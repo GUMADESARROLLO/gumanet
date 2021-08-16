@@ -1,0 +1,393 @@
+.expan_more {
+  background-color: #e2e2e2;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.expan_more:hover {
+  background-color: #cec7c7;
+} 
+
+#customFile .custom-file-control:lang(en)::after {
+  content: "Select file...";
+}
+
+#customFile .custom-file-control:lang(en)::before {
+  content: "Click me";
+}
+.custom-file-input~.custom-file-label::after {
+    content: attr(data-label);
+}
+
+.input-fecha {
+  height: 30px;
+  width: 100%;
+  padding: 0px 10px;
+  border: 1px solid #e0e0e0;
+  margin: 0;
+  text-overflow: ellipsis;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+  box-sizing: border-box;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -khtml-border-radius: 4px;
+  border-radius: 5px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+  box-shadow: none;
+  color: #000;
+  font-size: 1em;
+  font-weight: 400;
+  direction: ltr;
+}
+
+/*ESTILO MULTISELECT BOOTSTRAP*/
+.bootstrap-select .btn {
+  background-color: white;
+  border-color: gainsboro;
+}
+
+/*ESTILO DATATABLE*/
+.dt-center {
+  text-align: center;
+}
+
+.dt-right {
+  text-align: right;
+}
+
+.dt-left {
+  text-align: left;
+}
+
+.detail_AR {
+  text-align: center; 
+}
+
+.shown tr td {
+  background-color: red!important
+}
+
+.dt-back-unit {
+  background: #eaebff;
+  text-align: right;
+}
+
+.dt-back-vtas {
+  background: #d3d6ff;
+  text-align: right;
+}
+
+.dt-vencido {
+  background: #ffebee;
+  text-align: right;
+}
+
+.dt-n-vencido {
+  background: #e0f2f1;
+  text-align: right;
+}
+
+/*Sidebar lateral izquierda*/
+#sidebar {
+  position: fixed;
+  bottom: 0;
+  width: 250px;
+  height: 100%;
+  right: -250px;
+  transition: all 150ms linear;
+  background-color: white;
+}
+
+#sidebar.active {
+  right: 0px;
+}
+
+#sidebar ul li {
+  list-style: none;
+  padding: 10px 5px;
+  border-bottom: 0px solid rgba(100,100,100,0.3);
+}
+#sidebar ul li a i {
+  font-size: 18px;
+}
+
+#sidebar .toggle-btn {
+  position: absolute;
+  left: 230px;
+  top: 20px;
+}
+/*Fin de Sidebar*/
+
+/*Sidebar Menu left*/
+.vertical-nav {
+  min-width: 14.5rem;
+  width: 14.5rem;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s;
+}
+
+.date-picker-wrapper {
+  border-radius: 10px;
+  background-color: #f1f5f8!important;
+  padding: 15px!important;
+}
+
+.date-picker-wrapper .month-wrapper {
+  margin-top: 1%;
+}
+
+.day {
+  
+  width: 38px!important
+}
+
+.week-name {
+  width: 38px!important
+}
+
+.selected-days {
+  display: none!important;
+}
+
+.date-picker-wrapper .drp_top-bar .apply-btn {
+  cursor: pointer!important;
+  color:white!important;
+  border: solid 1px #0076a3!important;
+  background: #0095cd!important
+}
+
+.DrawBorder{
+  border: solid 2px black;
+}
+
+
+#sidebarCollapse {
+  cursor: pointer;
+}
+
+#sidebar-menu-left.active {
+  margin-left: -17rem;
+}
+
+#content.active {
+  width: 100%;
+  margin: 0;
+}
+
+.page-content {
+  width: calc(100% -17rem);
+  margin-left: 14.5rem;
+  transition: all 0.4s;
+}
+/*Fin de Sidebar*/
+
+/*Ventana detalles*/
+#page-details {
+  position: fixed;
+  bottom: 0;
+  width: 84%;
+  height: 100%;
+  right: -100%;
+  transition: all 300ms linear;
+  background-color: white;
+}
+
+#page-details.active {
+  right: 0px;
+}
+
+#page-details ul li {
+  list-style: none;
+  padding: 10px 5px;
+  border-bottom: 0px solid rgba(100,100,100,0.3);
+}
+#page-details ul li a i {
+  font-size: 18px;
+}
+
+#page-details .toggle-btn {
+  position: absolute;
+  left: 230px;
+  top: 20px;
+}
+/*Fin de Sidebar*/
+
+.highcharts-title -> tspan {
+  margin-top: 20px!important;
+  text-align: left;
+}
+
+.highcharts-credits {
+  display: none!important;
+}
+
+#page-details {
+  overflow: scroll
+}
+/*DATATABLES*/
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+  color:white !important;
+  border:0px solid #979797;
+  background-color:#87CEEB;
+  border-radius: 30%;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+  font-size: .8rem;
+  color: #e2e2e2!important;
+}
+/*DATATBLES FIN*/
+@media screen and (max-width:900px) {
+  #page-details {
+    width: 100%;
+    right: -100%;
+  }
+
+  .breadcrumb-item {
+    display: none
+  }
+
+  #page-details {
+    position: fixed;
+    bottom: 0;
+    width: 84%;
+    height: 100%;
+    right: -100%;
+    transition: all 300ms linear;
+    background-color: white;
+  }
+
+.page-content {
+  width: calc(100%);
+  margin-left: 14.5rem;
+  transition: all 0.4s;
+}
+
+
+}
+
+@media only screen and (min-width:420px) and (max-width:900px) {
+.d-none {
+    display: none!important;
+}
+}
+
+#_version {
+   position:fixed;
+   text-align: left;
+   left: 0px;
+   bottom:0px;
+   height:25px;
+     min-width: 14.5rem;
+  width: 14.5rem;
+   font-size: 11px;
+   
+   padding: 5px 10px 0px 10px;   
+}
+
+
+.highcharts-container, .highcharts-container svg {
+    width: 100% !important;
+    height: 100% !important;
+}
+.wrapper {
+  display: table;
+  width: 100%;
+}
+
+.element {
+  display: table-cell;
+  width: 50%;
+}
+
+#tbSaldos thead tr th {
+  text-align: center!important
+}
+
+.img01 {
+  width: 18px;
+  height: 18px;
+  margin-bottom: 5px;
+}
+
+.bg-blue {
+  background-color: #0072bc!important;
+}
+
+/* main content start */
+.pcoded-content {
+  position: relative;
+  display: block;
+  padding: 30px;
+}
+
+.pcoded-main-container {
+  position: relative;
+  margin: 0 auto;
+  display: block;
+  clear: both;
+  float: unset;
+  right: 0;
+  margin-left: 264px;
+  min-height: 100vh;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.highcharts-data-table table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    background: white;
+    min-width: 100%;
+    margin-top: 10px;
+    font-family: sans-serif;
+    font-size: 0.9em;
+}
+.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+    border: 1px solid silver;
+    padding: 0.5em;
+}
+.highcharts-data-table tr:nth-child(even), .highcharts-data-table thead tr {
+    background: #f8f8f8;
+}
+.highcharts-data-table tr:hover {
+    background: #eff;
+}
+.highcharts-data-table caption {
+    border-bottom: none;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+table.display tbody tr:nth-child(even):hover td{
+    background-color: #D8D8D8 !important;
+}
+
+table thead tr th {
+  text-align: center!important;
+}
+/* main content end*/
+
+.post_content {
+  font-size: 1.1em;
+  color: #1a1a1a;
+  overflow: hidden;
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.post_back {
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  background: #fff;
+  color: #000;
+  border: 1px solid #b9b9b9;
+  background-color: #fdfdfd;
+  table-layout: fixed;
+}
