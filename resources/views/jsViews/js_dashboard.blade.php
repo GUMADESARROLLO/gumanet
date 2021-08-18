@@ -83,7 +83,7 @@ $(document).ready(function() {
             renderTo: 'grafVtsMes'
         },
         title: {
-            text: `<p class="font-weight-bolder">Comportamiento de ventas</p>`
+            text: `<p class="font-weight-bolder">Comportamiento de venta anual</p>`
         },
         xAxis: {
             categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -140,7 +140,7 @@ $(document).ready(function() {
             renderTo: 'grafRealVentas'
         },
         title: {
-            text: `<p class="font-weight-bolder">Metas Ventas Reales</p>`
+            text: `<p class="font-weight-bolder">Venta real Vs Meta</p>`
         },
         xAxis: {
             categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -195,6 +195,55 @@ $(document).ready(function() {
         chart: {
             type: 'pie',
             renderTo: 'grafVtsXCateg',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text: 'Ventas por categorias'
+        },
+        subtitle: {},
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        tooltip: {
+            pointFormat: "<p class='font-weight-bold' style='font-size:14px'>C${point.y:,.2f}<br><span class='font-weight-bold' style='color:green; font-size:14px'>({point.porc}%)</span></p>"
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 45,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            },
+            series: {
+                allowPointSelect: false,
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    formatter: function( ) {
+                        return this.point.name+' '+ FormatPretty(this.y);
+                    }
+                }
+            },
+        },
+        series: [{
+            data: [],
+        }],
+    };
+
+    // GRAFICA POR VENTAS DIARIAS DE RUTAS
+    ventas_por_rutas = {
+        chart: {
+            type: 'pie',
+            renderTo: 'id_grafica_pie_ventas_ruta',
             options3d: {
                 enabled: true,
                 alpha: 45,
@@ -585,21 +634,7 @@ $(document).ready(function() {
         chart: {
             type: 'column',
             renderTo: 'grafVtsDiario'
-        },
-        yAxis:{
-            plotLines: [{
-                value: 0,
-                color: 'red',
-                dashStyle: 'shortdot',
-                width: 3,
-                zIndex: 10,
-                label: {
-                    text: 'Prom. Diario C$ ',
-                    x: 0
-                }
-            }],
-            
-        },
+        },      
 
         title: {
             text: 'Comportamiento Diario'
@@ -613,6 +648,23 @@ $(document).ready(function() {
         legend: {
             enabled: false
         },
+        yAxis:{
+            title: {
+                text: ''
+            },
+            plotLines: [{
+                value: 0,
+                color: 'red',
+                dashStyle: 'shortdot',
+                width: 3,
+                zIndex: 10,
+                label: {
+                    text: 'Prom. Diario C$ ',
+                    x: 0
+                }
+            }],
+            
+        },
         plotOptions: {
             series: {
                 allowPointSelect: false,
@@ -621,7 +673,7 @@ $(document).ready(function() {
                     enabled: true,
                     formatter: function() {
                         if (this.y > 1000) {
-                            return Highcharts.numberFormat(this.y / 1000, 1) + "    K";
+                            return Highcharts.numberFormat(this.y / 1000, 1) + " K";
                         } else {
                             return this.y
                         }
@@ -764,13 +816,16 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         dta.push({
                             name  : x['articulo'],
                             y     : x['data'], 
-                            und   : (x['dtUnd'] > 0 ) ? ' - ' + x['dtUnd'] + ' UNITS ' : '  '
+                            und   : (x['dtUnd'] > 0 ) ?  x['dtUnd'] : '  ',
+                            dtavg :  x['dtAVG']
                         })
 
                         title.push(x['name'])
                     });
 
-                    temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
+                    temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> Prom. :<b>C$ {point.dtavg} </b><br/>';
                     productos.tooltip = {
                         pointFormat : temporal
                     }
@@ -787,10 +842,11 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     $.each(item['data'], function(i, x) {
 
                         dta.push({
-                            name  : x['articulo'],
+                            name  :'Dia ' + x['articulo'],
                             mAVG  : x['dtAVG'],
+                            dtavg : x['dtavg_'],
                             y     : x['data'], 
-                            und   : (x['dtUnd'] > 0 ) ? ' - ' + x['dtUnd'] + ' UNITS ' : '  '                            
+                            und   : (x['dtUnd'] > 0 ) ?  x['dtUnd']  : '  '
                         });
                         //dta.push(x['data'])
                         //dta_avr.push(x['dtAVG']);
@@ -799,7 +855,12 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         title.push(x['name']); 
                     }); 
 
-                    temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
+                    //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
+                    temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';
+                    productos.tooltip = {
+                        pointFormat : temporal
+                    }
                     grafiacas_productos_Diarios.tooltip = {
                         pointFormat : temporal
                     }
@@ -845,6 +906,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     ventasXCateg.tooltip = {
                         pointFormat : temporal
                     }
+                    console.log(dta);
 
                     ventasXCateg.subtitle = {text: 'Todas las  categorias'};
                     ventasXCateg.series[0].data = dta;
@@ -1243,7 +1305,11 @@ function grafRealVentasMensuales(xbolsones) {
 
 var ventasMensuales = {};
 var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
+
 function grafVentasMensuales(xbolsones) {
+
+    
+
     var temporal = "";
     $("#grafVtsMes")
     .empty()
@@ -1441,38 +1507,43 @@ $("#select-cate").change(function() {
     })
 })
 
+
 var tableActive='';
 function detalles_ventas_diarias($dia,$mAVG)
 {
     $('#title-page-tem').addClass('text-uppercase').text("Detalle de venta del dia ");
     $("#page-details").toggleClass('active');  
-    mes         = $("#opcMes option:selected").val();
-    mesNombre   = $("#opcMes option:selected").text();
+
+    mes         = $("#opcMes option:selected").val();    
     anio        = $("#opcAnio option:selected").val();    
     pageName    = 'Dashboard';
 
-    FechaFiltrada = `Mostrando registros de `+mesNombre+` de `+anio;
+    dta_pie_rutas = [];
+
+    FechaFiltrada = `Mostrando registros del `+$dia+` de `+anio;    
+    $dia = $dia.replace(/[^\d.-]/g, '');
     $("#fechaFiltrada").text(FechaFiltrada);
     $('#filterDtTemp').val('');
+    
+
+
 
     $('#MontoReal').text('Cargando...');
-            $('#cumplMeta').text('Cargando...');
-            $('#cumplMetaContent').show();
-            $("#montoMetaContent").show();
-            $("#txtMontoReal").show();
-            $("#MontoReal").show();
-            $("#cjVentas").show();
-            $("#cjRecuperacion").hide();
-            $("#cjCliente").hide();
-            $("#cjArticulo").hide();
-            $("#cjRutVentas").show();
-            tableActive = `#dtTotalXRutaVent`;
-            $("#MontoMeta").text('C$ '+ numeral($mAVG).format('0,0.00') );
-            $("#cantRowsDtTemp selected").val("15");
+    $('#cumplMeta').text('Cargando...');
+    $('#cumplMetaContent').show();
+    $("#montoMetaContent").show();
+    $("#txtMontoReal").show();
+    $("#MontoReal").show();
+    $("#cjVentas").show();
+    $("#cjRecuperacion").hide();
+    $("#cjCliente").hide();
+    $("#cjArticulo").hide();
+    $("#cjRutVentas").show();            
+    $("#MontoMeta").text('C$ '+ numeral($mAVG).format('0,0.00') );
+    $("#cantRowsDtTemp selected").val("15");
+    
 
-
-            //Tabla Ventas del mes dashboard
-            $(tableActive).dataTable({
+            $("#dtTotalXRutaVent").dataTable({
                 responsive: true,
                 "autoWidth":false,
                 "ajax":{
@@ -1504,30 +1575,60 @@ function detalles_ventas_diarias($dia,$mAVG)
                     
                 ],
                 "footerCallback": function ( row, data, start, end, display ) {
+
                         var api = this.api(), data;
+                        
                         var intVal = function ( i ) {
                             return typeof i === 'string' ?
                             i.replace(/[^0-9.]/g, '')*1 :
                             typeof i === 'number' ?
                             i : 0;
                         };
+
                         total = api.column( 2 ).data().reduce( function (a, b) 
                         {
                             return intVal(a) + intVal(b);
                         }, 0 );
 
                         tmp = parseFloat($('#MontoMeta').text().replace(/[\ U,C$]/g, ''));
-                        cump = (tmp>0)?(( parseFloat(total) / tmp ) * 100):0;
+                        cump = (tmp>0)?(( parseFloat(total) / tmp ) * 100):0;     
+
+                        api.rows().data().each(function (value) {
+                            varMonto = value.REALE.replace(/[\ U,C$]/g, '');
+                            dta_pie_rutas.push({
+                                name  : value.VENDE,
+                                y     : parseFloat(varMonto),
+                                porc  : numeral((parseFloat(varMonto)/parseFloat(total))*100).format('0.00')
+                            })
+                        })
+
+                        
+
                         $('#cumplMeta').text(numeral(cump).format('0.00')+'%');
                         $('#MontoReal').text('C$ '+ numeral(total).format('0,0.00'));
+                        
+                        
+                        ventasXCateg.tooltip = {
+                            pointFormat : ''
+                        }
+                        ventasXCateg.subtitle = {text: 'Todas las  categorias'};
+                        ventas_por_rutas.series[0].data = dta_pie_rutas ;
+                        chart = new Highcharts.Chart(ventas_por_rutas);
                     },
                 
             });
+            
             $('#txtMontoReal').text('Total real ventas');
             $('#txtMontoMeta').text('Total Venta Diario');
 
             $("#dtTotalXRutaVent_length").hide();
             $("#dtTotalXRutaVent_filter").hide();
+
+           
+            
+
+
+
 
     var st = $('#sidebar-menu-left').hasClass('active');
 
@@ -2060,6 +2161,57 @@ function getDetalleVenta(mes, anio, metau, realu, metae, reale, ruta, nombre) {
     $('#mdDetailsVentas').modal('show');
 }
 
+function get_Detalle_Venta_dia(dia,mes, anio, ruta, nombre) {
+
+    $('#dtVentas').dataTable({
+        responsive: true,
+        "autoWidth":false,
+        "ajax":{
+            "url": "detallesVentasRutaDia/"+dia+"/"+mes+"/"+anio+"/"+ruta,
+            'dataSrc': '',
+        },
+        "destroy" : true,
+        "info":    false,
+        "lengthMenu": [[5,10,20,50,-1], [20,30,50,100,"Todo"]],
+        "language": {
+            "zeroRecords": "Cargando...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Última ",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+            "lengthMenu": "MOSTRAR _MENU_",
+            "emptyTable": "NO HAY DATOS DISPONIBLES",
+            "search":     "BUSCAR"
+        },
+        'columns': [
+            { "title"   : "",                   "data"  : "DETALLE"},
+            { "title"   : "Factura",            "data"  : "Factura" },
+            { "title"   : "Fecha",              "data"  : "Dia" },
+            { "title"   : "Codigo Cliente",     "data"  : "CODE" },
+            { "title"   : "Nombre Cliente",     "data"  : "NOMBRE" },
+            { "title"   : "Total",              "data"  : "Total" }
+        ],
+        "columnDefs": [
+            {"className": "dt-center", "targets": [ 0,1,2,3 ]},
+            {"className": "dt-back-unit", "targets": [ 4 ]},
+            {"className": "dt-back-vtas", "targets": [ 5 ]},
+            {"width": "20%", "targets": [ 1]},
+        ],
+        "footerCallback": function ( row, data, start, end, display ) {
+            
+
+            $('#vendedorNombre').text(nombre);
+            $('#id_detalles_ventas').hide();
+            
+        }
+    });
+    $("#dtVentas_length").hide();
+    $("#dtVentas_filter").hide();
+    $('#mdDetailsVentas').modal('show');
+}
+
 function detalleComparacionVentas(obj, tp) {
     var dif         = 0;
     var porcen01    = 0;
@@ -2185,6 +2337,90 @@ $(document).on('change', '.dash-opc', function(e) {
     }
     location.reload();
 });
+
+//MODAL PARA VER LOS DETALLES DE FACTUA DE LA GRAFICA DE DIARIO
+$(document).on('click', '#exp_more', function(ef) {
+    var table = $('#dtVentas').DataTable();
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
+    var data = table.row($(this).parents('tr')).data();
+
+    if (row.child.isShown()) {
+        row.child.hide();
+        tr.removeClass('shown');
+        ef.target.innerHTML = "expand_more";
+        ef.target.style.background = '#e2e2e2';
+        ef.target.style.color = '#007bff';
+    } else {
+        //VALIDA SI EN LA TABLA HAY TABLAS SECUNDARIAS ABIERTAS
+        table.rows().eq(0).each( function ( idx ) {
+            var row = table.row( idx );
+            if ( row.child.isShown() ) {
+                row.child.hide();
+                ef.target.innerHTML = "expand_more";
+
+                var c_1 = $(".expan_more");
+                c_1.text('expand_more');
+                c_1.css({
+                    background: '#e2e2e2',
+                    color: '#007bff',
+                });
+            }
+        } );
+
+        format(row.child,data.Factura);
+        tr.addClass('shown');
+        
+        ef.target.innerHTML = "expand_less";
+        ef.target.style.background = '#ff5252';
+        ef.target.style.color = '#e2e2e2';
+    }
+});
+function format ( callback, Factura_ ) {
+    var thead = tbody = '';            
+    thead =`<table class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th class="center">ARTICULO</th>                        
+                        <th class="center">DESCRIPCION.</th>
+                        <th class="center">CANTIDAD</th>
+                        <th class="center">PRECIO UNITARIO</th>
+                        <th class="center">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+                $.ajax({
+        type: "POST",
+        url: "getDetFactVenta",
+        data:{
+            factura: Factura_,
+        },
+        success: function ( data ) {
+            if (data.length==0) {
+                tbody +=`<tr><td colspan='6'><center>....</center></td></tr>`;
+                callback(thead + tbody).show();
+            }
+            
+            $.each(data['objDt'], function (i, item) {
+                tbody +=`<tr>
+                            <td class="center">` + item['ARTICULO'] + `</td>
+                            <td class="text-left">` + item['DESCRIPCION'] + `</td>
+                            <td class="text-left">` +numeral(item['CANTIDAD']).format('0,0.00')  + `</td>
+                            <td class="text-center">` + numeral(item['PRECIO_UNITARIO']).format('0,0.00') + `</td>
+                            <td class="text-right">` + numeral(item['PRECIO_TOTAL']).format('0,0.00') + `</td>
+                        </tr>`;
+            });
+            tbody += `</tbody></table>`;
+            
+            temp = thead+tbody;
+
+            callback(temp).show();
+        }
+
+
+    });
+}
+
 
 function reordenandoPantalla() {
     var x = 0;

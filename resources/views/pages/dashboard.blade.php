@@ -22,18 +22,18 @@
                     <div class="form-group">
                         <label for="opcMes" class="text-muted m-0">Filtrar por mes</label>
                         <select class="form-control form-control-sm" id="opcMes">
-                          <?php                        
-                            $mes = date("m");
-                            $meses = array('none','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre');
+                            <?php                        
+                                $mes = date("m");
+                                $meses = array('none','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre');
 
-                            for ($i= 1; $i <= 12 ; $i++) {
-                              if ($i==$mes) {
-                                echo'<option selected value="'.$i.'">'.$meses[$i].'</option>';
-                              }else {
-                                echo'<option value="'.$i.'">'.$meses[$i].'</option>';
-                              }
-                            }
-                          ?>
+                                for ($i= 1; $i <= 12 ; $i++) {
+                                if ($i==$mes) {
+                                    echo'<option selected value="'.$i.'">'.$meses[$i].'</option>';
+                                }else {
+                                    echo'<option value="'.$i.'">'.$meses[$i].'</option>';
+                                }
+                                }
+                            ?>
                         </select>
                     </div>
                 </div>
@@ -44,12 +44,11 @@
                             <?php
                                 $year = date("Y");
                                 for ($i= 2018; $i <= $year ; $i++) {
-                                  if ($i==$year) {
-                                    echo'<option selected value="'.$i.'">'.$i.'</option>';
-                                  }else {
-                                    echo'<option value="'.$i.'">'.$i.'</option>';
-                                  }
-                                 
+                                    if ($i==$year) {
+                                        echo'<option selected value="'.$i.'">'.$i.'</option>';
+                                    }else {
+                                        echo'<option value="'.$i.'">'.$i.'</option>';
+                                    }
                                 }
                             ?>
                         </select>  
@@ -69,15 +68,17 @@
                 <div class="container-vms" id="grafVtsDiario" style="width: 100%; margin: 0 auto"></div>
             </div>
         </div>
+        
+
         <div class="row" id="ct04">
             <div class="graf col-sm-12 mt-3">
-                <div class="container-vms" id="grafVtsMes" style="width: 100%; margin: 0 auto"></div>
+                <div class="container-rvts" id="grafRealVentas" style="width: 100%; margin: 0 auto"></div>
             </div>
         </div>
 
         <div class="row" id="ct04">
             <div class="graf col-sm-12 mt-3">
-                <div class="container-rvts" id="grafRealVentas" style="width: 100%; margin: 0 auto"></div>
+                <div class="container-vms" id="grafVtsMes" style="width: 100%; margin: 0 auto"></div>
             </div>
         </div>
 
@@ -245,7 +246,7 @@
                             </div>
                         </div>
                         <div class="col-sm-1 mt-3">
-                             <div class="input-group">
+                            <div class="input-group">
                                 <select class="custom-select" id="cantRowsDtTemp">
                                     <option value="5" selected>5</option>
                                     <option value="10">10</option>
@@ -256,16 +257,21 @@
                             </div>
                         </div>
                     </div>
-                  </div>
+                    <div id="id_grafica_pie_ventas_ruta"></div>    
+                </div>
                 </div>
             </div>
         </div>
+        
         <div class="row">
-            <div class="col-sm-12 mt-2">
+            <div class="col-sm-12 mt-2" id="id_tabla_ventas">
                 <div class="table-responsive">
-                    <div id="cjRutVentas"><table class="table table-bordered table-sm" width="100%" id="dtTotalXRutaVent" ></table></div>        
+                    <div id="cjRutVentas">
+                        <table class="table table-bordered table-sm" width="100%" id="dtTotalXRutaVent" ></table>
+                    </div>        
                 </div>
             </div>
+
             
             <div class="col-sm-12 mt-2">
                 <div class="table-responsive">
@@ -277,7 +283,7 @@
 
             <div class="col-sm-12 mt-2">
                 <div class="table-responsive">
-                   <div id="cjRecu_GumaPharma">
+                    <div id="cjRecu_GumaPharma">
                         <table class="table table-bordered table-sm" width="100%" id="dtRecu_GumaPharma"></table>
                     </div>
                 </div>                    
@@ -299,7 +305,7 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </div>
 <!-- Modal:Detalle Venta Comparación Meta, Real Cumplimineto -->
@@ -313,7 +319,7 @@
                 </button>
             </div>
             <div class="modal-body" id="bodyModal">
-                <div class="row">
+                <div class="row" id="id_detalles_ventas">
                 <div class="col-sm-2">
                     <p class="text-muted m-0">Meta Units.</p>
                     <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="total_Meta_Unidad"></p>

@@ -59,6 +59,10 @@ class dashboard_controller extends Controller {
     $obj = dashboard_model::getDetalleVentasXRuta($mes, $anio, $ruta);
     return response()->json($obj);
   }
+  public function get_Vta_Ruta_dia($Dia,$mes,$anio,$ruta){
+    $obj = dashboard_model::get_Vta_Ruta_dia($Dia,$mes, $anio, $ruta);
+    return response()->json($obj);
+  }
 
   public function getTop10Clientes() {
     $obj = dashboard_model::getTop10Clientes();

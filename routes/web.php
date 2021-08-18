@@ -83,6 +83,7 @@ Route::post('/getHistoriaMetaRecu','metas_controller@getHistoriaMetaRecu');
 Route::get('/detalles/{tipo}/{mes}/{anio}/{cliente}/{articulo}/{ruta}','dashboard_controller@getDetalleVentas');
 Route::get('/detallesdia/{dia}/{mes}/{anio}','dashboard_controller@getDetalleVentasDia');
 Route::get('/detallesVentasRuta/{mes}/{anio}/{ruta}','dashboard_controller@getDetalleVentasXRuta');
+Route::get('/detallesVentasRutaDia/{dia}/{mes}/{anio}/{ruta}','dashboard_controller@get_Vta_Ruta_dia');
 //Route::get('/ruta/{mes}/{anio}','dashboard_controller@getTotalRutaXVentas');
 Route::get('/unidadxProd/{mes}/{anio}','dashboard_controller@getTotalUnidadesXRutaXVentas');
 

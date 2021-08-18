@@ -83,6 +83,8 @@ class dashboard_model extends Model {
         $sql_server = new \sql_server();
         $sql_exec = '';
         $tem_ = 0;
+        $json = array();
+        $i = 0;
 
         $crecimiento_diario = 0;
 
@@ -114,9 +116,6 @@ class dashboard_model extends Model {
 
         $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
 
-        $json = array();
-        $i = 0;
-
         if( count($query)>0 ) {            
             if (count($info_metas) > 0) {
                 //EXTRAER META DE VENTA DEL MES
@@ -138,7 +137,7 @@ class dashboard_model extends Model {
                     $UND_ = 0;
                 }else {
                     $tem_ = (float) number_format(floatval($key['MontoVenta']),2,".","");
-                    $UND_ = intval($key['Cantidad']);
+                    $UND_ = intval($key['Cantidad']);                    
                 }
 
                 $json[$i]['data']   = $tem_;
@@ -458,6 +457,49 @@ class dashboard_model extends Model {
 
         $sql_server->close();
         return $json;
+    }  
+    public static function get_Vta_Ruta_dia($dia,$mes, $anio, $ruta) {
+
+        $sql_server = new \sql_server();
+        $sql_exec = '';
+        $i =0;
+        $request = Request();
+        $json = array();
+        $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        
+        switch ($company_user) {
+            case '1':
+                $sql_exec = "EXEC gnet_vnt_diaria_ruta ".$dia.",".$mes.", ".$anio.", '".$ruta."'";
+                
+                break;
+            case '2':
+                //$sql_exec = "EXEC Gp_VentaArticulo_Vendedor ".$mes.", ".$anio.", '".$ruta."'";
+                break;
+            case '3':
+                $sql_exec = "";
+                break;   
+            case '4':
+                //$sql_exec = "EXEC Inv_VentaArticulo_Vendedor ".$mes.", ".$anio.", '".$ruta."'";
+                break;         
+            default:                
+                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
+                break;
+        }
+
+        $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
+        
+        foreach ($query as $fila) {
+            $json[$i]["DETALLE"]    = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+            $json[$i]["Factura"]    = $fila["FACTURA"];
+            $json[$i]["Dia"]        = $fila["Dia"]->format('F j, Y');;
+            $json[$i]["CODE"]       = $fila["CodCliente"];
+            $json[$i]["NOMBRE"]     = $fila["NombreCliente"];
+            $json[$i]["Total"]      = "C$ " .number_format($fila["Total"], 2);
+            $i++;
+        }
+
+        $sql_server->close();
+        return $json;
     }    
 
     public static function getDetalleVentasDia($dia, $mes, $anio)
@@ -504,10 +546,11 @@ class dashboard_model extends Model {
 
         foreach ($query as $fila) {
 
-            $VENDEDOR = dashboard_model::buscarVendedorXRuta($fila["Ruta"], $company_user);
+
+            $VENDEDOR = dashboard_model::buscarVendedorXRuta($fila["Ruta"], $company_user);                        
+            $json[$i]["RUTA"] = '<a href="#!" onclick="get_Detalle_Venta_dia('.$dia.','.$mes.','.$anio.','."'".$fila["Ruta"]."'".', '."'".$VENDEDOR."'".')" >'.$fila["Ruta"].'</a>';
             $json[$i]["VENDE"] = $VENDEDOR;
             $json[$i]["REALE"] = "C$ ".number_format($fila["Monto"],2);
-            $json[$i]["RUTA"] = $fila["Ruta"];
             $i++;
         }
         $sql_server->close();
@@ -733,17 +776,20 @@ class dashboard_model extends Model {
                 $json[$i]['name']       = $key['Articulo'];
                 $json[$i]['articulo']   = $key['Descripcion'];
 
-                 if ( $company_user==4 ) {
-                    $tem_ = ($xbolsones)?intval($key['Cantidad']):intval($key['MontoVenta']);
+                if ( $company_user==4 ) {
+                    $tem_ = ($xbolsones)? floatval($key['Cantidad']) : floatval($key['MontoVenta']);
                     $UND_ = 0;
+                    $AVG_ = 0;
 
                 }else {
-                    $tem_ = intval($key['MontoVenta']);
-                    $UND_ = intval($key['Cantidad']);
+                    $tem_ = floatval($key['MontoVenta']);
+                    $UND_ = floatval($key['Cantidad']);
+                    $AVG_ = number_format(floatval($key['AVG_']),4);
                 }
 
                 $json[$i]['data'] = $tem_;
                 $json[$i]['dtUnd'] = $UND_;
+                $json[$i]['dtAVG'] = $AVG_;
 
                 $i++;
             }
