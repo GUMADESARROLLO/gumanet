@@ -213,17 +213,18 @@ class reportes_model extends Model
     public static function returnDetFactVenta($nFactura){
         $sql_server = new \sql_server();
         $Dta = array();
+       
 
         $sql_exec = '';
         $request = Request();
         $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
-
+        
         switch ($company_user) {
             case '1':
                 $sql_exec = 'SELECT FACTURA, ARTICULO, DESCRIPCION, CANTIDAD, PRECIO_UNITARIO, PRECIO_TOTAL FROM UMK_DETALLES_FACTURAS WHERE FACTURA = '."'".$nFactura."'";
                 break;
             case '2':
-                $sql_exec = 'SELECT FACTURA, ARTICULO, DESCRIPCION, CANTIDAD, PRECIO_UNITARIO, PRECIO_TOTAL FROM GP_DETALLES_FACTURAS WHERE FACTURA = '.$nFactura.'';
+                $sql_exec = 'SELECT FACTURA, ARTICULO, DESCRIPCION, CANTIDAD, PRECIO_UNITARIO, PRECIO_TOTAL FROM GP_DETALLES_FACTURAS WHERE FACTURA = '."'".$nFactura."'";                
                 break;
             case '3':
                 return false;

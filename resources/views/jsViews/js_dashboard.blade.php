@@ -244,14 +244,12 @@ $(document).ready(function() {
         chart: {
             type: 'pie',
             renderTo: 'id_grafica_pie_ventas_ruta',
-            options3d: {
-                enabled: true,
-                alpha: 45,
-                beta: 0
-            }
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
         },
         title: {
-            text: 'Ventas por categorias'
+            text: ''
         },
         subtitle: {},
         accessibility: {
@@ -269,7 +267,7 @@ $(document).ready(function() {
                 depth: 45,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.name}'
+                    format:  "<span class='font-weight-bold' style='color:black; font-size:10px'>{point.name}</span> "+"<span class='font-weight-bold' style='color:green; font-size:10px'> ({point.porc}%)</span>"
                 }
             },
             series: {
@@ -640,7 +638,9 @@ $(document).ready(function() {
             text: 'Comportamiento Diario'
         },
         subtitle: {
-            text: ''
+            text: 'C$ 0.00',
+            align: 'right',
+            x: -10
         },
         xAxis: [{
             type: 'category'   
@@ -835,11 +835,16 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                 break;
 
                 case 'dtaVentasDiarias':
+
                     dta = [];
                     dta_avr = [];
                     title = [];
+                    tmp_total = 0;
+                    
 
                     $.each(item['data'], function(i, x) {
+
+                        tmp_total = tmp_total + parseFloat(x['data']);
 
                         dta.push({
                             name  :'Dia ' + x['articulo'],
@@ -848,8 +853,6 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             y     : x['data'], 
                             und   : (x['dtUnd'] > 0 ) ?  x['dtUnd']  : '  '
                         });
-                        //dta.push(x['data'])
-                        //dta_avr.push(x['dtAVG']);
                         
                         goal = x['dtAVG']
                         title.push(x['name']); 
@@ -857,21 +860,14 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                     //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
                     temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';
-                    productos.tooltip = {
-                        pointFormat : temporal
-                    }
+                    temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';                   
                     grafiacas_productos_Diarios.tooltip = {
                         pointFormat : temporal
                     }
-
-                    
                     
                     grafiacas_productos_Diarios.xAxis.categories = title;
-                  //      grafiacas_productos_Diarios.xAxis.plotLines = title;
+                    grafiacas_productos_Diarios.subtitle.text = "C$ " + numeral(tmp_total).format('0,0.00') + " Total";
                     grafiacas_productos_Diarios.series[0].data = dta;
-                    //grafiacas_productos_Diarios.series[1].data = dta_avr;
-
                     
                     chart = new Highcharts.Chart(grafiacas_productos_Diarios);
                     chart.yAxis[0].options.plotLines[0].value = goal;
@@ -1308,8 +1304,6 @@ var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572',
 
 function grafVentasMensuales(xbolsones) {
 
-    
-
     var temporal = "";
     $("#grafVtsMes")
     .empty()
@@ -1518,13 +1512,20 @@ function detalles_ventas_diarias($dia,$mAVG)
     anio        = $("#opcAnio option:selected").val();    
     pageName    = 'Dashboard';
 
-    dta_pie_rutas = [];
 
-    FechaFiltrada = `Mostrando registros del `+$dia+` de `+anio;    
+    FechaFiltrada = `Mostrando registros del `+$dia+` de `+mes + ' ' + anio;    
     $dia = $dia.replace(/[^\d.-]/g, '');
     $("#fechaFiltrada").text(FechaFiltrada);
     $('#filterDtTemp').val('');
+
+    $("#cjVentasFacturas").show();
+    $("#cjVentas").hide();
+
+
     
+    $("#cjRutVentasRutas").show();
+    $("#id_grafica_pie_ventas_ruta").show();
+    $("#cjRutVentas").hide();
 
 
 
@@ -1534,16 +1535,16 @@ function detalles_ventas_diarias($dia,$mAVG)
     $("#montoMetaContent").show();
     $("#txtMontoReal").show();
     $("#MontoReal").show();
-    $("#cjVentas").show();
+    
     $("#cjRecuperacion").hide();
     $("#cjCliente").hide();
     $("#cjArticulo").hide();
-    $("#cjRutVentas").show();            
+    
     $("#MontoMeta").text('C$ '+ numeral($mAVG).format('0,0.00') );
-    $("#cantRowsDtTemp selected").val("15");
+    $("#cantRowsDtTemp selected").val("50");
     
 
-            $("#dtTotalXRutaVent").dataTable({
+            $("#dtVentaRuta").dataTable({
                 responsive: true,
                 "autoWidth":false,
                 "ajax":{
@@ -1552,7 +1553,7 @@ function detalles_ventas_diarias($dia,$mAVG)
                 },
                 "destroy" : true,
                 "info":    false,
-                "lengthMenu": [[10,15,20,-1], [10,15,20,"Todo"]],
+                "lengthMenu": [[20,-1], [20,"Todo"]],
                 "language": {
                     "zeroRecords": "Cargando...",
                     "paginate": {
@@ -1572,10 +1573,12 @@ function detalles_ventas_diarias($dia,$mAVG)
                 ],
                 "columnDefs": [
                     {"className": "dt-back-unit", "targets": [ 2 ]},
+                    {"className": "dt-left", "targets": [ 1 ]},
+                    {"className": "dt-center", "targets": [ 0 ]}
                     
                 ],
                 "footerCallback": function ( row, data, start, end, display ) {
-
+                        dta_pie_rutas = [];
                         var api = this.api(), data;
                         
                         var intVal = function ( i ) {
@@ -1621,10 +1624,9 @@ function detalles_ventas_diarias($dia,$mAVG)
             $('#txtMontoReal').text('Total real ventas');
             $('#txtMontoMeta').text('Total Venta Diario');
 
-            $("#dtTotalXRutaVent_length").hide();
-            $("#dtTotalXRutaVent_filter").hide();
-
-           
+            $("#dtVentaRuta_length").hide();
+            $("#dtVentaRuta_filter").hide();
+            $("#id_div_detalles_vendedores").hide();
             
 
 
@@ -1641,6 +1643,11 @@ function detalles_ventas_diarias($dia,$mAVG)
 
 var tableActive='';
 function detalleVentasMes(tipo, title, cliente, articulo) {
+
+    $("#cjRutVentasRutas").hide();
+    $("#id_grafica_pie_ventas_ruta").hide();
+    $("#cjRutVentas").show();
+
     $('#title-page-tem')
     .addClass('text-uppercase')
     .text(title);
@@ -1693,7 +1700,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                 },
                 "destroy" : true,
                 "info":    false,
-                "lengthMenu": [[5,10,20,50,-1], [5,30,50,100,"Todo"]],
+                "lengthMenu": [[30,50,-1], [30,100,"Todo"]],
                 "language": {
                     "zeroRecords": "Cargando...",
                     "paginate": {
@@ -1727,6 +1734,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
             });
             $('#txtMontoReal').text('Total real ventas');
             $('#txtMontoMeta').text('Total meta venta');
+            $("#id_div_detalles_vendedores").show();
             break;
         case 'recu':
             
@@ -2158,12 +2166,15 @@ function getDetalleVenta(mes, anio, metau, realu, metae, reale, ruta, nombre) {
     });
     $("#dtVentas_length").hide();
     $("#dtVentas_filter").hide();
+    $('#id_detalles_ventas').show();
+    $('#dtVentasFacturas').hide();
+    $('#id_div_Detalles_venta').show();
     $('#mdDetailsVentas').modal('show');
 }
 
 function get_Detalle_Venta_dia(dia,mes, anio, ruta, nombre) {
 
-    $('#dtVentas').dataTable({
+    $('#dtVentasFacturas').dataTable({
         responsive: true,
         "autoWidth":false,
         "ajax":{
@@ -2172,7 +2183,7 @@ function get_Detalle_Venta_dia(dia,mes, anio, ruta, nombre) {
         },
         "destroy" : true,
         "info":    false,
-        "lengthMenu": [[5,10,20,50,-1], [20,30,50,100,"Todo"]],
+        "lengthMenu": [[500,-1], [500,"Todo"]],
         "language": {
             "zeroRecords": "Cargando...",
             "paginate": {
@@ -2194,21 +2205,25 @@ function get_Detalle_Venta_dia(dia,mes, anio, ruta, nombre) {
             { "title"   : "Total",              "data"  : "Total" }
         ],
         "columnDefs": [
-            {"className": "dt-center", "targets": [ 0,1,2,3 ]},
+            {"className": "dt-center", "targets": [ 0,1,2,3,4 ]},
             {"className": "dt-back-unit", "targets": [ 4 ]},
             {"className": "dt-back-vtas", "targets": [ 5 ]},
             {"width": "20%", "targets": [ 1]},
         ],
         "footerCallback": function ( row, data, start, end, display ) {
-            
-
             $('#vendedorNombre').text(nombre);
+
             $('#id_detalles_ventas').hide();
+
+            $('#id_div_Detalles_venta').hide();
+            
+            
+            $('#dtVentasFacturas').show();
             
         }
     });
-    $("#dtVentas_length").hide();
-    $("#dtVentas_filter").hide();
+    $("#dtVentasFacturas_length").hide();
+    $("#dtVentasFacturas_filter").hide();
     $('#mdDetailsVentas').modal('show');
 }
 
@@ -2340,7 +2355,7 @@ $(document).on('change', '.dash-opc', function(e) {
 
 //MODAL PARA VER LOS DETALLES DE FACTUA DE LA GRAFICA DE DIARIO
 $(document).on('click', '#exp_more', function(ef) {
-    var table = $('#dtVentas').DataTable();
+    var table = $('#dtVentasFacturas').DataTable();
     var tr = $(this).closest('tr');
     var row = table.row(tr);
     var data = table.row($(this).parents('tr')).data();

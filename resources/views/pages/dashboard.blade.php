@@ -236,7 +236,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="id_div_detalles_vendedores">
                         <div class="col-sm-11 mt-3">
                            <div class="input-group">
                                 <div class="input-group-prepend">
@@ -257,14 +257,34 @@
                             </div>
                         </div>
                     </div>
-                    <div id="id_grafica_pie_ventas_ruta"></div>    
+                    
+                    
+                    <div class="row" >
+                        <div class="col-sm-6 mt-2">
+                            <div class="table-responsive">
+                                <div id="cjRutVentasRutas">
+                                    <table class="table table-bordered table-sm" width="100%" id="dtVentaRuta" ></table>
+                                </div>        
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6 mt-2 align-self-center">
+                            <div id="id_grafica_pie_ventas_ruta"></div>
+                        </div>
+                    
+                    </div>
                 </div>
                 </div>
             </div>
         </div>
         
         <div class="row">
-            <div class="col-sm-12 mt-2" id="id_tabla_ventas">
+
+        <div class="col-sm-12 mt-2" >
+                
+            </div>
+
+            <div class="col-sm-12 mt-2" >
                 <div class="table-responsive">
                     <div id="cjRutVentas">
                         <table class="table table-bordered table-sm" width="100%" id="dtTotalXRutaVent" ></table>
@@ -346,7 +366,7 @@
                 </div>
             </div>
             <hr>
-            <div class="row">
+            <div class="row" id="id_div_Detalles_venta">
                 <div class="col-sm-11 mt-2">
                    <div class="input-group">
                         <div class="input-group-prepend">
@@ -370,7 +390,12 @@
                 <div class="row">
                     <div class="col-sm-12 mt-3">
                         <div class="table-responsive">
-                            <div id="cjVentas"><table class="table table-bordered table-sm" width="100%" id="dtVentas" ></table></div>
+                            <div id="cjVentas">
+                                <table class="table table-bordered table-sm" width="100%" id="dtVentas" ></table>
+                            </div>
+                            <div id="cjVentasFacturas">
+                                <table class="table table-bordered table-sm" width="100%" id="dtVentasFacturas" ></table>
+                            </div>
                         </div>
                     </div>
                 </div>

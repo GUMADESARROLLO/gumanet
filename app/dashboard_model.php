@@ -469,17 +469,17 @@ class dashboard_model extends Model {
         
         switch ($company_user) {
             case '1':
-                $sql_exec = "EXEC gnet_vnt_diaria_ruta ".$dia.",".$mes.", ".$anio.", '".$ruta."'";
+                $sql_exec = "EXEC gnet_vnt_diaria_ruta_umk ".$dia.",".$mes.", ".$anio.", '".$ruta."'";
                 
                 break;
-            case '2':
-                //$sql_exec = "EXEC Gp_VentaArticulo_Vendedor ".$mes.", ".$anio.", '".$ruta."'";
+            case '2':                
+                $sql_exec = "EXEC gnet_vnt_diaria_ruta_gp ".$dia.",".$mes.", ".$anio.", '".$ruta."'";
                 break;
             case '3':
                 $sql_exec = "";
                 break;   
             case '4':
-                //$sql_exec = "EXEC Inv_VentaArticulo_Vendedor ".$mes.", ".$anio.", '".$ruta."'";
+                $sql_exec = "EXEC gnet_vnt_diaria_ruta_inn ".$dia.",".$mes.", ".$anio.", '".$ruta."'";
                 break;         
             default:                
                 dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
@@ -545,8 +545,6 @@ class dashboard_model extends Model {
         $json = array();        
 
         foreach ($query as $fila) {
-
-
             $VENDEDOR = dashboard_model::buscarVendedorXRuta($fila["Ruta"], $company_user);                        
             $json[$i]["RUTA"] = '<a href="#!" onclick="get_Detalle_Venta_dia('.$dia.','.$mes.','.$anio.','."'".$fila["Ruta"]."'".', '."'".$VENDEDOR."'".')" >'.$fila["Ruta"].'</a>';
             $json[$i]["VENDE"] = $VENDEDOR;
@@ -569,7 +567,7 @@ class dashboard_model extends Model {
         $articulo = ($articulo=='ND')?'':$articulo;
         $ruta = ($ruta=='ND')?'':$ruta;
 
-         switch ($company_user) {
+        switch ($company_user) {
             case '1':
                 $sql_exec = "EXEC Umk_VentaLinea_Articulo ".$mes.", ".$anio.", '', '".$cliente."', '".$articulo."', ''";
 
@@ -588,18 +586,17 @@ class dashboard_model extends Model {
                 break;
         }
 
-       
         $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
 
         $i = 0;
         $json = array();
 
         switch ($tipo) {
-        	case 'vent':
+            case 'vent':
                 $real_ = array_sum(array_column($query, 'Monto'));
                 $json[$i]['MONTO'] = $real_;
-        		break;
-        	case 'recu':
+            break;
+            case 'recu':
                     $mes = (strlen($mes)==1)?'0'.$mes:$mes;
                     $f1 = intval($anio.$mes.'01');
 
@@ -629,8 +626,8 @@ class dashboard_model extends Model {
                             $sql_exec = "";
                             break;  
                         case '4':
-                           $sql_exec = "EXEC Inv_Recuperacion_Cartera '".$f1."', '".$f2."', '' ";
-                            break;          
+                            $sql_exec = "EXEC Inv_Recuperacion_Cartera '".$f1."', '".$f2."', '' ";
+                        break;          
                         default:                
                             dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
                             break;
