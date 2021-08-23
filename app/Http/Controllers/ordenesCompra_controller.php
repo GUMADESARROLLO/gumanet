@@ -51,7 +51,7 @@ class ordenesCompra_controller extends Controller {
 
     public function getDetalleOrdenCompra(Request $request){
         if($request->isMethod('post')) {
-           $obj = ordenesCompra_model::getDetalleOrdenCompra($request->input('ordCompra'));
+            $obj = ordenesCompra_model::getDetalleOrdenCompra($request->input('ordCompra'));
             return response()->json($obj);
         }
     }

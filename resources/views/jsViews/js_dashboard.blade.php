@@ -817,6 +817,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             name  : x['articulo'],
                             y     : x['data'], 
                             und   : (x['dtUnd'] > 0 ) ?  x['dtUnd'] : '  ',
+                            undBo : (x['dtUndBo'] > 0 ) ?  x['dtUndBo'] : '  ',
                             dtavg :  x['dtAVG']
                         })
 
@@ -825,7 +826,8 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                     temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> Prom. :<b>C$ {point.dtavg} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> Unit. Bonif.: <b>  {point.undBo} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> Prec. Prome. :<b>C$ {point.dtavg} </b><br/>';
                     productos.tooltip = {
                         pointFormat : temporal
                     }
