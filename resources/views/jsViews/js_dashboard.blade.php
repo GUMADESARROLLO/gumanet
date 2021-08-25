@@ -620,7 +620,21 @@ $(document).ready(function() {
             point: {
                 events: {
                     click: function(e) {
-                        detalleVentasMes('artic', `[`+this.category+`] - `+this.name, 'ND', this.category);
+
+                        var dta_send = [];
+
+
+                        dta_send.push({
+                            total_fact      : this.y,
+                            unit_Fact       : this.und,
+                            unit_bonif      : this.undBo,
+                            prec_prom       : this.dtavg,
+                            cost_unit       : this.dtcpm,
+                            marg_contrib    : this.dtmco,
+                            porc_contrib    : this.dtpco
+                        })
+
+                        detalleVentasMes('artic', `[`+this.category+`] - `+this.name, dta_send, this.category);
                     }
                 }
             },
@@ -818,16 +832,22 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             y     : x['data'], 
                             und   : (x['dtUnd'] > 0 ) ?  x['dtUnd'] : '  ',
                             undBo : (x['dtUndBo'] > 0 ) ?  x['dtUndBo'] : '  ',
-                            dtavg :  x['dtAVG']
+                            dtavg :  x['dtAVG'],
+                            dtcpm :  x['dtCPM'],
+                            dtmco :  x['dtMCO'],
+                            dtpco :  x['dtPCO'],
                         })
 
                         title.push(x['name'])
                     });
 
-                    temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> Unit. Bonif.: <b>  {point.undBo} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> Prec. Prome. :<b>C$ {point.dtavg} </b><br/>';
+                    temporal = '<span style="color:black">\u25CF</span> TOT. FACT. :<b>C$  {point.y} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> UNIT. FACT.: <b>  {point.und} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> UNIT. BONIF: <b>  {point.undBo} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> PREC. PROM. :<b>C$ {point.dtavg} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> COST. UNIT. :<b>C$ {point.dtcpm} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> MARG. CONTRIB. :<b>C$ {point.dtmco} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> % CONTRIB. :<b>% {point.dtpco} </b><br/>';
                     productos.tooltip = {
                         pointFormat : temporal
                     }
@@ -904,7 +924,6 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     ventasXCateg.tooltip = {
                         pointFormat : temporal
                     }
-                    console.log(dta);
 
                     ventasXCateg.subtitle = {text: 'Todas las  categorias'};
                     ventasXCateg.series[0].data = dta;
@@ -1510,15 +1529,20 @@ function detalles_ventas_diarias($dia,$mAVG)
     $('#title-page-tem').addClass('text-uppercase').text("Detalle de venta del dia ");
     $("#page-details").toggleClass('active');  
 
+    $( "#id_div_titulo_Ventas_Rutas").removeClass( "table-responsive" ).addClass( "table" );
+
     mes         = $("#opcMes option:selected").val();    
+    mes_name    = $("#opcMes option:selected").text();    
     anio        = $("#opcAnio option:selected").val();    
     pageName    = 'Dashboard';
 
 
-    FechaFiltrada = `Mostrando registros del `+$dia+` de `+mes + ' ' + anio;    
+    FechaFiltrada = `Mostrando registros del `+$dia+` de `+mes_name + ' ' + anio;    
     $dia = $dia.replace(/[^\d.-]/g, '');
     $("#fechaFiltrada").text(FechaFiltrada);
     $('#filterDtTemp').val('');
+
+    $("#id_detalles_articulos").hide();
 
     $("#cjVentasFacturas").show();
     $("#cjVentas").hide();
@@ -1547,12 +1571,13 @@ function detalles_ventas_diarias($dia,$mAVG)
     
 
             $("#dtVentaRuta").dataTable({
-                responsive: true,
-                "autoWidth":false,
+                "scrollX": false,
+                "ordering": false,
                 "ajax":{
                     "url": "detallesdia/"+$dia+"/"+mes+"/"+anio,
                     'dataSrc': '',
                 },
+                
                 "destroy" : true,
                 "info":    false,
                 "lengthMenu": [[20,-1], [20,"Todo"]],
@@ -1650,6 +1675,8 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
     $("#id_grafica_pie_ventas_ruta").hide();
     $("#cjRutVentas").show();
 
+    $("#id_detalles_articulos").hide();
+
     $('#title-page-tem')
     .addClass('text-uppercase')
     .text(title);
@@ -1662,6 +1689,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
     FechaFiltrada = `Mostrando registros de `+mesNombre+` de `+anio;
     $("#fechaFiltrada").text(FechaFiltrada);
     $('#filterDtTemp').val('');
+
 
     switch(tipo) {
         case 'vent':
@@ -1986,9 +2014,12 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
             $('#MontoMeta').text('Cargando...');
             $('#txtMontoMeta').text('Cargando...');
 
+            
+            
+            $("#id_detalles_articulos").show();
 
             $("#cjRecuperacion").hide();
-            $('#cumplMetaContent').hide();
+            $('#cumplMetaContent').show();
             $("#cjVentas").hide();
             $("#cjRutVentas").hide();
             $("#cjCliente").hide();
@@ -2051,14 +2082,22 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                         }, 0 );
 
 
-                        
-                    $('#MontoReal').text('C$'+ numeral(total).format('0,0.00'));
-                    $('#txtMontoReal').text('Total facturado');
+
+                    $('#id_detall_prec_prom').text('C$ '+ numeral(cliente[0].prec_prom).format('0,0.00'));  
+                    $('#id_detall_cost_unit').text('C$ '+ numeral(cliente[0].cost_unit).format('0,0.00'));  
+                    $('#id_detall_marg_contrib').text('C$ '+ numeral(cliente[0].marg_contrib).format('0,0.00'));  
+                    $('#id_detall_porc_contrib').text(numeral(cliente[0].porc_contrib).format('0,0.00'));  
+
+                    $('#txtMontoMeta').text('TOT. FACT. :');
+                    $('#MontoMeta').text(numeral('C$ '+ cliente[0].total_fact).format('0,0.00'));
+                    
+                    $('#MontoReal').text(numeral(cliente[0].unit_Fact).format('0,0.00'));
+                    $('#txtMontoReal').text('UNIT. FACT. :');
+
+                    $('#cumplMeta').text(numeral(cliente[0].unit_bonif).format('0,0.00'));
+                    $('#id_detall_unit_bonif').text('UNIT. BONIF:');
 
                     
-
-                    $('#txtMontoMeta').text('Total Unidades');
-                    $('#MontoMeta').text(numeral(total_und).format('0,0.00'));
                 }
             });
         break;

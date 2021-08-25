@@ -212,9 +212,11 @@
         </div>
         <div class="row center">
             <div class="col-sm-12">
-                <div class="card mt-3 border-0 shadow-sm">
-                  <div class="card-body">
-                    <div class="row">
+                
+                
+                <div class="card mt-3 border-0 shadow-sm">                    
+                  <div class="card-body">                  
+                    <div class="row" id="lbl_id_articulos">
                         <div class="col-sm-4 border-right">
                             <h5 class="card-title" id="title-page-tem"></h5>
                             <p class="text-muted" id="fechaFiltrada"></p>
@@ -230,7 +232,7 @@
                                     <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="MontoReal"></p>
                                 </div>
                                 <div class="col-sm-4" id="cumplMetaContent">
-                                    <p class="text-muted m-0">% Cumpl.</p>
+                                    <p class="text-muted m-0" id="id_detall_unit_bonif">% Cumpl.</p>
                                     <p class="font-weight-bolder text-info" style="font-size: 1.3rem!important" id="cumplMeta"></p>
                                 </div>
                             </div>
@@ -261,7 +263,7 @@
                     
                     <div class="row" >
                         <div class="col-sm-6 mt-2">
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="id_div_titulo_Ventas_Rutas">
                                 <div id="cjRutVentasRutas">
                                     <table class="table table-bordered table-sm" width="100%" id="dtVentaRuta" ></table>
                                 </div>        
@@ -277,8 +279,59 @@
                 </div>
             </div>
         </div>
-        
-        <div class="row">
+        <br>
+        <div class="row" id="id_detalles_articulos" >
+        <div class="col-12 col-lg-6 col-xl">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center gx-0">
+                                    <div class="col">
+                                        <P class="text-muted m-0">PREC. PROM. :</P>
+                                        <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_detall_prec_prom"></p>                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center gx-0">
+                                <div class="col">
+                                    <p class="text-muted mb-0">COST. PROM. UNIT. :</p>
+                                    <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_detall_cost_unit"></p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center gx-0">
+                                <div class="col">
+                                    <p class="text-muted mb-0">MARG. CONTRIB. :</p>
+                                    <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_detall_marg_contrib"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center gx-0">
+                                <div class="col">
+                                    <p class="text-muted mb-0">% CONTRIB. :</p>
+                                    <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_detall_porc_contrib"></p>                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                                        
+                </div>           
+        <div class="row" >
 
         <div class="col-sm-12 mt-2" >
                 

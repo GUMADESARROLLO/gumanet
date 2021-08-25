@@ -770,22 +770,31 @@ class dashboard_model extends Model {
         if( count($query)>0 ) {
             foreach ($query as $key) {
 
-
-                $Cantidad               = $key['Cantidad'];
-                $Cantidad_bonificada    = $key['Cantida_boni'];
                 $Total_Facturado        = $key['MontoVenta'];
-
-
+                $Cantidad               = $key['Cantidad'];
+                $Cantidad_bonificada    = $key['Cantida_boni'];                
+                $COSTO_PROM             = $key['COSTO_PROM'];
                 $json[$i]['name']       = $key['Articulo'];
                 $json[$i]['articulo']   = $key['Descripcion'];
 
                 $AVG = floatval($Total_Facturado)  / (  floatval($Cantidad) + floatval($Cantidad_bonificada) );
 
+                $Costo_total_Promedio = (floatval($Cantidad) + floatval($Cantidad_bonificada)) * floatval($COSTO_PROM);
+                
+                $Monto_Contribucion = floatval($Total_Facturado)  - floatval($Costo_total_Promedio);
+
+                $prom_contribucion = ($Monto_Contribucion / $Costo_total_Promedio) * 100;          
+
                 if ( $company_user==4 ) {
-                    $tem_   = ($xbolsones)? floatval($Cantidad) : floatval($Total_Facturado);
-                    $UND_   = 0;
+                    $tem_   = ($xbolsones) ? floatval($Cantidad) : floatval($Total_Facturado);
+                    $UND_ = floatval($Cantidad);
                     $UND_BO = floatval($Cantidad_bonificada);
-                    $AVG_   = number_format(floatval($AVG),2);
+                    $AVG_   = number_format(floatval($AVG),2);                    
+                    $COSTO_PROM_ = number_format(floatval($COSTO_PROM),2);
+                    $MARG_CONTRI = number_format(floatval($Monto_Contribucion),2);
+                    $PORC_CONTRI = number_format(floatval($prom_contribucion),2);
+
+
 
                 }else {
 
@@ -793,13 +802,21 @@ class dashboard_model extends Model {
                     $UND_ = floatval($Cantidad);
                     $UND_BO = floatval($Cantidad_bonificada);
                     $AVG_ = number_format(floatval($AVG),2);
+                    $COSTO_PROM_ = number_format(floatval($COSTO_PROM),2);
+                    $MARG_CONTRI = number_format(floatval($Monto_Contribucion),2);
+                    $PORC_CONTRI = number_format(floatval($prom_contribucion),2);
                 }
+
+
 
                 $json[$i]['data']       = $tem_;
                 $json[$i]['dtUnd']      = $UND_;
                 $json[$i]['dtUndBo']    = $UND_BO;
                 $json[$i]['dtAVG']      = $AVG_;
-
+                $json[$i]['dtCPM']      = $COSTO_PROM_;
+                $json[$i]['dtMCO']      = $MARG_CONTRI;
+                $json[$i]['dtPCO']      = $PORC_CONTRI;
+                
                 $i++;
             }
         }
