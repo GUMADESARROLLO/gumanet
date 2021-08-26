@@ -956,12 +956,25 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                         var porcentaje = (meta_!=0)? (real_/meta_) * 100 :0;
 
+                        var dta_vst = [];
+
+
+                        dta_vst.push({
+                            dt_vst_real      : real_,
+                            dt_vst_meta      : meta_,
+                            dt_vst_porc      : porcentaje
+                        })
+
+
                         if ( real_>meta_ && meta_>0 ) {
                             remanente = real_- meta_
                         } else {
                             remanente = 0;
                         }
                         porcentaje = `<p class="font-weight-bolder" style="font-size:14px">`+numeral(porcentaje).format('0,0.00')+`% de 100%</p>`;
+
+
+                        
                         ventas.series[0]= {
                             name: 'Real',
                             type: 'column',
@@ -975,7 +988,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             point: {
                                 events: {
                                     click: function(e) {
-                                        detalleVentasMes('vent', 'Ventas del Mes', 'data');
+                                        detalleVentasMes('vent', 'Ventas del Mes', 'data',dta_vst);
                                     }
                                 }
                             },
@@ -995,7 +1008,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             point: {
                                 events: {
                                     click: function(e) {
-                                        detalleVentasMes('vent', 'Ventas del Mes', 'data');
+                                        detalleVentasMes('vent', 'Ventas del Mes', 'data',dta_vst);
                                     }
                                 }
                             },
@@ -1652,7 +1665,8 @@ function detalles_ventas_diarias($dia,$mAVG)
             $('#txtMontoMeta').text('Total Venta Diario');
 
             $("#dtVentaRuta_length").hide();
-            $("#dtVentaRuta_filter").hide();
+            $("#dtVentaRuta_filter,#dtVentaRuta_paginate").hide();
+            
             $("#id_div_detalles_vendedores").hide();
             
 
@@ -1706,7 +1720,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
             $("#MontoMeta").text('C$ '+montoMetaVenta);
             $("#cantRowsDtTemp selected").val("5");
             
-            $.ajax({// calcula el total real neto
+           /* $.ajax({// calcula el total real neto
                     url: "detalles/"+tipo+"/"+mes+"/"+anio+"/ND/ND/ND",
                     type: "GET",
                     async: true,
@@ -1718,7 +1732,10 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                         $('#cumplMeta').text(numeral(cump).format('0.00')+'%');
 
                     }
-                });
+                });*/
+
+                $('#MontoReal').empty().text('C$ '+ numeral(articulo[0].dt_vst_real).format('0,0.00'));
+                $('#cumplMeta').text(numeral(articulo[0].dt_vst_porc).format('0.00')+'%');
 
             //Tabla Ventas del mes dashboard
             $(tableActive).dataTable({
