@@ -557,29 +557,28 @@ class dashboard_model extends Model {
     
     
     public static function getDetalleVentas($tipo, $mes, $anio, $cliente, $articulo, $ruta) {
-        $sql_server = new \sql_server();
+        $sql_server     = new \sql_server();
 
-        $sql_exec = '';
-        $request = Request();
-        $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        $sql_exec       = '';
+        $request        = Request();
+        $company_user   = Company::where('id',$request->session()->get('company_id'))->first()->id;
 
-        $cliente = ($cliente=='ND')?'':$cliente;
-        $articulo = ($articulo=='ND')?'':$articulo;
-        $ruta = ($ruta=='ND')?'':$ruta;
+        $cliente        = ($cliente=='ND')?'':$cliente;
+        $articulo       = ($articulo=='ND')?'':$articulo;
+        $ruta           = ($ruta=='ND')?'':$ruta;
 
         switch ($company_user) {
             case '1':
-                $sql_exec = "EXEC Umk_VentaLinea_Articulo ".$mes.", ".$anio.", '', '".$cliente."', '".$articulo."', ''";
-
+                $sql_exec = "EXEC gnet_Ventas_detalle ".$mes.", ".$anio.", '', '".$cliente."', '".$articulo."', ''";
                 break;
             case '2':
-                $sql_exec = "EXEC Gp_VentaLinea_Articulo ".$mes.", ".$anio.", '', '".$cliente."', '".$articulo."', ''";
+                $sql_exec = "EXEC gnet_Ventas_detalle_gp ".$mes.", ".$anio.", '', '".$cliente."', '".$articulo."', ''";
                 break;
             case '3':
                 $sql_exec = "";
                 break;    
             case '4':
-                $sql_exec = "EXEC Inv_VentaLinea_Articulo ".$mes.", ".$anio.", '', '".$cliente."', '".$articulo."', ''";
+                $sql_exec = "EXEC gnet_Ventas_detalle_inn ".$mes.", ".$anio.", '', '".$cliente."', '".$articulo."', ''";
                 break;        
             default:                
                 dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
@@ -663,6 +662,7 @@ class dashboard_model extends Model {
                     $json[$i]["CLIENTE"]       = $fila["cliente"];
                     $json[$i]["NOMBRE"]        = $fila["nombre"];
                     $json[$i]["CANTIDAD"]      = number_format($fila["Cantidad"], 2);
+                    $json[$i]["CANTIDAD_BONI"] = number_format($fila["Cantida_boni"], 2);
                     $json[$i]["TOTAL"]         = number_format($fila["Monto"], 2);
                     $i++;
                 }
@@ -783,7 +783,10 @@ class dashboard_model extends Model {
                 
                 $Monto_Contribucion = floatval($Total_Facturado)  - floatval($Costo_total_Promedio);
 
-                $prom_contribucion = ($Monto_Contribucion / $Costo_total_Promedio) * 100;          
+               //$prom_contribucion = ($Monto_Contribucion / $Costo_total_Promedio) * 100;          
+
+               $prom_contribucion = (( $AVG - floatval($COSTO_PROM) ) / $AVG) * 100;
+
 
                 if ( $company_user==4 ) {
                     $tem_   = ($xbolsones) ? floatval($Cantidad) : floatval($Total_Facturado);

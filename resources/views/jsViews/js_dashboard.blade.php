@@ -845,8 +845,8 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     temporal += '<span style="color:black">\u25CF</span> UNIT. FACT.: <b>  {point.und} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> UNIT. BONIF: <b>  {point.undBo} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> PREC. PROM. :<b>C$ {point.dtavg} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> COST. UNIT. :<b>C$ {point.dtcpm} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> MARG. CONTRIB. :<b>C$ {point.dtmco} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> COST. PROM. UNIT. :<b>C$ {point.dtcpm} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> MARG. CONTRIB BRUTO :<b>C$ {point.dtmco} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> % CONTRIB. :<b>% {point.dtpco} </b><br/>';
                     productos.tooltip = {
                         pointFormat : temporal
@@ -2036,7 +2036,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                 },
                 "destroy" : true,
                 "info":    false,
-                "lengthMenu": [[5,10,20,50,-1], [20,30,50,100,"Todo"]],
+                "lengthMenu": [[20,50,-1], [20,30,50,100,"Todo"]],
                 "language": {
                     "zeroRecords": "Cargando...",
                     "paginate": {
@@ -2050,13 +2050,14 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                     "search":     "BUSCAR"
                 },
                 'columns': [
-                    { "title": "Cliente",      "data": "CLIENTE" },
-                    { "title": "Nombre",       "data": "NOMBRE" },
-                    { "title": "Cantidad",     "data": "CANTIDAD" },
-                    { "title": "Total",        "data": "TOTAL" }
+                    { "title": "Cliente",               "data": "CLIENTE" },
+                    { "title": "Nombre",                "data": "NOMBRE" },
+                    { "title": "Cantidad Facturada",    "data": "CANTIDAD" },
+                    { "title": "Cantidad Bonificada",   "data": "CANTIDAD_BONI" },
+                    { "title": "Total",                 "data": "TOTAL" }
                 ],
                 "columnDefs": [
-                    {"className": "dt-right", "targets": [ 2, 3 ]},
+                    {"className": "dt-right", "targets": [ 2, 3,4 ]},
                     {"className": "dt-center", "targets": [ 0 ]},
                 ],
                 "footerCallback": function ( row, data, start, end, display ) {
