@@ -846,7 +846,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     temporal += '<span style="color:black">\u25CF</span> UNIT. BONIF: <b>  {point.undBo} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> PREC. PROM. : <b>C$ {point.dtavg} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> COST. PROM. UNIT. :<b>C$ {point.dtcpm} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> CONTRIB.  : <b>C$ {point.dtmco} </b><br/>';
+                    temporal += '<span style="color:black">\u25CF</span> MARG. CONTRIB BRUTO.  : <b>C$ {point.dtmco} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> % MARGEN BRUTO: <b>% {point.dtpco} </b><br/>';
                     productos.tooltip = {
                         pointFormat : temporal
