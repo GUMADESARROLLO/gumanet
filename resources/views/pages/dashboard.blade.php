@@ -323,7 +323,7 @@
                             <div class="card-body">
                                 <div class="row align-items-center gx-0">
                                 <div class="col">
-                                    <p class="text-muted mb-0">% CONTRIB. :</p>
+                                    <p class="text-muted mb-0">% MARGEN CONTRIB. :</p>
                                     <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_detall_porc_contrib"></p>                                    
                                     </div>
                                 </div>
