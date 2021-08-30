@@ -23,7 +23,9 @@ class inventario_model extends Model {
         $sql_exec = '';
         $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
         $anio = date('Y');
+        $getMonth  = date('n');
         $anio = intval($anio) - 1;
+
 
         switch ($company_user) {
             case '1':
@@ -131,6 +133,7 @@ class inventario_model extends Model {
             $query[$i]['CANT_ANIO_PAS']     = number_format($cantidad, 2);
 
             $query[$i]['VST_MES_ACTUAL']    = number_format($vst_mes_Actual, 2);
+            $query[$i]['PROM_VST_ANUAL']    = number_format(($vst_anno_Actual / $getMonth), 2);
             $query[$i]['VST_ANNO_ACTUAL']   = number_format($vst_anno_Actual, 2);
             $i++;
         }
@@ -323,7 +326,7 @@ class inventario_model extends Model {
                 $temp = inventario_model::getArticulos();
                 
                 $tituloReporte = "INVENTARIO DE ARTICULOS ACTUALIZADOS HASTA ".date('d/m/Y');
-                $titulosColumnas = array('ARTICULO','DESCRIPCION','UNIDAD','EXISTENCIA','TOTAL UNITS/ MES','TOTAL UNITS/ 2021','PROM. UNITS/ 2020', 'TOTAL UNITS. 2020');
+                $titulosColumnas = array('ARTICULO','DESCRIPCION','UNIDAD','CANTI. DISP B002 ','TOTAL UNITS/ MES','TOTAL UNITS/ 2021','PROM. UNITS/MES 2020', 'TOTAL UNITS. 2020');
 
                 $objPHPExcel->setActiveSheetIndex(0)
                         ->mergeCells('A1:G1');
@@ -346,6 +349,7 @@ class inventario_model extends Model {
                     $cantidad = tbl_temporal::where('articulo', $key['ARTICULO_'])->select('cantidad')->first();
                     $vst_mes_Actual = tbl_temporal::where('articulo', $key['ARTICULO'])->select('VstMesActual')->first();
                     $vst_anno_Actual = tbl_temporal::where('articulo', $key['ARTICULO'])->select('VstAnnoActual')->first();
+                    $vst_anno_Actual = tbl_temporal::where('articulo', $key['ARTICULO'])->select('VstAnnoActual')->first();
         
                     $cantidad = ( $cantidad['cantidad']=='' )?0:$cantidad['cantidad'];
                     $promedio =   ( $cantidad>0 )?( $cantidad / 12 ):0;
@@ -363,6 +367,15 @@ class inventario_model extends Model {
                     ->setCellValue('G'.$i,  number_format($promedio))
                     ->setCellValue('H'.$i,  number_format($cantidad));
                     $i++;
+
+                    if ($key['ARTICULO_']=='18815012') {
+                        $data = array(
+                            "Articulos" => $key['ARTICULO_'],
+                            "vst_mes_Actual" => '00012',
+                        );
+                        dd();
+                    } 
+                    
                 }
 
                 $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(70);
@@ -385,7 +398,7 @@ class inventario_model extends Model {
 
                 $tituloReporte = ($valor==6)?("VENCIMIENTO A 6 MESES HASTA ".date('d/m/Y')):("VENCIMIENTO A 12 MESES HASTA ".date('d/m/Y'));
 
-                $titulosColumnas = array('ARTICULO', 'DESCRIPCION', 'DIAS PARA VENCERSE', 'CANTIDAD DISPONIBLE', 'FECHA VENCE', 'LOTE', 'BODEGA', 'TOTAL VENTA 2020', 'PROM. MES 2020', 'ESTIMADO ROTACION MES');
+                $titulosColumnas = array('ARTICULO', 'DESCRIPCION', 'DIAS PARA VENCERSE', 'CANTIDAD DISPONIBLE', 'FECHA VENCE', 'LOTE', 'BODEGA', 'TOTAL UNITS 2020', 'PROM. UNITS/MES 2020', 'ESTIMADO ROTACION MES');
 
                 $objPHPExcel->setActiveSheetIndex(0)
                         ->mergeCells('A1:J1');

@@ -14,15 +14,16 @@ $(document).ready(function() {
             { "width":"50%", "targets": [ 1 ] }
         ]
         columns = [
-            { title: "ARTICULO",     data: "ARTICULO" },
-            { title: "DESCRIPCION",  data: "DESCRIPCION" },
-            { title: "UNIDAD",       data: "UNIDAD_ALMACEN" },
-            { title: "EXIST. B002",   data: "total" },
-            { title: "UNIDADES",     data: "und" },
-            { title: "TOTAL UNITS/ MES", data: "VST_MES_ACTUAL" },
-            { title: "TOTAL UNITS/ 2021", data: "VST_ANNO_ACTUAL" },
-            { title: "PROM. UNITS/ 2020", data: "PROMEDIO_VENTA" },
-            { title: "TOTAL UNITS/ 2020", data: "CANT_ANIO_PAS" }
+            { title: "ARTICULO",                data: "ARTICULO" },
+            { title: "DESCRIPCION",             data: "DESCRIPCION" },
+            { title: "UNIDAD",                  data: "UNIDAD_ALMACEN" },
+            { title: "CANT. DISP. B002",        data: "total" },
+            { title: "TOTAL UNITS. ",           data: "und" },
+            { title: "TOTAL UNITS/ MES",        data: "VST_MES_ACTUAL" },
+            { title: "PROM UNITS/ MES 2021",    data: "PROM_VST_ANUAL" },
+            { title: "TOTAL UNITS 2021",        data: "VST_ANNO_ACTUAL" },
+            { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
+            { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" }
             
         ];
         infoTable = `Mostrando Articulos solo de Bodega 002`;
@@ -34,13 +35,13 @@ $(document).ready(function() {
             { "width":"50%", "targets": [ 1 ] }
         ]
         columns = [
-            { title: "ARTICULO",     data: "ARTICULO" },
-            { title: "DESCRIPCION",  data: "DESCRIPCION" },
-            { title: "UNIDAD",       data: "UNIDAD_ALMACEN" },
-            { title: "TOTAL UNITS/ MES", data: "VST_MES_ACTUAL" },
-            { title: "TOTAL UNITS/ 2021", data: "VST_ANNO_ACTUAL" },
-            { title: "EXISTENCIA",   data: "total" },
-            { title: "UNIDADES",     data: "und" },
+            { title: "ARTICULO",            data: "ARTICULO" },
+            { title: "DESCRIPCION",         data: "DESCRIPCION" },
+            { title: "UNIDAD",              data: "UNIDAD_ALMACEN" },
+            { title: "TOTAL UNITS/ MES",    data: "VST_MES_ACTUAL" },
+            { title: "TOTAL UNITS 2021",    data: "VST_ANNO_ACTUAL" },
+            { title: "EXISTENCIA",          data: "total" },
+            { title: "UNIDADES",            data: "und" },
         ];
         $("#modulo-inventario").empty();
     break;
@@ -51,14 +52,14 @@ $(document).ready(function() {
             { "width":"50%", "targets": [ 1 ] }
         ]
         columns = [
-            { title: "ARTICULO",     data: "ARTICULO" },
-            { title: "DESCRIPCION",  data: "DESCRIPCION" },
-            { title: "UNIDAD",       data: "UNIDAD_ALMACEN" },
-            { title: "EXISTENCIA",   data: "total" },
-            { title: "TOTAL UNITS/ MES", data: "VST_MES_ACTUAL" },
-            { title: "TOTAL UNITS/ 2021", data: "VST_ANNO_ACTUAL" },
-            { title: "PROM. UNITS/ 2020", data: "PROMEDIO_VENTA" },
-            { title: "TOTAL UNITS/ 2020", data: "CANT_ANIO_PAS" }
+            { title: "ARTICULO",                data: "ARTICULO" },
+            { title: "DESCRIPCION",             data: "DESCRIPCION" },
+            { title: "UNIDAD",                  data: "UNIDAD_ALMACEN" },
+            { title: "TOTAL DISP.",             data: "total" },
+            { title: "TOTAL UNITS/ MES",        data: "VST_MES_ACTUAL" },
+            { title: "TOTAL UNITS 2021",        data: "VST_ANNO_ACTUAL" },
+            { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
+            { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" }
         ];
         $("#modulo-inventario").empty();
     break
@@ -128,9 +129,9 @@ function liquidacionPorMeses(valor) {
             { "title": "FECHA VENCE",           "data": "F_VENCIMIENTO" },
             { "title": "LOTE",                  "data": "LOTE" },
             { "title": "BODEGA",                "data": "BODEGA" },
-            { "title": "TOTAL VENTA 2020",      "data": "VTS_ANIO_ANT" },
-            { "title": "PROM.MES 2020",         "data":  "PROMEDIO_VENTA" },
-            { "title": "ESTIMADO ROTACION MES",     "data": "TEMPO_ESTI_VENT" },
+            { "title": "TOTAL UNITS 2020",      "data": "VTS_ANIO_ANT" },
+            { "title": "PROM. UNITS/MES 2020",  "data":  "PROMEDIO_VENTA" },
+            { "title": "ESTIMADO ROTACION MES", "data": "TEMPO_ESTI_VENT" },
         ],
         "columnDefs": [
             {"className": "dt-center", "targets": [ 0, 2, 4, 5 ]},
