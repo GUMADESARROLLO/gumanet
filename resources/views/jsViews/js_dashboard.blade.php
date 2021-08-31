@@ -1030,6 +1030,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     var lbl_dif         = 0;
                     var lbl_porcen01    = 0;
                     var lbl_porcen02    = 0;
+                    lbl_toolTips = "";
                     $.each(item['data'], function(i, x) {
                         comparacionMesesVentas.series[i]= {
                             name: x['name'],
@@ -1063,13 +1064,13 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
 
                                                                         
-                                    temporal = '<span style="color:black">\u25CF</span> '+mes_actual + ' ' + text_monto_actual + '<br><b>';
-                                    temporal += '<span style="color:black">\u25CF</span> '+anio_pasado + ' ' + text_monto_anio_pasado + '<br><b>';
-                                    temporal += '<span style="color:black">\u25CF</span> DIF % : '+ numeral(lbl_porcen01).format('0.0') + '<br><b>';
-                                    temporal += '<span style="color:black">\u25CF</span> '+mes_pasado + text_monto_mes_pasado + '<br><b>';
-                                    temporal += '<span style="color:black">\u25CF</span> DIF % : '+ numeral(lbl_porcen02).format('0.0') + '<br><b>';
+                                    lbl_toolTips = '<span style="color:black">\u25CF</span> '+mes_actual + ' : <b>' + text_monto_actual + '</b><br>';
+                                    lbl_toolTips += '<span style="color:black">\u25CF</span> '+anio_pasado + ' : <b>' + text_monto_anio_pasado + '</b><br>';
+                                    lbl_toolTips += '<span style="color:black">\u25CF</span> DIF % : '+ '<b>' + numeral(lbl_porcen01).format('0.0') + '</b><br>';
+                                    lbl_toolTips += '<span style="color:black">\u25CF</span> '+mes_pasado + ' : <b>' + text_monto_mes_pasado + '</b><br>';
+                                    lbl_toolTips += '<span style="color:black">\u25CF</span> DIF % : <b>'+ numeral(lbl_porcen02).format('0.0') + '</b>';
                                     
-                                    return temporal;
+                                    return lbl_toolTips;
                                 }
                             },
                             cursor: 'pointer',
@@ -1096,7 +1097,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     var lbl_dif         = 0;
                     var lbl_porcen01    = 0;
                     var lbl_porcen02    = 0;
-
+                    lbl_toolTips02 = "";
                     $.each(item['data'], function(i, x) {
                         comparacionMesesItems.series[i]= {
                             name: x['name'],
@@ -1128,13 +1129,13 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                     text_monto_mes_pasado   = etiqueta+numeral(dtaItems[2]['data']).format('0,0');
 
 
-                                    temporal = '<span style="color:black">\u25CF</span> '+mes_actual + ' ' + text_monto_actual + '<br><b>';
-                                    temporal += '<span style="color:black">\u25CF</span> '+anio_pasado + ' ' + text_monto_anio_pasado + '<br><b>';
-                                    temporal += '<span style="color:black">\u25CF</span> DIF % : '+ numeral(lbl_porcen01).format('0.0') + '<br><b>';
-                                    temporal += '<span style="color:black">\u25CF</span> '+mes_pasado + text_monto_mes_pasado + '<br><b>';
-                                    temporal += '<span style="color:black">\u25CF</span> DIF % : '+ numeral(lbl_porcen02).format('0.0') + '<br><b>';
+                                    lbl_toolTips02 = '<span style="color:black">\u25CF</span> '+mes_actual + ' : <b>' + text_monto_actual + '</b><br>';
+                                    lbl_toolTips02 += '<span style="color:black">\u25CF</span> '+anio_pasado + ' : <b>' + text_monto_anio_pasado + '</b><br>';
+                                    lbl_toolTips02 += '<span style="color:black">\u25CF</span> DIF % : <b>'+ numeral(lbl_porcen01).format('0.0') + '</b><br>';
+                                    lbl_toolTips02 += '<span style="color:black">\u25CF</span> '+mes_pasado+ ' : <b>' + text_monto_mes_pasado + '</b><br>';
+                                    lbl_toolTips02 += '<span style="color:black">\u25CF</span> DIF % : <b>'+ numeral(lbl_porcen02).format('0.0') + '</b>';
                                     
-                                    return temporal;
+                                    return lbl_toolTips02;
                                 }
                             },
                             cursor: 'pointer',
