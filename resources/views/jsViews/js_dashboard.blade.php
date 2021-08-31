@@ -1027,6 +1027,9 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                 case 'dtaCompMesesVentas':
                     dtaVentasMes = item['data'];
                     title = [];
+                    var lbl_dif         = 0;
+                    var lbl_porcen01    = 0;
+                    var lbl_porcen02    = 0;
                     $.each(item['data'], function(i, x) {
                         comparacionMesesVentas.series[i]= {
                             name: x['name'],
@@ -1034,7 +1037,39 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             data: [x['data']],
                             tooltip: {
                                 customTooltipPerSeries: function() {
-                                    return x['name']+'<br><b>'+etiqueta+numeral(x['data']).format('0,0.00')+'</b>';
+
+
+                                    mes_actual      = dtaVentasMes[0]['name'];
+                                    anio_pasado     = dtaVentasMes[1]['name'];
+                                    mes_pasado      = dtaVentasMes[2]['name'];
+
+                                    m_actual        = parseFloat(dtaVentasMes[0]['data']);
+                                    m_anio_pasado   = parseFloat(dtaVentasMes[1]['data']);
+                                    m_mes_pasado    = parseFloat(dtaVentasMes[2]['data']); 
+
+                                    if (m_anio_pasado>0) {
+                                        lbl_dif = (m_actual-m_anio_pasado);
+                                        lbl_porcen01 = (lbl_dif/m_anio_pasado)*100;
+                                    }
+
+                                    if (m_mes_pasado>0) {
+                                        lbl_dif = (m_actual-m_mes_pasado);
+                                        lbl_porcen02 = (lbl_dif/m_mes_pasado)*100;
+                                    }
+
+                                    text_monto_actual       = etiqueta+numeral(dtaVentasMes[0]['data']).format('0,0.00');            
+                                    text_monto_anio_pasado  = etiqueta+numeral(dtaVentasMes[1]['data']).format('0,0.00');
+                                    text_monto_mes_pasado   = etiqueta+numeral(dtaVentasMes[2]['data']).format('0,0.00');
+
+
+                                                                        
+                                    temporal = '<span style="color:black">\u25CF</span> '+mes_actual + ' ' + text_monto_actual + '<br><b>';
+                                    temporal += '<span style="color:black">\u25CF</span> '+anio_pasado + ' ' + text_monto_anio_pasado + '<br><b>';
+                                    temporal += '<span style="color:black">\u25CF</span> DIF % : '+ numeral(lbl_porcen01).format('0.0') + '<br><b>';
+                                    temporal += '<span style="color:black">\u25CF</span> '+mes_pasado + text_monto_mes_pasado + '<br><b>';
+                                    temporal += '<span style="color:black">\u25CF</span> DIF % : '+ numeral(lbl_porcen02).format('0.0') + '<br><b>';
+                                    
+                                    return temporal;
                                 }
                             },
                             cursor: 'pointer',
@@ -1057,6 +1092,11 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                 case 'dtaCompMesesItems':
                     dtaItems = item['data'];
                     title = [];
+
+                    var lbl_dif         = 0;
+                    var lbl_porcen01    = 0;
+                    var lbl_porcen02    = 0;
+
                     $.each(item['data'], function(i, x) {
                         comparacionMesesItems.series[i]= {
                             name: x['name'],
@@ -1064,7 +1104,37 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             data: [x['data']],
                             tooltip: {
                                 customTooltipPerSeries: function() {
-                                    return x['name']+'<br><b>'+numeral(x['data']).format('0')+'</b>';
+
+                                    mes_actual      = dtaItems[0]['name'];
+                                    anio_pasado     = dtaItems[1]['name'];
+                                    mes_pasado      = dtaItems[2]['name'];
+
+                                    m_actual        = parseFloat(dtaItems[0]['data']);
+                                    m_anio_pasado   = parseFloat(dtaItems[1]['data']);
+                                    m_mes_pasado    = parseFloat(dtaItems[2]['data']); 
+
+                                    if (m_anio_pasado>0) {
+                                        lbl_dif = (m_actual-m_anio_pasado);
+                                        lbl_porcen01 = (lbl_dif/m_anio_pasado)*100;
+                                    }
+
+                                    if (m_mes_pasado>0) {
+                                        lbl_dif = (m_actual-m_mes_pasado);
+                                        lbl_porcen02 = (lbl_dif/m_mes_pasado)*100;
+                                    }
+
+                                    text_monto_actual       = etiqueta+numeral(dtaItems[0]['data']).format('0,0');            
+                                    text_monto_anio_pasado  = etiqueta+numeral(dtaItems[1]['data']).format('0,0');
+                                    text_monto_mes_pasado   = etiqueta+numeral(dtaItems[2]['data']).format('0,0');
+
+
+                                    temporal = '<span style="color:black">\u25CF</span> '+mes_actual + ' ' + text_monto_actual + '<br><b>';
+                                    temporal += '<span style="color:black">\u25CF</span> '+anio_pasado + ' ' + text_monto_anio_pasado + '<br><b>';
+                                    temporal += '<span style="color:black">\u25CF</span> DIF % : '+ numeral(lbl_porcen01).format('0.0') + '<br><b>';
+                                    temporal += '<span style="color:black">\u25CF</span> '+mes_pasado + text_monto_mes_pasado + '<br><b>';
+                                    temporal += '<span style="color:black">\u25CF</span> DIF % : '+ numeral(lbl_porcen02).format('0.0') + '<br><b>';
+                                    
+                                    return temporal;
                                 }
                             },
                             cursor: 'pointer',
