@@ -1315,10 +1315,10 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         tbody = `<tr>
                             <th scope="row" style="font-size: 1rem!important">Instituciones</th>
                             <td class="text-right">
-                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP1__).format('0,0.00') +`</p>
+                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP1__).format('0,0') +`</p>
                             </td>
                             <td class="text-right">
-                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(realGRP1__).format('0,0.00') +`</p>
+                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(realGRP1__).format('0,0') +`</p>
                             </td>
                             <td class="text-right">
                                 <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(cumplGRP1).format('0.0') +` %</p>
@@ -1327,10 +1327,10 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             <tr>
                             <th scope="row" style="font-size: 1rem!important">Mayoristas</th>
                             <td class="text-right">
-                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP2__).format('0,0.00') +`</p>
+                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP2__).format('0,0') +`</p>
                             </td>
                             <td class="text-right">
-                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(realGRP2__).format('0,0.00') +`</p>
+                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(realGRP2__).format('0,0') +`</p>
                             </td>
                             <td class="text-right">
                                 <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(cumplGRP2).format('0.0') +` %</p>
@@ -1339,10 +1339,10 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             <tr>
                             <th scope="row" style="font-size: 1rem!important">Farmacia</th>
                             <td class="text-right">
-                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP3__).format('0,0.00') +`</p>
+                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP3__).format('0,0') +`</p>
                             </td>
                             <td class="text-right">
-                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(realGRP3__).format('0,0.00') +`</p>
+                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(realGRP3__).format('0,0') +`</p>
                             </td>
                             <td class="text-right">
                                 <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(cumplGRP3).format('0.0') +` %</p>
@@ -1351,10 +1351,10 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             <tr>
                             <th scope="row" style="font-size: 1rem!important">Total</th>
                             <td class="text-right">
-                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(totalMETA__).format('0,0.00') +`</p>
+                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(totalMETA__).format('0,0') +`</p>
                             </td>
                             <td class="text-right">
-                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(totalREAL__).format('0,0.00') +`</p>
+                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(totalREAL__).format('0,0') +`</p>
                             </td>
                             <td class="text-right">
                                 <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(cumplTOTAL).format('0.0') +` %</p>
