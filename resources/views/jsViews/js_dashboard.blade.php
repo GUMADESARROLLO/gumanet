@@ -584,7 +584,7 @@ $(document).ready(function() {
         },
         xAxis: {
             type: 'category'
-        },
+        },        
         yAxis: {
             title: {
                 text: ''
@@ -852,8 +852,12 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         pointFormat : temporal
                     }
                     productos.xAxis.categories = title;
-                    productos.series[0].data = dta;
+                    productos.series[0].data = dta;                    
                     chart = new Highcharts.Chart(productos);
+
+                    
+
+
                 break;
 
                 case 'dtaVentasDiarias':
@@ -2302,6 +2306,61 @@ function getDetalleVenta(mes, anio, metau, realu, metae, reale, ruta, nombre) {
     $('#mdDetailsVentas').modal('show');
 }
 
+function Todos_Los_Items(){
+
+    tableActive = '';
+    tableActive = '#tblAllItems';
+
+    var mes = $('#opcMes option:selected').val();
+    var anio = $('#opcAnio option:selected').val();
+    mes_name    = $("#opcMes option:selected").text();   
+
+    FechaFiltrada = 'Mostrando registros del mes de ' + mes_name + ' ' + anio;        
+    $("#id_titulo_modal_all_items").text(FechaFiltrada);
+
+
+    $(tableActive).DataTable({
+        "destroy" : true,
+        "info":    false,
+        "ajax":{
+            "url": "detallesTodosItems/"+mes+"/"+anio,
+            'dataSrc': '',
+        },
+        "language": {
+            "zeroRecords": "Cargando...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Última ",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+            "lengthMenu": "MOSTRAR _MENU_",
+            "emptyTable": "NO HAY DATOS DISPONIBLES",
+            "search":     "BUSCAR"
+        },
+        
+        'columns': [
+            { "title"   : "ARTICULO",           "data"  : "Articulo" },
+            { "title"   : "DESCRIPCION",        "data"  : "Descripcion" },
+            { "title"   : "TOT. FACT",          "data"  : "TotalFacturado" },
+            { "title"   : "UNIT. FACT.",        "data"  : "UndFacturado" },
+            { "title"   : "UNIT. BONIF.",       "data"  : "UndBoni" },
+            { "title"   : "PREC. PROM.",        "data"  : "PrecProm" },
+            { "title"   : "COST. PROM. UNIT.",  "data"  : "CostProm" },
+            { "title"   : "CONTRIBUCION.",      "data"  : "Contribu" },
+            { "title"   : "% MARGEN BRUTO.",    "data"  : "MargenBruto" }
+        ],
+        "columnDefs": [
+            {"className": "dt-center", "targets": [0,1,3,4,8]},
+            {"className": "dt-right", "targets": [ 2,5,6,7 ]},            
+            {"width": "20%", "targets": [ 1]},
+        ],
+    });
+    $("#mdDetailsAllItems").modal();
+    $(tableActive + "_length").hide();
+    $(tableActive + "_filter").hide();
+}
+
 function get_Detalle_Venta_dia(dia,mes, anio, ruta, nombre) {
 
     $('#dtVentasFacturas').dataTable({
@@ -2448,6 +2507,18 @@ $('#filterDtTemp').on( 'keyup', function () {
     var table = $(tableActive).DataTable();
     table.search(this.value).draw();
 });
+
+/******************FROM ALL ITEM TOP 10 ***********************/
+$('#id_txt_all_item').on( 'keyup', function () {
+    var table = $(tableActive).DataTable();
+    table.search(this.value).draw();
+});
+
+$( "#id_select_all_items").change(function() {
+    var table = $(tableActive).DataTable();
+    table.page.len(this.value).draw();
+});
+/************************************************************/
 
 $( "#cantRowsDtTemp").change(function() {
     var table = $(tableActive).DataTable();

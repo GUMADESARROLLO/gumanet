@@ -1,3 +1,28 @@
+
+/*
+Full screen Modal 
+*/
+.modal.modal-fullscreen .modal-dialog {
+  width: 100%;
+  height: 90%!important;
+  max-width: none; 
+  top: 5px!important;
+  left: 10px!important;
+  right: 10px!important;
+  bottom: 10px!important;
+}
+
+.modal.modal-fullscreen .modal-content {
+  height: auto;
+  height: 100%!important;
+  border-radius: 0;
+  border: none; }
+
+.modal.modal-fullscreen .modal-body {
+  overflow-y: auto; 
+}
+
+
 .expan_more {
   background-color: #e2e2e2;
   border-radius: 50%;
@@ -391,3 +416,5 @@ table thead tr th {
   background-color: #fdfdfd;
   table-layout: fixed;
 }
+
+

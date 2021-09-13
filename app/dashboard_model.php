@@ -501,6 +501,70 @@ class dashboard_model extends Model {
         $sql_server->close();
         return $json;
     }    
+    public static function get_Vta_all_items($mes, $anio) {
+
+        $sql_server = new \sql_server();
+        $sql_exec = '';
+        $i =0;
+        $request = Request();
+        $json = array();
+        $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        
+        switch ($company_user) {
+            case '1':
+                $sql_exec = "EXEC Umk_DetalleVentas_all_items ".$mes.", ".$anio." ";
+                
+                break;
+            case '2':                
+                //$sql_exec = "EXEC gnet_vnt_diaria_ruta_gp ".$dia.",".$mes.", ".$anio.", '".$ruta."'";
+                break;
+            case '3':
+                //$sql_exec = "";
+                break;   
+            case '4':
+                //$sql_exec = "EXEC gnet_vnt_diaria_ruta_inn ".$dia.",".$mes.", ".$anio.", '".$ruta."'";
+                break;         
+            default:                
+                //dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
+                break;
+        }
+
+        $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
+        
+        foreach ($query as $fila) {
+
+            $Total_Facturado        = $fila['MontoVenta'];
+            $Cantidad               = $fila['Cantidad'];
+            $Cantidad_bonificada    = $fila['Cantida_boni'];                
+            $COSTO_PROM             = $fila['COSTO_PROM'];
+
+            $AVG = floatval($Total_Facturado)  / (  floatval($Cantidad) + floatval($Cantidad_bonificada) );
+
+            $Costo_total_Promedio = (floatval($Cantidad) + floatval($Cantidad_bonificada)) * floatval($COSTO_PROM);
+            $Monto_Contribucion = floatval($Total_Facturado)  - floatval($Costo_total_Promedio);
+
+            $prom_contribucion = (( $AVG - floatval($COSTO_PROM) ) / $AVG) * 100;
+
+
+
+
+            $json[$i]["Articulo"]           = $fila["Articulo"];
+            $json[$i]["Descripcion"]        = $fila["Descripcion"];            
+            $json[$i]["TotalFacturado"]     = "C$ " .number_format($Total_Facturado,2);
+            $json[$i]["UndFacturado"]       = number_format($Cantidad, 0);
+            $json[$i]["UndBoni"]            = number_format($Cantidad_bonificada, 0);
+            $json[$i]["PrecProm"]           = "C$ " .number_format($AVG, 2);
+            $json[$i]["CostProm"]           = "C$ " .number_format($COSTO_PROM, 2);
+            $json[$i]["Contribu"]           = "C$ " .number_format($Monto_Contribucion, 2);
+            $json[$i]["MargenBruto"]        = number_format($prom_contribucion, 2);
+
+            
+            $i++;
+        }
+
+        $sql_server->close();
+        return $json;
+    }  
 
     public static function getDetalleVentasDia($dia, $mes, $anio)
     {

@@ -200,7 +200,34 @@
         </div>
         <div class="row" id="ct02">
             <div class="graf col-sm-6 mt-3"><div class="container-tc" id="grafClientes"></div></div>
-            <div class="graf col-sm-6 mt-3"><div class="container-tp" id="grafProductos"></div></div>
+            <div class="graf col-sm-6 mt-3">
+
+            
+            <div class="row">
+                <div class="col-sm-6"></div>
+                <div class="col-sm-6">
+                    <div class="row">   
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="opcMes" class="text-muted m-0">SEGMENTO</label>
+                                <select class="form-control form-control-sm" id="opcMes">
+                                    <option selected value="">Farmacia</option>                            
+                                    <option selected value="">Instituciones</option>
+                                    <option selected value="">Mayoristas</option>                            
+                                </select>
+                            </div>
+                        </div>                
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <a href="#!" style="width: 100%" class="btn btn-primary float-right mt-3" onclick="Todos_Los_Items()">Todas</a>
+                            </div>
+                        </div>                
+                    </div>
+                </div>
+            </div>
+            
+                <div class="container-tp" id="grafProductos"></div>
+            </div>
         </div>
     </div>
     <!-- PAGINA TEMPORAL DE DETALLES -->
@@ -238,6 +265,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="row" id="id_div_detalles_vendedores">
                         <div class="col-sm-11 mt-3">
                            <div class="input-group">
@@ -375,6 +403,51 @@
                     <div id="cjArticulo">
                         <p class="font-weight-bold">CLIENTES</p>
                         <table class="table table-bordered table-sm" width="100%" id="dtArticulo"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal:Detalles de ventas de todos los articulos-->
+<div class="modal fade modal-fullscreen" id="mdDetailsAllItems" tabindex="-1" role="dialog" aria-labelledby="titleModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bolder text-info" id="id_titulo_modal_all_items" ></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="bodyModal">
+            <div class="row" >
+                <div class="col-sm-11 mt-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                        </div>
+                        <input type="text" id="id_txt_all_item"  class="form-control" placeholder="Buscar">
+                    </div>
+                </div>
+                <div class="col-sm-1 mt-2">
+                    <div class="input-group">
+                        <select class="custom-select" id="id_select_all_items" >
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="-1">Todo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-sm-12 mt-3">
+                        <div class="table-responsive">
+                            <table id="tblAllItems" class="table table-bordered table-sm" width="100%" >
+                                
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
