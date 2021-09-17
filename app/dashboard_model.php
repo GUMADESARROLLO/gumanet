@@ -830,6 +830,9 @@ class dashboard_model extends Model {
 
         $json = array();
         $i = 0;
+        $Farmacia = 0;
+        $Intitucion = 0;
+        $Mayorista = 0;
 
         if( count($query)>0 ) {
             foreach ($query as $key) {
@@ -874,7 +877,16 @@ class dashboard_model extends Model {
                     $PORC_CONTRI = number_format(floatval($prom_contribucion),2);
                 }
 
+                
 
+
+                /*$qFarmacia = $sql_server->fetchArray("SELECT  isnull(sum(T3.venta),0) as Farma FROM Softland.dbo.VtasTotal_UMK T3  Where 9 = T3.nMes and 2021 = T3.[Año] and T3.[P. Unitario] > 0 AND T3.Ruta in ('F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20') AND T3.ARTICULO='".$key['Articulo']."'",SQLSRV_FETCH_ASSOC);
+                $qIntitucion = $sql_server->fetchArray("SELECT  isnull(sum(T3.venta),0) as Inti FROM Softland.dbo.VtasTotal_UMK T3  Where 9 = T3.nMes and 2021 = T3.[Año] and T3.[P. Unitario] > 0 AND T3.Ruta in ('F02') AND T3.ARTICULO='".$key['Articulo']."'",SQLSRV_FETCH_ASSOC);
+                $qMayorista = $sql_server->fetchArray("SELECT  isnull(sum(T3.venta),0) as Mayo FROM Softland.dbo.VtasTotal_UMK T3  Where 9 = T3.nMes and 2021 = T3.[Año] and T3.[P. Unitario] > 0 AND T3.Ruta in ('F04') AND T3.ARTICULO='".$key['Articulo']."'",SQLSRV_FETCH_ASSOC);
+
+                $Farmacia = floatval($qFarmacia[0]['Farma']);
+                $Intitucion = floatval($qIntitucion[0]['Inti']);
+                $Mayorista = floatval($qMayorista[0]['Mayo']);*/
 
                 $json[$i]['data']       = $tem_;
                 $json[$i]['dtUnd']      = $UND_;
@@ -884,11 +896,17 @@ class dashboard_model extends Model {
                 $json[$i]['dtMCO']      = $MARG_CONTRI;
                 $json[$i]['dtPCO']      = $PORC_CONTRI;
                 
+                /*$json[$i]['dtFARMA']    = $Farmacia;
+                $json[$i]['dtInti']    = $Intitucion;
+                $json[$i]['dtMayo']    = $Mayorista;*/
+
+                
                 $i++;
             }
         }
 
-        return $json;
+       
+       return $json;
         $sql_server->close();
     }
 

@@ -574,6 +574,40 @@ $(document).ready(function() {
     }
 
     //GRAFICA: TOP 10 PRODUCTOS
+
+    /*productos = {
+        chart: {
+            type: 'column',
+            renderTo: 'grafProductos'
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            min: 0,
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: ( // theme
+                        Highcharts.defaultOptions.title.style &&
+                        Highcharts.defaultOptions.title.style.color
+                    ) || 'gray'
+                }
+            }
+        },
+        plotOptions: {
+        column: {
+            stacking: 'normal',
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        
+        series: []
+    }*/
+    
     productos = {
         chart: {
             type: 'column',
@@ -586,14 +620,28 @@ $(document).ready(function() {
             type: 'category'
         },        
         yAxis: {
-            title: {
-                text: ''
+            min: 0,
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (
+                        Highcharts.defaultOptions.title.style &&
+                        Highcharts.defaultOptions.title.style.color
+                    ) || 'gray'
+                }
             }
         },
         legend: {
             enabled: false
         },
         plotOptions: {
+            column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true
+            }
+        },
             series: {
                 allowPointSelect: false,
                 borderWidth: 0,
@@ -827,6 +875,17 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     title = [];                   
                     $.each(item['data'], function(i, x) {
 
+                        /* dta.push({
+                            name     : x['name'], 
+                            data     : [x['dtFARMA'],x['dtInti'],x['dtMayo'],4,5,6,7,8,9,10],
+                            /*und   : (x['dtUnd'] > 0 ) ?  x['dtUnd'] : '  ',
+                            undBo : (x['dtUndBo'] > 0 ) ?  x['dtUndBo'] : '  ',
+                            dtavg :  x['dtAVG'],
+                            dtcpm :  x['dtCPM'],
+                            dtmco :  x['dtMCO'],
+                            dtpco :  x['dtPCO'],
+                        })*/
+
                         dta.push({
                             name  : x['articulo'],
                             y     : x['data'], 
@@ -839,6 +898,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         })
 
                         title.push(x['name'])
+
                     });
 
                     temporal = '<span style="color:black">\u25CF</span> TOT. FACT. :<b>C$  {point.y} </b><br/>';
@@ -852,7 +912,8 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         pointFormat : temporal
                     }
                     productos.xAxis.categories = title;
-                    productos.series[0].data = dta;                    
+                    productos.series[0].data = dta;
+                    console.log(dta)                    
                     chart = new Highcharts.Chart(productos);
 
                     
@@ -1273,6 +1334,11 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                 break;
 
                 case 'dtaProyectos':
+
+
+
+
+
                     var tbody = '';
                     var metaGRP1__ = metaGRP2__ = metaGRP3__ = 0;
                     var realGRP1__ = realGRP2__ = realGRP3__ = 0;
@@ -2322,6 +2388,7 @@ function Todos_Los_Items(){
     $(tableActive).DataTable({
         "destroy" : true,
         "info":    false,
+        "scrollX": false,
         "ajax":{
             "url": "detallesTodosItems/"+mes+"/"+anio,
             'dataSrc': '',

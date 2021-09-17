@@ -91,6 +91,8 @@ Route::get('/unidadxProd/{mes}/{anio}','dashboard_controller@getTotalUnidadesXRu
 
 //RUTAS GRAFICAS DASHBOARDS
 Route::get('/dataGraf/{mes}/{anio}/{xbolsones}','dashboard_controller@getDataGraficas');
+
+
 Route::get('/dataVentasMens/{xbolsones}','dashboard_controller@getVentasMensuales');
 Route::get('/dataRealVtsMensuales/{xbolsones}','dashboard_controller@getRealVentasMensuales');
 Route::get('/top10Cls','dashboard_controller@getTop10Clientes');
