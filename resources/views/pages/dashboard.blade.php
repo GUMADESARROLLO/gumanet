@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label for="opcMes" class="text-muted m-0">Filtrar por mes</label>
                         <select class="form-control form-control-sm" id="opcMes">
-                            <?php                        
+                            <?php
                                 $mes = date("m");
                                 $meses = array('none','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre');
 
@@ -51,14 +51,14 @@
                                     }
                                 }
                             ?>
-                        </select>  
-                    </div>                
+                        </select>
+                    </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <a href="#!" style="width: 100%" id="filterM_A" class="btn btn-primary float-right mt-3">Aplicar</a>
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
     </div>
@@ -68,7 +68,7 @@
                 <div class="container-vms" id="grafVtsDiario" style="width: 100%; margin: 0 auto"></div>
             </div>
         </div>
-        
+
 
         <div class="row" id="ct04">
             <div class="graf col-sm-12 mt-3">
@@ -170,7 +170,7 @@
         </div>
 
         @if( Session::get('company_id')==40 )
-        <div class="row" id="ct05" style="display: none">            
+        <div class="row" id="ct05" style="display: none">
             <div class="graf col-sm-12 mt-3 text-right">
                 <figure class="highcharts-figure">
                 <select class="selectpicker col-sm-4 form-control form-control-sm mb-2 mt-3" id="select-cate" data-show-subtext="false" data-live-search="true" ></select>
@@ -179,7 +179,7 @@
             </div>
         </div>
         @else
-        <div class="row" id="ct05">            
+        <div class="row" id="ct05">
             <div class="graf col-sm-12 mt-3 text-right">
                 <figure class="highcharts-figure">
                 <select class="selectpicker col-sm-4 form-control form-control-sm mb-2 mt-3" id="select-cate" data-show-subtext="false" data-live-search="true" ></select>
@@ -214,32 +214,32 @@
                         <option value="3">Todas</option>
                     </select>
                 </div>
-            </form>    
+            </form>
             <div class="container-tc" id="grafClientes"></div></div>
             <div class="graf col-sm-6 mt-3">
             <div class="row">
                 <div class="col-sm-6"></div>
                 <div class="col-sm-6">
-                    <div class="row">   
+                    <div class="row">
                         <div class="col-sm-8">
                             <div class="form-group">
                                 <label for="opcMes" class="text-muted m-0">SEGMENTO</label>
                                 <select class="form-control form-control-sm" id="opcMes">
-                                    <option selected value="">Farmacia</option>                            
+                                    <option selected value="">Farmacia</option>
                                     <option selected value="">Instituciones</option>
-                                    <option selected value="">Mayoristas</option>                            
+                                    <option selected value="">Mayoristas</option>
                                 </select>
                             </div>
-                        </div>                
+                        </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <a href="#!" style="width: 100%" class="btn btn-primary float-right mt-3" onclick="Todos_Los_Items()">Todas</a>
                             </div>
-                        </div>                
+                        </div>
                     </div>
                 </div>
             </div>
-            
+
                 <div class="container-tp" id="grafProductos"></div>
             </div>
         </div>
@@ -253,10 +253,10 @@
         </div>
         <div class="row center">
             <div class="col-sm-12">
-                
-                
-                <div class="card mt-3 border-0 shadow-sm">                    
-                  <div class="card-body">                  
+
+
+                <div class="card mt-3 border-0 shadow-sm">
+                  <div class="card-body">
                     <div class="row" id="lbl_id_articulos">
                         <div class="col-sm-4 border-right">
                             <h5 class="card-title" id="title-page-tem"></h5>
@@ -279,7 +279,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row" id="id_div_detalles_vendedores">
                         <div class="col-sm-11 mt-3">
                            <div class="input-group">
@@ -301,21 +301,21 @@
                             </div>
                         </div>
                     </div>
-                    
-                    
+
+
                     <div class="row" >
                         <div class="col-sm-6 mt-2">
                             <div class="table-responsive" id="id_div_titulo_Ventas_Rutas">
                                 <div id="cjRutVentasRutas">
                                     <table class="table table-bordered table-sm" width="100%" id="dtVentaRuta" ></table>
-                                </div>        
+                                </div>
                             </div>
 
                         </div>
                         <div class="col-sm-6 mt-2 align-self-center">
                             <div id="id_grafica_pie_ventas_ruta"></div>
                         </div>
-                    
+
                     </div>
                 </div>
                 </div>
@@ -329,7 +329,7 @@
                                 <div class="row align-items-center gx-0">
                                     <div class="col">
                                         <P class="text-muted m-0">PREC. PROM. :</P>
-                                        <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_detall_prec_prom"></p>                                    
+                                        <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_detall_prec_prom"></p>
                                     </div>
                                 </div>
                             </div>
@@ -366,34 +366,34 @@
                                 <div class="row align-items-center gx-0">
                                 <div class="col">
                                     <p class="text-muted mb-0">% MARGEN BRUTO. :</p>
-                                    <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_detall_porc_contrib"></p>                                    
+                                    <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_detall_porc_contrib"></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>                                        
-                </div>           
+                    </div>
+                </div>
         <div class="row" >
 
         <div class="col-sm-12 mt-2" >
-                
+
             </div>
 
             <div class="col-sm-12 mt-2" >
                 <div class="table-responsive">
                     <div id="cjRutVentas">
                         <table class="table table-bordered table-sm" width="100%" id="dtTotalXRutaVent" ></table>
-                    </div>        
+                    </div>
                 </div>
             </div>
 
-            
+
             <div class="col-sm-12 mt-2">
                 <div class="table-responsive">
                     <div id="cjRecuperacion">
                         <table class="table table-bordered table-sm" width="100%" id="dtRecuperacion"></table>
                     </div>
-                </div>                    
+                </div>
             </div>
 
             <div class="col-sm-12 mt-2">
@@ -401,7 +401,7 @@
                     <div id="cjRecu_GumaPharma">
                         <table class="table table-bordered table-sm" width="100%" id="dtRecu_GumaPharma"></table>
                     </div>
-                </div>                    
+                </div>
             </div>
 
             <div class="col-sm-12 mt-2">
@@ -459,7 +459,7 @@
                     <div class="col-sm-12 mt-3">
                         <div class="table-responsive">
                             <table id="tblAllItems" class="table table-bordered table-sm" width="100%" >
-                                
+
                             </table>
                         </div>
                     </div>
@@ -481,10 +481,38 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <div class="row" >
+                    <div class="col-sm-11 mt-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                            </div>
+                            <input type="text" id="id_txt_all_item"  class="form-control" placeholder="Buscar">
+                        </div>
+                    </div>
+                    <div class="col-sm-1 mt-2">
+                        <div class="input-group">
+                            <select class="custom-select" id="id_select_all_items" >
+                                <option value="5" selected>5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="-1">Todo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 mt-3">
+                        <div class="table-responsive">
+                            <table id="tblAllClients" class="table table-bordered table-sm" width="100%" >
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -509,7 +537,7 @@
                     <p class="text-muted m-0">Meta Units.</p>
                     <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="total_Meta_Unidad"></p>
                 </div>
-                <div class="col-sm-2">                    
+                <div class="col-sm-2">
                     <p class="text-muted m-0" >Real Units.</p>
                     <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="total_Real_Unidad"></p>
                 </div>
@@ -580,7 +608,7 @@
       </div>
       <div class="modal-body" id="bodyModal">
         <div class="row">
-            <div class="col-sm-3">                    
+            <div class="col-sm-3">
                 <p class="text-muted m-0" id="text-mes-actual"></p>
                 <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="val-mes-actual"></p>
             </div>

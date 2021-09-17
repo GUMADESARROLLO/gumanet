@@ -11,11 +11,11 @@ use App\Company;
 
 
 class dashboard_controller extends Controller {
-  
+
   public function __construct() {
     $this->middleware('auth');
   }
-   
+
    public function index() {
 
     $this->agregarDatosASession();
@@ -24,7 +24,7 @@ class dashboard_controller extends Controller {
        $data = [
            'name' =>  'GUMA@NET'
        ];
-      
+
        return view('pages.dashboard',$data);
    }
 
@@ -33,7 +33,7 @@ class dashboard_controller extends Controller {
       $ApplicationVersion = new \git_version();
       $company = Company::where('id',$request->session()->get('company_id'))->first();// obtener nombre de empresa mediante el id de empresa
       $request->session()->put('ApplicationVersion', $ApplicationVersion::get());
-      $request->session()->put('companyName', $company->nombre);// agregar nombre de compañia a session[], para obtenert el nombre al cargar otras pagina 
+      $request->session()->put('companyName', $company->nombre);// agregar nombre de compañia a session[], para obtenert el nombre al cargar otras pagina
     }
 
     public function getTotalRutaXVentas($mes, $anio){
@@ -50,7 +50,7 @@ class dashboard_controller extends Controller {
 		$obj = dashboard_model::getDetalleVentas($tipo, $mes, $anio, $cliente, $articulo, $ruta);
 		return response()->json($obj);
 	}
-  public function getDetalleVentasDia($dia, $mes, $anio) 
+  public function getDetalleVentasDia($dia, $mes, $anio)
   {
 		$obj = dashboard_model::getDetalleVentasDia($dia, $mes, $anio);
 		return response()->json($obj);
@@ -74,9 +74,9 @@ class dashboard_controller extends Controller {
     return response()->json($obj);
   }
 
-  public function getAllClientsByCategory()
+  public function getAllClientsByCategory($mes,$anio)
   {
-    $obj = dashboard_model::getAllClientsByCategory();
+    $obj = dashboard_model::getAllClientsByCategory($mes,$anio);
     return response()->json($obj);
   }
 
@@ -113,7 +113,7 @@ class dashboard_controller extends Controller {
 
     $obj = dashboard_model::getRecuRowsByRoutes($mes, $anio, $pageName);
     return response()->json($obj);
-      
+
   }
 
 }

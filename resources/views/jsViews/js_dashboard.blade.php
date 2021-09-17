@@ -66,7 +66,7 @@ $(document).ready(function() {
     grafRealVentasMensuales(tipo);
     reordenandoPantalla();
     actualizandoGraficasDashboard(mes, anio, tipo);
-    
+
     Highcharts.setOptions({
         lang: {
             numericSymbols: [ 'k' , 'M' , 'B' , 'T' , 'P' , 'E'],
@@ -91,7 +91,7 @@ $(document).ready(function() {
         yAxis: {
             title: {
                 text: ''
-            }                
+            }
         },
         plotOptions: {
             series: {
@@ -148,7 +148,7 @@ $(document).ready(function() {
         yAxis: {
             title: {
                 text: ''
-            }                
+            }
         },
         plotOptions: {
             series: {
@@ -307,7 +307,7 @@ $(document).ready(function() {
             stackLabels: {
             enabled: true,
             formatter: function() {
-                return FormatPretty(this.total);                
+                return FormatPretty(this.total);
                 }
             }
         },
@@ -377,7 +377,7 @@ $(document).ready(function() {
             colorByPoint: true,
             data: [],
             showInLegend: false
-        }]  
+        }]
     };
 
     //GRAFICA COMPARACION VENTAS
@@ -423,7 +423,7 @@ $(document).ready(function() {
             colorByPoint: true,
             data: [],
             showInLegend: false
-        }]  
+        }]
     };
 
     //GRAFICA COMPARACION ITEMS
@@ -469,7 +469,7 @@ $(document).ready(function() {
             colorByPoint: true,
             data: [],
             showInLegend: false
-        }]  
+        }]
     };
 
     //GRAFICA: VALORIZACION DE INVENTARIO
@@ -495,7 +495,7 @@ $(document).ready(function() {
         plotOptions: {
             series: {
                 allowPointSelect: false,
-                
+
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
@@ -516,7 +516,7 @@ $(document).ready(function() {
             colorByPoint: true,
             data: [],
             showInLegend: false
-        }]    
+        }]
     };
 
     //GRAFICA: TOP 10 CLIENTES
@@ -541,7 +541,7 @@ $(document).ready(function() {
         },
         plotOptions: {
             series: {
-                allowPointSelect: false,                
+                allowPointSelect: false,
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
@@ -570,7 +570,7 @@ $(document).ready(function() {
                     }
                 }
             }
-        }]        
+        }]
     }
 
     //GRAFICA: TOP 10 PRODUCTOS
@@ -604,10 +604,10 @@ $(document).ready(function() {
                 }
             }
         },
-        
+
         series: []
     }*/
-    
+
     productos = {
         chart: {
             type: 'column',
@@ -618,7 +618,7 @@ $(document).ready(function() {
         },
         xAxis: {
             type: 'category'
-        },        
+        },
         yAxis: {
             min: 0,
             stackLabels: {
@@ -686,15 +686,15 @@ $(document).ready(function() {
                     }
                 }
             },
-        }]        
-    }  
+        }]
+    }
 
 
     grafiacas_productos_Diarios = {
         chart: {
             type: 'column',
             renderTo: 'grafVtsDiario'
-        },      
+        },
 
         title: {
             text: 'Comportamiento Diario'
@@ -705,7 +705,7 @@ $(document).ready(function() {
             x: -10
         },
         xAxis: [{
-            type: 'category'   
+            type: 'category'
         }],
         legend: {
             enabled: false
@@ -725,7 +725,7 @@ $(document).ready(function() {
                     x: 0
                 }
             }],
-            
+
         },
         plotOptions: {
             series: {
@@ -742,7 +742,7 @@ $(document).ready(function() {
                     }
                 }
             }
-        }, 
+        },
         tooltip: {
             pointFormat: '<span style="color:black">0.0<b>C$ {point.y}</b></span>'
         },
@@ -756,7 +756,7 @@ $(document).ready(function() {
                 }
             },
         }]
-    };   
+    };
 
 });
 
@@ -778,7 +778,7 @@ $("#filterM_A").click( function(e) {
 $("#customSwitch1").change( function() {
     var mes = $('#opcMes option:selected').val();
     var anio = $('#opcAnio option:selected').val();
-    
+
     if ($(this).is(':checked')) {
         switchStatus = $(this).is(':checked');
         $.cookie( 'xbolsones' , 'yes_bolsones');
@@ -841,7 +841,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         })
 
                         title.push(x['name'])
-                    });                    
+                    });
                     val_bodega.xAxis.categories = title;
                     val_bodega.series[0].data = dta;
                     val_bodega.subtitle = 'Datos hasta la fecha';
@@ -872,11 +872,11 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                 case 'dtaProductos':
                     dta = [];
-                    title = [];                   
+                    title = [];
                     $.each(item['data'], function(i, x) {
 
                         /* dta.push({
-                            name     : x['name'], 
+                            name     : x['name'],
                             data     : [x['dtFARMA'],x['dtInti'],x['dtMayo'],4,5,6,7,8,9,10],
                             /*und   : (x['dtUnd'] > 0 ) ?  x['dtUnd'] : '  ',
                             undBo : (x['dtUndBo'] > 0 ) ?  x['dtUndBo'] : '  ',
@@ -888,7 +888,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                         dta.push({
                             name  : x['articulo'],
-                            y     : x['data'], 
+                            y     : x['data'],
                             und   : (x['dtUnd'] > 0 ) ?  x['dtUnd'] : '  ',
                             undBo : (x['dtUndBo'] > 0 ) ?  x['dtUndBo'] : '  ',
                             dtavg :  x['dtAVG'],
@@ -913,10 +913,10 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     }
                     productos.xAxis.categories = title;
                     productos.series[0].data = dta;
-                    console.log(dta)                    
+                    console.log(dta)
                     chart = new Highcharts.Chart(productos);
 
-                    
+
 
 
                 break;
@@ -927,7 +927,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     dta_avr = [];
                     title = [];
                     tmp_total = 0;
-                    
+
 
                     $.each(item['data'], function(i, x) {
 
@@ -937,36 +937,36 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             name  :'Dia ' + x['articulo'],
                             mAVG  : x['dtAVG'],
                             dtavg : x['dtavg_'],
-                            y     : x['data'], 
+                            y     : x['data'],
                             und   : (x['dtUnd'] > 0 ) ?  x['dtUnd']  : '  '
                         });
-                        
+
                         goal = x['dtAVG']
-                        title.push(x['name']); 
-                    }); 
+                        title.push(x['name']);
+                    });
 
                     //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
                     temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';                   
+                    temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';
                     grafiacas_productos_Diarios.tooltip = {
                         pointFormat : temporal
                     }
-                    
+
                     grafiacas_productos_Diarios.xAxis.categories = title;
                     grafiacas_productos_Diarios.subtitle.text = "C$ " + numeral(tmp_total).format('0,0.00') + " Total";
                     grafiacas_productos_Diarios.series[0].data = dta;
-                    
+
                     chart = new Highcharts.Chart(grafiacas_productos_Diarios);
                     chart.yAxis[0].options.plotLines[0].value = goal;
                     chart.yAxis[0].options.plotLines[0].label.text = "C$ " + numeral(goal).format('0,0.00');
                     chart.yAxis[0].update();
-    
+
                 break;
 
                 case 'dtaVentasXCateg':
                     dta = [];
                     cate = '<option>TODAS LAS CATEGORIAS</option>';
-                    
+
                     objVenta = item['data'].map(function (obj) {return obj.data;});
                     mTotal = objVenta.reduce(function (m, n) {return m + n;}, 0);
 
@@ -976,7 +976,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             y     : x['data'],
                             porc  : numeral((parseFloat(x['data'])/parseFloat(mTotal))*100).format('0.00')
                         })
-                        cate += `<option>`+x['name']+`</option>` 
+                        cate += `<option>`+x['name']+`</option>`
                     });
 
                     $("#select-cate")
@@ -1039,7 +1039,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         porcentaje = `<p class="font-weight-bolder" style="font-size:14px">`+numeral(porcentaje).format('0,0.00')+`% de 100%</p>`;
 
 
-                        
+
                         ventas.series[0]= {
                             name: 'Real',
                             type: 'column',
@@ -1078,10 +1078,10 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                 }
                             },
                             color: colors[1],
-                            allowPointSelect: false,                
+                            allowPointSelect: false,
                             borderWidth: 0,
                         }
-                        
+
                         ventas.subtitle = {text: porcentaje};
                         montoMetaVenta = numeral(json[3].data[1].data).format('0,0.00');
                     }
@@ -1111,7 +1111,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                                     m_actual        = parseFloat(dtaVentasMes[0]['data']);
                                     m_anio_pasado   = parseFloat(dtaVentasMes[1]['data']);
-                                    m_mes_pasado    = parseFloat(dtaVentasMes[2]['data']); 
+                                    m_mes_pasado    = parseFloat(dtaVentasMes[2]['data']);
 
                                     if (m_anio_pasado>0) {
                                         lbl_dif = (m_actual-m_anio_pasado);
@@ -1123,18 +1123,18 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                         lbl_porcen02 = (lbl_dif/m_mes_pasado)*100;
                                     }
 
-                                    text_monto_actual       = etiqueta+numeral(dtaVentasMes[0]['data']).format('0,0.00');            
+                                    text_monto_actual       = etiqueta+numeral(dtaVentasMes[0]['data']).format('0,0.00');
                                     text_monto_anio_pasado  = etiqueta+numeral(dtaVentasMes[1]['data']).format('0,0.00');
                                     text_monto_mes_pasado   = etiqueta+numeral(dtaVentasMes[2]['data']).format('0,0.00');
 
 
-                                                                        
+
                                     lbl_toolTips = '<span style="color:black">\u25CF</span> '+mes_actual + ' : <b>' + text_monto_actual + '</b><br>';
                                     lbl_toolTips += '<span style="color:black">\u25CF</span> '+anio_pasado + ' : <b>' + text_monto_anio_pasado + '</b><br>';
                                     lbl_toolTips += '<span style="color:black">\u25CF</span> DIF % : '+ '<b>' + numeral(lbl_porcen01).format('0.0') + '</b><br>';
                                     lbl_toolTips += '<span style="color:black">\u25CF</span> '+mes_pasado + ' : <b>' + text_monto_mes_pasado + '</b><br>';
                                     lbl_toolTips += '<span style="color:black">\u25CF</span> DIF % : <b>'+ numeral(lbl_porcen02).format('0.0') + '</b>';
-                                    
+
                                     return lbl_toolTips;
                                 }
                             },
@@ -1147,7 +1147,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                 }
                             },
                             color: colors[i],
-                            allowPointSelect: false,                
+                            allowPointSelect: false,
                             borderWidth: 0,
                         }
                         title.push(x['name'])
@@ -1177,7 +1177,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                                     m_actual        = parseFloat(dtaItems[0]['data']);
                                     m_anio_pasado   = parseFloat(dtaItems[1]['data']);
-                                    m_mes_pasado    = parseFloat(dtaItems[2]['data']); 
+                                    m_mes_pasado    = parseFloat(dtaItems[2]['data']);
 
                                     if (m_anio_pasado>0) {
                                         lbl_dif = (m_actual-m_anio_pasado);
@@ -1189,7 +1189,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                         lbl_porcen02 = (lbl_dif/m_mes_pasado)*100;
                                     }
 
-                                    text_monto_actual       = etiqueta+numeral(dtaItems[0]['data']).format('0,0');            
+                                    text_monto_actual       = etiqueta+numeral(dtaItems[0]['data']).format('0,0');
                                     text_monto_anio_pasado  = etiqueta+numeral(dtaItems[1]['data']).format('0,0');
                                     text_monto_mes_pasado   = etiqueta+numeral(dtaItems[2]['data']).format('0,0');
 
@@ -1199,7 +1199,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                     lbl_toolTips02 += '<span style="color:black">\u25CF</span> DIF % : <b>'+ numeral(lbl_porcen01).format('0.0') + '</b><br>';
                                     lbl_toolTips02 += '<span style="color:black">\u25CF</span> '+mes_pasado+ ' : <b>' + text_monto_mes_pasado + '</b><br>';
                                     lbl_toolTips02 += '<span style="color:black">\u25CF</span> DIF % : <b>'+ numeral(lbl_porcen02).format('0.0') + '</b>';
-                                    
+
                                     return lbl_toolTips02;
                                 }
                             },
@@ -1212,12 +1212,12 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                 }
                             },
                             color: colors[i],
-                            allowPointSelect: false,                
+                            allowPointSelect: false,
                             borderWidth: 0,
                         }
                         title.push(x['name'])
                     });
-                    chart = new Highcharts.Chart(comparacionMesesItems);                    
+                    chart = new Highcharts.Chart(comparacionMesesItems);
                 break;
 
                 case 'dtaRecupera':
@@ -1245,7 +1245,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                     }
                                 },
                                 color: colors[i],
-                                allowPointSelect: false,                
+                                allowPointSelect: false,
                                 borderWidth: 0,
                             }
 
@@ -1259,12 +1259,12 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         var porcentaje = (meta_!=0)? (real_/meta_) * 100 :0;
                         remanente = (real_>meta_)? real_- meta_ :0;
                         porcentaje = `<p class="font-weight-bolder" style="font-size:13px">`+numeral(porcentaje).format('0,0.00')+`% de 100%</p>`;
-                        
+
                         recuperacionMes.subtitle = {text: porcentaje};
                         montoMetaRecup = numeral(meta_).format('0,0.00');
                     }
 
-                    chart = new Highcharts.Chart(recuperacionMes);                    
+                    chart = new Highcharts.Chart(recuperacionMes);
                 break;
 
                 case 'dtaClientes':
@@ -1343,7 +1343,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     var metaGRP1__ = metaGRP2__ = metaGRP3__ = 0;
                     var realGRP1__ = realGRP2__ = realGRP3__ = 0;
                     var totalMETA__ = totalREAL__ = totalALC__ = 0;
-                    
+
 
                     if (item['data'].length>0) {
                         $.each(item['data'], function(i, x) {
@@ -1431,7 +1431,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             </td>
                             </tr>`;
                         $('#tbody02').empty().append(tbody);
-                    }               
+                    }
 
                 break;
 
@@ -1457,7 +1457,7 @@ function grafRealVentasMensuales(xbolsones) {
     ventasRealMensuales.series = [];
     $.getJSON("dataRealVtsMensuales/"+xbolsones, function(json) {
         var newseries;
-        
+
         $.each(json, function (i, item) {
             temporal = (xbolsones)?'<span style="color:black"><b>{point.y:,.2f}</b></span>':'<span style="color:black"><b>C$ {point.y:,.2f}</b></span>';
 
@@ -1509,7 +1509,7 @@ function grafVentasMensuales(xbolsones) {
         var date  = new Date();
         var anio_ = parseInt(date.getFullYear());
         var mes_ = parseInt(date.getMonth()+1);
-        
+
         $.each(json, function (i, item) {
             temporal = (xbolsones)?'<span style="color:black"><b>{point.y:,.2f}</b></span>':'<span style="color:black"><b>C$ {point.y:,.2f}</b></span>';
             if (anio != item['name']) {
@@ -1519,7 +1519,7 @@ function grafVentasMensuales(xbolsones) {
                 })
 
                 sumTotales.push({ 'anio':item['name'], 'suma':temp });
-                
+
                 anio = item['name'];
                 temp = 0;
             }
@@ -1533,13 +1533,13 @@ function grafVentasMensuales(xbolsones) {
                 pointFormat : temporal
             };
             var chart = new Highcharts.Chart(ventasMensuales);
-            
+
         })
 
         if (sumTotales.length > 0) {
-            
-            sumTotales.sort(function (a, b) { return b.anio - a.anio; });            
-            
+
+            sumTotales.sort(function (a, b) { return b.anio - a.anio; });
+
             anioActual = sumTotales[0].anio;
             montoAnioActual = parseFloat(sumTotales[0].suma);
             porcentaActual = ( montoAnioActual /  mes_  );
@@ -1559,12 +1559,12 @@ function grafVentasMensuales(xbolsones) {
 
                 st_3 = (crecimiento3<0)?` <i class="material-icons text-danger font-weight-bold" style="font-size:15px">arrow_downward</i>`:` <i class="material-icons text-success font-weight-bold" style="font-size:15px">arrow_upward</i>`;
                 cls_3 = (crecimiento3<0)?`text-danger font-weight-bolder`:`text-success font-weight-bolder`;
-                
+
                 st_4 = (crecimiento4<0)?` <i class="material-icons text-danger font-weight-bold" style="font-size:15px">arrow_downward</i>`:` <i class="material-icons text-success font-weight-bold" style="font-size:15px">arrow_upward</i>`;
                 cls_4 = (crecimiento4<0)?`text-danger font-weight-bolder`:`text-success font-weight-bolder`;
 
                 acumuladoAnioAnte = `
-                <div class="col-sm-5 text-center">                    
+                <div class="col-sm-5 text-center">
                     <p class="text-muted m-0">`+anioPasado+`</p>
                     <p class="font-weight-bolder" style="font-size: 1.2rem!important">C$`+numeral(montoAnioPasado).format('0,0.00')+`</p>
                 </div>
@@ -1578,7 +1578,7 @@ function grafVentasMensuales(xbolsones) {
                 </div>`;
 
                 porcentajeAnioAnte = `
-                <div class="col-sm-5 text-center">                    
+                <div class="col-sm-5 text-center">
                     <p class="text-muted m-0">`+anioPasado+`</p>
                     <p class="font-weight-bolder" style="font-size: 1.2rem!important">`+numeral(porcentaPasado).format('0,0.00')+`</p>
                 </div>
@@ -1603,7 +1603,7 @@ function grafVentasMensuales(xbolsones) {
             cls_2 = (crecimiento2<0)?`text-danger font-weight-bolder`:`text-success font-weight-bolder`;
 
             anioAcumulado = `
-            <div class="col-sm-5 text-center">                    
+            <div class="col-sm-5 text-center">
                 <p class="text-muted m-0">`+anioActual+`</p>
                 <p class="font-weight-bolder" style="font-size: 1.2rem!important">C$`+numeral(montoAnioActual).format('0,0.00')+`</p>
             </div>
@@ -1617,7 +1617,7 @@ function grafVentasMensuales(xbolsones) {
             </div>`;
 
             porcentaje = `
-            <div class="col-sm-5 text-center">                    
+            <div class="col-sm-5 text-center">
                 <p class="text-muted m-0">`+anioActual+`</p>
                 <p class="font-weight-bolder" style="font-size: 1.2rem!important">`+numeral(porcentaActual).format('0,0.00')+`</p>
             </div>
@@ -1641,7 +1641,7 @@ function grafVentasMensuales(xbolsones) {
                 $("#cardAnioAntePasa").remove()
             }
         }
-        
+
     })
 }
 
@@ -1658,17 +1658,17 @@ $("#select-cate").change(function() {
         async: true,
         success: function(response) {
             dta = [];
-            
+
             objVenta = response.map(function (obj) {return obj.data;});
             mTotal = objVenta.reduce(function (m, n) {return m + n;}, 0);
-            
+
             $.each(response, function(i, x) {
                 dta.push({
                     name  : x['name'],
                     y     : x['data'],
                     porc  : numeral((parseFloat(x['data'])/parseFloat(mTotal))*100).format('0.00')
                 })
-            });            
+            });
             ventasXCateg.subtitle = {text: cate};
             ventasXCateg.series[0].data = dta;
             chart = new Highcharts.Chart(ventasXCateg);
@@ -1681,17 +1681,17 @@ var tableActive='';
 function detalles_ventas_diarias($dia,$mAVG)
 {
     $('#title-page-tem').addClass('text-uppercase').text("Detalle de venta del dia ");
-    $("#page-details").toggleClass('active');  
+    $("#page-details").toggleClass('active');
 
     $( "#id_div_titulo_Ventas_Rutas").removeClass( "table-responsive" ).addClass( "table" );
 
-    mes         = $("#opcMes option:selected").val();    
-    mes_name    = $("#opcMes option:selected").text();    
-    anio        = $("#opcAnio option:selected").val();    
+    mes         = $("#opcMes option:selected").val();
+    mes_name    = $("#opcMes option:selected").text();
+    anio        = $("#opcAnio option:selected").val();
     pageName    = 'Dashboard';
 
 
-    FechaFiltrada = `Mostrando registros del `+$dia+` de `+mes_name + ' ' + anio;    
+    FechaFiltrada = `Mostrando registros del `+$dia+` de `+mes_name + ' ' + anio;
     $dia = $dia.replace(/[^\d.-]/g, '');
     $("#fechaFiltrada").text(FechaFiltrada);
     $('#filterDtTemp').val('');
@@ -1702,7 +1702,7 @@ function detalles_ventas_diarias($dia,$mAVG)
     $("#cjVentas").hide();
 
 
-    
+
     $("#cjRutVentasRutas").show();
     $("#id_grafica_pie_ventas_ruta").show();
     $("#cjRutVentas").hide();
@@ -1715,14 +1715,14 @@ function detalles_ventas_diarias($dia,$mAVG)
     $("#montoMetaContent").show();
     $("#txtMontoReal").show();
     $("#MontoReal").show();
-    
+
     $("#cjRecuperacion").hide();
     $("#cjCliente").hide();
     $("#cjArticulo").hide();
-    
+
     $("#MontoMeta").text('C$ '+ numeral($mAVG).format('0,0.00') );
     $("#cantRowsDtTemp selected").val("50");
-    
+
 
             $("#dtVentaRuta").dataTable({
                 "scrollX": false,
@@ -1731,7 +1731,7 @@ function detalles_ventas_diarias($dia,$mAVG)
                     "url": "detallesdia/"+$dia+"/"+mes+"/"+anio,
                     'dataSrc': '',
                 },
-                
+
                 "destroy" : true,
                 "info":    false,
                 "lengthMenu": [[20,-1], [20,"Todo"]],
@@ -1756,12 +1756,12 @@ function detalles_ventas_diarias($dia,$mAVG)
                     {"className": "dt-back-unit", "targets": [ 2 ]},
                     {"className": "dt-left", "targets": [ 1 ]},
                     {"className": "dt-center", "targets": [ 0 ]}
-                    
+
                 ],
                 "footerCallback": function ( row, data, start, end, display ) {
                         dta_pie_rutas = [];
                         var api = this.api(), data;
-                        
+
                         var intVal = function ( i ) {
                             return typeof i === 'string' ?
                             i.replace(/[^0-9.]/g, '')*1 :
@@ -1769,13 +1769,13 @@ function detalles_ventas_diarias($dia,$mAVG)
                             i : 0;
                         };
 
-                        total = api.column( 2 ).data().reduce( function (a, b) 
+                        total = api.column( 2 ).data().reduce( function (a, b)
                         {
                             return intVal(a) + intVal(b);
                         }, 0 );
 
                         tmp = parseFloat($('#MontoMeta').text().replace(/[\ U,C$]/g, ''));
-                        cump = (tmp>0)?(( parseFloat(total) / tmp ) * 100):0;     
+                        cump = (tmp>0)?(( parseFloat(total) / tmp ) * 100):0;
 
                         api.rows().data().each(function (value) {
                             varMonto = value.REALE.replace(/[\ U,C$]/g, '');
@@ -1786,12 +1786,12 @@ function detalles_ventas_diarias($dia,$mAVG)
                             })
                         })
 
-                        
+
 
                         $('#cumplMeta').text(numeral(cump).format('0.00')+'%');
                         $('#MontoReal').text('C$ '+ numeral(total).format('0,0.00'));
-                        
-                        
+
+
                         ventasXCateg.tooltip = {
                             pointFormat : ''
                         }
@@ -1799,24 +1799,24 @@ function detalles_ventas_diarias($dia,$mAVG)
                         ventas_por_rutas.series[0].data = dta_pie_rutas ;
                         chart = new Highcharts.Chart(ventas_por_rutas);
                     },
-                
+
             });
-            
+
             $('#txtMontoReal').text('Total real ventas');
             $('#txtMontoMeta').text('Total Venta Diario');
 
             $("#dtVentaRuta_length").hide();
             $("#dtVentaRuta_filter,#dtVentaRuta_paginate").hide();
-            
+
             $("#id_div_detalles_vendedores").hide();
-            
+
 
 
 
 
     var st = $('#sidebar-menu-left').hasClass('active');
 
-    if (st) {        
+    if (st) {
         $('#page-details').css('width','100%')
     }
 
@@ -1838,7 +1838,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
     $("#page-details").toggleClass('active');
     mes         = $("#opcMes option:selected").val();
     mesNombre   = $("#opcMes option:selected").text();
-    anio        = $("#opcAnio option:selected").val();    
+    anio        = $("#opcAnio option:selected").val();
     pageName    = 'Dashboard';
 
     FechaFiltrada = `Mostrando registros de `+mesNombre+` de `+anio;
@@ -1860,7 +1860,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
             tableActive = `#dtTotalXRutaVent`;
             $("#MontoMeta").text('C$ '+montoMetaVenta);
             $("#cantRowsDtTemp selected").val("5");
-            
+
            /* $.ajax({// calcula el total real neto
                     url: "detalles/"+tipo+"/"+mes+"/"+anio+"/ND/ND/ND",
                     type: "GET",
@@ -1918,14 +1918,14 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                     {"className": "dt-back-vtas", "targets": [ 5, 6, 7 ]},
                     {"className": "dt-center", "targets": [ 0 ]}
                 ],
-                
+
             });
             $('#txtMontoReal').text('Total real ventas');
             $('#txtMontoMeta').text('Total meta venta');
             $("#id_div_detalles_vendedores").show();
             break;
         case 'recu':
-            
+
             $('#cumplMetaContent').show();
             $("#cjVentas").hide();
             $("#cjRutVentas").hide();
@@ -1934,7 +1934,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
             $("#montoMetaContent").show();
             $("#MontoMeta").text('C$ '+montoMetaRecup);
             $("#cantRowsDtTemp selected").val("5");
-            
+
 
 
             companny_id = $("#companny_id").text();
@@ -1955,7 +1955,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                         'method':metodo,
                         'async' : false,
                         'dataSrc': '',
-                    },        
+                    },
                     "destroy" : true,
                     "info":    false,
                     "lengthMenu": [[5,10,15,-1], [5,10,15,"Todo"]],
@@ -2006,9 +2006,9 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                         $('#MontoReal').text('C$'+ numeral(total).format('0,0.00'));
                     },
                     "fnInitComplete": function () {
-                        
+
                     }
-                    
+
                 });
 
                 $('#dtIntroRecup_length').hide();//Ocultar select que muestra cantidad de registros por pagina
@@ -2035,7 +2035,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                         'method':metodo,
                         'async' : false,
                         'dataSrc': '',
-                    },        
+                    },
                     "destroy" : true,
                     "info":    false,
                     "lengthMenu": [[5,10,15,-1], [5,10,15,"Todo"]],
@@ -2080,16 +2080,16 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                         .reduce( function (a, b) {
                         return intVal(a) + intVal(b);
                         }, 0 );
-                
+
                         tmp = parseFloat($('#MontoMeta').text().replace(/[\ U,C$]/g, ''));
                         cump = (tmp>0)?(( parseFloat(total) / tmp ) * 100):0;
                         $('#cumplMeta').text(numeral(cump).format('0.00')+'%');
                         $('#MontoReal').text('C$'+ numeral(total).format('0,0.00'));
                     },
                     "fnInitComplete": function () {
-                        
+
                     }
-                    
+
                 });
 
                 $('#dtRecu_GumaPharma_length').hide();//Ocultar select que muestra cantidad de registros por pagina
@@ -2111,7 +2111,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
             $("#montoMetaContent").hide()
             $("#cjCliente").show();
             tableActive = `#dtCliente`;
-            
+
             $(tableActive).dataTable({
                 responsive: true,
                 "autoWidth":false,
@@ -2172,8 +2172,8 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
             $('#MontoMeta').text('Cargando...');
             $('#txtMontoMeta').text('Cargando...');
 
-            
-            
+
+
             $("#id_detalles_articulos").show();
 
             $("#cjRecuperacion").hide();
@@ -2184,7 +2184,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
             $("#montoMetaContent").show()
             $("#cjArticulo").show();
             tableActive = `#dtArticulo`;
-            
+
             $(tableActive).dataTable({
                 responsive: true,
                 "autoWidth":false,
@@ -2236,27 +2236,27 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                     total_und = api
                         .column( 2 )
                         .data()
-                        .reduce( function (a, b) {                            
+                        .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
 
 
 
-                    $('#id_detall_prec_prom').text('C$ '+ numeral(cliente[0].prec_prom).format('0,0.00'));  
-                    $('#id_detall_cost_unit').text('C$ '+ numeral(cliente[0].cost_unit).format('0,0.00'));  
-                    $('#id_detall_marg_contrib').text('C$ '+ numeral(cliente[0].marg_contrib).format('0,0.00'));  
-                    $('#id_detall_porc_contrib').text(numeral(cliente[0].porc_contrib).format('0,0.00'));  
+                    $('#id_detall_prec_prom').text('C$ '+ numeral(cliente[0].prec_prom).format('0,0.00'));
+                    $('#id_detall_cost_unit').text('C$ '+ numeral(cliente[0].cost_unit).format('0,0.00'));
+                    $('#id_detall_marg_contrib').text('C$ '+ numeral(cliente[0].marg_contrib).format('0,0.00'));
+                    $('#id_detall_porc_contrib').text(numeral(cliente[0].porc_contrib).format('0,0.00'));
 
                     $('#txtMontoMeta').text('TOT. FACT. :');
                     $('#MontoMeta').text(numeral('C$ '+ cliente[0].total_fact).format('0,0.00'));
-                    
+
                     $('#MontoReal').text(numeral(cliente[0].unit_Fact).format('0,0.00'));
                     $('#txtMontoReal').text('UNIT. FACT. :');
 
                     $('#cumplMeta').text(numeral(cliente[0].unit_bonif).format('0,0.00'));
                     $('#id_detall_unit_bonif').text('UNIT. BONIF:');
 
-                    
+
                 }
             });
         break;
@@ -2268,7 +2268,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
 
     var st = $('#sidebar-menu-left').hasClass('active');
 
-    if (st) {        
+    if (st) {
         $('#page-details').css('width','100%')
     }
 }
@@ -2358,7 +2358,7 @@ function getDetalleVenta(mes, anio, metau, realu, metae, reale, ruta, nombre) {
 
             $('#total_Real_Efectivo').text('C$'+numeral(reale.replace(/[\ U,C$]/g, '')).format('0,0.00'));
             $('#total_Meta_Efectivo').text('C$'+numeral(metae.replace(/[\ U,C$]/g, '')).format('0,0.00'));
-            
+
             $('#total_Dif_Efectivo')
             .attr('class','font-weight-bolder text-info')
             .text(numeral(totalDifE).format('0,0.00')+'%');
@@ -2379,9 +2379,9 @@ function Todos_Los_Items(){
 
     var mes = $('#opcMes option:selected').val();
     var anio = $('#opcAnio option:selected').val();
-    mes_name    = $("#opcMes option:selected").text();   
+    mes_name    = $("#opcMes option:selected").text();
 
-    FechaFiltrada = 'Mostrando registros del mes de ' + mes_name + ' ' + anio;        
+    FechaFiltrada = 'Mostrando registros del mes de ' + mes_name + ' ' + anio;
     $("#id_titulo_modal_all_items").text(FechaFiltrada);
 
 
@@ -2405,7 +2405,7 @@ function Todos_Los_Items(){
             "emptyTable": "NO HAY DATOS DISPONIBLES",
             "search":     "BUSCAR"
         },
-        
+
         'columns': [
             { "title"   : "ARTICULO",           "data"  : "Articulo" },
             { "title"   : "DESCRIPCION",        "data"  : "Descripcion" },
@@ -2419,7 +2419,7 @@ function Todos_Los_Items(){
         ],
         "columnDefs": [
             {"className": "dt-center", "targets": [0,1,3,4,8]},
-            {"className": "dt-right", "targets": [ 2,5,6,7 ]},            
+            {"className": "dt-right", "targets": [ 2,5,6,7 ]},
             {"width": "20%", "targets": [ 1]},
         ],
     });
@@ -2472,10 +2472,10 @@ function get_Detalle_Venta_dia(dia,mes, anio, ruta, nombre) {
             $('#id_detalles_ventas').hide();
 
             $('#id_div_Detalles_venta').hide();
-            
-            
+
+
             $('#dtVentasFacturas').show();
-            
+
         }
     });
     $("#dtVentasFacturas_length").hide();
@@ -2496,7 +2496,7 @@ function detalleComparacionVentas(obj, tp) {
 
             m_actual        = parseFloat(obj[0]['data']);
             m_anio_pasado   = parseFloat(obj[1]['data']);
-            m_mes_pasado    = parseFloat(obj[2]['data']);            
+            m_mes_pasado    = parseFloat(obj[2]['data']);
 
             if (m_anio_pasado>0) {
                 dif = (m_actual-m_anio_pasado);
@@ -2513,7 +2513,7 @@ function detalleComparacionVentas(obj, tp) {
             cls_1 = (porcen01<0)?`text-danger font-weight-bolder`:`text-success font-weight-bolder`;
             cls_2 = (porcen02<0)?`text-danger font-weight-bolder`:`text-success font-weight-bolder`;
 
-            text_monto_actual       = 'C$'+numeral(obj[0]['data']).format('0,0.00')+st_1;            
+            text_monto_actual       = 'C$'+numeral(obj[0]['data']).format('0,0.00')+st_1;
             text_monto_anio_pasado  = 'C$'+numeral(obj[1]['data']).format('0,0.00');
             text_monto_mes_pasado   = 'C$'+numeral(obj[2]['data']).format('0,0.00');
         break;
@@ -2526,7 +2526,7 @@ function detalleComparacionVentas(obj, tp) {
 
             m_actual        = parseFloat(obj[0]['data']);
             m_anio_pasado   = parseFloat(obj[1]['data']);
-            m_mes_pasado    = parseFloat(obj[2]['data']);            
+            m_mes_pasado    = parseFloat(obj[2]['data']);
 
             if (m_anio_pasado>0) {
                 dif = (m_actual-m_anio_pasado);
@@ -2543,7 +2543,7 @@ function detalleComparacionVentas(obj, tp) {
             cls_1 = (porcen01<0)?`text-danger font-weight-bolder`:`text-success font-weight-bolder`;
             cls_2 = (porcen02<0)?`text-danger font-weight-bolder`:`text-success font-weight-bolder`;
 
-            text_monto_actual       = numeral(obj[0]['data']).format('0')+st_1;            
+            text_monto_actual       = numeral(obj[0]['data']).format('0')+st_1;
             text_monto_anio_pasado  = numeral(obj[1]['data']).format('0');
             text_monto_mes_pasado   = numeral(obj[2]['data']).format('0');
         break;
@@ -2603,7 +2603,7 @@ $( "#cantRowsDtDetalle").change(function() {
 
 $(".active-page-details").click( function() {
     $("#cantRowsDtTemp").val("5");
-    $("#page-details").toggleClass('active');    
+    $("#page-details").toggleClass('active');
 });
 
 /*OCULTANDO GRAFICAS DASHBOARD*/
@@ -2653,7 +2653,7 @@ $(document).on('click', '#exp_more', function(ef) {
 
         format(row.child,data.Factura);
         tr.addClass('shown');
-        
+
         ef.target.innerHTML = "expand_less";
         ef.target.style.background = '#ff5252';
         ef.target.style.color = '#e2e2e2';
@@ -2661,8 +2661,18 @@ $(document).on('click', '#exp_more', function(ef) {
 });
 
 function detailAllClients(){
-    /*alert("Evento onclick ejecutado!");
-    $('#mdClientDetail').dataTable({
+    //alert("Evento onclick ejecutado!");
+
+    tableActive = '';
+    tableActive = '#tblAllClients';
+
+    var mes = $('#opcMes option:selected').val();
+    var anio = $('#opcAnio option:selected').val();
+    mes_name    = $("#opcMes option:selected").text();
+
+    FechaFiltrada = 'Mostrando registros del mes de ' + mes_name + ' ' + anio;
+
+    $(tableActive).dataTable({
         responsive: true,
         "autoWidth": false,
         "ajax": {
@@ -2685,10 +2695,8 @@ function detailAllClients(){
             "search": "BUSCAR"
         },
         'columns': [
-            {"title": "", "data": "Articulo"},
-            {"title": "Factura", "data": "Descripcion"},
-            {"title": "Fecha", "data": "Cantidad"},
-            {"title": "Codigo Cliente", "data": "Total"},
+            {"title": "Codigo", "data": "Codigo"},
+            {"title": "Cliente", "data": "Cliente"},
         ],
         "columnDefs": [
             {"className": "dt-center", "targets": [0, 1, 2, 3, 4]},
@@ -2696,18 +2704,21 @@ function detailAllClients(){
             {"className": "dt-back-vtas", "targets": [5]},
             {"width": "20%", "targets": [1]},
         ],
-    });*/
-    $('#mdClientDetail').modal('show');
+    });
+
+    $('#mdClientDetail').modal();
+    $(tableActive + "_length").hide();
+    $(tableActive + "_filter").hide();
 }
 
 
 
 function format ( callback, Factura_ ) {
-    var thead = tbody = '';            
+    var thead = tbody = '';
     thead =`<table class="table table-striped table-bordered table-sm">
                 <thead>
                     <tr>
-                        <th class="center">ARTICULO</th>                        
+                        <th class="center">ARTICULO</th>
                         <th class="center">DESCRIPCION.</th>
                         <th class="center">CANTIDAD</th>
                         <th class="center">PRECIO UNITARIO</th>
@@ -2726,7 +2737,7 @@ function format ( callback, Factura_ ) {
                 tbody +=`<tr><td colspan='6'><center>....</center></td></tr>`;
                 callback(thead + tbody).show();
             }
-            
+
             $.each(data['objDt'], function (i, item) {
                 tbody +=`<tr>
                             <td class="center">` + item['ARTICULO'] + `</td>
@@ -2737,7 +2748,7 @@ function format ( callback, Factura_ ) {
                         </tr>`;
             });
             tbody += `</tbody></table>`;
-            
+
             temp = thead+tbody;
 
             callback(temp).show();
@@ -2753,13 +2764,13 @@ function reordenandoPantalla() {
     $(".content-graf div.row").each(function(e) {
         var div01 = $(this).attr('id');
         $("#" + div01 + " div.graf").each(function() {
-            ($(this).is(":visible"))?x++:x=x;            
+            ($(this).is(":visible"))?x++:x=x;
         })
         cont = 12 / x;
         $( "#" + div01 + " div.graf" ).removeClass( "col-sm-*" ).addClass( "col-sm-"+cont );
         x=0;
     });
-} 
+}
 
 function FormatPretty(number) {
     var numberString;
