@@ -63,11 +63,11 @@ class dashboard_controller extends Controller {
     $obj = dashboard_model::get_Vta_Ruta_dia($Dia,$mes, $anio, $ruta);
     return response()->json($obj);
   }
-
-  public function getTop10Clientes() {
-    $obj = dashboard_model::getTop10Clientes();
+  public function get_Vta_all_items($mes,$anio){
+    $obj = dashboard_model::get_Vta_all_items($mes, $anio);
     return response()->json($obj);
   }
+
 
   public function getValBodegas() {
     $obj = dashboard_model::getValBodegas();
@@ -85,6 +85,12 @@ class dashboard_controller extends Controller {
     $obj = dashboard_model::getDataGraficas($mes, $anio, $xbolsones);
     return response()->json($obj);
   }
+
+  public function GetTop10Productos($mes, $anio, $xbolsones) {
+    $obj = dashboard_model::getTop10Productos($mes, $anio,1, $xbolsones);
+    return response()->json($obj);
+  }
+
 
   public function getVentasMensuales($xbolsones) {
     $obj = dashboard_model::getVentasMensuales($xbolsones);
