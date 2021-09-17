@@ -199,10 +199,24 @@
             <div class="graf col-sm-6 mt-3"><div class="container-cc" id="grafCompCantid"></div></div>
         </div>
         <div class="row" id="ct02">
-            <div class="graf col-sm-6 mt-3"><div class="container-tc" id="grafClientes"></div></div>
             <div class="graf col-sm-6 mt-3">
+                <form class="form-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <button class="btn btn-primary" onclick="detailAllClients()" type="button" data-target="mdClientDetail">Ver Informacion</button>
+                    </div>
 
-            
+                <div class="form-group mx-sm-3 mb-2">
+                    <select class="custom-select" id="inputGroupSelect04">
+                        <option selected>Seleccionar...</option>
+                        <option value="1">Farmacias</option>
+                        <option value="2">Instituciones</option>
+                        <option value="3">Mayoristas</option>
+                        <option value="3">Todas</option>
+                    </select>
+                </div>
+            </form>    
+            <div class="container-tc" id="grafClientes"></div></div>
+            <div class="graf col-sm-6 mt-3">
             <div class="row">
                 <div class="col-sm-6"></div>
                 <div class="col-sm-6">
@@ -454,6 +468,31 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal:Lista de clientes -->
+<div class="modal" id="mdClientDetail" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <!-- Modal:Detalle Venta Comparación Meta, Real Cumplimineto -->
 <div class="modal fade" id="mdDetailsVentas" tabindex="-1" role="dialog" aria-labelledby="titleModal" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" >

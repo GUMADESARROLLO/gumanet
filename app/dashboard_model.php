@@ -458,6 +458,8 @@ class dashboard_model extends Model {
         $sql_server->close();
         return $json;
     }  
+
+    
     public static function get_Vta_Ruta_dia($dia,$mes, $anio, $ruta) {
 
         $sql_server = new \sql_server();
@@ -830,6 +832,9 @@ class dashboard_model extends Model {
 
         $json = array();
         $i = 0;
+        $Farmacia = 0;
+        $Intitucion = 0;
+        $Mayorista = 0;
 
         if( count($query)>0 ) {
             foreach ($query as $key) {
@@ -874,7 +879,16 @@ class dashboard_model extends Model {
                     $PORC_CONTRI = number_format(floatval($prom_contribucion),2);
                 }
 
+                
 
+
+                /*$qFarmacia = $sql_server->fetchArray("SELECT  isnull(sum(T3.venta),0) as Farma FROM Softland.dbo.VtasTotal_UMK T3  Where 9 = T3.nMes and 2021 = T3.[Año] and T3.[P. Unitario] > 0 AND T3.Ruta in ('F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20') AND T3.ARTICULO='".$key['Articulo']."'",SQLSRV_FETCH_ASSOC);
+                $qIntitucion = $sql_server->fetchArray("SELECT  isnull(sum(T3.venta),0) as Inti FROM Softland.dbo.VtasTotal_UMK T3  Where 9 = T3.nMes and 2021 = T3.[Año] and T3.[P. Unitario] > 0 AND T3.Ruta in ('F02') AND T3.ARTICULO='".$key['Articulo']."'",SQLSRV_FETCH_ASSOC);
+                $qMayorista = $sql_server->fetchArray("SELECT  isnull(sum(T3.venta),0) as Mayo FROM Softland.dbo.VtasTotal_UMK T3  Where 9 = T3.nMes and 2021 = T3.[Año] and T3.[P. Unitario] > 0 AND T3.Ruta in ('F04') AND T3.ARTICULO='".$key['Articulo']."'",SQLSRV_FETCH_ASSOC);
+
+                $Farmacia = floatval($qFarmacia[0]['Farma']);
+                $Intitucion = floatval($qIntitucion[0]['Inti']);
+                $Mayorista = floatval($qMayorista[0]['Mayo']);*/
 
                 $json[$i]['data']       = $tem_;
                 $json[$i]['dtUnd']      = $UND_;
@@ -884,11 +898,17 @@ class dashboard_model extends Model {
                 $json[$i]['dtMCO']      = $MARG_CONTRI;
                 $json[$i]['dtPCO']      = $PORC_CONTRI;
                 
+                /*$json[$i]['dtFARMA']    = $Farmacia;
+                $json[$i]['dtInti']    = $Intitucion;
+                $json[$i]['dtMayo']    = $Mayorista;*/
+
+                
                 $i++;
             }
         }
 
-        return $json;
+       
+       return $json;
         $sql_server->close();
     }
 
@@ -1671,6 +1691,57 @@ class dashboard_model extends Model {
         return $json;
         $sql_server->close();
     }
+
+    /******* Add Rodolfo *******/
+public static function getAllClientsByCategory($mes, $anio, $company_user, $xbolsones)
+{
+    $sql_server = new \sql_server();
+    $sql_exec = '';
+    $tem_ = 0;
+
+    switch ($company_user) {
+        case '1':
+            $sql_exec = " EXEC Umk_ReportVentas_Cliente " . $mes . ", " . $anio . " ";
+            break;
+        case '2':
+            $sql_exec = " EXEC Gp_ReportVentas_Cliente " . $mes . ", " . $anio . " ";
+            break;
+        case '3':
+            if ($xbolsones) {
+                $sql_exec = " EXEC Inv_ReportVentas_Cliente_Bolsones " . $mes . ", " . $anio . " ";
+            } else {
+                $sql_exec = " EXEC Inv_ReportVentas_Cliente " . $mes . ", " . $anio . " ";
+            }
+            break;
+        default:
+            dd("Ha sucedido un error al buscar los clientes para esta empresa. " . $company->id);
+            break;
+    }
+    $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+
+    $json = array();
+    $i = 0;
+
+    if (count($query) > 0) {
+        foreach ($query as $key) {
+
+            $json[$i]['name'] = $key['codigo'];
+            $json[$i]['cliente'] = $key['cliente'];
+
+            if ($company_user == 4) {
+                $tem_ = ($xbolsones) ? intval($key['CantidadVenta']) : intval($key['MontoVenta']);
+
+            } else {
+                $tem_ = intval($key['MontoVenta']);
+            }
+
+            $json[$i]['data'] = $tem_;
+            $i++;
+        }
+    }
+    return $json;
+    $sql_server->close();
+}
 
     public static function getRealVentasMensuales($xbolsones) {
         $sql_server = new \sql_server();

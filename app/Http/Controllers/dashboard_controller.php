@@ -68,13 +68,15 @@ class dashboard_controller extends Controller {
     return response()->json($obj);
   }
 
-  public function getTop10Clientes() {
-    $obj = dashboard_model::getTop10Clientes();
-    return response()->json($obj);
-  }
 
   public function getValBodegas() {
     $obj = dashboard_model::getValBodegas();
+    return response()->json($obj);
+  }
+
+  public function getAllClientsByCategory()
+  {
+    $obj = dashboard_model::getAllClientsByCategory();
     return response()->json($obj);
   }
 
@@ -89,6 +91,12 @@ class dashboard_controller extends Controller {
     $obj = dashboard_model::getDataGraficas($mes, $anio, $xbolsones);
     return response()->json($obj);
   }
+
+  public function GetTop10Productos($mes, $anio, $xbolsones) {
+    $obj = dashboard_model::getTop10Productos($mes, $anio,1, $xbolsones);
+    return response()->json($obj);
+  }
+
 
   public function getVentasMensuales($xbolsones) {
     $obj = dashboard_model::getVentasMensuales($xbolsones);
