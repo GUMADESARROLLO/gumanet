@@ -1740,6 +1740,9 @@ class dashboard_model extends Model
                 $sql_exec = " EXEC Dev_Gp_ReportVentas_AllClients " . $mes . ", " . $anio . " ";
                 break;
             case '3':
+                $sql_exec = " ";
+                break;
+            case '4':
                 if ($xbolsones) {
                     $sql_exec = " EXEC Dev_Inv_ReportVentas_AllClients_Bolsones " . $mes . ", " . $anio . " ";
                 } else {
@@ -1758,8 +1761,10 @@ class dashboard_model extends Model
         if (count($query) > 0) {
             foreach ($query as $key) {
 
-                $json[$i]['name'] = $key['codigo'];
+                $json[$i]['codigo'] = $key['codigo'];
                 $json[$i]['cliente'] = $key['cliente'];
+
+
 
                 if ($company_user == 4) {
                     $tem_ = ($xbolsones) ? intval($key['CantidadVenta']) : intval($key['MontoVenta']);
@@ -1768,7 +1773,7 @@ class dashboard_model extends Model
                     $tem_ = intval($key['MontoVenta']);
                 }
 
-                $json[$i]['data'] = $tem_;
+                $json[$i]['data_innova'] = $tem_;
                 $i++;
             }
         }
