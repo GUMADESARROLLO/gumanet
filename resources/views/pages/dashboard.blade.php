@@ -224,10 +224,12 @@
                         <div class="col-sm-8">
                             <div class="form-group">
                                 <label for="opcMes" class="text-muted m-0">SEGMENTO</label>
-                                <select class="form-control form-control-sm" id="opcMes">
-                                    <option selected value="">Farmacia</option>                            
-                                    <option selected value="">Instituciones</option>
-                                    <option selected value="">Mayoristas</option>                            
+                                <select class="form-control form-control-sm" id="opcSegmentos">
+                                    <option selected value="0">Todos</option>                            
+                                    <option selected value="1">Farmacia</option>                            
+                                    <option selected value="2">Mayoristas</option>                            
+                                    <option selected value="3">Instituciones</option>
+                                    
                                 </select>
                             </div>
                         </div>                
@@ -427,13 +429,25 @@
 <div class="modal fade modal-fullscreen" id="mdDetailsAllItems" tabindex="-1" role="dialog" aria-labelledby="titleModal" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document" >
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title font-weight-bolder text-info" id="id_titulo_modal_all_items" ></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="modal-header d-block">
+                <div  class="d-flex">
+                    <h5 class="modal-title font-weight-bolder text-info" id="id_titulo_modal_all_items" ></h5>
+                
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <p class="text-muted m-0" id="id_sub_titulo_modal_all_items">00</p>
+                        </div>
+                        <div class="col-sm-2">
+                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_total_segmento">C$ 0.00</p>
+                        </div>
+                    </div>
             </div>
-            <div class="modal-body" id="bodyModal">
+            <div class="modal-body" id="bodyModal">            
             <div class="row" >
                 <div class="col-sm-11 mt-2">
                     <div class="input-group">
@@ -464,6 +478,7 @@
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>

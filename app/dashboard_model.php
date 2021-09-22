@@ -74,7 +74,7 @@ class dashboard_model extends Model {
         );
 
         $array_merge = array_merge($dtaBodega, $dtaTop10Cl, $dtaTop10Pr, $dtaVtasMes, $dtaRecupera, $dtaCompMesesVentas, $dtaCompMesesItems, $dtaVentasXCateg, $dtaClientes, $dtaProyectos,$dtaVtnDiarias);
-        //$array_merge = array_merge($dtaVtnDiarias);
+        //$array_merge = array_merge($dtaTop10Pr);
         return $array_merge;
         $sql_server->close();
     }
@@ -503,7 +503,7 @@ class dashboard_model extends Model {
         $sql_server->close();
         return $json;
     }    
-    public static function get_Vta_all_items($mes, $anio) {
+    public static function get_Vta_all_items($mes, $anio,$Segmento) {
 
         $sql_server = new \sql_server();
         $sql_exec = '';
@@ -511,10 +511,50 @@ class dashboard_model extends Model {
         $request = Request();
         $json = array();
         $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
+
+        $RutaSegmento = "";
+
         
         switch ($company_user) {
             case '1':
-                $sql_exec = "EXEC Umk_DetalleVentas_all_items ".$mes.", ".$anio." ";
+
+                
+
+                if ($Segmento==0) {
+                    //TODAS LOS SEGMENTOS
+                    $RutaSegmento = "'F02','F03','F04','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
+                } else {
+                    if ($Segmento==1) {
+                        //TODAS LAS RUTAS DEL SEGMENTO FARMACIA
+                        $RutaSegmento = "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
+                    } else {
+                        if ($Segmento==2) {
+                           //TODAS LAS RUTAS DEL SEGMENTO MAYORISTA
+                            $RutaSegmento = "'F04'";
+                        } else {
+                            if ($Segmento==3) {
+                               //TODAS LAS RUTAS DEL SEGMENTO INSTITUCION
+                                $RutaSegmento = "'F02'";
+                            }
+                            
+                        }
+                        
+                    }
+                }
+                $sql_exec ="select 
+                                T1.Articulo,
+                                T1.Descripcion,
+                                count(T1.articulo) As NºVentaMes,
+                                isnull(sum(T1.cantidad),0) Cantidad,
+                                isnull(sum(T1.venta),0) MontoVenta,
+                                AVG (T1.[P. Unitario]) as AVG_,			
+                                T1.[Costo Unitario] AS COSTO_PROM,
+                                isnull((SELECT TOP 1 SUM(T2.cantidad) AS Cantidad FROM Softland.dbo.VtasTotal_UMK T2  WHERE $mes = T2.nMes AND ".$anio." = T2.[Año] AND T2.[P. Unitario] <= 0 AND T2.Articulo = T1.Articulo GROUP BY  T2.Articulo),0) AS Cantida_boni
+                    
+                    from Softland.dbo.VtasTotal_UMK T1 Where ".$mes." = T1.nMes and $anio = T1.[Año] and T1.[P. Unitario] > 0
+                    AND  Ruta IN (".$RutaSegmento." )
+                    group by T1.Articulo,T1.Descripcion,T1.[Costo Unitario]
+                    order by MontoVenta desc;";
                 
                 break;
             case '2':                
@@ -831,10 +871,9 @@ class dashboard_model extends Model {
         $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
 
         $json = array();
+        $json = array();
         $i = 0;
-        $Farmacia = 0;
-        $Intitucion = 0;
-        $Mayorista = 0;
+   
 
         if( count($query)>0 ) {
             foreach ($query as $key) {
@@ -845,6 +884,7 @@ class dashboard_model extends Model {
                 $COSTO_PROM             = $key['COSTO_PROM'];
                 $json[$i]['name']       = $key['Articulo'];
                 $json[$i]['articulo']   = $key['Descripcion'];
+
 
                 $AVG = floatval($Total_Facturado)  / (  floatval($Cantidad) + floatval($Cantidad_bonificada) );
 
@@ -858,6 +898,7 @@ class dashboard_model extends Model {
 
 
                 if ( $company_user==4 ) {
+
                     $tem_   = ($xbolsones) ? floatval($Cantidad) : floatval($Total_Facturado);
                     $UND_ = floatval($Cantidad);
                     $UND_BO = floatval($Cantidad_bonificada);
@@ -865,8 +906,6 @@ class dashboard_model extends Model {
                     $COSTO_PROM_ = number_format(floatval($COSTO_PROM),2);
                     $MARG_CONTRI = number_format(floatval($Monto_Contribucion),2);
                     $PORC_CONTRI = number_format(floatval($prom_contribucion),2);
-
-
 
                 }else {
 
@@ -879,16 +918,7 @@ class dashboard_model extends Model {
                     $PORC_CONTRI = number_format(floatval($prom_contribucion),2);
                 }
 
-                
 
-
-                /*$qFarmacia = $sql_server->fetchArray("SELECT  isnull(sum(T3.venta),0) as Farma FROM Softland.dbo.VtasTotal_UMK T3  Where 9 = T3.nMes and 2021 = T3.[Año] and T3.[P. Unitario] > 0 AND T3.Ruta in ('F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20') AND T3.ARTICULO='".$key['Articulo']."'",SQLSRV_FETCH_ASSOC);
-                $qIntitucion = $sql_server->fetchArray("SELECT  isnull(sum(T3.venta),0) as Inti FROM Softland.dbo.VtasTotal_UMK T3  Where 9 = T3.nMes and 2021 = T3.[Año] and T3.[P. Unitario] > 0 AND T3.Ruta in ('F02') AND T3.ARTICULO='".$key['Articulo']."'",SQLSRV_FETCH_ASSOC);
-                $qMayorista = $sql_server->fetchArray("SELECT  isnull(sum(T3.venta),0) as Mayo FROM Softland.dbo.VtasTotal_UMK T3  Where 9 = T3.nMes and 2021 = T3.[Año] and T3.[P. Unitario] > 0 AND T3.Ruta in ('F04') AND T3.ARTICULO='".$key['Articulo']."'",SQLSRV_FETCH_ASSOC);
-
-                $Farmacia = floatval($qFarmacia[0]['Farma']);
-                $Intitucion = floatval($qIntitucion[0]['Inti']);
-                $Mayorista = floatval($qMayorista[0]['Mayo']);*/
 
                 $json[$i]['data']       = $tem_;
                 $json[$i]['dtUnd']      = $UND_;
@@ -896,19 +926,18 @@ class dashboard_model extends Model {
                 $json[$i]['dtAVG']      = $AVG_;
                 $json[$i]['dtCPM']      = $COSTO_PROM_;
                 $json[$i]['dtMCO']      = $MARG_CONTRI;
-                $json[$i]['dtPCO']      = $PORC_CONTRI;
-                
-                /*$json[$i]['dtFARMA']    = $Farmacia;
-                $json[$i]['dtInti']    = $Intitucion;
-                $json[$i]['dtMayo']    = $Mayorista;*/
+                $json[$i]['dtPCO']      = $PORC_CONTRI;                
+                $json[$i]['M1']         = $key['Farmacias'];
+                $json[$i]['M2']         = $key['Mayoristas'];
+                $json[$i]['M3']         = $key['Instituciones'];
 
                 
                 $i++;
             }
         }
 
-       
-       return $json;
+        
+        return $json;
         $sql_server->close();
     }
 

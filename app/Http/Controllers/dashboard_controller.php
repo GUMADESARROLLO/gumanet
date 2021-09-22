@@ -63,8 +63,8 @@ class dashboard_controller extends Controller {
     $obj = dashboard_model::get_Vta_Ruta_dia($Dia,$mes, $anio, $ruta);
     return response()->json($obj);
   }
-  public function get_Vta_all_items($mes,$anio){
-    $obj = dashboard_model::get_Vta_all_items($mes, $anio);
+  public function get_Vta_all_items($mes,$anio,$segmento){
+    $obj = dashboard_model::get_Vta_all_items($mes, $anio,$segmento);
     return response()->json($obj);
   }
 

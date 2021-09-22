@@ -575,16 +575,25 @@ $(document).ready(function() {
 
     //GRAFICA: TOP 10 PRODUCTOS
 
-    /*productos = {
+    productos = {
         chart: {
             type: 'column',
             renderTo: 'grafProductos'
         },
         xAxis: {
-            type: 'category'
+            type: 'category',
+            categories : []
+        },
+        title: {
+            text: 'Top 10 Productos mas vendidos'
+        },       
+        legend: {
+            enabled: false
         },
         yAxis: {
-            min: 0,
+            title: {
+                text: ''
+            },
             stackLabels: {
                 enabled: true,
                 style: {
@@ -597,97 +606,69 @@ $(document).ready(function() {
             }
         },
         plotOptions: {
-        column: {
-            stacking: 'normal',
-                dataLabels: {
-                    enabled: true
-                }
-            }
-        },
-        
-        series: []
-    }*/
-    
-    productos = {
-        chart: {
-            type: 'column',
-            renderTo: 'grafProductos'
-        },
-        title: {
-            text: 'Top 10 Productos mas vendidos'
-        },
-        xAxis: {
-            type: 'category'
-        },        
-        yAxis: {
-            min: 0,
-            stackLabels: {
-                enabled: true,
-                style: {
-                    fontWeight: 'bold',
-                    color: (
-                        Highcharts.defaultOptions.title.style &&
-                        Highcharts.defaultOptions.title.style.color
-                    ) || 'gray'
-                }
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
             column: {
             stacking: 'normal',
             dataLabels: {
-                enabled: true
+                enabled: false
             }
         },
-            series: {
-                allowPointSelect: false,
-                borderWidth: 0,
+        },
+        plotOptions: {
+        column: {
+            stacking: 'normal',
                 dataLabels: {
-                    enabled: true,
-                    formatter: function() {
-                        if (this.y > 1000) {
-                        return Highcharts.numberFormat(this.y / 1000, 1) + "K";
-                        } else {
-                        return this.y
-                        }
-                    }
-                }
-            }
-        },
-        tooltip: {
-            pointFormat: '<span style="color:black">0.0<b>C$ {point.y}</b></span>'
-        },
-        series:[{
-            colorByPoint: true,
-            data: [],
-            showInLegend: false,
-            cursor: 'pointer',
-            point: {
+                    enabled: false
+                },
+                point: {
                 events: {
                     click: function(e) {
-
+                        
+                        const _this = this.series.chart.options.series[3].data[this.x];    
                         var dta_send = [];
 
-
                         dta_send.push({
-                            total_fact      : this.y,
-                            unit_Fact       : this.und,
-                            unit_bonif      : this.undBo,
-                            prec_prom       : this.dtavg,
-                            cost_unit       : this.dtcpm,
-                            marg_contrib    : this.dtmco,
-                            porc_contrib    : this.dtpco
+                            total_fact      : _this.Total,
+                            unit_Fact       : _this.und,
+                            unit_bonif      : _this.undBo,
+                            prec_prom       : _this.dtavg,
+                            cost_unit       : _this.dtcpm,
+                            marg_contrib    : _this.dtmco,
+                            porc_contrib    : _this.dtpco
                         })
 
-                        detalleVentasMes('artic', `[`+this.category+`] - `+this.name, dta_send, this.category);
+
+                        detalleVentasMes('artic', `[`+_this.Descripcion+`] - `+_this.Articulo, dta_send, _this.Articulo);
+                    
                     }
                 }
             },
-        }]        
-    }  
+            
+            }
+        },
+        tooltip: {
+            formatter: function() {
+                
+                Info = this.series.chart.series[3].points[this.point.index];
+
+                
+                
+                
+                temporal = '<span style="color:black">\u25CF</span> TOT. FACT. :<b>C$  ' + numeral(Info.Total).format('0,0.00') + ' </b><br/>';
+                temporal += '<span style="color:black">\u25CF</span> UNIT. FACT.: <b>  ' + numeral(Info.und).format('0,0.00')  + ' </b><br/>';
+                temporal += '<span style="color:black">\u25CF</span> UNIT. BONIF: <b>  ' + numeral(Info.undBo).format('0,0.00') + ' </b><br/>';
+                temporal += '<span style="color:black">\u25CF</span> PREC. PROM. : <b>C$ ' + numeral(Info.dtavg).format('0,0.00') + ' </b><br/>';
+                temporal += '<span style="color:black">\u25CF</span> COST. PROM. UNIT. :<b>C$ ' + numeral(Info.dtcpm).format('0,0.00') + ' </b><br/>';
+                temporal += '<span style="color:black">\u25CF</span> CONTRIBUCION.  : <b>C$ ' +  numeral(Info.dtmco).format('0,0.00') + ' </b><br/>';
+                temporal += '<span style="color:black">\u25CF</span> % MARGEN BRUTO: <b>% ' + numeral(Info.dtpco).format('0,0.00') + ' </b><br/>';
+
+
+                
+
+                return temporal;
+            }
+        }
+    }
+
 
 
     grafiacas_productos_Diarios = {
@@ -774,6 +755,7 @@ $("#filterM_A").click( function(e) {
     }
 
 });
+
 
 $("#customSwitch1").change( function() {
     var mes = $('#opcMes option:selected').val();
@@ -871,24 +853,23 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                 break;
 
                 case 'dtaProductos':
-                    dta = [];
-                    title = [];                   
+                    dta             =   [];
+                    title           =   [];
+                    
+                    SegFarmacia     =   []; 
+                    SegMayoristas   =   [];
+                    SegInstituciones =   [];
+
+                    Segmentos       =   [];
+                    InfoSegmento       =   [];
+                    
+                            
                     $.each(item['data'], function(i, x) {
-
-                        /* dta.push({
-                            name     : x['name'], 
-                            data     : [x['dtFARMA'],x['dtInti'],x['dtMayo'],4,5,6,7,8,9,10],
-                            /*und   : (x['dtUnd'] > 0 ) ?  x['dtUnd'] : '  ',
-                            undBo : (x['dtUndBo'] > 0 ) ?  x['dtUndBo'] : '  ',
-                            dtavg :  x['dtAVG'],
-                            dtcpm :  x['dtCPM'],
-                            dtmco :  x['dtMCO'],
-                            dtpco :  x['dtPCO'],
-                        })*/
-
-                        dta.push({
-                            name  : x['articulo'],
-                            y     : x['data'], 
+                        
+                        InfoSegmento.push({
+                            Articulo  : x['name'],
+                            Descripcion : x['articulo'], 
+                            Total     : x['data'], 
                             und   : (x['dtUnd'] > 0 ) ?  x['dtUnd'] : '  ',
                             undBo : (x['dtUndBo'] > 0 ) ?  x['dtUndBo'] : '  ',
                             dtavg :  x['dtAVG'],
@@ -898,26 +879,37 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         })
 
                         title.push(x['name'])
+                        SegFarmacia.push(parseFloat(x['M1']))
+                        SegMayoristas.push(parseFloat(x['M2']))
+                        SegInstituciones.push(parseFloat(x['M3']))
 
-                    });
 
-                    temporal = '<span style="color:black">\u25CF</span> TOT. FACT. :<b>C$  {point.y} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> UNIT. FACT.: <b>  {point.und} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> UNIT. BONIF: <b>  {point.undBo} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> PREC. PROM. : <b>C$ {point.dtavg} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> COST. PROM. UNIT. :<b>C$ {point.dtcpm} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> CONTRIBUCION.  : <b>C$ {point.dtmco} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> % MARGEN BRUTO: <b>% {point.dtpco} </b><br/>';
-                    productos.tooltip = {
-                        pointFormat : temporal
-                    }
-                    productos.xAxis.categories = title;
-                    productos.series[0].data = dta;
-                    console.log(dta)                    
-                    chart = new Highcharts.Chart(productos);
+                        
 
+                    });  
+
+
+                    Segmentos.push({
+                            name :"Farmacia",
+                            data: SegFarmacia
+                        },{
+                            name :"Mayoristas",
+                            data: SegMayoristas
+                        },{
+                            name :"Instituciones",
+                            data: SegInstituciones
+                        },{
+                            name :"InfoExtra",
+                            data: InfoSegmento
+                            
+                        }
+                    );
                     
-
+                    
+                    productos.xAxis.categories = title;
+                    productos.series = Segmentos;
+                    chart = new Highcharts.Chart(productos);
+                    
 
                 break;
 
@@ -1645,8 +1637,9 @@ function grafVentasMensuales(xbolsones) {
     })
 }
 
+
 $("#select-cate").change(function() {
-    cate = this.value;
+    
     $.ajax({
         url: 'dataCate',
         type: 'post',
@@ -1675,6 +1668,42 @@ $("#select-cate").change(function() {
         }
     })
 })
+
+$("#opcSegmentos").change( function() {   
+    
+    var Opc = this.value;                    
+    chart = new Highcharts.Chart(productos);
+
+    chart.series[0].show();
+    chart.series[1].show();
+    chart.series[2].show();
+
+    if (Opc==0) {
+        chart.series[0].show();
+        chart.series[1].show();
+        chart.series[2].show();
+    } else {
+        if (Opc==1) {
+            chart.series[0].show();
+            chart.series[1].hide();
+            chart.series[2].hide();
+        } else {
+            if (Opc==2) {
+                chart.series[0].hide();
+                chart.series[1].show();
+                chart.series[2].hide();
+            } else {
+                if (Opc==3) {
+                    chart.series[0].hide();
+                    chart.series[1].hide();
+                    chart.series[2].show();
+                } 
+            }
+        }
+    }
+    
+});
+
 
 
 var tableActive='';
@@ -2377,12 +2406,27 @@ function Todos_Los_Items(){
     tableActive = '';
     tableActive = '#tblAllItems';
 
-    var mes = $('#opcMes option:selected').val();
-    var anio = $('#opcAnio option:selected').val();
-    mes_name    = $("#opcMes option:selected").text();   
+    var mes             = $('#opcMes option:selected').val();
+    var anio            = $('#opcAnio option:selected').val();
+    mes_name            = $("#opcMes option:selected").text();   
 
-    FechaFiltrada = 'Mostrando registros del mes de ' + mes_name + ' ' + anio;        
-    $("#id_titulo_modal_all_items").text(FechaFiltrada);
+    var segmento        = $('#opcSegmentos option:selected').val();
+    var SegmentoName    = $("#opcSegmentos option:selected").text();   
+
+   
+
+    if (segmento == 0) {
+        varTitulo       = 'Mostrando registros del mes de ' + mes_name + ' ' + anio ;        
+        varSubTitulo    = 'De todos los segmentos.' ;        
+    } else {
+        varTitulo = 'Mostrando registros del mes de ' + mes_name + ' ' + anio 
+        varSubTitulo    = ' Del segmento ' + SegmentoName;      
+    }
+    
+    $("#id_titulo_modal_all_items").text(varTitulo);
+    $("#id_sub_titulo_modal_all_items").text(varSubTitulo);
+    
+
 
 
     $(tableActive).DataTable({
@@ -2390,7 +2434,7 @@ function Todos_Los_Items(){
         "info":    false,
         "scrollX": false,
         "ajax":{
-            "url": "detallesTodosItems/"+mes+"/"+anio,
+            "url": "detallesTodosItems/" + mes + "/" + anio + "/" + segmento,
             'dataSrc': '',
         },
         "language": {
@@ -2422,6 +2466,20 @@ function Todos_Los_Items(){
             {"className": "dt-right", "targets": [ 2,5,6,7 ]},            
             {"width": "20%", "targets": [ 1]},
         ],
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                    i.replace(/[^0-9.]/g, '')*1 :
+                    typeof i === 'number' ?
+                    i : 0;
+                };
+                total = api.column( 2 ).data().reduce( function (a, b) 
+                    {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                $('#id_total_segmento').text('Total C$ '+ numeral(total).format('0,0'));
+        },
     });
     $("#mdDetailsAllItems").modal();
     $(tableActive + "_length").hide();
