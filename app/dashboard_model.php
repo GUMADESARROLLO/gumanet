@@ -34,6 +34,10 @@ class dashboard_model extends Model
             'tipo' => 'dtaCliente',
             'data' => dashboard_model::getTop10Clientes($mes, $anio, $company_user, $xbolsones)
         );
+        $dtaAllCl[] = array(
+            'tipo' => 'dtaAllCliente',
+            'data' => dashboard_model::getAllClientsByCategory($mes, $anio, $categoria)
+        );
         $dtaTop10Pr[] = array(
             'tipo' => 'dtaProductos',
             'data' => dashboard_model::getTop10Productos($mes, $anio, $company_user, $xbolsones)
@@ -76,7 +80,8 @@ class dashboard_model extends Model
             'data' => dashboard_model::dataProyectos($mes, $anio, $company_user)
         );
 
-        $array_merge = array_merge($dtaBodega, $dtaTop10Cl, $dtaTop10Pr, $dtaVtasMes, $dtaRecupera, $dtaCompMesesVentas, $dtaCompMesesItems, $dtaVentasXCateg, $dtaClientes, $dtaProyectos, $dtaVtnDiarias);
+        $array_merge = array_merge($dtaBodega, $dtaTop10Cl, $dtaTop10Pr, $dtaVtasMes, $dtaRecupera, $dtaAllCl,
+            $dtaCompMesesVentas, $dtaCompMesesItems, $dtaVentasXCateg, $dtaClientes, $dtaProyectos, $dtaVtnDiarias);
         //$array_merge = array_merge($dtaVtnDiarias);
         return $array_merge;
         $sql_server->close();
@@ -1722,65 +1727,6 @@ class dashboard_model extends Model
         $sql_server->close();
     }
 
-    /******* Add Rodolfo *******/
-    public static function getAllClientsByCategory($mes, $anio)
-    {
-        $sql_server = new \sql_server();
-        $sql_exec = '';
-        $tem_ = 0;
-        $request = Request();
-        $json = array();
-        $company_user = Company::where('id', $request->session()->get('company_id'))->first()->id;
-
-        switch ($company_user) {
-            case '1':
-                $sql_exec = " EXEC Dev_Umk_ReportVentas_AllClients " . $mes . ", " . $anio . " ";
-                break;
-            case '2':
-                $sql_exec = " EXEC Dev_Gp_ReportVentas_AllClients " . $mes . ", " . $anio . " ";
-                break;
-            case '3':
-                $sql_exec = " ";
-                break;
-            case '4':
-                if ($xbolsones) {
-                    $sql_exec = " EXEC Dev_Inv_ReportVentas_AllClients_Bolsones " . $mes . ", " . $anio . " ";
-                } else {
-                    $sql_exec = " EXEC Dev_Inv_ReportVentas_AllClients " . $mes . ", " . $anio . " ";
-                }
-                break;
-            default:
-                dd("Ha sucedido un error al buscar los clientes para esta empresa. " . $company->id);
-                break;
-        }
-        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
-
-        $json = array();
-        $i = 0;
-
-        if (count($query) > 0) {
-            foreach ($query as $key) {
-
-                $json[$i]['codigo'] = $key['codigo'];
-                $json[$i]['cliente'] = $key['cliente'];
-
-
-
-                if ($company_user == 4) {
-                    $tem_ = ($xbolsones) ? intval($key['CantidadVenta']) : intval($key['MontoVenta']);
-
-                } else {
-                    $tem_ = intval($key['MontoVenta']);
-                }
-
-                $json[$i]['data_innova'] = $tem_;
-                $i++;
-            }
-        }
-        return $json;
-        $sql_server->close();
-    }
-
     public static function getRealVentasMensuales($xbolsones)
     {
         $sql_server = new \sql_server();
@@ -1970,6 +1916,94 @@ class dashboard_model extends Model
         $array[2]['data'] = $real;
 
         return $array;
+        $sql_server->close();
+    }
+
+    /******* Add by Rodolfo *******/
+    public static function getAllClientsByCategory($mes, $anio, $categoria, $grafclick)
+    {
+        $sql_server = new \sql_server();
+        $sql_exec = '';
+        $tem_ = 0;
+        $top10 = '';
+        $request = Request();
+        $json = array();
+        $company_user = Company::where('id', $request->session()->get('company_id'))->first()->id;
+
+        if ($grafclick == 0){
+            $top10 = '';
+        } else{
+            $top10 = "top 10";
+        }
+
+        switch ($company_user) {
+            case '1':
+                //Todos
+                if ($categoria == 0){
+                    $segmentos = "'F02','F03','F04','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
+                }
+                //Farmacias
+                elseif ($categoria == 1){
+                    $segmentos = "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
+                }
+                //Instituciones
+                elseif ($categoria == 2){
+                    $segmentos = "'F02'";
+                }
+                //Mayoristas
+                else{
+                    $segmentos = "'F04'";
+                }
+
+                $sql_exec = "SELECT top 10
+                                [Cod. Cliente] AS codigo,
+                                [Nombre del Cliente] AS cliente,
+                                isnull(SUM(VENTA),0) AS MontoVenta,
+                                isnull(sum(Cantidad),0) As CantidadVenta,Mes,Año
+                                FROM
+                                    Softland.dbo.VtasTotal_UMK (nolock)
+                                WHERE
+                                    [Año] = " . $anio . " AND nmes = " . $mes . " AND Ruta IN(" . $segmentos . ")
+                                AND [P. Unitario] > 0
+                                GROUP BY
+                                    [Cod. Cliente],[Nombre del Cliente],Mes, Año
+                                ORDER BY
+                                isnull(SUM(VENTA),0) DESC";
+
+                break;
+            case '2':
+                break;
+            case '3':
+                break;
+            case '4':
+                break;
+            default:
+                dd("Ha sucedido un error al buscar los clientes para esta empresa. " . $company->id);
+                break;
+        }
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+
+        $json = array();
+        $i = 0;
+
+        if (count($query) > 0) {
+            foreach ($query as $key) {
+
+                $json[$i]['codigo'] = $key['codigo'];
+                $json[$i]['cliente'] = $key['cliente'];
+
+                if ($company_user == 4) {
+                    $tem_ = ($xbolsones) ? intval($key['CantidadVenta']) : intval($key['MontoVenta']);
+
+                } else {
+                    $tem_ = intval($key['MontoVenta']);
+                }
+
+                $json[$i]['data_innova'] = $tem_;
+                $i++;
+            }
+        }
+        return $json;
         $sql_server->close();
     }
 }

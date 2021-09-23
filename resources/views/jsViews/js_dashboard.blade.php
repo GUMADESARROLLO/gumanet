@@ -689,6 +689,60 @@
             }]
         }
 
+        //GRAFICA: TOP 10 ALL CLIENTES
+        clientesAll = {
+            chart: {
+                type: 'column',
+                renderTo: 'grafClientes'
+            },
+            title: {
+                text: 'Top 10 Clientes'
+            },
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    allowPointSelect: false,
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function () {
+                            if (this.y > 1000) {
+                                return Highcharts.numberFormat(this.y / 1000, 1) + "K";
+                            } else {
+                                return this.y
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                pointFormat: '<span style="color:{point.color}"><b>C${point.y:,.2f}</b>',
+            },
+            series: [{
+                colorByPoint: true,
+                data: [],
+                showInLegend: false,
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: function (e) {
+                            detalleVentasMes('clien', `[` + this.category + `] - ` + this.name, this.category, 'ND');
+                        }
+                    }
+                }
+            }]
+        }
+
 
         grafiacas_productos_Diarios = {
             chart: {
@@ -802,6 +856,7 @@
     var ventasXCateg = {};
     var montoMetaVenta = 0;
     var montoMetaRecup = 0;
+    var clientesAll = {};
 
     function actualizandoGraficasDashboard(mes, anio, xbolsones) {
         $("#grafClientes, #grafProductos, #grafVentas, #grafBodega, #grafRecupera, #grafCompMontos, #grafCompCantid, #grafVtsXCateg, #grafVtsDiario")
@@ -1429,6 +1484,27 @@
                             $('#tbody02').empty().append(tbody);
                         }
 
+                        break;
+
+                    case 'dtaAllCliente':
+                        dta = [];
+                        title = [];
+                        $.each(item['data'], function (i, x) {
+                            dta.push({
+                                name: x['cliente'],
+                                y: x['data']
+                            })
+
+                            title.push(x['name'])
+                        });
+
+                        temporal = (xbolsones) ? '<span style="color:{point.color}"><b>{point.y:,.2f}</b>' : '<span style="color:{point.color}"><b>C${point.y:,.2f}</b>';
+                        clientesAll.tooltip = {
+                            pointFormat: temporal
+                        }
+                        clientesAll.xAxis.categories = title;
+                        clientesAll.series[0].data = dta;
+                        chart = new Highcharts.Chart(clientesAll);
                         break;
 
                     default:
@@ -2663,60 +2739,6 @@
         }
     });
 
-    function detailAllClients() {
-        //alert("Evento onclick ejecutado!");
-
-        tableActive = '';
-        tableActive = '#tblAllClients';
-
-        var mes = $('#opcMes option:selected').val();
-        var anio = $('#opcAnio option:selected').val();
-        mes_name = $("#opcMes option:selected").text();
-
-        //FechaFiltrada = 'Mostrando registros del mes de ' + mes_name + ' ' + anio;
-
-        $(tableActive).dataTable({
-            "responsive": true,
-            "autoWidth": false,
-            "scrollX": false,
-            "ajax": {
-                "url": "detailsAllCls/" + mes + "/" + anio + "/",
-                'dataSrc': '',
-            },
-            "destroy": true,
-            "info": false,
-            //"lengthMenu": [[500, -1], [500, "Todo"]],
-            "language": {
-                "zeroRecords": "Cargando...",
-                "paginate": {
-                    "first": "Primera",
-                    "last": "Última ",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                },
-                "lengthMenu": "MOSTRAR _MENU_",
-                "emptyTable": "NO HAY DATOS DISPONIBLES",
-                "search": "BUSCAR"
-            },
-            'columns': [
-                {"title": "Cliente", "data": "codigo"},
-                {"title": "Nombre", "data": "cliente"},
-                {"title": "MontoVenta", "data": "data_innova", render: $.fn.dataTable.render.number( ',', '.', 0, 'C$' )},
-
-            ],
-            "columnDefs": [
-                {"className": "dt-center", "targets": [0, 1, 2]},
-
-                {"width": "20%", "targets": [0,2]},
-            ],
-        });
-
-        $('#mdClientDetail').modal();
-        $(tableActive + "_length").hide();
-        $(tableActive + "_filter").hide();
-    }
-
-
     function format(callback, Factura_) {
         var thead = tbody = '';
         thead = `<table class="table table-striped table-bordered table-sm">
@@ -2809,6 +2831,74 @@
             numberString += scale
         }
         return numberString;
+    }
+
+    /** Add by Rodolfo **/
+    function detailAllClients() {
+        //alert("Evento onclick ejecutado!");
+
+        tableActive = '';
+        tableActive = '#tblAllClients';
+
+        var mes = $('#opcMes option:selected').val();
+        var anio = $('#opcAnio option:selected').val();
+        mes_name = $("#opcMes option:selected").text();
+        var categoria = document.getElementById("listClt").value;
+        var grafclick;
+
+
+        //FechaFiltrada = 'Mostrando registros del mes de ' + mes_name + ' ' + anio;
+
+        $(tableActive).dataTable({
+            "responsive": true,
+            "autoWidth": false,
+            "scrollX": false,
+            "ajax": {
+                "url": "detailsAllCls/" + mes + "/" + anio + "/" + categoria + "/" + grafclick,
+                'dataSrc': '',
+            },
+            "destroy": true,
+            "info": false,
+            //"lengthMenu": [[500, -1], [500, "Todo"]],
+            "language": {
+                "zeroRecords": "Cargando...",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Última ",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "lengthMenu": "MOSTRAR _MENU_",
+                "emptyTable": "NO HAY DATOS DISPONIBLES",
+                "search": "BUSCAR"
+            },
+            'columns': [
+                {"title": "Cliente", "data": "codigo"},
+                {"title": "Nombre", "data": "cliente"},
+                {"title": "MontoVenta", "data": "data_innova", render: $.fn.dataTable.render.number( ',', '.', 0, 'C$' )},
+
+            ],
+            "columnDefs": [
+                {"className": "dt-center", "targets": [0, 1, 2]},
+
+                {"width": "20%", "targets": [0,2]},
+            ],
+        });
+
+        $('#mdClientDetail').modal();
+        $(tableActive + "_length").hide();
+        $(tableActive + "_filter").hide();
+    }
+
+    function selectListClients(){
+        var v1 = document.getElementById("listClt").value;
+        console.log(v1);
+
+        var mes = $('#opcMes option:selected').val();
+        var anio = $('#opcAnio option:selected').val();
+        mes_name = $("#opcMes option:selected").text();
+        var categoria = document.getElementById("listClt").value;
+        var grafclick;
     }
 
 </script>

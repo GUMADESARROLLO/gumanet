@@ -218,13 +218,14 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <a href="#!" style="width: 100%" class="btn btn-primary float-right mt-3"
-                                           onclick="detailAllClients()" type="button">Todos</a>
+                                           onclick="detailAllClients()" type="button" id="btnclick">Todos</a>
                                     </div>
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="form-group ">
                                         <label for="opcMes" class="text-muted m-0">SEGMENTO</label>
-                                        <select class="form-control form-control-sm" id="opcMes">
+                                        <select class="form-control form-control-sm" id="listClt" onchange="selectListClients()">
+                                            <option value="0">Todas</option>
                                             <option value="1">Farmacias</option>
                                             <option value="2">Instituciones</option>
                                             <option value="3">Mayoristas</option>
