@@ -200,21 +200,33 @@
         </div>
         <div class="row" id="ct02">
             <div class="graf col-sm-6 mt-3">
-                <form class="form-inline">
-                    <div class="form-group mx-sm-3 mb-2">
-                        <button class="btn btn-primary" onclick="detailAllClients()" type="button" data-target="mdClientDetail">Ver Informacion</button>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <a href="#!" style="width: 100%" class="btn btn-primary float-right mt-3"
+                                onclick="detailAllClients()" type="button" id="btnclick">Todos</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group ">
+                                <label for="opcMes" class="text-muted m-0">SEGMENTO</label>
+                                <select class="form-control form-control-sm" id="listClt" >
+                                    <option value="0">Todas</option>
+                                    <option value="1">Farmacias</option>
+                                    <option value="2">Instituciones</option>
+                                    <option value="3">Mayoristas</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-
-                <div class="form-group mx-sm-3 mb-2">
-                    <select class="custom-select" id="inputGroupSelect04">
-                        <option selected>Seleccionar...</option>
-                        <option value="1">Farmacias</option>
-                        <option value="2">Instituciones</option>
-                        <option value="3">Mayoristas</option>
-                        <option value="3">Todas</option>
-                    </select>
                 </div>
-            </form>    
+                <div class="col-sm-6"></div>
+            </div>
+                
+                
+            
             <div class="container-tc" id="grafClientes"></div></div>
             <div class="graf col-sm-6 mt-3">
             <div class="row">
@@ -486,21 +498,48 @@
 
 
 <!-- Modal:Lista de clientes -->
-<div class="modal" id="mdClientDetail" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+<div class="modal fade modal-fullscreen" id="mdClientDetail" tabindex="-1" role="dialog"
+     aria-labelledby="titleModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title font-weight-bolder text-info" id="id_titulo_modal_all_clients"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="modal-body" id="bodyModal">
+                <div class="row">
+                    <div class="col-sm-11 mt-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i
+                                        data-feather="search"></i></span>
+                            </div>
+                            <input type="text" id="id_txt_all_clients" class="form-control" placeholder="Buscar">
+                        </div>
+                    </div>
+                    <div class="col-sm-1 mt-2">
+                        <div class="input-group">
+                            <select class="custom-select" id="id_select_all_clients">
+                                <option value="5" selected>5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="-1">Todo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 mt-3">
+                        <div class="table-responsive">
+                            <table id="tblAllClients" class="table table-bordered table-sm" width="100%">
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

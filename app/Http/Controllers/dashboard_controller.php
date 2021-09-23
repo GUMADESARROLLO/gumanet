@@ -74,12 +74,6 @@ class dashboard_controller extends Controller {
     return response()->json($obj);
   }
 
-  public function getAllClientsByCategory()
-  {
-    $obj = dashboard_model::getAllClientsByCategory();
-    return response()->json($obj);
-  }
-
   public function ventaXCategorias(Request $request) {
     if($request->isMethod('post')) {
       $obj = dashboard_model::ventaXCategorias($request->input('mes'),$request->input('anio'),$request->input('cate'));
@@ -114,6 +108,13 @@ class dashboard_controller extends Controller {
     $obj = dashboard_model::getRecuRowsByRoutes($mes, $anio, $pageName);
     return response()->json($obj);
       
+  }
+
+  /************ Add by Rodolfo **********/
+  public function getAllClientsByCategory($mes, $anio, $categoria)
+  {
+      $obj = dashboard_model::getAllClientsByCategory($mes, $anio, $categoria);
+      return response()->json($obj);
   }
 
 }

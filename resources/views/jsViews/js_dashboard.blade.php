@@ -2718,93 +2718,55 @@ $(document).on('click', '#exp_more', function(ef) {
     }
 });
 
-function detailAllClients(){
-    /*alert("Evento onclick ejecutado!");
-    $('#mdClientDetail').dataTable({
-        responsive: true,
-        "autoWidth": false,
-        "ajax": {
-            "url": "detailsAllCls/" + mes + "/" + anio + "/",
-            'dataSrc': '',
-        },
-        "destroy": true,
-        "info": false,
-        "lengthMenu": [[500, -1], [500, "Todo"]],
-        "language": {
-            "zeroRecords": "Cargando...",
-            "paginate": {
-                "first": "Primera",
-                "last": "Última ",
-                "next": "Siguiente",
-                "previous": "Anterior"
+function detailAllClients() {
+        //alert("Evento onclick ejecutado!");
+        tableActive = '';
+        tableActive = '#tblAllClients';
+        var mes = $('#opcMes option:selected').val();
+        var anio = $('#opcAnio option:selected').val();
+        mes_name = $("#opcMes option:selected").text();      
+        var categoria =  $('#listClt option:selected').val(); 
+
+        //FechaFiltrada = 'Mostrando registros del mes de ' + mes_name + ' ' + anio;
+        $(tableActive).dataTable({
+            "responsive": true,
+            "autoWidth": false,
+            "scrollX": false,
+            "ajax": {
+                "url": "detailsAllCls/" + mes + "/" + anio + "/" + categoria ,
+                'dataSrc': '',
             },
-            "lengthMenu": "MOSTRAR _MENU_",
-            "emptyTable": "NO HAY DATOS DISPONIBLES",
-            "search": "BUSCAR"
-        },
-        'columns': [
-            {"title": "", "data": "Articulo"},
-            {"title": "Factura", "data": "Descripcion"},
-            {"title": "Fecha", "data": "Cantidad"},
-            {"title": "Codigo Cliente", "data": "Total"},
-        ],
-        "columnDefs": [
-            {"className": "dt-center", "targets": [0, 1, 2, 3, 4]},
-            {"className": "dt-back-unit", "targets": [4]},
-            {"className": "dt-back-vtas", "targets": [5]},
-            {"width": "20%", "targets": [1]},
-        ],
-    });*/
-    $('#mdClientDetail').modal('show');
-}
+            "destroy": true,
+            "info": false,
+            //"lengthMenu": [[500, -1], [500, "Todo"]],
+            "language": {
+                "zeroRecords": "Cargando...",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Última ",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "lengthMenu": "MOSTRAR _MENU_",
+                "emptyTable": "NO HAY DATOS DISPONIBLES",
+                "search": "BUSCAR"
+            },
+            'columns': [
+                {"title": "Cliente", "data": "codigo"},
+                {"title": "Nombre", "data": "cliente"},
+                {"title": "MontoVenta", "data": "data_innova", render: $.fn.dataTable.render.number( ',', '.', 0, 'C$' )},
+            ],
+            "columnDefs": [
+                {"className": "dt-center", "targets": [0, 1, 2]},
+                {"width": "20%", "targets": [0,2]},
+            ],
+        });
+        $('#mdClientDetail').modal();
+        $(tableActive + "_length").hide();
+        $(tableActive + "_filter").hide();
+    }
 
-
-
-function format ( callback, Factura_ ) {
-    var thead = tbody = '';            
-    thead =`<table class="table table-striped table-bordered table-sm">
-                <thead>
-                    <tr>
-                        <th class="center">ARTICULO</th>                        
-                        <th class="center">DESCRIPCION.</th>
-                        <th class="center">CANTIDAD</th>
-                        <th class="center">PRECIO UNITARIO</th>
-                        <th class="center">TOTAL</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-                $.ajax({
-        type: "POST",
-        url: "getDetFactVenta",
-        data:{
-            factura: Factura_,
-        },
-        success: function ( data ) {
-            if (data.length==0) {
-                tbody +=`<tr><td colspan='6'><center>....</center></td></tr>`;
-                callback(thead + tbody).show();
-            }
-            
-            $.each(data['objDt'], function (i, item) {
-                tbody +=`<tr>
-                            <td class="center">` + item['ARTICULO'] + `</td>
-                            <td class="text-left">` + item['DESCRIPCION'] + `</td>
-                            <td class="text-left">` +numeral(item['CANTIDAD']).format('0,0.00')  + `</td>
-                            <td class="text-center">` + numeral(item['PRECIO_UNITARIO']).format('0,0.00') + `</td>
-                            <td class="text-right">` + numeral(item['PRECIO_TOTAL']).format('0,0.00') + `</td>
-                        </tr>`;
-            });
-            tbody += `</tbody></table>`;
-            
-            temp = thead+tbody;
-
-            callback(temp).show();
-        }
-
-
-    });
-}
-
+ 
 
 function reordenandoPantalla() {
     var x = 0;
