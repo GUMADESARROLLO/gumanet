@@ -224,7 +224,8 @@
                                 <div class="col-sm-8">
                                     <div class="form-group ">
                                         <label for="opcMes" class="text-muted m-0">SEGMENTO</label>
-                                        <select class="form-control form-control-sm" id="listClt" onchange="selectListClients()">
+                                        <select class=" form-control form-control-sm" id="listClt"
+                                                onchange="selectListClients()">
                                             <option value="0">Todas</option>
                                             <option value="1">Farmacias</option>
                                             <option value="2">Instituciones</option>

@@ -556,7 +556,7 @@
                 }
             },
             tooltip: {
-                pointFormat: '<span style="color:{point.color}"><b>C${point.y:,.2f}</b>',
+                pointFormat: '<span style="color:{point.color}"><b>C${point.y:,.2f}</b></span>',
             },
             series: [{
                 colorByPoint: true,
@@ -690,7 +690,7 @@
         }
 
         //GRAFICA: TOP 10 ALL CLIENTES
-        clientesAll = {
+        /*clientesAll = {
             chart: {
                 type: 'column',
                 renderTo: 'grafClientes'
@@ -741,7 +741,7 @@
                     }
                 }
             }]
-        }
+        }*/
 
 
         grafiacas_productos_Diarios = {
@@ -905,6 +905,7 @@
                     case 'dtaCliente':
                         dta = [];
                         title = [];
+                        categoria = $('#listClt option:selected').val();
 
                         $.each(item['data'], function (i, x) {
                             dta.push({
@@ -913,7 +914,9 @@
                             })
 
                             title.push(x['name'])
+
                         });
+
 
                         temporal = (xbolsones) ? '<span style="color:{point.color}"><b>{point.y:,.2f}</b>' : '<span style="color:{point.color}"><b>C${point.y:,.2f}</b>';
                         clientes.tooltip = {
@@ -921,6 +924,7 @@
                         }
                         clientes.xAxis.categories = title;
                         clientes.series[0].data = dta;
+                        console.log(dta)
                         chart = new Highcharts.Chart(clientes);
                         break;
 
@@ -1486,26 +1490,26 @@
 
                         break;
 
-                    case 'dtaAllCliente':
-                        dta = [];
-                        title = [];
-                        $.each(item['data'], function (i, x) {
-                            dta.push({
-                                name: x['cliente'],
-                                y: x['data']
-                            })
-
-                            title.push(x['name'])
-                        });
-
-                        temporal = (xbolsones) ? '<span style="color:{point.color}"><b>{point.y:,.2f}</b>' : '<span style="color:{point.color}"><b>C${point.y:,.2f}</b>';
-                        clientesAll.tooltip = {
-                            pointFormat: temporal
-                        }
-                        clientesAll.xAxis.categories = title;
-                        clientesAll.series[0].data = dta;
-                        chart = new Highcharts.Chart(clientesAll);
-                        break;
+                    // case 'dtaAllCliente':
+                    //     dta = [];
+                    //     title = [];
+                    //     $.each(item['data'], function (i, x) {
+                    //         dta.push({
+                    //             name: x['cliente'],
+                    //             y: x['data']
+                    //         })
+                    //
+                    //         title.push(x['name'])
+                    //     });
+                    //
+                    //     temporal = (xbolsones) ? '<span style="color:{point.color}"><b>{point.y:,.2f}</b>' : '<span style="color:{point.color}"><b>C${point.y:,.2f}</b>';
+                    //     clientesAll.tooltip = {
+                    //         pointFormat: temporal
+                    //     }
+                    //     clientesAll.xAxis.categories = title;
+                    //     clientesAll.series[0].data = dta;
+                    //     chart = new Highcharts.Chart(clientesAll);
+                    //     break;
 
                     default:
                         alert('Ups... parece que ocurrio un error :(');
@@ -2854,7 +2858,7 @@
             "autoWidth": false,
             "scrollX": false,
             "ajax": {
-                "url": "detailsAllCls/" + mes + "/" + anio + "/" + categoria + "/" + grafclick,
+                "url": "detailsAllCls/" + mes + "/" + anio + "/" + categoria,
                 'dataSrc': '',
             },
             "destroy": true,
@@ -2875,13 +2879,13 @@
             'columns': [
                 {"title": "Cliente", "data": "codigo"},
                 {"title": "Nombre", "data": "cliente"},
-                {"title": "MontoVenta", "data": "data_innova", render: $.fn.dataTable.render.number( ',', '.', 0, 'C$' )},
+                {"title": "MontoVenta", "data": "data_innova", render: $.fn.dataTable.render.number(',', '.', 0, 'C$')},
 
             ],
             "columnDefs": [
                 {"className": "dt-center", "targets": [0, 1, 2]},
 
-                {"width": "20%", "targets": [0,2]},
+                {"width": "20%", "targets": [0, 2]},
             ],
         });
 
@@ -2890,7 +2894,7 @@
         $(tableActive + "_filter").hide();
     }
 
-    function selectListClients(){
+    function selectListClients() {
         var v1 = document.getElementById("listClt").value;
         console.log(v1);
 
@@ -2900,5 +2904,35 @@
         var categoria = document.getElementById("listClt").value;
         var grafclick;
     }
+
+    $("#listClt").change(function () {
+        categoria = this.value;
+        $.ajax({
+            url: 'top10Cls',
+            type: 'post',
+            data: {
+                mes: $('#opcMes option:selected').val(),
+                anio: $('#opcAnio option:selected').val(),
+                categoria: this.value,
+            },
+            async: true,
+            success: function (response) {
+                dta = [];
+                title = [];
+
+                $.each(response, function (i, x) {
+                    dta.push({
+                        name: x['cliente'],
+                        y: x['data']
+                    })
+                    title.push(x['name'])
+                });
+                //clientes.title = {text: categoria};
+                clientes.series[0].data = dta;
+                clientes.xAxis.categories = title;
+                chart = new Highcharts.Chart(clientes);
+            }
+        })
+    })
 
 </script>

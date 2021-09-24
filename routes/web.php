@@ -92,12 +92,12 @@ Route::get('/unidadxProd/{mes}/{anio}','dashboard_controller@getTotalUnidadesXRu
 //RUTAS GRAFICAS DASHBOARDS
 Route::get('/dataGraf/{mes}/{anio}/{xbolsones}','dashboard_controller@getDataGraficas');
 
-Route::get('/detailsAllCls/{mes}/{anio}/{categoria}/{grafclick}','dashboard_controller@getAllClientsByCategory');
-
+Route::get('/detailsAllCls/{mes}/{anio}/{categoria}','dashboard_controller@getAllClientsByCategory');
+Route::post('/top10Cls','dashboard_controller@clientesXCategorias');
 
 Route::get('/dataVentasMens/{xbolsones}','dashboard_controller@getVentasMensuales');
 Route::get('/dataRealVtsMensuales/{xbolsones}','dashboard_controller@getRealVentasMensuales');
-Route::get('/top10Cls','dashboard_controller@getTop10Clientes');
+
 Route::get('/valBodegas','dashboard_controller@getValBodegas');
 Route::post('/dataCate', 'dashboard_controller@ventaXCategorias');
 Route::get('/getRecuRowsByRoutes/{mes}/{anio}/{pageName}','dashboard_controller@getRecuRowsByRoutes');

@@ -133,10 +133,22 @@ class dashboard_controller extends Controller
     }
 
     /************ Add by Rodolfo **********/
-    public function getAllClientsByCategory($mes, $anio, $categoria, $grafclick)
+    public function getAllClientsByCategory($mes, $anio, $categoria)
     {
-        $obj = dashboard_model::getAllClientsByCategory($mes, $anio, $categoria, $grafclick);
+        $obj = dashboard_model::getAllClientsByCategory($mes, $anio, $categoria);
         return response()->json($obj);
+    }
+
+    public function clientesXCategorias(Request $request)
+    {
+        /*$obj = dashboard_model::getTop10Clientes($mes, $anio, $xbolsones, $categoria);
+        return response()->json($obj);*/
+
+        if ($request->isMethod('post')) {
+            $obj = dashboard_model::clientesXCategorias($request->input('mes'), $request->input('anio'),
+                $request->input('categoria'));
+            return response()->json($obj);
+        }
     }
 
 }
