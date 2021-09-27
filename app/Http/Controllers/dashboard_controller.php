@@ -86,10 +86,16 @@ class dashboard_controller extends Controller {
     return response()->json($obj);
   }
 
-  public function GetTop10Productos($mes, $anio, $xbolsones) {
-    $obj = dashboard_model::getTop10Productos($mes, $anio,1, $xbolsones);
+  public function GetTop10Productos($mes, $anio, $xbolsones,$segmento) {
+    $obj = dashboard_model::getTop10Productos($mes, $anio,1, $xbolsones,$segmento);
     return response()->json($obj);
   }
+
+  public function GetTop10CLientes($mes, $anio, $xbolsones,$segmento) {
+    $obj = dashboard_model::getTop10Clientes($mes, $anio,1, $xbolsones,$segmento);
+    return response()->json($obj);
+  }
+
 
 
   public function getVentasMensuales($xbolsones) {

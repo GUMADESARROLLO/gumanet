@@ -29,11 +29,11 @@ class dashboard_model extends Model {
         );
         $dtaTop10Cl[] = array(
             'tipo' => 'dtaCliente',
-            'data' => dashboard_model::getTop10Clientes($mes, $anio, $company_user, $xbolsones)
+            'data' => dashboard_model::getTop10Clientes($mes, $anio, $company_user, $xbolsones,0)
         );
         $dtaTop10Pr[] = array(
             'tipo' => 'dtaProductos',
-            'data' => dashboard_model::getTop10Productos($mes, $anio, $company_user, $xbolsones)
+            'data' => dashboard_model::getTop10Productos($mes, $anio, $company_user, $xbolsones,0)
         );
         $dtaVtasMes[] = array(
             'tipo' => 'dtaVentasMes',
@@ -522,19 +522,20 @@ class dashboard_model extends Model {
 
                 if ($Segmento==0) {
                     //TODAS LOS SEGMENTOS
-                    $RutaSegmento = "'F02','F03','F04','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
+                     $qSegmento =" Ruta NOT IN ('F01','F12') ";
+
                 } else {
                     if ($Segmento==1) {
                         //TODAS LAS RUTAS DEL SEGMENTO FARMACIA
-                        $RutaSegmento = "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
+                        $qSegmento =" Ruta NOT IN ('F04','F02','F01','F12') ";
                     } else {
                         if ($Segmento==2) {
                            //TODAS LAS RUTAS DEL SEGMENTO MAYORISTA
-                            $RutaSegmento = "'F04'";
+                            $qSegmento =" Ruta IN ('F04') ";
                         } else {
                             if ($Segmento==3) {
                                //TODAS LAS RUTAS DEL SEGMENTO INSTITUCION
-                                $RutaSegmento = "'F02'";
+                                $qSegmento =" Ruta IN ('F02') ";
                             }
                             
                         }
@@ -547,14 +548,15 @@ class dashboard_model extends Model {
                                 count(T1.articulo) As NºVentaMes,
                                 isnull(sum(T1.cantidad),0) Cantidad,
                                 isnull(sum(T1.venta),0) MontoVenta,
-                                AVG (T1.[P. Unitario]) as AVG_,			
+                                AVG (T1.[P. Unitario]) as AVG_,         
                                 T1.[Costo Unitario] AS COSTO_PROM,
-                                isnull((SELECT TOP 1 SUM(T2.cantidad) AS Cantidad FROM Softland.dbo.VtasTotal_UMK T2  WHERE $mes = T2.nMes AND ".$anio." = T2.[Año] AND T2.[P. Unitario] <= 0 AND T2.Articulo = T1.Articulo GROUP BY  T2.Articulo),0) AS Cantida_boni
+                                isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.VtasTotal_UMK T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año]) AND  ".$qSegmento."  AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni
                     
                     from Softland.dbo.VtasTotal_UMK T1 Where ".$mes." = T1.nMes and $anio = T1.[Año] and T1.[P. Unitario] > 0
-                    AND  Ruta IN (".$RutaSegmento." )
+                    AND  T1.".$qSegmento." 
                     group by T1.Articulo,T1.Descripcion,T1.[Costo Unitario]
                     order by MontoVenta desc;";
+                    
                 
                 break;
             case '2':                
@@ -592,12 +594,12 @@ class dashboard_model extends Model {
 
             $json[$i]["Articulo"]           = $fila["Articulo"];
             $json[$i]["Descripcion"]        = $fila["Descripcion"];            
-            $json[$i]["TotalFacturado"]     = "C$ " .number_format($Total_Facturado,2);
+            $json[$i]["TotalFacturado"]     = number_format($Total_Facturado,2);
             $json[$i]["UndFacturado"]       = number_format($Cantidad, 0);
             $json[$i]["UndBoni"]            = number_format($Cantidad_bonificada, 0);
-            $json[$i]["PrecProm"]           = "C$ " .number_format($AVG, 2);
-            $json[$i]["CostProm"]           = "C$ " .number_format($COSTO_PROM, 2);
-            $json[$i]["Contribu"]           = "C$ " .number_format($Monto_Contribucion, 2);
+            $json[$i]["PrecProm"]           = number_format($AVG, 2);
+            $json[$i]["CostProm"]           = number_format($COSTO_PROM, 2);
+            $json[$i]["Contribu"]           = number_format($Monto_Contribucion, 2);
             $json[$i]["MargenBruto"]        = number_format($prom_contribucion, 2);
 
             
@@ -740,20 +742,20 @@ class dashboard_model extends Model {
 
                     $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
 
-    		        foreach ($query as $fila_) {                        
+                    foreach ($query as $fila_) {                        
                         $real = ($company_user==1)?(floatval($fila_['Recuperacion_Contado'])):$fila_['real_'];
                         $meta = dashboard_model::returnMetaRecuperacion($mes, $anio, $company_user, $fila_['Vendedor']);
 
                         $cump = ($meta==0)?100:( $real / $meta ) * 100;
 
-    		        	$json[$i]["RUTA"] 		= $fila_['Vendedor'];
-    		        	$json[$i]["NOMBRE"] 	= $fila_['Nombre'];
-    		            $json[$i]["MONTO"] 		= number_format($real, 2);
-    		            $json[$i]["META"] 		= number_format($meta, 2);
-    		            $json[$i]["EFEC"] 		= number_format($cump, 0).'%';
-    		            $i++;
-    		        }
-        		break;
+                        $json[$i]["RUTA"]       = $fila_['Vendedor'];
+                        $json[$i]["NOMBRE"]     = $fila_['Nombre'];
+                        $json[$i]["MONTO"]      = number_format($real, 2);
+                        $json[$i]["META"]       = number_format($meta, 2);
+                        $json[$i]["EFEC"]       = number_format($cump, 0).'%';
+                        $i++;
+                    }
+                break;
             case 'clien':
                 foreach ($query as $fila) {
                     $json[$i]["ARTICULO"]       = $fila["articulo"];
@@ -773,9 +775,9 @@ class dashboard_model extends Model {
                     $i++;
                 }
                 break; 
-        	default:
-        		return false;
-        		break;
+            default:
+                return false;
+                break;
         }
         $sql_server->close();
         return $json;
@@ -792,14 +794,53 @@ class dashboard_model extends Model {
         return $meta;
     }
 
-    public static function getTop10Clientes($mes, $anio, $company_user, $xbolsones) {
+    public static function getTop10Clientes($mes, $anio, $company_user, $xbolsones,$Segmento) {
         $sql_server = new \sql_server();        
         $sql_exec = '';
         $tem_ = 0;
 
         switch ($company_user) {
             case '1':
-                $sql_exec = " EXEC Umk_ReportVentas_Cliente ".$mes.", ".$anio." ";
+
+                if ($Segmento==0) {
+                    //TODAS LOS SEGMENTOS
+                    $RutaSegmento = "'F02','F03','F04','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
+                } else {
+                    if ($Segmento==1) {
+                        //TODAS LAS RUTAS DEL SEGMENTO FARMACIA
+                        $RutaSegmento = "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
+                    } else {
+                        if ($Segmento==2) {
+                           //TODAS LAS RUTAS DEL SEGMENTO MAYORISTA
+                            $RutaSegmento = "'F02'";
+                        } else {
+                            if ($Segmento==3) {
+                               //TODAS LAS RUTAS DEL SEGMENTO INSTITUCION
+                                $RutaSegmento = "'F04'";
+                            }
+                            
+                        }
+                        
+                    }
+                }
+
+                //$sql_exec = " EXEC Umk_ReportVentas_Cliente ".$mes.", ".$anio." ";
+
+                
+
+
+
+                $sql_exec ="select top 10
+                [Cod. Cliente] AS codigo,
+                [Nombre del Cliente] AS cliente,
+                isnull(SUM(VENTA),0) AS MontoVenta,
+                isnull(sum(Cantidad),0) As CantidadVenta,Mes,Año
+                
+                from Softland.dbo.VtasTotal_UMK  (nolock)where MONTH(dia)=".$mes." AND YEAR(dia)=".$anio."
+                AND  Ruta NOT IN('F01', 'F12')  AND  Ruta IN(".$RutaSegmento.") 
+                GROUP BY [Cod. Cliente],[Nombre del Cliente],MES,AÑO
+                ORDER BY isnull(SUM(VENTA),0) DESC";
+
                 break;
             case '2':
                 $sql_exec = " EXEC Gp_ReportVentas_Cliente ".$mes.", ".$anio." ";
@@ -845,14 +886,87 @@ class dashboard_model extends Model {
         $sql_server->close();
     }
 
-    public static function getTop10Productos($mes, $anio, $company_user, $xbolsones) {
+    public static function getTop10Productos($mes, $anio, $company_user, $xbolsones,$Segmento) {
         $sql_server = new \sql_server();
         $sql_exec = '';
         $tem_=0;
+        $RutaSegmento = "";
         
         switch ($company_user) {
             case '1':
-                $sql_exec = " EXEC Umk_DetalleVentas_Mes ".$mes.", ".$anio." ";
+                //$sql_exec = " EXEC Umk_DetalleVentas_Mes ".$mes.", ".$anio." ";
+
+
+                
+
+                /*if ($Segmento==0) {
+                    //TODAS LOS SEGMENTOS
+                    $RutaSegmento = "'F02','F03','F04','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
+                } else {
+                    if ($Segmento==1) {
+                        //TODAS LAS RUTAS DEL SEGMENTO FARMACIA
+                        $RutaSegmento = "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
+                    } else {
+                        if ($Segmento==2) {
+                           //TODAS LAS RUTAS DEL SEGMENTO MAYORISTA
+                            $RutaSegmento = "'F04'";
+                        } else {
+                            if ($Segmento==3) {
+                               //TODAS LAS RUTAS DEL SEGMENTO INSTITUCION
+                                $RutaSegmento = "'F02'";
+                            }
+                            
+                        }
+                        
+                    }
+                }*/
+
+
+                if ($Segmento==0) {
+                    //TODAS LOS SEGMENTOS
+                     $qSegmento =" Ruta NOT IN ('F01','F12') ";
+
+                } else {
+                    if ($Segmento==1) {
+                        //TODAS LAS RUTAS DEL SEGMENTO FARMACIA
+                        $qSegmento =" Ruta NOT IN ('F04','F02','F01','F12') ";
+                    } else {
+                        if ($Segmento==2) {
+                           //TODAS LAS RUTAS DEL SEGMENTO MAYORISTA
+                            $qSegmento =" Ruta IN ('F04') ";
+                        } else {
+                            if ($Segmento==3) {
+                               //TODAS LAS RUTAS DEL SEGMENTO INSTITUCION
+                                $qSegmento =" Ruta IN ('F02') ";
+                            }
+                            
+                        }
+                        
+                    }
+                }
+
+                
+
+                $sql_exec ="select top 10
+                        T1.Articulo,T1.Descripcion,T1.Clasificacion6,
+                        count(T1.articulo) As NºVentaMes,
+                        isnull(sum(T1.cantidad),0) Cantidad,
+                        isnull(sum(T1.venta),0) MontoVenta,
+                        AVG (T1.[P. Unitario]) as AVG_,         
+                        T1.[Costo Unitario] AS COSTO_PROM,
+                        isnull((SELECT TOP 1 SUM(T2.cantidad) AS Cantidad FROM Softland.dbo.VtasTotal_UMK T2  WHERE ".$mes." = T2.nMes AND ".$anio." = T2.[Año] AND T2.[P. Unitario] <= 0 AND T2.Articulo = T1.Articulo and ".$qSegmento." GROUP BY  T2.Articulo),0) AS Cantida_boni,
+                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE (".$mes." = T2.nMes) AND ( ".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta in ('F04'))    ), 0) AS Mayoristas,
+                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE (".$mes." = T2.nMes) AND ( ".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta in ('F02'))  ), 0) AS Instituciones,
+                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE (".$mes." = T2.nMes) AND (".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta NOT IN ('F04','F02','F01','F12'))  ), 0) AS Farmacias
+            
+            from Softland.dbo.VtasTotal_UMK T1 Where ".$mes." = T1.nMes and ".$anio." = T1.[Año] and T1.[P. Unitario] > 0
+            AND  Ruta NOT IN('F01', 'F12') AND  ".$qSegmento." 
+            group by T1.Articulo,T1.Descripcion,T1.Clasificacion6,T1.mes,T1.año,T1.[Costo Unitario]
+            order by MontoVenta desc";
+
+
+
+
                 break;
             case '2':
                 $sql_exec = " EXEC Gp_DetalleVentas_Mes ".$mes.", ".$anio." ";
@@ -1752,7 +1866,7 @@ class dashboard_model extends Model {
                     $segmentos = "'F04'";
                 }
 
-                $sql_exec = "SELECT top 10
+                $sql_exec = "SELECT 
                                 [Cod. Cliente] AS codigo,
                                 [Nombre del Cliente] AS cliente,
                                 isnull(SUM(VENTA),0) AS MontoVenta,
@@ -1760,7 +1874,7 @@ class dashboard_model extends Model {
                                 FROM
                                     Softland.dbo.VtasTotal_UMK (nolock)
                                 WHERE
-                                    [Año] = " . $anio . " AND nmes = " . $mes . " AND Ruta IN(" . $segmentos . ")
+                                    [Año] = " . $anio . " AND nmes = " . $mes . " AND Ruta IN(" . $segmentos . ") and Ruta NOT IN ('F01', 'F12')
                                 AND [P. Unitario] > 0
                                 GROUP BY
                                     [Cod. Cliente],[Nombre del Cliente],Mes, Año
@@ -1974,10 +2088,10 @@ class dashboard_model extends Model {
                     break;
                 }
 
-	            $query04 = $sql_server->fetchArray($sql_fcorte, SQLSRV_FETCH_ASSOC);
-	            $q1 = ( count($query04)>0 )?( floatval($query04[0]['montoVenta']) * 2 ):0;
-	            array_push($fechaCorte, $q1);
-			}
+                $query04 = $sql_server->fetchArray($sql_fcorte, SQLSRV_FETCH_ASSOC);
+                $q1 = ( count($query04)>0 )?( floatval($query04[0]['montoVenta']) * 2 ):0;
+                array_push($fechaCorte, $q1);
+            }
         }
 
         $array[0]['title'] = 'Meta';

@@ -85,6 +85,8 @@ Route::get('/detallesdia/{dia}/{mes}/{anio}','dashboard_controller@getDetalleVen
 Route::get('/detallesVentasRuta/{mes}/{anio}/{ruta}','dashboard_controller@getDetalleVentasXRuta');
 Route::get('/detallesVentasRutaDia/{dia}/{mes}/{anio}/{ruta}','dashboard_controller@get_Vta_Ruta_dia');
 Route::get('/detallesTodosItems/{mes}/{anio}/{segmento}','dashboard_controller@get_Vta_all_items');
+Route::get('/graficaSegmento/{mes}/{anio}/{bolson}/{Segmento}','dashboard_controller@GetTop10Productos');
+Route::get('/graficaSegmentoCL/{mes}/{anio}/{bolson}/{Segmento}','dashboard_controller@getTop10Clientes');
 //Route::get('/ruta/{mes}/{anio}','dashboard_controller@getTotalRutaXVentas');
 Route::get('/unidadxProd/{mes}/{anio}','dashboard_controller@getTotalUnidadesXRutaXVentas');
 

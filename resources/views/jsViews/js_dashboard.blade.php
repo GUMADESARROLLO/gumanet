@@ -605,12 +605,25 @@ $(document).ready(function() {
                 }
             }
         },
+        legend: {
+            align: 'right',
+            x: -30,
+            verticalAlign: 'top',
+            y: 25,
+            floating: true,
+            backgroundColor:
+                Highcharts.defaultOptions.legend.backgroundColor || 'white',
+            borderColor: '#CCC',
+            borderWidth: 1,
+            shadow: false
+        },
         plotOptions: {
             column: {
             stacking: 'normal',
             dataLabels: {
                 enabled: false
-            }
+            },
+            
         },
         },
         plotOptions: {
@@ -622,8 +635,11 @@ $(document).ready(function() {
                 point: {
                 events: {
                     click: function(e) {
+
                         
-                        const _this = this.series.chart.options.series[3].data[this.x];    
+                        const _this = this.series.chart.options.series[0].data[this.x];    
+
+
                         var dta_send = [];
 
                         dta_send.push({
@@ -646,14 +662,15 @@ $(document).ready(function() {
             }
         },
         tooltip: {
+            
             formatter: function() {
                 
-                Info = this.series.chart.series[3].points[this.point.index];
+                Info = this.series.chart.series[0].points[this.point.index];
 
                 
                 
-                
-                temporal = '<span style="color:black">\u25CF</span> TOT. FACT. :<b>C$  ' + numeral(Info.Total).format('0,0.00') + ' </b><br/>';
+                temporal =  Info.Descripcion + ' <br/>';
+                temporal += '<span style="color:black">\u25CF</span> TOT. FACT. :<b>C$  ' + numeral(Info.Total).format('0,0.00') + ' </b><br/>';
                 temporal += '<span style="color:black">\u25CF</span> UNIT. FACT.: <b>  ' + numeral(Info.und).format('0,0.00')  + ' </b><br/>';
                 temporal += '<span style="color:black">\u25CF</span> UNIT. BONIF: <b>  ' + numeral(Info.undBo).format('0,0.00') + ' </b><br/>';
                 temporal += '<span style="color:black">\u25CF</span> PREC. PROM. : <b>C$ ' + numeral(Info.dtavg).format('0,0.00') + ' </b><br/>';
@@ -882,14 +899,15 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         SegFarmacia.push(parseFloat(x['M1']))
                         SegMayoristas.push(parseFloat(x['M2']))
                         SegInstituciones.push(parseFloat(x['M3']))
-
-
-                        
-
                     });  
 
 
                     Segmentos.push({
+                            name :"InfoExtra",
+                            data: InfoSegmento,
+                            showInLegend: false
+                            
+                        },{
                             name :"Farmacia",
                             data: SegFarmacia
                         },{
@@ -898,10 +916,6 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         },{
                             name :"Instituciones",
                             data: SegInstituciones
-                        },{
-                            name :"InfoExtra",
-                            data: InfoSegmento
-                            
                         }
                     );
                     
@@ -909,6 +923,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     productos.xAxis.categories = title;
                     productos.series = Segmentos;
                     chart = new Highcharts.Chart(productos);
+                    
                     
 
                 break;
@@ -1668,39 +1683,160 @@ $("#select-cate").change(function() {
         }
     })
 })
+$("#OpcSegmClt").change( function() { 
+    mes         = $("#opcMes option:selected").val();         
+    anio        = $("#opcAnio option:selected").val();  
+    Segmento    = this.value;
+    xbolsones   = 1;
 
-$("#opcSegmentos").change( function() {   
-    
-    var Opc = this.value;                    
-    chart = new Highcharts.Chart(productos);
 
-    chart.series[0].show();
-    chart.series[1].show();
-    chart.series[2].show();
+    _dta = [];
+    _title = [];
 
-    if (Opc==0) {
-        chart.series[0].show();
-        chart.series[1].show();
-        chart.series[2].show();
-    } else {
-        if (Opc==1) {
-            chart.series[0].show();
-            chart.series[1].hide();
-            chart.series[2].hide();
-        } else {
-            if (Opc==2) {
-                chart.series[0].hide();
-                chart.series[1].show();
-                chart.series[2].hide();
-            } else {
-                if (Opc==3) {
-                    chart.series[0].hide();
-                    chart.series[1].hide();
-                    chart.series[2].show();
-                } 
-            }
-        }
+
+    chart = new Highcharts.Chart(clientes); 
+    var seriesLength = chart.series.length;
+    for(var i = seriesLength - 1; i > -1; i--) {
+        chart.series[i].remove();
     }
+
+    
+    $.getJSON("graficaSegmentoCL/"+mes+"/"+anio+"/"+xbolsones+"/"+Segmento, function(json) {
+        $.each(json, function (i, x) {            
+            _dta.push({
+                name  : x['cliente'],
+                y     : x['data']
+            })
+
+            _title.push(x['name'])  
+        })
+        _temporal = (xbolsones)?'<span style="color:{point.color}"><b>{point.y:,.2f}</b>':'<span style="color:{point.color}"><b>C${point.y:,.2f}</b>';
+        clientes.tooltip = {
+            pointFormat : _temporal
+        }
+        clientes.xAxis.categories = _title;
+        clientes.series[0].data = _dta;
+        console.log(_dta)
+        chart = new Highcharts.Chart(clientes);
+    });
+   
+
+});
+$("#opcSegmentos").change( function() {   
+    mes         = $("#opcMes option:selected").val();         
+    anio        = $("#opcAnio option:selected").val();  
+    Segmento    = this.value;
+    xbolsones   = 1;
+
+    title           =   [];                    
+    SegFarmacia     =   []; 
+    SegMayoristas   =   [];
+    SegInstituciones =   [];            
+    Segmentos       =   [];
+    InfoSegmento       =   [];
+
+    
+    chart = new Highcharts.Chart(productos); 
+    var seriesLength = chart.series.length;
+    for(var i = seriesLength - 1; i > -1; i--) {
+        chart.series[i].remove();
+    }
+
+
+
+    $.getJSON("graficaSegmento/"+mes+"/"+anio+"/"+xbolsones+"/"+Segmento, function(json) {
+        
+        $.each(json, function (i, x) {
+            InfoSegmento.push({
+                Articulo  : x['name'],
+                Descripcion : x['articulo'], 
+                Total     : x['data'], 
+                und   : (x['dtUnd'] > 0 ) ?  x['dtUnd'] : '  ',
+                undBo : (x['dtUndBo'] > 0 ) ?  x['dtUndBo'] : '  ',
+                dtavg :  x['dtAVG'],
+                dtcpm :  x['dtCPM'],
+                dtmco :  x['dtMCO'],
+                dtpco :  x['dtPCO'],
+            })
+
+            title.push(x['name'])
+            SegFarmacia.push(parseFloat(x['M1']))
+            SegMayoristas.push(parseFloat(x['M2']))
+            SegInstituciones.push(parseFloat(x['M3']))
+
+        });
+        if (Segmento==0) {
+            Segmentos.push({
+                            name :"InfoExtra",
+                            data: InfoSegmento,
+                            showInLegend: false
+                            
+                        },{
+                            name :"Farmacia",
+                            data: SegFarmacia
+                        },{
+                            name :"Mayoristas",
+                            data: SegMayoristas
+                        },{
+                            name :"Instituciones",
+                            data: SegInstituciones
+                        }
+                    );
+        } else {
+            if (Segmento==1) {
+                Segmentos.push({
+                            name :"InfoExtra",
+                            data: InfoSegmento,
+                            showInLegend: false
+                            
+                        },{
+                            name :"Farmacia",
+                            data: SegFarmacia
+                        }
+                    );
+            } else {
+                if (Segmento==2) {
+                    Segmentos.push({
+                            name :"InfoExtra",
+                            data: InfoSegmento,
+                            showInLegend: false
+                            
+                        },{
+                            name :"Mayoristas",
+                            data: SegMayoristas
+                        }
+                    );
+                } else {
+                    if (Segmento==3) {
+                        Segmentos.push({
+                            name :"InfoExtra",
+                            data: InfoSegmento,
+                            showInLegend: false
+                            
+                        },{
+                            name :"Instituciones",
+                            data: SegInstituciones
+                        }
+                    ); 
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+
+
+                    productos.xAxis.categories = title;
+                    productos.series = Segmentos;
+                    chart = new Highcharts.Chart(productos); 
+                    
+
+                    
+
+    });
+   
     
 });
 
@@ -2433,6 +2569,8 @@ function Todos_Los_Items(){
         "destroy" : true,
         "info":    false,
         "scrollX": false,
+        "order": [[ 8, "desc" ]],
+        "lengthMenu": [[-1], ["Todo"]],
         "ajax":{
             "url": "detallesTodosItems/" + mes + "/" + anio + "/" + segmento,
             'dataSrc': '',
@@ -2458,13 +2596,14 @@ function Todos_Los_Items(){
             { "title"   : "UNIT. BONIF.",       "data"  : "UndBoni" },
             { "title"   : "PREC. PROM.",        "data"  : "PrecProm" },
             { "title"   : "COST. PROM. UNIT.",  "data"  : "CostProm" },
-            { "title"   : "CONTRIBUCION.",      "data"  : "Contribu" },
-            { "title"   : "% MARGEN BRUTO.",    "data"  : "MargenBruto" }
+            { "title"   : "CONTRIBUCION",       "data"  : "Contribu" },
+            { "title"   : "% MARGEN BRUTO",     "data"  : "MargenBruto" }
         ],
         "columnDefs": [
-            {"className": "dt-center", "targets": [0,1,3,4,8]},
-            {"className": "dt-right", "targets": [ 2,5,6,7 ]},            
+            {"className": "dt-center", "targets": [0]},
+            {"className": "dt-right", "targets": [ 2,3,4,5,6,7,8]},            
             {"width": "20%", "targets": [ 1]},
+            
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -2485,7 +2624,56 @@ function Todos_Los_Items(){
     $(tableActive + "_length").hide();
     $(tableActive + "_filter").hide();
 }
+function detailAllClients() {
+        
+        tableActive = '';
+        tableActive = '#tblAllClients';
+        
+        var mes = $('#opcMes option:selected').val();
+        var anio = $('#opcAnio option:selected').val();
+        mes_name = $("#opcMes option:selected").text();      
+        var categoria =  $('#OpcSegmClt option:selected').val(); 
 
+        //FechaFiltrada = 'Mostrando registros del mes de ' + mes_name + ' ' + anio;
+        $(tableActive).dataTable({
+            "responsive": true,
+            "autoWidth": false,
+            "scrollX": false,
+            "ajax": {
+                "url": "detailsAllCls/" + mes + "/" + anio + "/" + categoria ,
+                'dataSrc': '',
+            },
+            "destroy": true,
+            "info": false,
+            //"lengthMenu": [[500, -1], [500, "Todo"]],
+            "language": {
+                "zeroRecords": "Cargando...",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Última ",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "lengthMenu": "MOSTRAR _MENU_",
+                "emptyTable": "NO HAY DATOS DISPONIBLES",
+                "search": "BUSCAR"
+            },
+            'columns': [
+                {"title": "Cliente", "data": "codigo"},
+                {"title": "Nombre", "data": "cliente"},
+                {"title": "MontoVenta", "data": "data_innova", render: $.fn.dataTable.render.number( ',', '.', 0, 'C$' )},
+            ],
+            "columnDefs": [
+                {"className": "dt-center", "targets": [0, 1, 2]},
+                {"width": "20%", "targets": [0,2]},
+            ],
+        });
+        $('#mdClientDetail').modal();
+        $(tableActive + "_length").hide();
+        $(tableActive + "_filter").hide();
+    }
+
+ 
 function get_Detalle_Venta_dia(dia,mes, anio, ruta, nombre) {
 
     $('#dtVentasFacturas').dataTable({
@@ -2643,6 +2831,19 @@ $( "#id_select_all_items").change(function() {
     var table = $(tableActive).DataTable();
     table.page.len(this.value).draw();
 });
+
+
+
+$('#id_txt_all_clients').on( 'keyup', function () {
+    var table = $(tableActive).DataTable();
+    table.search(this.value).draw();
+});
+
+$( "#id_select_all_clients").change(function() {
+    var table = $(tableActive).DataTable();
+    table.page.len(this.value).draw();
+});
+
 /************************************************************/
 
 $( "#cantRowsDtTemp").change(function() {
@@ -2718,55 +2919,8 @@ $(document).on('click', '#exp_more', function(ef) {
     }
 });
 
-function detailAllClients() {
-        //alert("Evento onclick ejecutado!");
-        tableActive = '';
-        tableActive = '#tblAllClients';
-        var mes = $('#opcMes option:selected').val();
-        var anio = $('#opcAnio option:selected').val();
-        mes_name = $("#opcMes option:selected").text();      
-        var categoria =  $('#listClt option:selected').val(); 
 
-        //FechaFiltrada = 'Mostrando registros del mes de ' + mes_name + ' ' + anio;
-        $(tableActive).dataTable({
-            "responsive": true,
-            "autoWidth": false,
-            "scrollX": false,
-            "ajax": {
-                "url": "detailsAllCls/" + mes + "/" + anio + "/" + categoria ,
-                'dataSrc': '',
-            },
-            "destroy": true,
-            "info": false,
-            //"lengthMenu": [[500, -1], [500, "Todo"]],
-            "language": {
-                "zeroRecords": "Cargando...",
-                "paginate": {
-                    "first": "Primera",
-                    "last": "Última ",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                },
-                "lengthMenu": "MOSTRAR _MENU_",
-                "emptyTable": "NO HAY DATOS DISPONIBLES",
-                "search": "BUSCAR"
-            },
-            'columns': [
-                {"title": "Cliente", "data": "codigo"},
-                {"title": "Nombre", "data": "cliente"},
-                {"title": "MontoVenta", "data": "data_innova", render: $.fn.dataTable.render.number( ',', '.', 0, 'C$' )},
-            ],
-            "columnDefs": [
-                {"className": "dt-center", "targets": [0, 1, 2]},
-                {"width": "20%", "targets": [0,2]},
-            ],
-        });
-        $('#mdClientDetail').modal();
-        $(tableActive + "_length").hide();
-        $(tableActive + "_filter").hide();
-    }
 
- 
 
 function reordenandoPantalla() {
     var x = 0;
