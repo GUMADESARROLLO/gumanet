@@ -2617,6 +2617,7 @@ function Todos_Los_Items(){
         'columns': [
             { "title"   : "ARTICULO",           "data"  : "Articulo" },
             { "title"   : "DESCRIPCION",        "data"  : "Descripcion" },
+            { "title"   : "CANT. DISP B002",    "data"  : "Existencia" },
             { "title"   : "TOT. FACT",          "data"  : "TotalFacturado" },
             { "title"   : "UNIT. FACT.",        "data"  : "UndFacturado" },
             { "title"   : "UNIT. BONIF.",       "data"  : "UndBoni" },
@@ -2627,7 +2628,7 @@ function Todos_Los_Items(){
         ],
         "columnDefs": [
             {"className": "dt-center", "targets": [0]},
-            {"className": "dt-right", "targets": [ 2,3,4,5,6,7,8]},            
+            {"className": "dt-right", "targets": [ 2,3,4,5,6,7,8,9]},            
             {"width": "20%", "targets": [ 1]},
             
         ],

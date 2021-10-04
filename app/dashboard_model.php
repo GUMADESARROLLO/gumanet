@@ -546,6 +546,7 @@ class dashboard_model extends Model {
                                 T1.Articulo,
                                 T1.Descripcion,
                                 count(T1.articulo) As NºVentaMes,
+                                (SELECT T3.CANT_DISPONIBLE FROM iweb_bodegas T3  WHERE T3.ARTICULO = T1.ARTICULO AND T3.BODEGA='002') AS EXISTENCIA,
                                 isnull(sum(T1.cantidad),0) Cantidad,
                                 isnull(sum(T1.venta),0) MontoVenta,
                                 AVG (T1.[P. Unitario]) as AVG_,         
@@ -595,6 +596,7 @@ class dashboard_model extends Model {
             $json[$i]["Articulo"]           = $fila["Articulo"];
             $json[$i]["Descripcion"]        = $fila["Descripcion"];            
             $json[$i]["TotalFacturado"]     = number_format($Total_Facturado,2);
+            $json[$i]["Existencia"]         = number_format($fila["EXISTENCIA"],2);
             $json[$i]["UndFacturado"]       = number_format($Cantidad, 0);
             $json[$i]["UndBoni"]            = number_format($Cantidad_bonificada, 0);
             $json[$i]["PrecProm"]           = number_format($AVG, 2);
