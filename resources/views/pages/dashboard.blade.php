@@ -210,12 +210,7 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label for="OpcSegmClt" class="text-muted m-0">SEGMENTO</label>
-                            <select class="form-control form-control-sm" id="OpcSegmClt" >
-                                <option value="0">Todos</option>
-                                <option value="1">Farmacias</option>
-                                <option value="2">Instituciones</option>
-                                <option value="3">Mayoristas</option>
-                            </select>
+                            <select class="form-control form-control-sm" id="OpcSegmClt" ></select>
                         </div>
                     </div>
                     
@@ -226,12 +221,7 @@
                     <div class="col-sm-4 ">
                         <div class="form-group">
                             <label for="opcSegmentos" class="text-muted m-0">SEGMENTO</label>
-                            <select class="form-control form-control-sm" id="opcSegmentos" >
-                                <option value="0">Todos</option>
-                                <option value="1">Farmacias</option>
-                                <option value="2">Instituciones</option>
-                                <option value="3">Mayoristas</option>
-                            </select>
+                            <select class="form-control form-control-sm" id="opcSegmentos" ></select>
                         </div>
                     </div>
                     <div class="col-sm-2">

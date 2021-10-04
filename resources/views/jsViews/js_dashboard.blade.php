@@ -870,15 +870,15 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                 break;
 
                 case 'dtaProductos':
-                    dta             =   [];
-                    title           =   [];
-                    
-                    SegFarmacia     =   []; 
-                    SegMayoristas   =   [];
-                    SegInstituciones =   [];
-
-                    Segmentos       =   [];
-                    InfoSegmento       =   [];
+                    dta                 =   [];
+                    title               =   [];
+                    Segmento            =   '';
+                    SegFarmacia         =   []; 
+                    SegMayoristas       =   [];
+                    SegInstituciones    =   [];
+                    Segmentos           =   [];
+                    InfoSegmento        =   [];
+                    isOne = 0;
                     
                             
                     $.each(item['data'], function(i, x) {
@@ -902,6 +902,17 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     });  
 
 
+                    // VALIDA EXISTENCIA DENTRO DEL ARREGLOS, Y DETERMINA SI ES 1 O MAS SEGMENTOS                    
+                    $.each(SegInstituciones,function(){isOne+=parseFloat(this) || 0; });
+
+                    if (isOne > 0) {
+                
+
+                    Segmento += '<option value="0">Todos</option>'+
+                            '<option value="1">Farmacias</option>'+
+                            '<option value="2">Instituciones</option>'+
+                            '<option value="3">Mayoristas</option>';
+
                     Segmentos.push({
                             name :"InfoExtra",
                             data: InfoSegmento,
@@ -918,8 +929,23 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             data: SegInstituciones
                         }
                     );
-                    
-                    
+                    } else {
+                        
+                        Segmento += '<option value="0">Todos</option>';
+
+                        Segmentos.push({
+                            name :"InfoExtra",
+                            data: InfoSegmento,
+                            showInLegend: false                            
+                        },{
+                            name :"Todos",
+                            data: SegFarmacia
+                        }
+                    );
+                    }
+
+
+                    $("#opcSegmentos,#OpcSegmClt").empty().append(Segmento).selectpicker('refresh');
                     productos.xAxis.categories = title;
                     productos.series = Segmentos;
                     chart = new Highcharts.Chart(productos);

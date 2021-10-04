@@ -1040,10 +1040,18 @@ class dashboard_model extends Model {
                 $json[$i]['dtAVG']      = $AVG_;
                 $json[$i]['dtCPM']      = $COSTO_PROM_;
                 $json[$i]['dtMCO']      = $MARG_CONTRI;
-                $json[$i]['dtPCO']      = $PORC_CONTRI;                
-                $json[$i]['M1']         = $key['Farmacias'];
-                $json[$i]['M2']         = $key['Mayoristas'];
-                $json[$i]['M3']         = $key['Instituciones'];
+                $json[$i]['dtPCO']      = $PORC_CONTRI;   
+                
+                if ($company_user==1) {
+                    $json[$i]['M1']         = $key['Farmacias'];
+                    $json[$i]['M2']         = $key['Mayoristas'];
+                    $json[$i]['M3']         = $key['Instituciones'];
+                } else {
+                    $json[$i]['M1']         = $tem_;
+                    $json[$i]['M2']         = 0;
+                    $json[$i]['M3']         = 0;
+                }
+
 
                 
                 $i++;
