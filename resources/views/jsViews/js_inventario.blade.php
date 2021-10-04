@@ -7,12 +7,7 @@ $(document).ready(function() {
     emp = $("#companny_id").text();
 
     switch(emp) {
-        case '1':
-        columnDefs=[
-            {"className":"dt-right", "targets": [ 3, 4, 6 ]},
-            {"className":"dt-center", "targets": [ 0, 2, 5 ]},
-            { "width":"50%", "targets": [ 1 ] }
-        ]
+        case '1':        
         columns = [
             { title: "ARTICULO",                data: "ARTICULO" },
             { title: "DESCRIPCION",             data: "DESCRIPCION" },
@@ -23,9 +18,15 @@ $(document).ready(function() {
             { title: "PROM UNITS/ MES 2021",    data: "PROM_VST_ANUAL" },
             { title: "TOTAL UNITS 2021",        data: "VST_ANNO_ACTUAL" },
             { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
-            { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" }
+            { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
+            { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" }
             
         ];
+        columnDefs=[
+            {"className":"dt-right", "targets": [ 3, 4, 5, 6, 7, 8, 9, 10 ]},
+            {"className":"dt-center", "targets": [ 0, 2 ]},
+            { "width":"50%", "targets": [ 1 ] }
+        ]
         infoTable = `Mostrando Articulos solo de Bodega 002`;
         break;
     case '2':
@@ -90,7 +91,17 @@ $(document).ready(function() {
             "search":     "BUSCAR"
         },
         'columns': columns,
-        "columnDefs": columnDefs
+        "columnDefs": columnDefs,
+        rowCallback: function (row, data) {
+
+            
+            if (numeral(data.MESES_INVENTARIO).format('0.00') <= 3) {                
+                $("td:eq(10)", row).addClass("alert alert-danger");
+            }else if(numeral(data.MESES_INVENTARIO).format('0.00') > 3 &&  data.MESES_INVENTARIO <= 12){
+                $("td:eq(10)", row).addClass("alert alert-warning");
+            }
+
+        }
     });
 
     liquidacionPorMeses(6)
@@ -131,11 +142,14 @@ function liquidacionPorMeses(valor) {
             { "title": "BODEGA",                "data": "BODEGA" },
             { "title": "TOTAL UNITS 2020",      "data": "VTS_ANIO_ANT" },
             { "title": "PROM. UNITS/MES 2020",  "data":  "PROMEDIO_VENTA" },
-            { "title": "ESTIMADO ROTACION MES", "data": "TEMPO_ESTI_VENT" },
+            { "title": "MESES DE INVENTARIO",   "data": "TEMPO_ESTI_VENT" },
+            { "title": "COSTO PROM.",           "data": "COSTO_PROM_LOC" },
+            { "title": "COSTO ULT.",            "data": "COSTO_ULT_LOC" },
+            { "title": "COSTO TOTAL",           "data": "COSTO_TOTAL" },
         ],
         "columnDefs": [
             {"className": "dt-center", "targets": [ 0, 2, 4, 5 ]},
-            {"className": "dt-right", "targets": [ 3, 6, 7, 8, 9 ]},
+            {"className": "dt-right", "targets": [ 3, 6, 7, 8, 9, 10, 11, 12]},
             { "width": "50%", "targets": [ 1 ] }
         ],
     });

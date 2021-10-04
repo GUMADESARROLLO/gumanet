@@ -2920,7 +2920,50 @@ $(document).on('click', '#exp_more', function(ef) {
 });
 
 
+function format ( callback, Factura_ ) {
+    var thead = tbody = '';            
+    thead =`<table class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th class="center">ARTICULO</th>                        
+                        <th class="center">DESCRIPCION.</th>
+                        <th class="center">CANTIDAD</th>
+                        <th class="center">PRECIO UNITARIO</th>
+                        <th class="center">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+                $.ajax({
+        type: "POST",
+        url: "getDetFactVenta",
+        data:{
+            factura: Factura_,
+        },
+        success: function ( data ) {
+            if (data.length==0) {
+                tbody +=`<tr><td colspan='6'><center>....</center></td></tr>`;
+                callback(thead + tbody).show();
+            }
+            
+            $.each(data['objDt'], function (i, item) {
+                tbody +=`<tr>
+                            <td class="center">` + item['ARTICULO'] + `</td>
+                            <td class="text-left">` + item['DESCRIPCION'] + `</td>
+                            <td class="text-left">` +numeral(item['CANTIDAD']).format('0,0.00')  + `</td>
+                            <td class="text-center">` + numeral(item['PRECIO_UNITARIO']).format('0,0.00') + `</td>
+                            <td class="text-right">` + numeral(item['PRECIO_TOTAL']).format('0,0.00') + `</td>
+                        </tr>`;
+            });
+            tbody += `</tbody></table>`;
+            
+            temp = thead+tbody;
 
+            callback(temp).show();
+        }
+
+
+    });
+}
 
 function reordenandoPantalla() {
     var x = 0;
