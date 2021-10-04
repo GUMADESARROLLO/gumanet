@@ -20,11 +20,12 @@ class reportes_controller extends Controller
         $articulos  = reportes_model::articulos();
         $clientes   = reportes_model::clientes();
         $rutas      = reportes_model::rutas();
+        $Labs       = reportes_model::Laboratorio();
         $data = [
             'name' =>  'GUMA@NET',
             'page' => 'Ventas'
         ];
-        return view('pages.reportes', compact('data', 'clases', 'articulos', 'clientes','rutas'));
+        return view('pages.reportes', compact('data', 'clases', 'articulos', 'clientes','rutas',"Labs"));
     }
 
     public function detalleVentas(Request $request) {
@@ -32,6 +33,7 @@ class reportes_controller extends Controller
             $obj = reportes_model::returndetalleVentas(
                 $request->input('clase'),
                 $request->input('cliente'),
+                $request->input('Labs'),
                 $request->input('articulo'),
                 $request->input('mes'),
                 $request->input('anio'),

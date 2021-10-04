@@ -90,6 +90,7 @@ $("#filterData").click( function() {
         data:{
             clase 		: $("#cmbClase 		option:selected").val(),
             ruta 		: $("#cmbRutas 		option:selected").val(),
+			Labs 		: $("#cmbLabs 		option:selected").val(),
             cliente 	: $("#cmbCliente 	option:selected").val(),
             articulo 	: $("#cmbArticulo 	option:selected").val(),
             mes 		: $('#cmbMes 		option:selected').val(),
@@ -110,6 +111,7 @@ $("#filterData").click( function() {
 		},
         success: function (json) {
 			if (json['objDt']) {
+				
 				dataVentasClientes(json['clientes']);
 				dataVentasArticulos(json['objDt'], json['meta']);
 
@@ -309,21 +311,24 @@ function dataVentasArticulos(json, meta) {
 					"search":     "BUSCAR"
 				},
 				'columns': [
-					{ "data": "articulo" },
-					{ "data": "descripcion" },
-					{ "data": "total", render: $.fn.dataTable.render.number( ',', '.', 2 ) },
-					{ "data": "UM" },
-					{ "data": "Cantidad", render: $.fn.dataTable.render.number( ',', '.', 2 ) },
+					{ "data": "Articulo" },
+					{ "data": "Descripcion" },
+					{ "data": "TotalFacturado" },
+					{ "data": "UndFacturado"},
+					{ "data": "UndBoni"},
+					{ "data": "PrecProm"},
+					{ "data": "CostProm"},
+					{ "data": "Contribu"},
 					/*{ "data": null, render: function (data, type, row ) {						
 						return numeral(row.Cantidad).format('0,0.0') + ' ' + row.UM;
 					} },*/
-					{ "data": "Cantidad_Unidad", render: $.fn.dataTable.render.number( ',', '.', 2 ) },
+					{ "data": "MargenBruto", render: $.fn.dataTable.render.number( ',', '.', 2 ) },
 				],
 				"columnDefs": [
 					{"className": "text-center", "targets": [ 0 ,3]},
-					{"className": "text-right", "targets": [ 2,  4,5 ]},
+					{"className": "text-right", "targets": [ 2, 4, 5, 6, 7,8 ]},
 					{ "width": "60%", "targets": [ 1 ] },
-					{ "width": "20%", "targets": [ 0, 2, 3, 4 ] }
+					{ "width": "5%", "targets": [ 0, 2, 3, 4, 5, 6, 7, 8 ] }
 				],
 		        "footerCallback": function ( row, data, start, end, display ) {
 		            var api = this.api(), data;
@@ -337,6 +342,7 @@ function dataVentasArticulos(json, meta) {
 
 
 		            mta = 0;
+
 		            total = api
 		                .column( 2 )
 		                .data()
@@ -346,7 +352,7 @@ function dataVentasArticulos(json, meta) {
 		            $('#MontoMeta2').text('C$ '+ numeral(total).format('0,0.00'));
 
 					total_unidades = api
-		                .column( 4 )
+		                .column( 3 )
 		                .data()
 		                .reduce( function (a, b) {							
 		                    return intVal(a) + intVal(b);

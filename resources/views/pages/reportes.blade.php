@@ -12,6 +12,7 @@
 		</div>
 	</div>
 	<div class="row">
+		
 		<div class="col-md-6">
 			<div class="form-group">
 				<label for="cmbArticulo" class="col-form-label-sm text-muted mb-0">Articulos</label>
@@ -36,7 +37,7 @@
 			</div>
 		</div>
 		@else
-		<div class="col-md-3">
+		<div class="col-md-2">
 		  <div class="form-group">
 		    <label for="cmbClase" class="col-form-label-sm text-muted mb-0">Clase terapeutica</label>
 			<select class="selectpicker form-control form-control-sm" id="cmbClase" data-show-subtext="true" data-live-search="true">
@@ -49,13 +50,24 @@
 			</select>
 		  </div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-2">
 			<div class="form-group">
 				<label for="cmbRutas" class="col-form-label-sm text-muted mb-0">Rutas</label>
 				<select class="selectpicker form-control form-control-sm" id="cmbRutas" data-show-subtext="true" data-live-search="true">
 					<option value="">RUTAS - TODOS</option>
 					@foreach($rutas as $key)
 						<option>{{ $key['VENDEDOR'] }}</option>
+					@endforeach
+				</select>
+			</div>
+		</div>
+		<div class="col-md-2">
+			<div class="form-group">
+				<label for="cmbLabs" class="col-form-label-sm text-muted mb-0">Laboratorios</label>
+				<select class="selectpicker form-control form-control-sm" id="cmbLabs" data-show-subtext="true" data-live-search="true">
+					<option value="">LABORATORIOS - TODOS</option>
+					@foreach($Labs as $key)
+						<option>{{ $key['DESCRIPCION'] }}</option>
 					@endforeach
 				</select>
 			</div>
@@ -152,12 +164,15 @@
 						<table id="tblArticulos" class="table table-bordered" width="100%">
 							<thead class="bg-blue text-light">
 								<tr>
-									<th class="text-center">Articulo</th>
-									<th class="text-center">Descripción</th>
-									<th class="text-center">Monto</th>
-									<th class="text-center">UND</th>
-									<th class="text-center">Vendido</th>
-									<th class="text-center">Unidades</th>
+									<th class="text-center">ARTICULO</th>
+									<th class="text-center">DESCRIPCION</th>
+									<th class="text-center">TOT. FACT</th>
+									<th class="text-center">UNIT. FACT.</th>
+									<th class="text-center">UNIT. BONIF</th>
+									<th class="text-center">PREC. PROM.</th>
+									<th class="text-center">COSTO. PROM. UNIT</th>
+									<th class="text-center">CONTRIBUCION</th>
+									<th class="text-center">% MARGEN BRUTO</th>
 								</tr>
 							</thead>
 							<tbody></tbody>
