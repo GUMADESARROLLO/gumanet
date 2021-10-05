@@ -11,7 +11,7 @@
 			<h4 class="h4 mb-4">Ventas por categorias</h4>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row" style="display: none;">
 		
 		<div class="col-md-6">
 			<div class="form-group">
@@ -63,11 +63,12 @@
 		</div>
 		<div class="col-md-2">
 			<div class="form-group">
-				<label for="cmbLabs" class="col-form-label-sm text-muted mb-0">Laboratorios</label>
-				<select class="selectpicker form-control form-control-sm" id="cmbLabs" data-show-subtext="true" data-live-search="true">
-					<option value="">LABORATORIOS - TODOS</option>
-					@foreach($Labs as $key)
-						<option>{{ $key['DESCRIPCION'] }}</option>
+				<label for="cmbCliente" class="col-form-label-sm text-muted mb-0">Clientes</label>
+				<select class="selectpicker form-control form-control-sm" id="cmbCliente" data-show-subtext="true" data-live-search="true">					
+					<option selected value="">CLIENTES - TODOS</option>
+					@foreach($clientes as $key)
+						
+						<option value="{{$key['CLIENTE']}}">{{ $key['NOMBRE'] }}</option>
 					@endforeach
 				</select>
 			</div>
@@ -77,11 +78,11 @@
 	<div class="row">
 		<div class="col-md-6" >
 			<div class="form-group">
-				<label for="cmbCliente" class="col-form-label-sm text-muted mb-0">Clientes</label>
-				<select class="selectpicker form-control form-control-sm" id="cmbCliente" data-show-subtext="true" data-live-search="true">
-					<option selected value="">CLIENTES - TODOS</option>
-					@foreach($clientes as $key)
-					<option value="{{$key['CLIENTE']}}">{{ $key['NOMBRE'] }}</option>
+				<label for="cmbLabs" class="col-form-label-sm text-muted mb-0">Laboratorio</label>
+				<select class="selectpicker form-control form-control-sm" id="cmbLabs" data-show-subtext="true" data-live-search="true">
+				<option value="">LABORATORIOS - TODOS</option>
+					@foreach($Labs as $key)
+					<option>{{ $key['DESCRIPCION'] }}</option>
 					@endforeach
 				</select>
 			</div>

@@ -76,6 +76,7 @@ class inventario_model extends Model {
                             GROUP BY
                                 ARTICULO,
                                 DESCRIPCION";
+                                $qResult =[];
 
                 break;
             case '3':
@@ -100,6 +101,7 @@ class inventario_model extends Model {
                             GROUP BY
                                 ARTICULO,
                                 DESCRIPCION";
+                                $qResult =[];
                 break; 
             default:                
                 dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);

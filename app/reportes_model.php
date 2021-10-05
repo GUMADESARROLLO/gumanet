@@ -122,7 +122,7 @@ class reportes_model extends Model
 
         switch ($company_user) {
             case '1':
-                $sql_exec = " SELECT * FROM UMK_ARTICULOS_LABORATORIO ";
+                $sql_exec = " SELECT * FROM UMK_ARTICULOS_LABORATORIO T0 ORDER BY T0.DESCRIPCION";
                 break;
             case '2':
                 //$sql_exec = " SELECT * FROM GP_ARTICULOS_ACTIVOS ";
@@ -299,7 +299,7 @@ class reportes_model extends Model
         
         switch ($company_user) {
             case '1':
-                $sql_exec = 'SELECT FACTURA, ARTICULO, DESCRIPCION, CANTIDAD, PRECIO_UNITARIO, PRECIO_TOTAL FROM UMK_DETALLES_FACTURAS WHERE FACTURA = '."'".$nFactura."'";
+                $sql_exec = 'SELECT FACTURA, ARTICULO, DESCRIPCION, CANTIDAD, PRECIO_UNITARIO, PRECIO_TOTAL FROM UMK_DETALLES_FACTURAS WHERE FACTURA = '."'".$nFactura."' AND TIPO_LINEA NOT IN ('C') ORDER BY ARTICULO";
                 break;
             case '2':
                 $sql_exec = 'SELECT FACTURA, ARTICULO, DESCRIPCION, CANTIDAD, PRECIO_UNITARIO, PRECIO_TOTAL FROM GP_DETALLES_FACTURAS WHERE FACTURA = '."'".$nFactura."'";                
