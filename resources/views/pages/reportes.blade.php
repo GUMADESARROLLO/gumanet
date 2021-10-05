@@ -8,7 +8,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
-			<h4 class="h4 mb-4">Ventas por categorias</h4>
+			<h4 class="h4 mb-4">REPORTE DE VENTAS</h4>
 		</div>
 	</div>
 	<div class="row">
