@@ -2,7 +2,7 @@
 @section('title' , $data['name'])
 @section('name_user' , 'Administrador')
 @section('metodosjs')
-  @include('jsViews.js_reportes');
+@include('jsViews.js_reportes');
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -11,8 +11,23 @@
 			<h4 class="h4 mb-4">REPORTE DE VENTAS</h4>
 		</div>
 	</div>
-	<div class="row" style="display: none;">
+	<div class="row">
+	@if( Session::get('company_id')==1 )
 		
+		<div class="col-md-6" >
+			<div class="form-group">
+				<label for="cmbLabs" class="col-form-label-sm text-muted mb-0">Laboratorio</label>
+				<select class="selectpicker form-control form-control-sm" id="cmbLabs" data-show-subtext="true" data-live-search="true">
+				<option value="">LABORATORIOS - TODOS</option>
+					@foreach($Labs as $key)
+					<option>{{ $key['DESCRIPCION'] }}</option>
+					@endforeach
+				</select>
+			</div>
+		</div>	
+				
+		
+	@else
 		<div class="col-md-6">
 			<div class="form-group">
 				<label for="cmbArticulo" class="col-form-label-sm text-muted mb-0">Articulos</label>
@@ -24,44 +39,32 @@
 				</select>
 			</div>
 		</div>
-		@if( Session::get('company_id')==4 )
+
+		<div class="col-md-3">
+			<div class="form-group">
+				<label for="cmbClase" class="col-form-label-sm text-muted mb-0">Clase terapeutica</label>
+				<select class="selectpicker form-control form-control-sm" id="cmbClase" data-show-subtext="true" data-live-search="true">
+					<option value="">CLASE TERAPEUTICA - TODOS</option>
+					@foreach($clases as $key)
+						@if($key['clase'] != '')
+							<option value="{{ $key['clase'] }}">{{ strtoupper($key['clase']) }}</option>							
+						@endif				
+					@endforeach
+				</select>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="form-group">
+				<label for="cmbRutas" class="col-form-label-sm text-muted mb-0">Rutas</label>
+				<select class="selectpicker form-control form-control-sm" id="cmbRutas" data-show-subtext="true" data-live-search="true">
+					<option value="">RUTAS - TODOS</option>
+					@foreach($rutas as $key)
+						<option>{{ $key['VENDEDOR'] }}</option>
+					@endforeach
+				</select>
+			</div>
+		</div>
 		<div class="col-md-6">
-			<div class="form-group">
-				<label for="cmbRutas" class="col-form-label-sm text-muted mb-0">Rutas</label>
-				<select class="selectpicker form-control form-control-sm" id="cmbRutas" data-show-subtext="true" data-live-search="true">
-					<option value="">RUTAS - TODOS</option>
-					@foreach($rutas as $key)
-						<option>{{ $key['VENDEDOR'] }}</option>
-					@endforeach
-				</select>
-			</div>
-		</div>
-		@else
-		<div class="col-md-2">
-		  <div class="form-group">
-		    <label for="cmbClase" class="col-form-label-sm text-muted mb-0">Clase terapeutica</label>
-			<select class="selectpicker form-control form-control-sm" id="cmbClase" data-show-subtext="true" data-live-search="true">
-				<option value="">CLASE TERAPEUTICA - TODOS</option>
-				@foreach($clases as $key)
-					@if($key['clase'] != '')
-						<option value="{{ $key['clase'] }}">{{ strtoupper($key['clase']) }}</option>							
-					@endif				
-				@endforeach
-			</select>
-		  </div>
-		</div>
-		<div class="col-md-2">
-			<div class="form-group">
-				<label for="cmbRutas" class="col-form-label-sm text-muted mb-0">Rutas</label>
-				<select class="selectpicker form-control form-control-sm" id="cmbRutas" data-show-subtext="true" data-live-search="true">
-					<option value="">RUTAS - TODOS</option>
-					@foreach($rutas as $key)
-						<option>{{ $key['VENDEDOR'] }}</option>
-					@endforeach
-				</select>
-			</div>
-		</div>
-		<div class="col-md-2">
 			<div class="form-group">
 				<label for="cmbCliente" class="col-form-label-sm text-muted mb-0">Clientes</label>
 				<select class="selectpicker form-control form-control-sm" id="cmbCliente" data-show-subtext="true" data-live-search="true">					
@@ -73,20 +76,12 @@
 				</select>
 			</div>
 		</div>
-		@endif
-	</div>
-	<div class="row">
-		<div class="col-md-6" >
-			<div class="form-group">
-				<label for="cmbLabs" class="col-form-label-sm text-muted mb-0">Laboratorio</label>
-				<select class="selectpicker form-control form-control-sm" id="cmbLabs" data-show-subtext="true" data-live-search="true">
-				<option value="">LABORATORIOS - TODOS</option>
-					@foreach($Labs as $key)
-					<option>{{ $key['DESCRIPCION'] }}</option>
-					@endforeach
-				</select>
-			</div>
-		</div>
+			
+			
+		
+		
+	@endif
+
 		<div class="col-md-2">
 			<div class="form-group">
 				<label for="cmbMes" class="col-form-label-sm text-muted mb-0">Mes</label>
@@ -124,13 +119,14 @@
 						}
 					}
 				?>
-				</select> 
-			</div>  
+				</select>
+			</div>
 		</div>
 		<div class="col-md-2">
 			<a href="#!" id="filterData" class="btn btn-primary btn-block float-right mt-4 ">Aplicar</a>			
 		</div>
 	</div>
+	
     <div class="row mt-3">
     	<div class="col-sm-12">
     		<div class="card border-0 shadow-sm">
