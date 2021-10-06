@@ -63,8 +63,8 @@ class dashboard_controller extends Controller {
     $obj = dashboard_model::get_Vta_Ruta_dia($Dia,$mes, $anio, $ruta);
     return response()->json($obj);
   }
-  public function get_Vta_all_items($mes,$anio,$segmento){
-    $obj = dashboard_model::get_Vta_all_items($mes, $anio,$segmento);
+  public function get_Vta_all_items($dia,$mes,$anio,$segmento){
+    $obj = dashboard_model::get_Vta_all_items($dia,$mes, $anio,$segmento);
     return response()->json($obj);
   }
 
@@ -117,9 +117,9 @@ class dashboard_controller extends Controller {
   }
 
   /************ Add by Rodolfo **********/
-  public function getAllClientsByCategory($mes, $anio, $categoria)
+  public function getAllClientsByCategory($mes, $anio, $categoria,$Bolson)
   {
-      $obj = dashboard_model::getAllClientsByCategory($mes, $anio, $categoria);
+      $obj = dashboard_model::getAllClientsByCategory($mes, $anio, $categoria,$Bolson);
       return response()->json($obj);
   }
 

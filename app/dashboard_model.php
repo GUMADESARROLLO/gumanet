@@ -503,7 +503,7 @@ class dashboard_model extends Model {
         $sql_server->close();
         return $json;
     }    
-    public static function get_Vta_all_items($mes, $anio,$Segmento) {
+    public static function get_Vta_all_items($dia,$mes, $anio,$Segmento) {
 
         $sql_server = new \sql_server();
         $sql_exec = '';
@@ -518,11 +518,13 @@ class dashboard_model extends Model {
         switch ($company_user) {
             case '1':
 
-                
+                $Sql_Dia = ($dia==0) ? '' : ' AND DAY(dia) = '.$dia.' '  ;
+
+
 
                 if ($Segmento==0) {
                     //TODAS LOS SEGMENTOS
-                     $qSegmento =" Ruta NOT IN ('F01','F12') ";
+                    $qSegmento =" Ruta NOT IN ('F01','F12') ";
 
                 } else {
                     if ($Segmento==1) {
@@ -542,7 +544,7 @@ class dashboard_model extends Model {
                         
                     }
                 }
-                $sql_exec ="select 
+                $sql_exec ="SELECT 
                                 T1.Articulo,
                                 T1.Descripcion,
                                 count(T1.articulo) As NºVentaMes,
@@ -553,21 +555,48 @@ class dashboard_model extends Model {
                                 T1.[Costo Unitario] AS COSTO_PROM,
                                 isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.VtasTotal_UMK T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año]) AND  ".$qSegmento."  AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni
                     
-                    from Softland.dbo.VtasTotal_UMK T1 Where ".$mes." = T1.nMes and $anio = T1.[Año] and T1.[P. Unitario] > 0
-                    AND  T1.".$qSegmento." 
-                    group by T1.Articulo,T1.Descripcion,T1.[Costo Unitario]
-                    order by MontoVenta desc;";
+                                from Softland.dbo.VtasTotal_UMK T1 Where ".$mes." = T1.nMes and $anio = T1.[Año] and T1.[P. Unitario] > 0
+                                AND  T1.".$qSegmento." $Sql_Dia
+                                group by T1.Articulo,T1.Descripcion,T1.[Costo Unitario]
+                                order by MontoVenta desc;";
+
                     
                 
                 break;
-            case '2':                
-                //$sql_exec = "EXEC gnet_vnt_diaria_ruta_gp ".$dia.",".$mes.", ".$anio.", '".$ruta."'";
+            case '2':
+                $sql_exec ="SELECT 
+                            T1.Articulo,
+                            T1.Descripcion,
+                            count(T1.articulo) As NºVentaMes,
+                            (SELECT T3.CANT_DISPONIBLE FROM GP_iweb_bodegas T3  WHERE T3.ARTICULO = T1.ARTICULO AND T3.BODEGA='001') AS EXISTENCIA,
+                            isnull(sum(T1.cantidad),0) Cantidad,
+                            isnull(sum(T1.venta),0) MontoVenta,
+                            AVG (T1.[P. Unitario]) as AVG_,         
+                            T1.[Costo Unitario] AS COSTO_PROM,
+                            isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.GP_VtasTotal_UMK T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año])  AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni
+                
+                            from Softland.dbo.GP_VtasTotal_UMK T1 WHERE ".$mes." = T1.nMes and $anio = T1.[Año] and T1.[P. Unitario] > 0
+                            GROUP BY T1.Articulo,T1.Descripcion,T1.[Costo Unitario]
+                            ORDER BY MontoVenta desc;"; 
                 break;
             case '3':
                 //$sql_exec = "";
                 break;   
             case '4':
-                //$sql_exec = "EXEC gnet_vnt_diaria_ruta_inn ".$dia.",".$mes.", ".$anio.", '".$ruta."'";
+                $sql_exec ="SELECT 
+                            T1.Articulo,
+                            T1.Descripcion,
+                            count(T1.articulo) As NºVentaMes,
+                            (SELECT T3.CANT_DISPONIBLE FROM INN_iweb_bodegas T3  WHERE T3.ARTICULO = T1.ARTICULO AND T3.BODEGA='007') AS EXISTENCIA,
+                            isnull(sum(T1.cantidad),0) Cantidad,
+                            isnull(sum(T1.venta),0) MontoVenta,
+                            AVG (T1.[P. Unitario]) as AVG_,         
+                            T1.[Costo Unitario] AS COSTO_PROM,
+                            isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.INV_VtasTotal_UMK_Temporal T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año])  AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni
+                
+                            from Softland.dbo.INV_VtasTotal_UMK_Temporal T1 WHERE ".$mes." = T1.nMes and $anio = T1.[Año] and T1.[P. Unitario] > 0
+                            GROUP BY T1.Articulo,T1.Descripcion,T1.[Costo Unitario]
+                            ORDER BY MontoVenta desc;"; 
                 break;         
             default:                
                 //dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
@@ -1846,7 +1875,7 @@ class dashboard_model extends Model {
     }
 
     /******* Add Rodolfo *******/
-    public static function getAllClientsByCategory($mes, $anio, $categoria)
+    public static function getAllClientsByCategory($mes, $anio, $categoria,$xbolsones)
     {
         $sql_server = new \sql_server();
         $sql_exec = '';
@@ -1856,7 +1885,6 @@ class dashboard_model extends Model {
         $json = array();
         $company_user = Company::where('id', $request->session()->get('company_id'))->first()->id;
 
-       
         switch ($company_user) {
             case '1':
                 //Todos
@@ -1884,7 +1912,7 @@ class dashboard_model extends Model {
                                 FROM
                                     Softland.dbo.VtasTotal_UMK (nolock)
                                 WHERE
-                                    [Año] = " . $anio . " AND nmes = " . $mes . " AND Ruta IN(" . $segmentos . ") and Ruta NOT IN ('F01', 'F12')
+                                    [Año] = " . $anio . " AND nmes = " . $mes . " AND Ruta IN(" . $segmentos . ") and Ruta NOT IN ('F01', 'F03')
                                 AND [P. Unitario] > 0
                                 GROUP BY
                                     [Cod. Cliente],[Nombre del Cliente],Mes, Año
@@ -1893,10 +1921,32 @@ class dashboard_model extends Model {
 
                 break;
             case '2':
+                //$segmentos = "'F04','F06','F08','F09','F10','F11'";        
+
+                $sql_exec = "SELECT
+                [Cod. Cliente] AS codigo,
+                [Nombre del Cliente] AS cliente,
+                isnull(SUM(VENTA),0) AS MontoVenta,
+                isnull(sum(Cantidad),0) As CantidadVenta,Mes,Año
+                
+                from Softland.dbo.GP_VtasTotal_UMK  (nolock) where " . $mes . "=MONTH(dia) AND " . $anio . "=YEAR(dia) 
+                GROUP BY [Cod. Cliente],[Nombre del Cliente],MES,AÑO
+                ORDER BY isnull(SUM(VENTA),0) DESC";
                 break;
             case '3':
                 break;
             case '4':
+                $sql_exec ="SELECT
+                [Cod. Cliente] AS codigo,
+                [Nombre del Cliente] AS cliente,
+                isnull(SUM(VENTA),0) AS MontoVenta,
+                isnull(sum(Cantidad),0) As CantidadVenta,Mes,Año
+                
+                from Softland.dbo.INV_VtasTotal_UMK_Temporal  (nolock)where  ".$mes."=MONTH(dia) AND ".$anio."=YEAR(dia) 
+                GROUP BY [Cod. Cliente],[Nombre del Cliente],MES,AÑO
+                ORDER BY isnull(SUM(VENTA),0) DESC";
+
+
                 break;
             default:
                 dd("Ha sucedido un error al buscar los clientes para esta empresa. " . $company->id);

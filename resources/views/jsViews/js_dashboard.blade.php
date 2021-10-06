@@ -827,6 +827,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
         var dta_avr = [];
 
         $.each(json, function (i, item) {
+
             etiqueta = (xbolsones)?'':'C$ ';
 
             switch (item['tipo']) {
@@ -850,6 +851,8 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                 case 'dtaCliente':
                     dta = [];
                     title = [];
+
+                    $('#btnclick').attr('onclick', 'detailAllClients('+xbolsones+')');
 
                     $.each(item['data'], function(i, x) {
                         dta.push({
@@ -1989,6 +1992,7 @@ function detalles_ventas_diarias($dia,$mAVG)
                         ventasXCateg.subtitle = {text: 'Todas las  categorias'};
                         ventas_por_rutas.series[0].data = dta_pie_rutas ;
                         chart = new Highcharts.Chart(ventas_por_rutas);
+                        Todos_Los_Items_Diario($dia,mes,anio,0);
                     },
                 
             });
@@ -2573,7 +2577,8 @@ function Todos_Los_Items(){
     mes_name            = $("#opcMes option:selected").text();   
 
     var segmento        = $('#opcSegmentos option:selected').val();
-    var SegmentoName    = $("#opcSegmentos option:selected").text();   
+    var SegmentoName    = $("#opcSegmentos option:selected").text();  
+    var dia = 0; 
 
    
 
@@ -2598,7 +2603,7 @@ function Todos_Los_Items(){
         "order": [[ 8, "desc" ]],
         "lengthMenu": [[-1], ["Todo"]],
         "ajax":{
-            "url": "detallesTodosItems/" + mes + "/" + anio + "/" + segmento,
+            "url": "detallesTodosItems/" + dia + "/" + mes + "/" + anio + "/" + segmento,
             'dataSrc': '',
         },
         "language": {
@@ -2617,7 +2622,7 @@ function Todos_Los_Items(){
         'columns': [
             { "title"   : "ARTICULO",           "data"  : "Articulo" },
             { "title"   : "DESCRIPCION",        "data"  : "Descripcion" },
-            { "title"   : "CANT. DISP B002",    "data"  : "Existencia" },
+            { "title"   : "CANT. DISP",         "data"  : "Existencia" },
             { "title"   : "TOT. FACT",          "data"  : "TotalFacturado" },
             { "title"   : "UNIT. FACT.",        "data"  : "UndFacturado" },
             { "title"   : "UNIT. BONIF.",       "data"  : "UndBoni" },
@@ -2651,7 +2656,74 @@ function Todos_Los_Items(){
     $(tableActive + "_length").hide();
     $(tableActive + "_filter").hide();
 }
-function detailAllClients() {
+function Todos_Los_Items_Diario(dia,mes,anio,segmento){
+
+tableActive = '';
+tableActive = '#tblAllItemsDiario';
+
+$(tableActive).DataTable({
+    "destroy" : true,
+    "info":    false,
+    "scrollX": false,
+    "order": [[ 8, "desc" ]],
+    "lengthMenu": [[10,-1], [10,"Todo"]],
+    "ajax":{
+        "url": "detallesTodosItems/" + dia + "/" + mes + "/" + anio + "/" + segmento,
+        'dataSrc': '',
+    },
+    "language": {
+        "zeroRecords": "Cargando...",
+        "paginate": {
+            "first":      "Primera",
+            "last":       "Última ",
+            "next":       "Siguiente",
+            "previous":   "Anterior"
+        },
+        "lengthMenu": "MOSTRAR _MENU_",
+        "emptyTable": "NO HAY DATOS DISPONIBLES",
+        "search":     "BUSCAR"
+    },
+    
+    'columns': [
+        { "title"   : "ARTICULO",           "data"  : "Articulo" },
+        { "title"   : "DESCRIPCION",        "data"  : "Descripcion" },
+        { "title"   : "CANT. DISP B002",    "data"  : "Existencia" },
+        { "title"   : "TOT. FACT",          "data"  : "TotalFacturado" },
+        { "title"   : "UNIT. FACT.",        "data"  : "UndFacturado" },
+        { "title"   : "UNIT. BONIF.",       "data"  : "UndBoni" },
+        { "title"   : "PREC. PROM.",        "data"  : "PrecProm" },
+        { "title"   : "COST. PROM. UNIT.",  "data"  : "CostProm" },
+        { "title"   : "CONTRIBUCION",       "data"  : "Contribu" },
+        { "title"   : "% MARGEN BRUTO",     "data"  : "MargenBruto" }
+    ],
+    "columnDefs": [
+        {"className": "dt-center", "targets": [0]},
+        {"className": "dt-right", "targets": [ 2,3,4,5,6,7,8,9]},            
+        {"width": "20%", "targets": [ 1]},
+        
+    ],
+    "footerCallback": function ( row, data, start, end, display ) {
+        var api = this.api(), data;
+        var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                i.replace(/[^0-9.]/g, '')*1 :
+                typeof i === 'number' ?
+                i : 0;
+            };
+            total = api.column( 2 ).data().reduce( function (a, b) 
+                {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+            $('#id_total_segmento').text('Total C$ '+ numeral(total).format('0,0'));
+    },
+});
+$(tableActive + "_length").hide();
+$(tableActive + "_filter").hide();
+}
+
+
+
+function detailAllClients(xbolsones) {
         
         tableActive = '';
         tableActive = '#tblAllClients';
@@ -2661,13 +2733,16 @@ function detailAllClients() {
         mes_name = $("#opcMes option:selected").text();      
         var categoria =  $('#OpcSegmClt option:selected').val(); 
 
+        
+
         //FechaFiltrada = 'Mostrando registros del mes de ' + mes_name + ' ' + anio;
         $(tableActive).dataTable({
             "responsive": true,
             "autoWidth": false,
             "scrollX": false,
+            "order": [[ 2, "desc" ]],
             "ajax": {
-                "url": "detailsAllCls/" + mes + "/" + anio + "/" + categoria ,
+                "url": "detailsAllCls/" + mes + "/" + anio + "/" + categoria + "/" + xbolsones ,
                 'dataSrc': '',
             },
             "destroy": true,
@@ -2688,7 +2763,7 @@ function detailAllClients() {
             'columns': [
                 {"title": "Cliente", "data": "codigo"},
                 {"title": "Nombre", "data": "cliente"},
-                {"title": "MontoVenta", "data": "data_innova", render: $.fn.dataTable.render.number( ',', '.', 0, 'C$' )},
+                {"title": "MontoVenta", "data": "data_innova", render: $.fn.dataTable.render.number( ',', '.', 0, 'C$ ' )},
             ],
             "columnDefs": [
                 {"className": "dt-center", "targets": [0, 1, 2]},
