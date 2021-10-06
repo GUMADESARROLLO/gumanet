@@ -205,7 +205,9 @@
 			</div>
 		</div>
     </div>
-    <div class="row mt-3">
+
+	@if( Session::get('company_id') != 1 )
+    <div class="row mt-3 ">
     	<div class="col-sm-12">
     		<div class="card border-0 shadow-sm">
     			<div class="card-body">
@@ -279,6 +281,7 @@
 			</div>
 		</div>
     </div>
+	@endif
     <!-- PAGINA TEMPORAL DE DETALLES -->
     <div id="page-details" class="p-4" style="background-color: #f1f5f8">
         <div class="row">

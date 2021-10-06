@@ -223,68 +223,67 @@ class reportes_model extends Model
                 break;
         }
         
-        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
-        $qCli  = $sql_server->fetchArray($sql_Cli, SQLSRV_FETCH_ASSOC);
+        
+        
         //$query2 = $sql_server->fetchArray($sql_meta, SQLSRV_FETCH_ASSOC);
 
-        if( count($qCli)>0 ){
-
-            foreach ($qCli as $key) {
-
-                $factura = $key['factura'];
-
-                if ( array_search($factura, array_column( $clientes, 'factura' ) ) === false) {
-                    $clientes[$i]['cliente']  = $key['cliente'];
-                    $clientes[$i]['nombre']  = $key['nombre'];
-                    $clientes[$i]['ruta']    = $key['ruta'];
-                    $clientes[$i]['factura'] = $key['factura'];
-                    $clientes[$i]['fecha02']   = $key['fecha02'];
-                    $clientes[$i]['total']   = array_sum(array_column(array_filter($qCli, function($item) use($factura) { return $item['factura'] == $factura; } ), 'total'));
-                    $clientes[$i]['Cantidad']   = array_sum(array_column(array_filter($qCli, function($item) use($factura) { return $item['factura'] == $factura; } ), 'Cantidad'));
-                    $i++;
+        if ($company_user != 1) {
+            $qCli  = $sql_server->fetchArray($sql_Cli, SQLSRV_FETCH_ASSOC);
+            if( count($qCli)>0 ){
+    
+                foreach ($qCli as $key) {
+    
+                    $factura = $key['factura'];
+    
+                    if ( array_search($factura, array_column( $clientes, 'factura' ) ) === false) {
+                        $clientes[$i]['cliente']  = $key['cliente'];
+                        $clientes[$i]['nombre']  = $key['nombre'];
+                        $clientes[$i]['ruta']    = $key['ruta'];
+                        $clientes[$i]['factura'] = $key['factura'];
+                        $clientes[$i]['fecha02']   = $key['fecha02'];
+                        $clientes[$i]['total']   = array_sum(array_column(array_filter($qCli, function($item) use($factura) { return $item['factura'] == $factura; } ), 'total'));
+                        $clientes[$i]['Cantidad']   = array_sum(array_column(array_filter($qCli, function($item) use($factura) { return $item['factura'] == $factura; } ), 'Cantidad'));
+                        $i++;
+                    }
                 }
             }
-
-            
-            if( count($query)>0 ){
-                foreach ($query as $fila) {
-
-                    $Total_Facturado        = $fila['MontoVenta'];
-                    $Cantidad               = $fila['Cantidad'];
-                    $Cantidad_bonificada    = $fila['Cantida_boni'];                
-                    $COSTO_PROM             = $fila['COSTO_PROM'];
-
-                    $AVG = floatval($Total_Facturado)  / (  floatval($Cantidad) + floatval($Cantidad_bonificada) );
-
-                    $Costo_total_Promedio = (floatval($Cantidad) + floatval($Cantidad_bonificada)) * floatval($COSTO_PROM);
-                    $Monto_Contribucion = floatval($Total_Facturado)  - floatval($Costo_total_Promedio);
-
-                    $prom_contribucion = (( $AVG - floatval($COSTO_PROM) ) / $AVG) * 100;
-
-                    $Articulos[$n]["Articulo"]           = $fila["Articulo"];
-                    $Articulos[$n]["Descripcion"]        = $fila["Descripcion"];            
-                    $Articulos[$n]["TotalFacturado"]     = number_format($Total_Facturado,2);
-                    $Articulos[$n]["UndFacturado"]       = number_format($Cantidad, 0);
-                    $Articulos[$n]["UndBoni"]            = number_format($Cantidad_bonificada, 0);
-                    $Articulos[$n]["PrecProm"]           = number_format($AVG, 2);
-                    $Articulos[$n]["CostProm"]           = number_format($COSTO_PROM, 2);
-                    $Articulos[$n]["Contribu"]           = number_format($Monto_Contribucion, 2);
-                    $Articulos[$n]["MargenBruto"]        = number_format($prom_contribucion, 2);
-
-                    $n++;
-
-                }
-            }
-
-
-
-
-
-			return $array = array(
-                'objDt' => $Articulos, 
-                'clientes' => $clientes
-            );
         }
+
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+        if( count($query)>0 ){
+            foreach ($query as $fila) {
+
+                $Total_Facturado        = $fila['MontoVenta'];
+                $Cantidad               = $fila['Cantidad'];
+                $Cantidad_bonificada    = $fila['Cantida_boni'];                
+                $COSTO_PROM             = $fila['COSTO_PROM'];
+
+                $AVG = floatval($Total_Facturado)  / (  floatval($Cantidad) + floatval($Cantidad_bonificada) );
+
+                $Costo_total_Promedio = (floatval($Cantidad) + floatval($Cantidad_bonificada)) * floatval($COSTO_PROM);
+                $Monto_Contribucion = floatval($Total_Facturado)  - floatval($Costo_total_Promedio);
+
+                $prom_contribucion = (( $AVG - floatval($COSTO_PROM) ) / $AVG) * 100;
+
+                $Articulos[$n]["Articulo"]           = $fila["Articulo"];
+                $Articulos[$n]["Descripcion"]        = $fila["Descripcion"];            
+                $Articulos[$n]["TotalFacturado"]     = number_format($Total_Facturado,2);
+                $Articulos[$n]["UndFacturado"]       = number_format($Cantidad, 0);
+                $Articulos[$n]["UndBoni"]            = number_format($Cantidad_bonificada, 0);
+                $Articulos[$n]["PrecProm"]           = number_format($AVG, 2);
+                $Articulos[$n]["CostProm"]           = number_format($COSTO_PROM, 2);
+                $Articulos[$n]["Contribu"]           = number_format($Monto_Contribucion, 2);
+                $Articulos[$n]["MargenBruto"]        = number_format($prom_contribucion, 2);
+
+                $n++;
+
+            }
+        }
+
+        return $array = array(
+            'objDt' => $Articulos, 
+            'clientes' => $clientes
+        );
 
         $sql_server->close();
         //return false;
