@@ -204,7 +204,7 @@
                 <div class="row">    
                 <div class="col-sm-2">
                         <div class="form-group">
-                            <a href="#!" style="width: 100%" class="btn btn-primary float-right mt-3"onclick="detailAllClients()" type="button" id="btnclick">Mostrar</a>
+                            <a href="#!" style="width: 100%" class="btn btn-primary float-right mt-3" onclick="detailAllClients()" type="button" id="btnclick">Mostrar</a>
                         </div>
                     </div>                
                     <div class="col-sm-4">
@@ -272,6 +272,8 @@
                             </div>
                         </div>
                     </div>
+
+                    
                     
                     <div class="row" id="id_div_detalles_vendedores">
                         <div class="col-sm-11 mt-3">
@@ -294,6 +296,19 @@
                             </div>
                         </div>
                     </div>
+
+
+                    @if( Session::get('company_id') == 1 )
+                    <div class="row" >
+                        <div class="col-sm-12 mt-3">
+                            <div class="table-responsive">
+                                <table id="tblAllItemsDiario" class="table table-sm" width="100%" >
+                                    
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     
                     
                     <div class="row" >

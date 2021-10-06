@@ -200,20 +200,22 @@ class reportes_model extends Model
 
         switch ($company_user) {
             case '1':
-                $sql_exec = "EXEC Umk_VentaLinea_Articulo_dev '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."','".$ruta."','".$Labs."'";
-                $sql_Cli  = "EXEC Umk_VentaLinea_Articulo '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."','".$ruta."'";
-                $sql_meta = "EXEC UMK_meta_articulos '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."'";
+                $sql_exec   = "EXEC gnet_rpt_ventas_filtros_umk '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."','".$ruta."','".$Labs."'";
+                $sql_Cli    = "EXEC Umk_VentaLinea_Articulo '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."','".$ruta."'";
+                $sql_meta   = "EXEC UMK_meta_articulos '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."'";
                 break;
             case '2':
-                $sql_exec = "EXEC Gp_VentaLinea_Articulo '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."','".$ruta."'";
-                $sql_meta = "EXEC Gp_meta_articulos ".$mes.", ".$anio.", '".$clase."', '".$cliente."', '".$articulo."'";
+                $sql_exec   = "EXEC gnet_rpt_ventas_filtros_gup '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."','".$ruta."','".$Labs."'";
+                $sql_Cli    = "EXEC Gp_VentaLinea_Articulo '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."','".$ruta."'";
+                $sql_meta   = "EXEC Gp_meta_articulos ".$mes.", ".$anio.", '".$clase."', '".$cliente."', '".$articulo."'";
                 break;
             case '3':
                 return false;
                 break;
             case '4':
-                $sql_exec = "EXEC Inv_VentaLinea_Articulo '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."','".$ruta."'";
-                $sql_meta = "EXEC Inv_meta_articulos ".$mes.", ".$anio.", '".$clase."', '".$cliente."', '".$articulo."'";
+                $sql_exec   = "EXEC gnet_rpt_ventas_filtros_inn '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."','".$ruta."','".$Labs."'";
+                $sql_Cli    = "EXEC Inv_VentaLinea_Articulo '".$mes."', ".$anio.", '".$clase."', '".$cliente."', '".$articulo."','".$ruta."'";
+                $sql_meta   = "EXEC Inv_meta_articulos ".$mes.", ".$anio.", '".$clase."', '".$cliente."', '".$articulo."'";
                 break;
                 break; 
             default:                
