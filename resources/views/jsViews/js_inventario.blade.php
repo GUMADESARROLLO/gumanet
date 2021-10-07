@@ -44,7 +44,6 @@ $(document).ready(function() {
             { title: "EXISTENCIA",          data: "total" },
             { title: "UNIDADES",            data: "und" },
         ];
-        $("#modulo-inventario").empty();
     break;
     case '4':
         columnDefs=[

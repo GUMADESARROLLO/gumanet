@@ -572,20 +572,9 @@ class inventario_model extends Model {
         switch ($company_user) {
             case '1':
                 $sql_exec = "EXECUTE FCHA_VENCIMIENTO_LOTE ".$valor;
-                /*$sql_vent_art = "SELECT
-                                ARTICULO,
-                                DESCRIPCION,
-                                CAST( SUM(Cantidad) AS FLOAT) AS CANTIDAD,
-                                CAST( SUM([P. Unitario] * Cantidad) AS FLOAT) AS VENTA
-                                FROM
-                                Softland.dbo.VtasTotal_UMK (nolock)
-                                WHERE [Año] = ".$anio." 
-                                AND [P. Unitario] > 0   AND
-                                Ruta NOT IN('F01', 'F12')
-                                GROUP BY ARTICULO, DESCRIPCION";*/
                 break;
             case '2':
-                return false;
+                $sql_exec = "EXECUTE FCHA_VENCIMIENTO_LOTE_GUMA ".$valor;                
                 break;
             case '3':
                 return false;
