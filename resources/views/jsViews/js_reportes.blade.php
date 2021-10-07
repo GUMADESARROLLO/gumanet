@@ -313,6 +313,7 @@ function dataVentasArticulos(json, meta) {
 				'columns': [
 					{ "data": "Articulo" },
 					{ "data": "Descripcion" },
+					{ "data": "Disponible" },
 					{ "data": "TotalFacturado" },
 					{ "data": "UndFacturado"},
 					{ "data": "UndBoni"},

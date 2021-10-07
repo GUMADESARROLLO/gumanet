@@ -2687,7 +2687,7 @@ $(tableActive).DataTable({
     'columns': [
         { "title"   : "ARTICULO",           "data"  : "Articulo" },
         { "title"   : "DESCRIPCION",        "data"  : "Descripcion" },
-        { "title"   : "CANT. DISP B002",    "data"  : "Existencia" },
+        { "title"   : "CANT. DISP",         "data"  : "Existencia" },
         { "title"   : "TOT. FACT",          "data"  : "TotalFacturado" },
         { "title"   : "UNIT. FACT.",        "data"  : "UndFacturado" },
         { "title"   : "UNIT. BONIF.",       "data"  : "UndBoni" },
