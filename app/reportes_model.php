@@ -267,6 +267,7 @@ class reportes_model extends Model
 
                 $Articulos[$n]["Articulo"]           = $fila["Articulo"];
                 $Articulos[$n]["Descripcion"]        = $fila["Descripcion"];            
+                $Articulos[$n]["Disponible"]         = number_format($fila["CANT_DISPONIBLE"],2);
                 $Articulos[$n]["TotalFacturado"]     = number_format($Total_Facturado,2);
                 $Articulos[$n]["UndFacturado"]       = number_format($Cantidad, 0);
                 $Articulos[$n]["UndBoni"]            = number_format($Cantidad_bonificada, 0);

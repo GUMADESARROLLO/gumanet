@@ -514,13 +514,9 @@ class dashboard_model extends Model {
 
         $RutaSegmento = "";
 
-        
+        $Sql_Dia = ($dia==0) ? '' : ' AND DAY(dia) = '.$dia.' '  ;
         switch ($company_user) {
             case '1':
-
-                $Sql_Dia = ($dia==0) ? '' : ' AND DAY(dia) = '.$dia.' '  ;
-
-
 
                 if ($Segmento==0) {
                     //TODAS LOS SEGMENTOS
@@ -553,7 +549,7 @@ class dashboard_model extends Model {
                                 isnull(sum(T1.venta),0) MontoVenta,
                                 AVG (T1.[P. Unitario]) as AVG_,         
                                 T1.[Costo Unitario] AS COSTO_PROM,
-                                isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.VtasTotal_UMK T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año]) AND  ".$qSegmento."  AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni
+                                isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.VtasTotal_UMK T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año]) AND  ".$qSegmento."  $Sql_Dia  AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni
                     
                                 from Softland.dbo.VtasTotal_UMK T1 Where ".$mes." = T1.nMes and $anio = T1.[Año] and T1.[P. Unitario] > 0
                                 AND  T1.".$qSegmento." $Sql_Dia
@@ -573,7 +569,7 @@ class dashboard_model extends Model {
                             isnull(sum(T1.venta),0) MontoVenta,
                             AVG (T1.[P. Unitario]) as AVG_,         
                             T1.[Costo Unitario] AS COSTO_PROM,
-                            isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.GP_VtasTotal_UMK T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año])  AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni
+                            isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.GP_VtasTotal_UMK T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año]) $Sql_Dia AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni
                 
                             from Softland.dbo.GP_VtasTotal_UMK T1 WHERE ".$mes." = T1.nMes and $anio = T1.[Año] and T1.[P. Unitario] > 0
                             GROUP BY T1.Articulo,T1.Descripcion,T1.[Costo Unitario]
@@ -592,7 +588,7 @@ class dashboard_model extends Model {
                             isnull(sum(T1.venta),0) MontoVenta,
                             AVG (T1.[P. Unitario]) as AVG_,         
                             T1.[Costo Unitario] AS COSTO_PROM,
-                            isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.INV_VtasTotal_UMK_Temporal T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año])  AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni
+                            isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.INV_VtasTotal_UMK_Temporal T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año]) $Sql_Dia AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni
                 
                             from Softland.dbo.INV_VtasTotal_UMK_Temporal T1 WHERE ".$mes." = T1.nMes and $anio = T1.[Año] and T1.[P. Unitario] > 0
                             GROUP BY T1.Articulo,T1.Descripcion,T1.[Costo Unitario]

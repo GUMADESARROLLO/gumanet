@@ -163,6 +163,7 @@
 								<tr>
 									<th class="text-center">ARTICULO</th>
 									<th class="text-center">DESCRIPCION</th>
+									<th class="text-center">CANT. DISP.</th>
 									<th class="text-center">TOT. FACT</th>
 									<th class="text-center">UNIT. FACT.</th>
 									<th class="text-center">UNIT. BONIF</th>
