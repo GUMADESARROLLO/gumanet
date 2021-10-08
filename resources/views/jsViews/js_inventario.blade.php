@@ -93,12 +93,12 @@ $(document).ready(function() {
         "columnDefs": columnDefs,
         rowCallback: function (row, data) {
 
-            
+            /*
             if (numeral(data.MESES_INVENTARIO).format('0.00') <= 3) {                
                 $("td:eq(10)", row).addClass("alert alert-danger");
             }else if(numeral(data.MESES_INVENTARIO).format('0.00') > 3 &&  data.MESES_INVENTARIO <= 12){
                 $("td:eq(10)", row).addClass("alert alert-warning");
-            }
+            }*/
 
         }
     });
@@ -139,8 +139,8 @@ function liquidacionPorMeses(valor) {
             { "title": "FECHA VENCE",           "data": "F_VENCIMIENTO" },
             { "title": "LOTE",                  "data": "LOTE" },
             { "title": "BODEGA",                "data": "BODEGA" },
-            { "title": "TOTAL UNITS 2020",      "data": "VTS_ANIO_ANT" },
-            { "title": "PROM. UNITS/MES 2020",  "data":  "PROMEDIO_VENTA" },
+            { "title": "TOTAL UNITS 2021",      "data": "VTS_ANIO_ANT" },
+            { "title": "PROM. UNITS/MES 2021",  "data":  "PROMEDIO_VENTA" },
             { "title": "MESES DE INVENTARIO",   "data": "TEMPO_ESTI_VENT" },
             { "title": "COSTO PROM.",           "data": "COSTO_PROM_LOC" },
             { "title": "COSTO ULT.",            "data": "COSTO_ULT_LOC" },

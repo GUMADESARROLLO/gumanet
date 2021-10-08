@@ -2103,6 +2103,20 @@ class dashboard_model extends Model {
                                 AND [P. Unitario] > 0   AND
                                 Ruta NOT IN('F01', 'F12')
                                 GROUP BY Año,nMes";
+                                /* $sql_fcorte = "
+                            SELECT CAST((AVG(T0.SubTotal) / 30 )  AS FLOAT) montoVenta
+                            FROM(
+                                SELECT 
+                                        sum ( venta ) SubTotal
+                                    FROM
+                                        Softland.dbo.VtasTotal_UMK ( nolock ) 
+                                    WHERE
+                                    [Dia] BETWEEN '".$f1."' 
+                                    AND '".$f2."'
+                                    AND [P. Unitario] > 0 
+                                    AND Ruta NOT IN ( 'F01', 'F12' ) 
+                                    GROUP BY day(Dia)
+                            ) T0;";*/
                     break;
                     case '2':
                     $sql_fcorte = "SELECT

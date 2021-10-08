@@ -24,7 +24,7 @@ class inventario_model extends Model {
         $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
         $anio = date('Y');
         $getMonth  = date('n');
-        $anio = intval($anio) - 1;
+        //$anio = intval($anio) - 1;
 
 
         switch ($company_user) {
@@ -114,25 +114,39 @@ class inventario_model extends Model {
 
         $query1 = $sql_server->fetchArray( $sql_exec , SQLSRV_FETCH_ASSOC);
         $query_vent_art = $sql_server->fetchArray($sql_vent_art, SQLSRV_FETCH_ASSOC);
-
-     
         
         tbl_temporal::truncate()->insert($query_vent_art);
         
         foreach ($query1 as $key) {
             $desc_art = inventario_model::clean($key['DESCRIPCION']);
 
-            $cantidad = tbl_temporal::where('articulo', $key['ARTICULO'])->select('cantidad')->first();
+            /*$cantidad = tbl_temporal::where('articulo', $key['ARTICULO'])->select('cantidad')->first();
             
             $vst_mes_Actual = tbl_temporal::where('articulo', $key['ARTICULO'])->select('VstMesActual')->first();
             $vst_anno_Actual = tbl_temporal::where('articulo', $key['ARTICULO'])->select('VstAnnoActual')->first();
-
             $cantidad = ( $cantidad['cantidad']=='' )?0:$cantidad['cantidad'];
+            */
+
+
+
+            $Stat_Articulos = tbl_temporal::where('articulo', $key['ARTICULO'])->get()->first();
+
+            if ($Stat_Articulos) {
+                $cantidad = $Stat_Articulos->cantidad;
+                $vst_mes_Actual = $Stat_Articulos->VstMesActual;
+                $vst_anno_Actual = $Stat_Articulos->VstAnnoActual;
+            } else {
+                $cantidad = 0;
+                $vst_mes_Actual = 0;
+                $vst_anno_Actual = 0;
+            }
+
+            
             $promedio =   ( $cantidad>0 )?( $cantidad / 12 ):0;
 
 
-            $vst_mes_Actual = ( $vst_mes_Actual['VstMesActual']=='' )?0:$vst_mes_Actual['VstMesActual'];
-            $vst_anno_Actual = ( $vst_anno_Actual['VstAnnoActual']=='' )?0:$vst_anno_Actual['VstAnnoActual'];
+            //$vst_mes_Actual = ( $vst_mes_Actual['VstMesActual']=='' )?0:$vst_mes_Actual['VstMesActual'];
+            //$vst_anno_Actual = ( $vst_anno_Actual['VstAnnoActual']=='' )?0:$vst_anno_Actual['VstAnnoActual'];
             
             $MesInventario = '0.00';
 
@@ -567,6 +581,7 @@ class inventario_model extends Model {
         $sql_exec = '';
         $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
         $anio = date('Y');
+        $getMonth  = date('n');
         $anio = intval($anio) - 1;
         
         switch ($company_user) {
@@ -596,12 +611,28 @@ class inventario_model extends Model {
 
         foreach ($query1 as $key) {
 
-            $cantidad = tbl_temporal::where('articulo', $key['ARTICULO'])->select('cantidad')->first();
-            $cantidad = ( $cantidad['cantidad']=='' )?0:$cantidad['cantidad'];
+            $oItem = tbl_temporal::where('articulo', $key['ARTICULO'])->get()->first();
+            if ($oItem) {
+                $cantidad = $oItem->cantidad;
+                $vst_mes_Actual = $oItem->VstMesActual;
+                $vst_anno_Actual = $oItem->VstAnnoActual;
+            } else {
+                $cantidad = 0;
+                $vst_mes_Actual = 0;
+                $vst_anno_Actual = 0;
+            }
+
+            /*$cantidad = tbl_temporal::where('articulo', $key['ARTICULO'])->select('cantidad')->first();
+            $cantidad = ( $cantidad['cantidad']=='' )?0:$cantidad['cantidad'];*/
+
+            
 
             $totalExistencia = $key['CANT_DISPONIBLE'];
             $promedio =   ( $cantidad>0 )?( $cantidad / 12 ):0;
-            $tempoEstimado = ($promedio>0)?($totalExistencia / $promedio):0;
+            //$tempoEstimado = ($promedio>0)?($totalExistencia / $PromedioActual):0;
+
+            $PromedioActual = number_format(($vst_anno_Actual / $getMonth), 2,".","");
+            $tempoEstimado = ($key['CANT_DISPONIBLE'] > 0.10 && $PromedioActual > 0.10) ? $totalExistencia  / $PromedioActual : "0.00" ;
 
             $query[$i]['ARTICULO']          = $key['ARTICULO'];
             $query[$i]['DESCRIPCION']       = $key['DESCRIPCION'];
@@ -610,9 +641,9 @@ class inventario_model extends Model {
             $query[$i]['CANT_DISPONIBLE']   = number_format($key['CANT_DISPONIBLE'],2).' - [ '.$key['UNIDAD_VENTA'].' ]';
             $query[$i]['F_VENCIMIENTO']     = date('d/m/Y', strtotime($key['FECHA_VENCIMIENTO']) );
             $query[$i]['LOTE']              = $key['LOTE'];
-            $query[$i]['VTS_ANIO_ANT']      = number_format($cantidad, 2);
+            $query[$i]['VTS_ANIO_ANT']      = number_format($vst_anno_Actual, 2);
             $query[$i]['BODEGA']            = $key['BODEGA'];
-            $query[$i]['PROMEDIO_VENTA']    = number_format($promedio, 2);
+            $query[$i]['PROMEDIO_VENTA']    = number_format($PromedioActual, 2);
             $query[$i]['TEMPO_ESTI_VENT']   = number_format($tempoEstimado, 2);
             $query[$i]['COSTO_PROM_LOC']    = number_format($key['COSTO_PROM_LOC'], 2);
             $query[$i]['COSTO_ULT_LOC']     = number_format($key['COSTO_ULT_LOC'], 2);

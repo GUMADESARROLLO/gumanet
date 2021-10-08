@@ -345,7 +345,7 @@ function dataVentasArticulos(json, meta) {
 		            mta = 0;
 
 		            total = api
-		                .column( 2 )
+		                .column( 3 )
 		                .data()
 		                .reduce( function (a, b) {
 		                    return intVal(a) + intVal(b);
@@ -353,7 +353,7 @@ function dataVentasArticulos(json, meta) {
 		            $('#MontoMeta2').text('C$ '+ numeral(total).format('0,0.00'));
 
 					total_unidades = api
-		                .column( 3 )
+		                .column( 4 )
 		                .data()
 		                .reduce( function (a, b) {							
 		                    return intVal(a) + intVal(b);
