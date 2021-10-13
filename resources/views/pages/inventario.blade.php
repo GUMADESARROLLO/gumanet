@@ -214,14 +214,18 @@
           </div>
           <div class="tab-pane fade" id="nav-costos" role="tabpanel" aria-labelledby="navCostos">
             <div class="row">
-              <div class="col-sm-12">
+              <div class="col-sm-12">                
                 <table id="tblCostos" class="table table-bordered mt-3">
-                  <thead class="bg-blue text-light">
-                  <tr>
-                      <th>Precio Promedio.</th>
-                      <th>Ultimo Costo.</th>
-                  </tr>
-                  </thead>
+                  <tbody id="tbody1">
+                      <tr>
+                        <td class="bg-blue text-light"><b>Precio Promedio.</b></td>
+                        <td id="id_prec_prom" class ="dt-right">0</td>
+                      </tr>
+                      <tr >
+                        <td class="bg-blue text-light"><b>Ultimo Costo.</b></td>
+                        <td id="id_ult_prec" class="dt-right">0</td>
+                      </tr>
+                    </tbody>
                 </table>
               </div>
             </div>
