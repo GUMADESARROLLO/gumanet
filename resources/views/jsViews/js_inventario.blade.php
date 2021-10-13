@@ -290,32 +290,17 @@ function getPrecios(articulo) {
         }
     });
 }
-function getCostos(articulo) {
-    $("#tblCostos").dataTable({
-        responsive: true,
-        "autoWidth":false,
-        "ajax":{
-            "url": "objCostos/"+articulo,
-            'dataSrc': '',
-        },
-        "searching": false,
-        "destroy": true,
-        "paging":   false,
-        "columns":[
-            { "data": "COSTO_PROM_LOC"},
-            { "data": "COSTO_ULT_LOC" }
-        ],
-        "columnDefs": [
-            {"className":"dt-right", "targets": [ 0,1 ] },
-            
-        ],
-        "info": false,
-        "language": {            
-            "zeroRecords": "No hay datos que mostrar",
-            "emptyTable": "N/D",
-            "loadingRecords": "Cargando...",
+function getCostos(articulo) {   
+    $.ajax({
+        url: "objCostos/"+articulo,
+        type: 'get',
+        data: {},
+        async: true,
+        success: function(data) {
+            $("#id_prec_prom").text(data[0]['COSTO_PROM_LOC']);
+            $("#id_ult_prec").text(data[0]['COSTO_ULT_LOC'])
         }
-    });
+    })
 }
 
 function getBonificados(articulo) {
