@@ -733,6 +733,44 @@ class inventario_model extends Model {
         $sql_server->close();
         return $json;
     }
+    public static function getCostosArticulos($articulo) {
+        
+        $sql_server     = new \sql_server();
+        $sql_exec       = '';
+        $request        = Request();
+        $company_user   = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        switch ($company_user) {
+            case '1':
+                $sql_exec = "EXEC gnet_articulo_costos N'".$articulo."',umk";
+                break;
+            case '2':
+                $sql_exec = "EXEC gnet_articulo_costos N'".$articulo."',guma";
+                break;
+            case '3':
+                return false;
+                break;
+            case '4':
+                $sql_exec = "EXEC gnet_articulo_costos N'".$articulo."',innova";
+                break;   
+            default:                
+                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
+                break;
+        }        
+
+        $i = 0;
+        $json = array();
+        
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+
+        foreach ($query as $fila) {
+            $json[$i]["COSTO_PROM_LOC"] = "C$ " .number_format($fila["COSTO_PROM_LOC"],4);
+            $json[$i]["COSTO_ULT_LOC"]  = ($fila["COSTO_ULT_LOC"]=="") ? "N/D" : "C$ " .number_format($fila["COSTO_ULT_LOC"],4);
+            $i++;
+        }
+
+        $sql_server->close();
+        return $json;
+    }
 
     public static function getArtBonificados($articulo) {
         

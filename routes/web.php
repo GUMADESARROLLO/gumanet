@@ -53,6 +53,7 @@ Route::get('/role','usuario_controller@getRole');
 Route::get('/articulos','inventario_controller@getArticulos');
 Route::get('/objBodega/{articulo}','inventario_controller@getBodegaInventario');
 Route::get('/objPrecios/{articulo}','inventario_controller@getPreciosArticulos');
+Route::get('/objCostos/{articulo}','inventario_controller@getCostosArticulos');
 Route::get('/objBonificado/{articulo}','inventario_controller@getArtBonificados');
 Route::post('/transacciones','inventario_controller@transaccionesDetalle');
 Route::post('/lotes','inventario_controller@getLotesArticulo');

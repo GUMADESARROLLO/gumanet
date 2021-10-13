@@ -211,6 +211,9 @@ $('nav .nav.nav-tabs a').click(function(){
         break;
         case 'navTransaccion':        
         break;
+        case 'navCostos':        
+            getCostos(articulo_g)
+        break;
         default:
             alert('Al parecer alguio salio mal :(')
     }    
@@ -278,6 +281,33 @@ function getPrecios(articulo) {
         "columns":[
             { "data": "NIVEL_PRECIO"},
             { "data": "PRECIO" }
+        ],
+        "info": false,
+        "language": {            
+            "zeroRecords": "No hay datos que mostrar",
+            "emptyTable": "N/D",
+            "loadingRecords": "Cargando...",
+        }
+    });
+}
+function getCostos(articulo) {
+    $("#tblCostos").dataTable({
+        responsive: true,
+        "autoWidth":false,
+        "ajax":{
+            "url": "objCostos/"+articulo,
+            'dataSrc': '',
+        },
+        "searching": false,
+        "destroy": true,
+        "paging":   false,
+        "columns":[
+            { "data": "COSTO_PROM_LOC"},
+            { "data": "COSTO_ULT_LOC" }
+        ],
+        "columnDefs": [
+            {"className":"dt-right", "targets": [ 0,1 ] },
+            
         ],
         "info": false,
         "language": {            

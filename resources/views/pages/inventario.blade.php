@@ -111,6 +111,7 @@
             <a class="nav-item nav-link" id="navPrecios" data-toggle="tab" href="#nav-prec" role="tab" aria-controls="nav-prec" aria-selected="false">Precios</a>
             <a class="nav-item nav-link" id="navBonificados" data-toggle="tab" href="#nav-boni" role="tab" aria-controls="nav-boni" aria-selected="false">Bonificados</a>
             <a class="nav-item nav-link" id="navTransaccion" data-toggle="tab" href="#nav-trans" role="tab" aria-controls="nav-trans" aria-selected="false">Transacciones</a>
+            <a class="nav-item nav-link" id="navCostos" data-toggle="tab" href="#nav-costos" role="tab" aria-controls="nav-trans" aria-selected="false">Costos</a>
           </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
@@ -210,7 +211,20 @@
                 </table>
               </div>
             </div>
-
+          </div>
+          <div class="tab-pane fade" id="nav-costos" role="tabpanel" aria-labelledby="navCostos">
+            <div class="row">
+              <div class="col-sm-12">
+                <table id="tblCostos" class="table table-bordered mt-3">
+                  <thead class="bg-blue text-light">
+                  <tr>
+                      <th>Precio Promedio.</th>
+                      <th>Ultimo Costo.</th>
+                  </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
