@@ -15,18 +15,17 @@ class dashboard_controller extends Controller {
   public function __construct() {
     $this->middleware('auth');
   }
-   
-   public function index() {
+  public function index() {
 
     $this->agregarDatosASession();
 
 
-       $data = [
-           'name' =>  'GUMA@NET'
-       ];
+      $data = [
+          'name' =>  'GUMA@NET'
+      ];
       
-       return view('pages.dashboard',$data);
-   }
+      return view('pages.dashboard',$data);
+  }
 
     public function agregarDatosASession(){
       $request = Request();
@@ -50,9 +49,9 @@ class dashboard_controller extends Controller {
 		$obj = dashboard_model::getDetalleVentas($tipo, $mes, $anio, $cliente, $articulo, $ruta);
 		return response()->json($obj);
 	}
-  public function getDetalleVentasDia($dia, $mes, $anio) 
+  public function getDetalleVentasDia($dia, $mes, $anio,$segmento) 
   {
-		$obj = dashboard_model::getDetalleVentasDia($dia, $mes, $anio);
+		$obj = dashboard_model::getDetalleVentasDia($dia, $mes, $anio,$segmento);
 		return response()->json($obj);
 	}
   public function getDetalleVentasXRuta($mes,$anio,$ruta){
@@ -85,6 +84,10 @@ class dashboard_controller extends Controller {
     $obj = dashboard_model::getDataGraficas($mes, $anio, $xbolsones);
     return response()->json($obj);
   }
+  public function getDataGrafSelect($mes, $anio, $xbolsones,$Segmentos) {
+    $obj = dashboard_model::get_Ventas_diarias($mes, $anio, 1 ,$xbolsones,$Segmentos);
+    return response()->json($obj);
+  }
 
   public function GetTop10Productos($mes, $anio, $xbolsones,$segmento) {
     $obj = dashboard_model::getTop10Productos($mes, $anio,1, $xbolsones,$segmento);
@@ -104,8 +107,8 @@ class dashboard_controller extends Controller {
   }
 
 
-  public function getRealVentasMensuales($xbolsones) {
-    $obj = dashboard_model::getRealVentasMensuales($xbolsones);
+  public function getRealVentasMensuales($xbolsones,$segmentos) {
+    $obj = dashboard_model::getRealVentasMensuales($xbolsones,$segmentos);
     return response()->json($obj);
   }
 
