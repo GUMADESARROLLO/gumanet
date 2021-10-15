@@ -772,6 +772,47 @@ class inventario_model extends Model {
         return $json;
     }
 
+    public static function getOtrosArticulos($articulo) {
+        
+        $sql_server     = new \sql_server();
+        $sql_exec       = '';
+        $request        = Request();
+        $company_user   = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        switch ($company_user) {
+            case '1':
+                $sql_exec = "EXEC gnet_articulo_otros N'".$articulo."',umk";
+                break;
+            case '2':
+                $sql_exec = "EXEC gnet_articulo_otros N'".$articulo."',guma";
+                break;
+            case '3':
+                return false;
+                break;
+            case '4':
+                $sql_exec = "EXEC gnet_articulo_otros N'".$articulo."',innova";
+                break;   
+            default:                
+                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
+                break;
+        }        
+
+        $i = 0;
+        $json = array();
+        
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+
+        foreach ($query as $fila) {
+            $json[$i]["CLASE"]              = ($fila["CLASE_ABC"]=="") ? "N/D" : $fila["CLASE_ABC"];
+            $json[$i]["MINIMO"]             = ($fila["EXISTENCIA_MINIMA"]=="") ? "N/D" : number_format($fila["EXISTENCIA_MINIMA"],4);
+            $json[$i]["REORDEN"]            = ($fila["PUNTO_DE_REORDEN"]=="") ? "N/D" : number_format($fila["PUNTO_DE_REORDEN"],4);
+            $json[$i]["REABASTECIMIENTO"]   = ($fila["PLAZO_REABAST"]=="") ? "N/D" : $fila["PLAZO_REABAST"]." Dias";
+            $i++;
+        }
+
+        $sql_server->close();
+        return $json;
+    }
+
     public static function getArtBonificados($articulo) {
         
         $sql_server = new \sql_server();

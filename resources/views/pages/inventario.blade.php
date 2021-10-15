@@ -112,6 +112,7 @@
             <a class="nav-item nav-link" id="navBonificados" data-toggle="tab" href="#nav-boni" role="tab" aria-controls="nav-boni" aria-selected="false">Bonificados</a>
             <a class="nav-item nav-link" id="navCostos" data-toggle="tab" href="#nav-costos" role="tab" aria-controls="nav-trans" aria-selected="false">Costos</a>
             <a class="nav-item nav-link" id="navTransaccion" data-toggle="tab" href="#nav-trans" role="tab" aria-controls="nav-trans" aria-selected="false">Transacciones</a>
+            <a class="nav-item nav-link" id="navOtros" data-toggle="tab" href="#nav-otros" role="tab" aria-controls="nav-otros" aria-selected="false">Otros</a>
             
           </div>
         </nav>
@@ -213,6 +214,7 @@
               </div>
             </div>
           </div>
+          
           <div class="tab-pane fade" id="nav-costos" role="tabpanel" aria-labelledby="navCostos">
             <div class="row">
               <div class="col-sm-12">                
@@ -231,6 +233,34 @@
               </div>
             </div>
           </div>
+
+          <div class="tab-pane fade" id="nav-otros" role="tabpanel" aria-labelledby="navOtros">
+            <div class="row">
+              <div class="col-sm-12">                
+                <table id="tblCostos" class="table table-bordered mt-3">
+                  <tbody id="tbody1">
+                      <tr>
+                        <td class="bg-blue text-light"><b>Clase.</b></td>
+                        <td id="id_clase_abc" class ="dt-right">0</td>
+                      </tr>
+                      <tr >
+                        <td class="bg-blue text-light"><b>Minimo.</b></td>
+                        <td id="id_existencia_minima" class="dt-right">0</td>
+                      </tr>
+                      <tr>
+                        <td class="bg-blue text-light"><b>ReOrden.</b></td>
+                        <td id="id_punto_de_reoden" class ="dt-right">0</td>
+                      </tr>
+                      <tr >
+                        <td class="bg-blue text-light"><b>Reabastecimiento.</b></td>
+                        <td id="id_plazo_rebast" class="dt-right">0</td>
+                      </tr>
+                    </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="modal-footer">

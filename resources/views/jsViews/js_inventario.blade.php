@@ -214,6 +214,9 @@ $('nav .nav.nav-tabs a').click(function(){
         case 'navCostos':        
             getCostos(articulo_g)
         break;
+        case 'navOtros':        
+            getOtros(articulo_g)
+        break;
         default:
             alert('Al parecer alguio salio mal :(')
     }    
@@ -299,6 +302,21 @@ function getCostos(articulo) {
         success: function(data) {
             $("#id_prec_prom").text(data[0]['COSTO_PROM_LOC']);
             $("#id_ult_prec").text(data[0]['COSTO_ULT_LOC'])
+        }
+    })
+}
+
+function getOtros(articulo) {   
+    $.ajax({
+        url: "objOtros/"+articulo,
+        type: 'get',
+        data: {},
+        async: true,
+        success: function(data) {
+            $("#id_clase_abc").text(data[0]['CLASE']);
+            $("#id_existencia_minima").text(data[0]['MINIMO'])
+            $("#id_punto_de_reoden").text(data[0]['REORDEN']);
+            $("#id_plazo_rebast").text(data[0]['REABASTECIMIENTO'])
         }
     })
 }
