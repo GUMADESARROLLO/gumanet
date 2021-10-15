@@ -41,7 +41,7 @@ class dashboard_model extends Model {
         );
         $dtaVtnDiarias[] = array(
             'tipo' => 'dtaVentasDiarias',
-            'data' => dashboard_model::get_Ventas_diarias($mes, $anio, $company_user, $xbolsones)
+            'data' => dashboard_model::get_Ventas_diarias($mes, $anio, $company_user, $xbolsones,0)
         );
         $dtaRecupera[] = array(
             'tipo' => 'dtaRecupera',
@@ -78,8 +78,9 @@ class dashboard_model extends Model {
         return $array_merge;
         $sql_server->close();
     }
-    public static function get_Ventas_diarias($mes, $anio, $company_user, $xbolsones) 
+    public static function get_Ventas_diarias($mes, $anio, $company_user, $xbolsones ,$Segmento) 
     {
+
         $sql_server = new \sql_server();
         $sql_exec = '';
         $tem_ = 0;
@@ -98,7 +99,7 @@ class dashboard_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = " EXEC gnet_vnts_diaria_umk ".$mes.", ".$anio."  ";
+                $sql_exec = " EXEC gnet_vnts_diaria_generico ".$mes.", ".$anio.", 'VtasTotal_UMK', ".$Segmento." ";
                 break;
             case '2':
                 $sql_exec = " EXEC gnet_vnts_diaria_gp ".$mes.", ".$anio." ";
@@ -637,19 +638,42 @@ class dashboard_model extends Model {
         return $json;
     }  
 
-    public static function getDetalleVentasDia($dia, $mes, $anio)
+    public static function getDetalleVentasDia($dia, $mes, $anio,$Segmento)
     {
         $sql_server = new \sql_server();
         $fecha = new DateTime($anio.'-'.$mes.'-01');
         $sql_exec = '';
         $request = Request();
         $idPeriodo = '';
+        $qSegmento ="";
         $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
         switch ($company_user) {
-            case '1':                               
+            case '1': 
+                if ($Segmento==0) {
+                    //TODAS LOS SEGMENTOS
+                    $qSegmento =" Ruta NOT IN ('F01','F12') ";
+
+                } else {
+                    if ($Segmento==1) {
+                        //TODAS LAS RUTAS DEL SEGMENTO FARMACIA
+                        $qSegmento =" Ruta NOT IN ('F04','F02','F01','F12') ";
+                    } else {
+                        if ($Segmento==2) {
+                           //TODAS LAS RUTAS DEL SEGMENTO MAYORISTA
+                            $qSegmento =" Ruta IN ('F04') ";
+                        } else {
+                            if ($Segmento==3) {
+                               //TODAS LAS RUTAS DEL SEGMENTO INSTITUCION
+                                $qSegmento =" Ruta IN ('F02') ";
+                            }
+                            
+                        }
+                        
+                    }
+                }
                 $sql_exec =" SELECT Ruta, SUM ( VENTA ) AS Monto, SUM ( Cantidad ) AS Cantidad 
                 FROM Softland.DBO.VtasTotal_UMK ( nolock ) 
-                WHERE DAY ( DIA ) =".$dia." AND MONTH ( DIA ) = ".$mes."  AND YEAR ( DIA ) = ".$anio."  AND [P. Unitario] > 0  AND Ruta NOT IN ( 'F01', 'F12' ) 
+                WHERE DAY ( DIA ) =".$dia." AND MONTH ( DIA ) = ".$mes."  AND YEAR ( DIA ) = ".$anio."  AND [P. Unitario] > 0  AND Ruta NOT IN ( 'F01', 'F12' ) AND  ".$qSegmento."
                 GROUP BY Ruta ORDER BY Ruta";
                 break;
             case '2':
@@ -921,37 +945,11 @@ class dashboard_model extends Model {
         
         switch ($company_user) {
             case '1':
-                //$sql_exec = " EXEC Umk_DetalleVentas_Mes ".$mes.", ".$anio." ";
-
-
                 
-
-                /*if ($Segmento==0) {
-                    //TODAS LOS SEGMENTOS
-                    $RutaSegmento = "'F02','F03','F04','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
-                } else {
-                    if ($Segmento==1) {
-                        //TODAS LAS RUTAS DEL SEGMENTO FARMACIA
-                        $RutaSegmento = "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'";
-                    } else {
-                        if ($Segmento==2) {
-                           //TODAS LAS RUTAS DEL SEGMENTO MAYORISTA
-                            $RutaSegmento = "'F04'";
-                        } else {
-                            if ($Segmento==3) {
-                               //TODAS LAS RUTAS DEL SEGMENTO INSTITUCION
-                                $RutaSegmento = "'F02'";
-                            }
-                            
-                        }
-                        
-                    }
-                }*/
-
 
                 if ($Segmento==0) {
                     //TODAS LOS SEGMENTOS
-                     $qSegmento =" Ruta NOT IN ('F01','F12') ";
+                    $qSegmento =" Ruta NOT IN ('F01','F12') ";
 
                 } else {
                     if ($Segmento==1) {
@@ -1974,7 +1972,7 @@ class dashboard_model extends Model {
         $sql_server->close();
 }
 
-    public static function getRealVentasMensuales($xbolsones) {
+    public static function getRealVentasMensuales($xbolsones,$Segmento) {
         $sql_server = new \sql_server();
         $sql_exec = '';
         $request = Request();
@@ -1983,185 +1981,79 @@ class dashboard_model extends Model {
         $real = array();
         $fechaCorte = array();
         $anio = intval( date('Y') );
-        
-        switch ($company_user) {
-            case '1':
-                $sql_exec = "SELECT
-                                ISNULL( CAST( SUM(venta) AS FLOAT), 0 ) AS montoVenta,
-                                nMes AS mes
-                            FROM
-                                Softland.dbo.VtasTotal_UMK(nolock)
-                            WHERE [Año] IN (".$anio.")
-                                AND [P. Unitario] > 0   AND
-                                Ruta NOT IN('F01', 'F12')
-                            GROUP BY Mes,Año,nMes
-                            ORDER BY nMes";
+        $qSegmento ="";
+        $View  = "VtasTotal_UMK";
 
-                $sql_meta = "SELECT
-                                ISNULL( CAST( SUM(T0.val) AS FLOAT ), 0 ) AS meta,
-                                MONTH(T1.Fecha) AS mes
-                            FROM
-                                DESARROLLO.dbo.gn_cuota_x_productos T0 INNER JOIN DESARROLLO.dbo.metacuota_GumaNet T1 ON T0.IdPeriodo = T1.IdPeriodo
-                            WHERE YEAR(T1.Fecha) = ".$anio." AND T1.IdCompany = 1
-                            GROUP BY MONTH(T1.Fecha)
-                            ORDER BY MONTH(T1.Fecha)";
-                break;
-            case '2':
-                $sql_exec = "SELECT
-                                ISNULL( CAST( SUM([P. Unitario] * Cantidad) AS FLOAT), 0 ) AS montoVenta,
-                                nMes AS mes
-                            FROM
-                                Softland.dbo.GP_VtasTotal_UMK(nolock)
-                            WHERE [Año] IN (".$anio.")
-                                AND [P. Unitario] > 0
-                            GROUP BY Mes,Año,nMes
-                            ORDER BY nMes";
+        $Filtros ="AND Ruta NOT IN('F01', 'F12')";
 
-                $sql_meta = "SELECT
-                                ISNULL( CAST( SUM(T0.val) AS FLOAT ), 0 ) AS meta,
-                                MONTH(T1.Fecha) AS mes
-                            FROM
-                                DESARROLLO.dbo.gn_cuota_x_productos T0 INNER JOIN DESARROLLO.dbo.metacuota_GumaNet T1 ON T0.IdPeriodo = T1.IdPeriodo
-                            WHERE YEAR(T1.Fecha) = ".$anio." AND T1.IdCompany = 2
-                            GROUP BY MONTH(T1.Fecha)
-                            ORDER BY MONTH(T1.Fecha)";
-                break;
-            case '3':
-                return false;
-                break; 
-            case '4':
-                if ( $xbolsones ) {
-                    $sql_exec = "SELECT
-                        ISNULL( CAST( SUM(CANTIDAD) AS FLOAT), 0 ) AS montoVenta,
-                        nMes AS mes
-                    FROM
-                        Softland.dbo.INV_VtasTotal_UMK_Temporal(nolock)
-                    WHERE [Año] IN (".$anio.")
-                        AND [P. Unitario] > 0
-                    GROUP BY Mes,Año,nMes
-                    ORDER BY nMes";
 
-                    $sql_meta = "SELECT
-                                    ISNULL( CAST( COUNT(T0.CodProducto) AS FLOAT ), 0 ) AS meta,
-                                    MONTH(T1.Fecha) AS mes
-                                FROM
-                                    DESARROLLO.dbo.gn_cuota_x_productos T0 INNER JOIN DESARROLLO.dbo.metacuota_GumaNet T1 ON T0.IdPeriodo = T1.IdPeriodo
-                                WHERE YEAR(T1.Fecha) = ".$anio."
-                                AND T1.IdCompany = 4
-                                GROUP BY MONTH(T1.Fecha)
-                                ORDER BY MONTH(T1.Fecha)";
-                }else {
+
+        if ($Segmento==0) {
+            //TODAS LOS SEGMENTOS
+            $qSegmento =" AND Ruta NOT IN ('F01','F12') ";
+
+        } else {
+            if ($Segmento==1) {
+                //TODAS LAS RUTAS DEL SEGMENTO FARMACIA
+                $qSegmento =" AND Ruta NOT IN ('F04','F02','F01','F12') ";
+            } else {
+                if ($Segmento==2) {
+                   //TODAS LAS RUTAS DEL SEGMENTO MAYORISTA
+                    $qSegmento =" AND Ruta IN ('F04') ";
+                } else {
+                    if ($Segmento==3) {
+                       //TODAS LAS RUTAS DEL SEGMENTO INSTITUCION
+                        $qSegmento =" AND Ruta IN ('F02') ";
+                    }
                     
-                    $sql_exec = "SELECT
-                        ISNULL( CAST( SUM(venta) AS FLOAT), 0 ) AS montoVenta,
-                        nMes AS mes
-                    FROM
-                        Softland.dbo.INV_VtasTotal_UMK_Temporal(nolock)
-                    WHERE [Año] IN (".$anio.")
-                        AND [P. Unitario] > 0
-                    GROUP BY Mes,Año,nMes
-                    ORDER BY nMes";
-
-                    $sql_meta = "SELECT
-                                ISNULL( CAST( SUM(T0.val) AS FLOAT ), 0 ) AS meta,
-                                MONTH(T1.Fecha) AS mes
-                            FROM
-                                DESARROLLO.dbo.gn_cuota_x_productos T0 INNER JOIN DESARROLLO.dbo.metacuota_GumaNet T1 ON T0.IdPeriodo = T1.IdPeriodo
-                            WHERE YEAR(T1.Fecha) = ".$anio." AND T1.IdCompany = 4
-                            GROUP BY MONTH(T1.Fecha)
-                            ORDER BY MONTH(T1.Fecha)";
                 }
-                break;           
-            default:                
-                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
-                break;
+                
+            }
         }
 
-        $query01 = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
-        $query02 = $sql_server->fetchArray($sql_meta, SQLSRV_FETCH_ASSOC);        
+        $campo = ($xbolsones==0) ? "CANTIDAD" : "venta" ;
 
-        foreach ($query01 as $key) {
-            $mes = $key['mes'];
-            $f1 = $anio.'-'.$mes.'-01 00:00:00.00';
-            $f2 = $anio.'-'.$mes.'-15 00:00:00.00';
-            $date = date("Y-m-d", strtotime($f2));
+        if ($company_user != 1 ) {
+            $Filtros   ="";
+            $qSegmento ="";
+            $View = ($company_user==2) ? "GP_VtasTotal_UMK" : "INV_VtasTotal_UMK_Temporal" ;
+        }
 
-            $temp = array_column(array_filter($query02, function($item) use($mes) { return $item['mes']==$mes; } ), 'meta');
+        $sql_exec = "SELECT ISNULL( CAST( SUM(".$campo.") AS FLOAT), 0 ) AS montoVenta, nMes AS mes 
+                    FROM Softland.dbo.".$View." (nolock)
+                    WHERE [Año] IN (YEAR(GETDATE())) AND [P. Unitario] > 0 ".$Filtros.$qSegmento."
+                    GROUP BY Mes,Año,nMes
+                    ORDER BY nMes";
+        $qReal = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
 
-            ( count($temp)>0 )?( array_push($meta, $temp[0])):array_push($meta, 0);
+        $sql_meta = "SELECT ISNULL( CAST( SUM(T0.val) AS FLOAT ), 0 ) AS meta, MONTH(T1.Fecha) AS mes
+                    FROM DESARROLLO.dbo.gn_cuota_x_productos T0 INNER JOIN DESARROLLO.dbo.metacuota_GumaNet T1 ON T0.IdPeriodo = T1.IdPeriodo
+                    WHERE YEAR(T1.Fecha) = YEAR(GETDATE()) AND T1.IdCompany = $company_user ".str_replace('Ruta','CodVendedor',$qSegmento)."
+                    GROUP BY MONTH(T1.Fecha)
+                    ORDER BY MONTH(T1.Fecha)";
+
+        $qMeta = $sql_server->fetchArray($sql_meta, SQLSRV_FETCH_ASSOC);
+        
+        
+        $sql_tendencia ="SELECT CAST( ( AVG ( T0.SubTotal ) * 21 ) AS FLOAT ) montoVenta,T0.mes 
+                            FROM( SELECT nMes AS mes, SUM ( ".$campo." ) SubTotal FROM Softland.dbo.".$View." ( nolock ) WHERE YEAR([Dia]) = YEAR(GETDATE())
+                                    AND [P. Unitario] > 0 ".$Filtros.$qSegmento."
+                                    GROUP BY nMes,DAY ( Dia ) 
+                                ) T0 GROUP BY T0.mes;";
+        
+        
+        $qTend = $sql_server->fetchArray($sql_tendencia, SQLSRV_FETCH_ASSOC);
+
+        foreach ($qReal as $key) {
+
+            $Numero_mes = $key['mes'];
+            $temporal_Meta = array_column(array_filter($qMeta, function($item) use($Numero_mes) { return $item['mes']==$Numero_mes; } ), 'meta');
+            ( count($temporal_Meta)>0 )?( array_push($meta, $temporal_Meta[0])):array_push($meta, 0); 
+            
+            $temporal_Tend = array_column(array_filter($qTend, function($row) use($Numero_mes) { return $row['mes']==$Numero_mes; } ), 'montoVenta');
+            ( count($temporal_Tend)>0 )?( array_push($fechaCorte, $temporal_Tend[0])):array_push($fechaCorte, 0);
+
             array_push($real, $key['montoVenta']);
-
-            if ( $date<=date('Y-m-d') ) {
-                switch ($company_user) {
-                    case '1':
-                    $sql_fcorte = "SELECT
-                                    CAST(SUM(venta) AS FLOAT) AS montoVenta,
-                                    nMes AS mes
-                                FROM
-                                Softland.dbo.VtasTotal_UMK(nolock)
-                                WHERE [Dia] BETWEEN '".$f1."' AND '".$f2."'
-                                AND [P. Unitario] > 0   AND
-                                Ruta NOT IN('F01', 'F12')
-                                GROUP BY Año,nMes";
-                                /* $sql_fcorte = "
-                            SELECT CAST((AVG(T0.SubTotal) / 30 )  AS FLOAT) montoVenta
-                            FROM(
-                                SELECT 
-                                        sum ( venta ) SubTotal
-                                    FROM
-                                        Softland.dbo.VtasTotal_UMK ( nolock ) 
-                                    WHERE
-                                    [Dia] BETWEEN '".$f1."' 
-                                    AND '".$f2."'
-                                    AND [P. Unitario] > 0 
-                                    AND Ruta NOT IN ( 'F01', 'F12' ) 
-                                    GROUP BY day(Dia)
-                            ) T0;";*/
-                    break;
-                    case '2':
-                    $sql_fcorte = "SELECT
-                                    CAST( SUM([P. Unitario] * Cantidad) AS FLOAT) AS montoVenta,
-                                    nMes AS mes
-                                FROM
-                                Softland.dbo.GP_VtasTotal_UMK(nolock)
-                                WHERE [Dia] BETWEEN '".$f1."' AND '".$f2."'
-                                AND [P. Unitario] > 0
-                                GROUP BY Año,nMes";
-                    break;
-                    case '3':
-                    break; 
-                    case '4':
-                    if ( $xbolsones ) {
-                        $sql_fcorte = "SELECT
-                                        CAST(SUM(CANTIDAD) AS FLOAT) AS montoVenta,
-                                        nMes AS mes
-                                    FROM
-                                    Softland.dbo.VtasTotal_UMK(nolock)
-                                    WHERE [Dia] BETWEEN '".$f1."' AND '".$f2."'
-                                    AND [P. Unitario] > 0   AND
-                                    Ruta NOT IN('F01', 'F12')
-                                    GROUP BY Año,nMes";
-                    }else {
-                        $sql_fcorte = "SELECT
-                                        CAST(SUM(venta) AS FLOAT) AS montoVenta,
-                                        nMes AS mes
-                                    FROM
-                                    Softland.dbo.VtasTotal_UMK(nolock)
-                                    WHERE [Dia] BETWEEN '".$f1."' AND '".$f2."'
-                                    AND [P. Unitario] > 0   AND
-                                    Ruta NOT IN('F01', 'F12')
-                                    GROUP BY Año,nMes";
-                    }
-                    break;          
-                    default:                
-                        dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
-                    break;
-                }
-
-                $query04 = $sql_server->fetchArray($sql_fcorte, SQLSRV_FETCH_ASSOC);
-                $q1 = ( count($query04)>0 )?( floatval($query04[0]['montoVenta']) * 2 ):0;
-                array_push($fechaCorte, $q1);
-            }
         }
 
         $array[0]['title'] = 'Meta';
@@ -2174,6 +2066,5 @@ class dashboard_model extends Model {
         $array[2]['data'] = $real;
 
         return $array;
-        $sql_server->close();
     }
 }

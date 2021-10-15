@@ -63,18 +63,36 @@
         </div>
     </div>
     <div class="content-graf mb-5">
+
+        @if( Session::get('company_id')==1 )
+        <div class="row justify-content-end " >
+            <div class="col-sm-2">
+                    <select class="form-control form-control-sm" id="opc_seg_graf01" ></select>
+            </div>              
+        </div>
+        @endif
+        
         <div class="row" id="ct04">
             <div class="graf col-sm-12 mt-3">
                 <div class="container-vms" id="grafVtsDiario" style="width: 100%; margin: 0 auto"></div>
             </div>
         </div>
-        
+
+        @if( Session::get('company_id')==1 )
+        <div class="row mt-3 justify-content-end" >
+            <div class="col-sm-2">
+                    <select class="form-control form-control-sm" id="opc_seg_graf02" ></select>
+            </div>              
+        </div>
+        @endif
 
         <div class="row" id="ct04">
             <div class="graf col-sm-12 mt-3">
                 <div class="container-rvts" id="grafRealVentas" style="width: 100%; margin: 0 auto"></div>
             </div>
         </div>
+        
+
 
         <div class="row" id="ct04">
             <div class="graf col-sm-12 mt-3">
@@ -169,7 +187,7 @@
             </div>
         </div>
 
-        @if( Session::get('company_id')==40 )
+        @if( Session::get('company_id')==4 )
         <div class="row" id="ct05" style="display: none">            
             <div class="graf col-sm-12 mt-3 text-right">
                 <figure class="highcharts-figure">

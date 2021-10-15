@@ -63,7 +63,7 @@ $(document).ready(function() {
 
 
     grafVentasMensuales(tipo);
-    grafRealVentasMensuales(tipo);
+    grafRealVentasMensuales(tipo,0);
     reordenandoPantalla();
     actualizandoGraficasDashboard(mes, anio, tipo);
     
@@ -782,14 +782,14 @@ $("#customSwitch1").change( function() {
         switchStatus = $(this).is(':checked');
         $.cookie( 'xbolsones' , 'yes_bolsones');
         grafVentasMensuales(1);
-        grafRealVentasMensuales(1);
+        grafRealVentasMensuales(1,0);
         actualizandoGraficasDashboard(mes, anio, 1);
     }
     else {
         switchStatus = $(this).is(':checked');
         $.cookie( 'xbolsones' , 'not_bolsones');
         grafVentasMensuales(0);
-        grafRealVentasMensuales(0);
+        grafRealVentasMensuales(0,0);
         actualizandoGraficasDashboard(mes, anio, 0);
     }
 });
@@ -948,7 +948,9 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     }
 
 
-                    $("#opcSegmentos,#OpcSegmClt").empty().append(Segmento).selectpicker('refresh');
+                    $("#opcSegmentos,#OpcSegmClt,#opc_seg_graf01,#opc_seg_graf02").empty().append(Segmento).selectpicker('refresh');
+
+
                     productos.xAxis.categories = title;
                     productos.series = Segmentos;
                     chart = new Highcharts.Chart(productos);
@@ -1479,7 +1481,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 }
 
 var ventasRealMensuales = {};
-function grafRealVentasMensuales(xbolsones) {
+function grafRealVentasMensuales(xbolsones,segmentos) {
     var temporal = "";
     $("#grafRealVentas")
     .empty()
@@ -1491,7 +1493,7 @@ function grafRealVentasMensuales(xbolsones) {
             </div>`);
 
     ventasRealMensuales.series = [];
-    $.getJSON("dataRealVtsMensuales/"+xbolsones, function(json) {
+    $.getJSON("dataRealVtsMensuales/"+xbolsones+"/"+segmentos, function(json) {
         var newseries;
         
         $.each(json, function (i, item) {
@@ -1712,6 +1714,75 @@ $("#select-cate").change(function() {
         }
     })
 })
+
+
+$("#opc_seg_graf01,#opc_seg_graf02").change( function() {
+    mes         = $("#opcMes option:selected").val();         
+    anio        = $("#opcAnio option:selected").val();  
+    Segmento    = this.value;
+    xbolsones   = 1;
+    var id = $(this).attr('id');
+
+
+    if (id=='opc_seg_graf01') {
+        $("#grafVtsDiario")
+        .empty()
+        .append('<div style="height:400px; background:#ffff; padding:20px">'+
+                    '<div class="d-flex align-items-center">'+
+                        '<strong class="text-info">Cargando...</strong>'+
+                        '<div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>'+
+                    '</div>'+
+                '</div>');
+
+        $.getJSON("Grafselect/"+mes+"/"+anio+"/"+xbolsones+"/"+Segmento, function(json) { 
+
+            dta = [];
+            dta_avr = [];
+            title = [];
+            tmp_total = 0;
+
+            $.each(json, function(i, x) {
+
+                tmp_total = tmp_total + parseFloat(x['data']);
+
+                dta.push({
+                    name  :'Dia ' + x['articulo'],
+                    mAVG  : x['dtAVG'],
+                    dtavg : x['dtavg_'],
+                    y     : x['data'], 
+                    und   : (x['dtUnd'] > 0 ) ?  x['dtUnd']  : '  '
+                });
+                
+                goal = x['dtAVG']
+                title.push(x['name']); 
+            }); 
+
+            //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
+            temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
+            temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';                   
+            grafiacas_productos_Diarios.tooltip = {
+                pointFormat : temporal
+            }
+
+            grafiacas_productos_Diarios.xAxis.categories = title;
+            grafiacas_productos_Diarios.subtitle.text = "C$ " + numeral(tmp_total).format('0,0.00') + " Total";
+            grafiacas_productos_Diarios.series[0].data = dta;
+
+            chart = new Highcharts.Chart(grafiacas_productos_Diarios);
+            chart.yAxis[0].options.plotLines[0].value = goal;
+            chart.yAxis[0].options.plotLines[0].label.text = "C$ " + numeral(goal).format('0,0.00');
+            chart.yAxis[0].update();
+
+        });
+        
+    } else {
+        grafRealVentasMensuales(xbolsones,Segmento)
+    }
+
+    
+
+
+})
 $("#OpcSegmClt").change( function() { 
     mes         = $("#opcMes option:selected").val();         
     anio        = $("#opcAnio option:selected").val();  
@@ -1822,7 +1893,7 @@ $("#opcSegmentos").change( function() {
                             name :"Farmacia",
                             data: SegFarmacia
                         }
-                    );
+                    );OpcSegmClt
             } else {
                 if (Segmento==2) {
                     Segmentos.push({
@@ -1857,15 +1928,11 @@ $("#opcSegmentos").change( function() {
         
 
 
-                    productos.xAxis.categories = title;
-                    productos.series = Segmentos;
-                    chart = new Highcharts.Chart(productos); 
-                    
-
-                    
+        productos.xAxis.categories = title;
+        productos.series = Segmentos;
+        chart = new Highcharts.Chart(productos); 
 
     });
-   
     
 });
 
@@ -1883,6 +1950,8 @@ function detalles_ventas_diarias($dia,$mAVG)
     mes_name    = $("#opcMes option:selected").text();    
     anio        = $("#opcAnio option:selected").val();    
     pageName    = 'Dashboard';
+
+    ElSegmento  = $("#opc_seg_graf01 option:selected").val();    
 
 
     FechaFiltrada = `Mostrando registros del `+$dia+` de `+mes_name + ' ' + anio;    
@@ -1922,7 +1991,7 @@ function detalles_ventas_diarias($dia,$mAVG)
                 "scrollX": false,
                 "ordering": false,
                 "ajax":{
-                    "url": "detallesdia/"+$dia+"/"+mes+"/"+anio,
+                    "url": "detallesdia/"+$dia+"/"+mes+"/"+anio+"/"+ElSegmento,
                     'dataSrc': '',
                 },
                 
@@ -1992,7 +2061,7 @@ function detalles_ventas_diarias($dia,$mAVG)
                         ventasXCateg.subtitle = {text: 'Todas las  categorias'};
                         ventas_por_rutas.series[0].data = dta_pie_rutas ;
                         chart = new Highcharts.Chart(ventas_por_rutas);
-                        Todos_Los_Items_Diario($dia,mes,anio,0);
+                        Todos_Los_Items_Diario($dia,mes,anio,ElSegmento);
                     },
                 
             });
