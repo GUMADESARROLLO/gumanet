@@ -5,7 +5,7 @@ $(document).ready(function() {
     $("#item-nav-01").after(`<li class="breadcrumb-item active">Ventas</li>`);
 
     $("#tblClientes_length").hide();
-    $("#tblClientes_filter").hide();
+    $("#tblClientes_filter,#id-form-filter").hide();
 
 	ventasGraf = {
 		chart: {
@@ -50,6 +50,7 @@ $(document).ready(function() {
 	    $('#page-details').css('width','100%')
 	}
 });
+
 $(".active-page-details").click( function() {//Regresar ala ventana anterior
     $("#page-details").toggleClass('active');
 });
@@ -74,6 +75,19 @@ $( "#cmbTableArticulos").change(function() {
 	table.page.len(this.value).draw();
 });
 
+
+
+
+$('#filterHide').on('click', function() {	
+	if ($("#id-form-filter").css("display") == "none") {
+        $("#id-form-filter").show("slow")
+    } else {
+        $("#id-form-filter").hide("slow")
+    }
+});
+
+
+$('#cmbLabs').removeAttr('selected').find('option:first').attr('selected', 'selected').trigger("change");
 
 var tiempo = 0;
 var tiempo_corriendo = null;

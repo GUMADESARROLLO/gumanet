@@ -417,8 +417,8 @@ table thead tr th {
   table-layout: fixed;
 }
 
-.drawBorder {
-  border: 1px solid #ccc !important;
+.dBorder {
+  border: 5px solid #ccc !important;
   padding: 0.01em 16px;
 }
 

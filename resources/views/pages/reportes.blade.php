@@ -11,9 +11,8 @@
 			<h4 class="h4 mb-4">REPORTE DE VENTAS</h4>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row dBorder" >
 	@if( Session::get('company_id')==1 )
-		
 		<div class="col-md-6" >
 			<div class="form-group">
 				<label for="cmbLabs" class="col-form-label-sm text-muted mb-0">Laboratorio</label>
@@ -76,10 +75,6 @@
 				</select>
 			</div>
 		</div>
-			
-			
-		
-		
 	@endif
 
 		<div class="col-md-2">
@@ -122,11 +117,78 @@
 				</select>
 			</div>
 		</div>
+		@if( Session::get('company_id')==1 )
+		<div class="col-md-1">
+			<a href="#!" id="filterData" class="btn btn-primary btn-block float-right mt-4 ">Aplicar</a>			
+		</div>
+		<div class="col-md-1">
+			<a href="#!" id="filterHide" class="btn btn-primary btn-block float-right mt-4 ">Filtros</a>			
+		</div>
+		
+		@else
 		<div class="col-md-2">
 			<a href="#!" id="filterData" class="btn btn-primary btn-block float-right mt-4 ">Aplicar</a>			
 		</div>
+		@endif
+		
+	</div>	
+
+	@if( Session::get('company_id')==1 )
+	<div class="row" id="id-form-filter">
+
+		<div class="col-md-3">
+			<div class="form-group">				
+				<select class="selectpicker form-control form-control-sm" id="cmbArticulo" data-show-subtext="true" data-live-search="true">
+					<option value="" selected>ARTICULOS - TODOS</option>
+					@foreach($articulos as $key)
+					<option value="{{$key['ARTICULO']}}">[{{ $key['ARTICULO']}}] - {{ $key['DESCRIPCION']}}</option>
+					@endforeach
+				</select>
+			</div>
+		</div>		
+
+		<div class="col-md-3">
+			<div class="form-group">
+				<select class="selectpicker form-control form-control-sm" id="cmbCliente" data-show-subtext="true" data-live-search="true">					
+					<option selected value="">CLIENTES - TODOS</option>
+					@foreach($clientes as $key)							
+						<option value="{{$key['CLIENTE']}}">{{ $key['NOMBRE'] }}</option>
+					@endforeach
+				</select>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<div class="form-group">
+				<select class="selectpicker form-control form-control-sm" id="cmbClase" data-show-subtext="true" data-live-search="true">
+					<option value="">CLASE TERAPEUTICA - TODOS</option>
+					@foreach($clases as $key)
+						@if($key['clase'] != '')
+							<option value="{{ $key['clase'] }}">{{ strtoupper($key['clase']) }}</option>							
+						@endif				
+					@endforeach
+				</select>
+			</div>
+		</div>
+
+		<div class="col-md-2">
+			<div class="form-group">
+				<select class="selectpicker form-control form-control-sm" id="cmbRutas" data-show-subtext="true" data-live-search="true">
+					<option value="">RUTAS - TODOS</option>
+					@foreach($rutas as $key)
+						<option>{{ $key['VENDEDOR'] }}</option>
+					@endforeach
+				</select>
+			</div>
+		</div>
+
+		
+
 	</div>
-	
+	@endif
+
+
+
     <div class="row mt-3">
     	<div class="col-sm-12">
     		<div class="card border-0 shadow-sm">

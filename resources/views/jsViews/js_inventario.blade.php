@@ -30,37 +30,46 @@ $(document).ready(function() {
         infoTable = `Mostrando Articulos solo de Bodega 002`;
         break;
     case '2':
-        columnDefs=[
-            {"className":"dt-right", "targets": [ 3, 4 ]},
-            {"className":"dt-center", "targets": [ 0, 2, 5 ]},
-            { "width":"50%", "targets": [ 1 ] }
-        ]
-        columns = [
-            { title: "ARTICULO",            data: "ARTICULO" },
-            { title: "DESCRIPCION",         data: "DESCRIPCION" },
-            { title: "UNIDAD",              data: "UNIDAD_ALMACEN" },
-            { title: "TOTAL UNITS/ MES",    data: "VST_MES_ACTUAL" },
-            { title: "TOTAL UNITS 2021",    data: "VST_ANNO_ACTUAL" },
-            { title: "EXISTENCIA",          data: "total" },
-            { title: "UNIDADES",            data: "und" },
-        ];
-    break;
-    case '4':
-        columnDefs=[
-            {"className":"dt-right", "targets": [ 3, 4, 5 ]},
-            {"className":"dt-center", "targets": [ 0, 2 ]},
-            { "width":"50%", "targets": [ 1 ] }
-        ]
         columns = [
             { title: "ARTICULO",                data: "ARTICULO" },
             { title: "DESCRIPCION",             data: "DESCRIPCION" },
             { title: "UNIDAD",                  data: "UNIDAD_ALMACEN" },
-            { title: "TOTAL DISP.",             data: "total" },
+            { title: "CANT. DISP.",        data: "total" },
+            { title: "TOTAL UNITS. ",           data: "und" },
             { title: "TOTAL UNITS/ MES",        data: "VST_MES_ACTUAL" },
+            { title: "PROM UNITS/ MES 2021",    data: "PROM_VST_ANUAL" },
             { title: "TOTAL UNITS 2021",        data: "VST_ANNO_ACTUAL" },
             { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
-            { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" }
+            { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
+            { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" }
+            
         ];
+        columnDefs=[
+            {"className":"dt-right", "targets": [ 3, 4, 5, 6, 7, 8, 9, 10 ]},
+            {"className":"dt-center", "targets": [ 0, 2 ]},
+            { "width":"50%", "targets": [ 1 ] }
+        ]
+    break;
+    case '4':
+        columns = [
+            { title: "ARTICULO",                data: "ARTICULO" },
+            { title: "DESCRIPCION",             data: "DESCRIPCION" },
+            { title: "UNIDAD",                  data: "UNIDAD_ALMACEN" },
+            { title: "CANT. DISP.",        data: "total" },
+            { title: "TOTAL UNITS. ",           data: "und" },
+            { title: "TOTAL UNITS/ MES",        data: "VST_MES_ACTUAL" },
+            { title: "PROM UNITS/ MES 2021",    data: "PROM_VST_ANUAL" },
+            { title: "TOTAL UNITS 2021",        data: "VST_ANNO_ACTUAL" },
+            { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
+            { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
+            { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" }
+            
+        ];
+        columnDefs=[
+            {"className":"dt-right", "targets": [ 3, 4, 5, 6, 7, 8, 9, 10 ]},
+            {"className":"dt-center", "targets": [ 0, 2 ]},
+            { "width":"50%", "targets": [ 1 ] }
+        ]
         $("#modulo-inventario").empty();
     break
     default:
