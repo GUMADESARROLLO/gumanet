@@ -2636,6 +2636,16 @@ function getDetalleVenta(mes, anio, metau, realu, metae, reale, ruta, nombre) {
     $('#mdDetailsVentas').modal('show');
 }
 
+function GetTop10Items(){
+
+    var dia             = 0;
+    var mes             = $('#opcMes option:selected').val();
+    var anio            = $('#opcAnio option:selected').val();
+    var segmento        = $('#opcSegmentos option:selected').val();
+
+    location.href = "excelAllTop10/" + dia + "/" + mes + "/" + anio + "/" + segmento;
+}
+
 function Todos_Los_Items(){
 
     tableActive = '';

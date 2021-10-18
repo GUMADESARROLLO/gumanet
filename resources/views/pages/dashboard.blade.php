@@ -460,8 +460,8 @@
                 </button>
             </div>
             <div class="modal-body" id="bodyModal">
-            <div class="row" >
-                <div class="col-sm-11 mt-2">
+            <div class="row dBoder" >
+                <div class="col-sm-10 mt-2">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
@@ -479,6 +479,9 @@
                             <option value="-1">Todo</option>
                         </select>
                     </div>
+                </div>
+                <div class="col-sm-1 mt-2">
+                    <a id="exp-to-excel-top-10-articulo" href="#!" class="btn btn-light btn-block text-success" onclick="GetTop10Items()"><i class="fas fa-file-excel"></i> Exportar</a>
                 </div>
             </div>
                 <div class="row">

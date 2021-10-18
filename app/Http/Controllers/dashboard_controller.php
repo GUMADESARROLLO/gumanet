@@ -67,6 +67,11 @@ class dashboard_controller extends Controller {
     return response()->json($obj);
   }
 
+  public function get_all_top($dia,$mes,$anio,$segmento){
+    $obj = dashboard_model::get_all_top($dia,$mes, $anio,$segmento);
+    return response()->json($obj);
+  }
+
 
   public function getValBodegas() {
     $obj = dashboard_model::getValBodegas();
