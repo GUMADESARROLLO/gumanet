@@ -11,7 +11,7 @@
 			<h4 class="h4 mb-4">REPORTE DE VENTAS</h4>
 		</div>
 	</div>
-	<div class="row dBorder" >
+	<div class="row " >
 	@if( Session::get('company_id')==1 )
 		<div class="col-md-6" >
 			<div class="form-group">

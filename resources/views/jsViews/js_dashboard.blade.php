@@ -913,8 +913,8 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                     Segmento += '<option value="0">Todos</option>'+
                             '<option value="1">Farmacias</option>'+
-                            '<option value="2">Instituciones</option>'+
-                            '<option value="3">Mayoristas</option>';
+                            '<option value="2">Mayoristas</option>'+
+                            '<option value="3">Instituciones</option>';
 
                     Segmentos.push({
                             name :"InfoExtra",
@@ -1767,6 +1767,7 @@ $("#opc_seg_graf01,#opc_seg_graf02").change( function() {
             grafiacas_productos_Diarios.xAxis.categories = title;
             grafiacas_productos_Diarios.subtitle.text = "C$ " + numeral(tmp_total).format('0,0.00') + " Total";
             grafiacas_productos_Diarios.series[0].data = dta;
+
 
             chart = new Highcharts.Chart(grafiacas_productos_Diarios);
             chart.yAxis[0].options.plotLines[0].value = goal;
