@@ -83,7 +83,7 @@ $(document).ready(function() {
             renderTo: 'grafVtsMes'
         },
         title: {
-            text: `<p class="font-weight-bolder">Comportamiento de venta anual</p>`
+            text: `<p class="font-weight-bolder">Comportamiento de Venta Anual</p>`
         },
         xAxis: {
             categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -140,7 +140,7 @@ $(document).ready(function() {
             renderTo: 'grafRealVentas'
         },
         title: {
-            text: `<p class="font-weight-bolder">Venta real Vs Meta</p>`
+            text: `<p class="font-weight-bolder">Venta Real Vs Meta</p>`
         },
         xAxis: {
             categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
