@@ -14,6 +14,8 @@
       @if( Auth::User()->email=='asaenz@unimarksa.com' || Auth::User()->email=='admin@gmail.com' )
         <a id="" href="{{url('/invCompleto')}}" class="btn btn-primary btn-block">Inventario Completo</a>
       @endif
+      <span>{{ auth()->user()->role }} </span>
+      
     </div>
   </div>
   <div class="row mt-3">
