@@ -14,6 +14,8 @@
       @if( Auth::User()->email=='asaenz@unimarksa.com' || Auth::User()->email=='admin@gmail.com' )
         <a id="" href="{{url('/invCompleto')}}" class="btn btn-primary btn-block">Inventario Completo</a>
       @endif
+      <span>{{ auth()->user()->role }} </span>
+      
     </div>
   </div>
   <div class="row mt-3">
@@ -110,9 +112,13 @@
             <a class="nav-item nav-link active" id="navBodega" data-toggle="tab" href="#nav-bod" role="tab" aria-controls="nav-bod" aria-selected="true">Bodega</a>
             <a class="nav-item nav-link" id="navPrecios" data-toggle="tab" href="#nav-prec" role="tab" aria-controls="nav-prec" aria-selected="false">Precios</a>
             <a class="nav-item nav-link" id="navBonificados" data-toggle="tab" href="#nav-boni" role="tab" aria-controls="nav-boni" aria-selected="false">Bonificados</a>
-            <a class="nav-item nav-link" id="navCostos" data-toggle="tab" href="#nav-costos" role="tab" aria-controls="nav-trans" aria-selected="false">Costos</a>
+            @if( Auth::User()->role == 1  || Auth::User()->role== 2 || Auth::User()->role== 6 || Auth::User()->role== 7 )
+              <a class="nav-item nav-link" id="navCostos" data-toggle="tab" href="#nav-costos" role="tab" aria-controls="nav-trans" aria-selected="false">Costos</a>
+            @endif
             <a class="nav-item nav-link" id="navTransaccion" data-toggle="tab" href="#nav-trans" role="tab" aria-controls="nav-trans" aria-selected="false">Transacciones</a>
             <a class="nav-item nav-link" id="navOtros" data-toggle="tab" href="#nav-otros" role="tab" aria-controls="nav-otros" aria-selected="false">Otros</a>
+
+            
             
           </div>
         </nav>

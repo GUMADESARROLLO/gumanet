@@ -126,7 +126,30 @@ class dashboard_model extends Model {
         if( count($query)>0 ) {            
             if (count($info_metas) > 0) {
                 //EXTRAER META DE VENTA DEL MES
-                $Meta_Mes = Gn_couta_x_producto::where(['IdPeriodo'=> $dias_habiles[1]])->sum('val');
+                if ($Segmento==0) {
+                    //TODAS LOS SEGMENTOS
+                    $Meta_Mes = Gn_couta_x_producto::where(['IdPeriodo'=> $dias_habiles[1]])->whereNotIn('CodVendedor', ['F01', 'F12'])->sum('val');
+                } else {
+                    if ($Segmento==1) {
+                        //TODAS LAS RUTAS DEL SEGMENTO FARMACIA                        
+                        $Meta_Mes = Gn_couta_x_producto::where(['IdPeriodo'=> $dias_habiles[1]])->whereNotIn('CodVendedor', ['F04','F02','F01','F12'])->sum('val');
+                    } else {
+                        if ($Segmento==2) {
+                           //TODAS LAS RUTAS DEL SEGMENTO MAYORISTA                            
+                            $Meta_Mes = Gn_couta_x_producto::where(['IdPeriodo'=> $dias_habiles[1]])->whereIn('CodVendedor', ['F04'])->sum('val');
+                        } else {
+                            if ($Segmento==3) {
+                               //TODAS LAS RUTAS DEL SEGMENTO INSTITUCION
+                                $Meta_Mes = Gn_couta_x_producto::where(['IdPeriodo'=> $dias_habiles[1]])->whereIn('CodVendedor', ['F02'])->sum('val');
+                            }
+                            
+                        }
+                        
+                    }
+                }
+                
+                
+                
                 //CALCULO DE CRECIMIENTO OPTIMO DIARIO CON FORME A METAS
                 $crecimiento_diario = $Meta_Mes / $dias_habiles[0];
             } else {
