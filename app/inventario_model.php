@@ -29,7 +29,7 @@ class inventario_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M FROM iweb_articulos T0 INNER JOIN gnet_inventario_promedios_anuales_umk T1 ON T0.ARTICULO = T1.ARTICULO where T0.ARTICULO NOT LIKE 'VU%'";
+                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH FROM iweb_articulos T0 INNER JOIN gnet_inventario_promedios_anuales_umk T1 ON T0.ARTICULO = T1.ARTICULO where T0.ARTICULO NOT LIKE 'VU%'";
 
                 $qSKU = "SELECT
                                     T1.ARTICULO,
@@ -121,15 +121,6 @@ class inventario_model extends Model {
 
             $desc_art = inventario_model::clean($key['DESCRIPCION']);
 
-            /*$cantidad = tbl_temporal::where('articulo', $key['ARTICULO'])->select('cantidad')->first();
-            
-            $vst_mes_Actual = tbl_temporal::where('articulo', $key['ARTICULO'])->select('VstMesActual')->first();
-            $vst_anno_Actual = tbl_temporal::where('articulo', $key['ARTICULO'])->select('VstAnnoActual')->first();
-            $cantidad = ( $cantidad['cantidad']=='' )?0:$cantidad['cantidad'];
-            */
-
-
-
             $Stat_Articulos = tbl_temporal::where('articulo', $key['ARTICULO'])->get()->first();
 
             if ($Stat_Articulos) {
@@ -178,6 +169,7 @@ class inventario_model extends Model {
             $query[$i]['SUM_ANUAL']         = number_format($key['SUM_ANUAL'],2);
             $query[$i]['AVG_ANUAL']         = number_format($key['AVG_ANUAL'],2);
             $query[$i]['AVG_3M']            = number_format($key['AVG_3M'],2);
+            $query[$i]['COUNT_MONTH']       = number_format($key['COUNT_MONTH'],0);
 
             $i++;
         }
@@ -207,6 +199,7 @@ class inventario_model extends Model {
             $query[$i]['SUM_ANUAL']         = "";
             $query[$i]['AVG_ANUAL']         = "";
             $query[$i]['AVG_3M']            = "";
+            $query[$i]['COUNT_MONTH']       = "";
 
             $i++;
         }

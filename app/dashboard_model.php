@@ -151,7 +151,7 @@ class dashboard_model extends Model {
                 
                 
                 //CALCULO DE CRECIMIENTO OPTIMO DIARIO CON FORME A METAS
-                $crecimiento_diario = $Meta_Mes / $dias_habiles[0];
+                $crecimiento_diario = $Meta_Mes / 24;
             } else {
                 $crecimiento_diario = 0;
             }
@@ -2198,7 +2198,7 @@ class dashboard_model extends Model {
         $qMeta = $sql_server->fetchArray($sql_meta, SQLSRV_FETCH_ASSOC);
         
         
-        $sql_tendencia ="SELECT CAST( ( AVG ( T0.SubTotal ) * 21 ) AS FLOAT ) montoVenta,T0.mes 
+        $sql_tendencia ="SELECT CAST( ( AVG ( T0.SubTotal ) * 24 ) AS FLOAT ) montoVenta,T0.mes 
                             FROM( SELECT nMes AS mes, SUM ( ".$campo." ) SubTotal FROM Softland.dbo.".$View." ( nolock ) WHERE YEAR([Dia]) = YEAR(GETDATE())
                                     AND [P. Unitario] > 0 ".$Filtros.$qSegmento."
                                     GROUP BY nMes,DAY ( Dia ) 
