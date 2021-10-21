@@ -1,0 +1,96 @@
+@extends('layouts.main')
+@section('title' , $name)
+@section('name_user' , 'Administrador')
+@section('metodosjs')
+@include('jsViews.js_vinneta');
+@endsection
+@section('content')  
+<div class="container-fluid">	
+		<div class="card border-0 shadow-sm mt-3">
+			<div class="col-sm-12">
+				<div class="card-body">
+					<h5 class="card-title">VIÑETAS</h5>
+					<div class="row">
+						<div class="col-sm-5 mt-4 ">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+								</div>
+								<input type="text" id="txtSearch" class="form-control" placeholder="Buscar...">
+							</div>
+						</div>
+						<div class="col-sm-1 mt-4 ">
+							<div class="input-group">
+								<select class="custom-select" id="dtLength" name="dtLength">
+								<option value="5" selected>5</option>
+								<option value="10">10</option>
+								<option value="20">20</option>
+								<option value="50">50</option>
+								<option value="-1">Todo</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-6 border-left ">
+							<div class="row ">
+								<div class="col-sm-4 ">
+									<div class="form-group">                
+										<label for="f1">Desde:</label>
+										<input type="text" class="input-fecha" id="f1">
+									</div>
+								</div>
+								<div class="col-sm-4 ">
+									<div class="form-group">                
+										<label for="f2">Hasta:</label>
+										<input type="text" class="input-fecha" id="f2">
+									</div>
+								</div>
+								<div class="col-sm-4 mt-4 ">
+									<a href="#!" class="btn btn-primary float-left" id="BuscarVinneta">Buscar</a>
+								</div>
+							</div>
+						</div>  
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card border-0 shadow-sm mt-3">	
+			<div class="card-body col-sm-12">
+				<div class="row mt-3">
+					<div class="col-sm-6">
+						<div class="card text-center">
+							<div class="card-body">
+								<h2 class="card-title" id="numero_factura">0.00</h2>
+								<p class="card-text" id="">Cantidad de Facturas con Viñetas</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="card text-center">
+							<div class="card-body">
+								<h2 class="card-title" id="MontoVinneta">C$ 0.00</h2>
+								<p class="card-text">Monto Total de Facturas con Viñetas</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<table class="table table-striped table-bordered table-sm post_back mt-3" width="100%" id="dtVinneta"></table>
+			</div>
+		</div>
+		<div class="card border-0 shadow-sm mt-3">
+			<div class="col-sm-12">				
+				<div class="card-body">
+					<h5 class="card-title">RESUMEN</h5>
+					<table class="table table-striped table-bordered table-sm post_back" width="100%" id="dtResumenVinneta" >
+					<tfoot>
+						<tr>
+							<th colspan="11" style="text-align:right">Total:</th>
+						</tr>
+					</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>		
+	</div>
+</div>
+@endsection
+

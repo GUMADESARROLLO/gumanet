@@ -20,14 +20,15 @@ $(document).ready(function() {
             { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
             { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
             { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" },
+            { title: "Nº MESES",                data: "COUNT_MONTH" },
             { title: "TOTAL VST. ANUAL",        data: "SUM_ANUAL" },
             { title: "PROM. VST. ANUAL",        data: "AVG_ANUAL" },
             { title: "PROM. 3M. MAS ALTO",      data: "AVG_3M" }
             
         ];
         columnDefs=[
-            {"className":"dt-right", "targets": [ 3, 4, 5, 6, 7, 8, 9, 10,11,12,13 ]},
-            {"className":"dt-center", "targets": [ 0, 2 ]},
+            {"className":"dt-right", "targets": [ 3, 4, 5, 6, 7, 8, 9, 10,12,13,14 ]},
+            {"className":"dt-center", "targets": [ 0, 2,11 ]},
             { "width":"50%", "targets": [ 1 ] }
         ]
         infoTable = `Mostrando Articulos solo de Bodega 002`;
@@ -110,7 +111,6 @@ $(document).ready(function() {
         'columns': columns,
         "columnDefs": columnDefs,
         rowCallback: function (row, data) {
-
             /*
             if (numeral(data.MESES_INVENTARIO).format('0.00') <= 3) {                
                 $("td:eq(10)", row).addClass("alert alert-danger");
