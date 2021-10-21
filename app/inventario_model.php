@@ -29,7 +29,7 @@ class inventario_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = "SELECT * FROM iweb_articulos where ARTICULO NOT LIKE 'VU%'";
+                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M FROM iweb_articulos T0 INNER JOIN gnet_inventario_promedios_anuales_umk T1 ON T0.ARTICULO = T1.ARTICULO where T0.ARTICULO NOT LIKE 'VU%'";
 
                 $qSKU = "SELECT
                                     T1.ARTICULO,
@@ -57,8 +57,8 @@ class inventario_model extends Model {
                                 Ruta NOT IN('F01', 'F12')
                                 GROUP BY ARTICULO, DESCRIPCION";
                 break;
-            case '2':
-                $sql_exec = "SELECT * FROM gp_iweb_articulos";
+            case '2':                
+                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M FROM gp_iweb_articulos T0 INNER JOIN gnet_inventario_promedios_anuales_gup T1 ON T0.ARTICULO = T1.ARTICULO ";
                 $sql_vent_art = "SELECT
                                 ARTICULO,
                                 DESCRIPCION,
@@ -83,7 +83,7 @@ class inventario_model extends Model {
                 return false;
                 break;
             case '4':
-                $sql_exec = "SELECT * FROM inn_iweb_articulos";
+                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M FROM inn_iweb_articulos T0 INNER JOIN gnet_inventario_promedios_anuales_inn T1 ON T0.ARTICULO = T1.ARTICULO ";
                 $sql_vent_art = "SELECT
                                 ARTICULO,
                                 DESCRIPCION,
@@ -118,6 +118,7 @@ class inventario_model extends Model {
         tbl_temporal::truncate()->insert($query_vent_art);
         
         foreach ($query1 as $key) {
+
             $desc_art = inventario_model::clean($key['DESCRIPCION']);
 
             /*$cantidad = tbl_temporal::where('articulo', $key['ARTICULO'])->select('cantidad')->first();
@@ -170,11 +171,13 @@ class inventario_model extends Model {
             $query[$i]['EMP']               = $company_user;
             $query[$i]['PROMEDIO_VENTA']    = number_format($promedio, 2);
             $query[$i]['CANT_ANIO_PAS']     = number_format($cantidad, 2);
-
             $query[$i]['VST_MES_ACTUAL']    = number_format($vst_mes_Actual, 2);
             $query[$i]['PROM_VST_ANUAL']    = number_format(($vst_anno_Actual / $getMonth), 2);
             $query[$i]['VST_ANNO_ACTUAL']   = number_format($vst_anno_Actual, 2);
             $query[$i]['MESES_INVENTARIO']  = number_format($MesInventario,2);
+            $query[$i]['SUM_ANUAL']         = number_format($key['SUM_ANUAL'],2);
+            $query[$i]['AVG_ANUAL']         = number_format($key['AVG_ANUAL'],2);
+            $query[$i]['AVG_3M']            = number_format($key['AVG_3M'],2);
 
             $i++;
         }
@@ -201,6 +204,9 @@ class inventario_model extends Model {
             $query[$i]['PROM_VST_ANUAL']    = number_format(0, 2);
             $query[$i]['VST_ANNO_ACTUAL']   = number_format(0, 2);
             $query[$i]['MESES_INVENTARIO']  = number_format(0, 2);
+            $query[$i]['SUM_ANUAL']         = "";
+            $query[$i]['AVG_ANUAL']         = "";
+            $query[$i]['AVG_3M']            = "";
 
             $i++;
         }
@@ -402,9 +408,9 @@ class inventario_model extends Model {
                 $temp = inventario_model::getArticulos();
                 
                 $tituloReporte = "INVENTARIO DE ARTICULOS ACTUALIZADOS HASTA ".date('d/m/Y');
-                $titulosColumnas = array('ARTICULO','DESCRIPCION','UNIDAD','CANTI. DISP B002 ','TOTAL UNITS/ MES','TOTAL UNITS/ 2021','PROM. UNITS/MES 2020', 'TOTAL UNITS. 2020','MESES INVENTARIOS');
+                $titulosColumnas = array('ARTICULO','DESCRIPCION','UNIDAD','CANTI. DISP B002 ','TOTAL UNITS/ MES','TOTAL UNITS/ 2021','PROM. UNITS/MES 2020', 'TOTAL UNITS. 2020','MESES INVENTARIOS','TOTAL VST. ANUAL','PROM. VST. ANUAL','PROM. 3M. MAS ALTO');
 
-                $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:J1');
+                $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:L1');
 
                 $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1',$tituloReporte)
@@ -416,7 +422,10 @@ class inventario_model extends Model {
                 ->setCellValue('F3',  $titulosColumnas[5])
                 ->setCellValue('G3',  $titulosColumnas[6])
                 ->setCellValue('H3',  $titulosColumnas[7])
-                ->setCellValue('I3',  $titulosColumnas[8]);
+                ->setCellValue('I3',  $titulosColumnas[8])
+                ->setCellValue('J3',  $titulosColumnas[9])
+                ->setCellValue('K3',  $titulosColumnas[10])
+                ->setCellValue('L3',  $titulosColumnas[11]);
                 
                 $i=4;
 
@@ -460,7 +469,10 @@ class inventario_model extends Model {
                     ->setCellValue('F'.$i,  number_format($vst_anno_Actual))
                     ->setCellValue('G'.$i,  number_format($promedio))
                     ->setCellValue('H'.$i,  number_format($cantidad))
-                    ->setCellValue('I'.$i,  $MesInventario);
+                    ->setCellValue('I'.$i,  $MesInventario)
+                    ->setCellValue('J'.$i,  $key['SUM_ANUAL'])
+                    ->setCellValue('K'.$i,  $key['AVG_ANUAL'])
+                    ->setCellValue('L'.$i,  $key['AVG_3M']);
                     $i++;
                     
                 }
@@ -472,13 +484,16 @@ class inventario_model extends Model {
                 $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(12);
                 $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(12);
                 $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(12);
-                $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(12);
-                $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(12);
+                $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
+                $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+                $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
+                $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
+                $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
                 
-                $objPHPExcel->getActiveSheet()->getStyle('A1:I1')->applyFromArray($estiloTituloReporte);
-                $objPHPExcel->getActiveSheet()->getStyle('A3:I3')->applyFromArray($estiloTituloColumnas);      
-                $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:I".($i-1));
-                $objPHPExcel->getActiveSheet()->getStyle("C4:I".($i-1))->applyFromArray($right);
+                $objPHPExcel->getActiveSheet()->getStyle('A1:L1')->applyFromArray($estiloTituloReporte);
+                $objPHPExcel->getActiveSheet()->getStyle('A3:L3')->applyFromArray($estiloTituloColumnas);      
+                $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:L".($i-1));
+                $objPHPExcel->getActiveSheet()->getStyle("C4:L".($i-1))->applyFromArray($right);
 
                 break;
             case 'vencimiento':
