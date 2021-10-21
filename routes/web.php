@@ -159,3 +159,8 @@ Route::get('dataRECUP', 'recupProyectos_controller@comparateDateRecup');
 //RUTAS ORDENES DE COMPRA
 Route::get('ordenes', 'ordenesCompra_controller@getDataOrdenesCompra');
 Route::post('/lineasOrden','ordenesCompra_controller@getDetalleOrdenCompra');
+
+//TODAS LAS RUTAS QUE TENGAN QUE VER CON VIÑETAS
+Route::get('vineta', 'vinneta_controller@index');
+Route::get('getVinnetas', 'vinneta_controller@getVinnetas');
+Route::get('getVinnetasResumen', 'vinneta_controller@getVinnetasResumen');
