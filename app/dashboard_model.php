@@ -151,7 +151,7 @@ class dashboard_model extends Model {
                 
                 
                 //CALCULO DE CRECIMIENTO OPTIMO DIARIO CON FORME A METAS
-                $crecimiento_diario = $Meta_Mes / $dias_habiles[0];
+                $crecimiento_diario = $Meta_Mes / 24;
             } else {
                 $crecimiento_diario = 0;
             }
