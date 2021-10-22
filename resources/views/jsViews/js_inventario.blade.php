@@ -46,6 +46,7 @@ $(document).ready(function() {
             { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
             { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
             { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" },
+            { title: "Nº MESES",                data: "COUNT_MONTH" },
             { title: "TOTAL VST. ANUAL",        data: "SUM_ANUAL" },
             { title: "PROM. VST. ANUAL",        data: "AVG_ANUAL" },
             { title: "PROM. 3M. MAS ALTO",      data: "AVG_3M" }
@@ -70,6 +71,7 @@ $(document).ready(function() {
             { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
             { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
             { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" },
+            { title: "Nº MESES",                data: "COUNT_MONTH" },
             { title: "TOTAL VST. ANUAL",        data: "SUM_ANUAL" },
             { title: "PROM. VST. ANUAL",        data: "AVG_ANUAL" },
             { title: "PROM. 3M. MAS ALTO",      data: "AVG_3M" }
