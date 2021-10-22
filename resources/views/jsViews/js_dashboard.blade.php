@@ -691,7 +691,7 @@ $(document).ready(function() {
     grafiacas_productos_Diarios = {
         chart: {
             type: 'column',
-            renderTo: 'grafVtsDiario'
+            renderTo: 'grafVtsDiario',
         },      
 
         title: {
@@ -722,7 +722,18 @@ $(document).ready(function() {
                     text: 'Prom. Diario C$ ',
                     x: 0
                 }
-            }],
+            },
+            {
+                value: 0,
+                color: 'green',
+                dashStyle: 'shortdot',
+                width: 3,
+                zIndex: 9,
+                label: {
+                    text: 'Prom. Diario C$ ',
+                    x: 0
+                }
+            }]
             
         },
         plotOptions: {
@@ -965,7 +976,8 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     dta_avr = [];
                     title = [];
                     tmp_total = 0;
-                    
+                    Tendencia = 1;
+                    Day_Max = [];
 
                     $.each(item['data'], function(i, x) {
 
@@ -978,9 +990,10 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             y     : x['data'], 
                             und   : (x['dtUnd'] > 0 ) ?  x['dtUnd']  : '  '
                         });
-                        
+
                         goal = x['dtAVG']
                         title.push(x['name']); 
+                        Day_Max.push(x['data']); 
                     }); 
 
                     //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
@@ -993,10 +1006,23 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     grafiacas_productos_Diarios.xAxis.categories = title;
                     grafiacas_productos_Diarios.subtitle.text = "C$ " + numeral(tmp_total).format('0,0.00') + " Total";
                     grafiacas_productos_Diarios.series[0].data = dta;
+
+                    
+                    Tendencia = (tmp_total / dta.length ) * 24
+
+                    var var_Day_Max = Math.max.apply(Math, Day_Max);
+
+                    var_Day_Max = var_Day_Max + (var_Day_Max * 0.12);
+                    
                     
                     chart = new Highcharts.Chart(grafiacas_productos_Diarios);
+
                     chart.yAxis[0].options.plotLines[0].value = goal;
                     chart.yAxis[0].options.plotLines[0].label.text = "C$ " + numeral(goal).format('0,0.00');
+
+                    chart.yAxis[0].options.plotLines[1].value = var_Day_Max
+                    chart.yAxis[0].options.plotLines[1].label.text = "Prom. Valor Tendencia C$ " + numeral(Tendencia ).format('0,0.00');
+                    
                     chart.yAxis[0].update();
     
                 break;
@@ -1741,6 +1767,9 @@ $("#opc_seg_graf01,#opc_seg_graf02").change( function() {
             title = [];
             tmp_total = 0;
 
+            Tendencia = 1;
+            Day_Max = [];
+
             $.each(json, function(i, x) {
 
                 tmp_total = tmp_total + parseFloat(x['data']);
@@ -1755,6 +1784,7 @@ $("#opc_seg_graf01,#opc_seg_graf02").change( function() {
                 
                 goal = x['dtAVG']
                 title.push(x['name']); 
+                Day_Max.push(x['data']); 
             }); 
 
             //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
@@ -1768,10 +1798,21 @@ $("#opc_seg_graf01,#opc_seg_graf02").change( function() {
             grafiacas_productos_Diarios.subtitle.text = "C$ " + numeral(tmp_total).format('0,0.00') + " Total";
             grafiacas_productos_Diarios.series[0].data = dta;
 
+            Tendencia = (tmp_total / dta.length ) * 24
+
+            var var_Day_Max = Math.max.apply(Math, Day_Max);
+
+            var_Day_Max = var_Day_Max + (var_Day_Max * 0.05);
+
 
             chart = new Highcharts.Chart(grafiacas_productos_Diarios);
+
             chart.yAxis[0].options.plotLines[0].value = goal;
             chart.yAxis[0].options.plotLines[0].label.text = "C$ " + numeral(goal).format('0,0.00');
+
+            chart.yAxis[0].options.plotLines[1].value = var_Day_Max
+            chart.yAxis[0].options.plotLines[1].label.text = "Prom. Valor Tendencia C$ " + numeral(Tendencia ).format('0,0.00');
+
             chart.yAxis[0].update();
 
         });
