@@ -29,7 +29,7 @@ class inventario_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH FROM iweb_articulos T0 INNER JOIN gnet_inventario_promedios_anuales_umk T1 ON T0.ARTICULO = T1.ARTICULO where T0.ARTICULO NOT LIKE 'VU%'";
+                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH FROM iweb_articulos T0 LEFT JOIN gnet_inventario_promedios_anuales_umk T1 ON T0.ARTICULO = T1.ARTICULO where T0.ARTICULO NOT LIKE 'VU%'";
 
                 $qSKU = "SELECT
                                     T1.ARTICULO,
@@ -58,7 +58,7 @@ class inventario_model extends Model {
                                 GROUP BY ARTICULO, DESCRIPCION";
                 break;
             case '2':                
-                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH FROM gp_iweb_articulos T0 INNER JOIN gnet_inventario_promedios_anuales_gup T1 ON T0.ARTICULO = T1.ARTICULO ";
+                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH FROM gp_iweb_articulos T0 LEFT JOIN gnet_inventario_promedios_anuales_gup T1 ON T0.ARTICULO = T1.ARTICULO ";
                 $sql_vent_art = "SELECT
                                 ARTICULO,
                                 DESCRIPCION,
@@ -83,7 +83,7 @@ class inventario_model extends Model {
                 return false;
                 break;
             case '4':
-                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH FROM inn_iweb_articulos T0 INNER JOIN gnet_inventario_promedios_anuales_inn T1 ON T0.ARTICULO = T1.ARTICULO ";
+                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH FROM inn_iweb_articulos T0 LEFT JOIN gnet_inventario_promedios_anuales_inn T1 ON T0.ARTICULO = T1.ARTICULO ";
                 $sql_vent_art = "SELECT
                                 ARTICULO,
                                 DESCRIPCION,
