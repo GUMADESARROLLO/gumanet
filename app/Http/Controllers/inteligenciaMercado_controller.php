@@ -20,7 +20,7 @@ class inteligenciaMercado_controller extends Controller
 {
 	public function __construct() {
 		$this->middleware(['auth','roles']);//pagina se carga unicamente cuando se este logeado
-  	}
+	}
 
 	public function index(Request $request) {
 		$this->agregarDatosASession();
@@ -34,6 +34,10 @@ class inteligenciaMercado_controller extends Controller
 			'hideTransaccion' 	=> '',
 			'comentarios'		=> $comentarios
 		];	
+
+
+		inteligenciaMercado_controller::Update();
+
 		return view('pages.inteligenciaMercado', $data);		
 	}
 
@@ -67,6 +71,22 @@ class inteligenciaMercado_controller extends Controller
 			return view('pages.comentarios', compact('comentarios'))->render();
 		}
     }
+
+	public function countim(Request $request){
+		$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;	
+
+		return inteligenciaMercado_model::where('Read', '=', 0)->where('empresa', $company_user)->count();
+		
+
+	}
+
+	public static function Update(){
+		$request = Request();
+		$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;	
+		inteligenciaMercado_model::where('Read',"=", 0)->where('empresa', $company_user)->update(['Read' => 1]);
+
+	}
+
 
     public function descargarComentarios( Request $request ) {
     	setlocale(LC_TIME, "spanish");
