@@ -132,6 +132,7 @@ Route::post('artProyectado', 'proyecciones_controller@dataProyeccionXArticulo');
 //RUTAS COMENTARIOS
 Route::post('/paginateDataSearch', 'inteligenciaMercado_controller@searchComentarios');
 Route::post('/dowloadComents', 'inteligenciaMercado_controller@descargarComentarios');
+Route::get('countim', 'inteligenciaMercado_controller@countim');
 
 //RUTAS VENTAS POR PROYECTOS
 Route::get('/dataVTS','ventasProyectos_controller@comparateDateVentas');

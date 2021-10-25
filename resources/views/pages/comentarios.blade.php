@@ -15,12 +15,22 @@
 				</div>
 			</div>
 			<div class="card-footer bg-white border-0">
-				<p class="float-left font-weight-bold mr-4"><img src="./images/user.svg" class="img01" /> {{ $key->Nombre }}</p>
-				<p class="float-left font-weight-bold mr-4">
-				<img src="./images/clock.svg" class="img01" />
-							{{ strftime('%a %d de %b %G', strtotime($key->Fecha)) }}. {{ date('h:i a', strtotime($key->Fecha)) }}
-				</p>
-				<p class="float-left font-weight-bold mr-4"><img src="./images/globe.svg" class="img01" /> {{ $key->Autor }}</p>
+			<div class="row">
+					<div class="col-11">
+						<p class="float-left font-weight-bold mr-4"><img src="./images/user.svg" class="img01" /> {{ $key->Nombre }}</p>
+						<p class="float-left font-weight-bold mr-4">
+						<img src="./images/clock.svg" class="img01" />
+									{{ strftime('%a %d de %b %G', strtotime($key->Fecha)) }}. {{ date('h:i a', strtotime($key->Fecha)) }}
+						</p>
+						<p class="float-left font-weight-bold mr-4"><img src="./images/globe.svg" class="img01" /> {{ $key->Autor }}</p>
+					</div>
+					<div class="col-1 text-center">
+					@if($key->Read == 0)
+						<div class="alert-success font-weight-bold mr-1" role="alert" style="border-radius: 30px;">Nuevo!</div>
+					@endif  
+						
+					</div>
+				</div>
 			</div>
 		</div>
 		@endforeach
