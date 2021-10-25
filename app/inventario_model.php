@@ -401,7 +401,21 @@ class inventario_model extends Model {
                 $temp = inventario_model::getArticulos();
                 
                 $tituloReporte = "INVENTARIO DE ARTICULOS ACTUALIZADOS HASTA ".date('d/m/Y');
-                $titulosColumnas = array('ARTICULO','DESCRIPCION','UNIDAD','CANTI. DISP B002 ','TOTAL UNITS/ MES','TOTAL UNITS/ 2021','PROM. UNITS/MES 2020', 'TOTAL UNITS. 2020','MESES INVENTARIOS','TOTAL VST. ANUAL','PROM. VST. ANUAL','PROM. 3M. MAS ALTO');
+                $titulosColumnas = array(
+                    'ARTICULO',
+                    'DESCRIPCION',
+                    'UNIDAD',
+                    'CANTI. DISP B002 ',
+                    'TOTAL UNITS/ MES',
+                    'TOTAL UNITS/ 2021',
+                    'PROM. UNITS/MES 2020',
+                    'TOTAL UNITS. 2020',
+                    'MESES INVENTARIOS',
+                    'Nº MESES',
+                    'TOTAL VST. ANUAL',
+                    'PROM. VST. ANUAL',
+                    'PROM. 3M. MAS ALTO'
+                );
 
                 $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:L1');
 
@@ -418,7 +432,8 @@ class inventario_model extends Model {
                 ->setCellValue('I3',  $titulosColumnas[8])
                 ->setCellValue('J3',  $titulosColumnas[9])
                 ->setCellValue('K3',  $titulosColumnas[10])
-                ->setCellValue('L3',  $titulosColumnas[11]);
+                ->setCellValue('L3',  $titulosColumnas[11])
+                ->setCellValue('M3',  $titulosColumnas[12]);
                 
                 $i=4;
 
@@ -463,9 +478,10 @@ class inventario_model extends Model {
                     ->setCellValue('G'.$i,  number_format($promedio))
                     ->setCellValue('H'.$i,  number_format($cantidad))
                     ->setCellValue('I'.$i,  $MesInventario)
-                    ->setCellValue('J'.$i,  $key['SUM_ANUAL'])
-                    ->setCellValue('K'.$i,  $key['AVG_ANUAL'])
-                    ->setCellValue('L'.$i,  $key['AVG_3M']);
+                    ->setCellValue('J'.$i,  $key['COUNT_MONTH'])
+                    ->setCellValue('L'.$i,  $key['SUM_ANUAL'])
+                    ->setCellValue('L'.$i,  $key['AVG_ANUAL'])
+                    ->setCellValue('M'.$i,  $key['AVG_3M']);
                     $i++;
                     
                 }
@@ -482,11 +498,12 @@ class inventario_model extends Model {
                 $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
                 $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
                 $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
+                $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(20);
                 
-                $objPHPExcel->getActiveSheet()->getStyle('A1:L1')->applyFromArray($estiloTituloReporte);
-                $objPHPExcel->getActiveSheet()->getStyle('A3:L3')->applyFromArray($estiloTituloColumnas);      
-                $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:L".($i-1));
-                $objPHPExcel->getActiveSheet()->getStyle("C4:L".($i-1))->applyFromArray($right);
+                $objPHPExcel->getActiveSheet()->getStyle('A1:M1')->applyFromArray($estiloTituloReporte);
+                $objPHPExcel->getActiveSheet()->getStyle('A3:M3')->applyFromArray($estiloTituloColumnas);      
+                $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:M".($i-1));
+                $objPHPExcel->getActiveSheet()->getStyle("C4:M".($i-1))->applyFromArray($right);
 
                 break;
             case 'vencimiento':

@@ -70,19 +70,36 @@ function dataVinneta(f1, f2) {
             "search":     "BUSCAR"
         },
         'columns': [
-            { "title": "",              "data": "DETALLE"},
-            { "title": "FACTURA",  "data": "FACTURA" },
+            { "title": "",          "data": "DETALLE"},            
+            { "title": "CLIENTE",   "data": "CLIENTE" },
+            { "title": "NOMBRE",    "data": "NOMBRE_CLIENTE" },
+            { "title": "FACTURA",   "data": "FACTURA" },
             { "title": "FECHA",     "data": "FECHA" },
-            { "title": "VENDEDOR",        "data": "VENDEDOR" }
+            { "title": "VENDEDOR",  "data": "VENDEDOR" },
+            { "title": "TOTAL",     "data": "TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )}
         ],
         "columnDefs": [
-            {"className": "dt-center", "targets": [ 0, 1, 2,3 ]},
-            { "width": "5%", "targets": [ 0 ] },
+            {"className": "dt-center", "targets": [1,3,4,5 ]},
+            {"className": "dt-right", "targets": [ 6 ]},
+            { "width": "5%", "targets": [0,1,3,4,5,6 ] },
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api();
-            total = api.rows().count()
-            $('#numero_factura').text(numeral(total).format('0,0'));
+            varCount = api.rows().count()
+
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                i.replace(/[^0-9.]/g, '')*1 :
+                typeof i === 'number' ?
+                i : 0;
+            };
+            $('#numero_factura').text(numeral(varCount).format('0,0.00'));
+
+            total = api.column( 6 ).data().reduce( function (a, b){
+                return intVal(a) + intVal(b);
+            }, 0 );
+
+            $('#MontoVinneta').text('C$ ' + numeral(total).format('0,0.00'));
         },
     });
 
@@ -150,10 +167,10 @@ $('#dtResumenVinneta').DataTable({
         }, 0 );
 
         $( api.column( 4 ).footer() ).html(
-                'C$ '+ numeral(total).format('0,0') +' TOTAL'
+                'C$ '+ numeral(total).format('0,0.00') +' TOTAL'
             );
 
-        $('#MontoVinneta').text('C$ ' + numeral(total).format('0,0'));
+       
     },
 });
 
@@ -213,6 +230,7 @@ function format ( callback, ordCompra_ ) {
                         <th class="center">CANTIDAD</th>
                         <th class="center">PRECIO UNITARIO</th>
                         <th class="center">PRECIO TOTAL</th>
+                        <th class="center">VALOR</th>
                         
                     </tr>
                 </thead>
@@ -232,13 +250,17 @@ function format ( callback, ordCompra_ ) {
                 callback(thead + tbody).show();
             }
             $.each(data['objDt'], function (i, item) {
-               tbody +=`<tr>
-                            <td class="text-center">` + item['ARTICULO'] + `</td>
-                            <td class="text-left">` + item['DESCRIPCION'] + `</td>
-                            <td class="text-right">` + numeral(item['CANTIDAD']).format('0,0.00') + `</td>
-                            <td class="text-right">` + numeral(item['PRECIO_UNITARIO']).format('0,0.00')  + `</td>
-                            <td class="text-right">` + numeral(item['PRECIO_TOTAL']).format('0,0.00')  + `</td>
-                        </tr>`;
+
+                 valor_ninneta =(item['ARTICULO'].substr(0,2) == 'VU') ? 'C$ ' + numeral( item['CANTIDAD'] * parseInt(item['ARTICULO'].substr(2,6)) ).format('0,0.00') : " - ";
+
+                tbody +='<tr>'+
+                            '<td class="text-center">' + item['ARTICULO'] + '</td>'+
+                            '<td class="text-left">' + item['DESCRIPCION'] + '</td>'+
+                            '<td class="text-right">' + numeral(item['CANTIDAD']).format('0,0.00') + '</td>'+
+                            '<td class="text-right">' + numeral(item['PRECIO_UNITARIO']).format('0,0.00')  + '</td>'+
+                            '<td class="text-right">' + numeral(item['PRECIO_TOTAL']).format('0,0.00')  + '</td>'+
+                            '<td class="text-right"> ' + valor_ninneta  + '</td>'+
+                        '</tr>';
             });
             tbody += `</tbody></table>`;
             
