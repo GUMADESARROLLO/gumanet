@@ -37,20 +37,34 @@
 <body>
 @include('layouts.menu')
 <div class="page-content" id="content">
-
-
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li><a href="#!" id="sidebarCollapse"><i class="material-icons ml-2 mr-3">menu</i></a></li>
+  <nav class="navbar navbar-expand-lg  " style="background-color: #e9ecef; height: 50px;">
+      <ol class="breadcrumb" style=" margin-top: 16px !important;">
+        <li>
+          <a href="#!" id="sidebarCollapse">
+            <i class="material-icons"  class="material-icons" >menu</i>
+          </a>
+        </li>
         @if(Auth::User()->activeRole()!=3 && Auth::User()->activeRole()!=4 && Auth::User()->activeRole()!=5)
-        <li class="breadcrumb-item" id="item-nav-01"><a href="{{url('/Dashboard')}}">Dashboard</a></li>
-        @endif
-        <li class="ml-auto"><a href="#!"><i class="active-menu material-icons text-info" style="font-size: 20px">settings</i></a></li>      
-        
-    </ol>
-</nav>
-
-  
+          <li class="breadcrumb-item" id="item-nav-01"><a href="{{url('/Dashboard')}}">Dashboard</a></li>
+        @endif              
+      </ol>
+      <div class="collapse navbar-collapse " >
+        <ul class="navbar-nav ml-auto nav-flex-icons ">
+            <li class="nav-item">
+              <a href="#!" class="nav-link">
+                <span class="badge badge-danger " id="id-count-im">0</span>
+                <i class="material-icons text-info"  style="font-size: 20px">notifications</i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#!" class="nav-link ">              
+                <i class="material-icons text-info"  style="font-size: 20px">settings</i>
+              </a>
+            </li>
+          </ul>
+      </div>
+    </nav>
+    <br>
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-12">        

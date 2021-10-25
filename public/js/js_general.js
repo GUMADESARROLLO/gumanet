@@ -1,6 +1,6 @@
 var pgurl = window.location.href.substr(window.location.href.lastIndexOf("/")+1).replace('#!', '', );
 
-$("ul li a").each(function() {
+$("ol li a").each(function() {
     const ruta = $(this).attr("href").substr(window.location.href.lastIndexOf("/")+1);
     if( ruta == pgurl || $(this).attr("href") == '' ){
         $(this).removeClass('text-secondary').addClass("text-primary font-weight-bold");
@@ -36,6 +36,25 @@ $("body").click( function(e) {
     if ( $("#sidebar").hasClass('active') || $(e.target).hasClass('active-menu') ) {
         $("#sidebar").toggleClass('active');
     }    
+});
+
+
+//RECUPERA LOS ENTRADAS DE IM 
+$.ajax({
+    url: "countim",
+    type: "GET",
+    async: true,
+    success: function(count) {
+
+        $('#id-count-im').empty().text(numeral(count).format('0'));
+
+        if (count==0) {
+            $('#id-count-im').hide();
+        } else {
+            $('#id-count-im').empty().text(numeral(count).format('0'));
+        }
+
+    }
 });
 
 // Sidebar toggle behavior
