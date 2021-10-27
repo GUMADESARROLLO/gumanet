@@ -1020,7 +1020,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     chart.yAxis[0].options.plotLines[0].value = goal;
                     chart.yAxis[0].options.plotLines[0].label.text = "Prom. Dia Meta C$ " + numeral(goal).format('0,0.00');
 
-                    chart.yAxis[0].options.plotLines[1].value = var_Day_Max
+                    chart.yAxis[0].options.plotLines[1].value = Tendencia
                     chart.yAxis[0].options.plotLines[1].label.text = "Prom. Dia Tendencia C$ " + numeral(Tendencia ).format('0,0.00');
                     
                     chart.yAxis[0].update();
@@ -1810,7 +1810,7 @@ $("#opc_seg_graf01,#opc_seg_graf02").change( function() {
             chart.yAxis[0].options.plotLines[0].value = goal;
             chart.yAxis[0].options.plotLines[0].label.text = "Prom. Dia Meta C$ " + numeral(goal).format('0,0.00');
 
-            chart.yAxis[0].options.plotLines[1].value = var_Day_Max
+            chart.yAxis[0].options.plotLines[1].value = Tendencia
             chart.yAxis[0].options.plotLines[1].label.text = "Prom. Dia Tendencia C$ " + numeral(Tendencia ).format('0,0.00');
 
             chart.yAxis[0].update();
