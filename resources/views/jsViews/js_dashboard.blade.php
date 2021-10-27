@@ -1018,10 +1018,10 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     chart = new Highcharts.Chart(grafiacas_productos_Diarios);
 
                     chart.yAxis[0].options.plotLines[0].value = goal;
-                    chart.yAxis[0].options.plotLines[0].label.text = "Valor Prom. Diario Meta C$ " + numeral(goal).format('0,0.00');
+                    chart.yAxis[0].options.plotLines[0].label.text = "Val. Prom. Diario Meta C$ " + numeral(goal).format('0,0.00');
 
                     chart.yAxis[0].options.plotLines[1].value = var_Day_Max
-                    chart.yAxis[0].options.plotLines[1].label.text = "Valor Prom. Diario Tendencia C$ " + numeral(Tendencia ).format('0,0.00');
+                    chart.yAxis[0].options.plotLines[1].label.text = "Val. Prom. Diario Tendencia C$ " + numeral(Tendencia ).format('0,0.00');
                     
                     chart.yAxis[0].update();
     
