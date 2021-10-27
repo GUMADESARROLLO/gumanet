@@ -1008,7 +1008,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     grafiacas_productos_Diarios.series[0].data = dta;
 
                     
-                    Tendencia = (tmp_total / dta.length ) * 24
+                    Tendencia = (tmp_total / dta.length ) 
 
                     var var_Day_Max = Math.max.apply(Math, Day_Max);
 
@@ -1798,7 +1798,7 @@ $("#opc_seg_graf01,#opc_seg_graf02").change( function() {
             grafiacas_productos_Diarios.subtitle.text = "C$ " + numeral(tmp_total).format('0,0.00') + " Total";
             grafiacas_productos_Diarios.series[0].data = dta;
 
-            Tendencia = (tmp_total / dta.length ) * 24
+            Tendencia = (tmp_total / dta.length ) 
 
             var var_Day_Max = Math.max.apply(Math, Day_Max);
 
