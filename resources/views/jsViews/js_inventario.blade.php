@@ -20,9 +20,9 @@ $(document).ready(function() {
             { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
             { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
             { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" },
-            { title: "Nº MESES",                data: "COUNT_MONTH" },
-            { title: "TOTAL VST. ANUAL",        data: "SUM_ANUAL" },
-            { title: "PROM. VST. ANUAL",        data: "AVG_ANUAL" },
+            { title: "Nº MESES CON VTA",        data: "COUNT_MONTH" },
+            { title: "TOTAL VTA ANUAL",         data: "SUM_ANUAL" },
+            { title: "PROM. VTA ANUAL",         data: "AVG_ANUAL" },
             { title: "PROM. 3M. MAS ALTO",      data: "AVG_3M" }
             
         ];
@@ -38,7 +38,7 @@ $(document).ready(function() {
             { title: "ARTICULO",                data: "ARTICULO" },
             { title: "DESCRIPCION",             data: "DESCRIPCION" },
             { title: "UNIDAD",                  data: "UNIDAD_ALMACEN" },
-            { title: "CANT. DISP.",        data: "total" },
+            { title: "CANT. DISP.",             data: "total" },
             { title: "TOTAL UNITS. ",           data: "und" },
             { title: "TOTAL UNITS/ MES",        data: "VST_MES_ACTUAL" },
             { title: "PROM UNITS/ MES 2021",    data: "PROM_VST_ANUAL" },
@@ -46,9 +46,9 @@ $(document).ready(function() {
             { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
             { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
             { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" },
-            { title: "Nº MESES",                data: "COUNT_MONTH" },
-            { title: "TOTAL VST. ANUAL",        data: "SUM_ANUAL" },
-            { title: "PROM. VST. ANUAL",        data: "AVG_ANUAL" },
+            { title: "Nº MESES CON VTA",        data: "COUNT_MONTH" },
+            { title: "TOTAL VTA ANUAL",         data: "SUM_ANUAL" },
+            { title: "PROM. VTA ANUAL",         data: "AVG_ANUAL" },
             { title: "PROM. 3M. MAS ALTO",      data: "AVG_3M" }
             
         ];
@@ -63,7 +63,7 @@ $(document).ready(function() {
             { title: "ARTICULO",                data: "ARTICULO" },
             { title: "DESCRIPCION",             data: "DESCRIPCION" },
             { title: "UNIDAD",                  data: "UNIDAD_ALMACEN" },
-            { title: "CANT. DISP.",        data: "total" },
+            { title: "CANT. DISP.",             data: "total" },
             { title: "TOTAL UNITS. ",           data: "und" },
             { title: "TOTAL UNITS/ MES",        data: "VST_MES_ACTUAL" },
             { title: "PROM UNITS/ MES 2021",    data: "PROM_VST_ANUAL" },
@@ -71,9 +71,9 @@ $(document).ready(function() {
             { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
             { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
             { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" },
-            { title: "Nº MESES",                data: "COUNT_MONTH" },
-            { title: "TOTAL VST. ANUAL",        data: "SUM_ANUAL" },
-            { title: "PROM. VST. ANUAL",        data: "AVG_ANUAL" },
+            { title: "Nº MESES CON VTA",        data: "COUNT_MONTH" },
+            { title: "TOTAL VTA ANUAL",         data: "SUM_ANUAL" },
+            { title: "PROM. VTA ANUAL",         data: "AVG_ANUAL" },
             { title: "PROM. 3M. MAS ALTO",      data: "AVG_3M" }
             
         ];
