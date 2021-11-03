@@ -39,7 +39,6 @@ class vinetaliq_controller extends Controller {
 
     public function getSolicitudes(Request $request) {
         
-        $vWhere  = array();
 
         $from   = $request->input('f1').' 00:00:00';
         $to     = $request->input('f2').' 23:59:59';
@@ -55,37 +54,43 @@ class vinetaliq_controller extends Controller {
 
         $data = array();
 
-        if($Ruta != ''){
-            $vWhere[] = array("ruta" => $Ruta);
+        $query=DB::table('tbl_order_vineta')->whereBetween('created_at', [$from, $to])->whereNotIn('status', array(3));
+
+        if($Ruta != '') {
+            $query->where('ruta', '=',  $Ruta);
+        }
+        
+        if($Clie != '') {
+            $query->where('cod_cliente', 'like', '%'.$Clie.'%');
         }
 
-        if($Clie != ''){
-            $vWhere[] = array('address' => $Clie);
-        }    
+        $obj = $query->get();
 
-        
-        $obj = solicitudes_model::whereBetween('created_at', [$from, $to])->whereNotIn('status', array(3))->get();
 
-        foreach ($obj as $key) {
+
+
+        foreach ($obj as $qR => $key) {
+
+            
 
             $arrDetalles = array();
 
 
             $data[$i]["DETALLE"]        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
-            $data[$i]['ID']             = $key['id'];
-            $data[$i]['VENDEDOR']       = $key['ruta'];
-            $data[$i]['CLIENTE']        = substr(TRIM($key['cod_cliente']),0,-1);;
-            $data[$i]['NOMBRE_CLIENTE'] = $key['name_cliente'];
-            $data[$i]['FECHA']          = $key['created_at']->format('d/m/Y');        
-            $data[$i]['TOTAL']          = $key['order_total'];
+            $data[$i]['ID']             = $key->id;
+            $data[$i]['VENDEDOR']       = $key->ruta;
+            $data[$i]['CLIENTE']        = substr(TRIM($key->cod_cliente),0,-1);;
+            $data[$i]['NOMBRE_CLIENTE'] = $key->name_cliente;
+            $data[$i]['FECHA']          = date('d/m/Y', strtotime($key->created_at));       
+            $data[$i]['TOTAL']          = $key->order_total;
             
-            $data[$i]['RECIBO']         = $key['recibo'];
-            $data[$i]['BENEFIC']        = $key['address'];
-            $data[$i]['COMMENT']        = $key['comment'];
-            $data[$i]['COMMENT_ANUL']   = $key['comment_anul'];
+            $data[$i]['RECIBO']         = $key->recibo;
+            $data[$i]['BENEFIC']        = $key->address;
+            $data[$i]['COMMENT']        = $key->comment;
+            $data[$i]['COMMENT_ANUL']   = $key->comment_anul;
 
 
-            $OrdenList  = $key['order_list'];
+            $OrdenList  = $key->order_list;
             $Lineas     = explode("],", $OrdenList);
             $cLineas    = count($Lineas) - 1;
             
@@ -107,18 +112,18 @@ class vinetaliq_controller extends Controller {
             $data[$i]['DETALLES']       = $arrDetalles;
 
 
-            if ($key['status']==0) {
-                $data[$i]["BOTONES"]        = '<button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key['id'].')">Procesar</button>
-                <button type="button" class="btn btn-outline-danger"  onClick="open_modal_anulacion('.$key['id'].')">Anular</button>';
+            if ($key->status==0) {
+                $data[$i]["BOTONES"]        = '<button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key->id.')">Procesar</button>
+                <button type="button" class="btn btn-outline-danger"  onClick="open_modal_anulacion('.$key->id.')">Anular</button>';
             } else if($key['status']==1) {
                 $data[$i]["BOTONES"]        = '<div class="alert alert-success" role="alert">
                                                     Procesada.
                                                 </div>';
-            }else if($key['status']==2){
+            }else if($key->status==2){
                 $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">
                                                     Anulada
                                                 </div>';
-            } else if($key['status']==3){
+            } else if($key->status==3){
                 $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">
                                                     Elim. Ruta
                                                 </div>';
