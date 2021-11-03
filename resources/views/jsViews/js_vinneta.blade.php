@@ -45,6 +45,21 @@ $( "#dtLength").change(function() {
 
 function dataVinneta(f1, f2) {
 
+
+    $.ajax({
+        url: 'pagado',
+        type: 'post',
+        data: {
+            'f1' : f1,
+            'f2' : f2
+        },
+        async: true,
+        success: function(pagado) {
+            $('#MontoPagado').text('C$ ' + numeral(pagado).format('0,0.00'));
+            
+        }
+    });
+
     $('#dtVinneta').DataTable({
         'ajax':{
             'url':'getVinnetas',
@@ -70,18 +85,20 @@ function dataVinneta(f1, f2) {
             "search":     "BUSCAR"
         },
         'columns': [
-            { "title": "",          "data": "DETALLE"},            
+            { "title": "",          "data": "DETALLE"},        
+            { "title": "FACTURA",   "data": "FACTURA" },    
             { "title": "CLIENTE",   "data": "CLIENTE" },
-            { "title": "NOMBRE",    "data": "NOMBRE_CLIENTE" },
-            { "title": "FACTURA",   "data": "FACTURA" },
+            { "title": "NOMBRE",    "data": "NOMBRE_CLIENTE" },            
             { "title": "FECHA",     "data": "FECHA" },
             { "title": "VENDEDOR",  "data": "VENDEDOR" },
-            { "title": "TOTAL",     "data": "TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )}
+            { "title": "TOTAL",     "data": "TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
+            { "title": "CANT. LIQ.", "data": "CANT_LIQUIDADA" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
+            { "title": "DISP.", "data": "DISPONIBLE" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )}
         ],
         "columnDefs": [
-            {"className": "dt-center", "targets": [1,3,4,5 ]},
-            {"className": "dt-right", "targets": [ 6 ]},
-            { "width": "5%", "targets": [0,1,3,4,5,6 ] },
+            {"className": "dt-center", "targets": [0,1,2,3,4,5 ]},
+            {"className": "dt-right", "targets": [ 6,7,8 ]},
+            { "width": "5%", "targets": [0,1,2,4,5,6,7,8 ] },
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api();
@@ -228,6 +245,7 @@ function format ( callback, ordCompra_ ) {
                         <th class="center">ARTICULO</th>
                         <th class="center">DESCRIP.</th>
                         <th class="center">CANTIDAD</th>
+                        <th class="center">CANTIDAD LIQUIDADA</th>
                         <th class="center">PRECIO UNITARIO</th>
                         <th class="center">PRECIO TOTAL</th>
                         <th class="center">VALOR</th>
@@ -256,7 +274,8 @@ function format ( callback, ordCompra_ ) {
                 tbody +='<tr>'+
                             '<td class="text-center">' + item['ARTICULO'] + '</td>'+
                             '<td class="text-left">' + item['DESCRIPCION'] + '</td>'+
-                            '<td class="text-right">' + numeral(item['CANTIDAD']).format('0,0.00') + '</td>'+
+                            '<td class="text-center">' + numeral(item['CANTIDAD']).format('0,0') + '</td>'+
+                            '<td class="text-center">' + numeral(item['CANT_LIQUIDADA']).format('0,0') + '</td>'+
                             '<td class="text-right">' + numeral(item['PRECIO_UNITARIO']).format('0,0.00')  + '</td>'+
                             '<td class="text-right">' + numeral(item['PRECIO_TOTAL']).format('0,0.00')  + '</td>'+
                             '<td class="text-right"> ' + valor_ninneta  + '</td>'+

@@ -49,11 +49,31 @@ class vinneta_model extends Model
             $data[$i]['FECHA']          = $key['FECHA']->format('d/m/Y');;
             $data[$i]['VENDEDOR']       = $key['VENDEDOR'];
             $data[$i]['TOTAL']          = $key['TOTAL'];
+            $data[$i]['CANT_LIQUIDADA'] = $key['CANT_LIQUIDADA'];
+            $data[$i]['DISPONIBLE']     = ($key['TOTAL'] - $key['CANT_LIQUIDADA']);
             $i++;
         }
         $sql_server->close();        
 
         return $data;
+    }
+
+    public static function getpagado($f1, $f2) {        
+        $sql_server = new \sql_server();        
+        $request = Request();
+        $sql_exec = '';
+        $i=0;
+        $data = array();
+        
+
+        $sql_exec = "SELECT SUM(T0.CANTIDAD * T0.VALOR_UND) AS TOTAL FROM DESARROLLO.dbo.tbl_vineta_liquidadas T0 WHERE CAST(T0.FECHA AS date) BETWEEN '".$f1."' AND '".$f2."'";
+    
+        $query = $sql_server->fetchArray( $sql_exec , SQLSRV_FETCH_ASSOC);
+
+        
+        $sql_server->close();        
+
+        return $query[0]['TOTAL'];
     }
 
     public static function getVinnetasResumen($f1, $f2) {        

@@ -165,3 +165,12 @@ Route::post('/lineasOrden','ordenesCompra_controller@getDetalleOrdenCompra');
 Route::get('vineta', 'vinneta_controller@index');
 Route::get('getVinnetas', 'vinneta_controller@getVinnetas');
 Route::get('getVinnetasResumen', 'vinneta_controller@getVinnetasResumen');
+
+Route::get('liqvineta', 'vinetaliq_controller@index');
+Route::get('getSolicitudes', 'vinetaliq_controller@getSolicitudes');
+
+Route::post('PushLiq', 'vinetaliq_controller@pushliq');
+Route::post('cancelarliq', 'vinetaliq_controller@cancelarliq');
+
+Route::post('pagado', 'vinneta_controller@getpagado');
+
