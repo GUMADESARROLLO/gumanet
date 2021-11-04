@@ -115,7 +115,7 @@ class vinetaliq_controller extends Controller {
             if ($key->status==0) {
                 $data[$i]["BOTONES"]        = '<button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key->id.')">Procesar</button>
                 <button type="button" class="btn btn-outline-danger"  onClick="open_modal_anulacion('.$key->id.')">Anular</button>';
-            } else if($key['status']==1) {
+            } else if($key->status==1) {
                 $data[$i]["BOTONES"]        = '<div class="alert alert-success" role="alert">
                                                     Procesada.
                                                 </div>';

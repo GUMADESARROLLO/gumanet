@@ -20,16 +20,16 @@
 							</div>
 						</div>
 
-						<div class="col-sm-4 mt-4 ">
-							<div class="form-group">
-								<select class="selectpicker form-control" id="dtCliente" data-show-subtext="true" data-live-search="true">					
-									<option selected value="">CLIENTES - TODOS</option>
-									@foreach($clientes as $key)										
-										<option value="{{$key['CLIENTE']}}">{{ $key['NOMBRE'] }}</option>
-									@endforeach
-								</select>
-							</div>
+					<div class="col-sm-3 mt-4 ">
+						<div class="form-group">
+							<select class="selectpicker form-control" id="dtCliente" data-show-subtext="true" data-live-search="true">					
+								<option selected value="">CLIENTES - TODOS</option>
+								@foreach($clientes as $key)										
+									<option value="{{$key['CLIENTE']}}">{{ $key['NOMBRE'] }}</option>
+								@endforeach
+							</select>
 						</div>
+					</div>
 
 						<div class="col-sm-1 mt-4 ">
 							<div class="input-group">
@@ -54,22 +54,29 @@
 							</div>
 						</div>
 						
-						<div class="col-sm-3 border-left">
+						<div class="col-sm-4 border-left">
 							<div class="row ">
-								<div class="col-sm-5 ">
+								<div class="col-sm-4 ">
 									<div class="form-group">                
 										<label for="f1">Desde:</label>
 										<input type="text" class="input-fecha" id="f1">
 									</div>
 								</div>
-								<div class="col-sm-5 ">
+								<div class="col-sm-4 ">
 									<div class="form-group">                
 										<label for="f2">Hasta:</label>
 										<input type="text" class="input-fecha" id="f2">
 									</div>
 								</div>
 								<div class="col-sm-2 mt-4 ">
-									<a href="#!" class="btn btn-primary float-left" id="BuscarVinneta">Filtrar</a>
+									<div class="form-group"> 
+										<a href="#!" class="btn btn-primary float-left" id="BuscarVinneta">Filtrar</a>
+									</div>
+								</div>
+								<div class="col-sm-2 mt-4">
+									<div class="form-group"> 
+										<a href="#!" class="btn btn-danger float-left" id="BuscarVinneta">PDF</a>
+									</div>
 								</div>
 							</div>
 						</div>  
@@ -78,7 +85,7 @@
 			</div>
 		</div>
 		<div class="card border-0 shadow-sm mt-3">	
-			<div class="card-body col-sm-12">								
+			<div class="card-body col-sm-12">												
 				<table class="table table-striped table-bordered table-sm post_back mt-3" width="100%" id="dtVinneta">
 					<thead class="bg-blue text-light"></thead>
 				</table>

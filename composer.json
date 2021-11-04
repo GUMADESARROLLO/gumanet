@@ -15,7 +15,8 @@
         "phpoffice/phpexcel": "dev-master",
         "snapappointments/bootstrap-select": "^1.13",
         "yajra/laravel-datatables": "^1.5",
-        "yajra/laravel-datatables-oracle": "~8.0"
+        "yajra/laravel-datatables-oracle": "~8.0",
+        "barryvdh/laravel-dompdf": "0.6.*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
