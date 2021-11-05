@@ -9,14 +9,15 @@
     "license": "MIT",
     "require": {
         "php": "^7.1.3",
+        "barryvdh/laravel-dompdf": "0.8.*",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "phpoffice/phpexcel": "dev-master",
         "snapappointments/bootstrap-select": "^1.13",
+        "vsmoraes/laravel-pdf": "^2.0",
         "yajra/laravel-datatables": "^1.5",
-        "yajra/laravel-datatables-oracle": "~8.0",
-        "barryvdh/laravel-dompdf": "0.6.*"
+        "yajra/laravel-datatables-oracle": "~8.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

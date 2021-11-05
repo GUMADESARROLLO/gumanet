@@ -174,3 +174,5 @@ Route::post('cancelarliq', 'vinetaliq_controller@cancelarliq');
 
 Route::post('pagado', 'vinneta_controller@getpagado');
 
+Route::get('resumen', 'vinetaliq_controller@resumenpdf');
+

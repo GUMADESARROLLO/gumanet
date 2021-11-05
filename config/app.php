@@ -179,7 +179,10 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\SqlSrvProvider::class,
         App\Providers\gitVersionServiceProvider::class,
-        Yajra\DataTables\DatatablesServiceProvider::class
+        Yajra\DataTables\DatatablesServiceProvider::class,
+        Vsmoraes\Pdf\PdfServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        
 
     ],
 
@@ -231,8 +234,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'sql_server' => App\Libraries\sql_server::class,
         'git_version' => App\Libraries\git_version::class,
-        'Datatables' => Yajra\Datatables\Facades\DataTables::class
-
+        'Datatables' => Yajra\Datatables\Facades\DataTables::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'GPDF' => Vsmoraes\Pdf\PdfFacade::class,
     ],
 
 ];

@@ -9,12 +9,40 @@ use App\Company;
 use App\solicitudes_model;
 use App\reportes_model;
 use Illuminate\Support\Facades\DB;
+use GPDF;
+use PDF;
 
 class vinetaliq_controller extends Controller {
     public function __construct() {
         $this->middleware('auth');
     }
 
+    public function resumenpdf(Request $request) {
+
+        $aRutas         = reportes_model::rutas();
+        $resumen        = json_decode(vinetaliq_controller::getSolicitudes($request)->content(), true);        
+        $Ruta           = $request->input('RU');
+        $found_key      = array_search($Ruta, array_column($aRutas, 'VENDEDOR'));
+        $Ruta_Name      = $aRutas[$found_key]['NOMBRE'];
+        $Fecha_generado = date('d/m/Y H:i:s');
+        $FondoInicial   = $request->input('Fondo');
+        $Nota           = $request->input('nota');
+        
+        $data = [
+            'Ejecutivo'   =>  $Ruta_Name,
+            'Fecha'       =>  $Fecha_generado,
+            'Ruta'        =>  $Ruta,
+            'Fondo'       =>  $FondoInicial,
+            'Fondo'       =>  $FondoInicial,
+            'Nota'        =>  $Nota
+        ];
+
+        //return view('pages.resumen', compact('data','resumen'));
+
+        $pdf = PDF::loadView('pages.resumen', compact('data','resumen'));
+        return $pdf->download('Resumen.pdf');
+        
+    }
     public function index() {
         $this->agregarDatosASession();
 
@@ -24,8 +52,10 @@ class vinetaliq_controller extends Controller {
         $data = [
             'name' =>  'GUMA@NET',
             'page' => 'Ventas'
-        ];
+            
 
+        ];
+        
         return view('pages.vinneta_liq', compact('data', 'clientes','rutas'));
     }
 
@@ -37,7 +67,7 @@ class vinetaliq_controller extends Controller {
         $request->session()->put('companyName', $company->nombre);
     }
 
-    public function getSolicitudes(Request $request) {
+    public static function getSolicitudes(Request $request) {
         
 
         $from   = $request->input('f1').' 00:00:00';
@@ -45,6 +75,7 @@ class vinetaliq_controller extends Controller {
         
         $Ruta   = $request->input('RU');
         $Clie   = $request->input('CL');
+        $Stat   = $request->input('St');
 
         $i=0;
 
@@ -62,6 +93,10 @@ class vinetaliq_controller extends Controller {
         
         if($Clie != '') {
             $query->where('cod_cliente', 'like', '%'.$Clie.'%');
+        }
+
+        if($Stat != '') {
+            $query->whereIn('status', array($Stat));
         }
 
         $obj = $query->get();

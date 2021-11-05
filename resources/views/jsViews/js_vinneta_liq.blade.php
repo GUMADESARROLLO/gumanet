@@ -28,13 +28,43 @@ function Requestdata(){
     f2      = $("#f2").val();
     Ruta    = $("#dtRutas").val();
     Clie    = $("#dtCliente").val();
+    Stat    = $("#dtStatus").val();
 
-    dataVinneta(f1, f2,Ruta,Clie);
+    dataVinneta(f1, f2,Ruta,Clie,Stat);
 }
 
 $("#BuscarVinneta").click( function() {
     Requestdata()
 });
+
+$("#resument").click( function() {
+
+    $('#mdlResumen').modal('show')
+    
+    $("#txt-fondo-inicial").val("")
+    
+    $("#id-nota").val("")
+});
+
+$("#id-print-pdf").click( function() {
+
+    f1      = $("#f1").val();
+    f2      = $("#f2").val();
+    Ruta    = $("#dtRutas").val();
+    Clie    = $("#dtCliente").val();
+    Fondo   = $("#txt-fondo-inicial").val();
+    Nota    = $("#id-coment").val();
+    Stat    = $("#dtStatus").val();
+    
+    if (Ruta==null || Fondo == '') {
+        alert("Tiene Informacion pendiente")        
+    } else {
+        location.href = "resumen?f1="+f1+"&f2="+f2+"&RU="+Ruta+"&CL="+Clie+"&Fondo="+Fondo+"&nota="+Nota+"&St="+Stat;
+    }
+    
+
+});
+
 
 $('#txtSearch').on( 'keyup', function () {
     var table = $('#dtVinneta').DataTable();
@@ -46,7 +76,7 @@ $( "#dtLength").change(function() {
 });
 
 
-function dataVinneta(f1, f2,Ruta,Cliente) {
+function dataVinneta(f1, f2,Ruta,Cliente,Stat) {
 
     $('#dtVinneta').DataTable({
         'ajax':{
@@ -57,6 +87,7 @@ function dataVinneta(f1, f2,Ruta,Cliente) {
                 'f2' : f2,
                 'RU' : Ruta,
                 'CL' : Cliente,
+                'St' : Stat,
             }
         },
         "destroy" : true,
