@@ -102,6 +102,9 @@ class vinetaliq_controller extends Controller {
         $obj = $query->get();
 
 
+        
+        $obj = solicitudes_model::whereBetween('created_at', [$from, $to])->whereNotIn('status', array(3))->get();
+
 
 
         foreach ($obj as $qR => $key) {
