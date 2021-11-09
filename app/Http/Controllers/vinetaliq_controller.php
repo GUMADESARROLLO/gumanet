@@ -11,7 +11,8 @@ use App\reportes_model;
 use Illuminate\Support\Facades\DB;
 use GPDF;
 use PDF;
-
+use App\tbl_liquidacion_fondo_vineta;
+use App\tbl_liquidacion_detalle;
 class vinetaliq_controller extends Controller {
     public function __construct() {
         $this->middleware('auth');
@@ -19,23 +20,70 @@ class vinetaliq_controller extends Controller {
 
     public function resumenpdf(Request $request) {
 
+        
+
+        $liq            = new tbl_liquidacion_fondo_vineta();
+        $liq_detalle    = new tbl_liquidacion_detalle();
+        $recibido       = 0; 
+        $Lineas         = [];
+
+
         $aRutas         = reportes_model::rutas();
         $resumen        = json_decode(vinetaliq_controller::getSolicitudes($request)->content(), true);        
         $Ruta           = $request->input('RU');
         $found_key      = array_search($Ruta, array_column($aRutas, 'VENDEDOR'));
         $Ruta_Name      = $aRutas[$found_key]['NOMBRE'];
-        $Fecha_generado = date('d/m/Y H:i:s');
+        $Fecha_generado = date('Y-m-d H:i:s');
         $FondoInicial   = $request->input('Fondo');
         $Nota           = $request->input('nota');
+
+        $liq->Ruta              = $Ruta;
+        $liq->Ruta_name         = $Ruta_Name;
+        $liq->Fecha             = $Fecha_generado;
+        $liq->Fondo_inicial     = $FondoInicial;
+        $liq->Nota              = $Nota;
+        $liq->save();
+        $number_liquidacion     = $liq->id;
+
+        $IdLiquidacion = $this->addZeros($number_liquidacion);
         
         $data = [
             'Ejecutivo'   =>  $Ruta_Name,
             'Fecha'       =>  $Fecha_generado,
             'Ruta'        =>  $Ruta,
             'Fondo'       =>  $FondoInicial,
-            'Fondo'       =>  $FondoInicial,
-            'Nota'        =>  $Nota
+            'Nota'        =>  $Nota,
+            'IdLiq'       =>  $IdLiquidacion
         ];
+
+        foreach($resumen as $key){        
+            $suma           = 0;    
+
+            $recibido += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
+
+            foreach($key['DETALLES'] as $dt){
+                $suma+=$dt['CANTIDAD'];
+            }
+
+            $Lineas[] = [
+                'id'            => $number_liquidacion,
+                'Fecha'         => $key['FECHA'],
+                'Recibo'        => $key['RECIBO'],
+                'cliente_name'  => $key['NOMBRE_CLIENTE'],
+                'cliente_cod'   => $key['CLIENTE'],
+                'Concepto'      => "Pago Viñeta ( ".$suma." )",
+                'Total'         => $recibido
+            ];
+            
+        }
+
+        $vUpdate = array(
+            'Reembolso'        =>  $recibido
+        );
+        
+        tbl_liquidacion_fondo_vineta::where('id', $number_liquidacion)->update($vUpdate);
+
+        tbl_liquidacion_detalle::insert($Lineas);
 
         //return view('pages.resumen', compact('data','resumen'));
 
@@ -52,8 +100,6 @@ class vinetaliq_controller extends Controller {
         $data = [
             'name' =>  'GUMA@NET',
             'page' => 'Ventas'
-            
-
         ];
         
         return view('pages.vinneta_liq', compact('data', 'clientes','rutas'));
@@ -85,10 +131,10 @@ class vinetaliq_controller extends Controller {
 
         $data = array();
 
-        $query=DB::table('tbl_order_vineta')->whereBetween('created_at', [$from, $to])->whereNotIn('status', array(3));
+        $query = DB::table('tbl_order_vineta')->whereBetween('created_at', [$from, $to])->whereNotIn('status', array(3));
 
         if($Ruta != '') {
-            $query->where('ruta', '=',  $Ruta);
+            $query->where('ruta', $Ruta);
         }
         
         if($Clie != '') {
@@ -101,12 +147,7 @@ class vinetaliq_controller extends Controller {
 
         $obj = $query->get();
 
-
-        
-        $obj = solicitudes_model::whereBetween('created_at', [$from, $to])->whereNotIn('status', array(3))->get();
-
-
-
+    
         foreach ($obj as $qR => $key) {
 
             
@@ -170,10 +211,92 @@ class vinetaliq_controller extends Controller {
             $i++;
         }
         
+        return response()->json($data);
+
+    }
+
+    public static function getLiquidaciones(Request $request) {
+        
+
+        $from   = $request->input('f1').' 00:00:00';
+        $to     = $request->input('f2').' 23:59:59';
+        
+        $Ruta   = $request->input('RU');
+
+        $i=0;
+
+        if (!$from) {
+            return response()->json(false);
+        }
+
+        $data = array();
+
+        $query = DB::table('view_liquidaciones')->whereBetween('created_at', [$from, $to]);
+
+        if($Ruta != '') {
+            $query->where('Ruta', $Ruta);
+        }
+
+
+        $obj = $query->get();
+
+    
+        foreach ($obj as $qR => $key) {
+            $arrDetalles = array();
+
+            $IdLiquidacion = vinetaliq_controller::addZeros($key->Id);
+
+            $Fondo      = $key->Fondo_inicial;
+            $Reembolso  = $key->Reembolso;
+            $Saldo      = $Fondo - $Reembolso;
+
+
+            $data[$i]["DETALLE"]        = '<a id="exp_more_liq" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+            $data[$i]['ID']             = $key->Id;
+            $data[$i]['VENDEDOR']       = $key->Ruta;           
+            $data[$i]['RUTA_NAME']      = $key->Ruta_name;           
+            $data[$i]['FECHA']          = date('d/m/Y', strtotime($key->created_at));        
+            $data[$i]['TOTAL']          = "";
+            $data[$i]['FONDO']          = $Fondo;  
+            $data[$i]['REEMBOLSO']      = $Reembolso;  
+            $data[$i]['SALDO']          = $Saldo;  
+            $data[$i]['RECIBO']         = $IdLiquidacion;
+
+            $data[$i]['COMMENT']        = $key->Nota;
+            $data[$i]['COMMENT_ANUL']   = "";
+
+            
+
+
+            $OrdenList  = $key->Lineas.",";
+            $Lineas     = explode("],", $OrdenList);
+            $cLineas    = count($Lineas) - 1;
+
+
+            for ($l=0; $l < $cLineas ; $l++){
+                
+                $Lineas_detalles     = explode(";", $Lineas[$l]);
+
+                $arrDetalles[$l]['FECHA']     = str_replace('[', '', $Lineas_detalles[0]);
+                $arrDetalles[$l]['RECIBO']     = $Lineas_detalles[1];
+                $arrDetalles[$l]['CLIENTE_NAME']    = $Lineas_detalles[2];
+                $arrDetalles[$l]['CLIENTE_COD']  = $Lineas_detalles[3];
+                $arrDetalles[$l]['CONCEPTO']  = $Lineas_detalles[4];
+                $arrDetalles[$l]['TOTAL']       = $Lineas_detalles[5];
+
+                
+            }
+
+            $data[$i]['DETALLES']       = $arrDetalles;
+
+            $i++;
+        }
         
         return response()->json($data);
 
     }
+
+
     public static function UpdateStatus($ID,$Status,$Message){
 		
         $request = Request();
@@ -302,6 +425,28 @@ class vinetaliq_controller extends Controller {
             $obj = vinneta_model::getDetalleOrdenCompra($request->input('ordCompra'));
             return response()->json($obj);
         }
+    }
+
+    public static function addZeros($code){
+        $res='';
+        switch (strlen($code)) {           
+            case 3:
+                $res = '0'.$code;
+                break;
+            case 2:
+                $res = '00'.$code;
+                break;
+            case 1:
+                $res = '000'.$code;
+                break;
+            
+            default:
+                $res = $code;
+                break;
+        }
+
+        return $res;
+        
     }
 
 

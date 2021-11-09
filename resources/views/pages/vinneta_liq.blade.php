@@ -20,10 +20,10 @@
 							</div>
 						</div>
 
-					<div class="col-sm-3 mt-4 ">
+					<div class="col-sm-4 mt-4 ">
 						<div class="form-group">
 							<select class="selectpicker form-control" id="dtCliente" data-show-subtext="true" data-live-search="true">					
-								<option selected value="">CLIENTES - TODOS</option>
+								<option selected value="">TODOS</option>
 								@foreach($clientes as $key)										
 									<option value="{{$key['CLIENTE']}}">{{ $key['NOMBRE'] }}</option>
 								@endforeach
@@ -34,7 +34,7 @@
 						<div class="col-sm-1 mt-4 ">
 							<div class="input-group">
 								<select class="custom-select" id="dtRutas" name="dtRutas">
-								<option selected value="">Rutas</option>
+								<option selected value="">Todos</option>
 									@foreach($rutas as $key)
 										<option>{{ $key['VENDEDOR'] }}</option>
 									@endforeach
@@ -42,17 +42,7 @@
 							</div>
 						</div>
 
-						<div class="col-sm-1 mt-4 ">
-							<div class="input-group">
-								<select class="custom-select" id="dtLength" name="dtLength">
-								<option value="5" selected>5</option>
-								<option value="10">10</option>
-								<option value="20">20</option>
-								<option value="50">50</option>
-								<option value="-1">Todo</option>
-								</select>
-							</div>
-						</div>
+						
 
 						<div class="col-sm-1 mt-4 ">
 							<div class="input-group">
@@ -81,25 +71,32 @@
 								</div>
 								<div class="col-sm-2 mt-4 ">
 									<div class="form-group"> 
-										<a href="#!" class="btn btn-primary float-left" id="BuscarVinneta">Filtrar</a>
+										<a href="#!" class="btn btn-primary float-left" id="BuscarVinneta">
+											<i class="material-icons text-white mt-1"  style="font-size: 20px">filter_list_alt</i>
+										</a>
 									</div>
 								</div>
 								<div class="col-sm-2 mt-4">
 									<div class="form-group"> 
-										<a href="#!" class="btn btn-danger float-left" id="resument">PDF</a>
+										<a href="#!" class="btn btn-primary float-left" id="resument">
+											<i class="material-icons text-white mt-1"  style="font-size: 20px">local_printshop</i>
+										</a>
 									</div>
 								</div>
 							</div>
 							<div class="row ml-2">
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-									<label class="form-check-label" for="inlineRadio1">Recibo</label>
-								</div>
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-									<label class="form-check-label" for="inlineRadio2">Liquidación</label>
-								</div>
+								<form id="FrmOptns">
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="optRec" checked>
+										<label class="form-check-label" for="inlineRadio1">Recibo</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="optLiq">
+										<label class="form-check-label" for="inlineRadio2">Liquidación</label>
+									</div>
+								</form>
 							</div>
+							
 						</div>  
 					</div>
 				</div>
@@ -140,28 +137,47 @@
 </div>
 
 <div class="modal fade" id="mdlResumen" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 		<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">Liquidacion de fondo de viñetas</h5>
+			<h5 class="modal-title">Liquidacion de fondo de viñetas</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
+				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
-		<div class="modal-body">
-			<form>
-			<div class="form-group">
-				<label for="recipient-name" class="col-form-label" >Fondo Inicial:</label>
-				<input type="number" onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" class="form-control" id="txt-fondo-inicial" placeholder="C$ 00.00">
+		<div class="modal-body">		
+			<div class="row">           
+				<div class="col-sm-2 ">
+					<p class="text-muted m-0">RUTA</p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id-form-ruta"></p>
+				</div>
+				<div class="col-sm-2 ">
+					<p class="text-muted m-0">EJECUTIVO</p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id-form-ruta-name"></p>
+				</div>
+				<div class="col-sm-2 border-right">
+					<p class="text-muted m-0">FECHA</p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id-form-time">0.00</p>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label for="recipient-name" class="col-form-label" >Fondo Inicial:</label>
+						<input type="number" onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" class="form-control" id="txt-fondo-inicial" placeholder="C$ 00.00">
+					</div>
+				</div>
 			</div>
+
+			<div class="mt-3" id="dtViewLiquidacion"></div>
+
 			<div class="form-group">
 				<label for="message-text" class="col-form-label" id="id-nota">Nota:</label>
 				<textarea class="form-control" id="id-coment" placeholder="Escriba una nota."></textarea>
 			</div>
-			</form>
+
+
 		</div>
 		<div class="modal-footer">			
-			<button type="button" class="btn btn-primary" id="id-print-pdf">Aceptar</button>
+			<button type="button" class="btn btn-primary" id="id-print-pdf">Guardar y Imprimir</button>
 		</div>
 		</div>
 	</div>
