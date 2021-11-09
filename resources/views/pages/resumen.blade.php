@@ -9,6 +9,7 @@
             <td valign="top">
             </td>
             <td align="right">
+            <h3>{{$data['IdLiq']}}</h3>
             <h3>UNIMARK, S.A.</h3>
                 <pre>
                     Villa Fontana, Club Terraza 150m Oeste
@@ -108,13 +109,12 @@
             <tr>
                 <td colspan="2" align="right">SALDO C$ </td>
                 <td align="right" >
-                    
                     {{ number_format(($data['Fondo'] - $recibido),2) }}    
                     
                 </td>
             </tr>
             <tr>
-                <td colspan="2" align="right">MONTO A REEMBILSAR C$</td>
+                <td colspan="2" align="right">MONTO A REEMBOLSAR C$</td>
                 <td  align="right">
                     {{number_format($recibido,2)}}
                 </td>
