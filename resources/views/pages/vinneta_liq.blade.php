@@ -36,7 +36,7 @@
 								<select class="custom-select" id="dtRutas" name="dtRutas">
 								<option selected value="">Todos</option>
 									@foreach($rutas as $key)
-										<option>{{ $key['VENDEDOR'] }}</option>
+										<option value="{{ $key['VENDEDOR'] }}"> {{ $key['VENDEDOR'] }} - {{ $key['NOMBRE'] }}</option>
 									@endforeach
 								</select>
 							</div>

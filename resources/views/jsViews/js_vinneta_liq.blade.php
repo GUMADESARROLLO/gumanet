@@ -202,8 +202,11 @@ $("#resument").click( function() {
             var time = moment().format('DD/MM/YYYY');
 
 
-            var data = table.rows().data();
-            Ruta     = $("#dtRutas").val();
+            var data  = table.rows().data();
+            Ruta      = $("#dtRutas").val();
+            Ruta_name = $( "#dtRutas option:selected" ).text();
+
+            Ruta_name = Ruta_name.substr(7, Ruta_name.length + 3)
 
         
 
@@ -211,15 +214,13 @@ $("#resument").click( function() {
             
 
             $("#id-form-ruta").html(Ruta)
+            $("#id-form-ruta-name").html(Ruta_name)
             $("#id-form-time").html(time)
 
         
             $.each( form_data, function( key, item ) {
 
                 let suma = 0
-
-                console.log(item['DETALLES'])
-
                 
                 $.each( item['DETALLES'], function( key, item ) {
                     suma += parseFloat(item['CANTIDAD']);
