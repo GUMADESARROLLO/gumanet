@@ -177,3 +177,5 @@ Route::post('pagado', 'vinneta_controller@getpagado');
 
 Route::get('resumen', 'vinetaliq_controller@resumenpdf');
 
+Route::get('clean', 'vinetaliq_controller@getClear');
+
