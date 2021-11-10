@@ -18,6 +18,18 @@ class vinetaliq_controller extends Controller {
         $this->middleware('auth');
     }
 
+    public function getClear(Request $request){
+
+        tbl_liquidacion_fondo_vineta::truncate();
+        
+        tbl_liquidacion_detalle::truncate();
+
+        solicitudes_model::truncate();
+
+        DB::connection('sqlsrv')->table('DESARROLLO.dbo.tbl_vineta_liquidadas')->delete();
+
+    }
+
     public function resumenpdf(Request $request) {
 
         
@@ -72,7 +84,8 @@ class vinetaliq_controller extends Controller {
                 'cliente_name'  => $key['NOMBRE_CLIENTE'],
                 'cliente_cod'   => $key['CLIENTE'],
                 'Concepto'      => "Pago Viñeta ( ".$suma." )",
-                'Total'         => $recibido
+                'Total'         => $recibido,
+                'created_at'    => date('Y-m-d H:i:s')
             ];
             
         }
@@ -104,6 +117,8 @@ class vinetaliq_controller extends Controller {
         
         return view('pages.vinneta_liq', compact('data', 'clientes','rutas'));
     }
+
+   
 
     public function agregarDatosASession() {
         $request = Request();

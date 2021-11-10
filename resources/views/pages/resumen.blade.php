@@ -6,17 +6,16 @@
 @endphp
     <table width="100%">
         <tr>
-            <td valign="top">
-            </td>
-            <td align="right">
-            <h3>{{$data['IdLiq']}}</h3>
-            <h3>UNIMARK, S.A.</h3>
-                <pre>
-                    Villa Fontana, Club Terraza 150m Oeste
-                    Managua, Nicaragua
-                    Tel.: 2278-8787 - E-mail : info@unimarksa.com
-                    RUC: J0310000121249
-                </pre>
+            <td valign="top"></td>
+            <td align ="right">
+                <h3>Nº {{$data['IdLiq']}}</h3>
+                <h3>UNIMARK, S.A.</h3>
+                    <pre>
+                        Villa Fontana, Club Terraza 150m Oeste
+                        Managua, Nicaragua
+                        Tel.: 2278-8787 - E-mail : info@unimarksa.com
+                        RUC: J0310000121249
+                    </pre>
             </td>
         </tr>
     </table>
@@ -37,7 +36,7 @@
     </table>
     
     <div class="text-center">
-        <strong>DETALLE DE RECIBOS DE PAGOS DE VIÑETAS</strong>
+        <strong><br>DETALLE DE RECIBOS DE PAGOS DE VIÑETAS</strong>
     </div>
 
     <br/>
@@ -55,39 +54,41 @@
             </tr>
         </thead>
         <tbody>
-        
-            @foreach($resumen as $key)
+            @if (count($resumen) > 0)
+                @foreach($resumen as $key)
 
-            @php 
-                $suma        = 0; 
-            @endphp
-            
-                @foreach($key['DETALLES'] as $dt)
-                    @php
-                        $suma+=$dt['CANTIDAD'];
-                    @endphp
-                @endforeach 
-
-                @php
-                    $recibido += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
-                    
-                @endphp
-                <tr>
-                    <th scope="row">{{$count_linea}}</th>
-                    <td>{{ $key['FECHA'] }}</td>
-                    <td>{{ $key['RECIBO'] }}</td>
-                    <td>{{ $key['NOMBRE_CLIENTE'] }}</td>
-                    <td align="right">{{ $key['CLIENTE'] }}</td>
-                    <td align="right">Pago Viñeta ( {{$suma}} ) </td>
-                    <td align="right">{{ $key['TOTAL'] }}</td>
-                </tr>
                 @php 
-                    $count_linea++;
+                    $suma        = 0; 
                 @endphp
+                
+                    @foreach($key['DETALLES'] as $dt)
+                        @php
+                            $suma+=$dt['CANTIDAD'];
+                        @endphp
+                    @endforeach 
 
-
-            @endforeach            
-            
+                    @php
+                        $recibido += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
+                        
+                    @endphp
+                    <tr>
+                        <th scope="row">{{$count_linea}}</th>
+                        <td>{{ $key['FECHA'] }}</td>
+                        <td>{{ $key['RECIBO'] }}</td>
+                        <td>{{ $key['NOMBRE_CLIENTE'] }}</td>
+                        <td align="right">{{ $key['CLIENTE'] }}</td>
+                        <td align="right">Pago Viñeta ( {{$suma}} ) </td>
+                        <td align="right">{{ $key['TOTAL'] }}</td>
+                    </tr>
+                    @php 
+                        $count_linea++;
+                    @endphp
+                @endforeach
+                @else
+                <tr>
+                    <th colspan="6">Sin RECIBOS</th>                    
+                </tr>
+            @endif
         </tbody>
         <tfoot>
             <tr>
@@ -120,5 +121,18 @@
                 </td>
             </tr>
         </tfoot>
+    </table
+    
+    <div class="text-center ml "><br><br><br><br><br><br></div>
+
+    <table width="100%" class="text-center">  
+        <tr>            
+            <td>_____________________________________<br><strong>Entregué Conforme:</strong></td>
+            <td>_____________________________________<br><strong>Recibí Conforme</strong> </td>
+        </tr>
+        <tr>
+            <td><strong>Ejecutivo de Ventas</strong> </td>
+            <td><strong>Cartera y Cobro</strong></td>
+        </tr>
     </table>
 @endsection

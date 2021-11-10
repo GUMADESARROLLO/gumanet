@@ -175,14 +175,29 @@ $("#resument").click( function() {
     $("#id-nota").val("")
     var table = $('#dtVinneta').DataTable();
 
-    var form_data  = table.rows().data().toArray();;
+    var form_data  = table.rows().data().toArray();
+
+    
+        
+    var time = moment().format('DD/MM/YYYY');
+    var data  = table.rows().data();
+    Ruta      = $("#dtRutas").val();
+    Ruta_name = $( "#dtRutas option:selected" ).text();
+
+    Ruta_name = Ruta_name.substr(7, Ruta_name.length + 3)
+    $('#mdlResumen').modal('show')
+    
+
+    $("#id-form-ruta").html(Ruta)
+    $("#id-form-ruta-name").html(Ruta_name)
+    $("#id-form-time").html(time)
 
     if(form_data.length > 0 ){
         if(Opt=='optRec'){
 
             let Subtotal  = 0;
 
-            var thead = tbody = tfoote = '';
+            var thead = tbody = tfooter = '';
 
             thead =`<table <table class="table table-striped table-bordered table-sm post_back" width="100%">
                         <thead c class="bg-blue text-light">
@@ -198,24 +213,6 @@ $("#resument").click( function() {
                         </thead>
                         <tbody>`;
 
-        
-            var time = moment().format('DD/MM/YYYY');
-
-
-            var data  = table.rows().data();
-            Ruta      = $("#dtRutas").val();
-            Ruta_name = $( "#dtRutas option:selected" ).text();
-
-            Ruta_name = Ruta_name.substr(7, Ruta_name.length + 3)
-
-        
-
-            $('#mdlResumen').modal('show')
-            
-
-            $("#id-form-ruta").html(Ruta)
-            $("#id-form-ruta-name").html(Ruta_name)
-            $("#id-form-time").html(time)
 
         
             $.each( form_data, function( key, item ) {
@@ -246,7 +243,7 @@ $("#resument").click( function() {
         
         
 
-            tfoote = `<tfoot>
+            tfooter = `<tfoot>
                     <tr>
                         <td colspan="6"><br></td>
                     </tr>            
@@ -268,7 +265,7 @@ $("#resument").click( function() {
                     </tr>
                 </tfoot>`
 
-                tbody += `</tbody> `+tfoote +`</table>`;
+                tbody += `</tbody> `+tfooter +`</table>`;
 
 
             temp = thead + tbody;
@@ -278,7 +275,47 @@ $("#resument").click( function() {
             alert("Opcion no disponible")    
         }
     }else{
-        alert("No hay datos que mostrar")
+    var thead = tbody = tfooter = '';
+
+    thead =`<table <table class="table table-striped table-bordered table-sm post_back" width="100%">
+                <thead c class="bg-blue text-light">
+                    <tr>
+                        <th class="center" width="10%">Fecha</th>
+                        <th class="center" width="10%">No. de Recibo pago</th>
+                        <th class="center" width="30%">Nombre del cliente</th>
+                        <th class="center" width="10%">Codigo</th>
+                        <th class="center" width="10%">Concepto</th>
+                        <th class="center" width="10%">Total C$</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>`;
+    tbody +='<tr>'+
+        '<td colspan="6" class="text-center" >SIN RECIBOS</td></tr>';
+    tfooter = `<tfoot>
+                    <tr>
+                        <td colspan="6"><br></td>
+                    </tr>            
+                    <tr>
+                        <td colspan="5" align="right">TOTAL RECIBIDO C$</td>
+                        <td align="right" id="id-mdl-subtotal">0.00</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" align="right">SALDO C$ </td>
+                        <td align="right" id="id-dml-disponible"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" align="right">MONTO A REEMBOLSAR C$</td>
+                        <td  align="right">0.00</td>
+                    </tr>
+                </tfoot>`
+
+                tbody += `</tbody> `+tfooter +`</table>`;
+
+
+            temp = thead + tbody;
+            $("#dtViewLiquidacion").empty().append(temp);
+
 
     }
 });
