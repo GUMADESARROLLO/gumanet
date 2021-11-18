@@ -146,7 +146,7 @@ class vinetaliq_controller extends Controller {
 
         $data = array();
 
-        $query = DB::table('tbl_order_vineta')->whereBetween('created_at', [$from, $to])->whereNotIn('status', array(3));
+        $query = DB::table('tbl_order_vineta')->whereBetween('date_time', [$from, $to])->whereNotIn('status', array(3));
 
         if($Ruta != '') {
             $query->where('ruta', $Ruta);
@@ -175,7 +175,7 @@ class vinetaliq_controller extends Controller {
             $data[$i]['VENDEDOR']       = $key->ruta;
             $data[$i]['CLIENTE']        = substr(TRIM($key->cod_cliente),0,-1);;
             $data[$i]['NOMBRE_CLIENTE'] = $key->name_cliente;
-            $data[$i]['FECHA']          = date('d/m/Y', strtotime($key->created_at));       
+            $data[$i]['FECHA']          = date('d/m/Y', strtotime($key->date_time));       
             $data[$i]['TOTAL']          = $key->order_total;
             
             $data[$i]['RECIBO']         = $key->recibo;
@@ -323,13 +323,13 @@ class vinetaliq_controller extends Controller {
         
         solicitudes_model::where('id', $ID)->update($vUpdate);
         
-        $Row = solicitudes_model::where('id',$ID)->first();
+        /*$Row = solicitudes_model::where('id',$ID)->first();
 
         if ($Status==1) {
             vinetaliq_controller::SendNotifications("Solicitud Aceptada","Recibo Nº ".$Row->recibo." ",$Row->player_id);
         } else if($Status==2) {
             vinetaliq_controller::SendNotifications("Solicitud Anulada","Recibo Nº ".$Row->recibo." ",$Row->player_id);
-        }
+        }*/
         
         
 
@@ -390,7 +390,7 @@ class vinetaliq_controller extends Controller {
                 $lVENDEDOR       = $key['ruta'];
                 $lRECIBO         = $key['recibo'];
                 $lCLIENTE        = substr(TRIM($key['cod_cliente']),0,-1);
-                $lFECHA          = date('Y-m-d H:i:s');        
+                $lFECHA          = $key['date_time'];        
 
 
                 $OrdenList  = $key['order_list'];
@@ -408,7 +408,7 @@ class vinetaliq_controller extends Controller {
                     $lVALOR_UNIT  = (int)$Lineas_detalles[3];
                     $lLINEA       = (int)$Lineas_detalles[5];   
 
-                    $Sql = "INSERT INTO [DESARROLLO].[dbo].[tbl_vineta_liquidadas] ([FACTURA], [VOUCHER], [LINEA], [CANTIDAD], [CLIENTE], [RUTA], [FECHA], [COD_RECIBO], [VALOR_UND]) 
+                    $Sql = "INSERT INTO [DESARROLLO].[dbo].[tbl_vineta_liquidadas_dev] ([FACTURA], [VOUCHER], [LINEA], [CANTIDAD], [CLIENTE], [RUTA], [FECHA], [COD_RECIBO], [VALOR_UND]) 
                     VALUES ('".$lFACTURA."', '".$lVOUCHER."', '$lLINEA', '$lCANTIDAD', '".$lCLIENTE."', '".$lVENDEDOR."', '$lFECHA', '".$lRECIBO."', '$lVALOR_UNIT') ";
                     $sql_server->fetchArray($Sql, SQLSRV_FETCH_ASSOC);
                 }

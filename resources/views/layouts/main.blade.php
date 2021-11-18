@@ -56,11 +56,7 @@
                 <i class="material-icons text-info"  style="font-size: 20px">notifications</i>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="#!" class="nav-link ">              
-                <i class="material-icons text-info"  style="font-size: 20px">settings</i>
-              </a>
-            </li>
+            <li class="ml-auto"><a href="#!"><i class="active-menu material-icons text-info" style="font-size: 20px">settings</i></a></li>
           </ul>
       </div>
     </nav>
