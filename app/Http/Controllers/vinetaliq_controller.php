@@ -13,6 +13,8 @@ use GPDF;
 use PDF;
 use App\tbl_liquidacion_fondo_vineta;
 use App\tbl_liquidacion_detalle;
+use App\app_onesignal;
+
 class vinetaliq_controller extends Controller {
     public function __construct() {
         $this->middleware('auth');
@@ -336,9 +338,13 @@ class vinetaliq_controller extends Controller {
 	}
 
     public static function SendNotifications($Titulo,$Contenido,$userId){
+        
+        $OneSignal = app_onesignal::all();
 
-        $onesignal_app_id       = "d97b7af8-b696-418f-875e-8547e9fe7581"; 
-        $onesignal_rest_api_key = "ZjIwZTM4MjYtN2Q1OS00YzM4LTljMmMtODY5NTQ3NjA2MmE5";
+        foreach($OneSignal as $OS){
+            $onesignal_app_id       = $OS->onesignal_app_id;
+            $onesignal_rest_api_key = $OS->onesignal_rest_api_key;
+        }
 
         define("ONESIGNAL_APP_ID", $onesignal_app_id);
         define("ONESIGNAL_REST_KEY", $onesignal_rest_api_key);
