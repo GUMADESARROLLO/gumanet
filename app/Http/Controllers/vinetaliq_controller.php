@@ -408,7 +408,7 @@ class vinetaliq_controller extends Controller {
                     $lVALOR_UNIT  = (int)$Lineas_detalles[3];
                     $lLINEA       = (int)$Lineas_detalles[5];   
 
-                    $Sql = "INSERT INTO [DESARROLLO].[dbo].[tbl_vineta_liquidadas_dev] ([FACTURA], [VOUCHER], [LINEA], [CANTIDAD], [CLIENTE], [RUTA], [FECHA], [COD_RECIBO], [VALOR_UND]) 
+                    $Sql = "INSERT INTO [DESARROLLO].[dbo].[tbl_vineta_liquidadas] ([FACTURA], [VOUCHER], [LINEA], [CANTIDAD], [CLIENTE], [RUTA], [FECHA], [COD_RECIBO], [VALOR_UND]) 
                     VALUES ('".$lFACTURA."', '".$lVOUCHER."', '$lLINEA', '$lCANTIDAD', '".$lCLIENTE."', '".$lVENDEDOR."', '$lFECHA', '".$lRECIBO."', '$lVALOR_UNIT') ";
                     $sql_server->fetchArray($Sql, SQLSRV_FETCH_ASSOC);
                 }
