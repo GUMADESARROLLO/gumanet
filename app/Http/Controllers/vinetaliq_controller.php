@@ -38,6 +38,7 @@ class vinetaliq_controller extends Controller {
 
         $liq            = new tbl_liquidacion_fondo_vineta();
         $liq_detalle    = new tbl_liquidacion_detalle();
+        $vlLinea        = 0; 
         $recibido       = 0; 
         $Lineas         = [];
 
@@ -70,9 +71,12 @@ class vinetaliq_controller extends Controller {
             'IdLiq'       =>  $IdLiquidacion
         ];
 
-        foreach($resumen as $key){        
-            $suma           = 0;    
+        foreach($resumen as $key){    
 
+            $suma           = 0;  
+            $vlLinea       = 0;   
+
+            $vlLinea += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
             $recibido += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
 
             foreach($key['DETALLES'] as $dt){
@@ -86,7 +90,7 @@ class vinetaliq_controller extends Controller {
                 'cliente_name'  => $key['NOMBRE_CLIENTE'],
                 'cliente_cod'   => $key['CLIENTE'],
                 'Concepto'      => "Pago Viñeta ( ".$suma." )",
-                'Total'         => $recibido,
+                'Total'         => $vlLinea,
                 'created_at'    => date('Y-m-d H:i:s')
             ];
             
@@ -100,12 +104,52 @@ class vinetaliq_controller extends Controller {
 
         tbl_liquidacion_detalle::insert($Lineas);
 
-        //return view('pages.resumen', compact('data','resumen'));
+       // return view('pages.resumen', compact('data','resumen'));
 
         $pdf = PDF::loadView('pages.resumen', compact('data','resumen'));
         return $pdf->download('Resumen.pdf');
         
     }
+
+
+    public function rePrint(Request $request) {
+
+        
+        $IdLiquidacion = $request->input('Id') ;
+
+        $Lineas             = [];
+        $row_Liq            = tbl_liquidacion_fondo_vineta::where('Id',$IdLiquidacion)->get();	
+        $row_Liq_detalles   = tbl_liquidacion_detalle::where('id',$IdLiquidacion)->get()->toArray();;	
+
+        
+        $Ruta           = $row_Liq[0]['Ruta'];
+        $Ruta_Name      = $row_Liq[0]['Ruta_name'];
+        $Fecha_generado = $row_Liq[0]['Fecha'];
+
+        $FondoInicial   = $row_Liq[0]['Fondo_inicial'];
+        $Nota           = $row_Liq[0]['Nota'];
+
+        $IdLiquidacion = $this->addZeros($IdLiquidacion);
+
+
+        $data = [
+            'Ejecutivo'   =>  $Ruta_Name,
+            'Fecha'       =>  $Fecha_generado,
+            'Ruta'        =>  $Ruta,
+            'Fondo'       =>  $FondoInicial,
+            'Nota'        =>  $Nota,
+            'IdLiq'       =>  $IdLiquidacion
+        ];
+
+        $resumen = $row_Liq_detalles;
+        
+        //return view('pages.reprintPDF', compact('data','resumen'));
+
+        $pdf = PDF::loadView('pages.reprintPDF', compact('data','resumen'));
+        return $pdf->download('Resumen.pdf');
+        
+    }
+
     public function index() {
         $this->agregarDatosASession();
 
@@ -209,8 +253,8 @@ class vinetaliq_controller extends Controller {
 
 
             if ($key->status==0) {
-                $data[$i]["BOTONES"]        = '<button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key->id.')">Procesar</button>
-                <button type="button" class="btn btn-outline-danger"  onClick="open_modal_anulacion('.$key->id.')">Anular</button>';
+                $data[$i]["BOTONES"]        = ' <button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key->id.')">Procesar</button>
+                                                <button type="button" class="btn btn-outline-danger"  onClick="open_modal_anulacion('.$key->id.')">Anular</button>';
             } else if($key->status==1) {
                 $data[$i]["BOTONES"]        = '<div class="alert alert-success" role="alert">
                                                     Procesada.
@@ -281,6 +325,7 @@ class vinetaliq_controller extends Controller {
 
             $data[$i]['COMMENT']        = $key->Nota;
             $data[$i]['COMMENT_ANUL']   = "";
+            
 
             
 
@@ -305,6 +350,11 @@ class vinetaliq_controller extends Controller {
             }
 
             $data[$i]['DETALLES']       = $arrDetalles;
+
+            $data[$i]["BOTONES"]        = ' <button type="button" class="btn btn-success float-center"   onClick="rePrint('.$key->Id.')">
+                                                <i class="material-icons text-white mt-1"  style="font-size: 20px">local_printshop</i>
+                                            </button>';
+
 
             $i++;
         }

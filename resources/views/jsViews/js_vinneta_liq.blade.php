@@ -91,12 +91,12 @@ $('#dtVinneta').DataTable({
         { "title": "FONDO INICIAL",         "data": "FONDO" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
         { "title": "TOTAL A REEMBOLSAR",    "data": "REEMBOLSO" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
         { "title": "SALDO",                 "data": "SALDO" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
-
+        { "title": "",                      "data": "BOTONES" }
     ],
     "columnDefs": [
-        {"className": "dt-center", "targets": [0,1,2,3]},
+        {"className": "dt-center", "targets": [0,1,2,3,8]},
         {"className": "dt-right", "targets": [ 5,6,7 ]},
-        { "width": "2%", "targets": [0, 1,2,3,5,6,7] },
+        { "width": "2%", "targets": [0, 1,2,3,5,6,7,8] },
         { "width": "20%", "targets": [ 4 ] }
     ],
     "footerCallback": function ( row, data, start, end, display ) {
@@ -145,14 +145,17 @@ $('#dtVinneta').DataTable({
         { "title": "FECHA",     "data": "FECHA" },
         { "title": "VENDEDOR",  "data": "VENDEDOR" },
         { "title": "TOTAL",     "data": "TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
-        { "title": "",          "data": "BOTONES"}       
+        { "title": "",          "data": "BOTONES"},
+        { "title": "RECIBO",    "data": "DETALLE" },
+        
 
     ],
     "columnDefs": [
         {"className": "dt-center", "targets": [0,1,2,3,4,5,7 ]},
         {"className": "dt-right", "targets": [ 6 ]},
         { "width": "5%", "targets": [0,1,2,4,5,6 ] },
-        { "width": "12%", "targets": [ 7 ] }
+        { "width": "12%", "targets": [ 7 ] },
+        { "visible":false, "searchable": false,"targets": [ 8 ] }
     ],
     "footerCallback": function ( row, data, start, end, display ) {
         var api = this.api();
@@ -176,7 +179,6 @@ $("#resument").click( function() {
     var table = $('#dtVinneta').DataTable();
 
     var form_data  = table.rows().data().toArray();
-
     
         
     var time = moment().format('DD/MM/YYYY');
@@ -339,6 +341,10 @@ $("#id-print-pdf").click( function() {
     
 
 });
+
+function rePrint(Id){
+    location.href = "rePrint?Id="+Id;
+}
 
 
 $('#txtSearch').on( 'keyup', function () {
