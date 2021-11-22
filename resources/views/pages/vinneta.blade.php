@@ -61,7 +61,7 @@
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="numero_factura">0.00</h3>
-								<p class="card-text" id="">Cant. Facturas con Viñetas.</p>
+								<p class="card-text" id="">Facturas con Viñetas.</p>
 							</div>
 						</div>
 					</div>
@@ -70,11 +70,20 @@
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="id_total_Facturado">C$ 0.00</h3>
-								<p class="card-text" id="">Cant. Total Facturado.</p>
+								<p class="card-text" id="">Monto Total Facturado.</p>
 							</div>
 						</div>
 					</div>
 
+					<div class="col-sm-2">
+						<div class="card text-center">
+							<div class="card-body">
+								<h3 class="card-title" id="MontoVinneta">C$ 0.00</h3>
+								<p class="card-text">Total en Viñetas.</p>
+							</div>
+						</div>
+					</div>	
+					
 					<div class="col-sm-2">
 						<div class="card text-center">
 							<div class="card-body">
@@ -84,20 +93,11 @@
 						</div>
 					</div>	
 
-					<div class="col-sm-2">
-						<div class="card text-center">
-							<div class="card-body">
-								<h3 class="card-title" id="MontoVinneta">C$ 0.00</h3>
-								<p class="card-text">Total de Facturas con Viñetas.</p>
-							</div>
-						</div>
-					</div>					
-
 					<div class="col-sm-4">
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="MontoPagado">C$ 0.00</h3>
-								<p class="card-text">Monto Total Pagado en Viñetas</p>
+								<p class="card-text">Total Pagado en Viñetas</p>
 							</div>
 						</div>
 					</div>
