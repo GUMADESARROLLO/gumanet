@@ -75,7 +75,16 @@
 						</div>
 					</div>
 
-					<div class="col-sm-4">
+					<div class="col-sm-2">
+						<div class="card text-center">
+							<div class="card-body">
+								<h3 class="card-title" id="id_roi"> 0.00</h3>
+								<p class="card-text">ROI</p>
+							</div>
+						</div>
+					</div>	
+
+					<div class="col-sm-2">
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="MontoVinneta">C$ 0.00</h3>

@@ -122,8 +122,11 @@ function dataVinneta(f1, f2) {
                 return intVal(a) + intVal(b);
             }, 0 );
 
+            var roi = (total_facturado - total)  / total;
+
             $('#MontoVinneta').text('C$ ' + numeral(total).format('0,0.00'));
             $('#id_total_Facturado').text('C$ ' + numeral(total_facturado).format('0,0.00'));
+            $('#id_roi').text(numeral(roi).format('0,0.00'));
         },
     });
 

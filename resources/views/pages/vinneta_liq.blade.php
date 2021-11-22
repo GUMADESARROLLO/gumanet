@@ -76,6 +76,7 @@
 										</a>
 									</div>
 								</div>
+								@if( Session::get('user_role')!=8 )
 								<div class="col-sm-2 mt-4">
 									<div class="form-group"> 
 										<a href="#!" class="btn btn-primary float-left" id="resument">
@@ -83,6 +84,7 @@
 										</a>
 									</div>
 								</div>
+								@endif
 							</div>
 							<div class="row ml-2">
 								<form id="FrmOptns">
@@ -90,10 +92,12 @@
 										<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="optRec" checked>
 										<label class="form-check-label" for="inlineRadio1">Recibo</label>
 									</div>
+									
 									<div class="form-check form-check-inline">
 										<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="optLiq">
 										<label class="form-check-label" for="inlineRadio2">Liquidación</label>
 									</div>
+									
 								</form>
 							</div>
 							
