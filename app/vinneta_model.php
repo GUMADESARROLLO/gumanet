@@ -19,6 +19,7 @@ class vinneta_model extends Model
         switch ($company_user) {
             case '1':
                 $sql_exec = "EXEC gnet_vinneta '".$f1."','".$f2."'";
+                
 
                 break;
             case '2':
@@ -51,6 +52,7 @@ class vinneta_model extends Model
             $data[$i]['TOTAL']          = $key['TOTAL'];
             $data[$i]['CANT_LIQUIDADA'] = $key['CANT_LIQUIDADA'];
             $data[$i]['DISPONIBLE']     = ($key['TOTAL'] - $key['CANT_LIQUIDADA']);
+            $data[$i]['TOTAL_FACTURA']  = $key['TOTAL_FACTURA'];
             $i++;
         }
         $sql_server->close();        

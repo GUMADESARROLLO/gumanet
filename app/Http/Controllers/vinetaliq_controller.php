@@ -184,6 +184,8 @@ class vinetaliq_controller extends Controller {
         $Clie   = $request->input('CL');
         $Stat   = $request->input('St');
 
+        $Role = $request->session()->get('user_role');
+
         $i=0;
 
         if (!$from) {
@@ -250,25 +252,28 @@ class vinetaliq_controller extends Controller {
             }
 
             $data[$i]['DETALLES']       = $arrDetalles;
+            
 
-
-            if ($key->status==0) {
-                $data[$i]["BOTONES"]        = ' <button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key->id.')">Procesar</button>
-                                                <button type="button" class="btn btn-outline-danger"  onClick="open_modal_anulacion('.$key->id.')">Anular</button>';
-            } else if($key->status==1) {
-                $data[$i]["BOTONES"]        = '<div class="alert alert-success" role="alert">
-                                                    Procesada.
-                                                </div>';
-            }else if($key->status==2){
-                $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">
-                                                    Anulada
-                                                </div>';
-            } else if($key->status==3){
-                $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">
-                                                    Elim. Ruta
-                                                </div>';
+            if ($Role == 8) {
+                if ($key->status==0) {
+                    $data[$i]["BOTONES"]    = '<div class="alert alert-success" role="alert">Pendiente.</div>';
+                } 
+            } else {
+                if ($key->status==0) {
+                    $data[$i]["BOTONES"]    = ' <button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key->id.')">Procesar</button>
+                                                    <button type="button" class="btn btn-outline-danger"  onClick="open_modal_anulacion('.$key->id.')">Anular</button>';
+                } 
             }
 
+            if($key->status==1) {
+                $data[$i]["BOTONES"]        = '<div class="alert alert-success" role="alert"> Procesada.</div>';
+            }else if($key->status==2){
+                $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">Anulada</div>';
+            } else if($key->status==3){
+                $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">Elim. Ruta</div>';
+            }
+            
+            
             $i++;
         }
         

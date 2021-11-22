@@ -93,12 +93,14 @@ function dataVinneta(f1, f2) {
             { "title": "VENDEDOR",  "data": "VENDEDOR" },
             { "title": "TOTAL",     "data": "TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
             { "title": "CANT. LIQ.", "data": "CANT_LIQUIDADA" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
-            { "title": "DISP.", "data": "DISPONIBLE" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )}
+            { "title": "DISP.", "data": "DISPONIBLE" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
+            { "title": "TOTAL FACT.", "data": "TOTAL_FACTURA" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
+            
         ],
         "columnDefs": [
             {"className": "dt-center", "targets": [0,1,2,3,4,5 ]},
-            {"className": "dt-right", "targets": [ 6,7,8 ]},
-            { "width": "5%", "targets": [0,1,2,4,5,6,7,8 ] },
+            {"className": "dt-right", "targets": [ 6,7,8,9 ]},
+            { "width": "5%", "targets": [0,1,2,4,5,6,7,8,9 ] },
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api();
@@ -110,13 +112,18 @@ function dataVinneta(f1, f2) {
                 typeof i === 'number' ?
                 i : 0;
             };
-            $('#numero_factura').text(numeral(varCount).format('0,0.00'));
+            $('#numero_factura').text(numeral(varCount).format('0,0'));
 
             total = api.column( 6 ).data().reduce( function (a, b){
                 return intVal(a) + intVal(b);
             }, 0 );
 
+            total_facturado = api.column( 9 ).data().reduce( function (a, b){
+                return intVal(a) + intVal(b);
+            }, 0 );
+
             $('#MontoVinneta').text('C$ ' + numeral(total).format('0,0.00'));
+            $('#id_total_Facturado').text('C$ ' + numeral(total_facturado).format('0,0.00'));
         },
     });
 

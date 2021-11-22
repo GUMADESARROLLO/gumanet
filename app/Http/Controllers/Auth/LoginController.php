@@ -99,7 +99,7 @@ class LoginController extends Controller
 
         $user = $request->email;//obtener el email del campo email
         $idComapny = $request->campoEmpresa;//obtener valor del input del campo empresa
-        $queryResult = DB::table('users')->where('email',$user)->pluck('id');// consulta para obtener el id del usuario a logearse de exiatir en email
+        $queryResult = DB::table('users')->where('email',$user)->pluck('role');// consulta para obtener el id del usuario a logearse de exiatir en email
        
 
         if (!$queryResult->isEmpty()) {//si queryResult no esta vacio existe el usuario
@@ -107,8 +107,12 @@ class LoginController extends Controller
             if(!$this->verifEmpresa($queryResult,$idComapny)->isEmpty()) {//verifica si id usuario e id empresa existen en la tabla intermedia relacional 'company_user'
                 
                 if ($this->attemptLogin($request)) {
+                    $Role = $queryResult[0];
                     $request->session()->put('user_email', $user);
                     $request->session()->put('company_id', $idComapny);
+                    $request->session()->put('user_role', $Role);
+
+                    
                     return $this->sendLoginResponse($request);
                 }
                 
