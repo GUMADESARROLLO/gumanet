@@ -91,7 +91,7 @@
             <tr>
                 <td rowspan="4" colspan="4" >
                     <div class="w3-border text-center" >
-                        <h2>Notas: {{ $data['Nota'] }}</h2><br>                                        
+                        <h5>Notas: {{ $data['Nota'] }}</h5><br>
                     </div>
                 </td>
             </tr>

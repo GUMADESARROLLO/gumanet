@@ -505,7 +505,7 @@ if( dta.COMMENT_ANUL.length != 0 ){
     tNule = `<div class="col-sm-12 mt-3">
                     <div class="card text-center">
                         <div class="card-body">
-                            <h2 class="card-title" id="numero_factura">`+dta.COMMENT_ANUL+`</h2>								
+                            <h5 class="card-title" id="numero_factura">`+dta.COMMENT_ANUL+`</h5>								
                         </div>
                     </div>
                 </div>`
@@ -521,7 +521,7 @@ temp = `
                 <div class="col-sm-6">						
                     <div class="card text-center">
                         <div class="card-body">
-                            <h2 class="card-title" id="numero_factura">`+dta.BENEFIC+`</h2>
+                            <h5 class="card-title" id="numero_factura">`+dta.BENEFIC+`</h5>
                             <p class="card-text" id="">BENEFICIARIO:</p>
                         </div>
                     </div>
@@ -529,7 +529,7 @@ temp = `
                 <div class="col-sm-6">
                     <div class="card text-center">
                         <div class="card-body">
-                            <h2 class="card-title" id="MontoVinneta">`+dta.COMMENT+`</h2>
+                            <h5 class="card-title" id="MontoVinneta">`+dta.COMMENT+`</h5>
                             <p class="card-text">OBSERVACIONES:</p>
                         </div>
                     </div>
@@ -631,7 +631,7 @@ function format_liq ( callback, dta ) {
 					<div class="col-sm-12">						
 						<div class="card text-center">
 							<div class="card-body">
-								<h4 class="card-title" id="numero_factura">`+dta.COMMENT+`</h4>
+								<h5 class="card-title" id="numero_factura">`+dta.COMMENT+`</h5>
 								<p class="card-text" id="">Nota:</p>
 							</div>
 						</div>
