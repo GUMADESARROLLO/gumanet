@@ -44,7 +44,9 @@
 									</div>
 								</div>
 								<div class="col-sm-2 mt-4 ">
-									<a href="#!" class="btn btn-primary float-left" id="BuscarVinneta">Filtrar</a>
+									<a href="#!" class="btn btn-primary float-left" id="BuscarVinneta">
+										<i class="material-icons text-white mt-1"  style="font-size: 20px">filter_list_alt</i>
+									</a>
 								</div>
 							</div>
 						</div>  
@@ -52,11 +54,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="card border-0 shadow-sm mt-3">	
+		<div class="card border-0 shadow-sm mt-3">			
 			<div class="card-body col-sm-12">
-			<h5 class="card-title">Por Facturas.</h5>					
+				<h5 class="card-title">Por Facturas.</h5>
 				<div class="row mt-3">
-
 					<div class="col-sm-2">						
 						<div class="card text-center">
 							<div class="card-body">
@@ -101,26 +102,43 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
-				<table class="table table-striped table-bordered table-sm post_back mt-3" width="100%" id="dtVinneta">
-					<thead class="bg-blue text-light"></thead>
-				</table>
+				<div class="col-sm-12">						
+					<table class="table table-striped table-bordered table-sm post_back mt-3" width="100%" id="dtVinneta">
+						<thead class="bg-blue text-light"></thead>
+					</table>
+				</div>	
 			</div>
 		</div>
 
 		<div class="card border-0 shadow-sm mt-3">
 			<div class="col-sm-12">				
-				<div class="card-body">
-					<h5 class="card-title">Por rutas.</h5>
-					<table class="table table-striped table-bordered table-sm post_back" width="100%" id="dtResumenVinneta" >
-					<thead class="bg-blue text-light"></thead>
-					<tfoot>
-						<tr>
-							<th colspan="11" style="text-align:right">Total:</th>
-						</tr>
-					</tfoot>
-					</table>
+				<div class="card-body">					
+					<div class="row ">
+						<div class="col-sm-7">						
+							<h5 class="card-title">Viñetas Desalojadas</h5>
+							<table class="table table-striped table-bordered table-sm post_back" width="100%" id="dtResumenVinneta" >
+							<thead class="bg-blue text-light"></thead>
+							<tfoot>
+								<tr>
+									<th colspan="11" style="text-align:right">Total:</th>
+								</tr>
+							</tfoot>
+							</table>
+						</div>
+						
+						<div class="col-sm-5">
+							<h5 class="card-title text-right">Valor de Viñetas Pagadas.</h5>
+							<table class="table table-striped table-bordered table-sm post_back" width="100%" id="dtRutas" >
+							<thead class="bg-blue text-light"></thead>
+							<tfoot>
+								<tr>
+									<th colspan="3" style="text-align:right">Total:</th>
+								</tr>
+							</tfoot>
+							</table>
+						</div>  
+					</div>
 				</div>
 			</div>
 		</div>		

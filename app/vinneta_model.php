@@ -42,8 +42,8 @@ class vinneta_model extends Model
         
         
 
-        foreach ($query as $key) {
-            $data[$i]["DETALLE"]        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+        foreach ($query as $key) {     
+            $data[$i]["DETALLE"]        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';       
             $data[$i]['FACTURA']        = $key['FACTURA'];
             $data[$i]['CLIENTE']        = $key['CLIENTE'];
             $data[$i]['NOMBRE_CLIENTE']        = $key['NOMBRE_CLIENTE'];
@@ -55,6 +55,51 @@ class vinneta_model extends Model
             $data[$i]['TOTAL_FACTURA']  = $key['TOTAL_FACTURA'];
             $i++;
         }
+        $sql_server->close();        
+
+        return $data;
+    }
+    public static function getPagadoRuta($f1, $f2) {        
+        $sql_server = new \sql_server();        
+        $request = Request();
+        $sql_exec = '';
+        $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        $i=0;
+        $data = array();
+        $f1 = $f1." 00 : 00 : 00 : 000";
+        $f2 = $f2." 23 : 59 : 59 : 998";
+
+        switch ($company_user) {
+            case '1':
+                $sql_exec = "EXEC gnet_vinneta_pagadas '".$f1."','".$f2."'";
+                break;
+            case '2':
+                $sql_exec = "";
+
+                break;
+            case '3':
+                return false;
+                break;
+            case '4':
+                $sql_exec = "";
+                break; 
+            default:                
+                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
+                break;
+        }
+
+    
+        $query = $sql_server->fetchArray( $sql_exec , SQLSRV_FETCH_ASSOC);
+        
+        
+
+        foreach ($query as $key) {          
+            $data[$i]['RUTA']        = $key['RUTA'];
+            $data[$i]['NOMBRE']      = $key['NOMBRE'];
+            $data[$i]['TOTAL']       = $key['TOTAL'];
+            $i++;
+        }
+
         $sql_server->close();        
 
         return $data;

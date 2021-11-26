@@ -164,6 +164,7 @@ Route::post('/lineasOrden','ordenesCompra_controller@getDetalleOrdenCompra');
 //TODAS LAS RUTAS QUE TENGAN QUE VER CON VIÑETAS
 Route::get('vineta', 'vinneta_controller@index');
 Route::get('getVinnetas', 'vinneta_controller@getVinnetas');
+Route::get('getPagadoRuta', 'vinneta_controller@getPagadoRuta');
 Route::get('getVinnetasResumen', 'vinneta_controller@getVinnetasResumen');
 
 Route::get('liqvineta', 'vinetaliq_controller@index');

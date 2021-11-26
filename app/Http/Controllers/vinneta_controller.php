@@ -49,6 +49,22 @@ class vinneta_controller extends Controller {
 
     }
 
+    public function getPagadoRuta(Request $request) {
+
+        $f1 = $request->input('f1');
+        $f2 = $request->input('f2');
+
+        
+
+        if (!$f1) {
+            return response()->json(false);
+        }
+
+        $obj = vinneta_model::getPagadoRuta($f1, $f2);
+        return response()->json($obj);
+
+    }
+
     public function getpagado(Request $request) {
 
         $f1 = $request->input('f1');

@@ -132,6 +132,65 @@ function dataVinneta(f1, f2) {
 
     $("#dtVinneta_length").hide();
     $("#dtVinneta_filter").hide();
+
+    $('#dtRutas').DataTable({
+        'ajax':{
+            'url':'getPagadoRuta',
+            'dataSrc': '',
+            data: {
+                'f1' : f1,
+                'f2' : f2
+            }
+        },
+        "destroy" : true,
+        "info":    false,
+        "lengthMenu": [[10,-1], [10,"Todo"]],
+        "language": {
+            "zeroRecords": "NO HAY COINCIDENCIAS",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Última ",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+            "lengthMenu": "MOSTRAR _MENU_",
+            "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+            "search":     "BUSCAR"
+        },
+        'columns': [
+            { "title": "RUTA",   "data": "RUTA" },
+            { "title": "NOMBRE",   "data": "NOMBRE" },
+            { "title": "TOTAL.", "data": "TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
+            
+        ],
+        "columnDefs": [
+            {"className": "dt-center", "targets": [0]},
+            {"className": "dt-right", "targets": [ 2 ]},
+            {"className": "dt-left", "targets": [ 1 ]},
+            { "width": "10%", "targets": [0,2] },
+        ],
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;                        
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                i.replace(/[^0-9.]/g, '')*1 :
+                typeof i === 'number' ?
+                i : 0;
+            };
+
+            total = api.column( 2 ).data().reduce( function (a, b) 
+            {
+                return intVal(a) + intVal(b);
+            }, 0 );
+
+            $( api.column( 2 ).footer() ).html(
+                    'C$ '+ numeral(total).format('0,0.00') +' TOTAL'
+            );
+        },
+    });
+
+    $("#dtRutas_length").hide();
+    $("#dtRutas_filter").hide();
 }
 
 function resumenVinneta(f1, f2) {
@@ -195,9 +254,7 @@ $('#dtResumenVinneta').DataTable({
 
         $( api.column( 4 ).footer() ).html(
                 'C$ '+ numeral(total).format('0,0.00') +' TOTAL'
-            );
-
-       
+        );        
     },
 });
 
