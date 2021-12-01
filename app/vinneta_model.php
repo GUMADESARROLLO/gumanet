@@ -53,6 +53,39 @@ class vinneta_model extends Model
             $data[$i]['CANT_LIQUIDADA'] = $key['CANT_LIQUIDADA'];
             $data[$i]['DISPONIBLE']     = ($key['TOTAL'] - $key['CANT_LIQUIDADA']);
             $data[$i]['TOTAL_FACTURA']  = $key['TOTAL_FACTURA'];
+            $data[$i]["BOTONES"]        = '<button type="button" class="btn btn-secondary float-center"  onClick="History('."'".$key['FACTURA']."'".')" >
+                                                <i class="material-icons text-white mt-1"  style="font-size: 20px">history</i>
+                                            </button>';
+            $i++;
+        }
+        $sql_server->close();        
+
+        return $data;
+    }
+
+    public static function getHistorialFactura($Factura) {        
+        $sql_server = new \sql_server();        
+        $request = Request();
+        $sql_exec = '';
+        $i=0;
+        $data = array();
+        $sql_exec = "SELECT * FROM [DESARROLLO].[dbo].[tbl_vineta_liquidadas] WHERE [FACTURA] = '".$Factura."'";
+    
+        $query = $sql_server->fetchArray( $sql_exec , SQLSRV_FETCH_ASSOC);
+
+        foreach ($query as $key) {     
+            
+            $data[$i]['FACTURA']        = $key['FACTURA'];
+            $data[$i]['VOUCHER']        = $key['VOUCHER'];
+            $data[$i]['LINEA']        = $key['LINEA'];
+            $data[$i]['CANTIDAD']        = $key['CANTIDAD'];
+            $data[$i]['CLIENTE']        = $key['CLIENTE'];
+            $data[$i]['RUTA']        = $key['RUTA'];
+            $data[$i]['FECHA']        = $key['FECHA']->format('d-m-Y H:i:s');;
+            $data[$i]['COD_RECIBO']        = $key['COD_RECIBO'];
+            $data[$i]['VALOR_UND']        = $key['VALOR_UND'];
+            $data[$i]['COMMENT']        = $key['COMMENT'];
+
             $i++;
         }
         $sql_server->close();        

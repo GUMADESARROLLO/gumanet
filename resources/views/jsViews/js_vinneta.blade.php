@@ -95,12 +95,13 @@ function dataVinneta(f1, f2) {
             { "title": "CANT. LIQ.", "data": "CANT_LIQUIDADA" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
             { "title": "DISP.", "data": "DISPONIBLE" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
             { "title": "TOTAL FACT.", "data": "TOTAL_FACTURA" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
+            { "title": "ACCIONES",  "data": "BOTONES" },
             
         ],
         "columnDefs": [
-            {"className": "dt-center", "targets": [0,1,2,3,4,5 ]},
+            {"className": "dt-center", "targets": [0,1,2,3,4,5,10 ]},
             {"className": "dt-right", "targets": [ 6,7,8,9 ]},
-            { "width": "5%", "targets": [0,1,2,4,5,6,7,8,9 ] },
+            { "width": "5%", "targets": [0,1,2,4,5,6,7,8,9,10 ] },
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api();
@@ -292,7 +293,7 @@ $(document).on('click', '#exp_more', function(ef) {
             }
         } );
 
-        format(row.child,data.FACTURA);
+        format(row.child,data.FACTURA,data.CLIENTE);
         tr.addClass('shown');
         
         ef.target.innerHTML = "expand_less";
@@ -304,7 +305,138 @@ $(document).on('click', '#exp_more', function(ef) {
 
 });
 
-function format ( callback, ordCompra_ ) {
+function History(Factura){
+    CardConten = '' ;
+    $('#mdlHistory').modal('show');
+    $('#id_Factura_history').html(Factura);
+    CardConten ='';
+
+    $.ajax({
+        url: 'HistorialFactura',
+        type: 'post',
+        data: {
+            vFactura     : Factura
+        },
+        async: true,
+        success: function(response) {
+        if (response.length==0) {
+            CardConten = `<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-body">
+								<p class="text-center font-weight-bolder">No se encontraron registros</p>
+								<center><img src="./images/icon_sinresultados.png" width="100" class="mt-4 mb-4" /></center>
+							</div>
+						</div>
+					</div>
+					</div>`;
+        }		
+
+        $.each(response, function (i, item) {
+
+            CardConten +='<div class="card border-light mb-3 shadow-sm bg-white rounded">'+
+			'<div class="card-body">'+
+				'<div class="row">'+
+					'<div class="col-md-10">'+
+						'<h5 class="card-title font-weight-bold text-primary">'+item.VOUCHER+'</h5>'+
+						'<p class="card-text">'+item.COMMENT+'</p>					'+
+					'</div>'+
+					'<div class="col-md-2 ">'+
+					'</div>'+
+				'</div>'+
+			'</div>'+
+			'<div class="card-footer bg-white border-0">'+
+                '<div class="row">'+
+                    '<div class="col-sm-3">'+               
+                        '<p class="text-muted m-0" >RUTA</p>'+
+                        '<p class="font-weight-bolder" style="font-size: 1.3rem!important" >'+item.RUTA+'</p>'+
+                    '</div>'+
+                    '<div class="col-sm-3">'+
+                        '<p class="text-muted m-0">FECHA</p>'+
+                        '<p class="font-weight-bolder" style="font-size: 1.3rem!important" >'+item.FECHA+'</p>'+
+                    '</div>'+
+                    '<div class="col-sm-2 border-right">'+
+                        '<p class="text-muted m-0">Nº RRECIBO</p>'+
+                        '<p class="font-weight-bolder" style="font-size: 1.3rem!important" >'+item.COD_RECIBO+'</p>'+
+                    '</div>'+
+                    '<div class="col-sm-2">'+
+                        '<p class="text-muted m-0">CANTIDAD</p>'+
+                        '<p class="font-weight-bolder" style="font-size: 1.3rem!important" >'+item.CANTIDAD+'</p>'+
+                    '</div>'+
+                    '<div class="col-sm-2">'+
+                        '<p class="text-muted m-0">VALOR UNIDAD C$.</p>'+
+                        '<p class="font-weight-bolder" style="font-size: 1.3rem!important" >'+item.VALOR_UND+'</p>'+
+                    '</div>'+
+                '</div>'+				
+			'</div>'+
+		'</div>';
+
+        });
+
+        $('#id_contenido_history').html(CardConten);
+
+
+        }
+    })
+}
+
+function AnulVineta(Factura,Voucher,Linea,Cliente,Valor_Linea,Cantidad){
+
+    $('#message-text').val("")
+    $('#mdlAnulacion').modal('show');
+    $('#id_Factura').html(Factura);
+    $('#id_Cantidad').val(Cantidad);
+    $('#id_Vinneta').html(Voucher);
+    $('#id_Linea').html(Linea);
+    $('#id_Cliente').html(Cliente);
+    $('#id_ValorUnd').html(Valor_Linea);
+			
+}
+
+
+$("#id_frm_save_anulacion").click( function() {
+
+    var vFactura    = $('#id_Factura').html();
+    var vCantidad   = $('#id_Cantidad').val();
+    var vVineta     = $('#id_Vinneta').html();
+    var vLinea      = $('#id_Linea').html();
+    var vCliente    = $('#id_Cliente').html();
+    var vValorUnd   = $('#id_ValorUnd').html();
+    var Comentario  = $('#message-text').val();
+
+
+    $.ajax({
+        url: 'Anular_Vineta',
+        type: 'post',
+        data: {
+            Factura     : vFactura,
+            Cantida     : vCantidad,
+            Vineta      : vVineta,
+            Linea       : vLinea,
+            Cliente     : vCliente,
+            ValorUnd    : vValorUnd,
+            Coment      : Comentario
+        },
+        async: true,
+        success: function(response) {
+            
+            f1 = $("#f1").val();
+            f2 = $("#f2").val();
+
+            dataVinneta(f1, f2);
+            resumenVinneta(f1, f2);
+
+            $('#mdlAnulacion').modal('hide')
+
+        }
+    })
+
+});
+
+function format ( callback, ordCompra_ ,Cliente) {
+    role = $("#id_form_role").html();
+
+
     var thead = tbody = '';            
     thead =`<table class="table table-striped table-bordered table-sm">
                 <thead class="text-center bg-secondary text-light">
@@ -316,6 +448,7 @@ function format ( callback, ordCompra_ ) {
                         <th class="center">PRECIO UNITARIO</th>
                         <th class="center">PRECIO TOTAL</th>
                         <th class="center">VALOR</th>
+                        <th class="center">ACCION</th>
                         
                     </tr>
                 </thead>
@@ -336,7 +469,20 @@ function format ( callback, ordCompra_ ) {
             }
             $.each(data['objDt'], function (i, item) {
 
-                 valor_ninneta =(item['ARTICULO'].substr(0,2) == 'VU') ? 'C$ ' + numeral( item['CANTIDAD'] * parseInt(item['ARTICULO'].substr(2,6)) ).format('0,0.00') : " - ";
+                btnDownload ='';
+
+                Valor_Vinneta = parseInt(item['ARTICULO'].substr(2,6))
+
+                _Valor_Vinneta =(item['ARTICULO'].substr(0,2) == 'VU') ? 'C$ ' + numeral( item['CANTIDAD'] * Valor_Vinneta ).format('0,0.00') : " - ";
+
+                ttTotal = parseInt(item['CANTIDAD']) - parseInt(item['CANT_LIQUIDADA']);
+
+                if(role!=8){
+                    if(item['ARTICULO'].substr(0,2) == 'VU'){
+                        btnDownload =(ttTotal == 0) ? '' : '<button type="button" class="btn btn-danger float-center" onClick="AnulVineta('+"'"+item['FACTURA']+"',"+"'" + item['ARTICULO']+ "',"+ "'" + item['LINEA']+ "'," + "'"+ Cliente +"'," +"'" + Valor_Vinneta+ "'," +"'" +ttTotal +"'" +')"><i class="material-icons text-white mt-1"  style="font-size: 20px">close</i></button>'
+                    }
+                }
+                
 
                 tbody +='<tr>'+
                             '<td class="text-center">' + item['ARTICULO'] + '</td>'+
@@ -345,7 +491,8 @@ function format ( callback, ordCompra_ ) {
                             '<td class="text-center">' + numeral(item['CANT_LIQUIDADA']).format('0,0') + '</td>'+
                             '<td class="text-right">' + numeral(item['PRECIO_UNITARIO']).format('0,0.00')  + '</td>'+
                             '<td class="text-right">' + numeral(item['PRECIO_TOTAL']).format('0,0.00')  + '</td>'+
-                            '<td class="text-right"> ' + valor_ninneta  + '</td>'+
+                            '<td class="text-right"> ' + _Valor_Vinneta  + '</td>'+
+                            '<td class="text-center"> ' + btnDownload  + '</td>'+
                         '</tr>';
             });
             tbody += `</tbody></table>`;

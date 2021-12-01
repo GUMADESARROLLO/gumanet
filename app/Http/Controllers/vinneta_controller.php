@@ -49,6 +49,18 @@ class vinneta_controller extends Controller {
 
     }
 
+    public function getHistorialFactura(Request $request) {
+
+        $Factura = $request->input('vFactura');
+        if (!$Factura) {
+            return response()->json(false);
+        }
+
+        $obj = vinneta_model::getHistorialFactura($Factura);
+        return response()->json($obj);
+
+    }
+
     public function getPagadoRuta(Request $request) {
 
         $f1 = $request->input('f1');

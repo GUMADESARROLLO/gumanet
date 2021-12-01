@@ -173,6 +173,9 @@ Route::get('getLiquidaciones', 'vinetaliq_controller@getLiquidaciones');
 
 Route::post('PushLiq', 'vinetaliq_controller@pushliq');
 Route::post('cancelarliq', 'vinetaliq_controller@cancelarliq');
+Route::post('Deleteliq', 'vinetaliq_controller@Deleteliq');
+Route::post('Anular_Vineta', 'vinetaliq_controller@AnularVineta');
+Route::post('HistorialFactura', 'vinneta_controller@getHistorialFactura');
 
 Route::post('pagado', 'vinneta_controller@getpagado');
 

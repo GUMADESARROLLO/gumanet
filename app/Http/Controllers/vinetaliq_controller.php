@@ -22,19 +22,17 @@ class vinetaliq_controller extends Controller {
 
     public function getClear(Request $request){
 
-        tbl_liquidacion_fondo_vineta::truncate();
+        /*tbl_liquidacion_fondo_vineta::truncate();
         
         tbl_liquidacion_detalle::truncate();
 
         solicitudes_model::truncate();
 
-        DB::connection('sqlsrv')->table('DESARROLLO.dbo.tbl_vineta_liquidadas')->delete();
+        DB::connection('sqlsrv')->table('DESARROLLO.dbo.tbl_vineta_liquidadas')->delete();*/
 
     }
 
     public function resumenpdf(Request $request) {
-
-        
 
         $liq            = new tbl_liquidacion_fondo_vineta();
         $liq_detalle    = new tbl_liquidacion_detalle();
@@ -57,6 +55,7 @@ class vinetaliq_controller extends Controller {
         $liq->Fecha             = $Fecha_generado;
         $liq->Fondo_inicial     = $FondoInicial;
         $liq->Nota              = $Nota;
+        $liq->Anulado           = "N";
         $liq->save();
         $number_liquidacion     = $liq->id;
 
@@ -71,28 +70,29 @@ class vinetaliq_controller extends Controller {
             'IdLiq'       =>  $IdLiquidacion
         ];
 
-        foreach($resumen as $key){    
-
-            $suma           = 0;  
-            $vlLinea       = 0;   
-
-            $vlLinea += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
-            $recibido += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
-
-            foreach($key['DETALLES'] as $dt){
-                $suma+=$dt['CANTIDAD'];
+        foreach($resumen as $key){     
+            if ($key['STATUS']!=0) {
+                $suma       = 0;  
+                $vlLinea    = 0;   
+    
+                $vlLinea += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
+                $recibido += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
+    
+                foreach($key['DETALLES'] as $dt){
+                    $suma+=$dt['CANTIDAD'];
+                }
+    
+                $Lineas[] = [
+                    'id'            => $number_liquidacion,
+                    'Fecha'         => $key['FECHA'],
+                    'Recibo'        => $key['RECIBO'],
+                    'cliente_name'  => $key['NOMBRE_CLIENTE'],
+                    'cliente_cod'   => $key['CLIENTE'],
+                    'Concepto'      => "Pago Viñeta ( ".$suma." )",
+                    'Total'         => $vlLinea,
+                    'created_at'    => date('Y-m-d H:i:s')
+                ];
             }
-
-            $Lineas[] = [
-                'id'            => $number_liquidacion,
-                'Fecha'         => $key['FECHA'],
-                'Recibo'        => $key['RECIBO'],
-                'cliente_name'  => $key['NOMBRE_CLIENTE'],
-                'cliente_cod'   => $key['CLIENTE'],
-                'Concepto'      => "Pago Viñeta ( ".$suma." )",
-                'Total'         => $vlLinea,
-                'created_at'    => date('Y-m-d H:i:s')
-            ];
             
         }
 
@@ -104,7 +104,7 @@ class vinetaliq_controller extends Controller {
 
         tbl_liquidacion_detalle::insert($Lineas);
 
-       // return view('pages.resumen', compact('data','resumen'));
+       //return view('pages.resumen', compact('data','resumen'));
 
         $pdf = PDF::loadView('pages.resumen', compact('data','resumen'));
         return $pdf->download('Resumen.pdf');
@@ -220,6 +220,7 @@ class vinetaliq_controller extends Controller {
 
             $data[$i]["DETALLE"]        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
             $data[$i]['ID']             = $key->id;
+            $data[$i]['STATUS']         = $key->status;
             $data[$i]['VENDEDOR']       = $key->ruta;
             $data[$i]['CLIENTE']        = substr(TRIM($key->cod_cliente),0,-1);;
             $data[$i]['NOMBRE_CLIENTE'] = $key->name_cliente;
@@ -358,6 +359,9 @@ class vinetaliq_controller extends Controller {
 
             $data[$i]["BOTONES"]        = ' <button type="button" class="btn btn-success float-center"   onClick="rePrint('.$key->Id.')">
                                                 <i class="material-icons text-white mt-1"  style="font-size: 20px">local_printshop</i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger float-center"   onClick="Delete('.$key->Id.')">
+                                                <i class="material-icons text-white mt-1"  style="font-size: 20px">close</i>
                                             </button>';
 
 
@@ -439,6 +443,19 @@ class vinetaliq_controller extends Controller {
             vinetaliq_controller::UpdateStatus($id,2,$me);
         }
     }
+    public function Deleteliq(Request $request){
+
+        if($request->isMethod('post')) {
+
+            $id = $request->input('id');
+
+            $vUpdate = array(
+                'Anulado'        =>  "S"
+            );
+            
+            tbl_liquidacion_fondo_vineta::where('Id', $id)->update($vUpdate);
+        }
+    }
 
     public function pushliq(Request $request){
         $sql_server = new \sql_server();
@@ -467,14 +484,38 @@ class vinetaliq_controller extends Controller {
                     $lVOUCHER     = $Lineas_detalles[1];
                     $lCANTIDAD    = (int)$Lineas_detalles[2];
                     $lVALOR_UNIT  = (int)$Lineas_detalles[3];
-                    $lLINEA       = (int)$Lineas_detalles[5];   
+                    $lLINEA       = (int)$Lineas_detalles[5];
+                    $lCOMMENT     = "";
 
-                    $Sql = "INSERT INTO [DESARROLLO].[dbo].[tbl_vineta_liquidadas] ([FACTURA], [VOUCHER], [LINEA], [CANTIDAD], [CLIENTE], [RUTA], [FECHA], [COD_RECIBO], [VALOR_UND]) 
-                    VALUES ('".$lFACTURA."', '".$lVOUCHER."', '$lLINEA', '$lCANTIDAD', '".$lCLIENTE."', '".$lVENDEDOR."', '$lFECHA', '".$lRECIBO."', '$lVALOR_UNIT') ";
+                    $Sql = "INSERT INTO [DESARROLLO].[dbo].[tbl_vineta_liquidadas] ([FACTURA], [VOUCHER], [LINEA], [CANTIDAD], [CLIENTE], [RUTA], [FECHA], [COD_RECIBO], [VALOR_UND], [COMMENT]) 
+                    VALUES ('".$lFACTURA."', '".$lVOUCHER."', '$lLINEA', '$lCANTIDAD', '".$lCLIENTE."', '".$lVENDEDOR."', '$lFECHA', '".$lRECIBO."', '$lVALOR_UNIT', '$lCOMMENT') ";
                     $sql_server->fetchArray($Sql, SQLSRV_FETCH_ASSOC);
                 }
             }
             vinetaliq_controller::UpdateStatus($id,1,"");
+        }
+        
+    }
+
+    public function AnularVineta(Request $request){
+        $sql_server = new \sql_server();
+        $Sql = "";
+        if($request->isMethod('post')) {
+
+            $lVENDEDOR      = "F00";
+            $lRECIBO        = "DEVO";
+            $lCLIENTE       =  $request->input('Cliente');
+            $lFECHA         =  date('Y-m-d H:i:s');    
+            $lFACTURA       = $request->input('Factura');
+            $lVOUCHER       = $request->input('Vineta');
+            $lCANTIDAD      = $request->input('Cantida');
+            $lVALOR_UNIT    = $request->input('ValorUnd');
+            $lLINEA         = $request->input('Linea'); 
+            $lCOMMENT       = $request->input('Coment'); 
+
+            $Sql = "INSERT INTO [DESARROLLO].[dbo].[tbl_vineta_liquidadas] ([FACTURA], [VOUCHER], [LINEA], [CANTIDAD], [CLIENTE], [RUTA], [FECHA], [COD_RECIBO], [VALOR_UND], [COMMENT]) 
+                    VALUES ('".$lFACTURA."', '".$lVOUCHER."', '$lLINEA', '$lCANTIDAD', '".$lCLIENTE."', '".$lVENDEDOR."', '$lFECHA', '".$lRECIBO."', '$lVALOR_UNIT', '$lCOMMENT') ";
+            $sql_server->fetchArray($Sql, SQLSRV_FETCH_ASSOC);
         }
         
     }

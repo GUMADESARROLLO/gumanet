@@ -56,6 +56,7 @@
         <tbody>
             @if (count($resumen) > 0)
                 @foreach($resumen as $key)
+                @if ($key['STATUS']  != 0)
 
                 @php 
                     $suma        = 0; 
@@ -71,6 +72,7 @@
                         $recibido += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
                         
                     @endphp
+                    
                     <tr>
                         <th scope="row">{{$count_linea}}</th>
                         <td>{{ $key['FECHA'] }}</td>
@@ -80,9 +82,11 @@
                         <td align="right">Pago Viñeta ( {{$suma}} ) </td>
                         <td align="right">{{ $key['TOTAL'] }}</td>
                     </tr>
+                    
                     @php 
                         $count_linea++;
                     @endphp
+                    @endif
                 @endforeach
                 @else
                 <tr>

@@ -11,10 +11,11 @@
 				<div class="card-body">					
 					<div class="row ">
 						<div class="col-sm-6 mt-4 ">
+						<span id="id_form_role" style="display:none">{{ Session::get('user_role') }}</span>
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
-								</div>
+								</div>								
 								<input type="text" id="txtSearch" class="form-control" placeholder="Buscar...">
 							</div>
 						</div>
@@ -144,5 +145,60 @@
 		</div>		
 	</div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="mdlAnulacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+
+			<div style="display:none">
+				<span id="id_Factura">0</span><br>
+				<span id="id_Linea">0</span><br>
+				<span id="id_Cliente">0</span><br>
+				<span id="id_ValorUnd">0</span>
+			</div>
+			
+			<h5 class="modal-title" id="exampleModalLongTitle">Nº 
+				<span id="id_Vinneta">0</span>
+			</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Cantidad.</label>
+				<input type="number" class="form-control" id="id_Cantidad" placeholder="0">
+			</div>
+			<div class="form-group">
+				<label for="message-text" class="col-form-label">Comentario:</label>
+				<textarea class="form-control" id="message-text"></textarea>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" id="id_frm_save_anulacion">Guardar</button>
+		</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade " id="mdlHistory" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document" >
+		<div class="modal-content">
+		<div class="modal-header">			
+			<h5 class="modal-title" id="exampleModalLongTitle">Historial <span id="id_Factura_history">0</span></h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body" id="id_contenido_history" style="background-color: #f1f5f8;">
+		</div>
+		
+		</div>
+	</div>
+</div>
+
 @endsection
 

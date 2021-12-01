@@ -301,7 +301,7 @@ class reportes_model extends Model
         
         switch ($company_user) {
             case '1':
-                $sql_exec = 'SELECT FACTURA, ARTICULO, DESCRIPCION, CANTIDAD, PRECIO_UNITARIO, PRECIO_TOTAL,CANT_LIQUIDADA FROM UMK_DETALLES_FACTURAS WHERE FACTURA = '."'".$nFactura."' AND TIPO_LINEA NOT IN ('C') ORDER BY ARTICULO";
+                $sql_exec = 'SELECT LINEA,FACTURA, ARTICULO, DESCRIPCION, CANTIDAD, PRECIO_UNITARIO, PRECIO_TOTAL,CANT_LIQUIDADA FROM UMK_DETALLES_FACTURAS WHERE FACTURA = '."'".$nFactura."' AND TIPO_LINEA NOT IN ('C') ORDER BY ARTICULO";
                 break;
             case '2':
                 $sql_exec = 'SELECT FACTURA, ARTICULO, DESCRIPCION, CANTIDAD, PRECIO_UNITARIO, PRECIO_TOTAL FROM GP_DETALLES_FACTURAS WHERE FACTURA = '."'".$nFactura."'";                

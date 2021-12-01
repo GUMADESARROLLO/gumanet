@@ -96,7 +96,7 @@ $('#dtVinneta').DataTable({
     "columnDefs": [
         {"className": "dt-center", "targets": [0,1,2,3,8]},
         {"className": "dt-right", "targets": [ 5,6,7 ]},
-        { "width": "2%", "targets": [0, 1,2,3,5,6,7,8] },
+        { "width": "5%", "targets": [0, 1,2,3,5,6,7,8] },
         { "width": "20%", "targets": [ 4 ] }
     ],
     "footerCallback": function ( row, data, start, end, display ) {
@@ -219,27 +219,32 @@ $("#resument").click( function() {
         
             $.each( form_data, function( key, item ) {
 
-                let suma = 0
+                if (item['STATUS']==1) {
+                    let suma = 0
                 
-                $.each( item['DETALLES'], function( key, item ) {
-                    suma += parseFloat(item['CANTIDAD']);
+                    $.each( item['DETALLES'], function( key, item ) {
+                        suma += parseFloat(item['CANTIDAD']);
 
-                })
+                    })
 
-                strTotal = item['TOTAL'];
+                    
 
-                Total = parseFloat(strTotal.replace('C$',' ').replace(',',''))
+                    strTotal = item['TOTAL'];
 
-                tbody +='<tr>'+
-                        '<td class="text-center" >' + item['FECHA'] + '</td>'+
-                        '<td class="text-center">' + item['RECIBO'] + '</td>'+
-                        '<td class="text-center">' + item['NOMBRE_CLIENTE'] + '</td>'+
-                        '<td class="text-center">' + item['CLIENTE'] + '</td>'+
-                        '<td class="text-center"> Pago Viñeta ( ' + suma + ' ) </td>'+
-                        '<td class="text-center">' + strTotal + '</td>'+
-                    '</tr>';
+                    Total = parseFloat(strTotal.replace('C$',' ').replace(',',''))
 
-                    Subtotal +=  Total;
+                    tbody +='<tr>'+
+                            '<td class="text-center" >' + item['FECHA'] + '</td>'+
+                            '<td class="text-center">' + item['RECIBO'] + '</td>'+
+                            '<td class="text-center">' + item['NOMBRE_CLIENTE'] + '</td>'+
+                            '<td class="text-center">' + item['CLIENTE'] + '</td>'+
+                            '<td class="text-center"> Pago Viñeta ( ' + suma + ' ) </td>'+
+                            '<td class="text-center">' + strTotal + '</td>'+
+                        '</tr>';
+
+                        Subtotal +=  Total;
+                        
+                    }
             });
 
         
@@ -354,7 +359,19 @@ $('#txtSearch').on( 'keyup', function () {
 
 
 
-
+function Delete(Id){
+    $.ajax({
+        url: 'Deleteliq',
+        type: 'post',
+        data: {
+            id : Id
+        },
+        async: true,
+        success: function(response) {            
+            Requestdata();
+        }
+    })
+}
 function Liquidar(Id){
     $.ajax({
         url: 'PushLiq',
@@ -409,9 +426,6 @@ $("#id_frm_save_anulacion").click( function() {
 
 });
 
-function Cancelar(Id){
-    
-}
 
 //DETALLES DE RECIBOS
 $(document).on('click', '#exp_more', function(ef) {
@@ -497,10 +511,6 @@ $.each(dta.DETALLES, function (i, item) {
 tbody += `</tbody></table>`;
 
 if( dta.COMMENT_ANUL.length != 0 ){
-
-    console.log(dta.COMMENT_ANUL.length)
-
-    
 
     tNule = `<div class="col-sm-12 mt-3">
                     <div class="card text-center">
