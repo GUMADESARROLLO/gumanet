@@ -184,3 +184,8 @@ Route::get('rePrint', 'vinetaliq_controller@rePrint');
 
 Route::get('clean', 'vinetaliq_controller@getClear');
 
+//RUTAS PARA LOS RECIBOS
+Route::get('recibos', 'recibos_controller@index');  
+Route::get('getRecibos', 'recibos_controller@getRecibos');
+Route::post('getAttachFile', 'recibos_controller@getAttachFile');
+Route::post('push_recibo', 'recibos_controller@push_recibo');
