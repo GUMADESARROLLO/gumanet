@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Company;
 use App\solicitudes_model;
+use App\recibos_model;
 use App\reportes_model;
 use Illuminate\Support\Facades\DB;
 use GPDF;
@@ -15,7 +16,7 @@ use App\tbl_liquidacion_fondo_vineta;
 use App\tbl_liquidacion_detalle;
 use App\app_onesignal;
 
-class vinetaliq_controller extends Controller {
+class recibos_controller extends Controller {
     public function __construct() {
         $this->middleware('auth');
     }
@@ -161,7 +162,7 @@ class vinetaliq_controller extends Controller {
             'page' => 'Ventas'
         ];
         
-        return view('pages.vinneta_liq', compact('data', 'clientes','rutas'));
+        return view('pages.recibos', compact('data', 'clientes','rutas'));
     }
 
    
@@ -173,8 +174,30 @@ class vinetaliq_controller extends Controller {
         $request->session()->put('ApplicationVersion', $ApplicationVersion::get());
         $request->session()->put('companyName', $company->nombre);
     }
+    public function getAttachFile(Request $request) {
 
-    public static function getSolicitudes(Request $request) {
+        $data = array();
+        $i=0;
+        $Recibo = $request->input('iRecibo');
+
+        if (!$Recibo) {
+            return response()->json(false);
+        }
+
+        $query = DB::table('tbl_order_recibo_adjuntos')->where('id_recibo', $Recibo);
+
+        $obj = $query->get();
+
+        foreach ($obj as $qR => $key) {
+            $data[$i]['IMAGEN'] = $key->Nombre_imagen;
+            $i++;
+
+        }  
+
+        return response()->json($data);
+
+    }
+    public static function getRecibos(Request $request) {
         
 
         $from   = $request->input('f1').' 00:00:00';
@@ -194,7 +217,7 @@ class vinetaliq_controller extends Controller {
 
         $data = array();
 
-        $query = DB::table('tbl_order_vineta')->whereBetween('date_time', [$from, $to])->whereNotIn('status', array(3));
+        $query = DB::table('tbl_order_recibo')->whereBetween('date_time', [$from, $to])->whereNotIn('status', array(3));
 
         if($Ruta != '') {
             $query->where('ruta', $Ruta);
@@ -219,7 +242,7 @@ class vinetaliq_controller extends Controller {
 
 
             $data[$i]["DETALLE"]        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
-            $data[$i]['ID']             = $key->id;
+            $data[$i]['ID']             = $key->recibo;
             $data[$i]['STATUS']         = $key->status;
             $data[$i]['VENDEDOR']       = $key->ruta;
             $data[$i]['CLIENTE']        = substr(TRIM($key->cod_cliente),0,-1);;
@@ -227,10 +250,10 @@ class vinetaliq_controller extends Controller {
             $data[$i]['FECHA']          = date('d/m/Y', strtotime($key->date_time));       
             $data[$i]['TOTAL']          = $key->order_total;
             
-            $data[$i]['RECIBO']         = $key->recibo;
-            $data[$i]['BENEFIC']        = $key->address;
+            $data[$i]['RECIBO']         = $key->recibo;            
             $data[$i]['COMMENT']        = $key->comment;
             $data[$i]['COMMENT_ANUL']   = $key->comment_anul;
+            $data[$i]['STATUS']         = recibos_controller::getStatus($key->status);
 
 
             $OrdenList  = $key->order_list;
@@ -242,40 +265,53 @@ class vinetaliq_controller extends Controller {
                 
                 $Lineas_detalles     = explode(";", $Lineas[$l]);
 
-                $arrDetalles[$l]['FACTURA']     = str_replace('[', '', $Lineas_detalles[0]);
-                $arrDetalles[$l]['VOUCHER']     = $Lineas_detalles[1];
-                $arrDetalles[$l]['CANTIDAD']    = $Lineas_detalles[2];
-                $arrDetalles[$l]['VALOR_UNIT']  = $Lineas_detalles[3];
-                $arrDetalles[$l]['TOTAL_UNIT']  = $Lineas_detalles[4];
-                $arrDetalles[$l]['LINEA']       = $Lineas_detalles[5];
+                $arrDetalles[$l]['FACTURA']         = str_replace('[', '', $Lineas_detalles[0]);
+                $arrDetalles[$l]['VALORFACTURA']    = $Lineas_detalles[1];
+                $arrDetalles[$l]['NOTACREDITO']     = $Lineas_detalles[2];
+                $arrDetalles[$l]['RETENCION']       = $Lineas_detalles[3];
+                $arrDetalles[$l]['DESCUENTO']       = $Lineas_detalles[4];
+                $arrDetalles[$l]['VALORRECIBIDO']   = $Lineas_detalles[5];
 
                 
             }
 
             $data[$i]['DETALLES']       = $arrDetalles;
+
+           
             
 
-            if ($Role == 8) {
+           if ($Role == 8) {
                 if ($key->status==0) {
                     $data[$i]["BOTONES"]    = '<div class="alert alert-success" role="alert">Pendiente.</div>';
                 } 
             } else {
-                if ($key->status==0) {
-                    $data[$i]["BOTONES"]    = ' <button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key->id.')">
-                                                    <i class="material-icons text-green mt-1"  style="font-size: 20px">done</i>
-                                                </button>
-                                                    <button type="button" class="btn btn-outline-danger"  onClick="open_modal_anulacion('.$key->id.')">
-                                                        <i class="material-icons text-green mt-1"  style="font-size: 20px">close</i>
-                                                    </button>';
-                } 
+                $data[$i]["BOTONES"]    = ' <button type="button" class="btn btn-outline-secondary"  onClick="Aprobado('.$key->id.')">
+                                                <i class="material-icons text-green mt-1"  style="font-size: 20px">done</i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
+                                                <i class="material-icons text-red mt-1"  style="font-size: 20px">attach_file</i>
+                                            </button>                                        
+                                            ';
+                
             }
 
             if($key->status==1) {
-                $data[$i]["BOTONES"]        = '<div class="alert alert-success" role="alert"> Procesada.</div>';
+                $data[$i]["BOTONES"]        = '<button type="button" class="btn btn-outline-secondary"  onClick="Verificado('.$key->id.')">
+                                                    <i class="material-icons text-green mt-1"  style="font-size: 20px">done_all</i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
+                                                    <i class="material-icons text-red mt-1"  style="font-size: 20px">attach_file</i>
+                                                </button>                                        
+                                            ';
             }else if($key->status==2){
-                $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">Anulada</div>';
+                $data[$i]["BOTONES"]        =  '<button type="button" class="btn btn-outline-success" >
+                                                    <i class="material-icons text-green mt-1"  style="font-size: 20px">done</i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
+                                                    <i class="material-icons text-red mt-1"  style="font-size: 20px">attach_file</i>
+                                                </button>';
             } else if($key->status==3){
-                $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">Elim. Ruta</div>';
+                $data[$i]["BOTONES"]        = '';
             }
             
             
@@ -349,12 +385,12 @@ class vinetaliq_controller extends Controller {
                 
                 $Lineas_detalles     = explode(";", $Lineas[$l]);
 
-                $arrDetalles[$l]['FECHA']     = str_replace('[', '', $Lineas_detalles[0]);
-                $arrDetalles[$l]['RECIBO']     = $Lineas_detalles[1];
+                $arrDetalles[$l]['FECHA']           = str_replace('[', '', $Lineas_detalles[0]);
+                $arrDetalles[$l]['RECIBO']          = $Lineas_detalles[1];
                 $arrDetalles[$l]['CLIENTE_NAME']    = $Lineas_detalles[2];
-                $arrDetalles[$l]['CLIENTE_COD']  = $Lineas_detalles[3];
-                $arrDetalles[$l]['CONCEPTO']  = $Lineas_detalles[4];
-                $arrDetalles[$l]['TOTAL']       = $Lineas_detalles[5];
+                $arrDetalles[$l]['CLIENTE_COD']     = $Lineas_detalles[3];
+                $arrDetalles[$l]['CONCEPTO']        = $Lineas_detalles[4];
+                $arrDetalles[$l]['TOTAL']           = $Lineas_detalles[5];
 
                 
             }
@@ -386,14 +422,14 @@ class vinetaliq_controller extends Controller {
             'comment_anul'  =>  $Message
         );
         
-        solicitudes_model::where('id', $ID)->update($vUpdate);
+        recibos_model::where('id', $ID)->update($vUpdate);
         
-        $Row = solicitudes_model::where('id',$ID)->first();
+        $Row = recibos_model::where('id',$ID)->first();
 
         if ($Status==1) {
-            vinetaliq_controller::SendNotifications("Solicitud Aceptada","Recibo Nº ".$Row->recibo." ",$Row->player_id);
+            recibos_controller::SendNotifications("Solicitud Aceptada","Recibo Nº ".$Row->recibo." ",$Row->player_id);
         } else if($Status==2) {
-            vinetaliq_controller::SendNotifications("Solicitud Anulada","Recibo Nº ".$Row->recibo." ",$Row->player_id);
+            recibos_controller::SendNotifications("Solicitud Anulada","Recibo Nº ".$Row->recibo." ",$Row->player_id);
         }
         
         
@@ -461,42 +497,17 @@ class vinetaliq_controller extends Controller {
         }
     }
 
-    public function pushliq(Request $request){
-        $sql_server = new \sql_server();
-        $Sql = "";
+    public function push_recibo(Request $request){
         if($request->isMethod('post')) {
-            $id = $request->input('id');
-            $obj = solicitudes_model::where('id',$id)->get();
-            foreach ($obj as $key) {
-
-                $lVENDEDOR       = $key['ruta'];
-                $lRECIBO         = $key['recibo'];
-                $lCLIENTE        = substr(TRIM($key['cod_cliente']),0,-1);
-                $lFECHA          = $key['date_time'];        
-
-
-                $OrdenList  = $key['order_list'];
-                $Lineas     = explode("],", $OrdenList);
-                $cLineas    = count($Lineas) - 1;
-                
-
-                for ($l=0; $l < $cLineas ; $l++){
-                    
-                    $Lineas_detalles     = explode(";", $Lineas[$l]);
-
-                    $lFACTURA     = str_replace('[', '', $Lineas_detalles[0]);
-                    $lVOUCHER     = $Lineas_detalles[1];
-                    $lCANTIDAD    = (int)$Lineas_detalles[2];
-                    $lVALOR_UNIT  = (int)$Lineas_detalles[3];
-                    $lLINEA       = (int)$Lineas_detalles[5];
-                    $lCOMMENT     = "";
-
-                    $Sql = "INSERT INTO [DESARROLLO].[dbo].[tbl_vineta_liquidadas] ([FACTURA], [VOUCHER], [LINEA], [CANTIDAD], [CLIENTE], [RUTA], [FECHA], [COD_RECIBO], [VALOR_UND], [COMMENT]) 
-                    VALUES ('".$lFACTURA."', '".$lVOUCHER."', '$lLINEA', '$lCANTIDAD', '".$lCLIENTE."', '".$lVENDEDOR."', '$lFECHA', '".$lRECIBO."', '$lVALOR_UNIT', '$lCOMMENT') ";
-                    $sql_server->fetchArray($Sql, SQLSRV_FETCH_ASSOC);
-                }
-            }
-            vinetaliq_controller::UpdateStatus($id,1,"");
+            $id = $request->input('id');            
+            recibos_controller::UpdateStatus($id,1,"");
+        }
+        
+    }
+    public function push_verificado(Request $request){
+        if($request->isMethod('post')) {
+            $id = $request->input('id');            
+            recibos_controller::UpdateStatus($id,2,"");
         }
         
     }
@@ -559,6 +570,28 @@ class vinetaliq_controller extends Controller {
                 break;
             case 1:
                 $res = '000'.$code;
+                break;
+            
+            default:
+                $res = $code;
+                break;
+        }
+
+        return $res;
+        
+    }
+
+    public static function getStatus($code){
+        $res='';
+        switch ($code) {           
+            case 0:
+                $res = 'Pendiente';
+                break;
+            case 1:
+                $res = 'Ingresado';
+                break;
+            case 2:
+                $res = 'Verificado';
                 break;
             
             default:
