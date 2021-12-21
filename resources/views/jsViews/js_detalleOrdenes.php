@@ -153,10 +153,10 @@
 			"destroy": true,
 			"paging": false,
 			"columns": [{
-					"data": "fibra"
+					"data": "maquina"
 				},
 				{
-					"data": "maquina"
+					"data": "fibra"
 				},
 				{
 					"data": "cantidad"
@@ -225,10 +225,10 @@
 			"destroy": true,
 			"paging": false,
 			"columns": [{
-					"data": "quimico"
+					"data": "maquina"
 				},
 				{
-					"data": "maquina"
+					"data": "quimico"
 				},
 				{
 					"data": "cantidad"
@@ -386,7 +386,7 @@
 					$('#Einicial').text(element.Einicial);
 					$('#Efinal').text(element.Efinal);
 					$('#Efinal').text(element.Efinal);
-					//Consumo de Gas
+					//Consumo de Gas	
 					/*$('#Ginicial').text(element.Ginicial);
 					$('#Gfinal').text(element.Gfinal);*/
 					$('#GtotalConsumo').text(element.GtotalConsumo + " Glns");
