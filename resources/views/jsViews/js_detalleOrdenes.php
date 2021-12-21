@@ -21,7 +21,7 @@
 				"search": "BUSCAR"
 			},
 			'columns': [{
-					"title": "NO.ORDEN",
+					"title": "Nº.ORDEN",
 					"data": "numOrden"
 				},
 				{
@@ -37,42 +37,56 @@
 					"data": "fechaFinal"
 				},
 				{
-					"title": "PRO.REAL(kg)",
+					"title": "PRO.REAL KG",
 					"data": "prod_real"
 				},
 				{
-					"title": "PROD.TOTAL(kg)",
+					"title": "PRO.REAL TON.",
+					"data": "prod_real_ton"
+				},
+				{
+					"title": "PROD.TOTAL KG",
 					"data": "prod_total"
 				},
 				{
-					"title": "COSTO TOTAL(C$)",
+					"title": "COSTO TOTAL C$",
 					"data": "costo_total"
 				},
 				{
-					"title": "VER",
+					"title": "COSTO TOTAL $",
+					"data": "ct_dolar"
+				},
+				{
+					"title": "T.C",
+					"data": "tipo_cambio"
+				},
+				{
+					"title": "COSTO TON. $",
+					"data": "costo_real_ton"
+				},
+				{
+					"title": "DETALLE",
 					"data": "ver"
 				},
 			],
+
 			"columnDefs": [{
 					"className": "dt-center",
 					"targets": [0, 1, 2, 3, 7]
 				},
 				{
 					"className": "dt-right",
-					"targets": [4, 5, 6]
+					"targets": [4, 5, 6,7,8,9,10]
 				},
-				/*{"width":"20%","targets":[ 2 ]},
-				{"width":"5%","targets":[ 0, 1, 3, 4, 5, 6, 7, 8, 9 ]}*/
+				{
+					"width": "7%",
+					"targets": [9]
+				},
 			],
 		});
 
 		$("#dtDetalleOrdenes_length").hide();
 		$("#dtDetalleOrdenes_filter").hide();
-
-
-
-
-
 		$('#InputDtShowSearchFilterArt').on('keyup', function() {
 			var table = $('#dtDetalleOrdenes').DataTable();
 			table.search(this.value).draw();
@@ -88,9 +102,10 @@
 
 	function getMoreDetail(numOrden, descripcion) {
 		numOrden_g = numOrden;
-		$("#tDetalleOrdenes").html(descripcion + `<p class="text-muted">` + numOrden + `</p>`);
+		$("#tDetalleOrdenes").html(descripcion + `<p class="text-white ml-1">` + numOrden + `</p>`);
 		getMateriaPrima(numOrden);
 		getOtrosConsumos(numOrden);
+		getDetailSumary(numOrden);
 		var target = '#nav-mp';
 		$('a[data-toggle=tab][href=' + target + ']').tab('show');
 
@@ -147,21 +162,17 @@
 					"data": "cantidad"
 				},
 			],
-			"columnDefs": [
-				{
-					"className": "dt-right",
-					"targets": [2]
-				},
-				/*{"width":"20%","targets":[ 2 ]},
-				{"width":"5%","targets":[ 0, 1, 3, 4, 5, 6, 7, 8, 9 ]}*/
-			],
+			"columnDefs": [{
+				"className": "dt-right",
+				"targets": [2]
+			}, ],
 			"info": false,
 			"language": {
 				"zeroRecords": "No hay datos que mostrar",
 				"emptyTable": "N/D",
 				"loadingRecords": "Cargando...",
 			}
-			
+
 		});
 	}
 
@@ -188,11 +199,11 @@
 				{
 					"data": "total"
 				},
-			],"columnDefs": [{
-					"className": "dt-center",
-					"targets": [1,2,3]
-				},
 			],
+			"columnDefs": [{
+				"className": "dt-center",
+				"targets": [1, 2, 3]
+			}, ],
 			"info": false,
 			"language": {
 				"zeroRecords": "No hay datos que mostrar",
@@ -222,10 +233,16 @@
 				{
 					"data": "cantidad"
 				},
-			],"columnDefs": [{
+			],
+			"columnDefs": [{
 					"className": "dt-center",
 					"targets": [2]
 				},
+				{
+					"width": "45%",
+					"targets": [0]
+				},
+
 			],
 			"info": false,
 			"language": {
@@ -258,7 +275,10 @@
 					"className": "dt-center",
 					"targets": [1]
 				},
-				{"width":"50%","targets":[ 0 ]},
+				{
+					"width": "50%",
+					"targets": [0]
+				},
 			],
 			"info": false,
 			"language": {
@@ -296,7 +316,7 @@
 					"data": "costo_Unitario"
 				},
 				{
-					"data": "costo_Total"
+					"data": "costo_Total", render: $.fn.dataTable.render.number( ',', '.', 2 )
 				},
 			],
 			"columnDefs": [{
@@ -305,9 +325,37 @@
 				},
 				{
 					"className": "dt-right",
-					"targets": [3,4,5]
+					"targets": [3, 4, 5]
 				},
 			],
+			"footerCallback": function(row, data, start, end, display) {
+				var api = this.api(),
+					data;
+
+				var intVal = function(i) {
+					return typeof i === 'string' ?
+						i.replace(/[\$,]/g, '') * 1 :
+						typeof i === 'number' ?
+						i : 0;
+				};
+
+				total = api
+					.column(5)
+					.data()
+					.reduce(function(a, b) {
+						return intVal(a) + intVal(b);
+					}, 0);
+				totalUnitario = api
+					.column(4)
+					.data()
+					.reduce(function(a, b) {
+						return intVal(a) + intVal(b);
+					}, 0);
+
+				$('#costoTotal').text('C$ ' + numeral(total).format('0,0.00'));
+				$('#CT_Unitario').text('C$ ' + numeral(totalUnitario).format('0,0.00'));
+
+			},
 			"info": false,
 			"language": {
 				"zeroRecords": "No hay datos que mostrar",
@@ -318,9 +366,8 @@
 	}
 
 	function getOtrosConsumos(numOrden) {
-
 		texto = "3";
-		suTexto = texto.sup().toString() ;
+		suTexto = texto.sup().toString();
 		$.ajax({
 			type: 'GET',
 			url: 'getOtrosConsumos/' + numOrden,
@@ -340,10 +387,44 @@
 					$('#Efinal').text(element.Efinal);
 					$('#Efinal').text(element.Efinal);
 					//Consumo de Gas
-					$('#Ginicial').text(element.Ginicial);
-					$('#Gfinal').text(element.Gfinal);
+					/*$('#Ginicial').text(element.Ginicial);
+					$('#Gfinal').text(element.Gfinal);*/
 					$('#GtotalConsumo').text(element.GtotalConsumo + " Glns");
+				});
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + '\r\n' +
+					xhr.statusText + '\r\n' +
+					xhr.responseText + '\r\n' +
+					ajaxOptions);
+			}
+		});
+	}
 
+	function getDetailSumary(numOrden) {
+		$.ajax({
+			type: 'GET',
+			url: 'getDetailSumary/' + numOrden,
+			dataType: "json",
+			data: {},
+			success: function(data) {
+				data.forEach(element => {
+					$('#fechaInicio').text(element.fechaInicio);
+					$('#fechaFinal').text(element.fechaFinal);
+					$('#horaInicio').text(element.horaInicio);
+					$('#horaFinal').text(element.horaFinal);
+					$('#lav-tetrapack').text(element.lavadora_total + " kg");
+					$('#residuos-pulper').text(element.residuo_total + " kg");
+					$('#fechaFinal').text(element.fechaFinal);
+					$('#merma-yankee-dry').text(element.merma_total + " kg");
+					$('#hrsTrabajadas').text(element.hrsTrabajadas + " hrs");
+					$('#produccionNeta').text(element.prod_real + " kg");
+					$('#produccionReal').text(element.prod_total + " kg");
+					// porcentajes
+					$('#factor-fibral').text(element.factorFibral + " %");
+					$('#porcentaje_merma').text(element.porcentMermaYankeeDry + " %");
+					$('#porcentaje_tpack').text(element.porcentLavadoraTetrapack + " %");
+					$('#porcentaje_rp').text(element.porcentResiduosPulper + " %");
 				});
 			},
 			error: function(xhr, ajaxOptions, thrownError) {

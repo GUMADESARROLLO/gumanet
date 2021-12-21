@@ -13,7 +13,7 @@ class DetalleOrden_model extends Model {
      *
      * @var string
      */
-     protected $table = 'inn_produccion_total';
+     protected $table = 'producciontest.inn_produccion_total';
 
 
 

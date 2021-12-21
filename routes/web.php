@@ -199,6 +199,8 @@ Route::get('/getMOD/{numOrden}','DetalleOrdenController@getMOD');
 Route::get('/getQuimicos/{numOrden}','DetalleOrdenController@getQuimicos');
 Route::get('/getSubCostos/{numOrden}','DetalleOrdenController@getSubCostos');
 Route::get('/getOtrosConsumos/{numOrden}','DetalleOrdenController@getOtrosConsumos');
+Route::get('/getDetailSumary/{numOrden}','DetalleOrdenController@getDetailSumary');
+
 
 
 
