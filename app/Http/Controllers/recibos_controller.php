@@ -242,7 +242,7 @@ class recibos_controller extends Controller {
 
 
             $data[$i]["DETALLE"]        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
-            $data[$i]['ID']             = $key->id;
+            $data[$i]['ID']             = $key->recibo;
             $data[$i]['STATUS']         = $key->status;
             $data[$i]['VENDEDOR']       = $key->ruta;
             $data[$i]['CLIENTE']        = substr(TRIM($key->cod_cliente),0,-1);;
@@ -253,6 +253,7 @@ class recibos_controller extends Controller {
             $data[$i]['RECIBO']         = $key->recibo;            
             $data[$i]['COMMENT']        = $key->comment;
             $data[$i]['COMMENT_ANUL']   = $key->comment_anul;
+            $data[$i]['STATUS']         = recibos_controller::getStatus($key->status);
 
 
             $OrdenList  = $key->order_list;
@@ -284,7 +285,7 @@ class recibos_controller extends Controller {
                     $data[$i]["BOTONES"]    = '<div class="alert alert-success" role="alert">Pendiente.</div>';
                 } 
             } else {
-                $data[$i]["BOTONES"]    = ' <button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key->id.')">
+                $data[$i]["BOTONES"]    = ' <button type="button" class="btn btn-outline-secondary"  onClick="Aprobado('.$key->id.')">
                                                 <i class="material-icons text-green mt-1"  style="font-size: 20px">done</i>
                                             </button>
                                             <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
@@ -295,15 +296,22 @@ class recibos_controller extends Controller {
             }
 
             if($key->status==1) {
-                $data[$i]["BOTONES"]        = '
+                $data[$i]["BOTONES"]        = '<button type="button" class="btn btn-outline-secondary"  onClick="Verificado('.$key->id.')">
+                                                    <i class="material-icons text-green mt-1"  style="font-size: 20px">done_all</i>
+                                                </button>
                                                 <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
                                                     <i class="material-icons text-red mt-1"  style="font-size: 20px">attach_file</i>
                                                 </button>                                        
                                             ';
             }else if($key->status==2){
-                $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">Anulada</div>';
+                $data[$i]["BOTONES"]        =  '<button type="button" class="btn btn-outline-success" >
+                                                    <i class="material-icons text-green mt-1"  style="font-size: 20px">done</i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
+                                                    <i class="material-icons text-red mt-1"  style="font-size: 20px">attach_file</i>
+                                                </button>';
             } else if($key->status==3){
-                $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">Elim. Ruta</div>';
+                $data[$i]["BOTONES"]        = '';
             }
             
             
@@ -377,12 +385,12 @@ class recibos_controller extends Controller {
                 
                 $Lineas_detalles     = explode(";", $Lineas[$l]);
 
-                $arrDetalles[$l]['FECHA']     = str_replace('[', '', $Lineas_detalles[0]);
-                $arrDetalles[$l]['RECIBO']     = $Lineas_detalles[1];
+                $arrDetalles[$l]['FECHA']           = str_replace('[', '', $Lineas_detalles[0]);
+                $arrDetalles[$l]['RECIBO']          = $Lineas_detalles[1];
                 $arrDetalles[$l]['CLIENTE_NAME']    = $Lineas_detalles[2];
-                $arrDetalles[$l]['CLIENTE_COD']  = $Lineas_detalles[3];
-                $arrDetalles[$l]['CONCEPTO']  = $Lineas_detalles[4];
-                $arrDetalles[$l]['TOTAL']       = $Lineas_detalles[5];
+                $arrDetalles[$l]['CLIENTE_COD']     = $Lineas_detalles[3];
+                $arrDetalles[$l]['CONCEPTO']        = $Lineas_detalles[4];
+                $arrDetalles[$l]['TOTAL']           = $Lineas_detalles[5];
 
                 
             }
@@ -490,10 +498,16 @@ class recibos_controller extends Controller {
     }
 
     public function push_recibo(Request $request){
-       
         if($request->isMethod('post')) {
             $id = $request->input('id');            
             recibos_controller::UpdateStatus($id,1,"");
+        }
+        
+    }
+    public function push_verificado(Request $request){
+        if($request->isMethod('post')) {
+            $id = $request->input('id');            
+            recibos_controller::UpdateStatus($id,2,"");
         }
         
     }
@@ -556,6 +570,28 @@ class recibos_controller extends Controller {
                 break;
             case 1:
                 $res = '000'.$code;
+                break;
+            
+            default:
+                $res = $code;
+                break;
+        }
+
+        return $res;
+        
+    }
+
+    public static function getStatus($code){
+        $res='';
+        switch ($code) {           
+            case 0:
+                $res = 'Pendiente';
+                break;
+            case 1:
+                $res = 'Ingresado';
+                break;
+            case 2:
+                $res = 'Verificado';
                 break;
             
             default:

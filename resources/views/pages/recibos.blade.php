@@ -48,8 +48,8 @@
 								<select class="custom-select" id="dtStatus" name="dtLength">
 								<option value="" selected>Todos</option>
 								<option value="0">Pendiente</option>
-								<option value="1">Aprobados</option>
-								<option value="2">Anulados</option>								
+								<option value="1">Ingresado</option>
+								<option value="2">Verificado</option>								
 								</select>
 							</div>
 						</div>
@@ -82,7 +82,29 @@
 			</div>
 		</div>
 		<div class="card border-0 shadow-sm mt-3">	
-			<div class="card-body col-sm-12">												
+			<div class="card-body col-sm-12">
+				<div class="row">
+				<div class="col-sm-3">
+					<p class="text-muted m-0" >Pendiente  <i class="material-icons text-secondary font-weight-bold" style="font-size:15px">done</i></p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_pendiente">C$ 0.00</p>
+				</div>
+				<div class="col-sm-3">
+					<p class="text-muted m-0" id="text-anio-pasado">Ingresado <i class="material-icons text-secondary font-weight-bold" style="font-size:15px">done_all</i></p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_ingresado">C$ 0.00</p>
+				</div>
+				<div class="col-sm-2 border-right">
+					<p class="text-muted m-0">Verificado <i class="material-icons text-success font-weight-bold" style="font-size:15px">done_all</i></p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_verificado">C$ 0.00</p>
+				</div>
+				<div class="col-sm-2">
+					<p class="text-muted m-0" id="text-mes-pasado">Total</p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_Total" >C$ 0.00</p>
+				</div>
+				<div class="col-sm-2">
+					<p class="text-muted m-0"></p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" ></p>
+				</div>
+			</div>												
 				<table class="table table-striped table-bordered table-sm post_back mt-3" width="100%" id="dtVinneta">
 					<thead class="bg-blue text-light"></thead>
 				</table>

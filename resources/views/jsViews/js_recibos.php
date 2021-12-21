@@ -96,13 +96,14 @@ $('#dtVinneta').DataTable({
     },
     'columns': [
         { "title": "DETALLES",          "data": "DETALLE"},            
-        { "title": "Nº ",         "data": "ID" },
-        { "title": "CLIENTE",   "data": "CLIENTE" },
-        { "title": "NOMBRE",    "data": "NOMBRE_CLIENTE" },
-        { "title": "FECHA",     "data": "FECHA" },
-        { "title": "VENDEDOR",  "data": "VENDEDOR" },
-        { "title": "TOTAL",     "data": "TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
+        { "title": "Nº RECIBO",         "data": "RECIBO" },
+        { "title": "CLIENTE",           "data": "CLIENTE" },
+        { "title": "NOMBRE",            "data": "NOMBRE_CLIENTE" },
+        { "title": "FECHA",             "data": "FECHA" },
+        { "title": "VENDEDOR",          "data": "VENDEDOR" },
+        { "title": "TOTAL",             "data": "TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
         { "title": "ACCIONES",          "data": "BOTONES"},
+        { "title": "STATUS",            "data": "STATUS"},
         
 
     ],
@@ -111,10 +112,48 @@ $('#dtVinneta').DataTable({
         {"className": "dt-right", "targets": [ 6 ]},
         { "width": "5%", "targets": [0,1,2,4,5,6 ] },
         { "width": "8%", "targets": [ 7 ] },
-        { "visible":false, "searchable": false,"targets": [  ] }
+        { "visible":false, "searchable": false,"targets": [8] }
     ],
     "footerCallback": function ( row, data, start, end, display ) {
         var api = this.api();
+
+        var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                i.replace(/[^0-9.]/g, '')*1 :
+                typeof i === 'number' ?
+                i : 0;
+            };
+
+            var Pendiete    = 0;
+            var Ingresado   = 0;
+            var Verificado  = 0;
+            var Total       = 0;
+
+            total = api.column( 6 ).data().reduce( function (a, b){
+                return intVal(a) + intVal(b);
+            }, 0 );
+
+            for (var i = 0; i < data.length; i++) {
+ 
+                if (data[i].STATUS == "Pendiente")
+                    Pendiete += intVal(data[i].TOTAL);
+                else if(data[i].STATUS == "Ingresado"){
+                    Ingresado += intVal(data[i].TOTAL);
+                }else{
+                    Verificado += intVal(data[i].TOTAL);
+                }
+            }
+
+            Total = Pendiete + Ingresado + Verificado;
+
+            $('#id_valor_pendiente').text("C$ " + numeral(Pendiete).format('0,0.00'));
+            $('#id_valor_ingresado').text("C$ " + numeral(Ingresado).format('0,0.00'));
+            $('#id_valor_verificado').text("C$ " + numeral(Verificado).format('0,0.00'));
+            $('#id_valor_Total').text("C$ " + numeral(Total).format('0,0.00'));
+
+
+
+        
     },
 });
 
@@ -376,9 +415,23 @@ function Delete(Id){
         }
     })
 }
-function Liquidar(Id){
+function Aprobado(Id){
     $.ajax({
         url: 'push_recibo',
+        type: 'post',
+        data: {
+            id :Id
+        },
+        async: true,
+        success: function(response) {
+
+            Requestdata()
+        }
+    })
+}
+function Verificado(Id){
+    $.ajax({
+        url: 'push_verificado',
         type: 'post',
         data: {
             id :Id
