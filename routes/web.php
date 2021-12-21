@@ -27,6 +27,8 @@ Route::get('/Menus','menus_controller@index');
 Route::get('/Roles','rol@index');
 Route::get('/recuProyectos','recupProyectos_controller@index');
 Route::get('/ordenesCompra', 'ordenesCompra_controller@index');
+Route::get('/DetalleOrden', 'DetalleOrdenController@index');
+
 
 //RUTAS LOGIN
 Route::get('/','Auth\LoginController@showLoginForm');//pagina login
@@ -64,7 +66,7 @@ Route::get('/invCompleto', 'inventario_controller@inventarioCompleto');
 Route::get('/invTotalizadoDT', 'inventario_controller@inventarioCompletoTable');
 Route::get('/desInvTotal2', 'inventario_controller@descargarInventarioCompleto');
 
-//RUTAS INVENTARIO TOTALIZADO
+//RUTAS INVENTARIO TOTALIZADO 
 Route::get('/invTotalizado','inventario_controller@getInventarioTotalizado');
 Route::get('/desInvTotal','inventario_controller@descargarInventarioCompleto');
 
@@ -184,9 +186,20 @@ Route::get('rePrint', 'vinetaliq_controller@rePrint');
 
 Route::get('clean', 'vinetaliq_controller@getClear');
 
+//RUTAS PARA EL DETALLE DE ORDENES
+Route::get('/DetalleOrdenesDT', 'DetalleOrdenController@getDetalleOrdenes');  
+Route::get('/getMateriaPrima/{numOrden}','DetalleOrdenController@getMateriaPrima');
+Route::get('/getMOD/{numOrden}','DetalleOrdenController@getMOD');
+Route::get('/getQuimicos/{numOrden}','DetalleOrdenController@getQuimicos');
+Route::get('/getSubCostos/{numOrden}','DetalleOrdenController@getSubCostos');
+Route::get('/getOtrosConsumos/{numOrden}','DetalleOrdenController@getOtrosConsumos');
+Route::get('/getDetailSumary/{numOrden}','DetalleOrdenController@getDetailSumary');
+
+
 //RUTAS PARA LOS RECIBOS
 Route::get('recibos', 'recibos_controller@index');  
 Route::get('getRecibos', 'recibos_controller@getRecibos');
 Route::post('getAttachFile', 'recibos_controller@getAttachFile');
 Route::post('push_recibo', 'recibos_controller@push_recibo');
 Route::post('push_verificado', 'recibos_controller@push_verificado');
+
