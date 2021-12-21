@@ -28,16 +28,19 @@ class DetalleOrdenController extends Controller
         $data = array();
         $i = 0;
         $j = 0;
-        $produccion_total = DB::table('producciontest.inn_produccion_total');
+        $produccion_total = DB::table('producciontest.inn_produccion_total')->select('inn_produccion_total.*', 'producciontest.orden_produccion.*')
+        ->join('producciontest.orden_produccion', 'producciontest.inn_produccion_total.numOrden', '=', 'producciontest.orden_produccion.numOrden')
+        ->where('producciontest.orden_produccion.estado', 1);
         $obj = $produccion_total->get();
+        
         foreach ($obj as $Orden => $key) {
-            $data[$i]['numOrden'] = $key->numOrden;
             $orden_produccion = DB::table('producciontest.orden_produccion')->where('numOrden', $key->numOrden)->get();
+            $data[$i]['numOrden'] = $key->numOrden;
             //costo_total
             $co_subTT = DB::table('producciontest.inn_costo_orden_subtotal')
                 ->select(DB::raw('SUM(subtotal) as total'))
                 ->where('numOrden',  $key->numOrden)->get();
-                //$query4 = DB::table('producciontest.inn_costo_orden_subtotal')->where('numOrden',  $op->numOrden)->get();
+            //$query4 = DB::table('producciontest.inn_costo_orden_subtotal')->where('numOrden',  $op->numOrden)->get();
             if (is_null($co_subTT)) {
                 $data[$i]['costo_total'] = 'C$ ' . number_format(0, 2);
             } else {
@@ -48,27 +51,25 @@ class DetalleOrdenController extends Controller
             foreach ($orden_produccion as $orden_prod => $op) {
                 $data[$i]['fechaInicio'] =  date('d/m/Y', strtotime($op->fechaInicio)) . ' ' .  date('g:i a', strtotime($op->horaInicio));
                 $data[$i]['fechaFinal'] = date('d/m/Y', strtotime($op->fechaFinal)) . ' ' . date('g:i a', strtotime($op->horaFinal));
-                (is_null($op->tipo_cambio)) ? $data[$i]['tipo_cambio']= "C$ " . number_format(0,4) :  $data[$i]['tipo_cambio'] = "C$ " . $op->tipo_cambio ;
-                if(($op->tipo_cambio == 0) ||(is_null($op->tipo_cambio)) ){
-                    $data[$i]['prod_real_ton'] =  number_format(0,4);
-                    $data[$i]['costo_real_ton'] = "$ " . number_format(0,4);
-                    $data[$i]['ct_dolar'] =  "$ " . number_format(0,4);
-
-                }else{
-                    $data[$i]['ct_dolar'] =  "$ " .number_format(($cst->total/$op->tipo_cambio),4);
-                    $data[$i]['prod_real_ton'] =  number_format(($cst->total/$op->tipo_cambio),4);
-                    $data[$i]['costo_real_ton'] =  "$ " . number_format((($cst->total/$op->tipo_cambio)/($key->prod_real/1000)),4);
+                (is_null($op->tipo_cambio)) ? $data[$i]['tipo_cambio'] = "C$ " . number_format(0, 4) :  $data[$i]['tipo_cambio'] = "C$ " . $op->tipo_cambio;
+                if (($op->tipo_cambio == 0) || (is_null($op->tipo_cambio))) {
+                    $data[$i]['prod_real_ton'] =  number_format(0, 4);
+                    $data[$i]['costo_real_ton'] = "$ " . number_format(0, 4);
+                    $data[$i]['ct_dolar'] =  "$ " . number_format(0, 4);
+                } else {
+                    $data[$i]['ct_dolar'] =  "$ " . number_format(($cst->total / $op->tipo_cambio), 4);
+                    $data[$i]['prod_real_ton'] =  number_format(($cst->total / $op->tipo_cambio), 4);
+                    $data[$i]['costo_real_ton'] =  "$ " . number_format((($cst->total / $op->tipo_cambio) / ($key->prod_real / 1000)), 4);
                 }
                 $productos = DB::table('producciontest.productos')->where('idProducto',  $op->producto)->get();
                 foreach ($productos as $producto => $p) {
                     $data[$i]['producto'] = $p->nombre;
                     $data[$i]['ver'] = '<a href="#!"  class="btn "  onclick="getMoreDetail(' . "'" . $key->numOrden . "'" . ', ' . "'" . $p->nombre . "'" . ')"><i class="fas fa-eye fa-2x text-primary"></i></a>';
                 }
-                
             }
             $data[$i]['prod_real'] = number_format($key->prod_real, 2);
             $data[$i]['prod_total'] = number_format($key->merma_total +  $key->prod_real, 2);
-            $data[$i]['prod_real_ton'] = number_format(($key->prod_real/1000),2);
+            $data[$i]['prod_real_ton'] = number_format(($key->prod_real / 1000), 2);
 
             $i++;
         }
@@ -273,35 +274,35 @@ class DetalleOrdenController extends Controller
 
         //Electricidad
         if ($finalE > 0) {
-            $data[0]['Einicial']          = number_format($inicialE,2);
-            $data[0]['Efinal']            = number_format($finalE,2);
+            $data[0]['Einicial']          = number_format($inicialE, 2);
+            $data[0]['Efinal']            = number_format($finalE, 2);
             $data[0]['EtotalConsumo']     =  number_format(($finalE - $inicialE), 2);
             $data[0]['EtotalCordobas']    = number_format(($finalE - $inicialE) * 560, 2);
         } else {
-            $data[0]['Einicial']          = number_format(0,2);
-            $data[0]['Efinal']            = number_format(0,2);
+            $data[0]['Einicial']          = number_format(0, 2);
+            $data[0]['Efinal']            = number_format(0, 2);
             $data[0]['EtotalConsumo']     = number_format(0, 2);
             $data[0]['EtotalCordobas']    = number_format(0, 2);
         }
         //Consumo de Agua
         if ($finalA > 0) {
-            $data[0]['Ainicial']         =  number_format($inicialA,2);
-            $data[0]['Afinal']           =  number_format($finalA,2);
+            $data[0]['Ainicial']         =  number_format($inicialA, 2);
+            $data[0]['Afinal']           =  number_format($finalA, 2);
             $data[0]['AtotalConsumo']    =  number_format(($finalA - $inicialA), 2);
         } else {
-            $data[0]['Ainicial']          = number_format(0,2);
-            $data[0]['Afinal']           = number_format(0,2);
+            $data[0]['Ainicial']          = number_format(0, 2);
+            $data[0]['Afinal']           = number_format(0, 2);
             $data[0]['AtotalConsumo']    = number_format(0, 2);
             //$data[1]['AtotalCordobas']   = number_format(0,2);
         }
         //Consumo de Gas
         if ($finalG > 0) {
-            $data[0]['Ginicial']          = number_format($inicialG,2);
-            $data[0]['Gfinal']            = number_format($finalG,2);
+            $data[0]['Ginicial']          = number_format($inicialG, 2);
+            $data[0]['Gfinal']            = number_format($finalG, 2);
             $data[0]['GtotalConsumo']     =  number_format(($finalG - $inicialG), 2);
         } else {
-            $data[0]['Ginicial']          = number_format(0,2);
-            $data[0]['Gfinal']           = number_format(0,2);
+            $data[0]['Ginicial']          = number_format(0, 2);
+            $data[0]['Gfinal']           = number_format(0, 2);
             $data[0]['GtotalConsumo']    = number_format(0, 2);
             $data[0]['GtotalCordobas']   = number_format(0, 2);
         }
@@ -344,14 +345,14 @@ class DetalleOrdenController extends Controller
                 ->get()->first();
             //Calculo de los porcentajes
             $porcentMermaYankeeDry = ($key->merma_total > 0  && $key->prod_real > 0) ?  (($key->merma_total / ($key->prod_real + $key->merma_total)) * 100) :   0;
-            $porcentLavadoraTetrapack = ($key->lavadora_total > 0 && $totalMPTPACK->total > 0) ?(($key->lavadora_total / $totalMPTPACK->total) * 100 ): 0;
-            $porcentResiduosPulper = ($key->residuo_total > 0 && $mp_total->mp_directa > 0) ?  (($key->residuo_total / $mp_total->mp_directa) * 100): 0;
-            $factorFibral =  (!is_null($mp_directa_exist) > 0 && $key->lavadora_total != '') ?(($mp_total->mp_directa - $key->lavadora_total) / ($key->prod_real + $key->merma_total)): 0;
+            $porcentLavadoraTetrapack = ($key->lavadora_total > 0 && $totalMPTPACK->total > 0) ? (($key->lavadora_total / $totalMPTPACK->total) * 100) : 0;
+            $porcentResiduosPulper = ($key->residuo_total > 0 && $mp_total->mp_directa > 0) ?  (($key->residuo_total / $mp_total->mp_directa) * 100) : 0;
+            $factorFibral =  (!is_null($mp_directa_exist) > 0 && $key->lavadora_total != '') ? (($mp_total->mp_directa - $key->lavadora_total) / ($key->prod_real + $key->merma_total)) : 0;
 
-            $data[$i]['factorFibral'] = number_format($factorFibral,2);
-            $data[$i]['porcentMermaYankeeDry'] = number_format($porcentMermaYankeeDry,2);
-            $data[$i]['porcentLavadoraTetrapack'] = number_format($porcentLavadoraTetrapack,2);
-            $data[$i]['porcentResiduosPulper'] = number_format($porcentResiduosPulper,2);
+            $data[$i]['factorFibral'] = number_format($factorFibral, 2);
+            $data[$i]['porcentMermaYankeeDry'] = number_format($porcentMermaYankeeDry, 2);
+            $data[$i]['porcentLavadoraTetrapack'] = number_format($porcentLavadoraTetrapack, 2);
+            $data[$i]['porcentResiduosPulper'] = number_format($porcentResiduosPulper, 2);
             $i++;
         }
         return response()->json($data);
