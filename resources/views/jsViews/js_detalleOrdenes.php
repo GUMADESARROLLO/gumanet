@@ -316,7 +316,7 @@
 					"data": "costo_Unitario"
 				},
 				{
-					"data": "costo_Total", render: $.fn.dataTable.render.number( ',', '.', 2 )
+					"data": "costo_Total"
 				},
 			],
 			"columnDefs": [{
