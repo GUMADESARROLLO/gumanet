@@ -46,9 +46,9 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-3 col-xs-3">
-                                            <label for="merma-yankee-dry" class="">Merma Yankee Dry (kg):</label>
-                                            <h6 class="mt-2 mb-0" id="merma-yankee-dry"></h6>
+                                        <div class="col-sm-3">
+                                            <p class="text-muted m-0" >Merma Yankee Dry (kg):</p>
+                                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="merma-yankee-dry">C$ 0.00</p>
                                         </div>
                                         <div class="col-md-3 col-xs-3">
                                             <label for="merma-yankee-dry" class="">Merma Yankee Dry (%):</label>
