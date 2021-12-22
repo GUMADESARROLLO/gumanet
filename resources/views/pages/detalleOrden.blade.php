@@ -39,120 +39,87 @@
                     <div class="row">
                         <!-- [ Header orden produccion ] start -->
                         <div class="col-xl-12">
-                            <div class="card"> 
+                            <div class="card">
                                 <div class="card-header d-flex justify-content-center align-items-center pt-1 pb-0 bg-blue">
-                                    <h5 class=" d-flex modal-title text-center align-self-center p-0 bg-blue text-white" id="tDetalleOrdenes"></h5>
+                                    <h5 class="modal-title text-center align-self-center p-1 bg-blue text-white" id="tDetalleOrdenes"></h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="fechaInicio" class="col-sm-6 col-form-label">Fecha
-                                                    Inicio:</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="fechaInicio"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="fechaFinal" class="col-sm-6 col-form-label">Fecha
-                                                    Final:</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="fechaFinal" value=""></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-3 col-xs-3">
                                             <div class="form-group row">
                                                 <label for="merma-yankee-dry" class="col-sm-6 col-form-label">Merma
                                                     Yankee Dry (kg):</label>
-                                                <div class="col-sm-6 input-group">
-                                                    <h6 class="mt-2 mb-0" id="merma-yankee-dry">
-                                                    </h6>
+                                                <div class="col-sm-6 p-0 input-group">
+                                                    <h6 class="mt-2 mb-0" id="merma-yankee-dry"></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-xs-3">
+                                            <div class="form-group row">
+                                                <label for="merma-yankee-dry" class="col-sm-6 col-form-label">Merma
+                                                    Yankee Dry (%):</label>
+                                                <div class="col-sm-6 p-0 input-group">
                                                     <span class="float-right mt-2  ml-1" id="porcentaje_merma"> </span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="" class="col-sm-6 col-form-label">Horas
-                                                    Trabajadas</label>
-                                                <div class="col-sm-6">
-                                                    <h6 class="mt-2 text-left" id="hrsTrabajadas"> </h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="horaInicio" class="col-sm-6 col-form-label">Hora
-                                                    Inicio:</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="horaInicio" value=""></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="horaFinal" class="col-sm-6 col-form-label">Hora
-                                                    Final:</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="horaFinal"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-3 col-xs-3">
                                             <div class="form-group row">
                                                 <label for="residuos-pulper" class="col-sm-6 col-form-label">Residuos
                                                     del Pulper (kg):</label>
-                                                <div class="col-sm-6 input-group">
+                                                <div class="col-sm-6 p-0 input-group">
                                                     <h6 class="mt-2 mb-0" id="residuos-pulper"> </h6>
                                                     <span class="float-right mt-2  ml-1" id="porcentaje_rp"> </span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="factorFibral" class="col-sm-6 col-form-label">Factor
-                                                    fibral</label>
-                                                <div class="col-sm-6">
-                                                    <h6 class="mt-2 mb-0 text-left" id="factor-fibral"> </h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="produccionNeta" class="col-sm-6 col-form-label">PROD.
-                                                    REAL (kg):</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="produccionNeta"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="produccionReal" class="col-sm-6 col-form-label">PROD.
-                                                    TOTAL (kg):</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="produccionReal"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-3 col-xs-3">
                                             <div class="form-group row">
                                                 <label for="lav-tetrapack" class="col-sm-6 col-form-label">Lavadora
                                                     de Tetrapack (kg):</label>
-                                                <div class="col-sm-6 input-group">
+                                                <div class="col-sm-6 p-0 input-group">
                                                     <h6 class="mt-2 mb-0" id="lav-tetrapack"> </h6>
                                                     <span class="float-right ml-1  mt-2" id="porcentaje_tpack"> </span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3 col-xs-3">
+                                            <div class="form-group row">
+                                                <label for="" class="col-sm-6 col-form-label">Horas
+                                                    Trabajadas</label>
+                                                <div class="col-sm-6 p-0">
+                                                    <h6 class="mt-2 text-left" id="hrsTrabajadas"> </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-xs-3">
+                                            <div class="form-group row">
+                                                <label for="factorFibral" class="col-sm-6 col-form-label">Factor
+                                                    fibral</label>
+                                                <div class="col-sm-6 p-0">
+                                                    <h6 class="mt-2 mb-0 text-left" id="factor-fibral"> </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-xs-3">
+                                            <div class="form-group row">
+                                                <label for="produccionNeta" class="col-sm-6 col-form-label">PROD.
+                                                    REAL (kg):</label>
+                                                <div class="col-sm-6 p-0">
+                                                    <p type="text" readonly="" class="form-control-plaintext" id="produccionNeta"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-xs-3">
+                                            <div class="form-group row">
+                                                <label for="produccionReal" class="col-sm-6 col-form-label">PROD.
+                                                    TOTAL (kg):</label>
+                                                <div class="col-sm-6 p-0">
+                                                    <p type="text" readonly="" class="form-control-plaintext" id="produccionReal"></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -162,7 +129,7 @@
                         </div>
                         <!-- [ Header orden produccion ] end -->
                     </div>
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col">
                             <div class="card card-social">
                                 <div class="card-header text-center p-2 bg-blue">
@@ -171,7 +138,7 @@
                                 <div class="card-block  mx-2  my-1 border-bottom">
                                     <div class="row align-items-center justify-content-center">
                                         <div class="col-auto">
-                                            <h6 class="mb-0">Consumo en m<sup>3</sup></h6>
+                                            <h6 class="mb-0">Consumo: </h6>
                                         </div>
                                         <div class="col text-right">
                                             <h6 id="AtotalConsumo"> </h6>
@@ -204,6 +171,14 @@
                                 <div class="card-block mx-2  my-1 border-bottom">
                                     <div class="row align-items-center justify-content-center">
                                         <div class="col-auto">
+                                            <h6 class="mb-0">Consumo: </h6>
+                                        </div>
+                                        <div class="col text-right">
+                                            <h6 id="EtotalConsumo"></h6>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center justify-content-center">
+                                        <div class="col-auto">
                                             <h6 class="mb-0">Factor de conversión: </h6>
                                         </div>
                                         <div class="col text-right">
@@ -212,20 +187,13 @@
                                     </div>
                                     <div class="row align-items-center justify-content-center">
                                         <div class="col-auto">
-                                            <h6 class="mb-0">Consumo en C$</h6>
+                                            <h6 class="mb-0">Consumo en C$: </h6>
                                         </div>
                                         <div class="col text-right">
                                             <h6 id="EtotalCordobas"></h6>
                                         </div>
                                     </div>
-                                    <div class="row align-items-center justify-content-center">
-                                        <div class="col-auto">
-                                            <h6 class="mb-0">Consumo en Kw/Hrs</h6>
-                                        </div>
-                                        <div class="col text-right">
-                                            <h6 id="EtotalConsumo"></h6>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="card-block">
                                     <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
@@ -257,7 +225,7 @@
                                 <div class="card-block mx-2 my-1">
                                     <div class="row align-items-center justify-content-center">
                                         <div class="col-auto">
-                                            <h6 class="mb-0">Consumo en Glns</h6>
+                                            <h6 class="mb-0">Consumo: </h6>
                                         </div>
                                         <div class="col text-right">
                                             <h6 id="GtotalConsumo"> Glns</h6>
@@ -358,9 +326,9 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>TOTAL</td>
-                                                <td id="CT_Unitario"></td>
-                                                <td id="costoTotal"> </td>
+                                                <td class="font-weight-bold">TOTAL</td>
+                                                <td id="CT_Unitario" class="font-weight-bold"></td>
+                                                <td id="costoTotal" class="font-weight-bold"> </td>
                                             </tr>
                                         </tfoot>
                                     </table>
