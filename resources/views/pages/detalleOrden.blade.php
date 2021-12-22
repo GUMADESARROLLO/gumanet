@@ -15,6 +15,7 @@
             </div>
         </div>
     </div>
+    <!-- [ Header detalle ordenes ] start -->
     <div class="row">
         <div class="col-xl-12">
             <div class="card">
@@ -46,81 +47,44 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-3 col-xs-3">
-                                            <div class="form-group row">
-                                                <label for="merma-yankee-dry" class="col-sm-6 col-form-label">Merma
-                                                    Yankee Dry (kg):</label>
-                                                <div class="col-sm-6 p-0 input-group">
-                                                    <h6 class="mt-2 mb-0" id="merma-yankee-dry"></h6>
-                                                </div>
+                                            <label for="merma-yankee-dry" class="">Merma Yankee Dry (kg):</label>
+                                            <h6 class="mt-2 mb-0" id="merma-yankee-dry"></h6>
+                                        </div>
+                                        <div class="col-md-3 col-xs-3">
+                                            <label for="merma-yankee-dry" class="">Merma Yankee Dry (%):</label>
+                                            <h6 class="mt-2" id="porcentaje_merma"> </h6>
+                                        </div>
+                                        <div class="col-md-3 col-xs-3">
+                                            <label for="residuos-pulper" class="">Residuos del Pulper (kg):</label>
+                                            <div class="input-group">
+                                                <h6 class="mt-2 mb-0" id="residuos-pulper"> </h6>
+                                                <h6 class="float-right mt-2  ml-2" id="porcentaje_rp"> </h6>
                                             </div>
                                         </div>
                                         <div class="col-md-3 col-xs-3">
-                                            <div class="form-group row">
-                                                <label for="merma-yankee-dry" class="col-sm-6 col-form-label">Merma
-                                                    Yankee Dry (%):</label>
-                                                <div class="col-sm-6 p-0 input-group">
-                                                    <span class="float-right mt-2  ml-1" id="porcentaje_merma"> </span>
-                                                </div>
+                                            <label for="lav-tetrapack" class="">Lavadora de Tetrapack (kg):</label>
+                                            <div class="input-group">
+                                                <h6 class="mt-2 mb-0" id="lav-tetrapack"> </h6>
+                                                <h6 class="float-right mt-2  ml-2 " id="porcentaje_tpack"> </h6>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 col-xs-3">
-                                            <div class="form-group row">
-                                                <label for="residuos-pulper" class="col-sm-6 col-form-label">Residuos
-                                                    del Pulper (kg):</label>
-                                                <div class="col-sm-6 p-0 input-group">
-                                                    <h6 class="mt-2 mb-0" id="residuos-pulper"> </h6>
-                                                    <span class="float-right mt-2  ml-1" id="porcentaje_rp"> </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 col-xs-3">
-                                            <div class="form-group row">
-                                                <label for="lav-tetrapack" class="col-sm-6 col-form-label">Lavadora
-                                                    de Tetrapack (kg):</label>
-                                                <div class="col-sm-6 p-0 input-group">
-                                                    <h6 class="mt-2 mb-0" id="lav-tetrapack"> </h6>
-                                                    <span class="float-right ml-1  mt-2" id="porcentaje_tpack"> </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                       
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3 col-xs-3">
-                                            <div class="form-group row">
-                                                <label for="" class="col-sm-6 col-form-label">Horas
-                                                    Trabajadas</label>
-                                                <div class="col-sm-6 p-0">
-                                                    <h6 class="mt-2 text-left" id="hrsTrabajadas"> </h6>
-                                                </div>
-                                            </div>
+                                            <label for="" class="">Horas Trabajadas:</label>
+                                            <h6 class="mt-2 text-left" id="hrsTrabajadas"> </h6>
                                         </div>
                                         <div class="col-md-3 col-xs-3">
-                                            <div class="form-group row">
-                                                <label for="factorFibral" class="col-sm-6 col-form-label">Factor
-                                                    fibral</label>
-                                                <div class="col-sm-6 p-0">
-                                                    <h6 class="mt-2 mb-0 text-left" id="factor-fibral"> </h6>
-                                                </div>
-                                            </div>
+                                            <label for="factorFibral" class="">Factor fibral:</label>
+                                            <h6 class="mt-2 mb-0 text-left" id="factor-fibral"> </h6>
                                         </div>
                                         <div class="col-md-3 col-xs-3">
-                                            <div class="form-group row">
-                                                <label for="produccionNeta" class="col-sm-6 col-form-label">PROD.
-                                                    REAL (kg):</label>
-                                                <div class="col-sm-6 p-0">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="produccionNeta"></p>
-                                                </div>
-                                            </div>
+                                            <label for="produccionNeta" class="">PROD.REAL (kg):</label>
+                                            <h6 type="text" readonly="" class="form-control-plaintext" id="produccionNeta"></h6>
                                         </div>
                                         <div class="col-md-3 col-xs-3">
-                                            <div class="form-group row">
-                                                <label for="produccionReal" class="col-sm-6 col-form-label">PROD.
-                                                    TOTAL (kg):</label>
-                                                <div class="col-sm-6 p-0">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="produccionReal"></p>
-                                                </div>
-                                            </div>
+                                            <label for="produccionReal" class="">PROD.TOTAL (kg):</label>
+                                            <h6 type="text" readonly="" class="form-control-plaintext" id="produccionReal"></h6>
                                         </div>
                                     </div>
                                 </div>
