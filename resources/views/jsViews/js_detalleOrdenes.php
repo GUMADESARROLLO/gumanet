@@ -72,7 +72,7 @@
 
 			"columnDefs": [{
 					"className": "dt-center",
-					"targets": [0, 1, 2, 3, 7]
+					"targets": [0, 1, 2, 3, 4, 5, 6, 7]
 				},
 				{
 					"className": "dt-right",
@@ -100,9 +100,9 @@
 
 	var numOrden_g = 0;
 
-	function getMoreDetail(numOrden, descripcion) {
+	function getMoreDetail(numOrden, descripcion, fechaInicio, fechaFin) {
 		numOrden_g = numOrden;
-		$("#tDetalleOrdenes").html(descripcion + `<p class="text-white ml-1">` + numOrden + `</p>`);
+		$("#tDetalleOrdenes").html(`<p class="text-white m-1">` + "#" + numOrden + "-"+ descripcion + `</p>` + `<p class="text-white m-1">` +  fechaInicio + " "+  fechaFin + `</p>`);
 		getMateriaPrima(numOrden);
 		getOtrosConsumos(numOrden);
 		getDetailSumary(numOrden);
