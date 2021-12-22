@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('metodosjs')
-@include('jsViews.js_detalleOrdenes');
+@include('jsViews.js_detalleOrdenes')
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -50,41 +50,41 @@
                                             <p class="text-muted m-0" >Merma Yankee Dry (kg):</p>
                                             <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="merma-yankee-dry">C$ 0.00</p>
                                         </div>
-                                        <div class="col-md-3 col-xs-3">
-                                            <label for="merma-yankee-dry" class="">Merma Yankee Dry (%):</label>
-                                            <h6 class="mt-2" id="porcentaje_merma"> </h6>
+                                        <div class="col-sm-3">
+                                            <p for="merma-yankee-dry" class="text-muted m-0">Merma Yankee Dry (%):</p>
+                                            <p class="font-weight-bolder"  style="font-size: 1.3rem!important" id="porcentaje_merma"> </p>
                                         </div>
-                                        <div class="col-md-3 col-xs-3">
-                                            <label for="residuos-pulper" class="">Residuos del Pulper (kg):</label>
+                                        <div class="col-sm-3">
+                                            <p for="residuos-pulper" class="text-muted m-0">Residuos del Pulper (kg):</p>
                                             <div class="input-group">
-                                                <h6 class="mt-2 mb-0" id="residuos-pulper"> </h6>
-                                                <h6 class="float-right mt-2  ml-2" id="porcentaje_rp"> </h6>
+                                                <p class="font-weight-bolder" id="residuos-pulper" style="font-size: 1.3rem!important"> </p>
+                                                <p class="font-weight-bolder ml-2"  style="font-size: 1.3rem!important" id="porcentaje_rp"> </p>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 col-xs-3">
-                                            <label for="lav-tetrapack" class="">Lavadora de Tetrapack (kg):</label>
+                                        <div class="col-sm-3">
+                                            <p for="lav-tetrapack" class="text-muted m-0">Lavadora de Tetrapack (kg):</p>
                                             <div class="input-group">
-                                                <h6 class="mt-2 mb-0" id="lav-tetrapack"> </h6>
-                                                <h6 class="float-right mt-2  ml-2 " id="porcentaje_tpack"> </h6>
+                                                <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="lav-tetrapack"> </p>
+                                                <p class="font-weight-bolder ml-2" style="font-size: 1.3rem!important" id="porcentaje_tpack"> </p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3 col-xs-3">
-                                            <label for="" class="">Horas Trabajadas:</label>
-                                            <h6 class="mt-2 text-left" id="hrsTrabajadas"> </h6>
+                                        <div class="col-sm-3">
+                                            <p for=""  class="text-muted m-0">Horas Trabajadas:</p>
+                                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="hrsTrabajadas"> </p>
                                         </div>
-                                        <div class="col-md-3 col-xs-3">
-                                            <label for="factorFibral" class="">Factor fibral:</label>
-                                            <h6 class="mt-2 mb-0 text-left" id="factor-fibral"> </h6>
+                                        <div class="col-sm-3">
+                                            <p for="factorFibral"  class="text-muted m-0">Factor fibral:</p>
+                                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="factor-fibral"> </p>
                                         </div>
-                                        <div class="col-md-3 col-xs-3">
-                                            <label for="produccionNeta" class="">PROD.REAL (kg):</label>
-                                            <h6 type="text" readonly="" class="form-control-plaintext" id="produccionNeta"></h6>
+                                        <div class="col-sm-3">
+                                            <p for="produccionNeta"  class="text-muted m-0">PROD.REAL (kg):</p>
+                                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="produccionNeta"></p>
                                         </div>
-                                        <div class="col-md-3 col-xs-3">
-                                            <label for="produccionReal" class="">PROD.TOTAL (kg):</label>
-                                            <h6 type="text" readonly="" class="form-control-plaintext" id="produccionReal"></h6>
+                                        <div class="col-sm-3">
+                                            <p for="produccionReal"  class="text-muted m-0">PROD.TOTAL (kg):</p>
+                                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="produccionReal"></p>
                                         </div>
                                     </div>
                                 </div>
