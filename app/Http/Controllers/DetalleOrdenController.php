@@ -29,18 +29,16 @@ class DetalleOrdenController extends Controller
         $i = 0;
         $j = 0;
         $produccion_total = DB::table('producciontest.inn_produccion_total')->select('inn_produccion_total.*', 'producciontest.orden_produccion.*')
-        ->join('producciontest.orden_produccion', 'producciontest.inn_produccion_total.numOrden', '=', 'producciontest.orden_produccion.numOrden')
-        ->where('producciontest.orden_produccion.estado', 1);
+            ->join('producciontest.orden_produccion', 'producciontest.inn_produccion_total.numOrden', '=', 'producciontest.orden_produccion.numOrden')
+            ->where('producciontest.orden_produccion.estado', 1);
         $obj = $produccion_total->get();
-        
+
         foreach ($obj as $Orden => $key) {
-            $orden_produccion = DB::table('producciontest.orden_produccion')->where('numOrden', $key->numOrden)->get();
             $data[$i]['numOrden'] = $key->numOrden;
             //costo_total
             $co_subTT = DB::table('producciontest.inn_costo_orden_subtotal')
                 ->select(DB::raw('SUM(subtotal) as total'))
                 ->where('numOrden',  $key->numOrden)->get();
-            //$query4 = DB::table('producciontest.inn_costo_orden_subtotal')->where('numOrden',  $op->numOrden)->get();
             if (is_null($co_subTT)) {
                 $data[$i]['costo_total'] = 'C$ ' . number_format(0, 2);
             } else {
@@ -48,29 +46,28 @@ class DetalleOrdenController extends Controller
                     $data[$i]['costo_total'] = 'C$ ' . number_format($cst->total, 2);
                 }
             }
-            foreach ($orden_produccion as $orden_prod => $op) {
-                $data[$i]['fechaInicio'] =  date('d/m/Y', strtotime($op->fechaInicio)) . ' ' .  date('g:i a', strtotime($op->horaInicio));
-                $data[$i]['fechaFinal'] = date('d/m/Y', strtotime($op->fechaFinal)) . ' ' . date('g:i a', strtotime($op->horaFinal));
-                (is_null($op->tipo_cambio)) ? $data[$i]['tipo_cambio'] = "C$ " . number_format(0, 4) :  $data[$i]['tipo_cambio'] = "C$ " . $op->tipo_cambio;
-                if (($op->tipo_cambio == 0) || (is_null($op->tipo_cambio))) {
-                    $data[$i]['prod_real_ton'] =  number_format(0, 4);
-                    $data[$i]['costo_real_ton'] = "$ " . number_format(0, 4);
-                    $data[$i]['ct_dolar'] =  "$ " . number_format(0, 4);
-                } else {
-                    $data[$i]['ct_dolar'] =  "$ " . number_format(($cst->total / $op->tipo_cambio), 4);
-                    $data[$i]['prod_real_ton'] =  number_format(($cst->total / $op->tipo_cambio), 4);
-                    $data[$i]['costo_real_ton'] =  "$ " . number_format((($cst->total / $op->tipo_cambio) / ($key->prod_real / 1000)), 4);
-                }
-                $productos = DB::table('producciontest.productos')->where('idProducto',  $op->producto)->get();
-                foreach ($productos as $producto => $p) {
-                    $data[$i]['producto'] = $p->nombre;
-                    $data[$i]['ver'] = '<a href="#!"  class="btn "  onclick="getMoreDetail(' . "'" . $key->numOrden . "'" . ', ' . "'" . $p->nombre . "'" . ')"><i class="fas fa-eye fa-2x text-primary"></i></a>';
-                }
+            $data[$i]['fechaInicio'] =  date('d/m/Y', strtotime($key->fechaInicio)) . ' ' .  date('g:i a', strtotime($key->horaInicio));
+            $data[$i]['fechaFinal'] = date('d/m/Y', strtotime($key->fechaFinal)) . ' ' . date('g:i a', strtotime($key->horaFinal));
+            (is_null($key->tipo_cambio)) ? $data[$i]['tipo_cambio'] = "C$ " . number_format(0, 4) :  $data[$i]['tipo_cambio'] = "C$ " . $key->tipo_cambio;
+            if (($key->tipo_cambio == 0) || (is_null($key->tipo_cambio))) {
+                $data[$i]['prod_real_ton'] =  number_format(0, 4);
+                $data[$i]['costo_real_ton'] = "$ " . number_format(0, 4);
+                $data[$i]['ct_dolar'] =  "$ " . number_format(0, 4);
+            } else {
+                $data[$i]['ct_dolar'] =  "$ " . number_format(($cst->total / $key->tipo_cambio), 4);
+                $data[$i]['prod_real_ton'] =  number_format(($cst->total / $key->tipo_cambio), 4);
+                $data[$i]['costo_real_ton'] =  "$ " . number_format((($cst->total / $key->tipo_cambio) / ($key->prod_real / 1000)), 4);
             }
+            $productos = DB::table('producciontest.productos')->where('idProducto',  $key->producto)->get();
+            foreach ($productos as $producto => $p) {
+                $data[$i]['producto'] = $p->nombre;
+                $data[$i]['ver'] = '<a href="#!"  class="btn "  onclick="getMoreDetail(' . "'" . $key->numOrden . "'" . ', ' . "'" . $p->nombre . "'" .
+                                 ','."'" . $data[$i]['fechaInicio'] . "'" . ', ' . "'" .  $data[$i]['fechaFinal'] . "'" .')"><i class="fas fa-eye fa-2x text-primary"></i></a>';
+            }
+
             $data[$i]['prod_real'] = number_format($key->prod_real, 2);
             $data[$i]['prod_total'] = number_format($key->merma_total +  $key->prod_real, 2);
             $data[$i]['prod_real_ton'] = number_format(($key->prod_real / 1000), 2);
-
             $i++;
         }
         return response()->json($data);
