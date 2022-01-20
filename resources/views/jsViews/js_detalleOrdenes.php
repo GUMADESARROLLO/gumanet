@@ -82,6 +82,7 @@
 					"width": "7%",
 					"targets": [9]
 				},
+				{ "visible":false, "searchable": false,"targets": [6] },
 			],
 		});
 
