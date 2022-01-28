@@ -52,7 +52,7 @@ class ventasProyectos_model extends Model {
 				if( array_search( $fila['nombre'], array_column( $json, 'nombre' ) ) === false) {
 					$ruta = $fila['vendedor'];
 					$nombre = $fila['nombre'];
-					$temp = array_filter( $query, function($item) use($nombre) { return $item['NOMBRE']==$nombre; } );
+					$temp = array_filter( $query, function($item) use($ruta) { return $item['RUTA']==$ruta; } );
 
 					$json[$i]['ruta'] 			= $fila['vendedor'];
 					$json[$i]['nombre'] 		= $fila['nombre'];
