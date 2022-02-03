@@ -144,7 +144,8 @@ $('#dtVinneta').DataTable({
                 }
             }
 
-            Total = Pendiete + Ingresado + Verificado;
+            //Total = Pendiete + Ingresado + Verificado;
+            Total = Pendiete + Ingresado;
 
             $('#id_valor_pendiente').text("C$ " + numeral(Pendiete).format('0,0.00'));
             $('#id_valor_ingresado').text("C$ " + numeral(Ingresado).format('0,0.00'));
