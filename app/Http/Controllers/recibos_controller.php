@@ -296,13 +296,21 @@ class recibos_controller extends Controller {
             }
 
             if($key->status==1) {
-                $data[$i]["BOTONES"]        = '<button type="button" class="btn btn-outline-secondary"  onClick="Verificado('.$key->id.')">
+
+                /*$data[$i]["BOTONES"]        = '<button type="button" class="btn btn-outline-secondary"  onClick="Verificado('.$key->id.')">
                                                     <i class="material-icons text-green mt-1"  style="font-size: 20px">done_all</i>
                                                 </button>
                                                 <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
                                                     <i class="material-icons text-red mt-1"  style="font-size: 20px">attach_file</i>
                                                 </button>                                        
-                                            ';
+                                            ';*/
+                $data[$i]["BOTONES"]        =  '<button type="button" class="btn btn-outline-success" >
+                                                    <i class="material-icons text-green mt-1"  style="font-size: 20px">done</i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
+                                                    <i class="material-icons text-red mt-1"  style="font-size: 20px">attach_file</i>
+                                                </button>';
+
             }else if($key->status==2){
                 $data[$i]["BOTONES"]        =  '<button type="button" class="btn btn-outline-success" >
                                                     <i class="material-icons text-green mt-1"  style="font-size: 20px">done</i>
