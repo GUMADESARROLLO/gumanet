@@ -61,8 +61,9 @@ class DetalleOrdenController extends Controller
             $productos = DB::table('producciontest.productos')->where('idProducto',  $key->producto)->get();
             foreach ($productos as $producto => $p) {
                 $data[$i]['producto'] = $p->nombre;
+                $data[$i]['descripcion'] = $p->descripcion;
                 $data[$i]['ver'] = '<a href="#!"  class="btn "  onclick="getMoreDetail(' . "'" . $key->numOrden . "'" . ', ' . "'" . $p->nombre . "'" .
-                                 ','."'" . $data[$i]['fechaInicio'] . "'" . ', ' . "'" .  $data[$i]['fechaFinal'] . "'" .')"><i class="fas fa-eye fa-2x text-primary"></i></a>';
+                    ',' . "'" . $data[$i]['fechaInicio'] . "'" . ', ' . "'" .  $data[$i]['fechaFinal'] . "'" . ')"><i class="fas fa-eye fa-2x text-primary"></i></a>';
             }
 
             $data[$i]['prod_real'] = number_format($key->prod_real, 2);
@@ -244,6 +245,12 @@ class DetalleOrdenController extends Controller
             ->where('numOrden', $numOrden)
             ->get()->first();
 
+        $prodRealTon = DB::table('producciontest.inn_produccion_total')
+            ->where('numOrden', $numOrden)
+            ->get()->first();
+
+       
+
         //Electricidad
         if ($electricidad) {
             $inicialE = ($electricidad->inicial == '') ? 0 : $electricidad->inicial;
@@ -268,18 +275,19 @@ class DetalleOrdenController extends Controller
             $inicialG = 0;
             $finalG = 0;
         }
-
         //Electricidad
         if ($finalE > 0) {
             $data[0]['Einicial']          = number_format($inicialE, 2);
             $data[0]['Efinal']            = number_format($finalE, 2);
             $data[0]['EtotalConsumo']     =  number_format(($finalE - $inicialE), 2);
-            $data[0]['EtotalCordobas']    = number_format(($finalE - $inicialE) * 560, 2);
+            $data[0]['E_ConsumoSTD']      = number_format(((((($finalE - $inicialE) * 560) * 0.8) / ($prodRealTon->prod_real + $prodRealTon->merma_total)) * 1000), 2);
+            $data[0]['E_ConsumoPS']      = number_format((($finalE - $inicialE) * 560) * 0.8, 2);
         } else {
             $data[0]['Einicial']          = number_format(0, 2);
             $data[0]['Efinal']            = number_format(0, 2);
             $data[0]['EtotalConsumo']     = number_format(0, 2);
-            $data[0]['EtotalCordobas']    = number_format(0, 2);
+            $data[0]['E_ConsumoSTD']      = number_format(0, 2);
+            $data[0]['E_ConsumoPS']      = number_format(0, 2);
         }
         //Consumo de Agua
         if ($finalA > 0) {
@@ -290,21 +298,20 @@ class DetalleOrdenController extends Controller
             $data[0]['Ainicial']          = number_format(0, 2);
             $data[0]['Afinal']           = number_format(0, 2);
             $data[0]['AtotalConsumo']    = number_format(0, 2);
-            //$data[1]['AtotalCordobas']   = number_format(0,2);
         }
         //Consumo de Gas
         if ($finalG > 0) {
             $data[0]['Ginicial']          = number_format($inicialG, 2);
             $data[0]['Gfinal']            = number_format($finalG, 2);
             $data[0]['GtotalConsumo']     =  number_format(($finalG - $inicialG), 2);
+            $data[0]['G_totalConsumoTon'] = number_format(((($finalG - $inicialG) / ($prodRealTon->prod_real + $prodRealTon->merma_total)) * 1000), 2);
         } else {
             $data[0]['Ginicial']          = number_format(0, 2);
             $data[0]['Gfinal']           = number_format(0, 2);
             $data[0]['GtotalConsumo']    = number_format(0, 2);
-            $data[0]['GtotalCordobas']   = number_format(0, 2);
+            $data[0]['G_totalConsumoTon']   = number_format(0, 2);
         }
-
-        //return $data;
+        
         return response()->json($data);
     }
     public function getDetailSumary($numOrden)
@@ -332,7 +339,6 @@ class DetalleOrdenController extends Controller
             $data[$i]['hrsTrabajadas'] = number_format($key->hrsTrabajadas, 2);
             $productos = DB::table('producciontest.productos')->where('idProducto',  $key->producto)->get()->first();;
             $data[$i]['producto'] = $productos->nombre;
-            $data[$i]['ver'] = '<a href="#!"  class="btn "  onclick="getMoreDetail(' . "'" . $key->numOrden . "'" . ', ' . "'" . $productos->nombre . "'" . ')"><i class="fas fa-eye fa-2x text-primary"></i></a>';
             $mp_directa_exist  = $this->getMateriaPrima($numOrden);
             $mp_total =  DB::table('producciontest.mp_directa')->select(DB::raw('SUM(cantidad) as mp_directa'))
                 ->where('numOrden', $numOrden)
@@ -347,13 +353,65 @@ class DetalleOrdenController extends Controller
             $porcentLavadoraTetrapack = ($key->lavadora_total > 0 && $totalMPTPACK->total > 0) ? (($key->lavadora_total / $totalMPTPACK->total) * 100) : 0;
             $porcentResiduosPulper = ($key->residuo_total > 0 && $mp_total->mp_directa > 0) ?  (($key->residuo_total / $mp_total->mp_directa) * 100) : 0;
             $factorFibral =  (!is_null($mp_directa_exist) > 0 && $key->lavadora_total != '') ? (($mp_total->mp_directa - $key->lavadora_total) / ($key->prod_real + $key->merma_total)) : 0;
+            $data[$i]['costoBolson'] =  number_format(((($key->merma_total +  $key->prod_real)) / 4.5), 2);
+            $data[$i]['bolsones'] =   number_format(40000, 2);
 
             $data[$i]['factorFibral'] = number_format($factorFibral, 2);
             $data[$i]['porcentMermaYankeeDry'] = number_format($porcentMermaYankeeDry, 2);
             $data[$i]['porcentLavadoraTetrapack'] = number_format($porcentLavadoraTetrapack, 2);
             $data[$i]['porcentResiduosPulper'] = number_format($porcentResiduosPulper, 2);
+
+            //Calculo de la tonelada por dia
+            $Tonelada_dia =  (($key->prod_real)>0 && ($key->hrsTrabajadas>0)) ?  number_format(($key->prod_real/ ($key->hrsTrabajadas/24))/1000,2) : 0;
+            $data[$i]['Tonelada_dia'] = $Tonelada_dia;
+
             $i++;
         }
         return response()->json($data);
     }
+
+    public function getHrasProducidas($numOrden){
+
+        $horas_efectivas = DB::table('producciontest.horas_efectivas')->select(DB::raw('SUM(TIME_TO_SEC(y1_dia)) as total_y1_Dia,
+        SUM(TIME_TO_SEC(y1_noche)) as total_y1_Noche, 
+        SUM(TIME_TO_SEC(y2_dia)) as total_y2_Dia,
+        SUM(TIME_TO_SEC(y2_noche)) as total_y2_Noche'))
+        ->where('numOrden', $numOrden)->where('estado', 1)->groupBy('numOrden')
+        ->get()->first();
+        
+        if(!is_null($horas_efectivas)){
+            $total_y1_Dia   = $horas_efectivas->total_y1_Dia / 3600;
+            $total_y1_Noche = $horas_efectivas->total_y1_Noche / 3600;
+            $total_y2_Dia   = $horas_efectivas->total_y2_Dia / 3600;
+            $total_y2_Noche = $horas_efectivas->total_y2_Noche / 3600;
+            $total          = $total_y1_Dia +  $total_y1_Noche  + $total_y1_Dia +  $total_y1_Noche +  $total_y2_Dia + $total_y2_Noche;
+            $totak_yk       = number_format($total / 3, 2);
+        }else{
+            $total_y1_Dia   = 0;
+            $total_y1_Noche = 0;
+            $total_y2_Dia   = 0;
+            $total_y2_Noche = 0;
+            $total          = 0;
+            $totak_yk       = 0;
+        }
+        
+
+        // YANKEE 1
+        $data[0]['nombre'] = 'Yankee  Dryer 1 ' ; //$horas_efectivas->;
+        $data[0]['dia'] =  number_format($total_y1_Dia, 2); //$horas_efectivas->;
+        $data[0]['noche'] = number_format($total_y1_Noche, 2);
+        $data[0]['total'] =  number_format($total_y1_Dia + $total_y1_Noche, 2);
+
+        //YANKEE 2
+        $data[1]['nombre'] = 'Yankee  Dryer 2';
+        $data[1]['dia'] = number_format($total_y2_Dia, 2);
+        $data[1]['noche'] = number_format($total_y2_Noche, 2);
+        $data[1]['total'] = number_format($total_y2_Dia + $total_y2_Noche, 2);
+        //Total de hiras efectivas
+        $data[1]['totalYk'] = number_format($totak_yk, 2);
+
+        //return $data;
+        return response()->json($data);
+    }
+
 }

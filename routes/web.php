@@ -194,6 +194,8 @@ Route::get('/getQuimicos/{numOrden}','DetalleOrdenController@getQuimicos');
 Route::get('/getSubCostos/{numOrden}','DetalleOrdenController@getSubCostos');
 Route::get('/getOtrosConsumos/{numOrden}','DetalleOrdenController@getOtrosConsumos');
 Route::get('/getDetailSumary/{numOrden}','DetalleOrdenController@getDetailSumary');
+Route::get('/getHrasProducidas/{numOrden}','DetalleOrdenController@getHrasProducidas');
+
 
 
 //RUTAS PARA LOS RECIBOS
@@ -202,4 +204,5 @@ Route::get('getRecibos', 'recibos_controller@getRecibos');
 Route::post('getAttachFile', 'recibos_controller@getAttachFile');
 Route::post('push_recibo', 'recibos_controller@push_recibo');
 Route::post('push_verificado', 'recibos_controller@push_verificado');
+Route::get('print_resumen', 'recibos_controller@print_resumen');
 

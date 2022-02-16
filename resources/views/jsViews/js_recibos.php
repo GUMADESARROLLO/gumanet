@@ -114,6 +114,12 @@ $('#dtVinneta').DataTable({
         { "width": "8%", "targets": [ 7 ] },
         { "visible":false, "searchable": false,"targets": [8] }
     ],
+    "createdRow": function( row, data, dataIndex ) {
+            if ( data.STATUS == 4) {        
+                $(row).addClass('tbl_rows_recibo_color');
+            }
+
+    },
     "footerCallback": function ( row, data, start, end, display ) {
         var api = this.api();
 
@@ -151,10 +157,6 @@ $('#dtVinneta').DataTable({
             $('#id_valor_ingresado').text("C$ " + numeral(Ingresado).format('0,0.00'));
             $('#id_valor_verificado').text("C$ " + numeral(Verificado).format('0,0.00'));
             $('#id_valor_Total').text("C$ " + numeral(Total).format('0,0.00'));
-
-
-
-        
     },
 });
 
@@ -194,7 +196,7 @@ function attach_file(idRecibo){
             CardConten +='<div class="col"><div class="card border-light mb-3 shadow-sm bg-white rounded">'+
 			'<div class="card-body">'+
 				
-                    '<img src="http://186.1.15.166:8448/gmv3/upload/recibos/'+item.IMAGEN+'" width="200" class="img-fluid rounded" style="cursor: pointer" />'+
+                    '<img src="http://192.168.1.139:8448/gmv3/upload/recibos/'+item.IMAGEN+'" width="200" class="img-fluid rounded" style="cursor: pointer" />'+
                 
 			'</div></div></div>';
 
@@ -223,6 +225,8 @@ $("#resument").click( function() {
     var table = $('#dtVinneta').DataTable();
 
     var form_data  = table.rows().data().toArray();
+
+    console.log(form_data);
     
         
     var time = moment().format('DD/MM/YYYY');
@@ -239,97 +243,117 @@ $("#resument").click( function() {
     $("#id-form-time").html(time)
 
     if(form_data.length > 0 ){
-        if(Opt=='optRec'){
+        let Subtotal  = 0;
 
-            let Subtotal  = 0;
+        var thead = tbody = tfooter = '';
+        var thead_dtl = tbody_dtl = tNule_dtl = temp_dtl = '';
 
-            var thead = tbody = tfooter = '';
+        thead =`<table class="table table-striped table-bordered table-sm post_back" width="100%">
+                    <thead c class="bg-blue text-light">
+                        <tr>
+                            <th class="center" width="10%">Fecha</th>
+                            <th class="center" width="10%">No. de Recibo Colector</th>
+                            <th class="center" width="10%">Codigo</th>
+                            <th colspan="3" class="center" width="30%">Nombre del cliente</th>                            
+                            <th class="center" width="10%">Total C$</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
 
-            thead =`<table <table class="table table-striped table-bordered table-sm post_back" width="100%">
-                        <thead c class="bg-blue text-light">
-                            <tr>
-                                <th class="center" width="10%">Fecha</th>
-                                <th class="center" width="10%">No. de Recibo pago</th>
-                                <th class="center" width="30%">Nombre del cliente</th>
-                                <th class="center" width="10%">Codigo</th>
-                                <th class="center" width="10%">Concepto</th>
-                                <th class="center" width="10%">Total C$</th>
-                                
-                            </tr>
-                        </thead>
-                        <tbody>`;
+      
 
 
-        
-            $.each( form_data, function( key, item ) {
 
-                if (item['STATUS']==1) {
-                    let suma = 0
-                
-                    $.each( item['DETALLES'], function( key, item ) {
-                        suma += parseFloat(item['CANTIDAD']);
+        $.each( form_data, function( key, item ) {
 
-                    })
+            let suma = 0
 
-                    
-
-                    strTotal = item['TOTAL'];
-
-                    Total = parseFloat(strTotal.replace('C$',' ').replace(',',''))
-
-                    tbody +='<tr>'+
-                            '<td class="text-center" >' + item['FECHA'] + '</td>'+
-                            '<td class="text-center">' + item['RECIBO'] + '</td>'+
-                            '<td class="text-center">' + item['NOMBRE_CLIENTE'] + '</td>'+
-                            '<td class="text-center">' + item['CLIENTE'] + '</td>'+
-                            '<td class="text-center"> Pago Viñeta ( ' + suma + ' ) </td>'+
-                            '<td class="text-center">' + strTotal + '</td>'+
-                        '</tr>';
-
-                        Subtotal +=  Total;
+            thead_dtl =`<table class="table table-striped table-bordered table-sm">
+            <thead class="text-center bg-secondary text-light">
+                    <tr>
+                        <th class="center">FACTURA</th>
+                        <th class="center">VALOR FACTURA</th>
+                        <th class="center">VALOR N/C</th>
+                        <th class="center">RETENCION</th>
+                        <th class="center">DESCUENTO</th>
+                        <th class="center">VALOR RECIBIDO</th>
+                        <th class="center">SALDO</th>
+                        <th class="center">TIPO</th>
                         
-                    }
-            });
-
-        
-        
-
-            tfooter = `<tfoot>
-                    <tr>
-                        <td colspan="6"><br></td>
-                    </tr>            
-                    <tr>
-                        <td colspan="5" align="right">TOTAL RECIBIDO C$</td>
-                        <td align="right" id="id-mdl-subtotal">
-                            ` + numeral(Subtotal).format('0,0.00') + `
-                        </td>
                     </tr>
-                    <tr>
-                        <td colspan="5" align="right">SALDO C$ </td>
-                        <td align="right" id="id-dml-disponible"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="5" align="right">MONTO A REEMBOLSAR C$</td>
-                        <td  align="right">
+                </thead>
+            <tbody>`;
+            
+            $.each( item['DETALLES'], function( key, item ) {
+                suma++;
+
+
+                var total_dtl = item['VALORFACTURA'] - item['NOTACREDITO'] - item['RETENCION'] - item['DESCUENTO'] - item['VALORRECIBIDO'];
+                tbody_dtl +='<tr>'+
+                    '<td class="text-center">' + item['FACTURA'] + '</td>'+
+                    '<td class="text-center">C$ ' + numeral(item['VALORFACTURA']).format('0,0') + '</td>'+
+                    '<td class="text-center">C$ ' + numeral(item['NOTACREDITO']).format('0,0') + '</td>'+
+                    '<td class="text-center">C$ ' + numeral(item['RETENCION']).format('0,0') + '</td>'+
+                    '<td class="text-right">C$ ' + numeral(item['DESCUENTO']).format('0,0.00')  + '</td>'+
+                    '<td class="text-right">C$ ' + numeral(item['VALORRECIBIDO']).format('0,0.00')  + '</td>'+
+                    '<td class="text-center">C$ ' + numeral(total_dtl).format('0,0.00')  + '</td>'+
+                    '<td class="text-center">' +  item['TIPO'] + '</td>'+
+                '</tr>';
+
+            })
+            tbody_dtl += `</tbody></table>`;
+
+            strTotal = item['TOTAL'];
+
+            Total = parseFloat(strTotal.replace('C$',' ').replace(',',''))
+            var clssAnulado = (item['STATUS']==4) ? "tbl_rows_recibo_color" : "";
+
+            tbody += '<tr class="'+clssAnulado+'">'+
+                        '<td class="text-center" >' + item['FECHA'] + '</td>'+
+                        '<td class="text-center">' + item['RECIBO'] + '</td>'+
+                        '<td class="text-center">' + item['CLIENTE'] + '</td>'+
+                        '<td colspan="3" class="text-left">' + item['NOMBRE_CLIENTE'] + '</td>'+        
+                        '<td class="text-center">' + strTotal + '</td>'+
+                    '</tr>' 
+                    ;
+            tbody += '<tr>'+
+                        '<td colspan="7"class="text-center" > '+thead_dtl + tbody_dtl+' </td>'+                        
+                    '</tr>'
+
+            /* EN CASO QUE TENGA QUE PONER ALGUN VALIDADOR
+            if (item['STATUS'] == "Ingresado"){
+                Subtotal +=  Total; 
+            }*/
+
+            Subtotal +=  Total; 
+
+            thead_dtl = '';
+            tbody_dtl = '';
+            
+        });
+
+
+
+        tfooter = `<tfoot>
+                <tr>
+                    <td colspan="6" align="right">TOTAL RECIBIDO C$</td>
+                    <td align="right" id="id-mdl-subtotal">
                         ` + numeral(Subtotal).format('0,0.00') + `
-                        </td>
-                    </tr>
-                </tfoot>`
+                    </td>
+                </tr>
+            </tfoot>`
 
-                tbody += `</tbody> `+tfooter +`</table>`;
+            tbody += `</tbody> `+tfooter +`</table>`;
 
+            $('#id-form-Total').text("C$ " + numeral(Subtotal).format('0,0.00'));
 
-            temp = thead + tbody;
-            $("#dtViewLiquidacion").empty().append(temp);
-        
-        }else{
-            alert("Opcion no disponible")    
-        }
+        temp = thead + tbody;
+        $("#dtViewLiquidacion").empty().append(temp);
     }else{
     var thead = tbody = tfooter = '';
 
     thead =`<table <table class="table table-striped table-bordered table-sm post_back" width="100%">
-                <thead c class="bg-blue text-light">
+                <thead  class="bg-blue text-light">
                     <tr>
                         <th class="center" width="10%">Fecha</th>
                         <th class="center" width="10%">No. de Recibo pago</th>
@@ -351,14 +375,6 @@ $("#resument").click( function() {
                         <td colspan="5" align="right">TOTAL RECIBIDO C$</td>
                         <td align="right" id="id-mdl-subtotal">0.00</td>
                     </tr>
-                    <tr>
-                        <td colspan="5" align="right">SALDO C$ </td>
-                        <td align="right" id="id-dml-disponible"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="5" align="right">MONTO A REEMBOLSAR C$</td>
-                        <td  align="right">0.00</td>
-                    </tr>
                 </tfoot>`
 
                 tbody += `</tbody> `+tfooter +`</table>`;
@@ -376,15 +392,13 @@ $("#id-print-pdf").click( function() {
     f1      = $("#f1").val();
     f2      = $("#f2").val();
     Ruta    = $("#id-form-ruta").text();
-    Clie    = $("#dtCliente").val();
-    Fondo   = $("#txt-fondo-inicial").val();
+    Clie    = $("#dtCliente").val();    
     Nota    = $("#id-coment").val();
-    Stat    = $("#dtStatus").val();
     
-    if (Ruta=='' || Fondo == '') {
+    if (Ruta=='' ) {
         alert(" Tiene Información pendiente ")        
     } else {
-        location.href = "resumen?f1="+f1+"&f2="+f2+"&RU="+Ruta+"&CL="+Clie+"&Fondo="+Fondo+"&nota="+Nota+"&St="+Stat;
+        location.href = "print_resumen?f1="+f1+"&f2="+f2+"&RU="+Ruta+"&CL="+Clie+"&nota="+Nota+"&St="+Stat;
         $('#mdlResumen').modal('hide')
     }
     
@@ -539,6 +553,7 @@ thead =`<table class="table table-striped table-bordered table-sm">
                     <th class="center">DESCUENTO</th>
                     <th class="center">VALOR RECIBIDO</th>
                     <th class="center">SALDO</th>
+                    <th class="center">TIPO</th>
                     
                 </tr>
             </thead>
@@ -554,7 +569,7 @@ if (dta.length==0) {
 
 $.each(dta.DETALLES, function (i, item) {
 
-    var total = item['VALORFACTURA'] - item['VALORRECIBIDO'];
+    var total = item['VALORFACTURA'] - item['NOTACREDITO'] - item['RETENCION'] - item['DESCUENTO'] - item['VALORRECIBIDO'];
 
 
     tbody +='<tr>'+
@@ -565,6 +580,7 @@ $.each(dta.DETALLES, function (i, item) {
                 '<td class="text-right">C$ ' + numeral(item['DESCUENTO']).format('0,0.00')  + '</td>'+
                 '<td class="text-right">C$ ' + numeral(item['VALORRECIBIDO']).format('0,0.00')  + '</td>'+
                 '<td class="text-right">C$ ' + numeral(total).format('0,0.00')  + '</td>'+
+                '<td class="text-center">' + item['TIPO']  + '</td>'+
             '</tr>';
 
 });
@@ -679,7 +695,7 @@ function format_liq ( callback, dta ) {
                     '<td class="text-center">' + item['CLIENTE_NAME'] + '</td>'+
                     '<td class="text-center">' + item['CLIENTE_COD'] + '</td>'+
                     '<td class="text-center">' + item['CONCEPTO'] + '</td>'+
-                    '<td class="text-right">C$ ' + numeral(item['TOTAL']).format('0,0.00')  + '</td>'+
+                    '<td class="text-center">C$ ' + numeral(item['TOTAL']).format('0,0.00')  + '</td>'+
                 '</tr>';
     });
 
