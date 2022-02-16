@@ -5,6 +5,7 @@
 				"url": "DetalleOrdenesDT",
 				'dataSrc': '',
 			},
+			'width': "auto",
 			'info': false,
 			"language": {
 				"infoFiltered": "(Filtrado de _MAX_ total entradas)",
@@ -27,6 +28,10 @@
 				{
 					"title": "PRODUCTO",
 					"data": "producto"
+				},
+				{
+					"title": "DESCRIPCION DEL PRODUCTO",
+					"data": "descripcion"
 				},
 				{
 					"title": "FECHA INICIO",
@@ -72,15 +77,11 @@
 
 			"columnDefs": [{
 					"className": "dt-center",
-					"targets": [0, 1, 2, 3, 7]
+					"targets": [0,3, 4, 5, 6, 7]
 				},
 				{
 					"className": "dt-right",
-					"targets": [4, 5, 6,7,8,9,10]
-				},
-				{
-					"width": "7%",
-					"targets": [9]
+					"targets": [4, 5, 6, 7, 8, 9, 10]
 				},
 				{ "visible":false, "searchable": false,"targets": [6] },
 			],
@@ -101,9 +102,9 @@
 
 	var numOrden_g = 0;
 
-	function getMoreDetail(numOrden, descripcion) {
+	function getMoreDetail(numOrden, descripcion, fechaInicio, fechaFin) {
 		numOrden_g = numOrden;
-		$("#tDetalleOrdenes").html(descripcion + `<p class="text-white ml-1">` + numOrden + `</p>`);
+		$("#tDetalleOrdenes").html(`<p class="text-white m-1">` + "#" + numOrden + "-" + descripcion + `</p>` + `<p class="text-white m-1">` + fechaInicio + " " + fechaFin + `</p>`);
 		getMateriaPrima(numOrden);
 		getOtrosConsumos(numOrden);
 		getDetailSumary(numOrden);
@@ -135,6 +136,9 @@
 				break;
 			case 'navCostos':
 				getSubCostos(numOrden_g);
+				break;
+			case 'navHrsEfect':
+				getHrsEfect(numOrden_g);
 				break;
 			default:
 				alert('Al parecer alguio salio mal :(')
@@ -382,15 +386,36 @@
 					$('#Ainicial').text(element.Ainicial);
 					$('#Afinal').text(element.Afinal);
 					//Electricidad
+					if (parseFloat(element.E_ConsumoSTD) > 560.00) {
+						$("#E_ConsumoSTD").css("color", "#FF0000");
+					}
 					$('#EtotalConsumo').text(element.EtotalConsumo + " Kwh");
-					$('#EtotalCordobas').text("C$ " + element.EtotalCordobas);
 					$('#Einicial').text(element.Einicial);
 					$('#Efinal').text(element.Efinal);
-					$('#Efinal').text(element.Efinal);
+					$('#E_ConsumoSTD').text(element.E_ConsumoSTD + " kw/ton"); // consumo standard
+					$('#consumo_ps').text(element.E_ConsumoPS + " kw/Hrs"); //proceso seco
+
 					//Consumo de Gas	
-					/*$('#Ginicial').text(element.Ginicial);
-					$('#Gfinal').text(element.Gfinal);*/
+					if (parseFloat(element.G_totalConsumoTon) > 145) {
+						$("#G_totalConsumoTon").css("color", "#FF0000");
+					}
 					$('#GtotalConsumo').text(element.GtotalConsumo + " Glns");
+					$('#G_totalConsumoTon').text(element.G_totalConsumoTon + " gln/ton");
+
+					//YANKEE - Horas efectivas por contador
+					//YANKEE 1
+					/*$('#yk1_dia').text(element.diaY1 + "hrs");
+					$('#yk1_noche').text(element.nocheY1  + "hrs");
+					$('#yk1_total').text(element.totalY1  + "hrs");*/
+
+					//YANKEE 2 
+					/*$('#yk2_dia').text(element.diaY2  + "hrs");
+					$('#yk2_noche').text(element.nocheY2  + "hrs");
+					$('#yk2_total').text(element.totalY2 + "hrs");*/
+
+					//Total de los YANKEE
+					//$('#yk_Total').text(element.totalYk  + "hrs");
+
 				});
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
@@ -422,10 +447,17 @@
 					$('#produccionNeta').text(element.prod_real + " kg");
 					$('#produccionReal').text(element.prod_total + " kg");
 					// porcentajes
+					if (parseFloat(element.factorFibral) > 1.3) {
+						$("#factor-fibral").css("color", "#FF0000");
+					}
 					$('#factor-fibral').text(element.factorFibral + " %");
 					$('#porcentaje_merma').text(element.porcentMermaYankeeDry + " %");
 					$('#porcentaje_tpack').text(element.porcentLavadoraTetrapack + " %");
 					$('#porcentaje_rp').text(element.porcentResiduosPulper + " %");
+					//ultimos datos agregados
+					$('#costoBolson').text(element.costoBolson);
+					$('#bolsones').text(element.bolsones);
+					$('#ton_dia').text(element.Tonelada_dia);
 				});
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
@@ -433,6 +465,69 @@
 					xhr.statusText + '\r\n' +
 					xhr.responseText + '\r\n' +
 					ajaxOptions);
+			}
+		});
+	}
+
+	function getHrsEfect(numOrden) {
+		$("#tblHrsEfect").dataTable({
+			responsive: true,
+			"autoWidth": false,
+			"ajax": {
+				"url": "getHrasProducidas/" + numOrden,
+				'dataSrc': '',
+			},
+			"searching": false,
+			"destroy": true,
+			"paging": false,
+			"columns": [{
+					"data": "nombre"
+				},
+				{
+					"data": "dia"
+				},
+				{
+					"data": "noche"
+				},
+				{
+					"data": "total"
+				},
+
+			],
+			"columnDefs": [{
+					"className": "dt-center",
+					"targets": [0]
+				},
+				{
+					"className": "dt-right",
+					"targets": [1, 2, 3]
+				},
+			],
+			"footerCallback": function(row, data, start, end, display) {
+				var api = this.api(),
+					data;
+
+				var intVal = function(i) {
+					return typeof i === 'string' ?
+						i.replace(/[\$,]/g, '') * 1 :
+						typeof i === 'number' ?
+						i : 0;
+				};
+				total3 = api.cells(0, 3).render('display').reduce(function(a, b) {
+					return intVal(a) + intVal(b);
+				}, 0);
+				total = api.column(3).data().reduce(function(a, b) {
+					return intVal(a) + intVal(b);
+				}, 0);
+
+				//$('#hrasTotales').text(numeral(total / 2).format('0,0.00') + ' Hras');
+				$('#hrasTotales').text(numeral((total + total3)/3).format('0,0.00') + ' Hras');
+			},
+			"info": false,
+			"language": {
+				"zeroRecords": "No hay datos que mostrar",
+				"emptyTable": "N/D",
+				"loadingRecords": "Cargando...",
 			}
 		});
 	}

@@ -194,6 +194,8 @@ Route::get('/getQuimicos/{numOrden}','DetalleOrdenController@getQuimicos');
 Route::get('/getSubCostos/{numOrden}','DetalleOrdenController@getSubCostos');
 Route::get('/getOtrosConsumos/{numOrden}','DetalleOrdenController@getOtrosConsumos');
 Route::get('/getDetailSumary/{numOrden}','DetalleOrdenController@getDetailSumary');
+Route::get('/getHrasProducidas/{numOrden}','DetalleOrdenController@getHrasProducidas');
+
 
 
 //RUTAS PARA LOS RECIBOS

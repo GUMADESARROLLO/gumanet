@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('metodosjs')
-@include('jsViews.js_detalleOrdenes');
+@include('jsViews.js_detalleOrdenes')
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -15,6 +15,7 @@
             </div>
         </div>
     </div>
+    <!-- [ Header detalle ordenes ] start -->
     <div class="row">
         <div class="col-xl-12">
             <div class="card">
@@ -24,7 +25,7 @@
                 <div class="card-block table-border-style">
                     <div class="table-responsive">
                         <div class="table-responsive mt-3 mb-2">
-                            <table class="table table-bordered table-sm table-hover" width="99.9%" id="dtDetalleOrdenes"></table>
+                            <table class="table table-bordered table-hover" width="99.9%" id="dtDetalleOrdenes"></table>
                         </div>
                     </div>
                 </div>
@@ -39,121 +40,60 @@
                     <div class="row">
                         <!-- [ Header orden produccion ] start -->
                         <div class="col-xl-12">
-                            <div class="card"> 
+                            <div class="card">
                                 <div class="card-header d-flex justify-content-center align-items-center pt-1 pb-0 bg-blue">
-                                    <h5 class=" d-flex modal-title text-center align-self-center p-0 bg-blue text-white" id="tDetalleOrdenes"></h5>
+                                    <h5 class="modal-title text-center align-self-center p-1 bg-blue text-white" id="tDetalleOrdenes"></h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="fechaInicio" class="col-sm-6 col-form-label">Fecha
-                                                    Inicio:</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="fechaInicio"></p>
-                                                </div>
+                                        <div class="col-sm-3">
+                                            <p class="text-muted m-0">Merma Yankee Dry (kg):</p>
+                                            <div class="input-group">
+                                                <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="merma-yankee-dry">C$ 0.00</p>
+                                                <p class="font-weight-bolder ml-2" style="font-size: 1.3rem!important" id="porcentaje_merma"> </p>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="fechaFinal" class="col-sm-6 col-form-label">Fecha
-                                                    Final:</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="fechaFinal" value=""></p>
-                                                </div>
+                                        <div class="col-sm-3">
+                                            <p for="" class="text-muted m-0">Tonelada al dia /
+                                                <small for="" class="text-muted m-0 p-0 ">STD : 10 </small>
+                                            </p>
+                                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="ton_dia"> </p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p for="residuos-pulper" class="text-muted m-0">Residuos del Pulper (kg):
+                                            </p>
+                                            <div class="input-group">
+                                                <p class="font-weight-bolder" id="residuos-pulper" style="font-size: 1.3rem!important"> </p>
+                                                <p class="font-weight-bolder ml-2" style="font-size: 1.3rem!important" id="porcentaje_rp"> </p>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="merma-yankee-dry" class="col-sm-6 col-form-label">Merma
-                                                    Yankee Dry (kg):</label>
-                                                <div class="col-sm-6 input-group">
-                                                    <h6 class="mt-2 mb-0" id="merma-yankee-dry">
-                                                    </h6>
-                                                    <span class="float-right mt-2  ml-1" id="porcentaje_merma"> </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="" class="col-sm-6 col-form-label">Horas
-                                                    Trabajadas</label>
-                                                <div class="col-sm-6">
-                                                    <h6 class="mt-2 text-left" id="hrsTrabajadas"> </h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="horaInicio" class="col-sm-6 col-form-label">Hora
-                                                    Inicio:</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="horaInicio" value=""></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="horaFinal" class="col-sm-6 col-form-label">Hora
-                                                    Final:</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="horaFinal"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="residuos-pulper" class="col-sm-6 col-form-label">Residuos
-                                                    del Pulper (kg):</label>
-                                                <div class="col-sm-6 input-group">
-                                                    <h6 class="mt-2 mb-0" id="residuos-pulper"> </h6>
-                                                    <span class="float-right mt-2  ml-1" id="porcentaje_rp"> </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="factorFibral" class="col-sm-6 col-form-label">Factor
-                                                    fibral</label>
-                                                <div class="col-sm-6">
-                                                    <h6 class="mt-2 mb-0 text-left" id="factor-fibral"> </h6>
-                                                </div>
+                                        <div class="col-sm-3">
+                                            <p for="lav-tetrapack" class="text-muted m-0">Lavadora de Tetrapack (kg):
+                                            </p>
+                                            <div class="input-group">
+                                                <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="lav-tetrapack"> </p>
+                                                <p class="font-weight-bolder ml-2" style="font-size: 1.3rem!important" id="porcentaje_tpack"> </p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="produccionNeta" class="col-sm-6 col-form-label">PROD.
-                                                    REAL (kg):</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="produccionNeta"></p>
-                                                </div>
-                                            </div>
+                                        <div class="col-sm-3">
+                                            <p for="" class="text-muted m-0">Horas Trabajadas:</p>
+                                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="hrsTrabajadas"> </p>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="produccionReal" class="col-sm-6 col-form-label">PROD.
-                                                    TOTAL (kg):</label>
-                                                <div class="col-sm-6">
-                                                    <p type="text" readonly="" class="form-control-plaintext" id="produccionReal"></p>
-                                                </div>
-                                            </div>
+                                        <div class="col-sm-3">
+                                            <p for="factorFibral" class="text-muted m-0">Factor fibral /
+                                                <small for="factorFibral" class="text-muted m-0">STD = 1.3 %</small>
+                                            </p>
+                                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="factor-fibral"> </p>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label for="lav-tetrapack" class="col-sm-6 col-form-label">Lavadora
-                                                    de Tetrapack (kg):</label>
-                                                <div class="col-sm-6 input-group">
-                                                    <h6 class="mt-2 mb-0" id="lav-tetrapack"> </h6>
-                                                    <span class="float-right ml-1  mt-2" id="porcentaje_tpack"> </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                            </div>
+                                        <div class="col-sm-3">
+                                            <p for="produccionNeta" class="text-muted m-0">PROD.REAL (kg):</p>
+                                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="produccionNeta"></p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p for="produccionReal" class="text-muted m-0">PROD.TOTAL (kg):</p>
+                                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="produccionReal"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -162,113 +102,189 @@
                         </div>
                         <!-- [ Header orden produccion ] end -->
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="card card-social">
-                                <div class="card-header text-center p-2 bg-blue">
-                                    <h5 class="text-white m-0">Agua</h5>
+                    <div class="row mt-3">
+                        <!-- Gastos de consumo-->
+
+                        <!-- Consumo de agua -->
+                        <div class="col-3">
+                            <div class="card card-social" style="height: 170px">
+                                <div class="card-header text-center bg-blue" style="height: 40px;">
+                                    <h6 class="text-white m-0">Agua</h6>
                                 </div>
-                                <div class="card-block  mx-2  my-1 border-bottom">
-                                    <div class="row align-items-center justify-content-center">
-                                        <div class="col-auto">
-                                            <h6 class="mb-0">Consumo en m<sup>3</sup></h6>
+                                <div class="card-block  border-bottom">
+                                    <div class="row  mx-2 my-1  align-items-center justify-content-center">
+                                        <div class="col-6 m-0 p-0">
+                                            <p class="mb-0">Consumo: </p>
                                         </div>
-                                        <div class="col text-right">
-                                            <h6 id="AtotalConsumo"> </h6>
+                                        <div class="col-6 m-0 p-0">
+                                            <h6 class="text-left  font-weight-bold" id="AtotalConsumo"></h6>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center justify-content-center  mx-2 my-1  border-bottom">
+                                    <div class="col-8 m-0 p-0">
+                                        <p class="text-left m-0 p-0">--</p>
+                                    </div>
+                                    <div class="col-4 m-0 p-0">
+                                        <p class="text-lef m-0 p-0">--</p>
                                     </div>
                                 </div>
                                 <div class="card-block">
                                     <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
-                                        <div class="col-2 m-0 p-0">
-                                            <h6 class="text-left m-b-10"><span class="text-muted m-r-5">Inicial:</span></h6>
+                                        <div class="col-6 m-0 p-0">
+                                            <p class="text-left m-0 p-0"><span class="text-muted m-r-5">Inicial:</span>
+                                            </p>
                                         </div>
-                                        <div class="col-4 m-0 p-0">
-                                            <h6 class="text-muted text-right m-b-10"><span class="text-muted m-r-5" id="Ainicial"></span> m<sup>3</sup></h6>
+                                        <div class="col-6 m-0 p-0">
+                                            <p class="text-left m-0 p-0"><span class="text-muted m-r-5">Final:</span>
+                                            </p>
                                         </div>
-                                        <div class="col-2 m-0 p-0">
-                                            <h6 class="text-right m-b-10"><span class="text-muted m-r-5">Final:</span></h6>
+                                    </div>
+                                    <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
+                                        <div class="col-6 m-0 p-0">
+                                            <h6 class="text-muted text-left m-0 p-0"><span class="text-muted m-r-5" id="Ainicial"></span></h6>
                                         </div>
-                                        <div class="col-4 m-0 p-0">
-                                            <h6 class="text-muted text-right  m-b-10"><span class="text-muted m-r-5" id="Afinal"></span> m<sup>3</sup></h6>
+
+                                        <div class="col-6 m-0 p-0">
+                                            <h6 class="text-muted text-left  m-0 p-0"><span class="text-muted m-r-5" id="Afinal"></span> m<sup>3</sup></h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card card-social">
+
+                        <!-- Consumo de electricidad -->
+                        <div class="col-3">
+                            <div class="card card-social" style="height: 170px">
                                 <div class="card-header text-center p-2 bg-blue">
-                                    <h5 class="m-0 text-white">Electricidad</h5>
+                                    <h6 class="m-0 text-white">Electricidad</h6>
                                 </div>
-                                <div class="card-block mx-2  my-1 border-bottom">
-                                    <div class="row align-items-center justify-content-center">
-                                        <div class="col-auto">
-                                            <h6 class="mb-0">Factor de conversión: </h6>
-                                        </div>
-                                        <div class="col text-right">
-                                            <h6>560</h6>
-                                        </div>
+                                <div class="row align-items-center justify-content-center mx-2 my-1 ">
+                                    <div class="col-8 m-0 p-0">
+                                        <p class="m-0 p-0">Consumo: </p>
                                     </div>
-                                    <div class="row align-items-center justify-content-center">
-                                        <div class="col-auto">
-                                            <h6 class="mb-0">Consumo en C$</h6>
-                                        </div>
-                                        <div class="col text-right">
-                                            <h6 id="EtotalCordobas"></h6>
-                                        </div>
+                                    <div class="col-4 m-0 p-0">
+                                        <h6 class=" font-weight-bold text-left" id="EtotalConsumo"></h6>
                                     </div>
-                                    <div class="row align-items-center justify-content-center">
-                                        <div class="col-auto">
-                                            <h6 class="mb-0">Consumo en Kw/Hrs</h6>
-                                        </div>
-                                        <div class="col text-right">
-                                            <h6 id="EtotalConsumo"></h6>
-                                        </div>
+                                </div>
+                                <div class="row align-items-center justify-content-center  mx-2 my-1  border-bottom">
+                                    <div class="col-8 m-0 p-0">
+                                        <p class="text-left m-0 p-0">Factor de conversión:</p>
+                                    </div>
+                                    <div class="col-4 m-0 p-0">
+                                        <h6 class="text-lef">560</h6>
                                     </div>
                                 </div>
                                 <div class="card-block">
                                     <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
-                                        <div class="col-2 m-0 p-0">
-                                            <h6 class="text-left m-b-10"><span class="text-muted m-r-5">Inicial:</span>
+                                        <div class="col-8 m-0 p-0">
+                                            <p class="text-left m-0 p-0"><span class="text-muted m-r-5">Inicial:</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-4 m-0 p-0">
+                                            <p class="text-left m-0 p-0"><span class="text-muted m-r-5">Final:</span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
+
+                                        <div class="col-8 m-0 p-0">
+                                            <h6 class="text-muted text-left m-0 p-0"><span id="Einicial" class="text-muted m-r-5"></span>
                                             </h6>
                                         </div>
                                         <div class="col-4 m-0 p-0">
-                                            <h6 class="text-muted text-right m-b-10"><span id="Einicial" class="text-muted m-r-5"></span> Kwh
-                                            </h6>
-                                        </div>
-                                        <div class="col-2 m-0 p-0">
-                                            <h6 class="text-right m-b-10"><span class="text-muted m-r-5">Final:</span>
-                                            </h6>
-                                        </div>
-                                        <div class="col-4 m-0 p-0">
-                                            <h6 class="text-muted text-right m-b-10"><span id="Efinal" class="text-muted m-r-5"></span> Kwh
+                                            <h6 class="text-muted text-left m-0 p-0"><span id="Efinal" class="text-muted m-r-5"></span>
                                             </h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card card-social">
+
+
+
+
+                        <!-- Consumo de electricidad Ton/KW-->
+
+                        <div class="col-3">
+                            <div class="card card-social" style="height: 170px">
                                 <div class="card-header text-center p-2 bg-blue">
-                                    <h5 class="m-0 text-white">Gas Butano</h5>
+                                    <h6 class="m-0 text-white">Electricidad Kw/Ton</h6>
                                 </div>
-                                <div class="card-block mx-2 my-1">
-                                    <div class="row align-items-center justify-content-center">
-                                        <div class="col-auto">
-                                            <h6 class="mb-0">Consumo en Glns</h6>
+                                <div class="row mx-2 my-1 align-items-center justify-content-center">
+                                    <div class="col-6 m-0 p-0">
+                                        <h6 class="">Consumo: </h6>
+                                    </div>
+                                    <div class="col-6  m-0 p-0 text-right">
+                                        <h6 class="font-weight-bold" id="E_ConsumoSTD" style="color: rgb(255, 0, 0);"></h6>
+                                    </div>
+                                </div>
+
+
+                                <!--<div class="row align-items-center justify-content-center px-1">
+                                    <div class="col-auto">
+                                        <h6 class="mb-0">Consumo Real (80%) </h6>
+                                    </div>
+                                    <div class="col text-right">
+                                        <h6 id="consumo_ps"></h6>
+                                    </div>
+                                </div>-->
+                                <div class="row mx-2 my-1  align-items-center justify-content-center">
+                                    <div class="col-6  m-0 p-0 ">
+                                        <h6>STD kw/Ton: </h6>
+                                    </div>
+                                    <div class="col-6   m-0 p-0 text-right">
+                                        <h6 id="E_STD">740 kw/ton</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Consumo de Gas butano -->
+                        <div class="col-3">
+                            <div class="card card-social" style="height: 170px">
+                                <div class="card-header text-center p-2 bg-blue">
+                                    <h6 class="m-0 text-white">Gas Butano</h6>
+                                </div>
+                                <div class="card-block">
+                                    <div class="row  mx-2 my-1 align-items-center justify-content-center">
+                                        <div class="col-auto m-0 p-0">
+                                            <h6 class="mb-0">STD: </h6>
                                         </div>
-                                        <div class="col text-right">
-                                            <h6 id="GtotalConsumo"> Glns</h6>
+                                        <div class="col text-right m-0 p-0">
+                                            <h6 id="G_STD"> 145 gln/ton</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row  mx-2 my-1 align-items-center justify-content-center">
+                                        <div class="col-auto m-0 p-0">
+                                            <h6 class="">Consumo: </h6>
+                                        </div>
+                                        <div class="col text-right m-0 p-0">
+                                            <h6 class="font-weight-bold" id="GtotalConsumo"></h6>
+                                        </div>
+                                    </div>
+                                    <div class="row  mx-2 my-1 align-items-center justify-content-center">
+                                        <div class="col-auto m-0 p-0">
+                                            <h6 class="mb-0">Consumo Ton: </h6>
+                                        </div>
+                                        <div class="col text-right m-0 p-0">
+                                            <h6 class="font-weight-bold" id="G_totalConsumoTon" style="color: rgb(255, 0, 0);"></h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
+                        <!-- Horas efectivas -->
+
                     </div>
+
+
+
                 </div>
-                <div class="modal-body">
+                <div class=" modal-body">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link active" id="navMP" data-toggle="tab" href="#nav-mp" role="tab" aria-controls="nav-mp" aria-selected="true">Materia Prima</a>
@@ -276,6 +292,7 @@
                             <a class="nav-item nav-link" id="navQuimicos" data-toggle="tab" href="#nav-quimicos" role="tab" aria-controls="nav-quimicos" aria-selected="false">Quimicos</a>
                             <a class="nav-item nav-link" id="navCIF" data-toggle="tab" href="#nav-cif" role="tab" aria-controls="nav-cif" aria-selected="false">Costos indirectos de Fabricación</a>
                             <a class="nav-item nav-link" id="navCostos" data-toggle="tab" href="#nav-costos" role="tab" aria-controls="nav-costos" aria-selected="false">Costos Por OP</a>
+                            <a class="nav-item nav-link" id="navHrsEfect" data-toggle="tab" href="#nav-HrsEfect" role="tab" aria-controls="nav-HrsEfect" aria-selected="false">Horas producidas</a>
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -358,9 +375,34 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>TOTAL</td>
-                                                <td id="CT_Unitario"></td>
-                                                <td id="costoTotal"> </td>
+                                                <td class="font-weight-bold">TOTAL</td>
+                                                <td id="CT_Unitario" class="font-weight-bold"></td>
+                                                <td id="costoTotal" class="font-weight-bold"> </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-HrsEfect" role="tabpanel" aria-labelledby="navHrsEfect">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="tblHrsEfect" class="table table-bordered mt-3">
+                                        <thead class="bg-blue text-light">
+                                            <tr>
+                                                <th>MAQUINA</th>
+                                                <th>Día</th>
+                                                <th>Noche</th>
+                                                <th>Total/Horas</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td id="" class="font-weight-bold">TOTAL</td>
+                                                <td id="hrasTotales" class="font-weight-bold"> </td>
                                             </tr>
                                         </tfoot>
                                     </table>
