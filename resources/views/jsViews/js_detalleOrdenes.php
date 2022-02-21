@@ -50,7 +50,7 @@
 					"data": "fechaFinal"
 				},
 				{
-					"title": "PRO.REAL KG",
+					"title": "PROD.REAL KG",
 					"data": "prod_real"
 				},
 				
@@ -59,7 +59,7 @@
 					"data": "prod_total"
 				},
 				{
-					"title": "PRO.REAL TON.",
+					"title": "PROD.REAL TON.",
 					"data": "prod_real_ton"
 				},
 				{
