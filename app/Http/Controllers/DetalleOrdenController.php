@@ -117,16 +117,21 @@ class DetalleOrdenController extends Controller
         $hrsTrabajadas = DB::table('producciontest.orden_produccion')->select('hrsTrabajadas')->where('numOrden', $numOrden)->get()->first();
         $hrsTrabajadas = $hrsTrabajadas->hrsTrabajadas / 2;
 
-        if ($t_pulpeo) {
+        if (!empty($t_pulpeo)) {
             $t_pulpeo_dia = ($t_pulpeo->cantDia * $t_pulpeo->tiempoPulpeo) / 60;
             $t_pulpeo_noche = ($t_pulpeo->cantNoche * $t_pulpeo->tiempoPulpeo) / 60;
         } else {
             $t_pulpeo_dia = 0;
             $t_pulpeo_noche = 0;
         }
-        if ($t_lavado) {
-            $t_lavado_dia = ($t_lavado->cantDia * $t_pulpeo->tiempoPulpeo) / 60;
-            $t_lavado_noche = ($t_lavado->cantNoche * $t_pulpeo->tiempoPulpeo) / 60;
+        if (!empty($t_lavado )) {
+            if(!empty($t_pulpeo)){
+                $t_lavado_dia = ($t_lavado->cantDia * $t_pulpeo->tiempoPulpeo) / 60;
+                $t_lavado_noche = ($t_lavado->cantNoche * $t_pulpeo->tiempoPulpeo) / 60;
+            } else {
+                $t_lavado_dia = 0;
+                $t_lavado_noche = 0;
+            }
         } else {
             $t_lavado_dia = 0;
             $t_lavado_noche = 0;
@@ -412,4 +417,5 @@ class DetalleOrdenController extends Controller
         return response()->json($data);
     }
 
+    
 }
