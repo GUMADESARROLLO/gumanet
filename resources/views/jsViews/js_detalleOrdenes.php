@@ -34,6 +34,14 @@
 					"data": "descripcion"
 				},
 				{
+					"title": "AÑO",
+					"data": "anio"
+				},
+				{
+					"title": "MES",
+					"data": "mes"
+				},
+				{
 					"title": "FECHA INICIO",
 					"data": "fechaInicio"
 				},
@@ -45,13 +53,14 @@
 					"title": "PRO.REAL KG",
 					"data": "prod_real"
 				},
+				
+				{
+					"title": "PROD.TOTAL KG (Real + merma)",
+					"data": "prod_total"
+				},
 				{
 					"title": "PRO.REAL TON.",
 					"data": "prod_real_ton"
-				},
-				{
-					"title": "PROD.TOTAL KG",
-					"data": "prod_total"
 				},
 				{
 					"title": "COSTO TOTAL C$",
@@ -388,34 +397,27 @@
 					//Electricidad
 					if (parseFloat(element.E_ConsumoSTD) > 560.00) {
 						$("#E_ConsumoSTD").css("color", "#FF0000");
+					}else if(parseFloat(element.E_ConsumoSTD)<= 560 && parseFloat(element.E_ConsumoSTD)> 0 ){
+						$("#E_ConsumoSTD").css("color", "#02b841");
+					}else if(parseFloat(element.E_ConsumoSTD) == 0){
+						$("#E_ConsumoSTD").css("color", "#000000");
 					}
 					$('#EtotalConsumo').text(element.EtotalConsumo + " Kwh");
 					$('#Einicial').text(element.Einicial);
 					$('#Efinal').text(element.Efinal);
 					$('#E_ConsumoSTD').text(element.E_ConsumoSTD + " kw/ton"); // consumo standard
-					$('#consumo_ps').text(element.E_ConsumoPS + " kw/Hrs"); //proceso seco
-
+					$('#E_ConsumoPH').text(element.E_ConsumoPH + " kwh"); //proceso seco
+					$('#E_ConsumoTTestimado').text(element.E_ConsumoTTestimado + " kwh");
 					//Consumo de Gas	
 					if (parseFloat(element.G_totalConsumoTon) > 145) {
 						$("#G_totalConsumoTon").css("color", "#FF0000");
+					}else if(parseFloat(element.G_totalConsumoTon) <= 145 && parseFloat(element.G_totalConsumoTon)>0){
+						$("#G_totalConsumoTon").css("color", "#02b841");
+					}else if(parseFloat(element.G_totalConsumoTon)==0){
+						$("#G_totalConsumoTon").css("color", "#000000");
 					}
 					$('#GtotalConsumo').text(element.GtotalConsumo + " Glns");
 					$('#G_totalConsumoTon').text(element.G_totalConsumoTon + " gln/ton");
-
-					//YANKEE - Horas efectivas por contador
-					//YANKEE 1
-					/*$('#yk1_dia').text(element.diaY1 + "hrs");
-					$('#yk1_noche').text(element.nocheY1  + "hrs");
-					$('#yk1_total').text(element.totalY1  + "hrs");*/
-
-					//YANKEE 2 
-					/*$('#yk2_dia').text(element.diaY2  + "hrs");
-					$('#yk2_noche').text(element.nocheY2  + "hrs");
-					$('#yk2_total').text(element.totalY2 + "hrs");*/
-
-					//Total de los YANKEE
-					//$('#yk_Total').text(element.totalYk  + "hrs");
-
 				});
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
@@ -449,6 +451,10 @@
 					// porcentajes
 					if (parseFloat(element.factorFibral) > 1.3) {
 						$("#factor-fibral").css("color", "#FF0000");
+					}else if(parseFloat(element.factorFibral) <= 1.3 && parseFloat(element.factorFibral)>0){
+						$("#factor-fibral").css("color", "#02b841");
+					}else if(parseFloat(element.factorFibral)==0){
+						$("#factor-fibral").css("color", "#000");
 					}
 					$('#factor-fibral').text(element.factorFibral + " %");
 					$('#porcentaje_merma').text(element.porcentMermaYankeeDry + " %");
@@ -458,6 +464,15 @@
 					$('#costoBolson').text(element.costoBolson);
 					$('#bolsones').text(element.bolsones);
 					$('#ton_dia').text(element.Tonelada_dia);
+
+					if(parseFloat(element.Tonelada_dia)> 10){
+						$('#ton_dia').css("color", "#02b841");
+					}
+					else if(parseFloat(element.Tonelada_dia)<= 10 && parseFloat(element.Tonelada_dia)>0){
+						$('#ton_dia').css("color", "#FF0000");
+					}else if(parseFloat(element.Tonelada_dia)==0){
+						$('#ton_dia').css("color", "#000000");
+					}
 				});
 			},
 			error: function(xhr, ajaxOptions, thrownError) {

@@ -92,7 +92,7 @@
                                             <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="produccionNeta"></p>
                                         </div>
                                         <div class="col-sm-3">
-                                            <p for="produccionReal" class="text-muted m-0">PROD.TOTAL (kg):</p>
+                                            <p for="produccionReal" class="text-muted m-0">PROD.TOTAL (kg) - (Real + Merma)</p>
                                             <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="produccionReal"></p>
                                         </div>
                                     </div>
@@ -155,7 +155,7 @@
 
                         <!-- Consumo de electricidad -->
                         <div class="col-3">
-                            <div class="card card-social" style="height: 170px">
+                            <div class="card card-social" style="height: 250px">
                                 <div class="card-header text-center p-2 bg-blue">
                                     <h6 class="m-0 text-white">Electricidad</h6>
                                 </div>
@@ -186,7 +186,6 @@
                                             </p>
                                         </div>
                                     </div>
-
                                     <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
 
                                         <div class="col-8 m-0 p-0">
@@ -199,14 +198,28 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="card-block border-top ">
+                                    <div class="row align-items-center mt-1 mx-2 border-bottom">
+                                        <div class="col-7 m-0 p-0 ">
+                                            <p class="m-0 p-0 text-muted  font-weight-bold">Consumo total estimado: </p>
+                                        </div>
+                                        <div class="col-5 m-0 p-0 ">
+                                            <p class="m-0 p-0 font-weight-bold text-center " id="E_ConsumoTTestimado"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center mx-2">
+                                        <div class="col-7 m-0 p-0">
+                                            <p class="m-0 p-0 text-muted  font-weight-bold">Consumo total estimado PH: </p>
+                                        </div>
+                                        <div class="col-5 m-0 p-0">
+                                            <p class="m-0 p-0 font-weight-bold text-center" id="E_ConsumoPH"></p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-
-
-
                         <!-- Consumo de electricidad Ton/KW-->
-
                         <div class="col-3">
                             <div class="card card-social" style="height: 170px">
                                 <div class="card-header text-center p-2 bg-blue">
@@ -221,8 +234,7 @@
                                     </div>
                                 </div>
 
-
-                                <!--<div class="row align-items-center justify-content-center px-1">
+                                <!--<div class="r                       ow align-items-center justify-content-center px-1">
                                     <div class="col-auto">
                                         <h6 class="mb-0">Consumo Real (80%) </h6>
                                     </div>
@@ -250,10 +262,10 @@
                                 <div class="card-block">
                                     <div class="row  mx-2 my-1 align-items-center justify-content-center">
                                         <div class="col-auto m-0 p-0">
-                                            <h6 class="mb-0">STD: </h6>
+                                            <h6 class="mb-0">Consumo Ton: </h6>
                                         </div>
                                         <div class="col text-right m-0 p-0">
-                                            <h6 id="G_STD"> 145 gln/ton</h6>
+                                            <h6 class="font-weight-bold" id="G_totalConsumoTon" style="color: rgb(255, 0, 0);"></h6>
                                         </div>
                                     </div>
                                     <div class="row  mx-2 my-1 align-items-center justify-content-center">
@@ -266,19 +278,16 @@
                                     </div>
                                     <div class="row  mx-2 my-1 align-items-center justify-content-center">
                                         <div class="col-auto m-0 p-0">
-                                            <h6 class="mb-0">Consumo Ton: </h6>
+                                            <h6 class="mb-0">STD: </h6>
                                         </div>
                                         <div class="col text-right m-0 p-0">
-                                            <h6 class="font-weight-bold" id="G_totalConsumoTon" style="color: rgb(255, 0, 0);"></h6>
+                                            <h6 id="G_STD"> 145 gln/ton</h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                         <!-- Horas efectivas -->
-
                     </div>
 
 
