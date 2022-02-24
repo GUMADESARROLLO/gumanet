@@ -107,6 +107,10 @@ Route::get('/detailsAllCls/{mes}/{anio}/{categoria}/{bolson}','dashboard_control
 
 
 Route::get('/dataVentasMens/{xbolsones}','dashboard_controller@getVentasMensuales');
+
+
+Route::get('/dtaComportamientoAnuales/{xbolsones}','dashboard_controller@getComportamiento');
+
 Route::get('/dataRealVtsMensuales/{xbolsones}/{segmentos}','dashboard_controller@getRealVentasMensuales');
 Route::get('/top10Cls','dashboard_controller@getTop10Clientes');
 Route::get('/valBodegas','dashboard_controller@getValBodegas');
@@ -204,4 +208,5 @@ Route::get('getRecibos', 'recibos_controller@getRecibos');
 Route::post('getAttachFile', 'recibos_controller@getAttachFile');
 Route::post('push_recibo', 'recibos_controller@push_recibo');
 Route::post('push_verificado', 'recibos_controller@push_verificado');
+Route::get('print_resumen', 'recibos_controller@print_resumen');
 
