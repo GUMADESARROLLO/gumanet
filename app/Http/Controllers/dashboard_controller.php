@@ -106,6 +106,12 @@ class dashboard_controller extends Controller {
 
 
 
+  public function getComportamiento($elemento) {
+    $obj = dashboard_model::getComportamiento($elemento);
+    return response()->json($obj);
+  }
+
+
   public function getVentasMensuales($xbolsones) {
     $obj = dashboard_model::getVentasMensuales($xbolsones);
     return response()->json($obj);
