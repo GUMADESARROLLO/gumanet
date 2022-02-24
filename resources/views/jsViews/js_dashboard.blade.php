@@ -140,7 +140,7 @@ $(document).ready(function() {
             renderTo: 'grafClienteAnual'
         },
         title: {
-            text: `<p class="font-weight-bolder">Comportamiento de Cliente Anual</p>`
+            text: `<p class="font-weight-bolder">Comportamiento de Clientes Anual</p>`
         },
         xAxis: {
             categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
