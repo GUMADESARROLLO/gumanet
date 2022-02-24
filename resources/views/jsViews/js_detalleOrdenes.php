@@ -30,7 +30,7 @@
 					"data": "producto"
 				},
 				{
-					"title": "DESCRIPCION DEL PRODUCTO",
+					"title": "DESCRIPCION P.H EN O.P",
 					"data": "descripcion"
 				},
 				{
@@ -67,13 +67,13 @@
 					"data": "costo_total"
 				},
 				{
-					"title": "COSTO TOTAL $",
-					"data": "ct_dolar"
-				},
-				{
 					"title": "T.C",
 					"data": "tipo_cambio"
 				},
+				{
+					"title": "COSTO TOTAL $",
+					"data": "ct_dolar"
+				},				
 				{
 					"title": "COSTO TON. $",
 					"data": "costo_real_ton"
