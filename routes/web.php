@@ -107,6 +107,10 @@ Route::get('/detailsAllCls/{mes}/{anio}/{categoria}/{bolson}','dashboard_control
 
 
 Route::get('/dataVentasMens/{xbolsones}','dashboard_controller@getVentasMensuales');
+
+
+Route::get('/dtaComportamientoAnuales/{xbolsones}','dashboard_controller@getComportamiento');
+
 Route::get('/dataRealVtsMensuales/{xbolsones}/{segmentos}','dashboard_controller@getRealVentasMensuales');
 Route::get('/top10Cls','dashboard_controller@getTop10Clientes');
 Route::get('/valBodegas','dashboard_controller@getValBodegas');
