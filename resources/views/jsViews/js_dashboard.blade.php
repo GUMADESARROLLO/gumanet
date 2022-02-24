@@ -140,7 +140,7 @@ $(document).ready(function() {
             renderTo: 'grafClienteAnual'
         },
         title: {
-            text: `<p class="font-weight-bolder">Comportamiento Anual de Clientes</p>`
+            text: `<p class="font-weight-bolder">Comportamiento de Cliente Anual</p>`
         },
         xAxis: {
             categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -196,7 +196,7 @@ $(document).ready(function() {
             renderTo: 'grafSkuAnual'
         },
         title: {
-            text: `<p class="font-weight-bolder">Comportamiento de SKU Anuales</p>`
+            text: `<p class="font-weight-bolder">Comportamiento de SKU Anual </p>`
         },
         xAxis: {
             categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -1715,7 +1715,7 @@ function graf_Comportamiento_sku_anual() {
     var temporal = "";
     $("#grafSkuAnual").empty().append(`<div style="height:400px; background:#ffff; padding:20px">
                 <div class="d-flex align-items-center">
-                    <strong class="text-info">Cargando comportamiento SKU Anual...</strong>
+                    <strong class="text-info">Cargando...</strong>
                     <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
                 </div>
             </div>`);
@@ -1771,7 +1771,7 @@ function grafVentasMensuales(xbolsones) {
     .empty()
     .append(`<div style="height:400px; background:#ffff; padding:20px">
                 <div class="d-flex align-items-center">
-                    <strong class="text-info">Cargando comportamiento de ventas...</strong>
+                    <strong class="text-info">Cargando...</strong>
                     <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
                 </div>
             </div>`);
