@@ -1,119 +1,17 @@
 <script>
-	$(document).ready(function() {
-		$('#dtDetalleOrdenes').DataTable({
-			"ajax": {
-				"url": "DetalleOrdenesDT",
-				'dataSrc': '',
-			},
-			'width': "auto",
-			'info': false,
-			"language": {
-				"infoFiltered": "(Filtrado de _MAX_ total entradas)",
-				"zeroRecords": "No hay coincidencias",
-				"loadingRecords": "Cargando datos...",
-				"paginate": {
-					"first": "Primera",
-					"last": "Última ",
-					"next": "Siguiente",
-					"previous": "Anterior"
-				},
-				"lengthMenu": "MOSTRAR _MENU_",
-				"emptyTable": "NO HAY DATOS DISPONIBLES",
-				"search": "BUSCAR"
-			},
-			'columns': [{
-					"title": "Nº.ORDEN",
-					"data": "numOrden"
-				},
-				{
-					"title": "PRODUCTO",
-					"data": "producto"
-				},
-				{
-					"title": "DESCRIPCION P.H EN O.P",
-					"data": "descripcion"
-				},
-				{
-					"title": "AÑO",
-					"data": "anio"
-				},
-				{
-					"title": "MES",
-					"data": "mes"
-				},
-				{
-					"title": "FECHA INICIO",
-					"data": "fechaInicio"
-				},
-				{
-					"title": "FECHA FINAL",
-					"data": "fechaFinal"
-				},
-				{
-					"title": "PROD.REAL KG",
-					"data": "prod_real"
-				},
-				
-				{
-					"title": "PROD.TOTAL KG (Real + merma)",
-					"data": "prod_total"
-				},
-				{
-					"title": "PROD.REAL TON.",
-					"data": "prod_real_ton"
-				},
-				{
-					"title": "COSTO TOTAL C$",
-					"data": "costo_total"
-				},
-				{
-					"title": "T.C",
-					"data": "tipo_cambio"
-				},
-				{
-					"title": "COSTO TOTAL $",
-					"data": "ct_dolar"
-				},				
-				{
-					"title": "COSTO TON. $",
-					"data": "costo_real_ton"
-				},
-				{
-					"title": "DETALLE",
-					"data": "ver"
-				},
-			],
 
-			"columnDefs": [{
-					"className": "dt-center",
-					"targets": [0,3, 4, 5, 6, 7]
-				},
-				{
-					"className": "dt-right",
-					"targets": [4, 5, 6, 7, 8, 9, 10]
-				},
-				{ "visible":false, "searchable": false,"targets": [6] },
-			],
-		});
+	$(document).ready(function(){
+		$('#dtData > thead').addClass('bg-blue text-white');
+		$('#tbdetalles > thead').addClass('bg-blue text-white');
+		inicializaControlFecha();
+		dataOrden(0,0);
 
-		$("#dtDetalleOrdenes_length").hide();
-		$("#dtDetalleOrdenes_filter").hide();
-		$('#InputDtShowSearchFilterArt').on('keyup', function() {
-			var table = $('#dtDetalleOrdenes').DataTable();
-			table.search(this.value).draw();
-		});
-
-		$("#InputDtShowColumnsArtic").change(function() {
-			var table = $('#dtInventarioArticulos').DataTable();
-			table.page.len(this.value).draw();
-		});
-	})
-
+	});
 	var numOrden_g = 0;
 
 	function getMoreDetail(numOrden, descripcion, fechaInicio, fechaFin) {
 		numOrden_g = numOrden;
-		$("#tDetalleOrdenes").html(`<p class="text-white m-1">` + "#" + numOrden + "-" + descripcion + `</p>` + `<p class="text-white m-1">` + fechaInicio + " " + fechaFin + `</p>`);
+		$("#tDetalleOrdenes").html(`<p class="text-white m-1">` + "#" + numOrden + "-" + descripcion + `</p>` + `<p class="text-white m-1">` + fechaInicio + " - " + fechaFin + `</p>`);
 		getMateriaPrima(numOrden);
 		getOtrosConsumos(numOrden);
 		getDetailSumary(numOrden);
@@ -289,7 +187,7 @@
 					"className": "dt-center",
 					"targets": [1]
 				},
-				{
+				{	
 					"width": "50%",
 					"targets": [0]
 				},
@@ -397,9 +295,9 @@
 					//Electricidad
 					if (parseFloat(element.E_ConsumoSTD) > 560.00) {
 						$("#E_ConsumoSTD").css("color", "#FF0000");
-					}else if(parseFloat(element.E_ConsumoSTD)<= 560 && parseFloat(element.E_ConsumoSTD)> 0 ){
+					} else if (parseFloat(element.E_ConsumoSTD) <= 560 && parseFloat(element.E_ConsumoSTD) > 0) {
 						$("#E_ConsumoSTD").css("color", "#02b841");
-					}else if(parseFloat(element.E_ConsumoSTD) == 0){
+					} else if (parseFloat(element.E_ConsumoSTD) == 0) {
 						$("#E_ConsumoSTD").css("color", "#000000");
 					}
 					$('#EtotalConsumo').text(element.EtotalConsumo + " Kwh");
@@ -411,9 +309,9 @@
 					//Consumo de Gas	
 					if (parseFloat(element.G_totalConsumoTon) > 145) {
 						$("#G_totalConsumoTon").css("color", "#FF0000");
-					}else if(parseFloat(element.G_totalConsumoTon) <= 145 && parseFloat(element.G_totalConsumoTon)>0){
+					} else if (parseFloat(element.G_totalConsumoTon) <= 145 && parseFloat(element.G_totalConsumoTon) > 0) {
 						$("#G_totalConsumoTon").css("color", "#02b841");
-					}else if(parseFloat(element.G_totalConsumoTon)==0){
+					} else if (parseFloat(element.G_totalConsumoTon) == 0) {
 						$("#G_totalConsumoTon").css("color", "#000000");
 					}
 					$('#GtotalConsumo').text(element.GtotalConsumo + " Glns");
@@ -451,9 +349,9 @@
 					// porcentajes
 					if (parseFloat(element.factorFibral) > 1.3) {
 						$("#factor-fibral").css("color", "#FF0000");
-					}else if(parseFloat(element.factorFibral) <= 1.3 && parseFloat(element.factorFibral)>0){
+					} else if (parseFloat(element.factorFibral) <= 1.3 && parseFloat(element.factorFibral) > 0) {
 						$("#factor-fibral").css("color", "#02b841");
-					}else if(parseFloat(element.factorFibral)==0){
+					} else if (parseFloat(element.factorFibral) == 0) {
 						$("#factor-fibral").css("color", "#000");
 					}
 					$('#factor-fibral').text(element.factorFibral + " %");
@@ -465,12 +363,11 @@
 					$('#bolsones').text(element.bolsones);
 					$('#ton_dia').text(element.Tonelada_dia);
 
-					if(parseFloat(element.Tonelada_dia)> 10){
+					if (parseFloat(element.Tonelada_dia) > 10) {
 						$('#ton_dia').css("color", "#02b841");
-					}
-					else if(parseFloat(element.Tonelada_dia)<= 10 && parseFloat(element.Tonelada_dia)>0){
+					} else if (parseFloat(element.Tonelada_dia) <= 10 && parseFloat(element.Tonelada_dia) > 0) {
 						$('#ton_dia').css("color", "#FF0000");
-					}else if(parseFloat(element.Tonelada_dia)==0){
+					} else if (parseFloat(element.Tonelada_dia) == 0) {
 						$('#ton_dia').css("color", "#000000");
 					}
 				});
@@ -536,7 +433,7 @@
 				}, 0);
 
 				//$('#hrasTotales').text(numeral(total / 2).format('0,0.00') + ' Hras');
-				$('#hrasTotales').text(numeral((total + total3)/3).format('0,0.00') + ' Hras');
+				$('#hrasTotales').text(numeral((total + total3) / 3).format('0,0.00') + ' Hras');
 			},
 			"info": false,
 			"language": {
@@ -545,5 +442,206 @@
 				"loadingRecords": "Cargando...",
 			}
 		});
+	}
+
+	$("#BuscarOrden").click(function() {
+		Requestdata()
+	});
+
+
+	function Requestdata() {
+
+		f1 = $("#f1").val();
+		f2 = $("#f2").val();
+
+		dataOrden(f1, f2);
+
+
+	}
+
+	function dataOrden(f1, f2) {
+
+		$('#dtData').DataTable({
+			'ajax': {
+				'url': 'getData',
+				'dataSrc': '',
+				data: {
+					'f1': f1,
+					'f2': f2,
+				}
+			},
+			"destroy": true,
+			"info": false,
+			"language": {
+				"zeroRecords": "NO HAY COINCIDENCIAS",
+				"paginate": {
+					"first": "Primera",
+					"last": "Última ",
+					"next": "Siguiente",
+					"previous": "Anterior"
+				},
+				"infoFiltered": "(Filtrado de _MAX_ total entradas)",
+				"loadingRecords": "Cargando datos...",
+				"lengthMenu": "MOSTRAR _MENU_",
+				"emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+				"search": "BUSCAR"
+			},
+			'columns': [{
+					"title": "Detalle",
+					"data": "detalle_general"
+				},
+				{
+					"title": "PROD.REAL KG",
+					"data": "prod_real_total"
+				},
+				{
+					"title": "PROD.TOTAL KG (Real + merma)",
+					"data": "prod_total_total"
+				},
+				{
+					"title": "PROD.REAL TON.",
+					"data": "prod_real_ton_total"
+				},
+				{
+					"title": "COSTO TOTAL C$",
+					"data": "costo_total_total",
+					"render": function(data, type, row) {
+                        return 'C$ ' + data;
+                    }
+				},
+				{
+					"title": "COSTO TOTAL $",
+					"data": "ct_dolar_total",
+					"render": function(data, type, row) {
+                        return '$ ' + data;
+                    }
+				},
+				{
+					"title": "COSTO TOTAL TON $",
+					"data": "costo_real_ton_total",
+					"render": function(data, type, row) {
+                        return '$ ' + data;
+                    }
+				}, 
+			],
+			"columnDefs": [{
+				"className": "dt-center",
+				"targets": [0, 1, 2, 3, 4, 5, 6]
+			}],
+
+		});
+
+		$("#dtData_length").hide();
+		$("#dtData_filter").hide();
+		$('#InputDtShowSearchFilterArt').on('keyup', function() {
+			var table = $('#dtData').DataTable();
+			table.search(this.value).draw();
+		});
+	}
+
+	//DETALLES DE LIQUITACION
+	$(document).on('click', '#exp_more', function(ef) {
+		var table = $('#dtData').DataTable();
+		var tr = $(this).closest('tr');
+		var row = table.row(tr);
+		var data = table.row($(this).parents('tr')).data();
+
+		if (row.child.isShown()) {
+			row.child.hide();
+			tr.removeClass('shown');
+			ef.target.innerHTML = "expand_more";
+			ef.target.style.background = '#e2e2e2';
+			ef.target.style.color = '#007bff';
+		} else {
+			//VALIDA SI EN LA TABLA HAY TABLAS SECUNDARIAS ABIERTAS
+			table.rows().eq(0).each(function(idx) {
+				var row = table.row(idx);
+
+				if (row.child.isShown()) {
+					row.child.hide();
+					ef.target.innerHTML = "expand_more";
+
+					var c_1 = $(".expan_more");
+					c_1.text('expand_more');
+					c_1.css({
+						background: '#e2e2e2',
+						color: '#007bff',
+					});
+				}
+			});
+
+			format_detalle(row.child, data);
+			tr.addClass('shown');
+
+			ef.target.innerHTML = "expand_less";
+			ef.target.style.background = '#ff5252';
+			ef.target.style.color = '#e2e2e2';
+		}
+	});
+
+	function format_detalle(callback, dta) {
+
+		var thead = tbody = tNule = '';
+
+		thead = `<table class="table table-striped table-bordered table-sm">
+			<thead class="text-center bg-secondary text-dark" id="tbdetalles">
+				<tr>
+					<th class="center">N°.ORDEN</th>
+					<th class="center">PRODUCTO</th>
+					<th class="center">DESCRIPCION P.H EN O.P</th>
+					<th class="center">AÑO</th>
+					<th class="center">MES</th>
+					<th class="center">FECHA INICIO </th>
+					<th class="center">FECHA FINAL </th>
+					<th class="center">PROD.REAL </th>		
+					<th class="center">PROD.TOTAL (REAL + MERMA) </th>		
+					<th class="center">PROD.REAL TON</th>	
+					<th class="center">COSTO TOTAL C$</th>	
+					<th class="center">T.C</th>		
+					<th class="center">COSTO TOTAL $</th>		
+					<th class="center">COSTO.TON $</th>	
+					<th class="center">DETALLE</th>															
+				</tr>
+			</thead>
+			<tbody>`;
+
+
+		if (dta.length == 0) {
+			tbody += `<tr>
+				<td colspan='6'><center>Bodega sin existencia</center></td>
+			</tr>`;
+			callback(thead + tbody).show();
+		}
+
+		$.each(dta.all_detalles, function(i, item) {
+			tbody += '<tr>' +
+				'<td class="text-center">' + item['numOrden'] + '</td>' +
+				'<td class="text-center">' + item['producto'] + '</td>' +
+				'<td class="text-center">' + item['descripcion'] + '</td>' +
+				'<td class="text-center">' + item['anio'] + '</td>' +
+				'<td class="text-center">' + item['mes'] + '</td>' +
+				'<td class="text-center">' + item['fechaInicio'] + '</td>' +
+				'<td class="text-center">' + item['fechaFinal'] + '</td>' +
+				'<td class="text-center">' + numeral(item['prod_real']).format('0,0.00') + '</td>' +
+				'<td class="text-center">' + numeral(item['prod_total']).format('0,0.00') + '</td>' +
+				'<td class="text-center">' + numeral(item['prod_real_ton']).format('0,0.00') + '</td>' +
+				'<td class="text-right"> C$ ' + numeral(item['costo_total']).format('0,0.0000') + '</td>' +
+				'<td class="text-center"> C$' + numeral(item['tipo_cambio']).format('0,0.0000') + '</td>' +
+				'<td class="text-center"> $' + numeral(item['ct_dolar']).format('0,0.0000') + '</td>' +
+				'<td class="text-center">  $' + numeral(item['costo_real_ton']).format('0,0.0000') + '</td>' +
+				'<td class="text-center">' + item['ver'] + '</td>' +
+				'</tr>';
+		});
+
+
+		tbody += `</tbody></table>`;
+		temp = `<div style="margin: 0 auto; height: auto; width:100%; overflow: auto">
+				<pre dir="ltr" style="margin: 0px;padding:6px;">
+					` + thead + tbody + `
+				</pre>
+				</div>
+				`;
+		callback(temp).show();
+
 	}
 </script>
