@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <!-- [ Main Content ] start -->
     <div class="row my-3">
-        <div class="col-sm-12">
+        <div class="col-sm-8 mt-4">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
@@ -14,9 +14,32 @@
                 <input type="text" id="InputDtShowSearchFilterArt" class="form-control" placeholder="Buscar en ordenes de produccion" aria-label="Username" aria-describedby="basic-addon1">
             </div>
         </div>
+        <div class="col-sm-4 border-left">
+            <div class="row ">
+                <div class="col-sm-4 ">
+                    <div class="form-group">
+                        <label for="f1">Desde:</label>
+                        <input type="text" class="input-fecha" id="f1">
+                    </div>
+                </div>
+                <div class="col-sm-4 ">
+                    <div class="form-group">
+                        <label for="f2">Hasta:</label>
+                        <input type="text" class="input-fecha" id="f2">
+                    </div>
+                </div>
+                <div class="col-sm-4 mt-4 ">
+                    <div class="form-group">
+                        <a href="#!" class="btn btn-primary float-left" id="BuscarOrden">
+                            <i class="material-icons text-white mt-1" style="font-size: 20px">filter_list_alt</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- [ Header detalle ordenes ] start -->
-    <div class="row">
+    <!--  <div class="row">
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header mt-3">
@@ -26,6 +49,22 @@
                     <div class="table-responsive">
                         <div class="table-responsive mt-3 mb-2">
                             <table class="table table-bordered table-hover" width="99.9%" id="dtDetalleOrdenes"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <div class="row mt-5">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header mt-3">
+                    <h5 class="text-secondary">ORDEN DE PRODUCCIÓN</h5>
+                </div>
+                <div class="card-block table-border-style">
+                    <div class="table-responsive">
+                        <div class="table-responsive mt-3 mb-2">
+                            <table class="table table-bordered table-hover" width="99.9%" id="dtData"></table>
                         </div>
                     </div>
                 </div>

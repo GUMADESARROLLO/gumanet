@@ -187,7 +187,6 @@ Route::get('rePrint', 'vinetaliq_controller@rePrint');
 Route::get('clean', 'vinetaliq_controller@getClear');
 
 //RUTAS PARA EL DETALLE DE ORDENES
-Route::get('/DetalleOrdenesDT', 'DetalleOrdenController@getDetalleOrdenes');  
 Route::get('/getMateriaPrima/{numOrden}','DetalleOrdenController@getMateriaPrima');
 Route::get('/getMOD/{numOrden}','DetalleOrdenController@getMOD');
 Route::get('/getQuimicos/{numOrden}','DetalleOrdenController@getQuimicos');
@@ -195,6 +194,8 @@ Route::get('/getSubCostos/{numOrden}','DetalleOrdenController@getSubCostos');
 Route::get('/getOtrosConsumos/{numOrden}','DetalleOrdenController@getOtrosConsumos');
 Route::get('/getDetailSumary/{numOrden}','DetalleOrdenController@getDetailSumary');
 Route::get('/getHrasProducidas/{numOrden}','DetalleOrdenController@getHrasProducidas');
+Route::get('/getData','DetalleOrdenController@getData');
+
 
 
 
