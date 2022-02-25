@@ -2035,9 +2035,15 @@ class dashboard_model extends Model {
         $sql_exec       = '';
         $View           = '';
         $mercado        = '';
+        $isTicket       = false;
         $request        = Request();
         $company_user   = Company::where('id',$request->session()->get('company_id'))->first()->id;
         $i = 0;
+
+        if($elemento=='TICKETPROM'){
+            $elemento   = '[Cod. Cliente]';
+            $isTicket   =  true;
+        }
 
         $meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
         
@@ -2054,7 +2060,11 @@ class dashboard_model extends Model {
         }
         
 
-        $sql="SELECT mes, CAST(count( distinct ".$elemento.") AS FLOAT) AS cvalue, [Año] AS annio FROM ".$View."
+        $sql="SELECT mes, 
+                CAST(count( distinct ".$elemento.") AS FLOAT) AS cvalue, 
+                CAST ( SUM ( venta ) / COUNT ( DISTINCT [Cod. Cliente] ) AS FLOAT ) AS vntMes,
+                [Año] AS annio 
+                FROM ".$View."
                 WHERE [Año] IN ( YEAR(DATEADD(year, -1,GETDATE())), YEAR(GETDATE()))
                 AND [P. Unitario] > 0 
                 ".$mercado."
@@ -2070,10 +2080,17 @@ class dashboard_model extends Model {
 
         for ($anio=$anioLimit; $anio<=$anioActual; $anio++) {
             
-            foreach ($meses as $key => $mes) {
-                $temp = array_column(array_filter($query, function($item) use($mes,$anio) { return $item['annio'] == $anio and $item['mes']==$mes; } ), 'cvalue');
-
-                ( count($temp)>0 )?( array_push($array, $temp[0])):false;
+            if($isTicket){
+                foreach ($meses as $key => $mes) {
+                    $vntMes = array_column(array_filter($query, function($item) use($mes,$anio) { return $item['annio'] == $anio and $item['mes']==$mes; } ), 'vntMes');
+                    
+                    (count($vntMes) > 0 ) ? (array_push($array, $vntMes[0])):false;
+                }
+            }else{
+                foreach ($meses as $key => $mes) {
+                    $temp = array_column(array_filter($query, function($item) use($mes,$anio) { return $item['annio'] == $anio and $item['mes']==$mes; } ), 'cvalue');
+                    (count($temp) > 0 ) ? (array_push($array, $temp[0])):false;
+                }
             }
 
             $json[$i]['name'] = $anio;

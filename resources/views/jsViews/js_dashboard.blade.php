@@ -63,6 +63,7 @@ $(document).ready(function() {
 
     graf_Comportamiento_clientes_anual();
     graf_Comportamiento_sku_anual();
+    graf_Ticket_promedio();
     grafVentasMensuales(tipo);
     grafRealVentasMensuales(tipo,0);
     reordenandoPantalla();
@@ -197,6 +198,62 @@ $(document).ready(function() {
         },
         title: {
             text: `<p class="font-weight-bolder">Comportamiento de SKU Anual </p>`
+        },
+        xAxis: {
+            categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        },
+        yAxis: {
+            title: {
+                text: ''
+            }                
+        },
+        plotOptions: {
+            series: {
+                allowPointSelect: false,
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    formatter: function() {
+                        return FormatPretty(this.y);
+                    }
+                },
+                events: {
+                    legendItemClick: function() {
+                        return false;
+                    }
+                }
+            },
+        },
+        tooltip: {},
+        legend: {
+            align: 'center',
+            verticalAlign: 'top',
+            borderWidth: 0
+        },
+        series: [],
+        responsive: {
+            rules: [{
+                condition: {
+                maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+    };
+
+    TicketProm = {
+        chart: {
+            type: 'spline',
+            renderTo: 'grafTicketProm'
+        },
+        title: {
+            text: `<p class="font-weight-bolder">Comportamiento de Ticket Promedio Anual </p>`
         },
         xAxis: {
             categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -904,6 +961,7 @@ $("#customSwitch1").change( function() {
     
     graf_Comportamiento_clientes_anual();
     graf_Comportamiento_sku_anual();
+    graf_Ticket_promedio();
 
     if ($(this).is(':checked')) {
         switchStatus = $(this).is(':checked');
@@ -1657,6 +1715,7 @@ function grafRealVentasMensuales(xbolsones,segmentos) {
 var ventasMensuales     = {};
 var ClientesAnuales     = {};
 var SkusAnual           = {};
+var TicketProm          = {};
 
 var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
 function graf_Comportamiento_clientes_anual() {
@@ -1758,6 +1817,59 @@ function graf_Comportamiento_sku_anual() {
                 pointFormat : temporal
             };
             var chart = new Highcharts.Chart(SkusAnual);
+            
+        })    
+    })    
+        
+    
+}
+function graf_Ticket_promedio() {
+    var temporal = "";
+    $("#grafTicketProm").empty().append(`<div style="height:400px; background:#ffff; padding:20px">
+                <div class="d-flex align-items-center">
+                    <strong class="text-info">Cargando...</strong>
+                    <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
+                </div>
+            </div>`);
+
+
+    $("#anioAcumulado").empty();
+    $("#porcentaje").empty();
+    
+    TicketProm.series = [];
+    elementCount = "TICKETPROM";
+    $.getJSON("dtaComportamientoAnuales/"+elementCount, function(json) {
+        var newseries;
+        var sumTotales = [];
+        var temp = 0;
+        var anio = 0;
+        var date  = new Date();
+        var anio_ = parseInt(date.getFullYear());
+        var mes_ = parseInt(date.getMonth()+1);
+        
+        $.each(json, function (i, item) {
+            temporal = 'C$ <span style="color:black"><b>{point.y:,.2f}  </b></span>';
+            if (anio != item['name']) {
+
+                $.each(item['venta'], function(i_, item_) {
+                    temp = temp + parseFloat(item_)
+                })
+
+                sumTotales.push({ 'anio':item['name'], 'suma':temp });
+                
+                anio = item['name'];
+                temp = 0;
+            }
+
+            newseries = {};
+            newseries.data = item['venta'];
+            newseries.name = item['name'];
+            newseries.color = colors_[i];
+            TicketProm.series.push(newseries);
+            TicketProm.tooltip = {
+                pointFormat : temporal
+            };
+            var chart = new Highcharts.Chart(TicketProm);
             
         })    
     })    
