@@ -112,6 +112,12 @@
             </div>
         </div>
 
+        <div class="row" id="ct04">
+            <div class="graf col-sm-12 mt-3">
+                <div class="container-vms" id="grafTicketProm" style="width: 100%; margin: 0 auto"></div>
+            </div>
+        </div>
+
         
 
         <div class="row mt-3" id="cardAnioActual">
