@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <!-- [ Main Content ] start -->
     <div class="row my-3">
-        <div class="col-sm-12">
+        <div class="col-sm-12 mt-4">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
@@ -14,23 +14,7 @@
                 <input type="text" id="InputDtShowSearchFilterArt" class="form-control" placeholder="Buscar en ordenes de produccion" aria-label="Username" aria-describedby="basic-addon1">
             </div>
         </div>
-    </div>
-    <!-- [ Header detalle ordenes ] start -->
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="card">
-                <div class="card-header mt-3">
-                    <h5 class="text-secondary">ORDEN DE PRODUCCIÓN</h5>
-                </div>
-                <div class="card-block table-border-style">
-                    <div class="table-responsive">
-                        <div class="table-responsive mt-3 mb-2">
-                            <table class="table table-bordered table-hover" width="99.9%" id="dtDetalleOrdenes"></table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
     <!-- modal detalle Orden -->
     <div class="modal fade bd-example-modal-xl" data-backdrop="static" data-keyboard="false" id="mdDetalleOrd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -403,7 +387,6 @@
                                                 <th>Día</th>
                                                 <th>Noche</th>
                                                 <th>Total/Horas</th>
-
                                             </tr>
                                         </thead>
                                         <tfoot>
@@ -426,4 +409,24 @@
             </div>
         </div>
     </div>
+    
+    <div class="row mt-5">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header mt-3">
+                    <h5 class="text-secondary">ORDEN DE PRODUCCIÓN</h5>
+                </div>
+                <div class="card-block table-border-style">
+                    <div class="table-responsive">
+                        <div class="table-responsive mt-3 mb-2">
+                            <table class="table table-bordered table-hover" width="99.9%" id="dtDetalles">
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @endsection
