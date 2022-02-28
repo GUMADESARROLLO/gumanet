@@ -1,11 +1,7 @@
 <script>
-
-	$(document).ready(function(){
-		$('#dtData > thead').addClass('bg-blue text-white');
-		$('#tbdetalles > thead').addClass('bg-blue text-white');
-		inicializaControlFecha();
-		dataOrden(0,0);
-
+	$(document).ready(function() {
+		data();
+		$('#dtDetalles > thead').addClass('bg-blue text-white');
 	});
 	var numOrden_g = 0;
 
@@ -187,7 +183,7 @@
 					"className": "dt-center",
 					"targets": [1]
 				},
-				{	
+				{
 					"width": "50%",
 					"targets": [0]
 				},
@@ -444,31 +440,14 @@
 		});
 	}
 
-	$("#BuscarOrden").click(function() {
-		Requestdata()
-	});
+	// NEW TABLE DETALLE ORDENES
 
+	function data() {
 
-	function Requestdata() {
-
-		f1 = $("#f1").val();
-		f2 = $("#f2").val();
-
-		dataOrden(f1, f2);
-
-
-	}
-
-	function dataOrden(f1, f2) {
-
-		$('#dtData').DataTable({
+		$('#dtDetalles').DataTable({
 			'ajax': {
 				'url': 'getData',
 				'dataSrc': '',
-				data: {
-					'f1': f1,
-					'f2': f2,
-				}
 			},
 			"destroy": true,
 			"info": false,
@@ -491,6 +470,18 @@
 					"data": "detalle_general"
 				},
 				{
+					"title": "Año",
+					"data": "anio"
+				},
+				{
+					"title": "Mes",
+					"data": "mes"
+				},
+				{
+					"title": "Ordenes",
+					"data": "contOrder"
+				},
+				{
 					"title": "PROD.REAL KG",
 					"data": "prod_real_total"
 				},
@@ -506,42 +497,46 @@
 					"title": "COSTO TOTAL C$",
 					"data": "costo_total_total",
 					"render": function(data, type, row) {
-                        return 'C$ ' + data;
-                    }
+						return 'C$ ' + data;
+					}
 				},
 				{
 					"title": "COSTO TOTAL $",
 					"data": "ct_dolar_total",
 					"render": function(data, type, row) {
-                        return '$ ' + data;
-                    }
+						return '$ ' + data;
+					}
 				},
 				{
 					"title": "COSTO TOTAL TON $",
 					"data": "costo_real_ton_total",
 					"render": function(data, type, row) {
-                        return '$ ' + data;
-                    }
-				}, 
+						return '$ ' + data;
+					}
+				},
 			],
 			"columnDefs": [{
+				"className": "dt-right",
+				"targets": [ 5, 6,7,8,9]
+			},
+			{
 				"className": "dt-center",
-				"targets": [0, 1, 2, 3, 4, 5, 6]
-			}],
+				"targets": [0, 1, 2,3,4]
+			}
+		],
 
 		});
 
-		$("#dtData_length").hide();
-		$("#dtData_filter").hide();
+		$("#dtDetalles_length").hide();
+		$("#dtDetalles_filter").hide();
 		$('#InputDtShowSearchFilterArt').on('keyup', function() {
-			var table = $('#dtData').DataTable();
+			var table = $('#dtDetalles').DataTable();
 			table.search(this.value).draw();
 		});
-	}
 
-	//DETALLES DE LIQUITACION
+	}
 	$(document).on('click', '#exp_more', function(ef) {
-		var table = $('#dtData').DataTable();
+		var table = $('#dtDetalles').DataTable();
 		var tr = $(this).closest('tr');
 		var row = table.row(tr);
 		var data = table.row($(this).parents('tr')).data();
@@ -570,7 +565,7 @@
 				}
 			});
 
-			format_detalle(row.child, data);
+			format(row.child, data);
 			tr.addClass('shown');
 
 			ef.target.innerHTML = "expand_less";
@@ -579,68 +574,61 @@
 		}
 	});
 
-	function format_detalle(callback, dta) {
+	function format(callback, dta) {
 
 		var thead = tbody = tNule = '';
 
 		thead = `<table class="table table-striped table-bordered table-sm">
-			<thead class="text-center bg-secondary text-dark" id="tbdetalles">
-				<tr>
-					<th class="center">N°.ORDEN</th>
-					<th class="center">PRODUCTO</th>
-					<th class="center">DESCRIPCION P.H EN O.P</th>
-					<th class="center">AÑO</th>
-					<th class="center">MES</th>
-					<th class="center">FECHA INICIO </th>
-					<th class="center">FECHA FINAL </th>
-					<th class="center">PROD.REAL </th>		
-					<th class="center">PROD.TOTAL (REAL + MERMA) </th>		
-					<th class="center">PROD.REAL TON</th>	
-					<th class="center">COSTO TOTAL C$</th>	
-					<th class="center">T.C</th>		
-					<th class="center">COSTO TOTAL $</th>		
-					<th class="center">COSTO.TON $</th>	
-					<th class="center">DETALLE</th>															
-				</tr>
-			</thead>
-			<tbody>`;
+					<thead class="text-center text-white">
+					<tr  class=" bg-secondary">
+						<th class="center">N°.ORDEN</th>
+						<th class="center">PRODUCTO</th>
+						<th class="center">DESCRIPCION P.H EN O.P</th>
+						<th class="center">FECHA INICIO </th>
+						<th class="center">FECHA FINAL </th>	
+						<th class="center">PROD.REAL </th>		
+						<th class="center">PROD.TOTAL (REAL + MERMA) </th>		
+						<th class="center">PROD.REAL TON</th>	
+						<th class="center">COSTO TOTAL C$</th>	
+						<th class="center">T.C</th>		
+						<th class="center">COSTO TOTAL $</th>		
+						<th class="center">COSTO.TON $</th>		
+					</tr>
+					</thead>
+					<tbody>`;
 
 
 		if (dta.length == 0) {
 			tbody += `<tr>
-				<td colspan='6'><center>Bodega sin existencia</center></td>
-			</tr>`;
+						<td colspan='6'><center>Bodega sin existencia</center></td>
+						</tr>`;
 			callback(thead + tbody).show();
 		}
 
-		$.each(dta.all_detalles, function(i, item) {
+		$.each(dta.Detalles, function(i, item) {
 			tbody += '<tr>' +
 				'<td class="text-center">' + item['numOrden'] + '</td>' +
 				'<td class="text-center">' + item['producto'] + '</td>' +
 				'<td class="text-center">' + item['descripcion'] + '</td>' +
-				'<td class="text-center">' + item['anio'] + '</td>' +
-				'<td class="text-center">' + item['mes'] + '</td>' +
 				'<td class="text-center">' + item['fechaInicio'] + '</td>' +
 				'<td class="text-center">' + item['fechaFinal'] + '</td>' +
-				'<td class="text-center">' + numeral(item['prod_real']).format('0,0.00') + '</td>' +
-				'<td class="text-center">' + numeral(item['prod_total']).format('0,0.00') + '</td>' +
-				'<td class="text-center">' + numeral(item['prod_real_ton']).format('0,0.00') + '</td>' +
+				'<td class="text-right">' + item['prod_real'] + '</td>' +
+				'<td class="text-right">' + item['prod_total'] + '</td>' +
+				'<td class="text-right">' + numeral(item['prod_real_ton']).format('0,0.00') + '</td>' +
 				'<td class="text-right"> C$ ' + numeral(item['costo_total']).format('0,0.0000') + '</td>' +
-				'<td class="text-center"> C$' + numeral(item['tipo_cambio']).format('0,0.0000') + '</td>' +
-				'<td class="text-center"> $' + numeral(item['ct_dolar']).format('0,0.0000') + '</td>' +
-				'<td class="text-center">  $' + numeral(item['costo_real_ton']).format('0,0.0000') + '</td>' +
-				'<td class="text-center">' + item['ver'] + '</td>' +
+				'<td class="text-right"> C$ ' + numeral(item['tipo_cambio']).format('0,0.0000') + '</td>' +
+				'<td class="text-right"> $ ' + numeral(item['ct_dolar']).format('0,0.0000') + '</td>' +
+				'<td class="text-right">  $ '  + numeral(item['costo_real_ton']).format('0,0.0000') + '</td>' +
 				'</tr>';
 		});
 
-
 		tbody += `</tbody></table>`;
 		temp = `<div style="margin: 0 auto; height: auto; width:100%; overflow: auto">
-				<pre dir="ltr" style="margin: 0px;padding:6px;">
-					` + thead + tbody + `
-				</pre>
-				</div>
-				`;
+					<pre dir="ltr" style="margin: 0px;padding:6px;">
+						` + thead + tbody + `
+					</pre>
+					</div>
+					`;
 		callback(temp).show();
 
 	}
