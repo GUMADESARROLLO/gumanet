@@ -396,24 +396,14 @@ class DetalleOrdenController extends Controller
         return $result;
     }
 
-
-    public function getData(Request $request)
+    public function getDataFormat()
     {
         $data = array();
-        $dataP = array();
-
-        $from = $request->input('f1'); //. '00:00:00'
-        $to     = $request->input('f2'); //.' 23:59:59'
-
         $i = 0;
-
-        if (!$from) {
-            return response()->json(false);
-        }
 
         $produccion_total = DB::table('producciontest.inn_produccion_total')->select('inn_produccion_total.*', 'producciontest.orden_produccion.*')
             ->join('producciontest.orden_produccion', 'producciontest.inn_produccion_total.numOrden', '=', 'producciontest.orden_produccion.numOrden')
-            ->where('producciontest.orden_produccion.estado', 1)->whereBetween('producciontest.orden_produccion.fechaInicio', [$from, $to]);
+            ->where('producciontest.orden_produccion.estado', 1);
 
         $obj = $produccion_total->get();
         foreach ($obj as $Orden => $key) {
@@ -450,8 +440,8 @@ class DetalleOrdenController extends Controller
             $productos = DB::table('producciontest.productos')->where('idProducto',  $key->producto)->get();
             foreach ($productos as $producto => $p) {
                 $data[$i]['producto'] = $p->nombre;
-                $data[$i]['descripcion'] = $p->descripcion;
-                $data[$i]['descripcion'] =  $p->descripcion == null || $p->descripcion == '' ? '': $p->descripcion;
+                //$data[$i]['descripcion'] = $p->descripcion;
+                $data[$i]['descripcion'] =  $p->descripcion == null || $p->descripcion == '' ? '' : $p->descripcion;
                 $data[$i]['ver'] = '<a href="#!"  class="btn "  onclick="getMoreDetail(' . "'" . $key->numOrden . "'" . ', ' . "'" . $p->nombre . "'" .
                     ',' . "'" . $data[$i]['fechaInicio'] . "'" . ', ' . "'" .  $data[$i]['fechaFinal'] . "'" . ')"><i class="fas fa-eye fa-2x text-primary"></i></a>';
             }
@@ -461,20 +451,120 @@ class DetalleOrdenController extends Controller
             $data[$i]['prod_real_ton'] = ($key->prod_real / 1000);
             $i++;
         }
-        if(!empty($data)){
-            $dataP[0]['prod_real_total']= number_format(array_sum(array_column($data, 'prod_real')),2);
-            $dataP[0]['prod_total_total']= number_format(array_sum(array_column($data, 'prod_total')),2);
-            $dataP[0]['prod_real_ton_total']= number_format(array_sum(array_column($data, 'prod_real_ton')),2);
-            $dataP[0]['costo_total_total']= number_format(array_sum(array_column($data, 'costo_total')),4);
-            $dataP[0]['costo_real_ton_total']= number_format(array_sum(array_column($data, 'costo_real_ton')),4);
-            $dataP[0]['ct_dolar_total']= number_format(array_sum(array_column($data, 'ct_dolar')),4);
-            $dataP[0]['all_detalles'] = $data;
-            $dataP[0]['detalle_general']= '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+
+        $j = 0;
+        $k = 0;
+
+        $dataP = array();
+        $dataDate = array();
+        $arrayValue =  array_unique(array_column($data, 'mes')); // mes
+        $arrayValueAnio =  array_unique(array_column($data, 'anio'));  // años
+        /*foreach($arrayValueAnio as $anios){
+            $dataDate[]
+        } */
+        $arrayValueMesAnio =  array_merge($arrayValue,  $arrayValueAnio);
+        //los meses que estan en la orden No repetidos.
+        foreach ($arrayValue as $dataMonth) {
+
+            $prod_real_total        = 0;
+            $prod_total_total       = 0;
+            $prod_real_ton_total    = 0;
+            $costo_total_total      = 0;
+            $costo_real_ton_total   = 0;
+            $ct_dolar_total         = 0;
+            $contador               = 0;
+            $mes                    = '';
+            $anio                    = '';
+            $subData = array();
+
+            foreach ($data as $dataOrden  => $key) {
+                if ($key['mes'] == $dataMonth) { //Si tienen el mismo mes
+                    $subData[$k]['numOrden'] =        $key['numOrden'];
+                    $subData[$k]['producto'] =        $key['producto'];
+                    $subData[$k]['descripcion'] =     $key['descripcion'] == null || $key['descripcion'] == '' ? '' : $key['descripcion'];
+                    $subData[$k]['anio'] =            $key['anio'];
+                    $subData[$k]['mes'] =             $key['mes'];
+                    $subData[$k]['fechaInicio'] =     $key['fechaInicio'];
+                    $subData[$k]['fechaFinal'] =      $key['fechaFinal'];
+                    $subData[$k]['prod_real'] =       $key['prod_real'];
+                    $subData[$k]['prod_total'] =      $key['prod_total'];
+                    $subData[$k]['prod_real_ton'] =   $key['prod_real_ton'];
+                    $subData[$k]['costo_total'] =     $key['costo_total'];
+                    $subData[$k]['tipo_cambio'] =     $key['tipo_cambio'];
+                    $subData[$k]['ct_dolar'] =        $key['ct_dolar'];
+                    $subData[$k]['costo_real_ton'] =  $key['costo_real_ton'];
+                    $subData[$k]['ver'] =             $key['ver'];
+                    $k++;
+                    $prod_real_total +=  $key['prod_real'];
+                    $prod_total_total += $key['prod_total'];
+                    $prod_real_ton_total +=  $key['prod_real_ton'];
+                    $costo_total_total +=  $key['costo_total'];
+                    $costo_real_ton_total +=  $key['costo_real_ton'];
+                    $ct_dolar_total +=  $key['ct_dolar'];
+                    $mes  = $dataMonth;
+                    $anio  = $key['anio'];
+                    ++$contador;
+                }
+            }
+            $dataP[$j]['ordenes']              = '(' . $contador . ')';
+            $dataP[$j]['all_detalles']         = $subData;
+            $dataP[$j]['mes_']                 = $mes;
+            $dataP[$j]['anio_']                = $anio;
+            $dataP[$j]['prod_real_total']      = number_format($prod_real_total, 2);
+            $dataP[$j]['prod_total_total']     = number_format($prod_total_total, 2);
+            $dataP[$j]['prod_real_ton_total']  = number_format($prod_real_ton_total, 2);
+            $dataP[$j]['costo_total_total']    = number_format($costo_total_total, 2);
+            $dataP[$j]['costo_real_ton_total'] = number_format($costo_real_ton_total, 2);
+            $dataP[$j]['ct_dolar_total']       = number_format($ct_dolar_total, 2);
+            $dataP[$j]['detalle_general']      = '<a id="exp_more_" class="exp_more_" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+            $j++;
         }
-        
-
-
-      //  array_push($dataP,$data);
         return response()->json($dataP);
+    }
+
+
+    public function getData()
+    {
+        $detalle_orden = DB::table('producciontest.inn_detalles_gumanet')->get();
+        $Data = array();
+        $k = 0;
+        $arrDetalles = array();
+        foreach ($detalle_orden as $detalle => $key) {
+            $Data[$k]['anio']    = $key->year_;
+            $mes =  DateTime::createFromFormat('!m', $key->mes_);
+            $Data[$k]['mes']     =   $this->getMes($mes->format('F'));
+            $Data[$k]['contOrder']        = $key->contOrder;
+            $Data[$k]['prod_real_total']       = number_format($key->prod_real_mensual,2);
+            $Data[$k]['prod_total_total']     = number_format($key->prod_total_mensual, 2);
+            $Data[$k]['prod_real_ton_total']  = number_format($key->prod_real_tonelada_mensual, 2);
+            $Data[$k]['costo_total_total']    = number_format($key->costo_total_mensual, 4);
+            $Data[$k]['costo_real_ton_total'] = number_format($key->costo_real_tonelada_mensual, 4);
+            $Data[$k]['ct_dolar_total']       = number_format($key->costo_total_dolar_mensual, 4);
+            $Data[$k]['detalle_general']       = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+            $lista_ordenes  =  $key->Detalles;
+            $size     = explode(";", $lista_ordenes);
+            $cLineas    = count($size);
+            for ($l = 0; $l < $cLineas; $l++) {
+
+                $_detalles     = explode(",", $size[$l]);
+                $arrDetalles[$l]['numOrden']        = '<a href="#!"  class=""  onclick="getMoreDetail(' . "'" . $_detalles[0] . "'" . ', ' . "'" . $_detalles[1] . "'" .
+                    ',' . "'" . $_detalles[3] . "'" . ', ' . "'" .  $_detalles[4] . "'" . ')"> ' . $_detalles[0] . ' </i></a>';
+                $arrDetalles[$l]['producto']        = $_detalles[1];
+                $arrDetalles[$l]['descripcion']     = $_detalles[2];
+                $arrDetalles[$l]['fechaInicio']     = $_detalles[3];
+                $arrDetalles[$l]['fechaFinal']      = $_detalles[4];
+                $arrDetalles[$l]['prod_real']       = $_detalles[5];
+                $arrDetalles[$l]['prod_total']      = $_detalles[6];
+                $arrDetalles[$l]['prod_real_ton']   = $_detalles[7];
+                $arrDetalles[$l]['costo_total']     = $_detalles[8];
+                $arrDetalles[$l]['tipo_cambio']     = $_detalles[9];
+                $arrDetalles[$l]['ct_dolar']        = $_detalles[10];
+                $arrDetalles[$l]['costo_real_ton']  = $_detalles[11];
+            }
+
+            $Data[$k]['Detalles']       = $arrDetalles;
+            $k++;
+        }
+        return response()->json($Data);
     }
 }
