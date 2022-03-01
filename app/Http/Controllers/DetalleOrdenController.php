@@ -528,8 +528,9 @@ class DetalleOrdenController extends Controller
         $detalle_orden = DB::table('producciontest.inn_detalles_gumanet')->get();
         $Data = array();
         $k = 0;
-        $arrDetalles = array();
+
         foreach ($detalle_orden as $detalle => $key) {
+
             $Data[$k]['anio']    = $key->year_;
             $mes =  DateTime::createFromFormat('!m', $key->mes_);
             $Data[$k]['mes']     =   $this->getMes($mes->format('F'));
@@ -544,6 +545,8 @@ class DetalleOrdenController extends Controller
             $lista_ordenes  =  $key->Detalles;
             $size     = explode(";", $lista_ordenes);
             $cLineas    = count($size);
+            $arrDetalles = array();
+
             for ($l = 0; $l < $cLineas; $l++) {
 
                 $_detalles     = explode(",", $size[$l]);
@@ -565,6 +568,7 @@ class DetalleOrdenController extends Controller
             $Data[$k]['Detalles']       = $arrDetalles;
             $k++;
         }
-        return response()->json($Data);
+
+        return $Data;
     }
 }
