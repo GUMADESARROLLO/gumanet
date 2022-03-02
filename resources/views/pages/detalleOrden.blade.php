@@ -413,12 +413,13 @@
     <div class="row mt-5">
         <div class="col-xl-12">
             <div class="card">
-                <div class="card-header mt-3">
-                    <h5 class="text-secondary">ORDEN DE PRODUCCIÓN</h5>
+                <div class="card-header pt-3 pb-4 pl-2">
+                    <h6 class="text-muted text-left ml-0 pl-0 pb-2">
+                        Ordenes de producción</h6>
                 </div>
                 <div class="card-block table-border-style">
                     <div class="table-responsive">
-                        <div class="table-responsive mt-3 mb-2">
+                        <div class="table-responsive mb-2">
                             <table class="table table-bordered table-hover" width="99.9%" id="dtDetalles">
 
                             </table>
