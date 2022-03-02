@@ -14,7 +14,7 @@
                 <input type="text" id="InputDtShowSearchFilterArt" class="form-control" placeholder="Buscar en ordenes de produccion" aria-label="Username" aria-describedby="basic-addon1">
             </div>
         </div>
-        
+
     </div>
     <!-- modal detalle Orden -->
     <div class="modal fade bd-example-modal-xl" data-backdrop="static" data-keyboard="false" id="mdDetalleOrd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -409,17 +409,15 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row mt-5">
         <div class="col-xl-12">
             <div class="card">
-                <div class="card-header pt-3 pb-4 pl-2">
-                    <h6 class="text-muted text-left ml-0 pl-0 pb-2">
-                        Ordenes de producción</h6>
-                </div>
-                <div class="card-block table-border-style">
+                <p class="text-left mt-3 ml-4 pb-2 font-weight-bolder" style="font-size: 1.3rem!important">
+                    Ordenes de producción</p>
+                <div class="card-block table-border-style mx-4 mt-2">
                     <div class="table-responsive">
-                        <div class="table-responsive mb-2">
+                        <div class="table-responsive mb-2 ">
                             <table class="table table-bordered table-hover" width="99.9%" id="dtDetalles">
 
                             </table>
