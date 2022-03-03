@@ -699,62 +699,51 @@
   <div class="modal-dialog modal-xl" role="document" >
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="titleModal-01">Comportamientos</h5>
+        <h5 class="modal-title" id="titleModal-comportamiento">Comportamientos</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body" id="bodyModal">        
-        <div class="row">
-            <div class="col-sm-3">                    
-                <p class="text-muted m-0" id=""><br></p>
-                <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="XXXXXX">Anual de Cliente</p>
-            </div>
-            <div class="col-sm-3">                    
+        <div class="row" id="id_row_cliente">            
+            <div class="col-sm-4">                    
                 <p class="text-muted m-0" id="id_avg_anterior_cliente_nombre">text</p>
                 <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_avg_anterior_cliente_prom">0.00</p>
             </div>
-            <div class="col-sm-3 border-right">
+            <div class="col-sm-4 border-right">
                 <p class="text-muted m-0" id="id_avg_actual_cliente_nombre">text</p>
                 <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_avg_actual_cliente_prom">0.00</p>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <p class="text-muted m-0">Diferencia en %</p>
                 <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_dif_cliente">0.00</p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-3">                    
-                <p class="text-muted m-0" id=""><br></p>
-                <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="XXXXXX">Ticket Promedio Anual</p>
-            </div>
-            <div class="col-sm-3">                    
+        <div class="row" id="id_row_ticket">            
+            <div class="col-sm-4">                    
                 <p class="text-muted m-0" id="id_avg_anterior_ticket_nombre">text</p>
                 <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_avg_anterior_ticket_prom">0.00</p>
             </div>
-            <div class="col-sm-3 border-right">
+            <div class="col-sm-4 border-right">
                 <p class="text-muted m-0" id="id_avg_actual_ticket_nombre">text</p>
                 <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_avg_actual_ticket_prom">0.00</p>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <p class="text-muted m-0">Diferencia en %</p>
                 <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_dif_ticket">0.00</p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-3">                    
-                <p class="text-muted m-0" id=""><br></p>
-                <p class="font-weight-bolder" style="font-size: 1.3rem!important" >SKU Anuales</p>
-            </div>
-            <div class="col-sm-3">                    
+        <div class="row" id="id_row_sku">
+            
+            <div class="col-sm-4">                    
                 <p class="text-muted m-0" id="id_avg_anterior_sku_nombre">text</p>
                 <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_avg_anterior_sku_prom">0.00</p>
             </div>
-            <div class="col-sm-3 border-right">
+            <div class="col-sm-4 border-right">
                 <p class="text-muted m-0 " id="id_avg_actual_sku_nombre">text</p>
                 <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_avg_actual_sku_prom">0.00</p>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <p class="text-muted m-0">Diferencia en %</p>
                 <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_difs_skus">0.00</p>
             </div>
