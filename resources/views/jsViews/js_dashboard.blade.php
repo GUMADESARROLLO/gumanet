@@ -93,7 +93,7 @@ $(document).ready(function() {
         //Clientes , SKUs , TicketProm
         var Titulo = ""
         if (Grafica=="Clientes") {
-            var Titulo = "Promedio Comportamiento de Cliente Anual"
+            var Titulo = "Comportamiento de Cliente Anual"
             
             $("#id_row_cliente").show()
             $("#id_row_ticket").hide()
@@ -119,7 +119,7 @@ $(document).ready(function() {
             $('#id_dif_cliente').html(dif_cliente_html);  
 
         } else if(Grafica=="SKUs") {
-            var Titulo = "Promedio Comportamiento SKU Anual"
+            var Titulo = "Comportamiento de SKU Anual"
 
             $("#id_row_cliente").hide()
             $("#id_row_ticket").hide()
@@ -145,7 +145,7 @@ $(document).ready(function() {
             $('#id_difs_skus').html(dif_sku_html);
 
         }else{
-            var Titulo = "Promedio Comportamiento de Ticket Promedio Anual"
+            var Titulo = "Comportamiento de Ticket Promedio Anual "
             $("#id_row_cliente").hide()
             $("#id_row_ticket").show()
             $("#id_row_sku").hide()
