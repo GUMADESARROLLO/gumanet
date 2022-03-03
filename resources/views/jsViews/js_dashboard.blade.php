@@ -90,7 +90,6 @@ $(document).ready(function() {
 
     function promedio_comportamiento(Grafica) {
 
-        //Clientes , SKUs , TicketProm
         var Titulo = ""
         if (Grafica=="Clientes") {
             var Titulo = "Comportamiento de Cliente Anual"
