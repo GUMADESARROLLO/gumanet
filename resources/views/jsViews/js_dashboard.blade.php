@@ -68,6 +68,7 @@ $(document).ready(function() {
     grafRealVentasMensuales(tipo,0);
     reordenandoPantalla();
     actualizandoGraficasDashboard(mes, anio, tipo);
+
     
     Highcharts.setOptions({
         lang: {
@@ -77,6 +78,103 @@ $(document).ready(function() {
         },
         colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
     });
+    function getAvg(dta) {
+        const total = dta.reduce((acc, c) => acc + c, 0);        
+        return total / dta.length;
+    }
+
+    function format_number(Numero,Formato){
+        return numeral(Numero).format(Formato);
+    }
+
+
+    function promedio_comportamiento(Grafica) {
+
+        var Titulo = ""
+        if (Grafica=="Clientes") {
+            var Titulo = "Comportamiento de Cliente Anual"
+            
+            $("#id_row_cliente").show()
+            $("#id_row_ticket").hide()
+            $("#id_row_sku").hide()
+
+            //Promedio Comportamiento Anual de Clientes
+            const avg_anterior_cliente_prom     = getAvg(ClientesAnuales.series[0].data);
+            const avg_anterior_cliente_nombre   = ClientesAnuales.series[0].name
+
+            const avg_actual_cliente_prom       = getAvg(ClientesAnuales.series[1].data);
+            const avg_actual_cliente_nombre     = ClientesAnuales.series[1].name
+
+            var dif_cliente = 0;
+
+            $('#id_avg_anterior_cliente_prom').text(format_number(avg_anterior_cliente_prom,'0,0.00'));
+            $('#id_avg_anterior_cliente_nombre').text(avg_anterior_cliente_nombre);
+            $('#id_avg_actual_cliente_prom').text(format_number(avg_actual_cliente_prom,'0,0.00'));
+            $('#id_avg_actual_cliente_nombre').text(avg_actual_cliente_nombre);
+
+            dif_cliente  = (( avg_actual_cliente_prom / avg_anterior_cliente_prom ) - 1 ) * 100;
+            cls_1 = (dif_cliente <0 )? 'text-danger font-weight-bolder':'text-success font-weight-bolder';
+            dif_cliente_html = '<p class="font-weight-bolder '+cls_1+'">'+format_number(dif_cliente,'0,0.00')+'</p>';
+            $('#id_dif_cliente').html(dif_cliente_html);  
+
+        } else if(Grafica=="SKUs") {
+            var Titulo = "Comportamiento de SKU Anual"
+
+            $("#id_row_cliente").hide()
+            $("#id_row_ticket").hide()
+            $("#id_row_sku").show()
+
+            //Promedio Comportamiento de SKU Anuales
+            const avg_anterior_sku_prom         = getAvg(SkusAnual.series[0].data);
+            const avg_anterior_sku_nombre       = SkusAnual.series[0].name
+
+            const avg_actual_sku_prom           = getAvg(SkusAnual.series[1].data);
+            const avg_actual_sku_nombre         = SkusAnual.series[1].name    
+
+            var dif_skus = 0;
+
+            $('#id_avg_anterior_sku_prom').text(format_number(avg_anterior_sku_prom,'0,0.00'));
+            $('#id_avg_anterior_sku_nombre').text(avg_anterior_sku_nombre);
+            $('#id_avg_actual_sku_prom').text(format_number(avg_actual_sku_prom,'0,0.00'));
+            $('#id_avg_actual_sku_nombre').text(avg_actual_sku_nombre);
+
+            dif_skus  = (( avg_actual_sku_prom / avg_anterior_sku_prom ) - 1 ) * 100;
+            cls_1 = (dif_skus <0 )? 'text-danger font-weight-bolder':'text-success font-weight-bolder';
+            dif_sku_html = '<p class="font-weight-bolder '+cls_1+'">'+format_number(dif_skus,'0,0.00')+'</p>';
+            $('#id_difs_skus').html(dif_sku_html);
+
+        }else{
+            var Titulo = "Comportamiento de Ticket Promedio Anual "
+            $("#id_row_cliente").hide()
+            $("#id_row_ticket").show()
+            $("#id_row_sku").hide()
+
+            //Promedio Comportamiento de Ticket Promedio Anual
+            const avg_anterior_ticket_prom       = getAvg(TicketProm.series[0].data);
+            const avg_anterior_ticket_nombre     = TicketProm.series[0].name
+
+            const avg_actual_ticket_prom         = getAvg(TicketProm.series[1].data);
+            const avg_actual_ticket_nombre       = TicketProm.series[1].name
+            
+            var dif_ticket = 0;
+            
+            $('#id_avg_anterior_ticket_prom').text("C$ " + format_number(avg_anterior_ticket_prom,'0,0.00'));
+            $('#id_avg_anterior_ticket_nombre').text(avg_anterior_ticket_nombre);
+            $('#id_avg_actual_ticket_prom').text("C$ " + format_number(avg_actual_ticket_prom,'0,0.00'));
+            $('#id_avg_actual_ticket_nombre').text(avg_actual_ticket_nombre);
+
+            dif_ticket = (( avg_actual_ticket_prom / avg_anterior_ticket_prom ) - 1 ) * 100;
+            cls_1 = (dif_ticket <0 )? 'text-danger font-weight-bolder':'text-success font-weight-bolder';
+            dif_ticket_html = '<p class="font-weight-bolder '+cls_1+'">'+format_number(dif_ticket,'0,0.00')+'</p>';
+            $('#id_dif_ticket').html(dif_ticket_html);    
+        }
+
+        $('#titleModal-comportamiento').text(Titulo);
+
+        $('#mdl_Promedios_Comportamiento').modal('show')
+        
+
+    }
 
     //GRAFICA VENTAS MENSUALES
     ventasMensuales = {
@@ -151,6 +249,7 @@ $(document).ready(function() {
                 text: ''
             }                
         },
+        
         plotOptions: {
             series: {
                 allowPointSelect: false,
@@ -164,6 +263,14 @@ $(document).ready(function() {
                 events: {
                     legendItemClick: function() {
                         return false;
+                    }
+                },
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: function() {
+                            promedio_comportamiento("Clientes")
+                        }
                     }
                 }
             },
@@ -221,6 +328,14 @@ $(document).ready(function() {
                     legendItemClick: function() {
                         return false;
                     }
+                },
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: function() {
+                            promedio_comportamiento("SKUs")
+                        }
+                    }
                 }
             },
         },
@@ -276,6 +391,14 @@ $(document).ready(function() {
                 events: {
                     legendItemClick: function() {
                         return false;
+                    }
+                },
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: function() {
+                            promedio_comportamiento("TicketProm")
+                        }
                     }
                 }
             },
@@ -1762,9 +1885,11 @@ function graf_Comportamiento_clientes_anual() {
             ClientesAnuales.tooltip = {
                 pointFormat : temporal
             };
+            
             var chart = new Highcharts.Chart(ClientesAnuales);
             
         })    
+        
     })    
         
     
