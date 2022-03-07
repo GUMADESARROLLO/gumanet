@@ -359,6 +359,11 @@ class inventario_controller extends Controller
 		return response()->json($obj);
 	}
 
+	public function getMargenArticulos($articulo) {
+		$obj = inventario_model::getMargenArticulos($articulo);
+		return response()->json($obj);
+	}
+
 	public function getCostosArticulos($articulo) {
 		$obj = inventario_model::getCostosArticulos($articulo);
 		return response()->json($obj);

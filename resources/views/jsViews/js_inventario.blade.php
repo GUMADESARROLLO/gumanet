@@ -234,6 +234,9 @@ $('nav .nav.nav-tabs a').click(function(){
         case 'navCostos':        
             getCostos(articulo_g)
         break;
+        case 'navMargen':        
+            getMargen(articulo_g)
+        break;
         case 'navOtros':        
             getOtros(articulo_g)
         break;
@@ -289,7 +292,29 @@ function getDataBodega(articulo) {
         }
     });
 }
-
+function getMargen(articulo) {
+    $("#tblMargen").dataTable({
+        responsive: true,
+        "autoWidth":false,
+        "ajax":{
+            "url": "objMargen/"+articulo,
+            'dataSrc': '',
+        },
+        "searching": false,
+        "destroy": true,
+        "paging":   false,
+        "columns":[
+            { "data": "NIVEL_PRECIO"},
+            { "data": "PRECIO" }
+        ],
+        "info": false,
+        "language": {            
+            "zeroRecords": "No hay datos que mostrar",
+            "emptyTable": "N/D",
+            "loadingRecords": "Cargando...",
+        }
+    });
+}
 function getPrecios(articulo) {
     $("#tblPrecios").dataTable({
         responsive: true,

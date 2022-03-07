@@ -112,6 +112,7 @@
             <a class="nav-item nav-link" id="navBonificados" data-toggle="tab" href="#nav-boni" role="tab" aria-controls="nav-boni" aria-selected="false">Bonificados</a>
             @if( Auth::User()->role == 1  || Auth::User()->role== 2 || Auth::User()->role== 6 || Auth::User()->role== 7 )
               <a class="nav-item nav-link" id="navCostos" data-toggle="tab" href="#nav-costos" role="tab" aria-controls="nav-trans" aria-selected="false">Costos</a>
+              <a class="nav-item nav-link" id="navMargen" data-toggle="tab" href="#nav-margen" role="tab" aria-controls="nav-margen" aria-selected="false">Margen</a>
             @endif
             <a class="nav-item nav-link" id="navTransaccion" data-toggle="tab" href="#nav-trans" role="tab" aria-controls="nav-trans" aria-selected="false">Transacciones</a>
             <a class="nav-item nav-link" id="navOtros" data-toggle="tab" href="#nav-otros" role="tab" aria-controls="nav-otros" aria-selected="false">Otros</a>
@@ -233,6 +234,22 @@
                         <td id="id_ult_prec" class="dt-right">0</td>
                       </tr>
                     </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="nav-margen" role="tabpanel" aria-labelledby="navMargen">
+            <div class="row">
+              <div class="col-sm-12">
+                
+                <table id="tblMargen" class="table table-bordered mt-3">
+                  <thead class="bg-blue text-light">
+                  <tr>
+                      <th>CANAL</th>
+                      <th>MARGEN BRUTO</th>
+                  </tr>
+                  </thead>
                 </table>
               </div>
             </div>
