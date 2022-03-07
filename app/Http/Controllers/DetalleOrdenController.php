@@ -533,21 +533,21 @@ class DetalleOrdenController extends Controller
 
         foreach ($detalle_orden as $detalle => $key) {
 
-            $Data[$k]['anio']    = $key->year_;
-            $mes =  DateTime::createFromFormat('!m', $key->mes_);
-            $Data[$k]['mes']     =   $this->getMes($mes->format('F'));
-            $Data[$k]['contOrder']        = $key->contOrder;
-            $Data[$k]['prod_real_total']       = number_format($key->prod_real_mensual,2);
-            $Data[$k]['prod_total_total']     = number_format($key->prod_total_mensual, 2);
-            $Data[$k]['prod_real_ton_total']  = number_format($key->prod_real_tonelada_mensual, 2);
-            $Data[$k]['costo_total_total']    = number_format($key->costo_total_mensual, 4);
-            $Data[$k]['costo_real_ton_total'] = number_format($key->costo_real_tonelada_mensual, 4);
-            $Data[$k]['ct_dolar_total']       = number_format($key->costo_total_dolar_mensual, 4);
-            $Data[$k]['detalle_general']       = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
-            $lista_ordenes  =  $key->Detalles;
-            $size     = explode(";", $lista_ordenes);
-            $cLineas    = count($size);
-            $arrDetalles = array();
+            $Data[$k]['anio']                   = $key->year_;
+            $mes                                = DateTime::createFromFormat('!m', $key->mes_);
+            $Data[$k]['mes']                    = $this->getMes($mes->format('F'));
+            $Data[$k]['contOrder']              = $key->contOrder;
+            $Data[$k]['prod_real_total']        = number_format($key->prod_real_mensual,2);
+            $Data[$k]['prod_total_total']       = number_format($key->prod_total_mensual, 2);
+            $Data[$k]['prod_real_ton_total']    = number_format($key->prod_real_tonelada_mensual, 2);
+            $Data[$k]['costo_total_total']      = number_format($key->costo_total_mensual / $key->contOrder, 4);
+            $Data[$k]['costo_real_ton_total']   = number_format($key->costo_real_tonelada_mensual / $key->contOrder, 4);
+            $Data[$k]['ct_dolar_total']         = number_format($key->costo_total_dolar_mensual / $key->contOrder, 4);
+            $Data[$k]['detalle_general']        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+            $lista_ordenes                      =  $key->Detalles;
+            $size                               = explode(";", $lista_ordenes);
+            $cLineas                            = count($size);
+            $arrDetalles                        = array();
 
             for ($l = 0; $l < $cLineas; $l++) {
 

@@ -758,6 +758,43 @@ class inventario_model extends Model {
         $sql_server->close();
         return $json;
     }
+    public static function getMargenArticulos($articulo) {
+        
+        $sql_server     = new \sql_server();
+        $sql_exec       = '';
+        $request        = Request();
+        $company_user   = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        switch ($company_user) {
+            case '1':
+                $sql_exec = 'EXEC sp_iweb_margen '."'".$articulo."'".' ';
+                break;
+            case '2':
+                $sql_exec = 'EXEC sp_gp_iweb_precios '."'".$articulo."'".' ';
+                break;
+            case '3':
+                return false;
+                break;
+            case '4':
+                $sql_exec = 'EXEC sp_inn_iweb_precios '."'".$articulo."'".' ';
+                break;   
+            default:                
+                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
+                break;
+        }        
+
+        $i = 0;
+        $json = array();
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+
+        foreach ($query as $fila) {
+            $json[$i]["NIVEL_PRECIO"] = $fila["NIVEL_PRECIO"];
+            $json[$i]["PRECIO"] = ($fila["PRECIO"]=="") ? "N/D" : number_format($fila["PRECIO"],2);
+            $i++;
+        }
+
+        $sql_server->close();
+        return $json;
+    }
     public static function getCostosArticulos($articulo) {
         
         $sql_server     = new \sql_server();
