@@ -366,7 +366,7 @@
         </div>
         <br>
         <div class="row" id="id_detalles_articulos" >
-        <div class="col-12 col-lg-6 col-xl">
+            <div class="col-12 col-lg-6 col-xl">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row align-items-center gx-0">
@@ -403,7 +403,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-6 col-xl">
+                    <div class="col-12 col-lg-2 col-xl">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row align-items-center gx-0">
@@ -414,8 +414,60 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                                        
-                </div>           
+                    </div> 
+                                                 
+                </div>
+            <div>         
+            <div class="row mt-3" >
+            <div class="col-12 col-lg-6 col-xl">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center gx-0">
+                                <div class="col">
+                                    <p class="text-muted mb-0">CANT. DISP. B002. :</p>
+                                    <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_disp_cant"></p>                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                    <div class="col-12 col-lg-2 col-xl">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center gx-0">
+                                <div class="col">
+                                    <p class="text-muted mb-0">CANT. DISP. UNDS. B002. :</p>
+                                    <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_disp_unds"></p>                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-12 col-lg-2 col-xl">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center gx-0">
+                                <div class="col">
+                                    <p class="text-muted mb-0">PROM. UNDS. MES. 2022 :</p>
+                                    <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_prom_mes_actual"> 0.00</p>                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-2 col-xl">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center gx-0">
+                                <div class="col">
+                                    <p class="text-muted mb-0">CANT. DISP. MES. :</p>
+                                    <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_disp_meses"></p>                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
         <div class="row" >
 
         <div class="col-sm-12 mt-2" >
@@ -750,6 +802,32 @@
                 <p class="text-muted m-0">Diferencia en %</p>
                 <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_difs_skus">0.00</p>
             </div>
+        </div>
+
+        <div class="row col-sm-12" id="id_tbl_clientes_no_facturados">
+            
+            <div class="col-sm-10">
+                <div class="input-group mt-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                    </div>
+                    <input type="text" id="Search_cliente_no_facturado" class="form-control" placeholder="Buscar...">
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <select class="custom-select" id="cantRowsDtTemp">
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="-1">Todo</option>
+                    </select>
+                </div>
+            </div>
+            <table class="table table-striped table-bordered table-sm post_back mt-1" width="100%" id="tblClientes">
+                <thead class="bg-blue text-light"></thead>
+            </table>
         </div>
       </div>
     </div>
