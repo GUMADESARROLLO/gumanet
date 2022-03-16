@@ -1449,7 +1449,10 @@ class dashboard_model extends Model {
         if (count($query)>0) {
 
             $metas = dashboard_model::getVentasMes($mes, $anio, $company_user, 0);
-            $clientesMeta = clientes_x_rutas::sum('cantidad');
+            //$clientesMeta = clientes_x_rutas::sum('cantidad');
+            $sql_count="SELECT T0.CLIENTE  FROM Softland.umk.FACTURA T0  WHERE YEAR ( T0.FECHA ) = YEAR ( GETDATE( ) ) - 1 	GROUP BY T0.CLIENTE";
+            $qCount = $sql_server->fetchArray($sql_count, SQLSRV_FETCH_ASSOC);
+            $clientesMeta = count($qCount);
 
             if (count($metas)>0) {
                 $array[0]['title'] = 'real';
@@ -2137,16 +2140,34 @@ class dashboard_model extends Model {
         $i = 0;
         $json = array();
         $array = array();
+
         $clientesMeta = clientes_x_rutas::sum('cantidad');
+
+        $sql_count="SELECT T0.CLIENTE  FROM Softland.umk.FACTURA T0  WHERE YEAR ( T0.FECHA ) = YEAR ( GETDATE( ) ) - 1 	GROUP BY T0.CLIENTE";
+        $qCount = $sql_server->fetchArray($sql_count, SQLSRV_FETCH_ASSOC);
+        $Master_Cliente = count($qCount);
+
         if($elemento=="[Cod. Cliente]"){
+
             for ($n = 1; $n <= 12; $n++) {
             
-                ($n > 0 ) ? (array_push($array, $clientesMeta)):false;
+                ($n > 0 ) ? (array_push($array, $Master_Cliente)):false;
                 
-                $json[2]['name'] = "META";
+                $json[2]['name'] = "Master Cliente";
                 $json[2]['venta'] = $array;
             }
             $array = array();
+
+            for ($m = 1; $m <= 12; $m++) {
+            
+                ($n > 0 ) ? (array_push($array, $clientesMeta)):false;
+                
+                $json[3]['name'] = "META";
+                $json[3]['venta'] = $array;
+            }
+            $array = array();
+
+
         }
 
         if($elemento=='TICKETPROM'){
