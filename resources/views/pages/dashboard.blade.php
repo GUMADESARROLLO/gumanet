@@ -366,7 +366,7 @@
         </div>
         <br>
         <div class="row" id="id_detalles_articulos" >
-        <div class="col-12 col-lg-6 col-xl">
+            <div class="col-12 col-lg-6 col-xl">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row align-items-center gx-0">
@@ -415,7 +415,11 @@
                             </div>
                         </div>
                     </div> 
-                    <div class="col-12 col-lg-6 col-xl">
+                                                 
+                </div>
+            <div>         
+            <div class="row mt-3" >
+            <div class="col-12 col-lg-6 col-xl">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row align-items-center gx-0">
@@ -444,14 +448,26 @@
                             <div class="card-body">
                                 <div class="row align-items-center gx-0">
                                 <div class="col">
+                                    <p class="text-muted mb-0">PROM. UNDS. MES. 2022 :</p>
+                                    <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_prom_mes_actual"> 0.00</p>                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-2 col-xl">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center gx-0">
+                                <div class="col">
                                     <p class="text-muted mb-0">CANT. DISP. MES. :</p>
                                     <p class="font-weight-bolder text-center" style="font-size: 1.3rem!important" id="id_disp_meses"></p>                                    
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>                              
-                </div>           
+                    </div>
+            </div>
         <div class="row" >
 
         <div class="col-sm-12 mt-2" >

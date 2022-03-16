@@ -141,7 +141,7 @@ $(document).ready(function() {
                             "next": "Siguiente",
                             "previous": "Anterior"
                         },
-                        "info":       "Existen _MAX_ Clientes No Facturados",
+                        "info":       " ",
                         "infoEmpty":  "",
                         "infoPostFix":    "",
                         "infoFiltered":   "",
@@ -152,15 +152,16 @@ $(document).ready(function() {
                 'columns': [
                     {"title": "CLIENTE",                "data": "CLIENTE"},
                     {"title": "NOMBRE",                 "data": "NOMBRE_CLIENTE"},
-                    {"title": "ULTIM. COMPRA",          "data": "ULTIMA_COMPRA"},
-                    {"title": "DIFERENCIAS",          "data": "Diferencia"},
+                    {"title": "FECHA ULTIMA COMPRA",    "data": "ULTIMA_COMPRA"},
+                    {"title": "TIEMPO SIN COMPRAR",     "data": "Diferencia"},
                 ],
                 "columnDefs": [
-                    {"className": "dt-center","targets": [0,1,2,3]},
+                    {"className": "dt-center","targets": [0,2,3]},
                     {"className": "dt-right","targets": []},
+                    {"className": "dt-left","targets": [1]},
                     {"visible": false,"searchable": false,"targets": []},
                     {"width": "5%","targets": [0,2,3]},
-                    {"width": "15%","targets": [1]},
+                    {"width": "10%","targets": [1]},
                 ],
             });
 
@@ -998,7 +999,8 @@ $(document).ready(function() {
                             porc_contrib    : _this.dtpco,
                             dttie           : _this.dttie,
                             dttub           : _this.dttub,
-                            dttb2           : _this.dttb2
+                            dttb2           : _this.dttb2,
+                            dtpro           : _this.dtpro
                         })
 
 
@@ -1026,9 +1028,10 @@ $(document).ready(function() {
                 temporal += '<span style="color:black">\u25CF</span> COST. PROM. UNIT. :<b>C$ ' + numeral(Info.dtcpm).format('0,0.00') + ' </b><br/>';
                 temporal += '<span style="color:black">\u25CF</span> CONTRIBUCION.  : <b>C$ ' +  numeral(Info.dtmco).format('0,0.00') + ' </b><br/>';
                 temporal += '<span style="color:black">\u25CF</span> % MARGEN BRUTO: <b>% ' + numeral(Info.dtpco).format('0,0.00') + ' </b><br/>';
-                temporal += '<span style="color:black">\u25CF</span> DISP. CANT. B002: <b> ' + numeral(Info.dttb2).format('0,0.00') + ' </b><br/>';
-                temporal += '<span style="color:black">\u25CF</span> DISP. UNIDADES: <b> ' + numeral(Info.dttub).format('0,0.00') + ' </b><br/>';
-                temporal += '<span style="color:black">\u25CF</span> DISP. MES: <b> ' + numeral(Info.dttie).format('0,0.00') + ' </b><br/>';
+                temporal += '<span style="color:black">\u25CF</span> CANT. DISP. B002: <b> ' + numeral(Info.dttb2).format('0,0.00') + ' </b><br/>';
+                temporal += '<span style="color:black">\u25CF</span> CANT. DISP. UNDS. B002: <b> ' + numeral(Info.dttub).format('0,0.00') + ' </b><br/>';
+                temporal += '<span style="color:black">\u25CF</span> PROM. UNDS MES 2022: <b> ' + numeral(Info.dtpro).format('0,0.00') + ' </b><br/>';
+                temporal += '<span style="color:black">\u25CF</span> CANT. DISP. MES: <b> ' + numeral(Info.dttie).format('0,0.00') + ' </b><br/>';
 
 
                 
@@ -1267,6 +1270,8 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             dttie :  x['dtTIE'],
                             dttb2 :  x['dtTB2'],
                             dttub :  x['dtTUB'],
+                            dtpro :  x['dtPRO'],
+
                         })
 
                         title.push(x['name'])
@@ -3085,7 +3090,8 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
 
                     $('#id_disp_cant').empty().text('C$ '+ numeral(cliente[0].dttb2).format('0,0.00'));
                     $('#id_disp_unds').empty().text('C$ '+ numeral(cliente[0].dttub).format('0,0.00'));
-                    $('#id_disp_meses').empty().text('C$ '+ numeral(cliente[0].dttie).format('0,0.00'));
+                    $('#id_disp_meses').empty().text(numeral(cliente[0].dttie).format('0,0.00'));
+                    $('#id_prom_mes_actual').empty().text(numeral(cliente[0].dtpro).format('0,0.00'));
 
                     $('#txtMontoMeta').text('TOT. FACT. :');
                     $('#MontoMeta').text(numeral('C$ '+ cliente[0].total_fact).format('0,0.00'));

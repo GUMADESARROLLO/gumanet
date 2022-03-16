@@ -388,37 +388,40 @@ class dashboard_model extends Model {
         $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
         $idPeriodo = Metacuota_gumanet::where(['Fecha' => $fecha,'IdCompany'=> $company_user])->pluck('IdPeriodo');
 
+        $UND_NEGOCIO = '';
+
         switch ($company_user) {
             case '1':               
-                //$sql_exec = "EXEC Ventas_Rutas ".$mes.", ".$anio;
-                $sql_exec= "SELECT 
-                TblLastPurchase.CLIENTE,
-                T0.NOMBRE_CLIENTE, 
-              MAX(T0.FECHA) ULTIMA_COMPRA,
-              dbo.get_Exact_Date_diff( MAX(T0.FECHA), GETDATE()) as Diferencia
-            FROM  Softland.UMK.FACTURA T0
-                       CROSS APPLY (
-                           SELECT TOP 1 * 
-                           FROM Softland.UMK.FACTURA T1 
-                           WHERE T1.FACTURA = T0.FACTURA
-                           ORDER BY T0.FECHA DESC) AS TblLastPurchase							 
-                                     WHERE YEAR(T0.FECHA) = YEAR(GETDATE()) - 1 
-                                     AND T0.CLIENTE NOT IN (SELECT T2.CLIENTE FROM Softland.umk.FACTURA T2 WHERE YEAR(T2.FECHA) = ".$anio." AND MONTH( T2.FECHA ) = ".$mes." AND T2.RUTA NOT IN ('F01','F12') GROUP BY T2.CLIENTE)
-            GROUP BY T0.NOMBRE_CLIENTE,TblLastPurchase.CLIENTE";
+                $UND_NEGOCIO = 'umk';
                 break;
             case '2':
-                //$sql_exec = "EXEC Ventas_Rutas_GF ".$mes.", ".$anio;
+                $UND_NEGOCIO = 'guma';
             break;
             case '3':
                 $sql_exec = "";
                 break;     
             case '4':
-                //$sql_exec = "EXEC Ventas_Rutas_INV ".$mes.", ".$anio;
+                $UND_NEGOCIO = 'innova';
                 break;       
             default:                
                 dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
                 break;
         }
+
+        $sql_exec= "SELECT 
+                TblLastPurchase.CLIENTE,
+                T0.NOMBRE_CLIENTE, 
+            MAX(T0.FECHA) ULTIMA_COMPRA,
+            dbo.get_Exact_Date_diff( MAX(T0.FECHA), GETDATE()) as Diferencia
+            FROM  Softland.".$UND_NEGOCIO.".FACTURA T0
+                    CROSS APPLY (
+                        SELECT TOP 1 * 
+                        FROM Softland.".$UND_NEGOCIO.".FACTURA T1 
+                        WHERE T1.FACTURA = T0.FACTURA
+                        ORDER BY T0.FECHA DESC) AS TblLastPurchase							 
+                                    WHERE YEAR(T0.FECHA) = YEAR(GETDATE()) - 1 
+                                    AND T0.CLIENTE NOT IN (SELECT T2.CLIENTE FROM Softland.".$UND_NEGOCIO.".FACTURA T2 WHERE YEAR(T2.FECHA) = ".$anio." AND MONTH( T2.FECHA ) = ".$mes." AND T2.RUTA NOT IN ('F01','F12') GROUP BY T2.CLIENTE)
+            GROUP BY T0.NOMBRE_CLIENTE,TblLastPurchase.CLIENTE";
 
 
         $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
@@ -1320,7 +1323,8 @@ class dashboard_model extends Model {
                 
                 $json[$i]['dtTIE']      = $TIEMPO_ESTIMADO;   
                 $json[$i]['dtTB2']      = $TOTAL_B002;   
-                $json[$i]['dtTUB']      = $TOTAL_UND_B002;   
+                $json[$i]['dtTUB']      = $TOTAL_UND_B002; 
+                $json[$i]['dtPRO']      = $PromedioActual;
                 
                 if ($company_user==1) {
                     $json[$i]['M1']         = $key['Farmacias'];
