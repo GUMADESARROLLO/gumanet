@@ -2162,7 +2162,7 @@ class dashboard_model extends Model {
             
                 ($n > 0 ) ? (array_push($array, $clientesMeta)):false;
                 
-                $json[3]['name'] = "META";
+                $json[3]['name'] = "Meta";
                 $json[3]['venta'] = $array;
             }
             $array = array();

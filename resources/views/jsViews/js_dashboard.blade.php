@@ -141,7 +141,7 @@ $(document).ready(function() {
                             "next": "Siguiente",
                             "previous": "Anterior"
                         },
-                        "info":       " ",
+                        "info":       "Clientes que no han comprado del master",
                         "infoEmpty":  "",
                         "infoPostFix":    "",
                         "infoFiltered":   "",
