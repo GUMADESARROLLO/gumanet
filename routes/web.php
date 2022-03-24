@@ -213,3 +213,9 @@ Route::post('push_recibo', 'recibos_controller@push_recibo');
 Route::post('push_verificado', 'recibos_controller@push_verificado');
 Route::get('print_resumen', 'recibos_controller@print_resumen');
 
+
+// RUTAS PARA PROMOCIONES DE INNOVA
+Route::get('promocion', 'promocion_controller@index');
+Route::get('getPromocion', 'promocion_controller@getPromocion');
+Route::post('getHistorialFactura','promocion_controller@getHistorialFactura');
+Route::get('getResumen', 'promocion_controller@getResumen');
