@@ -1,7 +1,7 @@
 <script>
 $(document).ready(function() {
     //AGREGO LA RUTA AL NAVEGADOR
-    $("#item-nav-01").after(`<li class="breadcrumb-item active">Promoción</li>`);
+    $("#item-nav-01").after(`<li class="breadcrumb-item active">Promoción Vueno</li>`);
     $('[data-toggle="tooltip"]').tooltip()
     dataPromocion(0,0);
     Resumen(0,0)
@@ -94,6 +94,8 @@ $('#dtResumen').DataTable({
                 headerTitle =  "PH VUENO 1000 HS + 05 BLISTERS IBUPROFENO 400 MG";
                 else if ( headerText == "SKU 05" )
                 headerTitle =  "PH VUENO 1000 HS + 1 CAJA ACIDO ACETILSALICILICO 100 MG";
+                else if ( headerText == "VALOR" )
+                headerTitle =  "";
                 $td.attr('title', headerTitle);
             });
             $('#dtResumen thead th[title]').tooltip({
@@ -116,7 +118,7 @@ $('#dtResumen').DataTable({
         }, 0 );
 
         $( api.column( 0 ).footer() ).html(
-                'C$ '+ numeral(total).format('0,0.00') +' TOTAL'
+                numeral(total).format('0,0.00') +' TOTAL'
         );        
     },
 });;

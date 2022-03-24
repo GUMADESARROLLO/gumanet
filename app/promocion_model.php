@@ -21,16 +21,19 @@ class promocion_model extends Model
         
         
 
-        foreach ($query as $key) {     
-            $data[$i]["DETALLE"]        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';       
-            $data[$i]['FACTURA']        = $key['FACTURA'];
-            $data[$i]['CLIENTE']        = $key['CLIENTE'];
-            $data[$i]['NOMBRE_CLIENTE'] = $key['NOMBRE_CLIENTE'];
-            $data[$i]['FECHA']          = $key['Dia']->format('d/m/Y');;
-            $data[$i]['VENDEDOR']       = $key['Ruta'];
-            $data[$i]['TOTAL']          = number_format($key['Promo'],2);
-            $data[$i]['TOTAL_FACTURA']  = $key['Total'];
-            $i++;
+        foreach ($query as $key) {  
+            if($key['Promo'] > 0){
+                $data[$i]["DETALLE"]        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';       
+                $data[$i]['FACTURA']        = $key['FACTURA'];
+                $data[$i]['CLIENTE']        = $key['CLIENTE'];
+                $data[$i]['NOMBRE_CLIENTE'] = $key['NOMBRE_CLIENTE'];
+                $data[$i]['FECHA']          = $key['Dia']->format('d/m/Y');;
+                $data[$i]['VENDEDOR']       = $key['Ruta'];
+                $data[$i]['TOTAL']          = number_format($key['Promo'],2);
+                $data[$i]['TOTAL_FACTURA']  = $key['Total'];
+                $i++;
+            }   
+            
         }
         $sql_server->close();        
 

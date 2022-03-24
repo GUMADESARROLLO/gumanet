@@ -217,7 +217,7 @@ Route::get('print_resumen', 'recibos_controller@print_resumen');
 
 
 // RUTAS PARA PROMOCIONES DE INNOVA
-Route::get('promocion', 'promocion_controller@index');
+Route::get('promocion_Vueno', 'promocion_controller@index');
 Route::get('getPromocion', 'promocion_controller@getPromocion');
 Route::post('getHistorialFactura','promocion_controller@getHistorialFactura');
 Route::get('getResumen', 'promocion_controller@getResumen');
