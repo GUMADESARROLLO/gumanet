@@ -241,8 +241,6 @@ class inventario_model extends Model {
         T0.ARTICULO, 
         DESCRIPCION,
         T0.LOTE, 
-        CONVERT ( CHAR, T1.FECHA_ENTRADA, 103 ) AS FECHA_ENTRADA, 
-        T1.CANTIDAD_INGRESADA, 
         T0.CANT_DISPONIBLE,
         T2.COSTO_PROM_LOC,
         T2.COSTO_ULT_LOC,
@@ -251,7 +249,14 @@ class inventario_model extends Model {
         Softland.".$Unidad.".EXISTENCIA_LOTE T0	
         LEFT OUTER JOIN Softland.".$Unidad.".LOTE T1 ON T0.LOTE = T1.LOTE 
         INNER JOIN Softland.".$Unidad.".ARTICULO T2 ON T1.ARTICULO = T2.ARTICULO
-    WHERE( T0.BODEGA IN ( '004' )  AND T0.ARTICULO NOT LIKE '%-B' AND T0.ARTICULO NOT LIKE '%-M' AND T0.CANT_DISPONIBLE > 0 )";
+    WHERE( T0.BODEGA IN ( '004' )  AND T0.ARTICULO NOT LIKE '%-B' AND T0.ARTICULO NOT LIKE '%-M' AND T0.CANT_DISPONIBLE > 0 )
+    GROUP BY T0.ARTICULO, 
+        DESCRIPCION,
+        T0.LOTE, 
+        T0.CANT_DISPONIBLE,
+        T2.COSTO_PROM_LOC,
+        T2.COSTO_ULT_LOC,
+        T1.FECHA_VENCIMIENTO";
         $query = array();
         $i=0;
 
@@ -261,7 +266,7 @@ class inventario_model extends Model {
             $query[$i]['DESCRIPCION']               = $key['DESCRIPCION'];
             $query[$i]['LOTE']                      = $key['LOTE'];
             $query[$i]['CANT_DISPONIBLE']           = number_format($key['CANT_DISPONIBLE'], 2);
-            $query[$i]['FECHA_VENCIMIENTO']         = date('d/m/Y', strtotime($key['FECHA_VENCIMIENTO']));
+            $query[$i]['FECHA_VENCIMIENTO']         = $key['FECHA_VENCIMIENTO'];
             $query[$i]['COSTO_PROM_LOC']            = number_format($key['COSTO_PROM_LOC'], 2);
             $query[$i]['COSTO_ULT_LOC']             = number_format($key['COSTO_ULT_LOC'], 2);
             $i++;
