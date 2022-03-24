@@ -95,6 +95,45 @@
       </div>
     </div>
   </div>
+
+
+
+
+  <div class="row mt-4" id="modulo-inventario-vencido">
+    <div class="col-sm-12">
+      <h1 class="h4 text-info mb-4">Articulos de Bodega 004 Dañado y Vencidos</h1>
+      <div class="row">
+        <div class="col-md-11">
+          <div class="form-group">
+            <label for="InputDtShowSearchFilterArtVenc" class="text-muted">Realizar busqueda por Articulo</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id=""><i data-feather="search"></i></span>
+              </div>
+              <input type="text" id="id_search_tble_inventario_vencido" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+          </div>
+        </div>        
+        <div class="col-sm-1">
+          <div class="form-group">
+            <label for="InputDtShowColumnsArtic2" class="text-muted">Ver por</label>
+            <select class="custom-select" id="id_select_inventario_vencido" name="InputDtShowColumnsArtic2">
+              <option value="10" selected>10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="-1">Todo</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive mb-5">
+        <table class="table table-bordered table-sm" width="100%" id="id_tbl_inventario_b004"></table>
+      </div>
+    </div>
+  </div>
+
+
 </div>
 
 <!--MODAL: DETALLE DE ARTICULO-->

@@ -59,16 +59,26 @@
 			<div class="card-body col-sm-12">
 				<h5 class="card-title">Por Facturas.</h5>
 				<div class="row mt-3">
-					<div class="col-sm-4">						
+					<div class="col-sm-3">						
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="numero_factura">0.00</h3>
-								<p class="card-text" id="">Facturas con Viñetas.</p>
+								<p class="card-text" id="">Cantidad de Factura</p>
 							</div>
 						</div>
 					</div>
 
-					<div class="col-sm-4">						
+					<div class="col-sm-3">						
+						<div class="card text-center">
+							<div class="card-body">
+								<h3 class="card-title" id="MontoPromocion"> 0.00</h3>
+								<p class="card-text" id="">Cantidad Bolsones Facturado.</p>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="col-sm-3">						
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="id_total_Facturado">C$ 0.00</h3>
@@ -78,7 +88,7 @@
 					</div>
 
 					
-					<div class="col-sm-4">
+					<div class="col-sm-3">
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="id_roi"> 0.00</h3>

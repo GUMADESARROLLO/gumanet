@@ -156,13 +156,15 @@ function dataPromocion(f1, f2) {
             { "title": "NOMBRE",    "data": "NOMBRE_CLIENTE" },            
             { "title": "FECHA",     "data": "FECHA" },
             { "title": "VENDEDOR",  "data": "VENDEDOR" },
-            { "title": "TOTAL FACT.", "data": "TOTAL_FACTURA" ,render: $.fn.dataTable.render.number( ',', '.', 0  , 'C$ ' )},
+            { "title": "TOTAL BOLSONES", "data": "TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 2  , ' ' )},
+            { "title": "TOTAL FACT.", "data": "TOTAL_FACTURA" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
             
         ],
         "columnDefs": [
-            {"className": "dt-center", "targets": [0,1,2,3,4,5 ]},
-            {"className": "dt-right", "targets": [ 6, ]},
-            { "width": "5%", "targets": [0,1,2,4,5,6, ] },
+            {"className": "dt-center", "targets": [0,1,2,4,5 ]},
+            {"className": "dt-right", "targets": [ 6,7 ]},
+            {"className": "dt-left", "targets": [ 3 ]},
+            { "width": "5%", "targets": [0,1,2,4,5,6, 7] },
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api();
@@ -176,18 +178,18 @@ function dataPromocion(f1, f2) {
             };
             $('#numero_factura').text(numeral(varCount).format('0,0'));
 
-            /*total = api.column( 6 ).data().reduce( function (a, b){
+            total = api.column( 6 ).data().reduce( function (a, b){
                 return intVal(a) + intVal(b);
             }, 0 );
-             var roi = (total_facturado - total)  / total;*/
+            // var roi = (total_facturado - total)  / total;
             var roi =0;
-            total_facturado = api.column( 6 ).data().reduce( function (a, b){
+            total_facturado = api.column( 7 ).data().reduce( function (a, b){
                 return intVal(a) + intVal(b);
             }, 0 );
 
            
 
-            //$('#MontoVinneta').text('C$ ' + numeral(total).format('0,0.00'));
+            $('#MontoPromocion').text(numeral(total).format('0,0.00'));
             $('#id_total_Facturado').text('C$ ' + numeral(total_facturado).format('0,0.00'));
             $('#id_roi').text(numeral(roi).format('0,0.00'));
         },
@@ -254,7 +256,6 @@ function format ( callback, ordCompra_ ,Cliente) {
                         <th class="center">ARTICULO</th>
                         <th class="center">DESCRIP.</th>
                         <th class="center">CANTIDAD</th>
-                        <th class="center">CANTIDAD LIQUIDADA</th>
                         <th class="center">PRECIO UNITARIO</th>
                         <th class="center">PRECIO TOTAL</th>
                         
@@ -280,8 +281,7 @@ function format ( callback, ordCompra_ ,Cliente) {
                 tbody +='<tr>'+
                             '<td class="text-center">' + item['ARTICULO'] + '</td>'+
                             '<td class="text-left">' + item['DESCRIPCION'] + '</td>'+
-                            '<td class="text-center">' + numeral(item['CANTIDAD']).format('0,0') + '</td>'+
-                            '<td class="text-center">' + numeral(item['CANT_LIQUIDADA']).format('0,0') + '</td>'+
+                            '<td class="text-center">' + numeral(item['CANTIDAD']).format('0,0') + '</td>'+                            
                             '<td class="text-right">' + numeral(item['PRECIO_UNITARIO']).format('0,0.00')  + '</td>'+
                             '<td class="text-right">' + numeral(item['PRECIO_TOTAL']).format('0,0.00')  + '</td>'+
                         '</tr>';

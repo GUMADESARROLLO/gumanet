@@ -16,6 +16,7 @@ class promocion_model extends Model
         $f2 = $f2." 23 : 59 : 59 : 998";
 
         $sql_exec = "EXEC gnet_promocion '".$f1."','".$f2."'";
+        
         $query = $sql_server->fetchArray( $sql_exec , SQLSRV_FETCH_ASSOC);
         
         
@@ -24,11 +25,11 @@ class promocion_model extends Model
             $data[$i]["DETALLE"]        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';       
             $data[$i]['FACTURA']        = $key['FACTURA'];
             $data[$i]['CLIENTE']        = $key['CLIENTE'];
-            $data[$i]['NOMBRE_CLIENTE']        = $key['NOMBRE_CLIENTE'];
-            $data[$i]['FECHA']          = $key['FECHA']->format('d/m/Y');;
-            $data[$i]['VENDEDOR']       = $key['VENDEDOR'];
-            $data[$i]['TOTAL']          = $key['TOTAL'];
-            $data[$i]['TOTAL_FACTURA']  = $key['TOTAL_FACTURA'];
+            $data[$i]['NOMBRE_CLIENTE'] = $key['NOMBRE_CLIENTE'];
+            $data[$i]['FECHA']          = $key['Dia']->format('d/m/Y');;
+            $data[$i]['VENDEDOR']       = $key['Ruta'];
+            $data[$i]['TOTAL']          = number_format($key['Promo'],2);
+            $data[$i]['TOTAL_FACTURA']  = $key['Total'];
             $i++;
         }
         $sql_server->close();        

@@ -83,6 +83,8 @@ $(document).ready(function() {
             { "width":"50%", "targets": [ 1 ] }
         ]
         $("#modulo-inventario").empty();
+        $("#modulo-inventario-vencido").empty();
+        
     break
     default:
         alert('Ups... ocurrio un problema')
@@ -125,9 +127,50 @@ $(document).ready(function() {
 
     liquidacionPorMeses(6)
     inicializaControlFecha();
+    InventarioB004(12)
 });
 
+function InventarioB004() {
+    $('#id_tbl_inventario_b004').DataTable({
+        "destroy": true,
+        "ajax":{
+            "url": "invenVencidos",
+            'dataSrc': '',
+        },
+        "info":    false,
+        "lengthMenu": [[5,10,50,-1], [5,10,100,"Todo"]],
+        "language": {
+            "zeroRecords": "No hay coincidencias",
+            "loadingRecords": "Cargando datos...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Última ",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+            "lengthMenu": "MOSTRAR _MENU_",
+            "emptyTable": "NO HAY DATOS DISPONIBLES",
+            "search":     "BUSCAR"
+        },
+        'columns': [
+            { "title": "ARTICULO",              "data": "ARTICULO" },
+            { "title": "DESCRIPCION",           "data": "DESCRIPCION" },
+            { "title": "LOTE",                  "data": "LOTE" },            
+            { "title": "CANTIDAD",              "data": "CANT_DISPONIBLE" },
+            { "title": "COSTO PROM. LOC.",      "data": "COSTO_PROM_LOC",render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' ) },
+            { "title": "COSTO ULT. LOC.",       "data": "COSTO_ULT_LOC",render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' ) },
+            { "title": "FECHA DE VENCIMIENTO",  "data": "FECHA_VENCIMIENTO" },
+        ],
+        "columnDefs": [
+            {"className": "dt-center", "targets": [ 0, 2 ,6 ]},
+            {"className": "dt-right", "targets": [ 3,4,5 ]},
+            { "width": "50%", "targets": [ 1 ] }
+        ],
+    });
 
+    $("#id_tbl_inventario_b004_length ").hide();
+    $("#id_tbl_inventario_b004_filter").hide();
+}
 
 function liquidacionPorMeses(valor) {
     $('#tblArticulosVencimiento').DataTable({
@@ -216,6 +259,17 @@ $( "#InputDtShowColumnsArtic2").change(function() {
     var table = $('#tblArticulosVencimiento').DataTable();
     table.page.len(this.value).draw();
 });
+
+$( "#id_select_inventario_vencido").change(function() {
+    var table = $('#id_tbl_inventario_b004').DataTable();
+    table.page.len(this.value).draw();
+});
+
+$('#id_search_tble_inventario_vencido').on( 'keyup', function () {
+    var table = $('#id_tbl_inventario_b004').DataTable();
+    table.search(this.value).draw();
+});
+
 
 $('nav .nav.nav-tabs a').click(function(){
     var idNav = $(this).attr('id');

@@ -66,6 +66,8 @@ Route::get('/desInventario/{tipo}/{valor}', 'inventario_controller@descargarInve
 Route::get('/invCompleto', 'inventario_controller@inventarioCompleto');
 Route::get('/invTotalizadoDT', 'inventario_controller@inventarioCompletoTable');
 Route::get('/desInvTotal2', 'inventario_controller@descargarInventarioCompleto');
+Route::get('/invenVencidos', 'inventario_controller@invenVencidos');
+
 
 //RUTAS INVENTARIO TOTALIZADO 
 Route::get('/invTotalizado','inventario_controller@getInventarioTotalizado');

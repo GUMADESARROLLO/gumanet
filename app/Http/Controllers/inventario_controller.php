@@ -65,6 +65,11 @@ class inventario_controller extends Controller
 		return response()->json($obj);
     }
 
+	public function invenVencidos() {
+		$obj = inventario_model::invenVencidos();
+		return response()->json($obj);
+    }
+
 	public function getArticulos() {
 		$obj = inventario_model::getArticulos();
 		return response()->json($obj);
