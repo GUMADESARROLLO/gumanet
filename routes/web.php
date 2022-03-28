@@ -66,6 +66,8 @@ Route::get('/desInventario/{tipo}/{valor}', 'inventario_controller@descargarInve
 Route::get('/invCompleto', 'inventario_controller@inventarioCompleto');
 Route::get('/invTotalizadoDT', 'inventario_controller@inventarioCompletoTable');
 Route::get('/desInvTotal2', 'inventario_controller@descargarInventarioCompleto');
+Route::get('/invenVencidos', 'inventario_controller@invenVencidos');
+
 
 //RUTAS INVENTARIO TOTALIZADO 
 Route::get('/invTotalizado','inventario_controller@getInventarioTotalizado');
@@ -213,3 +215,13 @@ Route::post('push_recibo', 'recibos_controller@push_recibo');
 Route::post('push_verificado', 'recibos_controller@push_verificado');
 Route::get('print_resumen', 'recibos_controller@print_resumen');
 
+
+// RUTAS PARA PROMOCIONES DE INNOVA
+Route::get('promocion_Vueno', 'promocion_controller@index');
+Route::get('getPromocion', 'promocion_controller@getPromocion');
+Route::post('getHistorialFactura','promocion_controller@getHistorialFactura');
+Route::get('getResumen', 'promocion_controller@getResumen');
+
+// RUTAS PARA INFORMACION DE FACTURA DE EXPORTACIONES
+Route::get('exportacion', 'exportacion_controller@index');
+Route::get('getVentasExportacion', 'exportacion_controller@getVentasExportacion');
