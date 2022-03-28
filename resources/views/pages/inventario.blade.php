@@ -101,7 +101,7 @@
 
   <div class="row mt-4" id="modulo-inventario-vencido">
     <div class="col-sm-12">
-      <h1 class="h4 text-info mb-4">Articulos de Bodega 004 - Dañado y Vencidos</h1>
+      <h1 class="h4 text-info mb-4">Articulos de Bodega 004 - Dañados y Vencidos</h1>
       <div class="row">
         <div class="col-md-11">
           <div class="form-group">

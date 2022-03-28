@@ -221,3 +221,6 @@ Route::get('promocion_Vueno', 'promocion_controller@index');
 Route::get('getPromocion', 'promocion_controller@getPromocion');
 Route::post('getHistorialFactura','promocion_controller@getHistorialFactura');
 Route::get('getResumen', 'promocion_controller@getResumen');
+
+// RUTAS PARA INFORMACION DE FACTURA DE EXPORTACIONES
+Route::get('exportacion', 'exportacion_controller@index');

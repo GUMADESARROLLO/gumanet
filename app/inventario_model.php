@@ -217,6 +217,7 @@ class inventario_model extends Model {
         $sql_exec = '';
         $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
         $Unidad ='';
+        $jsonResulto = array();
         
         switch ($company_user) {
             case '1':
@@ -242,38 +243,37 @@ class inventario_model extends Model {
         DESCRIPCION,
         T0.LOTE, 
         T0.CANT_DISPONIBLE,
-        T2.COSTO_PROM_LOC,
-        T2.COSTO_ULT_LOC,
+        (SELECT T3.COSTO_PROM_LOC FROM Softland.".$Unidad.".ARTICULO T3 WHERE T3.ARTICULO= T0.ARTICULO) AS COSTO_PROM_LOC,
+	    (SELECT T3.COSTO_ULT_LOC FROM Softland.".$Unidad.".ARTICULO T3 WHERE T3.ARTICULO= T0.ARTICULO ) AS COSTO_ULT_LOC,
         CONVERT ( CHAR, T1.FECHA_VENCIMIENTO, 103 ) AS FECHA_VENCIMIENTO 
     FROM
         Softland.".$Unidad.".EXISTENCIA_LOTE T0	
         LEFT OUTER JOIN Softland.".$Unidad.".LOTE T1 ON T0.LOTE = T1.LOTE 
         INNER JOIN Softland.".$Unidad.".ARTICULO T2 ON T1.ARTICULO = T2.ARTICULO
-    WHERE( T0.BODEGA IN ( '004' )  AND T0.ARTICULO NOT LIKE '%-B' AND T0.ARTICULO NOT LIKE '%-M' AND T0.CANT_DISPONIBLE > 0 )
+    WHERE( T0.BODEGA IN ( '004' )  AND T0.ARTICULO NOT LIKE '%-B' AND T0.ARTICULO NOT LIKE '%-M' AND T0.CANT_DISPONIBLE > 0 ) 
     GROUP BY T0.ARTICULO, 
         DESCRIPCION,
         T0.LOTE, 
         T0.CANT_DISPONIBLE,
-        T2.COSTO_PROM_LOC,
-        T2.COSTO_ULT_LOC,
         T1.FECHA_VENCIMIENTO";
-        $query = array();
+
+        //dd($sql_exec);
         $i=0;
 
-        $query1 = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
-        foreach ($query1 as $key) {
-            $query[$i]['ARTICULO']                  = $key['ARTICULO'];
-            $query[$i]['DESCRIPCION']               = $key['DESCRIPCION'];
-            $query[$i]['LOTE']                      = $key['LOTE'];
-            $query[$i]['CANT_DISPONIBLE']           = number_format($key['CANT_DISPONIBLE'], 2);
-            $query[$i]['FECHA_VENCIMIENTO']         = $key['FECHA_VENCIMIENTO'];
-            $query[$i]['COSTO_PROM_LOC']            = number_format($key['COSTO_PROM_LOC'], 2);
-            $query[$i]['COSTO_ULT_LOC']             = number_format($key['COSTO_ULT_LOC'], 2);
+        $qInvetario = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
+        foreach ($qInvetario as $key) {
+            $jsonResulto[$i]['ARTICULO']                  = $key['ARTICULO'];
+            $jsonResulto[$i]['DESCRIPCION']               = $key['DESCRIPCION'];
+            $jsonResulto[$i]['LOTE']                      = $key['LOTE'];
+            $jsonResulto[$i]['CANT_DISPONIBLE']           = number_format($key['CANT_DISPONIBLE'], 2);
+            $jsonResulto[$i]['FECHA_VENCIMIENTO']         = $key['FECHA_VENCIMIENTO'];
+            $jsonResulto[$i]['COSTO_PROM_LOC']            = number_format($key['COSTO_PROM_LOC'], 2);
+            $jsonResulto[$i]['COSTO_ULT_LOC']             = number_format($key['COSTO_ULT_LOC'], 2);
             $i++;
         }
         $sql_server->close();
 
-        return $query;
+        return $jsonResulto;
     }
 
     public static function getInventarioCompleto() {
