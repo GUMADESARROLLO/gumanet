@@ -237,25 +237,25 @@ class inventario_model extends Model {
                 break;
         }
 
-
-        $sql_exec = "SELECT DISTINCT 
-        T0.ARTICULO, 
-        DESCRIPCION,
-        T0.LOTE, 
-        T0.CANT_DISPONIBLE,
-        (SELECT T3.COSTO_PROM_LOC FROM Softland.".$Unidad.".ARTICULO T3 WHERE T3.ARTICULO= T0.ARTICULO) AS COSTO_PROM_LOC,
-	    (SELECT T3.COSTO_ULT_LOC FROM Softland.".$Unidad.".ARTICULO T3 WHERE T3.ARTICULO= T0.ARTICULO ) AS COSTO_ULT_LOC,
-        CONVERT ( CHAR, T1.FECHA_VENCIMIENTO, 103 ) AS FECHA_VENCIMIENTO 
+        $sql_exec="SELECT
+        T0.ARTICULO,
+        T0.DESCRIPCION,
+        T1.LOTE,
+        T1.CANT_DISPONIBLE,
+        (SELECT T2.COSTO_PROM_LOC FROM Softland.".$Unidad.".ARTICULO T2 WHERE T2.ARTICULO= T0.ARTICULO) AS COSTO_PROM_LOC,
+        (SELECT T3.COSTO_ULT_LOC FROM Softland.".$Unidad.".ARTICULO T3 WHERE T3.ARTICULO= T0.ARTICULO ) AS COSTO_ULT_LOC,
+        (SELECT T4.FECHA_VENCIMIENTO FROM Softland.".$Unidad.".LOTE T4 WHERE T4.ARTICULO = T0.ARTICULO AND T4.LOTE = T1.LOTE ) AS FECHA_VENCIMIENTO
     FROM
-        Softland.".$Unidad.".EXISTENCIA_LOTE T0	
-        LEFT OUTER JOIN Softland.".$Unidad.".LOTE T1 ON T0.LOTE = T1.LOTE 
-        INNER JOIN Softland.".$Unidad.".ARTICULO T2 ON T1.ARTICULO = T2.ARTICULO
-    WHERE( T0.BODEGA IN ( '004' )  AND T0.ARTICULO NOT LIKE '%-B' AND T0.ARTICULO NOT LIKE '%-M' AND T0.CANT_DISPONIBLE > 0 ) 
-    GROUP BY T0.ARTICULO, 
-        DESCRIPCION,
-        T0.LOTE, 
-        T0.CANT_DISPONIBLE,
-        T1.FECHA_VENCIMIENTO";
+        Softland.umk.ARTICULO T0  
+        INNER JOIN Softland.".$Unidad.".EXISTENCIA_LOTE T1 ON T0.ARTICULO = T1.ARTICULO
+        
+    WHERE
+        (LEN(T0.ARTICULO) <= 8) AND (T0.ACTIVO = 'S') AND (LEN(T0.ARTICULO) > 7) and T0.ARTICULO LIKE '1%' AND T1.CANT_DISPONIBLE > 0 AND T1.BODEGA = '004' 
+        GROUP BY 
+        T0.ARTICULO,
+        T0.DESCRIPCION,
+        T1.LOTE,
+        T1.CANT_DISPONIBLE";
 
         //dd($sql_exec);
         $i=0;
@@ -266,7 +266,7 @@ class inventario_model extends Model {
             $jsonResulto[$i]['DESCRIPCION']               = $key['DESCRIPCION'];
             $jsonResulto[$i]['LOTE']                      = $key['LOTE'];
             $jsonResulto[$i]['CANT_DISPONIBLE']           = number_format($key['CANT_DISPONIBLE'], 2);
-            $jsonResulto[$i]['FECHA_VENCIMIENTO']         = $key['FECHA_VENCIMIENTO'];
+            $jsonResulto[$i]['FECHA_VENCIMIENTO']         = $key['FECHA_VENCIMIENTO']->format('d/m/Y');;
             $jsonResulto[$i]['COSTO_PROM_LOC']            = number_format($key['COSTO_PROM_LOC'], 2);
             $jsonResulto[$i]['COSTO_ULT_LOC']             = number_format($key['COSTO_ULT_LOC'], 2);
             $i++;

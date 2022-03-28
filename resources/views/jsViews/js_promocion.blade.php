@@ -57,12 +57,11 @@ $('#dtResumen').DataTable({
     },
     'columns': [
         { "title": "RUTA",    "data": "VENDEDOR"},
+        { "title": "NOMBRE",    "data": "NOMBRE"},
         { 
             "title": "SKU 01",  
             "data": "SKU1",
             "defaultContent" : '',
-                
-            
         },
         
         { "title": "SKU 02",  "data": "SKU2" },
@@ -73,7 +72,7 @@ $('#dtResumen').DataTable({
     ],
     "columnDefs": [
         {"className": "dt-center", "targets": [ 0]},
-        {"className": "dt-right", "targets": [1,2,3,4,5,6]}
+        {"className": "dt-right", "targets": [1,2,3,4,5,6,7]}
         
     ],
     "initComplete": function(settings){
@@ -112,14 +111,52 @@ $('#dtResumen').DataTable({
             i : 0;
         };
 
+        
+
+        total = api.column( 2 ).data().reduce( function (a, b) 
+        {
+            return intVal(a) + intVal(b);
+        }, 0 );
+
+        $( api.column( 2 ).footer() ).html( numeral(total).format('0,0.00')); 
+
+        total = api.column( 3 ).data().reduce( function (a, b) 
+        {
+            return intVal(a) + intVal(b);
+        }, 0 );
+
+        $( api.column( 3 ).footer() ).html( numeral(total).format('0,0.00')); 
+
+        total = api.column( 4 ).data().reduce( function (a, b) 
+        {
+            return intVal(a) + intVal(b);
+        }, 0 );
+
+        $( api.column( 4 ).footer() ).html( numeral(total).format('0,0.00')); 
+
+        total = api.column( 5 ).data().reduce( function (a, b) 
+        {
+            return intVal(a) + intVal(b);
+        }, 0 );
+
+        $( api.column( 5 ).footer() ).html( numeral(total).format('0,0.00')); 
+
         total = api.column( 6 ).data().reduce( function (a, b) 
         {
             return intVal(a) + intVal(b);
         }, 0 );
 
-        $( api.column( 0 ).footer() ).html(
-                numeral(total).format('0,0.00') +' TOTAL'
-        );        
+        $( api.column( 6 ).footer() ).html( numeral(total).format('0,0.00')); 
+
+        
+
+
+        total = api.column( 7 ).data().reduce( function (a, b) 
+        {
+            return intVal(a) + intVal(b);
+        }, 0 );
+
+        $( api.column( 7 ).footer() ).html(numeral(total).format('0,0.00'));        
     },
 });;
 $("#dtResumen_length").hide();

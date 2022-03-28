@@ -6,7 +6,7 @@ use App\Models;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Company;
-use App\promocion_model;
+use App\exportacion_model;
 
 class exportacion_controller extends Controller {
     public function __construct() {
@@ -30,10 +30,10 @@ class exportacion_controller extends Controller {
             'hideTransaccion'   => ''
         );
 
-        return view('pages.promocion', $data);
+        return view('pages.exportacion', $data);
     }
 
-    public function getPromocion(Request $request) {
+    public function getVentasExportacion(Request $request) {
 
         $f1 = $request->input('f1');
         $f2 = $request->input('f2');
@@ -44,31 +44,16 @@ class exportacion_controller extends Controller {
             return response()->json(false);
         }
 
-        $obj = promocion_model::getPromocion($f1, $f2);
+        $obj = exportacion_model::getVentasExportacion($f1, $f2);
         return response()->json($obj);
 
     }
     public function getHistorialFactura(Request $request){
         if($request->isMethod('post')) {
-            $obj = promocion_model::HistorialFactura($request->input('factura'));
+            $obj = exportacion_model::HistorialFactura($request->input('factura'));
             return response()->json($obj);
         }
-    }
-    public function getResumen(Request $request) {
-
-        $f1 = $request->input('f1');
-        $f2 = $request->input('f2');
-
-        
-
-        if (!$f1) {
-            return response()->json(false);
-        }
-
-        $obj = promocion_model::getResumen($f1, $f2);
-        return response()->json($obj);
-
-    }
+    }    
 
 
 }

@@ -73,6 +73,7 @@ class promocion_model extends Model
 
         foreach ($query as $key) {            
             $data[$i]['VENDEDOR']       = $key['VENDEDOR'];
+            $data[$i]['NOMBRE']         = $key['NOMBRE'];
             $data[$i]['SKU1']           = number_format($key['SKU1'],0);
             $data[$i]['SKU2']           = number_format($key['SKU2'],0);
             $data[$i]['SKU3']           = number_format($key['SKU3'],0);

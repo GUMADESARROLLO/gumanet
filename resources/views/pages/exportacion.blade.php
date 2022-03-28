@@ -2,7 +2,7 @@
 @section('title' , $name)
 @section('name_user' , 'Administrador')
 @section('metodosjs')
-@include('jsViews.js_promocion');
+@include('jsViews.js_exportacion');
 @endsection
 @section('content')  
 <div class="container-fluid">	
@@ -57,9 +57,9 @@
 		</div>
 		<div class="card border-0 shadow-sm mt-3">			
 			<div class="card-body col-sm-12">
-				<h5 class="card-title">Por Facturas.</h5>
+				<h5 class="card-title"></h5>
 				<div class="row mt-3">
-					<div class="col-sm-4">						
+					<div class="col-sm-6">						
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="numero_factura">0.00</h3>
@@ -68,68 +68,27 @@
 						</div>
 					</div>
 
-					<div class="col-sm-4">						
+					<div class="col-sm-6">						
 						<div class="card text-center">
 							<div class="card-body">
-								<h3 class="card-title" id="MontoPromocion"> 0.00</h3>
-								<p class="card-text" id="">Cantidad Bolsones Facturado.</p>
-							</div>
-						</div>
-					</div>
-
-
-					<div class="col-sm-4">						
-						<div class="card text-center">
-							<div class="card-body">
-								<h3 class="card-title" id="id_total_Facturado">C$ 0.00</h3>
+								<h3 class="card-title" id="id_total_Facturado">$ 0.00</h3>
 								<p class="card-text" id="">Monto Total Facturado.</p>
 							</div>
 						</div>
 					</div>
 
 					
-					<div class="col-sm-3" style="display:none">
-						<div class="card text-center">
-							<div class="card-body">
-								<h3 class="card-title" id="id_roi"> 0.00</h3>
-								<p class="card-text">ROI</p>
-							</div>
-						</div>
-					</div>						
+										
 				</div>
 				<div class="col-sm-12">						
-					<table class="table table-striped table-bordered table-sm post_back mt-3" width="100%" id="dtPromocion">
+					<table class="table table-striped table-bordered table-sm post_back mt-3" width="100%" id="dtVentaExportacion">
 						<thead class="bg-blue text-light"></thead>
 					</table>
 				</div>	
 			</div>
 		</div>
 		
-		<div class="card border-0 shadow-sm mt-3">
-			<div class="col-sm-12">				
-				<div class="card-body">					
-					<div class="row ">
-						
-					<h5 class="card-title">Por Ruta</h5>
-					<table class="table table-striped table-bordered table-sm post_back" width="100%" id="dtResumen" >
-					<thead class="bg-blue text-light"></thead>
-					<tfoot>
-						<tr>
-							<th colspan="3" style="text-align:right">0.00</th>
-							<th  style="text-align:right">0.00</th>
-							<th  style="text-align:right">0.00</th>
-							<th  style="text-align:right">0.00</th>
-							<th  style="text-align:right">0.00</th>
-							<th  style="text-align:right">0.00</th>
-						</tr>
-						
-					</tfoot>
-					</table>
-						
-					</div>
-				</div>
-			</div>
-		</div>		
+		
 			
 	</div>
 </div>
