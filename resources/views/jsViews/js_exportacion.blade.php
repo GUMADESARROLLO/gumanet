@@ -58,7 +58,7 @@ function dataVentaExportacion(f1, f2) {
             { "title": "CLIENTE",   "data": "CLIENTE" },
             { "title": "NOMBRE",    "data": "NOMBRE_CLIENTE" },            
             { "title": "FECHA",     "data": "FECHA" },         
-            { "title": "TOTAL FACT.", "data": "TOTAL_FACTURA" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
+            { "title": "TOTAL FACT.", "data": "TOTAL_FACTURA" ,render: $.fn.dataTable.render.number( ',', '.', 2  , '$ ' )},
             
         ],
         "columnDefs": [
