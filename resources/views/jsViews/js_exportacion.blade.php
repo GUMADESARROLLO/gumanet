@@ -59,13 +59,16 @@ function dataVentaExportacion(f1, f2) {
             { "title": "NOMBRE",    "data": "NOMBRE_CLIENTE" },            
             { "title": "FECHA",     "data": "FECHA" },         
             { "title": "TOTAL FACT.", "data": "TOTAL_FACTURA" ,render: $.fn.dataTable.render.number( ',', '.', 2  , '$ ' )},
+            { "title": "TIPO DE CAMBIO.", "data": "TIPO_CAMBIO" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
+            { "title": "TOTAL FACT.", "data": "TOTAL_MONEDA_LOCAL" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
             
         ],
         "columnDefs": [
             {"className": "dt-center", "targets": [0,1,2,4,5 ]},
-            {"className": "dt-right", "targets": [ 5 ]},
+            {"className": "dt-right", "targets": [ 5,6,7 ]},
             {"className": "dt-left", "targets": [ 3 ]},
-            { "width": "5%", "targets": [0,1,2,4,5] },
+            { "width": "5%", "targets": [0,1,2,4,5,6] },
+            { "width": "10%", "targets": [7] },
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api();
@@ -82,8 +85,13 @@ function dataVentaExportacion(f1, f2) {
             total_facturado = api.column( 5 ).data().reduce( function (a, b){
                 return intVal(a) + intVal(b);
             }, 0 );
+
+            total_moneda_local = api.column( 7 ).data().reduce( function (a, b){
+                return intVal(a) + intVal(b);
+            }, 0 );
             
             $('#id_total_Facturado').text('$ ' + numeral(total_facturado).format('0,0.00'));
+            $('#id_total_moneda_local').text('C$ ' + numeral(total_moneda_local).format('0,0.00'));
            
         },
     });
