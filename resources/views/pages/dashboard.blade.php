@@ -6,16 +6,12 @@
 @endsection
 @section('content')
 <div class="container-fluid">
+    
     <div class="row">
         <div class="col-sm-6">
             <h4 class="h4 mt-4">Dashboard</h4>
-            @if( Session::get('company_id')==4 )
-            <div class="custom-control custom-switch mt-2">
-                <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                <label class="custom-control-label" for="customSwitch1">Bolsones</label>
-            </div>
-            @endif
         </div>
+        
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-5">
@@ -62,6 +58,29 @@
             </div>
         </div>
     </div>
+    @if( Session::get('company_id')==4 )
+        <div class="row">
+            <div class="col">
+                <div class="custom-control custom-switch mt-2">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                    <label class="custom-control-label" for="customSwitch1">Bolsones</label>
+                </div>
+            </div>
+            <div class="col col-lg-2 mt-2">
+                <h5 class="h5" ><span id="id_lbl_ventas_diarias">Vts. </span> <span id="id_ventas_diarias" >0.00</span></h5>
+            </div>
+            <div class="col col-lg-2 mt-2">
+                <div class = 'vts-month-dolar has_standard_tooltip'>
+                    <h5 class="h5" id="id_ventas_dolares">Vts $. 0.00</h5>
+                </div>
+                
+            </div>
+            <div class="col col-lg-2 mt-2">
+                
+                <h5 class="h5" id="id_ventas_totales">Total. Vts. C$. 0.00</h5>
+            </div>
+        </div>
+    @endif
     <div class="content-graf mb-5">
 
         @if( Session::get('company_id')==1 )

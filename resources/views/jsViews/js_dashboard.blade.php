@@ -1,6 +1,7 @@
 <script>
 $(document).ready(function() {
     fullScreen();
+    $('[data-toggle="tooltip"]').tooltip()
     var date    = new Date();
     var anio    = parseInt(date.getFullYear())
     var mes     = parseInt(date.getMonth()+1);
@@ -1344,6 +1345,8 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     Tendencia = 1;
                     Day_Max = [];
 
+                    var vVtsDiarias;
+
                     $.each(item['data'], function(i, x) {
 
                         tmp_total = tmp_total + parseFloat(x['data']);
@@ -1362,15 +1365,26 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     }); 
 
                     //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
+                    moneda = (xbolsones)? "" :"C$ "
                     temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';                   
                     grafiacas_productos_Diarios.tooltip = {
                         pointFormat : temporal
                     }
-                    
+                    vVtsDiarias = numeral(tmp_total).format('0,0.00');
                     grafiacas_productos_Diarios.xAxis.categories = title;
-                    grafiacas_productos_Diarios.subtitle.text = "C$ " + numeral(tmp_total).format('0,0.00') + " Total";
+                    grafiacas_productos_Diarios.subtitle.text = moneda + vVtsDiarias + " Total";
                     grafiacas_productos_Diarios.series[0].data = dta;
+
+
+                    $("#id_ventas_diarias").html(moneda + vVtsDiarias)
+
+                    Lblmoneda = (xbolsones)? "Bolsones Vts." :"Vts. "
+                    $("#id_lbl_ventas_diarias").html(Lblmoneda)
+
+                    
+
+
 
                     
                     Tendencia = (tmp_total / dta.length ) 
@@ -1861,6 +1875,24 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             </tr>`;
                         $('#tbody02').empty().append(tbody);
                     }               
+
+                break;
+
+                case 'vtsDolares':
+                    var val_vts_month = $("#id_ventas_diarias").text().replace(/[\ U,C$]/g, '')  
+                    val_vts_month = parseFloat(val_vts_month) + parseFloat(item['data']['Local']);
+                    $("#id_ventas_dolares").html("Vts. $. " + numeral(item['data']['Dolar']).format('0,0.00'))
+                    var inCordobas = "C$. " +numeral(item['data']['Local']).format('0,0.00')
+                    
+                    $('.has_standard_tooltip').attr('data-toggle', 'tooltip');
+	                $('.vts-month-dolar').attr('title', inCordobas);  
+                    $('[data-toggle="tooltip"]').tooltip();
+
+                    if (xbolsones==1) {
+                        $("#id_ventas_totales").html("Total. Vts. C$. 0.00")
+                    } else {
+                        $("#id_ventas_totales").html("Total. Vts. C$. " + numeral(val_vts_month).format('0,0.00'))
+                    }
 
                 break;
 
@@ -3088,8 +3120,8 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                     $('#id_detall_porc_contrib').text(numeral(cliente[0].porc_contrib).format('0,0.00'));  
 
 
-                    $('#id_disp_cant').empty().text('C$ '+ numeral(cliente[0].dttb2).format('0,0.00'));
-                    $('#id_disp_unds').empty().text('C$ '+ numeral(cliente[0].dttub).format('0,0.00'));
+                    $('#id_disp_cant').empty().text(numeral(cliente[0].dttb2).format('0,0.00'));
+                    $('#id_disp_unds').empty().text(numeral(cliente[0].dttub).format('0,0.00'));
                     $('#id_disp_meses').empty().text(numeral(cliente[0].dttie).format('0,0.00'));
                     $('#id_prom_mes_actual').empty().text(numeral(cliente[0].dtpro).format('0,0.00'));
 
