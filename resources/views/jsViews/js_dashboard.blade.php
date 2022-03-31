@@ -1365,6 +1365,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     }); 
 
                     //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
+                    moneda = (xbolsones)? "" :"C$ "
                     temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';                   
                     grafiacas_productos_Diarios.tooltip = {
@@ -1372,11 +1373,11 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     }
                     vVtsDiarias = numeral(tmp_total).format('0,0.00');
                     grafiacas_productos_Diarios.xAxis.categories = title;
-                    grafiacas_productos_Diarios.subtitle.text = "C$ " + vVtsDiarias + " Total";
+                    grafiacas_productos_Diarios.subtitle.text = moneda + vVtsDiarias + " Total";
                     grafiacas_productos_Diarios.series[0].data = dta;
 
 
-                    $("#id_ventas_diarias").html(vVtsDiarias)
+                    $("#id_ventas_diarias").html(moneda + vVtsDiarias)
 
 
 
@@ -1873,17 +1874,20 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                 break;
 
                 case 'vtsDolares':
-                    var val_vts_month = $("#id_ventas_diarias").text().replace(/[\ U,C$]/g, '')         
+                    var val_vts_month = $("#id_ventas_diarias").text().replace(/[\ U,C$]/g, '')  
                     val_vts_month = parseFloat(val_vts_month) + parseFloat(item['data']['Local']);
                     $("#id_ventas_dolares").html("Vts. $. " + numeral(item['data']['Dolar']).format('0,0.00'))
-                    $("#id_ventas_totales").html("Total. C$. " + numeral(val_vts_month).format('0,0.00'))
-
-
                     var inCordobas = "C$. " +numeral(item['data']['Local']).format('0,0.00')
                     
                     $('.has_standard_tooltip').attr('data-toggle', 'tooltip');
 	                $('.vts-month-dolar').attr('title', inCordobas);  
                     $('[data-toggle="tooltip"]').tooltip();
+
+                    if (xbolsones==1) {
+                        $("#id_ventas_totales").html(inCordobas)
+                    } else {
+                        $("#id_ventas_totales").html("Total. C$. " + numeral(val_vts_month).format('0,0.00'))
+                    }
 
                 break;
 
