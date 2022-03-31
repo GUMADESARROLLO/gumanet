@@ -1881,7 +1881,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                 case 'vtsDolares':
                     var val_vts_month = $("#id_ventas_diarias").text().replace(/[\ U,C$]/g, '')  
                     val_vts_month = parseFloat(val_vts_month) + parseFloat(item['data']['Local']);
-                    $("#id_ventas_dolares").html("Vts. $. " + numeral(item['data']['Dolar']).format('0,0.00'))
+                    
                     var inCordobas = "C$. " +numeral(item['data']['Local']).format('0,0.00')
                     
                     $('.has_standard_tooltip').attr('data-toggle', 'tooltip');
@@ -1890,8 +1890,10 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                     if (xbolsones==1) {
                         $("#id_ventas_totales").html("Total. Vts. C$. 0.00")
+                        $("#id_ventas_dolares").html("Vts. $ 0.00")
                     } else {
-                        $("#id_ventas_totales").html("Total. Vts. C$. " + numeral(val_vts_month).format('0,0.00'))
+                        $("#id_ventas_dolares").html("Vts. $ " + numeral(item['data']['Dolar']).format('0,0.00'))
+                        $("#id_ventas_totales").html("Total. Vts. C$ " + numeral(val_vts_month).format('0,0.00'))
                     }
 
                 break;

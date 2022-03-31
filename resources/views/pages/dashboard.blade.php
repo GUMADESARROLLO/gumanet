@@ -71,13 +71,13 @@
             </div>
             <div class="col col-lg-2 mt-2">
                 <div class = 'vts-month-dolar has_standard_tooltip'>
-                    <h5 class="h5" id="id_ventas_dolares">Vts $. 0.00</h5>
+                    <h5 class="h5" id="id_ventas_dolares">Vts $ 0.00</h5>
                 </div>
                 
             </div>
             <div class="col col-lg-2 mt-2">
                 
-                <h5 class="h5" id="id_ventas_totales">Total. Vts. C$. 0.00</h5>
+                <h5 class="h5" id="id_ventas_totales">Total. Vts. C$ 0.00</h5>
             </div>
         </div>
     @endif
