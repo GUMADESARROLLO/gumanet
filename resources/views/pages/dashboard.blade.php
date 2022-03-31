@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="col col-lg-2 mt-2">
-                <h5 class="h5" >Vts. <span id="id_ventas_diarias" >0.00</span></h5>
+                <h5 class="h5" ><span id="id_lbl_ventas_diarias">Vts. </span> <span id="id_ventas_diarias" >0.00</span></h5>
             </div>
             <div class="col col-lg-2 mt-2">
                 <div class = 'vts-month-dolar has_standard_tooltip'>

@@ -1379,6 +1379,11 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                     $("#id_ventas_diarias").html(moneda + vVtsDiarias)
 
+                    Lblmoneda = (xbolsones)? "Bolsones Vts." :"Vts. "
+                    $("#id_lbl_ventas_diarias").html(Lblmoneda)
+
+                    
+
 
 
                     
@@ -1884,9 +1889,9 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     $('[data-toggle="tooltip"]').tooltip();
 
                     if (xbolsones==1) {
-                        $("#id_ventas_totales").html(inCordobas)
+                        $("#id_ventas_totales").html("Total. Vts. C$. 0.00")
                     } else {
-                        $("#id_ventas_totales").html("Total. C$. " + numeral(val_vts_month).format('0,0.00'))
+                        $("#id_ventas_totales").html("Total. Vts. C$. " + numeral(val_vts_month).format('0,0.00'))
                     }
 
                 break;
