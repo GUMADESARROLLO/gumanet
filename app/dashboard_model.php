@@ -79,8 +79,25 @@ class dashboard_model extends Model {
             'data' => dashboard_model::dataProyectos($mes, $anio, $company_user)
         );
 
-        $array_merge = array_merge($dtaBodega, $dtaTop10Cl, $dtaTop10Pr, $dtaVtasMes, $dtaRecupera, $dtaCompMesesVentas, $dtaCompMesesItems, $dtaVentasXCateg, $dtaClientes, $dtaProyectos,$dtaVtnDiarias);
-        //$array_merge = array_merge($dtaTop10Pr);
+        $f1 = $anio."-".$mes."-01";
+        $f2 = $anio."-".$mes."-30";
+        
+        $Resultado = exportacion_model::getVentasExportacion($f1, $f2);
+
+        $TOTAL_FACTURA = array_sum(array_column($Resultado,'TOTAL_FACTURA'));
+        $TOTAL_MONEDA_LOCAL = array_sum(array_column($Resultado,'TOTAL_MONEDA_LOCAL'));
+
+       
+        $dtaDolares[] = array(
+            'tipo' => 'vtsDolares',
+            'data' => array(
+                'Dolar' => $TOTAL_FACTURA,
+                'Local' => $TOTAL_MONEDA_LOCAL
+            )
+        );
+
+        $array_merge = array_merge($dtaBodega, $dtaTop10Cl, $dtaTop10Pr, $dtaVtasMes, $dtaRecupera, $dtaCompMesesVentas, $dtaCompMesesItems, $dtaVentasXCateg, $dtaClientes, $dtaProyectos,$dtaVtnDiarias,$dtaDolares);
+        //$array_merge = array_merge($dtaDolares);
         return $array_merge;
         $sql_server->close();
     }
@@ -1170,6 +1187,7 @@ class dashboard_model extends Model {
     public static function getTop10Productos($mes, $anio, $company_user, $xbolsones,$Segmento) {
         $sql_server = new \sql_server();
         $sql_exec = '';
+        $sql_exec_Vueno= '';
         $tem_=0;
         $RutaSegmento = "";
         
@@ -1234,7 +1252,8 @@ class dashboard_model extends Model {
                 $sql_exec = "";
                 break;   
             case '4':
-                $sql_exec = " EXEC Inv_DetalleVentas_Mes ".$mes.", ".$anio." ";
+                $sql_exec       = " EXEC Inv_DetalleVentas_Mes ".$mes.", ".$anio." ";
+                $sql_exec_Vueno = " EXEC Inv_DetalleVentas_Mes_promo_vueno ".$mes.", ".$anio." ";
                 break;        
             default:                
                 dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
@@ -1242,10 +1261,12 @@ class dashboard_model extends Model {
         }
 
         $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
+        
 
         $json = array();
-        $json = array();
+        
         $i = 0;
+        
         $getMonth  = date('n');
 
         if( count($query)>0 ) {
@@ -1342,6 +1363,35 @@ class dashboard_model extends Model {
             }
         }
 
+        if($company_user==4){
+            $query_result_vueno = $sql_server->fetchArray($sql_exec_Vueno,SQLSRV_FETCH_ASSOC);
+            $array_vueno = array();
+            if( count($query_result_vueno)>0 ) {
+
+                $sm_Cantidad    = array_sum(array_column($query_result_vueno, 'Cantidad'));
+                $sm_MontoVenta  = array_sum(array_column($query_result_vueno, 'MontoVenta'));
+
+                $array_vueno['name'] = 'VUENO';
+                $array_vueno['articulo'] = 'Promo VUENO';
+                $array_vueno['data']       = $sm_MontoVenta;
+                $array_vueno['dtUnd']      = $sm_Cantidad;
+                $array_vueno['dtUndBo']    = 0;
+                $array_vueno['dtAVG']      = '0.00';
+                $array_vueno['dtCPM']      = '0.00';
+                $array_vueno['dtMCO']      = '0.00';
+                $array_vueno['dtPCO']      = '0.00';             
+                $array_vueno['dtTIE']      = '0.00';   
+                $array_vueno['dtTB2']      = '0.00';   
+                $array_vueno['dtTUB']      = '0.00'; 
+                $array_vueno['dtPRO']      = '0.00';
+                $array_vueno['M1']      = $sm_Cantidad;   
+                $array_vueno['M2']      = 0; 
+                $array_vueno['M3']      = 0;
+                
+            }        
+            array_push($json,$array_vueno);
+
+        }
         
         return $json;
         $sql_server->close();
