@@ -1892,7 +1892,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         $("#id_ventas_totales").html("Total. Vts. C$. 0.00")
                         $("#id_ventas_dolares").html("Vts. $ 0.00")
                     } else {
-                        $("#id_ventas_dolares").html("Vts. $ " + numeral(item['data']['Dolar']).format('0,0.00'))
+                        $("#id_ventas_dolares").html("<a href='exportacion'> Vts. $ " + numeral(item['data']['Dolar']).format('0,0.00')+"</a>")
                         $("#id_ventas_totales").html("Total. Vts. C$ " + numeral(val_vts_month).format('0,0.00'))
                     }
 
