@@ -80,7 +80,7 @@ class dashboard_model extends Model {
         );
 
         $f1 = $anio."-".$mes."-01";
-        $f2 = $anio."-".$mes."-31";
+        $f2 = $anio."-".$mes."-".date('t',strtotime('today'));
         
         $Resultado = exportacion_model::getVentasExportacion($f1, $f2);
 
