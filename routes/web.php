@@ -225,3 +225,4 @@ Route::get('getResumen', 'promocion_controller@getResumen');
 // RUTAS PARA INFORMACION DE FACTURA DE EXPORTACIONES
 Route::get('exportacion', 'exportacion_controller@index');
 Route::get('getVentasExportacion', 'exportacion_controller@getVentasExportacion');
+Route::get('/dtaVentaExportacion/{xbolsones}/{segmentos}','dashboard_controller@getVentasExportacion');

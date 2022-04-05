@@ -128,6 +128,11 @@ class dashboard_controller extends Controller {
     return response()->json($obj);
   }
 
+  public function getVentasExportacion($xbolsones,$segmentos) {
+    $obj = dashboard_model::getVentasExportacion($xbolsones,$segmentos);
+    return response()->json($obj);
+  }
+
   public function getRecuRowsByRoutes($mes, $anio, $pageName){
 
     $obj = dashboard_model::getRecuRowsByRoutes($mes, $anio, $pageName);

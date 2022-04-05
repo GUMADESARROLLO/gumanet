@@ -1308,7 +1308,7 @@ class dashboard_model extends Model {
                $prom_contribucion = (( $AVG - floatval($COSTO_PROM) ) / $AVG) * 100;
 
 
-                if ( $company_user==4 ) {
+                if ( $company_user == 4 ) {
 
                     $tem_   = ($xbolsones) ? floatval($Cantidad) : floatval($Total_Facturado);
                     $UND_ = floatval($Cantidad);
@@ -1387,6 +1387,23 @@ class dashboard_model extends Model {
                 $array_vueno['M2']      = 0; 
                 $array_vueno['M3']      = 0;
                 
+            }else{
+                $array_vueno['name'] = 'VUENO';
+                $array_vueno['articulo'] = 'Promo VUENO';
+                $array_vueno['data']       = 0;
+                $array_vueno['dtUnd']      = 0;
+                $array_vueno['dtUndBo']    = 0;
+                $array_vueno['dtAVG']      = '0.00';
+                $array_vueno['dtCPM']      = '0.00';
+                $array_vueno['dtMCO']      = '0.00';
+                $array_vueno['dtPCO']      = '0.00';             
+                $array_vueno['dtTIE']      = '0.00';   
+                $array_vueno['dtTB2']      = '0.00';   
+                $array_vueno['dtTUB']      = '0.00'; 
+                $array_vueno['dtPRO']      = '0.00';
+                $array_vueno['M1']      = 0;   
+                $array_vueno['M2']      = 0; 
+                $array_vueno['M3']      = 0;
             }        
             array_push($json,$array_vueno);
 
@@ -2478,6 +2495,46 @@ class dashboard_model extends Model {
 
         $array[2]['title'] = 'Real';
         $array[2]['data'] = $real;
+
+        return $array;
+    }
+    public static function getVentasExportacion($xbolsones,$Segmento) {
+        $sql_server = new \sql_server();
+        $sql_exec = '';
+        $request = Request();  
+        $i=0;
+
+        $data = array();
+
+        $anio = intval( date('Y') );
+        $month = date('m');
+
+        $f1 = $anio.'-01-01 00 : 00 : 00 : 000';
+        $f2 = $anio.'-12-31 23 : 59 : 59 : 998';
+
+        $sql_exec = "EXEC gnet_ventas_exportacion_grafica '".$f1."','".$f2."'";
+        
+        $query = $sql_server->fetchArray( $sql_exec , SQLSRV_FETCH_ASSOC);
+
+        //dd($query[0]);
+
+        for ($m = 1; $m <= $month; $m++) {
+            $found_key = array_search($m, array_column($query, 'nMes'));
+            if ($found_key !== false) {
+                array_push($data, floatval($query[$found_key]['Total']));
+            } else {
+                array_push($data, floatval("0.00"));
+            }
+            
+        }
+
+       
+       // dd();
+
+        $array[0]['title'] = 'Venta';
+        $array[0]['data'] = $data;
+
+        $sql_server->close();        
 
         return $array;
     }
