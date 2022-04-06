@@ -19,14 +19,18 @@ class exportacion_model extends Model
         
         $query = $sql_server->fetchArray( $sql_exec , SQLSRV_FETCH_ASSOC);
         
-        
-
         foreach ($query as $key) {
+
+            $Factura_Detalles = exportacion_model::HistorialFactura($key['FACTURA']);
+            
+            $Cantidad = array_sum(array_column($Factura_Detalles['objDt'],'CANTIDAD')) / 1000;
+
             $data[$i]["DETALLE"]             = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';       
             $data[$i]['FACTURA']             = $key['FACTURA'];
             $data[$i]['CLIENTE']             = $key['CLIENTE'];
             $data[$i]['NOMBRE_CLIENTE']      = $key['NOMBRE_CLIENTE'];
-            $data[$i]['FECHA']               = $key['Dia']->format('d/m/Y');;
+            $data[$i]['FECHA']               = $key['Dia']->format('d/m/Y');
+            $data[$i]['CANTIDAD']            = $Cantidad;
             $data[$i]['VENDEDOR']            = $key['RUTA'];                
             $data[$i]['TOTAL_FACTURA']       = $key['Total'];
             $data[$i]['TIPO_CAMBIO']         = $key['TIPO_CAMBIO'];

@@ -67,17 +67,17 @@
                 </div>
             </div>
             <div class="col col-lg-2 mt-2">
-                <h5 class="h5" ><span id="id_lbl_ventas_diarias">Vts. </span> <span id="id_ventas_diarias" >0.00</span></h5>
+                <h5 class="h5" ><span id="id_lbl_ventas_diarias">Venta  </span> <span id="id_ventas_diarias" >0.00</span></h5>
             </div>
             <div class="col col-lg-2 mt-2">
                 <div class = 'vts-month-dolar has_standard_tooltip'>
-                    <h5 class="h5" id="id_ventas_dolares">Vts $ 0.00</h5>
+                    <h5 class="h5" id="id_ventas_dolares">Venta Local $ 0.00</h5>
                 </div>
                 
             </div>
             <div class="col col-lg-2 mt-2">
                 
-                <h5 class="h5" id="id_ventas_totales">Total. Vts. C$ 0.00</h5>
+                <h5 class="h5" id="id_ventas_totales">Total Venta C$ 0.00</h5>
             </div>
         </div>
     @endif
@@ -104,7 +104,13 @@
             </div>              
         </div>
         @endif
-
+        @if( Session::get('company_id') ==4  )   
+        <div class="row" id="ct04">
+            <div class="graf col-sm-12 mt-3">
+                <div class="container-rvts" id="id_grafica_venta_exportacion" style="width: 100%; margin: 0 auto"></div>
+            </div>
+        </div>
+        @endif
         <div class="row" id="ct04">
             <div class="graf col-sm-12 mt-3">
                 <div class="container-rvts" id="grafRealVentas" style="width: 100%; margin: 0 auto"></div>
@@ -118,13 +124,13 @@
                 <div class="container-vms" id="grafVtsMes" style="width: 100%; margin: 0 auto"></div>
             </div>
         </div>
-
+        @if( Session::get('company_id') !=4  )       
         <div class="row" id="ct04">
             <div class="graf col-sm-12 mt-3">
                 <div class="container-vms" id="grafClienteAnual" style="width: 100%; margin: 0 auto"></div>
             </div>
         </div>
-
+        
         <div class="row" id="ct04">
             <div class="graf col-sm-12 mt-3">
                 <div class="container-vms" id="grafTicketProm" style="width: 100%; margin: 0 auto"></div>
@@ -136,6 +142,7 @@
                 <div class="container-vms" id="grafSkuAnual" style="width: 100%; margin: 0 auto"></div>
             </div>
         </div>  
+        @endif
         <div class="row mt-3" id="cardAnioActual">
             <div class="col-sm-6">
                 <div class="card border-0 shadow-sm">

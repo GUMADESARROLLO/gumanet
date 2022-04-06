@@ -63,10 +63,13 @@ $(document).ready(function() {
 
 
     graf_Comportamiento_clientes_anual();
+
     graf_Comportamiento_sku_anual();
     graf_Ticket_promedio();
+
     grafVentasMensuales(tipo);
     grafRealVentasMensuales(tipo,0);
+    fn_grafica_ventas_exportacion(tipo,0);
     reordenandoPantalla();
     actualizandoGraficasDashboard(mes, anio, tipo);
 
@@ -453,6 +456,72 @@ $(document).ready(function() {
                     events: {
                         click: function() {
                             promedio_comportamiento("TicketProm","")
+                        }
+                    }
+                }
+            },
+        },
+        tooltip: {},
+        legend: {
+            align: 'center',
+            verticalAlign: 'top',
+            borderWidth: 0
+        },
+        series: [],
+        responsive: {
+            rules: [{
+                condition: {
+                maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+    };
+
+    //GRAFICA METAS-REAL MENSUALES
+    grafica_ventas_exportacion = {
+        chart: {
+            type: 'spline',
+            renderTo: 'id_grafica_venta_exportacion'
+        },
+        title: {
+            text: `<p class="font-weight-bolder">Ventas de Exportación</p>`
+        },
+        xAxis: {
+            categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        },
+        yAxis: {
+            title: {
+                text: ''
+            }                
+        },
+        plotOptions: {
+            series: {
+                allowPointSelect: false,
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    formatter: function() {
+                        return FormatPretty(this.y);
+                    }
+                },
+                events: {
+                    legendItemClick: function() {
+                        return false;
+                    }
+                },
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: function() {
+                            window.location = "exportacion";
+                            
                         }
                     }
                 }
@@ -1154,6 +1223,7 @@ $("#customSwitch1").change( function() {
         $.cookie( 'xbolsones' , 'yes_bolsones');
         grafVentasMensuales(1);
         grafRealVentasMensuales(1,0);
+        fn_grafica_ventas_exportacion(1,0);
         actualizandoGraficasDashboard(mes, anio, 1);
     }
     else {
@@ -1161,6 +1231,7 @@ $("#customSwitch1").change( function() {
         $.cookie( 'xbolsones' , 'not_bolsones');
         grafVentasMensuales(0);
         grafRealVentasMensuales(0,0);
+        fn_grafica_ventas_exportacion(0,0);
         actualizandoGraficasDashboard(mes, anio, 0);
     }
 });
@@ -1379,7 +1450,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                     $("#id_ventas_diarias").html(moneda + vVtsDiarias)
 
-                    Lblmoneda = (xbolsones)? "Bolsones Vts." :"Vts. "
+                    Lblmoneda = (xbolsones)? "Bolsones Venta Local" :"Venta Local "
                     $("#id_lbl_ventas_diarias").html(Lblmoneda)
 
                     
@@ -1889,11 +1960,11 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     $('[data-toggle="tooltip"]').tooltip();
 
                     if (xbolsones==1) {
-                        $("#id_ventas_totales").html("Total. Vts. C$. 0.00")
-                        $("#id_ventas_dolares").html("Vts. $ 0.00")
+                        $("#id_ventas_totales").html("Total Venta C$. 0.00")
+                        $("#id_ventas_dolares").html("Venta Exportación $ 0.00")
                     } else {
-                        $("#id_ventas_dolares").html("<a href='exportacion'> Vts. $ " + numeral(item['data']['Dolar']).format('0,0.00')+"</a>")
-                        $("#id_ventas_totales").html("Total. Vts. C$ " + numeral(val_vts_month).format('0,0.00'))
+                        $("#id_ventas_dolares").html("<a href='exportacion'> Venta Exportación $ " + numeral(item['data']['Dolar']).format('0,0.00')+"</a>")
+                        $("#id_ventas_totales").html("Total Venta C$ " + numeral(val_vts_month).format('0,0.00'))
                     }
 
                 break;
@@ -1933,6 +2004,39 @@ function grafRealVentasMensuales(xbolsones,segmentos) {
                 pointFormat : temporal
             }
             var chart = new Highcharts.Chart(ventasRealMensuales);
+        })
+    })
+}
+
+
+var grafica_ventas_exportacion = {};
+function fn_grafica_ventas_exportacion(xbolsones,segmentos) {
+    var temporal = "";
+    $("#id_grafica_venta_exportacion")
+    .empty()
+    .append(`<div style="height:400px; background:#ffff; padding:20px">
+                <div class="d-flex align-items-center">
+                    <strong class="text-info">Cargando...</strong>
+                    <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
+                </div>
+            </div>`);
+
+            grafica_ventas_exportacion.series = [];
+    $.getJSON("dtaVentaExportacion/"+xbolsones+"/"+segmentos, function(json) {
+        var newseries;
+        
+        $.each(json, function (i, item) {
+            temporal = (xbolsones)?'<span style="color:black"><b>{point.y:,.2f}</b></span>':'<span style="color:black"><b>TON {point.y:,.2f}</b></span>';
+
+            newseries = {};
+            newseries.data = item['data'];
+            newseries.name = item['title'];
+            newseries.color = colors_[i];
+            grafica_ventas_exportacion.series.push(newseries);
+            grafica_ventas_exportacion.tooltip = {
+                pointFormat : temporal
+            }
+            var chart = new Highcharts.Chart(grafica_ventas_exportacion);
         })
     })
 }
@@ -2385,6 +2489,7 @@ $("#opc_seg_graf01,#opc_seg_graf02").change( function() {
         
     } else {
         grafRealVentasMensuales(xbolsones,Segmento)
+        fn_grafica_ventas_exportacion(xbolsones,Segmento);
     }
 
     

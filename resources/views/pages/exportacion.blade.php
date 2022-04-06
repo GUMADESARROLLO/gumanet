@@ -59,7 +59,7 @@
 			<div class="card-body col-sm-12">
 				<h5 class="card-title"></h5>
 				<div class="row mt-3">
-					<div class="col-sm-4">						
+					<div class="col-sm-3">						
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="numero_factura">0.00</h3>
@@ -68,7 +68,7 @@
 						</div>
 					</div>
 
-					<div class="col-sm-4">						
+					<div class="col-sm-3">						
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="id_total_Facturado">$ 0.00</h3>
@@ -77,11 +77,19 @@
 						</div>
 					</div>
 
-					<div class="col-sm-4">						
+					<div class="col-sm-3">						
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="id_total_moneda_local">C$ 0.00</h3>
 								<p class="card-text" id="">Monto Total Facturado.</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-3">						
+						<div class="card text-center">
+							<div class="card-body">
+								<h3 class="card-title" id="id_total_ton"> 0.00</h3>
+								<p class="card-text" id="">Total Tonelada Facturada</p>
 							</div>
 						</div>
 					</div>

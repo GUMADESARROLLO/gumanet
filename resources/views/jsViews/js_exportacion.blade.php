@@ -58,17 +58,18 @@ function dataVentaExportacion(f1, f2) {
             { "title": "CLIENTE",   "data": "CLIENTE" },
             { "title": "NOMBRE",    "data": "NOMBRE_CLIENTE" },            
             { "title": "FECHA",     "data": "FECHA" },         
+            { "title": "TONELADA FACTURADA",  "data": "CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 2  , ' ' ) },         
             { "title": "TOTAL FACT.", "data": "TOTAL_FACTURA" ,render: $.fn.dataTable.render.number( ',', '.', 2  , '$ ' )},
             { "title": "TIPO DE CAMBIO.", "data": "TIPO_CAMBIO" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
             { "title": "TOTAL FACT.", "data": "TOTAL_MONEDA_LOCAL" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
             
         ],
         "columnDefs": [
-            {"className": "dt-center", "targets": [0,1,2,4,5 ]},
-            {"className": "dt-right", "targets": [ 5,6,7 ]},
+            {"className": "dt-center", "targets": [0,1,2,4,6 ]},
+            {"className": "dt-right", "targets": [ 5,6,7,8 ]},
             {"className": "dt-left", "targets": [ 3 ]},
-            { "width": "5%", "targets": [0,1,2,4,5,6] },
-            { "width": "10%", "targets": [7] },
+            { "width": "6%", "targets": [0,1,2,4,5,6,7] },
+            { "width": "10%", "targets": [8] },
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api();
@@ -81,17 +82,22 @@ function dataVentaExportacion(f1, f2) {
                 i : 0;
             };
             $('#numero_factura').text(numeral(varCount).format('0,0'));
+
+            total_ton = api.column( 5 ).data().reduce( function (a, b){
+                return intVal(a) + intVal(b);
+            }, 0 );
         
-            total_facturado = api.column( 5 ).data().reduce( function (a, b){
+            total_facturado = api.column( 6 ).data().reduce( function (a, b){
                 return intVal(a) + intVal(b);
             }, 0 );
 
-            total_moneda_local = api.column( 7 ).data().reduce( function (a, b){
+            total_moneda_local = api.column( 8 ).data().reduce( function (a, b){
                 return intVal(a) + intVal(b);
             }, 0 );
             
             $('#id_total_Facturado').text('$ ' + numeral(total_facturado).format('0,0.00'));
             $('#id_total_moneda_local').text('C$ ' + numeral(total_moneda_local).format('0,0.00'));
+            $('#id_total_ton').text(numeral(total_ton).format('0,0.00'));
            
         },
     });
@@ -182,7 +188,7 @@ function format ( callback, ordCompra_ ,Cliente) {
                 tbody +='<tr>'+
                             '<td class="text-center">' + item['ARTICULO'] + '</td>'+
                             '<td class="text-left">' + item['DESCRIPCION'] + '</td>'+
-                            '<td class="text-center">' + numeral(item['CANTIDAD']).format('0,0') + '</td>'+                            
+                            '<td class="text-center">' + numeral(item['CANTIDAD']).format('0,0.00') + '</td>'+                            
                             '<td class="text-right">' + numeral(item['PRECIO_UNITARIO']).format('0,0.00')  + '</td>'+
                             '<td class="text-right">' + numeral(item['PRECIO_TOTAL']).format('0,0.00')  + '</td>'+
                         '</tr>';
