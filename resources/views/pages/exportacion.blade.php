@@ -89,7 +89,7 @@
 						<div class="card text-center">
 							<div class="card-body">
 								<h3 class="card-title" id="id_total_ton"> 0.00</h3>
-								<p class="card-text" id="">Monto Total Ton.</p>
+								<p class="card-text" id="">Total Tonelada Facturada</p>
 							</div>
 						</div>
 					</div>

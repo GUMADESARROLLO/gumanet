@@ -58,7 +58,7 @@ function dataVentaExportacion(f1, f2) {
             { "title": "CLIENTE",   "data": "CLIENTE" },
             { "title": "NOMBRE",    "data": "NOMBRE_CLIENTE" },            
             { "title": "FECHA",     "data": "FECHA" },         
-            { "title": "CANTIDAD",  "data": "CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 2  , ' ' ) },         
+            { "title": "TONELADA FACTURADA",  "data": "CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 2  , ' ' ) },         
             { "title": "TOTAL FACT.", "data": "TOTAL_FACTURA" ,render: $.fn.dataTable.render.number( ',', '.', 2  , '$ ' )},
             { "title": "TIPO DE CAMBIO.", "data": "TIPO_CAMBIO" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
             { "title": "TOTAL FACT.", "data": "TOTAL_MONEDA_LOCAL" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
@@ -68,7 +68,7 @@ function dataVentaExportacion(f1, f2) {
             {"className": "dt-center", "targets": [0,1,2,4,6 ]},
             {"className": "dt-right", "targets": [ 5,6,7,8 ]},
             {"className": "dt-left", "targets": [ 3 ]},
-            { "width": "5%", "targets": [0,1,2,4,5,6,7] },
+            { "width": "6%", "targets": [0,1,2,4,5,6,7] },
             { "width": "10%", "targets": [8] },
         ],
         "footerCallback": function ( row, data, start, end, display ) {
