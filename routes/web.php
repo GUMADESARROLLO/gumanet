@@ -27,6 +27,8 @@ Route::get('/Menus','menus_controller@index');
 Route::get('/Roles','rol@index');
 Route::get('/recuProyectos','recupProyectos_controller@index');
 Route::get('/ordenesCompra', 'ordenesCompra_controller@index');
+Route::get('/DetalleOrden', 'DetalleOrdenController@index');
+
 
 //RUTAS LOGIN
 Route::get('/','Auth\LoginController@showLoginForm');//pagina login
@@ -54,6 +56,7 @@ Route::get('/articulos','inventario_controller@getArticulos');
 Route::get('/objBodega/{articulo}','inventario_controller@getBodegaInventario');
 Route::get('/objPrecios/{articulo}','inventario_controller@getPreciosArticulos');
 Route::get('/objCostos/{articulo}','inventario_controller@getCostosArticulos');
+Route::get('/objMargen/{articulo}','inventario_controller@getMargenArticulos');
 Route::get('/objOtros/{articulo}','inventario_controller@getOtrosArticulos');
 Route::get('/objBonificado/{articulo}','inventario_controller@getArtBonificados');
 Route::post('/transacciones','inventario_controller@transaccionesDetalle');
@@ -63,8 +66,10 @@ Route::get('/desInventario/{tipo}/{valor}', 'inventario_controller@descargarInve
 Route::get('/invCompleto', 'inventario_controller@inventarioCompleto');
 Route::get('/invTotalizadoDT', 'inventario_controller@inventarioCompletoTable');
 Route::get('/desInvTotal2', 'inventario_controller@descargarInventarioCompleto');
+Route::get('/invenVencidos', 'inventario_controller@invenVencidos');
 
-//RUTAS INVENTARIO TOTALIZADO
+
+//RUTAS INVENTARIO TOTALIZADO 
 Route::get('/invTotalizado','inventario_controller@getInventarioTotalizado');
 Route::get('/desInvTotal','inventario_controller@descargarInventarioCompleto');
 
@@ -92,6 +97,7 @@ Route::get('/graficaSegmento/{mes}/{anio}/{bolson}/{Segmento}','dashboard_contro
 Route::get('/graficaSegmentoCL/{mes}/{anio}/{bolson}/{Segmento}','dashboard_controller@getTop10Clientes');
 //Route::get('/ruta/{mes}/{anio}','dashboard_controller@getTotalRutaXVentas');
 Route::get('/unidadxProd/{mes}/{anio}','dashboard_controller@getTotalUnidadesXRutaXVentas');
+Route::get('/ClientesNoFacturados/{mes}/{anio}','dashboard_controller@ClientesNoFacturados');
 
 
 
@@ -105,6 +111,10 @@ Route::get('/detailsAllCls/{mes}/{anio}/{categoria}/{bolson}','dashboard_control
 
 
 Route::get('/dataVentasMens/{xbolsones}','dashboard_controller@getVentasMensuales');
+
+
+Route::get('/dtaComportamientoAnuales/{xbolsones}','dashboard_controller@getComportamiento');
+
 Route::get('/dataRealVtsMensuales/{xbolsones}/{segmentos}','dashboard_controller@getRealVentasMensuales');
 Route::get('/top10Cls','dashboard_controller@getTop10Clientes');
 Route::get('/valBodegas','dashboard_controller@getValBodegas');
@@ -184,8 +194,35 @@ Route::get('rePrint', 'vinetaliq_controller@rePrint');
 
 Route::get('clean', 'vinetaliq_controller@getClear');
 
+//RUTAS PARA EL DETALLE DE ORDENES
+Route::get('/getMateriaPrima/{numOrden}','DetalleOrdenController@getMateriaPrima');
+Route::get('/getMOD/{numOrden}','DetalleOrdenController@getMOD');
+Route::get('/getQuimicos/{numOrden}','DetalleOrdenController@getQuimicos');
+Route::get('/getSubCostos/{numOrden}','DetalleOrdenController@getSubCostos');
+Route::get('/getOtrosConsumos/{numOrden}','DetalleOrdenController@getOtrosConsumos');
+Route::get('/getDetailSumary/{numOrden}','DetalleOrdenController@getDetailSumary');
+Route::get('/getHrasProducidas/{numOrden}','DetalleOrdenController@getHrasProducidas');
+Route::get('/getData','DetalleOrdenController@getData');
+
+
+
+
 //RUTAS PARA LOS RECIBOS
 Route::get('recibos', 'recibos_controller@index');  
 Route::get('getRecibos', 'recibos_controller@getRecibos');
 Route::post('getAttachFile', 'recibos_controller@getAttachFile');
 Route::post('push_recibo', 'recibos_controller@push_recibo');
+Route::post('push_verificado', 'recibos_controller@push_verificado');
+Route::get('print_resumen', 'recibos_controller@print_resumen');
+
+
+// RUTAS PARA PROMOCIONES DE INNOVA
+Route::get('promocion_Vueno', 'promocion_controller@index');
+Route::get('getPromocion', 'promocion_controller@getPromocion');
+Route::post('getHistorialFactura','promocion_controller@getHistorialFactura');
+Route::get('getResumen', 'promocion_controller@getResumen');
+
+// RUTAS PARA INFORMACION DE FACTURA DE EXPORTACIONES
+Route::get('exportacion', 'exportacion_controller@index');
+Route::get('getVentasExportacion', 'exportacion_controller@getVentasExportacion');
+Route::get('/dtaVentaExportacion/{xbolsones}/{segmentos}','dashboard_controller@getVentasExportacion');

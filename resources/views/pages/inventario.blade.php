@@ -95,6 +95,45 @@
       </div>
     </div>
   </div>
+
+
+
+
+  <div class="row mt-4" id="modulo-inventario-vencido">
+    <div class="col-sm-12">
+      <h1 class="h4 text-info mb-4">Articulos de Bodega 004 - Dañados y Vencidos</h1>
+      <div class="row">
+        <div class="col-md-11">
+          <div class="form-group">
+            <label for="InputDtShowSearchFilterArtVenc" class="text-muted">Realizar busqueda por Articulo</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id=""><i data-feather="search"></i></span>
+              </div>
+              <input type="text" id="id_search_tble_inventario_vencido" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+          </div>
+        </div>        
+        <div class="col-sm-1">
+          <div class="form-group">
+            <label for="InputDtShowColumnsArtic2" class="text-muted">Ver por</label>
+            <select class="custom-select" id="id_select_inventario_vencido" name="InputDtShowColumnsArtic2">
+              <option value="10" selected>10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="-1">Todo</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive mb-5">
+        <table class="table table-bordered table-sm" width="100%" id="id_tbl_inventario_b004"></table>
+      </div>
+    </div>
+  </div>
+
+
 </div>
 
 <!--MODAL: DETALLE DE ARTICULO-->
@@ -112,6 +151,7 @@
             <a class="nav-item nav-link" id="navBonificados" data-toggle="tab" href="#nav-boni" role="tab" aria-controls="nav-boni" aria-selected="false">Bonificados</a>
             @if( Auth::User()->role == 1  || Auth::User()->role== 2 || Auth::User()->role== 6 || Auth::User()->role== 7 )
               <a class="nav-item nav-link" id="navCostos" data-toggle="tab" href="#nav-costos" role="tab" aria-controls="nav-trans" aria-selected="false">Costos</a>
+              <a class="nav-item nav-link" id="navMargen" data-toggle="tab" href="#nav-margen" role="tab" aria-controls="nav-margen" aria-selected="false">Margen</a>
             @endif
             <a class="nav-item nav-link" id="navTransaccion" data-toggle="tab" href="#nav-trans" role="tab" aria-controls="nav-trans" aria-selected="false">Transacciones</a>
             <a class="nav-item nav-link" id="navOtros" data-toggle="tab" href="#nav-otros" role="tab" aria-controls="nav-otros" aria-selected="false">Otros</a>
@@ -233,6 +273,22 @@
                         <td id="id_ult_prec" class="dt-right">0</td>
                       </tr>
                     </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="nav-margen" role="tabpanel" aria-labelledby="navMargen">
+            <div class="row">
+              <div class="col-sm-12">
+                
+                <table id="tblMargen" class="table table-bordered mt-3">
+                  <thead class="bg-blue text-light">
+                  <tr>
+                      <th>CANAL</th>
+                      <th>MARGEN BRUTO</th>
+                  </tr>
+                  </thead>
                 </table>
               </div>
             </div>

@@ -211,7 +211,70 @@ class inventario_model extends Model {
         return $query;
     }
 
-    
+    public static function invenVencidos() {
+        $sql_server = new \sql_server();        
+        $request = Request();
+        $sql_exec = '';
+        $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        $Unidad ='';
+        $jsonResulto = array();
+        
+        switch ($company_user) {
+            case '1':
+                $Unidad ='umk';
+                break;
+            case '2':
+                $Unidad ='guma';
+                break;
+            case '3':
+                return false;
+                break;
+            case '4':
+                return false;
+                break; 
+            default:                
+                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
+                break;
+        }
+
+        $sql_exec="SELECT
+        T0.ARTICULO,
+        T0.DESCRIPCION,
+        T1.LOTE,
+        T1.CANT_DISPONIBLE,
+        (SELECT T2.COSTO_PROM_LOC FROM Softland.".$Unidad.".ARTICULO T2 WHERE T2.ARTICULO= T0.ARTICULO) AS COSTO_PROM_LOC,
+        (SELECT T3.COSTO_ULT_LOC FROM Softland.".$Unidad.".ARTICULO T3 WHERE T3.ARTICULO= T0.ARTICULO ) AS COSTO_ULT_LOC,
+        (SELECT T4.FECHA_VENCIMIENTO FROM Softland.".$Unidad.".LOTE T4 WHERE T4.ARTICULO = T0.ARTICULO AND T4.LOTE = T1.LOTE ) AS FECHA_VENCIMIENTO
+    FROM
+        Softland.umk.ARTICULO T0  
+        INNER JOIN Softland.".$Unidad.".EXISTENCIA_LOTE T1 ON T0.ARTICULO = T1.ARTICULO
+        
+    WHERE
+        (LEN(T0.ARTICULO) <= 8) AND (T0.ACTIVO = 'S') AND (LEN(T0.ARTICULO) > 7) and T0.ARTICULO LIKE '1%' AND T1.CANT_DISPONIBLE > 0 AND T1.BODEGA = '004' 
+        GROUP BY 
+        T0.ARTICULO,
+        T0.DESCRIPCION,
+        T1.LOTE,
+        T1.CANT_DISPONIBLE";
+
+        //dd($sql_exec);
+        $i=0;
+
+        $qInvetario = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
+        foreach ($qInvetario as $key) {
+            $jsonResulto[$i]['ARTICULO']                  = $key['ARTICULO'];
+            $jsonResulto[$i]['DESCRIPCION']               = $key['DESCRIPCION'];
+            $jsonResulto[$i]['LOTE']                      = $key['LOTE'];
+            $jsonResulto[$i]['CANT_DISPONIBLE']           = number_format($key['CANT_DISPONIBLE'], 2);
+            $jsonResulto[$i]['FECHA_VENCIMIENTO']         = $key['FECHA_VENCIMIENTO']->format('d/m/Y');;
+            $jsonResulto[$i]['COSTO_PROM_LOC']            = number_format($key['COSTO_PROM_LOC'], 2);
+            $jsonResulto[$i]['COSTO_ULT_LOC']             = number_format($key['COSTO_ULT_LOC'], 2);
+            $i++;
+        }
+        $sql_server->close();
+
+        return $jsonResulto;
+    }
 
     public static function getInventarioCompleto() {
         $sql_server = new \sql_server();        
@@ -407,9 +470,9 @@ class inventario_model extends Model {
                     'UNIDAD',
                     'CANTI. DISP B002 ',
                     'TOTAL UNITS/ MES',
-                    'TOTAL UNITS/ 2021',
-                    'PROM. UNITS/MES 2020',
-                    'TOTAL UNITS. 2020',
+                    'TOTAL UNITS/ 2022',
+                    'PROM. UNITS/MES 2021',
+                    'TOTAL UNITS. 2021',
                     'MESES INVENTARIOS',
                     'Nº MESES',
                     'TOTAL VST. ANUAL',
@@ -730,6 +793,43 @@ class inventario_model extends Model {
         switch ($company_user) {
             case '1':
                 $sql_exec = 'EXEC sp_iweb_precios '."'".$articulo."'".' ';
+                break;
+            case '2':
+                $sql_exec = 'EXEC sp_gp_iweb_precios '."'".$articulo."'".' ';
+                break;
+            case '3':
+                return false;
+                break;
+            case '4':
+                $sql_exec = 'EXEC sp_inn_iweb_precios '."'".$articulo."'".' ';
+                break;   
+            default:                
+                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
+                break;
+        }        
+
+        $i = 0;
+        $json = array();
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+
+        foreach ($query as $fila) {
+            $json[$i]["NIVEL_PRECIO"] = $fila["NIVEL_PRECIO"];
+            $json[$i]["PRECIO"] = ($fila["PRECIO"]=="") ? "N/D" : number_format($fila["PRECIO"],2);
+            $i++;
+        }
+
+        $sql_server->close();
+        return $json;
+    }
+    public static function getMargenArticulos($articulo) {
+        
+        $sql_server     = new \sql_server();
+        $sql_exec       = '';
+        $request        = Request();
+        $company_user   = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        switch ($company_user) {
+            case '1':
+                $sql_exec = 'EXEC sp_iweb_margen '."'".$articulo."'".' ';
                 break;
             case '2':
                 $sql_exec = 'EXEC sp_gp_iweb_precios '."'".$articulo."'".' ';

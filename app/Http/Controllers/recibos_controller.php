@@ -12,8 +12,6 @@ use App\reportes_model;
 use Illuminate\Support\Facades\DB;
 use GPDF;
 use PDF;
-use App\tbl_liquidacion_fondo_vineta;
-use App\tbl_liquidacion_detalle;
 use App\app_onesignal;
 
 class recibos_controller extends Controller {
@@ -33,81 +31,57 @@ class recibos_controller extends Controller {
 
     }
 
-    public function resumenpdf(Request $request) {
+    public function print_resumen(Request $request) {
 
-        $liq            = new tbl_liquidacion_fondo_vineta();
-        $liq_detalle    = new tbl_liquidacion_detalle();
         $vlLinea        = 0; 
         $recibido       = 0; 
         $Lineas         = [];
 
 
         $aRutas         = reportes_model::rutas();
-        $resumen        = json_decode(vinetaliq_controller::getSolicitudes($request)->content(), true);        
+        $resumen        = json_decode(recibos_controller::getRecibos($request)->content(), true);        
         $Ruta           = $request->input('RU');
         $found_key      = array_search($Ruta, array_column($aRutas, 'VENDEDOR'));
         $Ruta_Name      = $aRutas[$found_key]['NOMBRE'];
-        $Fecha_generado = date('Y-m-d H:i:s');
-        $FondoInicial   = $request->input('Fondo');
+        $Fecha_generado = date('Y-m-d H:i:s');        
         $Nota           = $request->input('nota');
 
-        $liq->Ruta              = $Ruta;
-        $liq->Ruta_name         = $Ruta_Name;
-        $liq->Fecha             = $Fecha_generado;
-        $liq->Fondo_inicial     = $FondoInicial;
-        $liq->Nota              = $Nota;
-        $liq->Anulado           = "N";
-        $liq->save();
-        $number_liquidacion     = $liq->id;
-
-        $IdLiquidacion = $this->addZeros($number_liquidacion);
+        
         
         $data = [
             'Ejecutivo'   =>  $Ruta_Name,
             'Fecha'       =>  $Fecha_generado,
             'Ruta'        =>  $Ruta,
-            'Fondo'       =>  $FondoInicial,
-            'Nota'        =>  $Nota,
-            'IdLiq'       =>  $IdLiquidacion
+            'Nota'        =>  $Nota
         ];
 
         foreach($resumen as $key){     
-            if ($key['STATUS']!=0) {
-                $suma       = 0;  
-                $vlLinea    = 0;   
-    
-                $vlLinea += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
-                $recibido += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
-    
-                foreach($key['DETALLES'] as $dt){
-                    $suma+=$dt['CANTIDAD'];
-                }
-    
-                $Lineas[] = [
-                    'id'            => $number_liquidacion,
-                    'Fecha'         => $key['FECHA'],
-                    'Recibo'        => $key['RECIBO'],
-                    'cliente_name'  => $key['NOMBRE_CLIENTE'],
-                    'cliente_cod'   => $key['CLIENTE'],
-                    'Concepto'      => "Pago Viñeta ( ".$suma." )",
-                    'Total'         => $vlLinea,
-                    'created_at'    => date('Y-m-d H:i:s')
-                ];
+            $suma       = 0;  
+            $vlLinea    = 0;   
+
+            $vlLinea += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
+            $recibido += preg_replace('/[^0-9-.]+/', '', $key['TOTAL']);
+
+            foreach($key['DETALLES'] as $dt){
+                $suma++;
             }
+
+            $Lineas[] = [
+                'id'            => 0,
+                'Fecha'         => $key['FECHA'],
+                'Recibo'        => $key['RECIBO'],
+                'cliente_name'  => $key['NOMBRE_CLIENTE'],
+                'cliente_cod'   => $key['CLIENTE'],
+                'Concepto'      => "Pago Viñeta ( ".$suma." )",
+                'Total'         => $vlLinea,
+                'created_at'    => date('Y-m-d H:i:s')
+            ];
             
         }
 
-        $vUpdate = array(
-            'Reembolso'        =>  $recibido
-        );
-        
-        tbl_liquidacion_fondo_vineta::where('id', $number_liquidacion)->update($vUpdate);
+        //return view('pages.recibo_print', compact('data','resumen'));
 
-        tbl_liquidacion_detalle::insert($Lineas);
-
-       //return view('pages.resumen', compact('data','resumen'));
-
-        $pdf = PDF::loadView('pages.resumen', compact('data','resumen'));
+        $pdf = PDF::loadView('pages.recibo_print', compact('data','resumen'));
         return $pdf->download('Resumen.pdf');
         
     }
@@ -242,7 +216,7 @@ class recibos_controller extends Controller {
 
 
             $data[$i]["DETALLE"]        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
-            $data[$i]['ID']             = $key->id;
+            $data[$i]['ID']             = $key->recibo;
             $data[$i]['STATUS']         = $key->status;
             $data[$i]['VENDEDOR']       = $key->ruta;
             $data[$i]['CLIENTE']        = substr(TRIM($key->cod_cliente),0,-1);;
@@ -253,11 +227,14 @@ class recibos_controller extends Controller {
             $data[$i]['RECIBO']         = $key->recibo;            
             $data[$i]['COMMENT']        = $key->comment;
             $data[$i]['COMMENT_ANUL']   = $key->comment_anul;
+            $data[$i]['STATUS']         = recibos_controller::getStatus($key->status);
 
 
             $OrdenList  = $key->order_list;
             $Lineas     = explode("],", $OrdenList);
             $cLineas    = count($Lineas) - 1;
+
+            
             
 
             for ($l=0; $l < $cLineas ; $l++){
@@ -270,21 +247,19 @@ class recibos_controller extends Controller {
                 $arrDetalles[$l]['RETENCION']       = $Lineas_detalles[3];
                 $arrDetalles[$l]['DESCUENTO']       = $Lineas_detalles[4];
                 $arrDetalles[$l]['VALORRECIBIDO']   = $Lineas_detalles[5];
+                $arrDetalles[$l]['TIPO']            =  (!isset($Lineas_detalles[8])) ? "N/D" : $Lineas_detalles[8] ;
 
                 
             }
 
             $data[$i]['DETALLES']       = $arrDetalles;
 
-           
-            
-
-           if ($Role == 8) {
+            if ($Role == 8) {
                 if ($key->status==0) {
                     $data[$i]["BOTONES"]    = '<div class="alert alert-success" role="alert">Pendiente.</div>';
                 } 
             } else {
-                $data[$i]["BOTONES"]    = ' <button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key->id.')">
+                $data[$i]["BOTONES"]    = ' <button type="button" class="btn btn-outline-secondary"  onClick="Aprobado('.$key->id.')">
                                                 <i class="material-icons text-green mt-1"  style="font-size: 20px">done</i>
                                             </button>
                                             <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
@@ -295,15 +270,33 @@ class recibos_controller extends Controller {
             }
 
             if($key->status==1) {
-                $data[$i]["BOTONES"]        = '
+
+                /*$data[$i]["BOTONES"]        = '<button type="button" class="btn btn-outline-secondary"  onClick="Verificado('.$key->id.')">
+                                                    <i class="material-icons text-green mt-1"  style="font-size: 20px">done_all</i>
+                                                </button>
                                                 <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
                                                     <i class="material-icons text-red mt-1"  style="font-size: 20px">attach_file</i>
                                                 </button>                                        
-                                            ';
+                                            ';*/
+                $data[$i]["BOTONES"]        =  '<button type="button" class="btn btn-outline-success" >
+                                                    <i class="material-icons text-green mt-1"  style="font-size: 20px">done</i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
+                                                    <i class="material-icons text-red mt-1"  style="font-size: 20px">attach_file</i>
+                                                </button>';
+
             }else if($key->status==2){
-                $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">Anulada</div>';
+                $data[$i]["BOTONES"]        =  '<button type="button" class="btn btn-outline-success" >
+                                                    <i class="material-icons text-green mt-1"  style="font-size: 20px">done</i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger"  onClick="attach_file('.$key->id.')">
+                                                    <i class="material-icons text-red mt-1"  style="font-size: 20px">attach_file</i>
+                                                </button>';
             } else if($key->status==3){
-                $data[$i]["BOTONES"]        = '<div class="alert alert-danger" role="alert">Elim. Ruta</div>';
+                $data[$i]["BOTONES"]        = '';
+            }else if($key->status==4){
+                $data[$i]['NOMBRE_CLIENTE'] = $key->comment;
+                $data[$i]["BOTONES"]        = '';
             }
             
             
@@ -377,12 +370,12 @@ class recibos_controller extends Controller {
                 
                 $Lineas_detalles     = explode(";", $Lineas[$l]);
 
-                $arrDetalles[$l]['FECHA']     = str_replace('[', '', $Lineas_detalles[0]);
-                $arrDetalles[$l]['RECIBO']     = $Lineas_detalles[1];
+                $arrDetalles[$l]['FECHA']           = str_replace('[', '', $Lineas_detalles[0]);
+                $arrDetalles[$l]['RECIBO']          = $Lineas_detalles[1];
                 $arrDetalles[$l]['CLIENTE_NAME']    = $Lineas_detalles[2];
-                $arrDetalles[$l]['CLIENTE_COD']  = $Lineas_detalles[3];
-                $arrDetalles[$l]['CONCEPTO']  = $Lineas_detalles[4];
-                $arrDetalles[$l]['TOTAL']       = $Lineas_detalles[5];
+                $arrDetalles[$l]['CLIENTE_COD']     = $Lineas_detalles[3];
+                $arrDetalles[$l]['CONCEPTO']        = $Lineas_detalles[4];
+                $arrDetalles[$l]['TOTAL']           = $Lineas_detalles[5];
 
                 
             }
@@ -490,10 +483,16 @@ class recibos_controller extends Controller {
     }
 
     public function push_recibo(Request $request){
-       
         if($request->isMethod('post')) {
             $id = $request->input('id');            
             recibos_controller::UpdateStatus($id,1,"");
+        }
+        
+    }
+    public function push_verificado(Request $request){
+        if($request->isMethod('post')) {
+            $id = $request->input('id');            
+            recibos_controller::UpdateStatus($id,2,"");
         }
         
     }
@@ -556,6 +555,28 @@ class recibos_controller extends Controller {
                 break;
             case 1:
                 $res = '000'.$code;
+                break;
+            
+            default:
+                $res = $code;
+                break;
+        }
+
+        return $res;
+        
+    }
+
+    public static function getStatus($code){
+        $res='';
+        switch ($code) {           
+            case 0:
+                $res = 'Pendiente';
+                break;
+            case 1:
+                $res = 'Ingresado';
+                break;
+            case 2:
+                $res = 'Verificado';
                 break;
             
             default:

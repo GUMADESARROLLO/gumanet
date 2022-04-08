@@ -48,8 +48,8 @@
 								<select class="custom-select" id="dtStatus" name="dtLength">
 								<option value="" selected>Todos</option>
 								<option value="0">Pendiente</option>
-								<option value="1">Aprobados</option>
-								<option value="2">Anulados</option>								
+								<option value="1">Ingresado</option>
+								<option value="2">Verificado</option>								
 								</select>
 							</div>
 						</div>
@@ -68,13 +68,20 @@
 										<input type="text" class="input-fecha" id="f2">
 									</div>
 								</div>
-								<div class="col-sm-4 mt-4 ">
+								<div class="col-sm-2 mt-4 ">
 									<div class="form-group"> 
 										<a href="#!" class="btn btn-primary float-left" id="BuscarVinneta">
 											<i class="material-icons text-white mt-1"  style="font-size: 20px">filter_list_alt</i>
 										</a>
 									</div>
-								</div>								
+								</div>	
+								<div class="col-sm-2 mt-4">
+									<div class="form-group"> 
+										<a href="#!" class="btn btn-primary float-left" id="resument">
+											<i class="material-icons text-white mt-1"  style="font-size: 20px">local_printshop</i>
+										</a>
+									</div>
+								</div>							
 							</div>
 						</div>  
 					</div>
@@ -82,7 +89,29 @@
 			</div>
 		</div>
 		<div class="card border-0 shadow-sm mt-3">	
-			<div class="card-body col-sm-12">												
+			<div class="card-body col-sm-12">
+				<div class="row">
+				<div class="col-sm-3">
+					<p class="text-muted m-0" >Ingresado.  <i class="material-icons text-secondary font-weight-bold" style="font-size:15px">done</i></p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_pendiente">C$ 0.00</p>
+				</div>
+				<div class="col-sm-5">
+					<p class="text-muted m-0" id="text-anio-pasado">Validado por Cartera. <i class="material-icons text-success font-weight-bold" style="font-size:15px">done_all</i></p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_ingresado">C$ 0.00</p>
+				</div>
+				<div class="col-sm-2 border-right" style="display:none">
+					<p class="text-muted m-0">Validado por Tesoreria. <i class="material-icons text-success font-weight-bold" style="font-size:15px">done_all</i></p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_verificado">C$ 0.00</p>
+				</div>
+				<div class="col-sm-2">
+					<p class="text-muted m-0" id="text-mes-pasado">Total</p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_Total" >C$ 0.00</p>
+				</div>
+				<div class="col-sm-2">
+					<p class="text-muted m-0"></p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" ></p>
+				</div>
+			</div>												
 				<table class="table table-striped table-bordered table-sm post_back mt-3" width="100%" id="dtVinneta">
 					<thead class="bg-blue text-light"></thead>
 				</table>
@@ -135,7 +164,7 @@
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 		<div class="modal-header">
-			<h5 class="modal-title">Liquidacion de fondo de viñetas</h5>
+			<h5 class="modal-title">Resumen de recibos. </h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
@@ -146,7 +175,7 @@
 					<p class="text-muted m-0">RUTA</p>
 					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id-form-ruta"></p>
 				</div>
-				<div class="col-sm-2 ">
+				<div class="col-sm-5 ">
 					<p class="text-muted m-0">EJECUTIVO</p>
 					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id-form-ruta-name"></p>
 				</div>
@@ -154,12 +183,12 @@
 					<p class="text-muted m-0">FECHA</p>
 					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id-form-time">0.00</p>
 				</div>
-				<div class="col-sm-6">
-					<div class="form-group">
-						<label for="recipient-name" class="col-form-label" >Fondo Inicial:</label>
-						<input type="number" onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;" class="form-control" id="txt-fondo-inicial" placeholder="C$ 00.00">
-					</div>
+
+				<div class="col-sm-3 border-right">
+					<p class="text-muted m-0">TOTAL</p>
+					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id-form-Total">0.00</p>
 				</div>
+				
 			</div>
 
 			<div class="mt-3" id="dtViewLiquidacion"></div>
@@ -172,7 +201,7 @@
 
 		</div>
 		<div class="modal-footer">			
-			<button type="button" class="btn btn-primary" id="id-print-pdf">Guardar y Imprimir</button>
+			<button type="button" class="btn btn-primary" id="id-print-pdf">Imprimir</button>
 		</div>
 		</div>
 	</div>

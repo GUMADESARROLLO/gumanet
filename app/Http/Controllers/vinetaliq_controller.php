@@ -261,8 +261,12 @@ class vinetaliq_controller extends Controller {
                 } 
             } else {
                 if ($key->status==0) {
-                    $data[$i]["BOTONES"]    = ' <button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key->id.')">Procesar</button>
-                                                    <button type="button" class="btn btn-outline-danger"  onClick="open_modal_anulacion('.$key->id.')">Anular</button>';
+                    $data[$i]["BOTONES"]    = ' <button type="button" class="btn btn-outline-success"  onClick="Liquidar('.$key->id.')">
+                                                    <i class="material-icons text-green mt-1"  style="font-size: 20px">done</i>
+                                                </button>
+                                                    <button type="button" class="btn btn-outline-danger"  onClick="open_modal_anulacion('.$key->id.')">
+                                                        <i class="material-icons text-green mt-1"  style="font-size: 20px">close</i>
+                                                    </button>';
                 } 
             }
 

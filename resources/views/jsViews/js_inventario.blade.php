@@ -13,12 +13,12 @@ $(document).ready(function() {
             { title: "DESCRIPCION",             data: "DESCRIPCION" },
             { title: "UNIDAD",                  data: "UNIDAD_ALMACEN" },
             { title: "CANT. DISP. B002",        data: "total" },
-            { title: "TOTAL UNITS. ",           data: "und" },
+            { title: "TOTAL UNITS. DISP. B002",           data: "und" },
             { title: "TOTAL UNITS/ MES",        data: "VST_MES_ACTUAL" },
-            { title: "PROM UNITS/ MES 2021",    data: "PROM_VST_ANUAL" },
-            { title: "TOTAL UNITS 2021",        data: "VST_ANNO_ACTUAL" },
-            { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
-            { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
+            { title: "PROM UNITS/ MES 2022",    data: "PROM_VST_ANUAL" },
+            { title: "TOTAL UNITS 2022",        data: "VST_ANNO_ACTUAL" },
+            { title: "PROM. UNITS/ MES 2021",   data: "PROMEDIO_VENTA" },
+            { title: "TOTAL UNITS 2021",        data: "CANT_ANIO_PAS" },
             { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" },
             { title: "Nº MESES CON VTA",        data: "COUNT_MONTH" },
             { title: "TOTAL VTA ANUAL",         data: "SUM_ANUAL" },
@@ -41,10 +41,10 @@ $(document).ready(function() {
             { title: "CANT. DISP.",             data: "total" },
             { title: "TOTAL UNITS. ",           data: "und" },
             { title: "TOTAL UNITS/ MES",        data: "VST_MES_ACTUAL" },
-            { title: "PROM UNITS/ MES 2021",    data: "PROM_VST_ANUAL" },
+            { title: "PROM UNITS/ MES 2022",    data: "PROM_VST_ANUAL" },
             { title: "TOTAL UNITS 2021",        data: "VST_ANNO_ACTUAL" },
-            { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
-            { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
+            { title: "PROM. UNITS/ MES 2021",   data: "PROMEDIO_VENTA" },
+            { title: "TOTAL UNITS 2021",        data: "CANT_ANIO_PAS" },
             { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" },
             { title: "Nº MESES CON VTA",        data: "COUNT_MONTH" },
             { title: "TOTAL VTA ANUAL",         data: "SUM_ANUAL" },
@@ -66,10 +66,10 @@ $(document).ready(function() {
             { title: "CANT. DISP.",             data: "total" },
             { title: "TOTAL UNITS. ",           data: "und" },
             { title: "TOTAL UNITS/ MES",        data: "VST_MES_ACTUAL" },
-            { title: "PROM UNITS/ MES 2021",    data: "PROM_VST_ANUAL" },
+            { title: "PROM UNITS/ MES 2022",    data: "PROM_VST_ANUAL" },
             { title: "TOTAL UNITS 2021",        data: "VST_ANNO_ACTUAL" },
-            { title: "PROM. UNITS/ MES 2020",   data: "PROMEDIO_VENTA" },
-            { title: "TOTAL UNITS 2020",        data: "CANT_ANIO_PAS" },
+            { title: "PROM. UNITS/ MES 2021",   data: "PROMEDIO_VENTA" },
+            { title: "TOTAL UNITS 2021",        data: "CANT_ANIO_PAS" },
             { title: "MESES INVENTARIO",        data: "MESES_INVENTARIO" },
             { title: "Nº MESES CON VTA",        data: "COUNT_MONTH" },
             { title: "TOTAL VTA ANUAL",         data: "SUM_ANUAL" },
@@ -83,6 +83,8 @@ $(document).ready(function() {
             { "width":"50%", "targets": [ 1 ] }
         ]
         $("#modulo-inventario").empty();
+        $("#modulo-inventario-vencido").empty();
+        
     break
     default:
         alert('Ups... ocurrio un problema')
@@ -125,9 +127,50 @@ $(document).ready(function() {
 
     liquidacionPorMeses(6)
     inicializaControlFecha();
+    InventarioB004(12)
 });
 
+function InventarioB004() {
+    $('#id_tbl_inventario_b004').DataTable({
+        "destroy": true,
+        "ajax":{
+            "url": "invenVencidos",
+            'dataSrc': '',
+        },
+        "info":    false,
+        "lengthMenu": [[5,10,50,-1], [5,10,100,"Todo"]],
+        "language": {
+            "zeroRecords": "No hay coincidencias",
+            "loadingRecords": "Cargando datos...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Última ",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+            "lengthMenu": "MOSTRAR _MENU_",
+            "emptyTable": "NO HAY DATOS DISPONIBLES",
+            "search":     "BUSCAR"
+        },
+        'columns': [
+            { "title": "ARTICULO",              "data": "ARTICULO" },
+            { "title": "DESCRIPCION",           "data": "DESCRIPCION" },
+            { "title": "LOTE",                  "data": "LOTE" },            
+            { "title": "CANTIDAD",              "data": "CANT_DISPONIBLE" },
+            { "title": "COSTO PROM. LOC.",      "data": "COSTO_PROM_LOC",render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' ) },
+            { "title": "COSTO ULT. LOC.",       "data": "COSTO_ULT_LOC",render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' ) },
+            { "title": "FECHA DE VENCIMIENTO",  "data": "FECHA_VENCIMIENTO" },
+        ],
+        "columnDefs": [
+            {"className": "dt-center", "targets": [ 0, 2 ,6 ]},
+            {"className": "dt-right", "targets": [ 3,4,5 ]},
+            { "width": "50%", "targets": [ 1 ] }
+        ],
+    });
 
+    $("#id_tbl_inventario_b004_length ").hide();
+    $("#id_tbl_inventario_b004_filter").hide();
+}
 
 function liquidacionPorMeses(valor) {
     $('#tblArticulosVencimiento').DataTable({
@@ -159,8 +202,8 @@ function liquidacionPorMeses(valor) {
             { "title": "FECHA VENCE",           "data": "F_VENCIMIENTO" },
             { "title": "LOTE",                  "data": "LOTE" },
             { "title": "BODEGA",                "data": "BODEGA" },
-            { "title": "TOTAL UNITS 2021",      "data": "VTS_ANIO_ANT" },
-            { "title": "PROM. UNITS/MES 2021",  "data":  "PROMEDIO_VENTA" },
+            { "title": "TOTAL UNITS 2022",      "data": "VTS_ANIO_ANT" },
+            { "title": "PROM. UNITS/MES 2022",  "data":  "PROMEDIO_VENTA" },
             { "title": "MESES DE INVENTARIO",   "data": "TEMPO_ESTI_VENT" },
             { "title": "COSTO PROM.",           "data": "COSTO_PROM_LOC" },
             { "title": "COSTO ULT.",            "data": "COSTO_ULT_LOC" },
@@ -217,6 +260,17 @@ $( "#InputDtShowColumnsArtic2").change(function() {
     table.page.len(this.value).draw();
 });
 
+$( "#id_select_inventario_vencido").change(function() {
+    var table = $('#id_tbl_inventario_b004').DataTable();
+    table.page.len(this.value).draw();
+});
+
+$('#id_search_tble_inventario_vencido').on( 'keyup', function () {
+    var table = $('#id_tbl_inventario_b004').DataTable();
+    table.search(this.value).draw();
+});
+
+
 $('nav .nav.nav-tabs a').click(function(){
     var idNav = $(this).attr('id');
     switch(idNav) {
@@ -233,6 +287,9 @@ $('nav .nav.nav-tabs a').click(function(){
         break;
         case 'navCostos':        
             getCostos(articulo_g)
+        break;
+        case 'navMargen':        
+            getMargen(articulo_g)
         break;
         case 'navOtros':        
             getOtros(articulo_g)
@@ -289,7 +346,29 @@ function getDataBodega(articulo) {
         }
     });
 }
-
+function getMargen(articulo) {
+    $("#tblMargen").dataTable({
+        responsive: true,
+        "autoWidth":false,
+        "ajax":{
+            "url": "objMargen/"+articulo,
+            'dataSrc': '',
+        },
+        "searching": false,
+        "destroy": true,
+        "paging":   false,
+        "columns":[
+            { "data": "NIVEL_PRECIO"},
+            { "data": "PRECIO" }
+        ],
+        "info": false,
+        "language": {            
+            "zeroRecords": "No hay datos que mostrar",
+            "emptyTable": "N/D",
+            "loadingRecords": "Cargando...",
+        }
+    });
+}
 function getPrecios(articulo) {
     $("#tblPrecios").dataTable({
         responsive: true,
