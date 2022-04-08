@@ -24,6 +24,11 @@
             font-size: 3.5rem;
         }
     }
+
+  .tbl_rows_recibo_color{
+      background-color: #F7CFCF !important;
+  }
+
 </style>
 <!-- Custom styles for this template -->
 <link rel="stylesheet" href="{{ url('css/dashboard.css') }}">

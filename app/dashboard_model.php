@@ -105,7 +105,7 @@ class dashboard_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = " EXEC gnet_vnts_diaria_generico ".$mes.", ".$anio.", 'VtasTotal_UMK', ".$Segmento." ";
+                $sql_exec = " EXEC gnet_vnts_diaria_generico ".$mes.", ".$anio.", 'VtasTotal_UMK', ".$Segmento." "; 
                 break;
             case '2':
                 $sql_exec = " EXEC gnet_vnts_diaria_gp ".$mes.", ".$anio." ";
@@ -2030,8 +2030,63 @@ class dashboard_model extends Model {
         return $json;
         $sql_server->close();
     }
+    public static function getComportamiento($elemento) {
+        $sql_server     = new \sql_server();
+        $sql_exec       = '';
+        $View           = '';
+        $mercado        = '';
+        $request        = Request();
+        $company_user   = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        $i = 0;
 
-    /******* Add Rodolfo *******/
+        $meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        
+        if ($company_user==1) {
+            $View       = "Softland.dbo.VtasTotal_UMK(nolock)";
+            $mercado     = "AND Ruta NOT IN('F01', 'F12')";
+        } else {
+            if ($company_user==2) {
+                $View = "Softland.dbo.GP_VtasTotal_UMK(nolock)";
+            } else {
+                $View = "Softland.dbo.INV_VtasTotal_UMK_Temporal(nolock)";
+            }
+            
+        }
+        
+
+        $sql="SELECT mes, CAST(count( distinct ".$elemento.") AS FLOAT) AS cvalue, [Año] AS annio FROM ".$View."
+                WHERE [Año] IN ( YEAR(DATEADD(year, -1,GETDATE())), YEAR(GETDATE()))
+                AND [P. Unitario] > 0 
+                ".$mercado."
+                GROUP BY Mes,Año,nMes
+                ORDER BY nMes";
+
+        $json = array();
+        $array = array();
+        $query = $sql_server->fetchArray($sql, SQLSRV_FETCH_ASSOC);
+
+        $anioActual = intval(date('Y'));
+        $anioLimit = $anioActual - 1;
+
+        for ($anio=$anioLimit; $anio<=$anioActual; $anio++) {
+            
+            foreach ($meses as $key => $mes) {
+                $temp = array_column(array_filter($query, function($item) use($mes,$anio) { return $item['annio'] == $anio and $item['mes']==$mes; } ), 'cvalue');
+
+                ( count($temp)>0 )?( array_push($array, $temp[0])):false;
+            }
+
+            $json[$i]['name'] = $anio;
+            $json[$i]['venta'] = $array;
+            $i++;
+            
+            $array = array();
+        }
+
+        return $json;
+        $sql_server->close();
+    }
+
     public static function getAllClientsByCategory($mes, $anio, $categoria,$xbolsones)
     {
         $sql_server = new \sql_server();

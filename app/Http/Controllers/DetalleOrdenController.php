@@ -279,7 +279,8 @@ class DetalleOrdenController extends Controller
         $data = array();
         $i = 0;
         $j = 0;
-        $produccion_total = DB::table('producciontest.inn_produccion_total')->select('inn_produccion_total.*', 'producciontest.orden_produccion.*')
+        $produccion_total = DB::table('producciontest.inn_produccion_total')
+            ->select('inn_produccion_total.*', 'producciontest.orden_produccion.*')
             ->join('producciontest.orden_produccion', 'producciontest.inn_produccion_total.numOrden', '=', 'producciontest.orden_produccion.numOrden')
             ->where('producciontest.inn_produccion_total.numOrden', $numOrden);
         $pt = $produccion_total->get();
@@ -302,6 +303,7 @@ class DetalleOrdenController extends Controller
             $mp_total =  DB::table('producciontest.mp_directa')->select(DB::raw('SUM(cantidad) as mp_directa'))
                 ->where('numOrden', $numOrden)
                 ->get()->first();
+                
             $totalMPTPACK = DB::table('producciontest.mp_directa')->select(DB::raw('SUM(cantidad) as total'))
                 ->where('idFibra', $idTetra->idFibra)
                 ->where('numOrden', $numOrden)

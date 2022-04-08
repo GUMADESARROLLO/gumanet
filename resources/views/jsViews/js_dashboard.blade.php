@@ -61,7 +61,8 @@ $(document).ready(function() {
     }
 
 
-
+    graf_Comportamiento_clientes_anual();
+    graf_Comportamiento_sku_anual();
     grafVentasMensuales(tipo);
     grafRealVentasMensuales(tipo,0);
     reordenandoPantalla();
@@ -84,6 +85,118 @@ $(document).ready(function() {
         },
         title: {
             text: `<p class="font-weight-bolder">Comportamiento de Venta Anual</p>`
+        },
+        xAxis: {
+            categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        },
+        yAxis: {
+            title: {
+                text: ''
+            }                
+        },
+        plotOptions: {
+            series: {
+                allowPointSelect: false,
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    formatter: function() {
+                        return FormatPretty(this.y);
+                    }
+                },
+                events: {
+                    legendItemClick: function() {
+                        return false;
+                    }
+                }
+            },
+        },
+        tooltip: {},
+        legend: {
+            align: 'center',
+            verticalAlign: 'top',
+            borderWidth: 0
+        },
+        series: [],
+        responsive: {
+            rules: [{
+                condition: {
+                maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+    };
+
+    ClientesAnuales = {
+        chart: {
+            type: 'spline',
+            renderTo: 'grafClienteAnual'
+        },
+        title: {
+            text: `<p class="font-weight-bolder">Comportamiento Anual de Clientes</p>`
+        },
+        xAxis: {
+            categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        },
+        yAxis: {
+            title: {
+                text: ''
+            }                
+        },
+        plotOptions: {
+            series: {
+                allowPointSelect: false,
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    formatter: function() {
+                        return FormatPretty(this.y);
+                    }
+                },
+                events: {
+                    legendItemClick: function() {
+                        return false;
+                    }
+                }
+            },
+        },
+        tooltip: {},
+        legend: {
+            align: 'center',
+            verticalAlign: 'top',
+            borderWidth: 0
+        },
+        series: [],
+        responsive: {
+            rules: [{
+                condition: {
+                maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+    };
+
+    SkusAnual = {
+        chart: {
+            type: 'spline',
+            renderTo: 'grafSkuAnual'
+        },
+        title: {
+            text: `<p class="font-weight-bolder">Comportamiento de SKU Anuales</p>`
         },
         xAxis: {
             categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -789,6 +902,9 @@ $("#customSwitch1").change( function() {
     var mes = $('#opcMes option:selected').val();
     var anio = $('#opcAnio option:selected').val();
     
+    graf_Comportamiento_clientes_anual();
+    graf_Comportamiento_sku_anual();
+
     if ($(this).is(':checked')) {
         switchStatus = $(this).is(':checked');
         $.cookie( 'xbolsones' , 'yes_bolsones');
@@ -1538,9 +1654,116 @@ function grafRealVentasMensuales(xbolsones,segmentos) {
     })
 }
 
-var ventasMensuales = {};
-var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
+var ventasMensuales     = {};
+var ClientesAnuales     = {};
+var SkusAnual           = {};
 
+var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
+function graf_Comportamiento_clientes_anual() {
+    var temporal = "";
+    $("#grafRealCliente").empty().append(`<div style="height:400px; background:#ffff; padding:20px">
+                <div class="d-flex align-items-center">
+                    <strong class="text-info">Cargando comportamiento SKU Anual...</strong>
+                    <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
+                </div>
+            </div>`);
+
+    $("#anioAcumulado").empty();
+    $("#porcentaje").empty();
+    
+    ClientesAnuales.series = [];
+    elementCount = "[Cod. Cliente]";
+    $.getJSON("dtaComportamientoAnuales/"+elementCount, function(json) {
+    var newseries;
+        var sumTotales = [];
+        var temp = 0;
+        var anio = 0;
+        var date  = new Date();
+        var anio_ = parseInt(date.getFullYear());
+        var mes_ = parseInt(date.getMonth()+1);
+        temporal = '<span style="color:black"><b>{point.y:,.0f}</b></span>';
+        $.each(json, function (i, item) {
+            if (anio != item['name']) {
+
+                $.each(item['venta'], function(i_, item_) {
+                    temp = temp + parseFloat(item_)
+                })
+
+                sumTotales.push({ 'anio':item['name'], 'suma':temp });
+                
+                anio = item['name'];
+                temp = 0;
+            }
+
+            newseries = {};
+            newseries.data = item['venta'];
+            newseries.name = item['name'];
+            newseries.color = colors_[i];
+            ClientesAnuales.series.push(newseries);
+            ClientesAnuales.tooltip = {
+                pointFormat : temporal
+            };
+            var chart = new Highcharts.Chart(ClientesAnuales);
+            
+        })    
+    })    
+        
+    
+}
+
+function graf_Comportamiento_sku_anual() {
+    var temporal = "";
+    $("#grafSkuAnual").empty().append(`<div style="height:400px; background:#ffff; padding:20px">
+                <div class="d-flex align-items-center">
+                    <strong class="text-info">Cargando comportamiento SKU Anual...</strong>
+                    <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
+                </div>
+            </div>`);
+
+
+    $("#anioAcumulado").empty();
+    $("#porcentaje").empty();
+    
+    SkusAnual.series = [];
+    elementCount = "ARTICULO";
+    $.getJSON("dtaComportamientoAnuales/"+elementCount, function(json) {
+        var newseries;
+        var sumTotales = [];
+        var temp = 0;
+        var anio = 0;
+        var date  = new Date();
+        var anio_ = parseInt(date.getFullYear());
+        var mes_ = parseInt(date.getMonth()+1);
+        
+        $.each(json, function (i, item) {
+            temporal = '<span style="color:black"><b>{point.y:,.0f} Items </b></span>';
+            if (anio != item['name']) {
+
+                $.each(item['venta'], function(i_, item_) {
+                    temp = temp + parseFloat(item_)
+                })
+
+                sumTotales.push({ 'anio':item['name'], 'suma':temp });
+                
+                anio = item['name'];
+                temp = 0;
+            }
+
+            newseries = {};
+            newseries.data = item['venta'];
+            newseries.name = item['name'];
+            newseries.color = colors_[i];
+            SkusAnual.series.push(newseries);
+            SkusAnual.tooltip = {
+                pointFormat : temporal
+            };
+            var chart = new Highcharts.Chart(SkusAnual);
+            
+        })    
+    })    
+        
+    
+}
 function grafVentasMensuales(xbolsones) {
 
     var temporal = "";
@@ -1560,6 +1783,7 @@ function grafVentasMensuales(xbolsones) {
     $("#porcentaje").empty();
 
     ventasMensuales.series = [];
+
     $.getJSON("dataVentasMens/"+xbolsones, function(json) {
         var newseries;
         var sumTotales = [];
