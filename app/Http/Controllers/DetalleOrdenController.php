@@ -535,25 +535,26 @@ class DetalleOrdenController extends Controller
 
             $Data[$k]['anio']    = $key->year_;
             $mes =  DateTime::createFromFormat('!m', $key->mes_);
-            $Data[$k]['mes']     =   $this->getMes($mes->format('F'));
-            $Data[$k]['contOrder']        = $key->contOrder;
-            $Data[$k]['prod_real_total']       = number_format($key->prod_real_mensual,2);
-            $Data[$k]['prod_total_total']     = number_format($key->prod_total_mensual, 2);
-            $Data[$k]['prod_real_ton_total']  = number_format($key->prod_real_tonelada_mensual, 2);
-            $Data[$k]['costo_total_total']    = number_format($key->costo_total_mensual, 4);
-            $Data[$k]['costo_real_ton_total'] = number_format($key->costo_real_tonelada_mensual, 4);
-            $Data[$k]['ct_dolar_total']       = number_format($key->costo_total_dolar_mensual, 4);
-            $Data[$k]['detalle_general']       = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
-            $lista_ordenes  =  $key->Detalles;
-            $size     = explode(";", $lista_ordenes);
+            $Data[$k]['mes']                    =   $this->getMes($mes->format('F'));
+            $Data[$k]['contOrder']              = $key->contOrder;
+            $Data[$k]['prod_real_total']        = number_format($key->prod_real_mensual,2);
+            $Data[$k]['prod_total_total']       = number_format($key->prod_total_mensual, 2);
+            $Data[$k]['prod_real_ton_total']    = number_format($key->prod_real_tonelada_mensual, 2);
+            $Data[$k]['costo_total_total']      = number_format($key->costo_total_mensual, 4);
+            $Data[$k]['costo_real_ton_total']   = number_format($key->costo_real_tonelada_mensual, 4);
+            $Data[$k]['ct_dolar_total']         = number_format($key->costo_total_dolar_mensual, 4);
+            $Data[$k]['detalle_general']        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+            $lista_ordenes  =  trim($key->Detalles, "\"[].");;
+            $size     = explode(",", $lista_ordenes);
             $cLineas    = count($size);
             $arrDetalles = array();
+            //dd($key->Detalles);
 
             for ($l = 0; $l < $cLineas; $l++) {
 
-                $_detalles     = explode(",", $size[$l]);
-                $arrDetalles[$l]['numOrden']        = '<a href="#!"  class=""  onclick="getMoreDetail(' . "'" . $_detalles[0] . "'" . ', ' . "'" . $_detalles[1] . "'" .
-                    ',' . "'" . $_detalles[3] . "'" . ', ' . "'" .  $_detalles[4] . "'" . ')"> ' . $_detalles[0] . ' </i></a>';
+                $_detalles     = explode(";", $size[$l]);
+                $arrDetalles[$l]['numOrden']        = '<a href="#!"  class=""  onclick="getMoreDetail(' . "'" . trim($_detalles[0], "\" .") . "'" . ', ' . "'" . $_detalles[1] . "'" .
+                    ',' . "'" . $_detalles[3] . "'" . ', ' . "'" .  $_detalles[4] . "'" . ')"> ' . trim($_detalles[0], "\" .") . ' </i></a>';
                 $arrDetalles[$l]['producto']        = $_detalles[1];
                 $arrDetalles[$l]['descripcion']     = $_detalles[2];
                 $arrDetalles[$l]['fechaInicio']     = $_detalles[3];
@@ -564,7 +565,7 @@ class DetalleOrdenController extends Controller
                 $arrDetalles[$l]['costo_total']     = $_detalles[8];
                 $arrDetalles[$l]['tipo_cambio']     = $_detalles[9];
                 $arrDetalles[$l]['ct_dolar']        = $_detalles[10];
-                $arrDetalles[$l]['costo_real_ton']  = $_detalles[11];
+                $arrDetalles[$l]['costo_real_ton']  = trim($_detalles[11], "\" .");
             }
 
             $Data[$k]['Detalles']       = $arrDetalles;
