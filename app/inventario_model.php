@@ -987,16 +987,16 @@ class inventario_model extends Model {
                         isnull(sum(T1.venta),0) MontoVenta,
                         AVG (T1.[P. Unitario]) as AVG_,         
                         T1.[Costo Unitario] AS COSTO_PROM,
-                        isnull((SELECT TOP 1 SUM(T2.cantidad) AS Cantidad FROM Softland.dbo.VtasTotal_UMK T2  WHERE ".$mes." = T2.nMes AND ".$anio." = T2.[Año] AND T2.[P. Unitario] <= 0 AND T2.Articulo = T1.Articulo and ".$qSegmento." GROUP BY  T2.Articulo),0) AS Cantida_boni,
-                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE (".$mes." = T2.nMes) AND ( ".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta in ('F04'))    ), 0) AS Mayoristas,
-                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE (".$mes." = T2.nMes) AND ( ".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta in ('F02'))  ), 0) AS Instituciones,
-                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE (".$mes." = T2.nMes) AND (".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta NOT IN ('F04','F02','F01','F12'))  ), 0) AS Farmacias,
+                        isnull((SELECT TOP 1 SUM(T2.cantidad) AS Cantidad FROM Softland.dbo.VtasTotal_UMK T2  WHERE ".$anio." = T2.[Año] AND T2.[P. Unitario] <= 0 AND T2.Articulo = T1.Articulo and ".$qSegmento." GROUP BY  T2.Articulo),0) AS Cantida_boni,
+                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE ( ".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta in ('F04'))    ), 0) AS Mayoristas,
+                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE ( ".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta in ('F02'))  ), 0) AS Instituciones,
+                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE (".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta NOT IN ('F04','F02','F01','F12'))  ), 0) AS Farmacias,
                         T3.total,
                         T3.UNIDADES
             
             FROM Softland.dbo.VtasTotal_UMK T1 
             INNER JOIN iweb_articulos T3 ON T1.ARTICULO = T3.ARTICULO 
-            Where ".$mes." = T1.nMes and ".$anio." = T1.[Año] and T1.[P. Unitario] > 0 AND T1.Articulo = '".$articulo."'
+            Where ".$anio." = T1.[Año] and T1.[P. Unitario] > 0 AND T1.Articulo = '".$articulo."'
             AND  Ruta NOT IN('F01', 'F12') AND  ".$qSegmento." 
             group by T1.Articulo,T1.Descripcion,T1.Clasificacion6,T1.mes,T1.año,T1.[Costo Unitario],T3.total,T3.UNIDADES
             order by MontoVenta desc";
