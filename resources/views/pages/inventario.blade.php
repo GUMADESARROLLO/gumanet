@@ -328,47 +328,63 @@
                 <table id="tblIndicadores" class="table table-bordered mt-3">
                   <tbody id="tbody1">
                       <tr>
+                        <td class="bg-blue text-light"><b>Descripción</b></td>
+                        <td id="" class ="dt-right">Mes Actual.</td>
+                        <td id="" class ="dt-right">Acumulado Anual.</td>
+                      </tr>
+                      <tr>
                         <td class="bg-blue text-light"><b>TOTAL. FACT.</b></td>
+                        <td id="id_total_fact_month" class ="dt-right">0</td>
                         <td id="id_total_fact" class ="dt-right">0</td>
                       </tr>
                       <tr >
                         <td class="bg-blue text-light"><b>UNIT. FACT.</b></td>
+                        <td id="id_unit_fact_month" class="dt-right">0</td>
                         <td id="id_unit_fact" class="dt-right">0</td>
                       </tr>
                       <tr>
                         <td class="bg-blue text-light"><b>UNIT. BONIF. </b></td>
+                        <td id="id_unit_fact_month" class="dt-right">0</td>
                         <td id="id_unit_bonif" class ="dt-right">0</td>
                       </tr>
                       <tr >
                         <td class="bg-blue text-light"><b>PREC. PROM.</b></td>
+                        <td id="id_prom_prec_month" class="dt-right">0</td>
                         <td id="id_prom_prec" class="dt-right">0</td>
                       </tr>
                       <tr>
                         <td class="bg-blue text-light"><b>COST. PROM. UNIT</b></td>
+                        <td id="id_prom_cost_unit_month" class="dt-right">0</td>
                         <td id="id_prom_cost_unit" class ="dt-right">0</td>
                       </tr>
                       <tr >
                         <td class="bg-blue text-light"><b>CONTRIBUCION</b></td>
+                        <td id="id_contribucion_month" class="dt-right">0</td>
                         <td id="id_contribucion" class="dt-right">0</td>
                       </tr>
                       <tr>
                         <td class="bg-blue text-light"><b>% MARGEN BRUTO </b></td>
+                        <td id="id_margen_bruto_month" class="dt-right">0</td>
                         <td id="id_margen_bruto" class ="dt-right">0</td>
                       </tr>
                       <tr >
                         <td class="bg-blue text-light"><b>CANT. DISP. B002</b></td>
+                        <td id="id_disp_bodega_month" class="dt-right">0</td>
                         <td id="id_disp_bodega" class="dt-right">0</td>
                       </tr>
                       <tr>
                       <td class="bg-blue text-light"><b>CANT. DISP. UNDS. B002</b></td>
+                      <td id="id_disp_bodega_unds_month" class="dt-right">0</td>
                         <td id="id_disp_bodega_unds" class ="dt-right">0</td>
                       </tr>
                       <tr >
                         <td class="bg-blue text-light"><b>PROM. UNDS. MES 2022</b></td>
+                        <td id="id_prom_unds_mes_month" class="dt-right">0</td>
                         <td id="id_prom_unds_mes" class="dt-right">0</td>
                       </tr>
                       <tr>
                         <td class="bg-blue text-light"><b>CANT. DISP. MES</b></td>
+                        <td id="id_cant_disp_mes_month" class="dt-right">0</td>
                         <td id="id_cant_disp_mes" class ="dt-right">0</td>
                       </tr>                      
                     </tbody>

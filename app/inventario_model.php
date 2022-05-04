@@ -941,7 +941,7 @@ class inventario_model extends Model {
     public static function objIndicadores($articulo) {
         
         $sql_server = new \sql_server();
-        $sql_exec = '';
+        $sql_exec_anual = '';
         $sql_exec_Vueno= '';
         $tem_=0;
         $RutaSegmento = "";
@@ -980,7 +980,7 @@ class inventario_model extends Model {
                     }
                 }
 
-                $sql_exec ="SELECT 
+            $sql_exec_anual = "SELECT 
                         T1.Articulo,T1.Descripcion,T1.Clasificacion6,
                         count(T1.articulo) As NºVentaMes,
                         isnull(sum(T1.cantidad),0) Cantidad,
@@ -988,31 +988,51 @@ class inventario_model extends Model {
                         AVG (T1.[P. Unitario]) as AVG_,         
                         T1.[Costo Unitario] AS COSTO_PROM,
                         isnull((SELECT TOP 1 SUM(T2.cantidad) AS Cantidad FROM Softland.dbo.VtasTotal_UMK T2  WHERE ".$anio." = T2.[Año] AND T2.[P. Unitario] <= 0 AND T2.Articulo = T1.Articulo and ".$qSegmento." GROUP BY  T2.Articulo),0) AS Cantida_boni,
-                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE ( ".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta in ('F04'))    ), 0) AS Mayoristas,
-                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE ( ".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta in ('F02'))  ), 0) AS Instituciones,
-                        ISNULL((SELECT SUM(T2.venta)  FROM Softland.dbo.VtasTotal_UMK T2 WHERE (".$anio." = T2.[Año]) AND (T2.[P. Unitario] > 0) AND (T2.Articulo = T1.Articulo) AND (T2.Ruta NOT IN ('F04','F02','F01','F12'))  ), 0) AS Farmacias,
+                        
                         T3.total,
                         T3.UNIDADES
             
-            FROM Softland.dbo.VtasTotal_UMK T1 
-            INNER JOIN iweb_articulos T3 ON T1.ARTICULO = T3.ARTICULO 
-            Where ".$anio." = T1.[Año] and T1.[P. Unitario] > 0 AND T1.Articulo = '".$articulo."'
-            AND  Ruta NOT IN('F01', 'F12') AND  ".$qSegmento." 
-            group by T1.Articulo,T1.Descripcion,T1.Clasificacion6,T1.mes,T1.año,T1.[Costo Unitario],T3.total,T3.UNIDADES
-            order by MontoVenta desc";
+                        FROM Softland.dbo.VtasTotal_UMK T1 
+                        INNER JOIN iweb_articulos T3 ON T1.ARTICULO = T3.ARTICULO 
+                        Where ".$anio." = T1.[Año] and T1.[P. Unitario] > 0 AND T1.Articulo = '".$articulo."'
+                        AND  Ruta NOT IN('F01', 'F12') AND  ".$qSegmento." 
+                        group by T1.Articulo,T1.Descripcion,T1.Clasificacion6,T1.año,T1.[Costo Unitario],T3.total,T3.UNIDADES
+                        order by MontoVenta desc";
 
+            $sql_exec_mensual = "SELECT                         
+                        T1.Articulo,T1.Descripcion,T1.Clasificacion6,
+                        count(T1.articulo) As NºVentaMes,
+                        isnull(sum(T1.cantidad),0) Cantidad,
+                        isnull(sum(T1.venta),0) MontoVenta,
+                        AVG (T1.[P. Unitario]) as AVG_,         
+                        T1.[Costo Unitario] AS COSTO_PROM,
+                        isnull((SELECT TOP 1 SUM(T2.cantidad) AS Cantidad FROM Softland.dbo.VtasTotal_UMK T2  WHERE ".$mes." = T2.nMes AND ".$anio." = T2.[Año] AND T2.[P. Unitario] <= 0 AND T2.Articulo = T1.Articulo and ".$qSegmento." GROUP BY  T2.Articulo),0) AS Cantida_boni,
+                        T3.total,
+                        T3.UNIDADES
+
+                        FROM Softland.dbo.VtasTotal_UMK T1 
+                        INNER JOIN iweb_articulos T3 ON T1.ARTICULO = T3.ARTICULO 
+                        Where ".$mes." = T1.nMes and ".$anio." = T1.[Año] and T1.[P. Unitario] > 0 AND T1.Articulo = '".$articulo."'
+                        AND  Ruta NOT IN('F01', 'F12') AND  ".$qSegmento." 
+                        group by T1.Articulo,T1.Descripcion,T1.Clasificacion6,T1.mes,T1.año,T1.[Costo Unitario],T3.total,T3.UNIDADES
+                        order by MontoVenta desc";
+
+
+
+            
+            
 
 
 
                 break;
             case '2':
-                $sql_exec = " EXEC Gp_DetalleVentas_Mes ".$mes.", ".$anio." ";
+                $sql_exec_anual = " EXEC Gp_DetalleVentas_Mes ".$mes.", ".$anio." ";
                 break;
             case '3':
-                $sql_exec = "";
+                $sql_exec_anual = "";
                 break;   
             case '4':
-                $sql_exec       = " EXEC Inv_DetalleVentas_Mes ".$mes.", ".$anio." ";
+                $sql_exsql_exec_anualec       = " EXEC Inv_DetalleVentas_Mes ".$mes.", ".$anio." ";
                 $sql_exec_Vueno = " EXEC Inv_DetalleVentas_Mes_promo_vueno ".$mes.", ".$anio." ";
                 break;        
             default:                
@@ -1020,7 +1040,8 @@ class inventario_model extends Model {
                 break;
         }
 
-        $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
+        $query_anual = $sql_server->fetchArray($sql_exec_anual,SQLSRV_FETCH_ASSOC);
+        $query_mensual = $sql_server->fetchArray($sql_exec_mensual,SQLSRV_FETCH_ASSOC);
         
 
         $json = array();
@@ -1029,8 +1050,8 @@ class inventario_model extends Model {
         
         $getMonth  = date('n');
 
-        if( count($query)>0 ) {
-            foreach ($query as $key) {
+        if( count($query_anual)>0 ) {
+            foreach ($query_anual as $key) {
 
                 $oItem = tbl_temporal::where('articulo', $key['Articulo'])->get()->first();
                 if ($oItem) {
@@ -1054,8 +1075,8 @@ class inventario_model extends Model {
                 $COSTO_PROM             = $key['COSTO_PROM'];
                 $TOTAL_B002             = $key['total'];
                 $TOTAL_UND_B002         = $key['UNIDADES'];
-                $json[$i]['name']       = $key['Articulo'];
-                $json[$i]['articulo']   = $key['Descripcion'];
+                $json['ANUAL'][$i]['name']       = $key['Articulo'];
+                $json['ANUAL'][$i]['articulo']   = $key['Descripcion'];
 
 
                 $AVG = floatval($Total_Facturado)  / (  floatval($Cantidad) + floatval($Cantidad_bonificada) );
@@ -1080,34 +1101,93 @@ class inventario_model extends Model {
 
 
 
-                $json[$i]['data']       = $tem_;
-                $json[$i]['dtUnd']      = $UND_;
-                $json[$i]['dtUndBo']    = $UND_BO;
-                $json[$i]['dtAVG']      = $AVG_;
-                $json[$i]['dtCPM']      = $COSTO_PROM_;
-                $json[$i]['dtMCO']      = $MARG_CONTRI;
-                $json[$i]['dtPCO']      = $PORC_CONTRI; 
+                $json['ANUAL'][$i]['data']       = $tem_;
+                $json['ANUAL'][$i]['dtUnd']      = $UND_;
+                $json['ANUAL'][$i]['dtUndBo']    = $UND_BO;
+                $json['ANUAL'][$i]['dtAVG']      = $AVG_;
+                $json['ANUAL'][$i]['dtCPM']      = $COSTO_PROM_;
+                $json['ANUAL'][$i]['dtMCO']      = $MARG_CONTRI;
+                $json['ANUAL'][$i]['dtPCO']      = $PORC_CONTRI; 
                 
-                $json[$i]['dtTIE']      = $TIEMPO_ESTIMADO;   
-                $json[$i]['dtTB2']      = $TOTAL_B002;   
-                $json[$i]['dtTUB']      = $TOTAL_UND_B002; 
-                $json[$i]['dtPRO']      = $PromedioActual;
-                
-                if ($company_user==1) {
-                    $json[$i]['M1']         = $key['Farmacias'];
-                    $json[$i]['M2']         = $key['Mayoristas'];
-                    $json[$i]['M3']         = $key['Instituciones'];
-                } else {
-                    $json[$i]['M1']         = $tem_;
-                    $json[$i]['M2']         = 0;
-                    $json[$i]['M3']         = 0;
-                }
-
-
+                $json['ANUAL'][$i]['dtTIE']      = $TIEMPO_ESTIMADO;   
+                $json['ANUAL'][$i]['dtTB2']      = $TOTAL_B002;   
+                $json['ANUAL'][$i]['dtTUB']      = $TOTAL_UND_B002; 
+                $json['ANUAL'][$i]['dtPRO']      = $PromedioActual;
+             
                 
                 $i++;
             }
         }
+        $i = 0;
+        if( count($query_mensual)>0 ) {
+            foreach ($query_mensual as $row) {
+
+                $oItem = tbl_temporal::where('articulo', $key['Articulo'])->get()->first();
+                if ($oItem) {
+                    $cantidad = $oItem->cantidad;
+                    $vst_mes_Actual = $oItem->VstMesActual;
+                    $vst_anno_Actual = $oItem->VstAnnoActual;
+                } else {
+                    $cantidad = 0;
+                    $vst_mes_Actual = 0;
+                    $vst_anno_Actual = 0;
+                }
+
+                $totalExistencia = $key['total'];
+
+                $PromedioActual = number_format(($vst_anno_Actual / $getMonth), 2,".","");
+                $tempoEstimado = ($row['total'] > 0.10 && $PromedioActual > 0.10) ? $totalExistencia  / $PromedioActual : "0.00" ;
+
+                $Total_Facturado        = $row['MontoVenta'];
+                $Cantidad               = $row['Cantidad'];
+                $Cantidad_bonificada    = $row['Cantida_boni'];                
+                $COSTO_PROM             = $row['COSTO_PROM'];
+                $TOTAL_B002             = $row['total'];
+                $TOTAL_UND_B002         = $row['UNIDADES'];
+                $json['MENSUAL'][$i]['name']       = $row['Articulo'];
+                $json['MENSUAL'][$i]['articulo']   = $row['Descripcion'];
+
+
+                $AVG = floatval($Total_Facturado)  / (  floatval($Cantidad) + floatval($Cantidad_bonificada) );
+
+                $Costo_total_Promedio = (floatval($Cantidad) + floatval($Cantidad_bonificada)) * floatval($COSTO_PROM);
+                
+                $Monto_Contribucion = floatval($Total_Facturado)  - floatval($Costo_total_Promedio);
+
+               //$prom_contribucion = ($Monto_Contribucion / $Costo_total_Promedio) * 100;          
+
+               $prom_contribucion = (( $AVG - floatval($COSTO_PROM) ) / $AVG) * 100;
+
+
+                $tem_ = floatval($Total_Facturado);
+                $UND_ = floatval($Cantidad);
+                $UND_BO = floatval($Cantidad_bonificada);
+                $AVG_ = number_format(floatval($AVG),2);
+                $COSTO_PROM_ = number_format(floatval($COSTO_PROM),2);
+                $MARG_CONTRI = number_format(floatval($Monto_Contribucion),2);
+                $PORC_CONTRI = number_format(floatval($prom_contribucion),2);
+                $TIEMPO_ESTIMADO = number_format(floatval($tempoEstimado),2);
+
+
+
+                $json['MENSUAL'][$i]['data']       = $tem_;
+                $json['MENSUAL'][$i]['dtUnd']      = $UND_;
+                $json['MENSUAL'][$i]['dtUndBo']    = $UND_BO;
+                $json['MENSUAL'][$i]['dtAVG']      = $AVG_;
+                $json['MENSUAL'][$i]['dtCPM']      = $COSTO_PROM_;
+                $json['MENSUAL'][$i]['dtMCO']      = $MARG_CONTRI;
+                $json['MENSUAL'][$i]['dtPCO']      = $PORC_CONTRI; 
+                
+                $json['MENSUAL'][$i]['dtTIE']      = $TIEMPO_ESTIMADO;   
+                $json['MENSUAL'][$i]['dtTB2']      = $TOTAL_B002;   
+                $json['MENSUAL'][$i]['dtTUB']      = $TOTAL_UND_B002; 
+                $json['MENSUAL'][$i]['dtPRO']      = $PromedioActual;
+             
+                
+                $i++;
+            }
+        }
+
         return $json;
         $sql_server->close();
     }
