@@ -328,9 +328,9 @@
                 <table id="tblIndicadores" class="table table-bordered mt-3">
                   <tbody id="tbody1">
                       <tr>
-                        <td class="bg-blue text-light"><b>Descripción</b></td>
-                        <td id="" class ="dt-right">Mes Actual.</td>
-                        <td id="" class ="dt-right">Acumulado Anual.</td>
+                        <td class="bg-blue text-light dt-center"><b>Descripción</b></td>
+                        <td id="" class ="dt-center">Mes Actual.</td>
+                        <td id="" class ="dt-center">Acumulado.</td>
                       </tr>
                       <tr>
                         <td class="bg-blue text-light"><b>TOTAL. FACT.</b></td>
