@@ -294,6 +294,9 @@ $('nav .nav.nav-tabs a').click(function(){
         case 'navOtros':        
             getOtros(articulo_g)
         break;
+        case 'navIndicadores':        
+            getIndicadores(articulo_g)
+        break;
         default:
             alert('Al parecer alguio salio mal :(')
     }    
@@ -416,6 +419,46 @@ function getOtros(articulo) {
             $("#id_existencia_minima").text(data[0]['MINIMO'])
             $("#id_punto_de_reoden").text(data[0]['REORDEN']);
             $("#id_plazo_rebast").text(data[0]['REABASTECIMIENTO'])
+        }
+    })
+}
+
+function getIndicadores(articulo) {   
+    $.ajax({
+        url: "objIndicadores/"+articulo,
+        type: 'get',
+        data: {},
+        async: true,
+        success: function(data) {
+            
+
+            $("#id_total_fact").text("C$ " + numeral(data['ANUAL'][0]['data']).format("0,00.00"));
+            $("#id_unit_fact").text(numeral(data['ANUAL'][0]['dtUnd']).format("0,00.00"));
+            $("#id_unit_bonif").text(numeral(data['ANUAL'][0]['dtUndBo']).format("0,00.00"));
+            $("#id_prom_prec").text("C$ " + data['ANUAL'][0]['dtAVG']);
+            $("#id_prom_cost_unit").text("C$ " +numeral(data['ANUAL'][0]['dtCPM']).format("0,00.00"));
+            $("#id_contribucion").text("C$ " + data['ANUAL'][0]['dtMCO']);
+            $("#id_margen_bruto").text(numeral(data['ANUAL'][0]['dtPCO']).format("0,00.00") + " %");
+
+            $("#id_disp_bodega").text(numeral(data['ANUAL'][0]['dtTB2']).format("0,00.00") );
+            $("#id_disp_bodega_unds").text(numeral(data['ANUAL'][0]['dtTUB']).format("0,00.00"));
+
+            $("#id_prom_unds_mes").text(numeral(data['ANUAL'][0]['dtPRO']).format("0,00.00") );
+            $("#id_cant_disp_mes").text(numeral(data['ANUAL'][0]['dtTIE']).format("0,00.00"));
+
+            $("#id_total_fact_month").text("C$ " + numeral(data['MENSUAL'][0]['data']).format("0,00.00"));
+            $("#id_unit_fact_month").text(numeral(data['MENSUAL'][0]['dtUnd']).format("0,00.00"));
+            $("#id_unit_bonif_month").text(numeral(data['MENSUAL'][0]['dtUndBo']).format("0,00.00"));
+            $("#id_prom_prec_month").text("C$ " + data['MENSUAL'][0]['dtAVG']);
+            $("#id_prom_cost_unit_month").text("C$ " +numeral(data['ANUAL'][0]['dtCPM']).format("0,00.00"));
+            $("#id_contribucion_month").text("C$ " + data['MENSUAL'][0]['dtMCO']);
+            $("#id_margen_bruto_month").text(numeral(data['MENSUAL'][0]['dtPCO']).format("0,00.00") + " %");
+
+            $("#id_disp_bodega_month").text(numeral(data['MENSUAL'][0]['dtTB2']).format("0,00.00") );
+            $("#id_disp_bodega_unds_month").text(numeral(data['MENSUAL'][0]['dtTUB']).format("0,00.00"));
+
+            $("#id_prom_unds_mes_month").text(numeral(data['MENSUAL'][0]['dtPRO']).format("0,00.00") );
+            $("#id_cant_disp_mes_month").text(numeral(data['MENSUAL'][0]['dtTIE']).format("0,00.00"));
         }
     })
 }
