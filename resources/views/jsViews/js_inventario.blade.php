@@ -430,6 +430,7 @@ function getIndicadores(articulo) {
         data: {},
         async: true,
         success: function(data) {
+            
 
             $("#id_total_fact").text("C$ " + numeral(data['ANUAL'][0]['data']).format("0,00.00"));
             $("#id_unit_fact").text(numeral(data['ANUAL'][0]['dtUnd']).format("0,00.00"));

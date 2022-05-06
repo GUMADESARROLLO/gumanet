@@ -344,7 +344,7 @@
                       </tr>
                       <tr>
                         <td class="bg-blue text-light"><b>UNIT. BONIF. </b></td>
-                        <td id="id_unit_fact_month" class="dt-right">0</td>
+                        <td id="id_unit_bonif_month" class="dt-right">0</td>
                         <td id="id_unit_bonif" class ="dt-right">0</td>
                       </tr>
                       <tr >
