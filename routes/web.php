@@ -59,6 +59,8 @@ Route::get('/objCostos/{articulo}','inventario_controller@getCostosArticulos');
 Route::get('/objMargen/{articulo}','inventario_controller@getMargenArticulos');
 Route::get('/objOtros/{articulo}','inventario_controller@getOtrosArticulos');
 Route::get('/objBonificado/{articulo}','inventario_controller@getArtBonificados');
+Route::get('/objIndicadores/{articulo}','inventario_controller@objIndicadores');
+
 Route::post('/transacciones','inventario_controller@transaccionesDetalle');
 Route::post('/lotes','inventario_controller@getLotesArticulo');
 Route::get('/liqMeses/{valor}','inventario_controller@liquidacionMeses');
