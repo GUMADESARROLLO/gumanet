@@ -133,6 +133,10 @@
 <script src="{{ url('js/ckeditor/ckeditor.js') }}"></script>
 <script src="{{ url('js/ckeditor/adapters/jquery.js') }}"></script>
 <script src="{{ url('js/grouped-categories.js') }}"></script>
+
+<script src="{{ url('js/exporting.js') }}"></script>
+<script src="{{ url('js/export-data.js') }}"></script>
+
 @yield('metodosjs')
 </body>
 </html>

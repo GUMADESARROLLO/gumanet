@@ -233,6 +233,52 @@ $(document).ready(function() {
 
     }
 
+    function ModalArticuloNoFacturados(){
+        $('#mdl_articulos_no_facturados').modal('show')
+        $('#tblArticulos').DataTable({
+            "ajax":{
+                "url": "ArticuloNoFacturado/"+mes+"/"+anio,
+                'dataSrc': '',
+            },
+            "destroy": true,
+            "info": true,
+            "lengthMenu": [[10,-1], [10,"Todo"]],
+            "language": {
+                "zeroRecords": "-",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Última ",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "info":       "-",
+                "infoEmpty":  "",
+                "infoPostFix":    "",
+                "infoFiltered":   "",
+                "lengthMenu": "MOSTRAR _MENU_",
+                "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+                "search": "BUSCAR"
+            },
+        'columns': [
+            {"title": "ARTICULO",                "data": "ARTICULO"},
+            {"title": "DESCRIPCION",                 "data": "DESCRIPCION"},
+            {"title": "FECHA ULTIMA COMPRA",    "data": "ULTIMA_COMPRA"},
+            {"title": "TIEMPO SIN COMPRAR",     "data": "Diferencia"},
+        ],
+        "columnDefs": [
+            {"className": "dt-center","targets": [0,2,3]},
+            {"className": "dt-right","targets": []},
+            {"className": "dt-left","targets": [1]},
+            {"visible": false,"searchable": false,"targets": []},
+            {"width": "5%","targets": [0,2,3]},
+            {"width": "10%","targets": [1]},
+        ],
+    });
+
+    $("#tblArticulos_length").hide();
+    $("#tblArticulos_filter").hide();
+    }
+
     //GRAFICA VENTAS MENSUALES
     ventasMensuales = {
         chart: {
@@ -250,6 +296,7 @@ $(document).ready(function() {
                 text: ''
             }                
         },
+        exporting: {enabled: false},
         plotOptions: {
             series: {
                 allowPointSelect: false,
@@ -333,6 +380,27 @@ $(document).ready(function() {
                 }
             },
         },
+        exporting: {
+        buttons: {
+            contextButton: {
+                enabled: false
+            },
+            exportButton: {
+                text: 'Articulos No Facturados',
+                // Use only the download related menu items from the default
+                // context button
+                onclick: function () {
+                    ModalArticuloNoFacturados()
+                }
+            },
+            printButton: {
+                text: '',
+                onclick: function () {
+
+                }
+            }
+        }
+    },
         tooltip: {},
         legend: {
             align: 'center',
@@ -361,6 +429,7 @@ $(document).ready(function() {
             type: 'spline',
             renderTo: 'grafSkuAnual'
         },
+        exporting: {enabled: false},
         title: {
             text: `<p class="font-weight-bolder">Comportamiento de SKU Anual </p>`
         },
@@ -425,6 +494,7 @@ $(document).ready(function() {
             type: 'spline',
             renderTo: 'grafTicketProm'
         },
+        exporting: {enabled: false},
         title: {
             text: `<p class="font-weight-bolder">Comportamiento de Ticket Promedio Anual </p>`
         },
@@ -490,6 +560,7 @@ $(document).ready(function() {
             type: 'spline',
             renderTo: 'id_grafica_venta_exportacion'
         },
+        exporting: {enabled: false},
         title: {
             text: `<p class="font-weight-bolder">Ventas de Exportación</p>`
         },
@@ -556,6 +627,7 @@ $(document).ready(function() {
             type: 'spline',
             renderTo: 'grafRealVentas'
         },
+        exporting: {enabled: false},
         title: {
             text: `<p class="font-weight-bolder">Venta Real Vs Meta</p>`
         },
@@ -618,6 +690,7 @@ $(document).ready(function() {
                 beta: 0
             }
         },
+        exporting: {enabled: false},
         title: {
             text: 'Ventas por categorias'
         },
@@ -668,6 +741,7 @@ $(document).ready(function() {
         title: {
             text: ''
         },
+        exporting: {enabled: false},
         subtitle: {},
         accessibility: {
             point: {
@@ -709,6 +783,7 @@ $(document).ready(function() {
             type: 'column',
             renderTo: 'grafVentas'
         },
+        exporting: {enabled: false},
         title: {
             text: 'Ventas del mes'
         },
@@ -757,6 +832,7 @@ $(document).ready(function() {
             type: 'column',
             renderTo: 'grafRecupera'
         },
+        exporting: {enabled: false},
         title: {
             text: 'Recuperación del mes'
         },
@@ -816,6 +892,7 @@ $(document).ready(function() {
             }
 
         },
+        exporting: {enabled: false},
         legend: {
             enabled: true
         },
@@ -856,6 +933,7 @@ $(document).ready(function() {
             type: 'category',
             visible: false
         },
+        exporting: {enabled: false},
         yAxis: {
             title: {
                 text: ''
@@ -901,6 +979,7 @@ $(document).ready(function() {
         xAxis: {
             type: 'category'
         },
+        exporting: {enabled: false},
         yAxis: {
             title: {
                 text: ''
@@ -953,6 +1032,7 @@ $(document).ready(function() {
                 text: ''
             }
         },
+        exporting: {enabled: false},
         legend: {
             enabled: false
         },
@@ -1001,6 +1081,7 @@ $(document).ready(function() {
             type: 'category',
             categories : []
         },
+        exporting: {enabled: false},
         title: {
             text: 'Top 10 Productos mas vendidos'
         },       
@@ -1043,6 +1124,7 @@ $(document).ready(function() {
             
         },
         },
+        exporting: {enabled: false},
         plotOptions: {
         column: {
             stacking: 'normal',
@@ -1127,12 +1209,9 @@ $(document).ready(function() {
             align: 'right',
             x: -10
         },
-        xAxis: [{
-            type: 'category'   
-        }],
-        legend: {
-            enabled: false
-        },
+        exporting: {enabled: false},
+        xAxis: [{type: 'category' }],
+        legend: {enabled: false},
         yAxis:{
             title: {
                 text: ''
@@ -3727,6 +3806,11 @@ $('#Search_cliente_no_facturado').on( 'keyup', function () {
     var table = $("#tblClientes").DataTable();
     table.search(this.value).draw();
 });
+$('#Search_articulo_no_facturado').on( 'keyup', function () {
+    var table = $("#tblArticulos").DataTable();
+    table.search(this.value).draw();
+});
+
 
 
 

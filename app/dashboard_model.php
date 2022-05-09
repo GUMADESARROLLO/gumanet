@@ -430,7 +430,73 @@ class dashboard_model extends Model {
             $sql_server->close();
             $sql_exec = 'SELECT ';
     }
+    public static function ArticuloNoFacturado($mes, $anio){
 
+        $sql_server = new \sql_server();
+        $fecha = new DateTime($anio.'-'.$mes.'-01');
+        $sql_exec_cliente = '';
+        $sql_exec_articulo = '';
+        $request = Request();
+        $idPeriodo = '';
+        $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        $idPeriodo = Metacuota_gumanet::where(['Fecha' => $fecha,'IdCompany'=> $company_user])->pluck('IdPeriodo');
+
+        $UND_NEGOCIO = '';
+
+        switch ($company_user) {
+            case '1':               
+                $UND_NEGOCIO = 'umk';
+                break;
+            case '2':
+                $UND_NEGOCIO = 'guma';
+            break;
+            case '3':
+                $sql_exec = "";
+                break;     
+            case '4':
+                $UND_NEGOCIO = 'innova';
+                break;       
+            default:                
+                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
+                break;
+        }
+
+
+
+            $sql_exec_articulo ="SELECT 
+                                    T0.ARTICULO,
+                                    T0.DESCRIPCION,
+                                    MAX ( TblLastPurchase.FECHA_FACTURA ) ULTIMA_COMPRA,
+                                    dbo.get_Exact_Date_diff( MAX(TblLastPurchase.FECHA_FACTURA), GETDATE()) as Diferencia
+                                FROM
+                                    Softland.".$UND_NEGOCIO.".ARTICULO T0 CROSS APPLY ( SELECT TOP 1 T1.FECHA_FACTURA FROM Softland.".$UND_NEGOCIO.".FACTURA_LINEA T1 WHERE T1.ARTICULO = T0.ARTICULO AND T1.BODEGA = '002' AND FECHA_FACTURA != convert(varchar, getdate(), 23) GROUP BY T1.FECHA_FACTURA  ORDER BY T1.FECHA_FACTURA DESC  ) AS TblLastPurchase 
+                                WHERE
+                                    ( LEN( T0.ARTICULO ) <= 8 ) AND ( T0.ACTIVO = 'S' ) AND ( LEN( T0.ARTICULO ) > 7 ) AND ( T0.ARTICULO <> '01010101' ) AND (T0.ARTICULO NOT LIKE 'VU%') AND (T0.ARTICULO NOT LIKE 'RF%') AND T0.ARTICULO LIKE '1%'
+                                    GROUP BY T0.ARTICULO,T0.DESCRIPCION ";
+
+        $qArticulos = $sql_server->fetchArray($sql_exec_articulo,SQLSRV_FETCH_ASSOC);
+
+        $i = 0;
+        $json = array();        
+
+        
+
+        foreach ($qArticulos as $fArticulos) {
+
+            
+
+            $json[$i]["ARTICULO"]        = $fArticulos['ARTICULO'];
+            $json[$i]["DESCRIPCION"] = $fArticulos['DESCRIPCION'];
+            $json[$i]["ULTIMA_COMPRA"]  = strftime('%a %d de %b %G', strtotime($fArticulos['ULTIMA_COMPRA']->format('Y-m-d H:i:s')));
+            $json[$i]["Diferencia"] = $fArticulos['Diferencia'];
+            
+            $i++;
+        }
+        
+        $sql_server->close();
+        return $json;
+
+    }
     public static function ClientesNoFacturados($mes, $anio){
 
         $sql_server = new \sql_server();
