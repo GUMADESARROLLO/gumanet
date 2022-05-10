@@ -859,6 +859,36 @@
     </div>
   </div>
 </div>
+<!-- Modal:ArticulosNoFacturados -->
+<div class="modal fade" id="mdl_articulos_no_facturados" tabindex="-1" role="dialog" aria-labelledby="titleModal" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleModal-comportamiento">Articulos No Facturados</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="">        
+        <div class="row col-sm-12 " id="">            
+            <div class="col-sm-12 ">
+                <div class="input-group mt-3 mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                    </div>
+                    <input type="text" id="Search_articulo_no_facturado" class="form-control" placeholder="Buscar...">
+                </div>
+                <table class="table table-striped table-bordered table-sm post_back mt-1" width="100%" id="tblArticulos">
+                    <thead class="bg-blue text-light"></thead>
+                </table>
+            </div>
+            
+           
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal:Detalle -->
 <div class="modal fade" id="mdDetails" tabindex="-1" role="dialog" aria-labelledby="titleModal" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document" >
