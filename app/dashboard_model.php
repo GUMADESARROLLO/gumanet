@@ -466,6 +466,7 @@ class dashboard_model extends Model {
             $sql_exec_articulo ="SELECT 
                                     T0.ARTICULO,
                                     T0.DESCRIPCION,
+                                    (SELECT t4.CANT_DISPONIBLE FROM iweb_bodegas t4 WHERE t4.ARTICULO=T0.ARTICULO and BODEGA = '002') B002,
                                     MAX ( TblLastPurchase.FECHA_FACTURA ) ULTIMA_COMPRA,
                                     dbo.get_Exact_Date_diff( MAX(TblLastPurchase.FECHA_FACTURA), GETDATE()) as Diferencia
                                 FROM
@@ -475,6 +476,7 @@ class dashboard_model extends Model {
                                     GROUP BY T0.ARTICULO,T0.DESCRIPCION ";
 
         $qArticulos = $sql_server->fetchArray($sql_exec_articulo,SQLSRV_FETCH_ASSOC);
+
 
         $i = 0;
         $json = array();        
@@ -487,6 +489,7 @@ class dashboard_model extends Model {
 
             $json[$i]["ARTICULO"]        = $fArticulos['ARTICULO'];
             $json[$i]["DESCRIPCION"] = $fArticulos['DESCRIPCION'];
+            $json[$i]["B002"] = number_format($fArticulos['B002'],2);
             $json[$i]["ULTIMA_COMPRA"]  = strftime('%a %d de %b %G', strtotime($fArticulos['ULTIMA_COMPRA']->format('Y-m-d H:i:s')));
             $json[$i]["Diferencia"] = $fArticulos['Diferencia'];
             

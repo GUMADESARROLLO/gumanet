@@ -262,16 +262,17 @@ $(document).ready(function() {
         'columns': [
             {"title": "ARTICULO",                "data": "ARTICULO"},
             {"title": "DESCRIPCION",                 "data": "DESCRIPCION"},
+            {"title": "CANT. DISP. B002",                 "data": "B002"},
             {"title": "FECHA ULTIMA COMPRA",    "data": "ULTIMA_COMPRA"},
             {"title": "TIEMPO SIN COMPRAR",     "data": "Diferencia"},
         ],
         "columnDefs": [
-            {"className": "dt-center","targets": [0,2,3]},
-            {"className": "dt-right","targets": []},
-            {"className": "dt-left","targets": [1]},
+            {"className": "dt-center","targets": [0,3,4]},
+            {"className": "dt-right","targets": [2]},
+            {"className": "dt-left","targets": []},
             {"visible": false,"searchable": false,"targets": []},
-            {"width": "5%","targets": [0,2,3]},
-            {"width": "10%","targets": [1]},
+            {"width": "15%","targets": [3,4]},
+            {"width": "10%","targets": [0,2]},
         ],
     });
 
