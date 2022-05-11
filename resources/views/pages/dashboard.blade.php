@@ -832,7 +832,7 @@
 
         <div class="row col-sm-12" id="id_tbl_clientes_no_facturados">
             
-            <div class="col-sm-10">
+            <div class="col-sm-12">
                 <div class="input-group mt-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
@@ -840,20 +840,53 @@
                     <input type="text" id="Search_cliente_no_facturado" class="form-control" placeholder="Buscar...">
                 </div>
             </div>
-            <div class="col-sm-2">
-                <div class="input-group">
-                    <select class="custom-select" id="cantRowsDtTemp">
-                        <option value="5" selected>5</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                        <option value="-1">Todo</option>
-                    </select>
-                </div>
-            </div>
             <table class="table table-striped table-bordered table-sm post_back mt-1" width="100%" id="tblClientes">
                 <thead class="bg-blue text-light"></thead>
             </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal:ClientesSinComprar -->
+<div class="modal fade" id="mdl_clientes_sin_comprar" tabindex="-1" role="dialog" aria-labelledby="titleModal" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleModal-comportamiento">Clientes sin comprar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="">   
+        <div class="row" id="">
+            <div class="col-sm-4">
+                <p class="text-muted m-0" id="id_lbl_txt_anterior">0000</p>
+                <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_lbl_val_anterior">0.00</p>
+            </div>            
+            <div class="col-sm-4  border-right">                    
+                <p class="text-muted m-0" id="id_lbl_txt_actual">000</p>
+                <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_lbl_val_actual">0.00</p>
+            </div>
+            
+            <div class="col-sm-4">
+                <p class="text-muted m-0">Diferencia en %</p>
+                <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_lbl_val_dif">0.00</p>
+            </div>
+        </div>     
+        <div class="row col-sm-12 " id="">            
+        
+            <div class="col-sm-12 ">
+                <div class="input-group mt-3 mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                    </div>
+                    <input type="text" id="Search_cliente_sin_facturar" class="form-control" placeholder="Buscar...">
+                </div>
+                <table class="table table-striped table-bordered table-sm post_back mt-1" width="100%" id="tblClientesSinComprar">
+                    <thead class="bg-blue text-light"></thead>
+                </table>
+            </div>
         </div>
       </div>
     </div>
@@ -882,8 +915,6 @@
                     <thead class="bg-blue text-light"></thead>
                 </table>
             </div>
-            
-           
         </div>
       </div>
     </div>

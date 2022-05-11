@@ -566,7 +566,74 @@ class dashboard_model extends Model {
             $sql_server->close();
             $sql_exec = 'SELECT ';
     }
+    public static function Cliente_sin_comprar($mes, $anio){
 
+        $sql_server = new \sql_server();
+        $fecha = new DateTime($anio.'-'.$mes.'-01');
+        $sql_exec = '';
+        $request = Request();
+        $idPeriodo = '';
+        $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        $idPeriodo = Metacuota_gumanet::where(['Fecha' => $fecha,'IdCompany'=> $company_user])->pluck('IdPeriodo');
+
+        $UND_NEGOCIO = '';
+
+        switch ($company_user) {
+            case '1':               
+                $UND_NEGOCIO = 'umk';
+                break;
+            case '2':
+                $UND_NEGOCIO = 'guma';
+            break;
+            case '3':
+                $sql_exec = "";
+                break;     
+            case '4':
+                $UND_NEGOCIO = 'innova';
+                break;       
+            default:                
+                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
+                break;
+        }
+
+        
+
+            $sql_exec = "SELECT
+            T0.CLIENTE,
+            T0.NOMBRE,
+            MAX ( TblLastPurchase.FECHA ) ULTIMA_COMPRA,
+            dbo.get_Exact_Date_diff ( MAX ( TblLastPurchase.FECHA ), GETDATE( ) ) AS Diferencia 
+
+            FROM
+            Softland.".$UND_NEGOCIO.".CLIENTE T0	
+            CROSS APPLY ( SELECT TOP 1 T1.FECHA FROM Softland.".$UND_NEGOCIO.".FACTURA T1 WHERE T1.CLIENTE = T0.CLIENTE AND T1.FECHA != CONVERT ( VARCHAR, getdate( ), 23 ) 
+            GROUP BY T1.FECHA  ORDER BY T1.FECHA DESC 
+            ) AS TblLastPurchase 
+            WHERE T0.ACTIVO='S'
+            GROUP BY T0.CLIENTE,
+            T0.NOMBRE";
+
+
+        $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
+
+        $i = 0;
+        $json = array();        
+
+        
+        foreach ($query as $fila) {
+
+            $json[$i]["CLIENTE"]        = $fila['CLIENTE'];
+            $json[$i]["NOMBRE_CLIENTE"] = $fila['NOMBRE'];
+            $json[$i]["ULTIMA_COMPRA"]  = strftime('%a %d de %b %G', strtotime($fila['ULTIMA_COMPRA']->format('Y-m-d H:i:s')));
+            $json[$i]["Diferencia"] = $fila['Diferencia'];
+            
+            $i++;
+        }
+        return $json;
+
+            $sql_server->close();
+            $sql_exec = 'SELECT ';
+    }
     public static function buscarVendedorXRuta($ruta, $compañia){
         $sql_server = new \sql_server();
         $vendedor = array(); 
