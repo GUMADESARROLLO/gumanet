@@ -101,6 +101,7 @@ Route::get('/graficaSegmentoCL/{mes}/{anio}/{bolson}/{Segmento}','dashboard_cont
 Route::get('/unidadxProd/{mes}/{anio}','dashboard_controller@getTotalUnidadesXRutaXVentas');
 Route::get('/ClientesNoFacturados/{mes}/{anio}','dashboard_controller@ClientesNoFacturados');
 Route::get('/ArticuloNoFacturado/{mes}/{anio}','dashboard_controller@ArticuloNoFacturado');
+Route::get('/getClientesSinComprar/{mes}/{anio}','dashboard_controller@getClientesSinComprar');
 
 
 

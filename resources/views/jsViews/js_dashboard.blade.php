@@ -280,6 +280,77 @@ $(document).ready(function() {
     $("#tblArticulos_filter").hide();
     }
 
+    function ModalClientesSinComprar(){
+
+        //Promedio Comportamiento Anual de Clientes
+        var avg_anterior_cliente_prom     = getAvg(ClientesAnuales.series[0].data);
+        var avg_anterior_cliente_nombre   = ClientesAnuales.series[0].name
+
+        var avg_actual_cliente_prom       = getAvg(ClientesAnuales.series[1].data);
+        var avg_actual_cliente_nombre     = ClientesAnuales.series[1].name
+
+        var dif_cliente = 0;
+
+        $('#id_lbl_txt_anterior').text(avg_anterior_cliente_nombre);
+        $('#id_lbl_val_anterior').text(format_number(avg_anterior_cliente_prom,'0,0.00'));
+        
+        $('#id_lbl_txt_actual').text(avg_actual_cliente_nombre);
+        $('#id_lbl_val_actual').text(format_number(avg_actual_cliente_prom,'0,0.00'));
+        
+
+        dif_cliente  = (( avg_actual_cliente_prom / avg_anterior_cliente_prom ) - 1 ) * 100;
+        cls_1 = (dif_cliente <0 )? 'text-danger font-weight-bolder':'text-success font-weight-bolder';
+        dif_cliente_html = '<p class="font-weight-bolder '+cls_1+'">'+format_number(dif_cliente,'0,0.00')+'</p>';
+
+
+        $('#id_lbl_val_dif').html(dif_cliente_html);
+
+        $('#mdl_clientes_sin_comprar').modal('show')
+        $('#tblClientesSinComprar').DataTable({
+            "ajax":{
+                "url": "getClientesSinComprar/"+mes+"/"+anio,
+                'dataSrc': '',
+            },
+            "destroy": true,
+            "info": true,
+            "lengthMenu": [[10,-1], [10,"Todo"]],
+            "language": {
+                "zeroRecords": "-",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Última ",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "info":       "-",
+                "infoEmpty":  "",
+                "infoPostFix":    "",
+                "infoFiltered":   "",
+                "lengthMenu": "MOSTRAR _MENU_",
+                "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+                "search": "BUSCAR"
+            },
+            'columns': [
+                {"title": "CLIENTE",                "data": "CLIENTE"},
+                {"title": "NOMBRE",                 "data": "NOMBRE_CLIENTE"},
+                {"title": "FECHA ULTIMA COMPRA",    "data": "ULTIMA_COMPRA"},
+                {"title": "TIEMPO SIN COMPRAR",     "data": "Diferencia"},
+            ],
+            "columnDefs": [
+                {"className": "dt-center","targets": [0,2,3]},
+                {"className": "dt-right","targets": []},
+                {"className": "dt-left","targets": [1]},
+                {"visible": false,"searchable": false,"targets": []},
+                {"width": "5%","targets": [0,2,3]},
+                {"width": "10%","targets": [1]},
+            ],
+        });
+
+        $("#tblClientesSinComprar_length").hide();
+        $("#tblClientesSinComprar_filter").hide();
+
+    }
+
     //GRAFICA VENTAS MENSUALES
     ventasMensuales = {
         chart: {
@@ -374,7 +445,7 @@ $(document).ready(function() {
                 point: {
                     events: {
                         click: function() {
-                            promedio_comportamiento("Clientes",event.point.category)
+                            //promedio_comportamiento("Clientes",event.point.category)
                             
                         }
                     }
@@ -395,9 +466,9 @@ $(document).ready(function() {
                 }
             },
             printButton: {
-                text: '',
+                text: 'Clientes Sin Comprar',
                 onclick: function () {
-
+                    ModalClientesSinComprar()
                 }
             }
         }
@@ -3811,6 +3882,11 @@ $('#Search_articulo_no_facturado').on( 'keyup', function () {
     var table = $("#tblArticulos").DataTable();
     table.search(this.value).draw();
 });
+$('#Search_cliente_sin_facturar').on( 'keyup', function () {
+    var table = $("#tblClientesSinComprar").DataTable();
+    table.search(this.value).draw();
+});
+
 
 
 
