@@ -15,6 +15,7 @@ use PHPExcel_Style_Border;
 use PHPExcel_Style_Fill;
 use App\inteligenciaMercado_model;
 use DB;
+use Carbon\Carbon;
 
 class inteligenciaMercado_controller extends Controller
 {
@@ -286,6 +287,29 @@ class inteligenciaMercado_controller extends Controller
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		$objWriter->save('php://output');
     }
+
+	public function getComentNoLeidos(Request $request){
+		$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;	
+		$Comentarios  = inteligenciaMercado_model::where('Read', '=', 0)->where('empresa', $company_user)->get();
+		$data = array();
+		$i = 0;
+		$carbon = new Carbon(); 
+		//$string = 
+
+		foreach($Comentarios as $comment){
+
+			$data[$i]['Nombre'] 	= $comment['Nombre'];
+			$data[$i]['Titulo'] 	= $comment['Titulo'];
+			$data[$i]['Contenido'] 	= (strlen($comment['Contenido']) > 100) ? substr($comment['Contenido'],0,100).'...' : $comment['Contenido'];
+			$data[$i]['Fecha'] 		= carbon::parse($comment['Fecha'])->diffForHumans();
+			
+			$i++;
+		}
+		
+		return response()->json($data);
+	}
+
+
 }
 
 
