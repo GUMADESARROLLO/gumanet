@@ -232,5 +232,7 @@ Route::get('/dtaVentaExportacion/{xbolsones}/{segmentos}','dashboard_controller@
 //Route::get('/notify','importaciones_controller@index');
 Route::get('exist_notify', 'importaciones_controller@exist_notify');
 Route::get('getCommentIM', 'inteligenciaMercado_controller@getComentNoLeidos');
+Route::get('exist_registry', 'importaciones_controller@exist_registry');
+
 
 

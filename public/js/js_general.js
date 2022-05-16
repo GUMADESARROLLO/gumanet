@@ -135,14 +135,13 @@ function inicializaControlFecha() {
 }
 var down = false;
 
+exist_notify();
 $('#bell').on('click', function (e) {
     //$('.toast').toast('show');
 
     $('#list-notify').empty();
-    console.log(exist_notify);
     getCommentIM();
     getNotificacionesExport();
-    //exist_notify();
     if ($('#contain-notify').is(":visible")) {
         $('#contain-notify').hide();
         exist_notify();
@@ -154,33 +153,43 @@ $('#bell').on('click', function (e) {
 
 //Nueva notificacion
 
-exist_notify();
 function exist_notify() {
     $.ajax({
         url: "exist_notify",
         type: "GET",
         async: true,
         success: function (response) {
-            if (response) {
+            if (response > 0) {
                 $('#noti_exist').addClass("circulo");
             } else {
                 $('#noti_exist').removeClass("circulo");
+            }
+        }
+    });
+
+}
+exist_registry();
+function exist_registry() {
+    $.ajax({
+        url: "exist_registry",
+        type: "GET",
+        async: true,
+        success: function (response) {
+            if (response <= 0) {
                 const scriptHTML = `<div class="overflow-auto m-0 p-0">
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item ">
                                                 <div class="row mx-2 justify-content-center">
-                                                    <p>No hay notificaciones pendientes</p>
+                                                    <p>No hay notificaciones</p>
                                                 </div>
                                             </li>
                                          </ul>
                                    </div>`
                     ;
                 $("#No_exist").html(scriptHTML);
-            //    console.log('No hay notificaciones');
             }
         }
     });
-
 }
 
 //Obtener norificaciones
@@ -191,68 +200,133 @@ function getCommentIM() {
         async: true,
         dataType: "json",
         success: function (data) {
+            var i = 0;
+            var scriptHTML = '';
             console.log(data);
-            data.forEach(element => {
-                const scriptHTML = `<li class="list-group-item" style="border-left: 3px solid #007bff !important ;">
-                                        <a href="http://localhost/gumanet-1/public/InteligenciaMercado">
-                                            <div class="row">
-                                                  <div class="col-2 ">
-                                                    <img src="img/img_avatar.png" alt="" class="img-fluid" style="border-radius: 50%;">
-                                                  </div>
-                                                  <div class="col-7 m-0 p-0">
-                                                    <div class="body m-0 p-0">
-                                                      <div class="container-fluid m-0 p-0">
-                                                        <h6 class="text-dark">`+ element.Nombre + `</h6>
-                                                        <p class="text-secondary m-0 p-0">` + element.Titulo + `</p>
-                                                        <p class="border-left pl-2  border-primary text-dark" style="border-left: 3px solid #007bff !important ;">`+ element.Contenido + `</p>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="col-3 m-0 p-0">
-                                                    <span class="text-dark">`+ element.Fecha + `</span>
-                                                  </div>
+            if (Object.keys(data).length === 0) {
+                console.log("No existen datos en las notificaciones de IM");
+                return false;
+            } else {
+                data.forEach(element => {
+                    if (element.Read == 0) {
+                                    scriptHTML += `<li class="list-group-item notification-list--unread" style="border-left: 3px solid #007bff !important ;">
+                                <a href="http://localhost/gumanet-1/public/InteligenciaMercado">
+                                    <div class="row">
+                                          <div class="col-2 ">
+                                            <img src="img/img_avatar.png" alt="" class="img-fluid" style="border-radius: 50%;">
+                                          </div>
+                                          <div class="col-7 m-0 p-0">
+                                            <div class="body m-0 p-0">
+                                              <div class="container-fluid m-0 p-0">
+                                                <h6 class="text-dark">`+ element.Nombre + `</h6>
+                                                <p class="text-secondary m-0 p-0">` + element.Titulo + `</p>
+                                                <p class="border-left pl-2  border-primary text-dark" style="border-left: 3px solid #007bff !important ;">`+ element.Contenido + `</p>
+                                              </div>
                                             </div>
-                                        </a>
-                                    </li>
-                                              `
-                    ;
+                                          </div>
+                                          <div class="col-3 m-0 p-0">
+                                            <span class="text-dark">`+ element.Fecha + `</span>
+                                          </div>
+                                    </div>
+                                </a>
+                            </li>`;
+                    } else {
+                        if (i <= 4) {
+                            scriptHTML += `<li class="list-group-item ">
+                                 <a href="http://localhost/gumanet-1/public/InteligenciaMercado">
+                                     <div class="row">
+                                           <div class="col-2 ">
+                                             <img src="img/img_avatar.png" alt="" class="img-fluid" style="border-radius: 50%;">
+                                           </div>
+                                           <div class="col-7 m-0 p-0">
+                                             <div class="body m-0 p-0">
+                                               <div class="container-fluid m-0 p-0">
+                                                 <h6 class="text-dark">`+ element.Nombre + `</h6>
+                                                 <p class="text-secondary m-0 p-0">` + element.Titulo + `</p>
+                                                 <p class="border-left pl-2  border-primary text-dark" style="border-left: 3px solid #007bff !important ;">`+ element.Contenido + `</p>
+                                               </div>
+                                             </div>
+                                           </div>
+                                           <div class="col-3 m-0 p-0">
+                                             <span class="text-dark">`+ element.Fecha + `</span>
+                                           </div>
+                                     </div>
+                                 </a>
+                             </li>`;
+                        }
+                        i++;
+                    }
+                });
                 $("#list-notify").append(scriptHTML);
-            });
+            }
         }
     });
 }
 
 function getNotificacionesExport() {
     $.ajax({
-        url: "http://localhost/exportaciones/api/notificaciones",
+        url: "http://localhost/exportaciones/api/Allnotificaciones",
         type: "GET",
         async: true,
         dataType: "json",
         success: function (data) {
             console.log(data);
-            data.forEach(element => {
-                const scriptHTML = `<li class="list-group-item" style="border-left: 3px solid #007bff !important ;">
-                                          <div class="row">
-                                            <div class="col-2">
-                                              <img src="img/img_avatar.png" alt="" class="img-fluid " style="border-radius: 50%;">
-                                            </div>
-                                            <div class="col-7 m-0 p-0">
-                                              <div class="body m-0 p-0">
-                                                <div class="container-fluid m-0 p-0">
-                                                  <h6>`+ element.nombre + `</h6>
-                                                  <p class="text-secondary m-0 p-0 mb-1">` + element.title + `</p>
-                                                  <p class="border-left pl-2  border-primary" style="border-left: 3px solid #007bff !important ;">` + element.message + `</p>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div class="col-3 m-0 p-0">
-                                              <span>` + element.created_at + `</span>
-                                            </div>
-                                          </div>
-                                        </li>`
-                    ;
+            var i = 0;
+            var scriptHTML = '';
+            //Object.keys(data).length === 0? console.log('el json viene vacio') : console.log('Existen datos');
+            if (Object.keys(data).length === 0) {
+                console.log("No existen datos en las notificaciones de expo");
+                return false;
+            } else {
+
+                data.forEach(element => {
+                    if (element.leido == 0) {
+                        scriptHTML += `<li class="list-group-item notification-list--unread" style="border-left: 3px solid #007bff !important ;">
+                        <div class="row">
+                          <div class="col-2">
+                            <img src="img/img_avatar.png" alt="" class="img-fluid " style="border-radius: 50%;">
+                          </div>
+                          <div class="col-7 m-0 p-0">
+                            <div class="body m-0 p-0">
+                              <div class="container-fluid m-0 p-0">
+                                <h6>`+ element.nombre + `</h6>
+                                <p class="text-secondary m-0 p-0 mb-1">` + element.title + `</p>
+                                <p class="border-left pl-2  border-primary" style="border-left: 3px solid #007bff !important ;">` + element.message + `</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-3 m-0 p-0">
+                            <span>` + element.created_at + `</span>
+                          </div>
+                        </div>
+                      </li>`;
+                    } else {
+                        if (i <= 4) {
+                            scriptHTML += `<li class="list-group-item">
+                            <div class="row">
+                              <div class="col-2">
+                                <img src="img/img_avatar.png" alt="" class="img-fluid " style="border-radius: 50%;">
+                              </div>
+                              <div class="col-7 m-0 p-0">
+                                <div class="body m-0 p-0">
+                                  <div class="container-fluid m-0 p-0">
+                                    <h6>`+ element.nombre + `</h6>
+                                    <p class="text-secondary m-0 p-0 mb-1">` + element.title + `</p>
+                                    <p class="border-left pl-2  border-primary" style="border-left: 3px solid #007bff !important ;">` + element.message + `</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-3 m-0 p-0">
+                                <span>` + element.created_at + `</span>
+                              </div>
+                            </div>
+                          </li>`
+                        }
+                        i++;
+                    }
+                });
                 $("#list-notify").append(scriptHTML);
-            });
+            }
         }
     });
 }
@@ -267,7 +341,6 @@ function changeState() {
         success: function (response) {
             console.log(response);
             console.log('Estado cambiado');
-
         }
     });
 }

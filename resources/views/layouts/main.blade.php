@@ -43,6 +43,11 @@
     -webkit-border-radius: 50px !important;
     border-radius: 50% !important;
   }
+
+  .notification-list--unread {
+    position: relative;
+    background: #f4f8fa;
+  }
 </style>
 <!-- Custom styles for this template -->
 <link rel="stylesheet" href="{{ url('css/dashboard.css') }}">
