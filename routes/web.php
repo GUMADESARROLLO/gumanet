@@ -200,6 +200,12 @@ Route::get('/getDetailSumary/{numOrden}','DetalleOrdenController@getDetailSumary
 Route::get('/getHrasProducidas/{numOrden}','DetalleOrdenController@getHrasProducidas');
 Route::get('/getData','DetalleOrdenController@getData');
 
+//PROCESO DE CONVERSIÓN
+Route::get('/getOrdenesPC','DetalleOrdenController@getOrdenesPC');
+Route::get('/getDataGeneralPc/{numOrden}','DetalleOrdenController@getDataGeneralPc');
+Route::get('/getMP_PC/{numOrden}','DetalleOrdenController@getMP_PC');
+Route::get('/getProd_pc/{numOrden}','DetalleOrdenController@getProd_pc');
+Route::get('/getTiempos_paros/{numOrden}','DetalleOrdenController@getTiempos_paros');
 
 
 
