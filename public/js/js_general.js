@@ -175,6 +175,7 @@ function exist_registry() {
         type: "GET",
         async: true,
         success: function (response) {
+            console.log(response);
             if (response <= 0) {
                 const scriptHTML = `<div class="overflow-auto m-0 p-0">
                                         <ul class="list-group list-group-flush">
@@ -202,14 +203,13 @@ function getCommentIM() {
         success: function (data) {
             var i = 0;
             var scriptHTML = '';
-            console.log(data);
             if (Object.keys(data).length === 0) {
                 console.log("No existen datos en las notificaciones de IM");
                 return false;
             } else {
                 data.forEach(element => {
                     if (element.Read == 0) {
-                                    scriptHTML += `<li class="list-group-item notification-list--unread" style="border-left: 3px solid #007bff !important ;">
+                        scriptHTML += `<li class="list-group-item notification-list--unread" style="border-left: 3px solid #007bff !important ;">
                                 <a href="http://localhost/gumanet-1/public/InteligenciaMercado">
                                     <div class="row">
                                           <div class="col-2 ">
@@ -265,12 +265,11 @@ function getCommentIM() {
 
 function getNotificacionesExport() {
     $.ajax({
-        url: "http://localhost/exportaciones/api/Allnotificaciones",
+        url: "Allnotificaciones",
         type: "GET",
         async: true,
         dataType: "json",
         success: function (data) {
-            console.log(data);
             var i = 0;
             var scriptHTML = '';
             //Object.keys(data).length === 0? console.log('el json viene vacio') : console.log('Existen datos');
@@ -333,7 +332,7 @@ function getNotificacionesExport() {
 //Cambiar estado
 function changeState() {
     $.ajax({
-        url: "http://127.0.0.1/exportaciones/api/updateState",
+        url: "updateState",
         type: "POST",
         dataType: "json",
         data: {},
@@ -344,6 +343,3 @@ function changeState() {
         }
     });
 }
-
-
-

@@ -83,7 +83,7 @@
                   <div id="noti_exist"></div>
                 </div>
                 <div class="col-12 text-center">
-                  <i class="material-icons text-info" style="font-size: 20px">notifications</i>
+                  <i class="material-icons text-info" style="font-size: 20px" id="icon-bell">notifications</i>
                 </div>
               </div>
             </a>
@@ -94,7 +94,7 @@
     </nav>
 
     <div class="container-fluid ml-auto " style="position: relative; z-index: 1 ; display:none;" id="contain-notify">
-      <div class="card" style="position: absolute; top: 0; right: 25px; max-height: 500px; max-width:30%; min-width:30%" data-autohide="false">
+      <div class="card" style="position: absolute; top: 0; right: 25px; max-height: 500px; max-width:30%; min-width:30%" data-autohide="false" id="card-notify">
         <div class=" card-header">
           <div class="d-flex">
             <div class=" justify-content-start mr-auto">

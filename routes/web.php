@@ -230,9 +230,10 @@ Route::get('getVentasExportacion', 'exportacion_controller@getVentasExportacion'
 Route::get('/dtaVentaExportacion/{xbolsones}/{segmentos}','dashboard_controller@getVentasExportacion');
 
 //Route::get('/notify','importaciones_controller@index');
-Route::get('exist_notify', 'importaciones_controller@exist_notify');
+Route::get('exist_notify', 'notifications_controller@exist_notify');
 Route::get('getCommentIM', 'inteligenciaMercado_controller@getComentNoLeidos');
-Route::get('exist_registry', 'importaciones_controller@exist_registry');
-
+Route::get('exist_registry', 'notifications_controller@exist_registry');
+Route::get('Allnotificaciones', 'notifications_controller@getAllnotificaciones');
+Route::post('updateState', 'notifications_controller@updateState');
 
 
