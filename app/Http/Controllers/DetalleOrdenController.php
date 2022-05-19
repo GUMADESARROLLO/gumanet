@@ -406,9 +406,9 @@ class DetalleOrdenController extends Controller
 
         foreach ($detalle_orden as $detalle => $key) {
 
-            $Data[$k]['anio']    = $key->year_;
-            $mes =  DateTime::createFromFormat('!m', $key->mes_);
-            $Data[$k]['mes']                    =   $this->getMes($mes->format('F'));
+            $Data[$k]['anio']                   = $key->year_;
+            $mes                                = DateTime::createFromFormat('!m', $key->mes_);
+            $Data[$k]['mes']                    = $this->getMes($mes->format('F'));
             $Data[$k]['contOrder']              = $key->contOrder;
             $Data[$k]['prod_real_total']        = number_format($key->prod_real_mensual,2);
             $Data[$k]['prod_total_total']       = number_format($key->prod_total_mensual, 2);
