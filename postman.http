@@ -1,7 +1,0 @@
-POST http://localhost:8448/gumanet/public/getDetFactVenta
-content-type: application/json
-
-{
-    "factura": "0002084"
-}
-###
