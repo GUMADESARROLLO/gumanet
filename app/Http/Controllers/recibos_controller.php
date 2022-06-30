@@ -191,7 +191,7 @@ class recibos_controller extends Controller {
 
         $data = array();
 
-        $query = DB::table('tbl_order_recibo')->whereBetween('date_time', [$from, $to])->whereNotIn('status', array(3));
+        $query = DB::table('tbl_order_recibo')->whereBetween('fecha_recibo', [$from, $to])->whereNotIn('status', array(3));
 
         if($Ruta != '') {
             $query->where('ruta', $Ruta);
@@ -221,7 +221,7 @@ class recibos_controller extends Controller {
             $data[$i]['VENDEDOR']       = $key->ruta;
             $data[$i]['CLIENTE']        = substr(TRIM($key->cod_cliente),0,-1);;
             $data[$i]['NOMBRE_CLIENTE'] = $key->name_cliente;
-            $data[$i]['FECHA']          = date('d/m/Y', strtotime($key->date_time));       
+            $data[$i]['FECHA']          = date('d/m/Y', strtotime($key->fecha_recibo));       
             $data[$i]['TOTAL']          = $key->order_total;
             
             $data[$i]['RECIBO']         = $key->recibo;            

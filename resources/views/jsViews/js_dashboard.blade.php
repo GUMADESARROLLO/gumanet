@@ -263,8 +263,8 @@ $(document).ready(function() {
             {"title": "ARTICULO",                "data": "ARTICULO"},
             {"title": "DESCRIPCION",                 "data": "DESCRIPCION"},
             {"title": "CANT. DISP. B002",                 "data": "B002"},
-            {"title": "FECHA ULTIMA COMPRA",    "data": "ULTIMA_COMPRA"},
-            {"title": "TIEMPO SIN COMPRAR",     "data": "Diferencia"},
+            {"title": "FECHA ULTIMA VENTA",    "data": "ULTIMA_COMPRA"},
+            {"title": "TIEMPO SIN FACTURAR",     "data": "Diferencia"},
         ],
         "columnDefs": [
             {"className": "dt-center","targets": [0,3,4]},
@@ -466,7 +466,7 @@ $(document).ready(function() {
                 }
             },
             printButton: {
-                text: 'Clientes Sin Comprar',
+                text: 'Clientes Sin Facturar',
                 onclick: function () {
                     ModalClientesSinComprar()
                 }
