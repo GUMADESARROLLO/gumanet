@@ -92,7 +92,7 @@
 			<div class="card-body col-sm-12">
 				<div class="row">
 				<div class="col-sm-3">
-					<p class="text-muted m-0" >Ingresado.  <i class="material-icons text-secondary font-weight-bold" style="font-size:15px">done</i></p>
+					<p class="text-muted m-0" >Ingresado por Vendedor.  <i class="material-icons text-secondary font-weight-bold" style="font-size:15px">done</i></p>
 					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_pendiente">C$ 0.00</p>
 				</div>
 				<div class="col-sm-5">
