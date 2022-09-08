@@ -114,19 +114,22 @@ $('#dtVinneta').DataTable({
 
     },
     "footerCallback": function ( row, data, start, end, display ) {
-       /* var api = this.api();
-
+        var api = this.api();
+        var Total       = 0;
         var intVal = function ( i ) {
                 return typeof i === 'string' ?
                 i.replace(/[^0-9.]/g, '')*1 :
                 typeof i === 'number' ?
                 i : 0;
             };
+       /* 
+
+       
 
             var Pendiete    = 0;
             var Ingresado   = 0;
             var Verificado  = 0;
-            var Total       = 0;
+            
 
             total = api.column( 6 ).data().reduce( function (a, b){
                 return intVal(a) + intVal(b);
@@ -149,7 +152,12 @@ $('#dtVinneta').DataTable({
             $('#id_valor_pendiente').text("C$ " + numeral(Pendiete).format('0,0.00'));
             $('#id_valor_ingresado').text("C$ " + numeral(Ingresado).format('0,0.00'));
             $('#id_valor_verificado').text("C$ " + numeral(Verificado).format('0,0.00'));
-            $('#id_valor_Total').text("C$ " + numeral(Total).format('0,0.00'));*/
+            */
+            total = api.column( 3 ).data().reduce( function (a, b){
+                return intVal(a) + intVal(b);
+            }, 0 );
+
+            $('#id_valor_Total').text("C$ " + numeral(total).format('0,0.00'));
     },
 });
 
