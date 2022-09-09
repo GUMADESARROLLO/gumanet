@@ -37,9 +37,8 @@
 							<div class="input-group">
 								<select class="custom-select" id="dtStatus" name="dtLength">
 								<option value="" selected>Todos</option>
-								<option value="0">Pendiente</option>
-								<option value="1">Ingresado</option>
-								<option value="2">Verificado</option>								
+								<option value="0">Creado por Vendedor</option>
+								<option value="1">Ingresado a Sistema Exactus</option>				
 								</select>
 							</div>
 						</div>
@@ -74,13 +73,13 @@
 		</div>
 		<div class="card border-0 shadow-sm mt-3">	
 			<div class="card-body col-sm-12">
-				<div class="row">
+				<div class="row" >
 				<div class="col-sm-3">
-					<p class="text-muted m-0" >Ingresado.  <i class="material-icons text-secondary font-weight-bold" style="font-size:15px">done</i></p>
+					<p class="text-muted m-0" >Total creadp por vendedor.  <i class="material-icons text-secondary font-weight-bold" style="font-size:15px">done</i></p>
 					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_pendiente">C$ 0.00</p>
 				</div>
 				<div class="col-sm-5">
-					<p class="text-muted m-0" id="text-anio-pasado">Validado por Cartera. <i class="material-icons text-success font-weight-bold" style="font-size:15px">done_all</i></p>
+					<p class="text-muted m-0" id="text-anio-pasado">Total ingresado a aistema exactus. <i class="material-icons text-success font-weight-bold" style="font-size:15px">done_all</i></p>
 					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_ingresado">C$ 0.00</p>
 				</div>
 				<div class="col-sm-2 border-right" style="display:none">
@@ -114,7 +113,7 @@
 			<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
-		<div class="modal-body" id="id_contenido_history" style="background-color: #f1f5f8;">
+		
 		</div>
 		
 		</div>
@@ -176,7 +175,7 @@
 			</div>
 
 			<div class="mt-3" id="dtViewLiquidacion"></div>
-
+			<div id="id_contenido_history" style="background-color: #f1f5f8;">
 			<div class="form-group">
 				<label for="message-text" class="col-form-label" id="id-nota">Nota:</label>
 				<textarea class="form-control" id="id-coment" placeholder="Escriba una nota."></textarea>
@@ -185,7 +184,7 @@
 
 		</div>
 		<div class="modal-footer">			
-			<br>
+			
 		</div>
 		</div>
 	</div>

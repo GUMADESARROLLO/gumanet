@@ -28,6 +28,9 @@
   .tbl_rows_recibo_color{
       background-color: #F7CFCF !important;
   }
+  .tbl_rows_recibo_ingress{
+      background-color: #c8f5bf !important;
+  }
 
 </style>
 <!-- Custom styles for this template -->

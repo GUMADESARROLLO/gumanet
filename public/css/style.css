@@ -243,7 +243,7 @@ Full screen Modal
 }
 /*Fin de Sidebar*/
 
-.highcharts-title -> tspan {
+.highcharts-title > tspan {
   margin-top: 20px!important;
   text-align: left;
 }

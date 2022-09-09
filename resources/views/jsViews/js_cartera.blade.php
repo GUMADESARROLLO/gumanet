@@ -93,18 +93,28 @@ $('#dtVinneta').DataTable({
         "search":     "BUSCAR"
     },
     'columns': [
-        { "title": "DETALLES",          "data": "DETALLE","className":'detalles-rutas-recibos'},
-        { "title": "VENDEDOR",          "data": "VENDEDOR" },
-        { "title": "NOMBRE",          "data": "NOMBRE" },
-        { "title": "TOTAL",             "data": "MONTO" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
+        { "title": "",                      "data": "DETALLE","className":'text-center detalles-rutas-recibos'},
+        { "title": "VENDEDOR",              "data": "VENDEDOR" },
+        { "title": "NOMBRE",                "data": "NOMBRE" },
+        
+        { "title": "CREADO POR VENDEDOR",                 "data": "SUM_INGRESS" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
+        { "title": "INGRESADO A EXACTUS",                 "data": "SUM_PROCESS" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
+        { "title": "TOTAL",                 "data": "MONTO" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
+
+        { "title": "REC. PENDIENTE INGRESADO",       "data": "COUNT_INGRESS" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+        { "title": "REC. PRONCESADO",       "data": "COUNT_PROCESS" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+        { "title": "REC. ANULADO",       "data": "COUNT_ANULA" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+        { "title": "REC. TOTAL",    "data": "COUNT_TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+        
+        
         
 
     ],
     "columnDefs": [
-        {"className": "dt-center", "targets": [0,1,2 ]},
-        {"className": "dt-right", "targets": [ 3 ]},
-        { "width": "5%", "targets": [0,1] },
-        { "width": "8%", "targets": [  ] },
+        {"className": "dt-center", "targets": [1,3,4,5,6,7,8,9 ]},
+        {"className": "dt-left", "targets": [2]},
+        { "width": "8%", "targets": [0,1,3,4,5] },
+        { "width": "12%", "targets": [ 2 ] },
         { "visible":false, "searchable": false,"targets": [] }
     ],
     "createdRow": function( row, data, dataIndex ) {
@@ -116,48 +126,28 @@ $('#dtVinneta').DataTable({
     "footerCallback": function ( row, data, start, end, display ) {
         var api = this.api();
         var Total       = 0;
+        var Pendiete    = 0;
+        var Ingresado   = 0;
         var intVal = function ( i ) {
-                return typeof i === 'string' ?
-                i.replace(/[^0-9.]/g, '')*1 :
-                typeof i === 'number' ?
-                i : 0;
-            };
-       /* 
-
+            return typeof i === 'string' ?
+            i.replace(/[^0-9.]/g, '')*1 :
+            typeof i === 'number' ?
+            i : 0;
+        };
        
+        Pendiete = api.column( 3 ).data().reduce( function (a, b){
+            return intVal(a) + intVal(b);
+        }, 0 );
+        Ingresado = api.column( 4 ).data().reduce( function (a, b){
+            return intVal(a) + intVal(b);
+        }, 0 );
+        total = api.column( 5 ).data().reduce( function (a, b){
+            return intVal(a) + intVal(b);
+        }, 0 );
 
-            var Pendiete    = 0;
-            var Ingresado   = 0;
-            var Verificado  = 0;
-            
-
-            total = api.column( 6 ).data().reduce( function (a, b){
-                return intVal(a) + intVal(b);
-            }, 0 );
-
-            for (var i = 0; i < data.length; i++) {
- 
-                if (data[i].STATUS == "Pendiente")
-                    Pendiete += intVal(data[i].TOTAL);
-                else if(data[i].STATUS == "Ingresado"){
-                    Ingresado += intVal(data[i].TOTAL);
-                }else{
-                    Verificado += intVal(data[i].TOTAL);
-                }
-            }
-
-            //Total = Pendiete + Ingresado + Verificado;
-            Total = Pendiete + Ingresado + Verificado;
-
-            $('#id_valor_pendiente').text("C$ " + numeral(Pendiete).format('0,0.00'));
-            $('#id_valor_ingresado').text("C$ " + numeral(Ingresado).format('0,0.00'));
-            $('#id_valor_verificado').text("C$ " + numeral(Verificado).format('0,0.00'));
-            */
-            total = api.column( 3 ).data().reduce( function (a, b){
-                return intVal(a) + intVal(b);
-            }, 0 );
-
-            $('#id_valor_Total').text("C$ " + numeral(total).format('0,0.00'));
+        $('#id_valor_pendiente').text("C$ " + numeral(Pendiete).format('0,0.00'));
+        $('#id_valor_ingresado').text("C$ " + numeral(Ingresado).format('0,0.00'));
+        $('#id_valor_Total').text("C$ " + numeral(total).format('0,0.00'));
     },
 });
 
@@ -170,8 +160,6 @@ $("#BuscarVinneta").click( function() {
 });
 function attach_file(idRecibo){
     CardConten = '' ;
-    $('#mdlAttachFile').modal('show');
-    $('#id_Factura_history').html(idRecibo);
     CardConten  = '';
     vBody       = '';
 
@@ -314,10 +302,11 @@ $("#id_frm_save_anulacion").click( function() {
 
 //DETALLES DE RECIBOS
 $('#dtVinneta').on('click', 'td.detalles-rutas-recibos', function (ef) {
-    var table = $('#dtVinneta').DataTable();
-    var tr = $(this).closest('tr');
-    var row = table.row(tr);
-    var data = table.row($(this).parents('tr')).data();
+    var table   = $('#dtVinneta').DataTable();
+    var tr      = $(this).closest('tr');
+    var row     = table.row(tr);
+    var data    = table.row($(this).parents('tr')).data();
+    var Ruta    = $("#dtRutas").val();
 
     if (row.child.isShown()) {
         row.child.hide();
@@ -343,12 +332,26 @@ $('#dtVinneta').on('click', 'td.detalles-rutas-recibos', function (ef) {
             }
         } );
 
-        format(row.child,data);
-        tr.addClass('shown');
         
-        ef.target.innerHTML = "expand_less";
-        ef.target.style.background = '#ff5252';
-        ef.target.style.color = '#e2e2e2';
+        console.log(Ruta + " -> "+ data.VENDEDOR )
+        
+
+        if(Ruta == data.VENDEDOR){
+            format(row.child,data);            
+            tr.addClass('shown');            
+            ef.target.innerHTML = "expand_less";
+            ef.target.style.background = '#ff5252';
+            ef.target.style.color = '#e2e2e2';
+        }else{
+            if(Ruta == ""){
+                format(row.child,data);            
+                tr.addClass('shown');            
+                ef.target.innerHTML = "expand_less";
+                ef.target.style.background = '#ff5252';
+                ef.target.style.color = '#e2e2e2';
+            }
+        }
+
        
     }
 });
@@ -359,7 +362,6 @@ function getIndex(value,Array) {
         
 
         if(Array[x][1] == value){
-            console.log(Array[x])
             return Object[x];
         }
 
@@ -369,7 +371,10 @@ function getIndex(value,Array) {
 }
 function DetalleRecibo(id){
     
-    $('#mdlResumen').modal('show')
+    $('#mdlResumen').modal('show');
+
+    attach_file(id)
+
 
     $.ajax({
         url: "getOneRecibos",
@@ -393,9 +398,11 @@ function DetalleRecibo(id){
             
             $.each(dta[0]['DETALLES'], function (i, item) {
 
+                var clssAnulado = (item['TIPO']==='ANULADO') ? "1" : "";
+
                 
-                tbody +='<tr>'+
-                            '<td class="text-center">' + item['FACTURA'] + '</td>'+
+                tbody +='<tr class="'+clssAnulado+'">'+
+                            '<td class="text-center  ">' + item['FACTURA'] + '</td>'+
                             '<td class="text-center">C$ ' + item['VALORFACTURA'] + '</td>'+
                             '<td class="text-center">C$ ' + item['NOTACREDITO'] + '</td>'+
                             '<td class="text-center">C$ ' + item['RETENCION'] + '</td>'+
@@ -522,13 +529,13 @@ function detalle_recibo ( callback, dta ) {
         
     }
 
-function format ( callback, dta ) {    
+function format ( callback, dta ) {   
+    
     f1      = $("#f1").val();
     f2      = $("#f2").val();
-    Ruta    = dta.VENDEDOR;
     Stat    = $("#dtStatus").val();
     Opt     = $('input[name=inlineRadioOptions]:checked', '#FrmOptns').val();
-
+    Ruta    = dta.VENDEDOR; 
     
     
     $.ajax({
@@ -547,11 +554,24 @@ function format ( callback, dta ) {
 
             
             $.each(dta, function (i, item) {
-                tbody +='<tr>'+
-                            '<td class="text-center exp_detalle_recibo "><a onclick="DetalleRecibo('+item['ID']+')" href="#!"><i class="material-icons exp_detalle_recibo">expand_more</i></a></td>'+
+
+                var clssColorRow = '';
+
+                if(item['STATUS'] ==4){
+                    clssColorRow = "tbl_rows_recibo_color";
+                }else{
+                    if(item['STATUS']=="Ingresado"){
+                        clssColorRow = "tbl_rows_recibo_ingress";
+                    }
+                }                
+
+                console.log(clssColorRow)
+
+                tbody +='<tr class="'+clssColorRow+'">'+
+                            '<td class="text-center exp_detalle_recibo"><a onclick="DetalleRecibo('+item['ID']+')" href="#!"><i class="material-icons exp_detalle_recibo">open_in_new</i></a></td>'+
                             '<td class="text-center">' + item['RECIBO'] + '</td>'+
                             '<td class="text-center">' + item['CLIENTE'] + '</td>'+
-                            '<td class="text-center">' + item['NOMBRE_CLIENTE'] + '</td>'+
+                            '<td class="text-left">' + item['NOMBRE_CLIENTE'] + '</td>'+
                             '<td class="text-center">' + item['FECHA'] + '</td>'+
                             '<td class="text-center">' + item['TOTAL'] + '</td>'+
                         '</tr>';
@@ -560,12 +580,12 @@ function format ( callback, dta ) {
             temp = `<table class="table table-striped table-bordered table-sm post_back mt-3 expand_more" width="100%" id="id_exp_detalle_recibo">
 					<thead class="bg-blue text-light">
                         <tr>
-                            <th class="center">DETALLES</th>
-                            <th class="center">Nº RECIBO</th>
-                            <th class="center">CLIENTE</th>
+                            <th class="center" style="width: 63px;">DETALLES</th>
+                            <th class="center" style="width: 70px;">Nº RECIBO</th>
+                            <th class="center" style="width: 70px;">CLIENTE</th>
                             <th class="center">NOMBRE</th>
-                            <th class="center">FECHA</th>
-                            <th class="center">TOTAL</th> 
+                            <th class="center"style="width: 75px;">FECHA</th>
+                            <th class="center"style="width: 95px;">TOTAL</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -574,8 +594,7 @@ function format ( callback, dta ) {
 				</table>`
 
             
-    
-        callback(temp).show();
+        callback(temp).show()
 
         },
         error: function(xhr) {
