@@ -95,8 +95,8 @@ $('#dtVinneta').DataTable({
         { "title": "INGRESADO A EXACTUS",                 "data": "SUM_PROCESS" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
         { "title": "TOTAL",                 "data": "MONTO" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
 
-        { "title": "REC. PENDIENTE INGRESADO",       "data": "COUNT_INGRESS" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
-        { "title": "REC. PRONCESADO",       "data": "COUNT_PROCESS" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+        { "title": "REC. CREADO POR VENDEDOR",       "data": "COUNT_INGRESS" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+        { "title": "REC. INGRESADO A SISTEMA",       "data": "COUNT_PROCESS" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
         { "title": "REC. ANULADO",       "data": "COUNT_ANULA" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
         { "title": "REC. TOTAL",    "data": "COUNT_TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
 
