@@ -40,8 +40,6 @@ $( "#txt-fondo-inicial").on( 'keyup',function() {
     
     $('#id-dml-disponible').html(dmlTotal)
     
-
-    
 });
 
 $("#exp-to-excel").click( function() {
@@ -58,11 +56,7 @@ function Requestdata(){
 
     
     dataVinneta(f1, f2,Ruta,Stat);
-
-    
 }
-
-
 
 function dataVinneta(f1, f2,Ruta,Stat) {
 
@@ -105,9 +99,6 @@ $('#dtVinneta').DataTable({
         { "title": "REC. PRONCESADO",       "data": "COUNT_PROCESS" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
         { "title": "REC. ANULADO",       "data": "COUNT_ANULA" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
         { "title": "REC. TOTAL",    "data": "COUNT_TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
-        
-        
-        
 
     ],
     "columnDefs": [
@@ -118,10 +109,6 @@ $('#dtVinneta').DataTable({
         { "visible":false, "searchable": false,"targets": [] }
     ],
     "createdRow": function( row, data, dataIndex ) {
-            /*if ( data.STATUS == 4) {        
-                $(row).addClass('tbl_rows_recibo_color');
-            }*/
-
     },
     "footerCallback": function ( row, data, start, end, display ) {
         var api = this.api();
@@ -351,8 +338,6 @@ $('#dtVinneta').on('click', 'td.detalles-rutas-recibos', function (ef) {
                 ef.target.style.color = '#e2e2e2';
             }
         }
-
-       
     }
 });
 function getIndex(value,Array) {
@@ -430,18 +415,11 @@ function DetalleRecibo(id){
 				</table>`
 
                 $("#dtViewLiquidacion").empty().append(temp);
-          
-
-            
-    
 
         },
         error: function(xhr) {
 
         }
-
-   
-  
     });
 
 
