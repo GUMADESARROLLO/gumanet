@@ -1,106 +1,237 @@
-_JarvanIVStandardBase
-000722.976| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000722.976| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000729.034| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000729.034| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000730.085| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000730.085| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000779.357| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000779.357| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000782.444| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000782.444| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000782.544| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000782.544| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000786.632| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000786.632| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000874.254| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000874.254| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000875.139| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000875.139| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000989.761| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000989.761| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000992.498| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000992.498| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000997.070| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-000997.070| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001057.605| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001057.605| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001057.773| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001057.773| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001062.695| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001062.695| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001113.850| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001113.850| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001160.729| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001160.729| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001163.516| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001163.516| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001172.059| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001172.059| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001225.266| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001225.266| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001226.300| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001226.300| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001228.002| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001228.002| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001286.222| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001286.222| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001288.459| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001288.459| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001290.160| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001290.160| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001380.929| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001380.929| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001389.289| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001389.289| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001473.203| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001473.203| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001476.943| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001476.943| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001535.047| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001535.047| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001537.283| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001537.284| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001585.273| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001585.273| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001586.224| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001586.224| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001589.161| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001589.161| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001597.253| ALWAYS|  FLOW| SEJ-44WBGM2J
-001597.287| ALWAYS|  FLOW| SEJ-Z8U3YRZ3
-001656.762| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001656.762| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001719.089| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001719.089| ALWAYS| Failed to spawn particle with effect key hash 9878098. Skin: TFT6_JarvanIVStandardBase
-001753.993| ALWAYS|  FLOW| SEJ-44WBGM2J
-001754.009| ALWAYS|  FLOW| SEJ-Z8U3YRZ3
-001760.958| ALWAYS|  FLOW| Switching Game State from GAMESTATE_GAMELOOP to GAMESTATE_PRE_EXIT for reason TFT Exit Now
-001760.972| ALWAYS|  CONN| Requesting disconnect (22)
-001760.972| ALWAYS|  FLOW| Switching Game State from GAMESTATE_PRE_EXIT to GAMESTATE_EXIT for reason PreExit Game State is Complete.
-001760.988| ALWAYS|  FLOW| Finished Main Loop
-001761.013| ALWAYS| =================== Perf Stats (all in ms) =========================
-001761.013| ALWAYS| Average Frame Time:    16.71
-001761.013| ALWAYS| Average FPS:           59.84 fps
-001761.013| ALWAYS| StdDev Frame Time:     2.10
-001761.013| ALWAYS| Max Frame Time:        458.20
-001761.013| ALWAYS| Ave GPU Frame Time:    4.10
-001761.013| ALWAYS| StdDev GPU Frame Time: 1.37
-001761.013| ALWAYS| Max GPU Frame Time:    76.98
-001761.013| ALWAYS| Histogram Buckets:     [0.0,1.0,2.0,5.0,7.5,10.0,18.0,35.0,50.0,75.0,100.0,500.0,1000.0,340282346638528859811704183484516925440.0]
-001761.013| ALWAYS| Frame Time Histogram:  [0,0,0,16,48,59,97262,2749,25,22,2,6,0,0]
-001761.013| ALWAYS| GPU Time Histogram:    [0,0,1319,76923,19647,2180,111,8,0,0,1,0,0,0]
-001761.017| ALWAYS| TFT.CombatRounds.ave:  [0.000,0.000,16.862,16.687,16.697,16.687,16.688,16.692,0.000,16.688,16.688,16.687,16.687,16.687,16.688,0.000,16.687,16.699,16.687,16.714,16.738,16.686,0.000,16.693,16.698,16.685,16.686,16.686,16.694,0.000]
-001761.017| ALWAYS| TFT.CombatRounds.max:  [0.000,0.000,206.518,23.074,32.950,22.950,19.503,35.315,0.000,19.262,23.014,23.992,19.786,21.421,20.601,0.000,19.502,44.016,22.488,50.601,75.082,20.215,0.000,25.456,35.573,23.398,22.621,21.094,34.589,0.000]
-001761.017| ALWAYS| TFT.Rounds.ave:        [17.896,16.753,16.857,16.737,16.700,16.693,16.690,16.692,16.688,16.695,16.702,16.749,16.695,16.703,16.693,16.687,16.695,16.705,16.930,16.720,16.718,16.697,16.688,16.707,16.700,16.793,16.701,16.695,16.698,16.688]
-001761.017| ALWAYS| TFT.Rounds.max:        [60.229,75.548,206.518,100.805,43.602,34.852,39.354,37.311,24.508,43.665,66.092,191.886,48.379,50.230,53.357,25.781,53.632,58.886,458.200,58.409,75.082,56.396,24.472,67.842,57.534,216.547,60.470,54.925,55.478,32.298]
-001761.060| ALWAYS| Max Memory Allocated = 882.074MB
-001761.333| ALWAYS|  FLOW| Cleanup Complete
-001761.344| ALWAYS|  FLOW| LCU Game End Status: GAMEFLOW_EVENT.GAME_COMPLETED Result: 200: SUCCESS
-001761.704| ALWAYS|  FLOW| ALE-8SDFH23F
-001761.716| ALWAYS| {"exit_code":"EXITCODE_NONE","messageType":"riot__game_client__connection_info","message_body":"Game exited"}
-001761.717| ALWAYS| AudioManagerWwise::Finit
-001761.726| ALWAYS|  FLOW| Destroying the renderer
-001761.726| ALWAYS| r3dRenderLayer::Close() enter
-001761.736| ALWAYS| r3dRenderLayer::Close() exit
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+//RUTAS MENU
+Route::get('/Inventario','inventario_controller@index');
+Route::get('/Metas','metas_controller@index');
+Route::get('/Usuario','usuario_controller@index');
+Route::get('/Reportes','reportes_controller@index');
+Route::get('/Recuperacion','recuperacion_controller@index');
+Route::get('/Saldos','saldos_controller@index');
+Route::get('/Proyecciones','proyecciones_controller@index');
+Route::get('/InteligenciaMercado','inteligenciaMercado_controller@index');
+Route::get('/InvTotalizado','inventario_controller@inventarioTotalizado');
+Route::get('/VtsProyectos','ventasProyectos_controller@index');
+Route::get('/MinutasCorporativas','minutasCorp_controller@index');
+Route::get('/Menus','menus_controller@index');
+Route::get('/Roles','rol@index');
+Route::get('/recuProyectos','recupProyectos_controller@index');
+Route::get('/ordenesCompra', 'ordenesCompra_controller@index');
+Route::get('/DetalleOrden', 'DetalleOrdenController@index');
+
+
+//RUTAS LOGIN
+Route::get('/','Auth\LoginController@showLoginForm');//pagina login
+Auth::routes();//dentro de la funcion routes() se encunetran todas las rutas para login del Auth "Vendor/laravel/src/illuminate/routing/router.php"
+Route::get('/Dashboard','dashboard_controller@index')->name('Dashboard');
+Route::get('/getCompanies','Auth\LoginController@getCompanies');
+//Route::get('password/reset/{token}', 'resetPassword_Controller@index')->name('pass.reset','{token}');
+
+//RUTA RESET PASS
+Route::get('/formReset','resetPass_controller@index')->name('formReset');
+Route::post('/resetPass','resetPass_controller@resetPass')->name('resetPass');
+
+
+//RUTAS USUARIO
+Route::get('/usuarios','usuario_controller@getUsuario');
+Route::get('/usuario/{id}/companies','usuario_controller@getCompaniesByUserId');
+Route::get('/company/{id}/usuarios','usuario_controller@getUsersByCompanyId');
+Route::post('/editUser','usuario_controller@editUser');
+Route::post('/deleteUser','usuario_controller@deleteUser');
+Route::post('/changeUserStatus','usuario_controller@changeUserStatus');
+Route::get('/role','usuario_controller@getRole');
+
+//RUTAS INVENTARIO
+Route::get('/articulos','inventario_controller@getArticulos');
+Route::get('/objBodega/{articulo}','inventario_controller@getBodegaInventario');
+Route::get('/objPrecios/{articulo}','inventario_controller@getPreciosArticulos');
+Route::get('/objCostos/{articulo}','inventario_controller@getCostosArticulos');
+Route::get('/objMargen/{articulo}','inventario_controller@getMargenArticulos');
+Route::get('/objOtros/{articulo}','inventario_controller@getOtrosArticulos');
+Route::get('/objBonificado/{articulo}','inventario_controller@getArtBonificados');
+Route::get('/objIndicadores/{articulo}','inventario_controller@objIndicadores');
+
+Route::post('/transacciones','inventario_controller@transaccionesDetalle');
+Route::post('/lotes','inventario_controller@getLotesArticulo');
+Route::get('/liqMeses/{valor}','inventario_controller@liquidacionMeses');
+Route::get('/desInventario/{tipo}/{valor}', 'inventario_controller@descargarInventario');
+Route::get('/invCompleto', 'inventario_controller@inventarioCompleto');
+Route::get('/invTotalizadoDT', 'inventario_controller@inventarioCompletoTable');
+Route::get('/desInvTotal2', 'inventario_controller@descargarInventarioCompleto');
+Route::get('/invenVencidos', 'inventario_controller@invenVencidos');
+
+
+//RUTAS INVENTARIO TOTALIZADO 
+Route::get('/invTotalizado','inventario_controller@getInventarioTotalizado');
+Route::get('/desInvTotal','inventario_controller@descargarInventarioCompleto');
+
+//RUTAS METAS
+Route::post('/export_meta_from_exl','metas_controller@exportMetaFromExl');
+Route::post('/export_meta_from_exl_venta','metas_controller@exportMetaFromExlVenta');
+Route::post('/get_tmp_exl_data','metas_controller@getTmpExlData');
+Route::get('/add_data_meta','metas_controller@add_data_meta');
+Route::post('/calc_and_add_unidad_meta','metas_controller@calcAddUnidadMeta');
+Route::get('/truncate_tmp_exl_tbl','metas_controller@truncate_tmp_exl_tbl');
+Route::post('/get_historial_meta','metas_controller@getHistorialMeta');
+Route::post('/existe_Fecha_Meta','metas_controller@existeFechaMeta');
+Route::post('/existe_Fecha_Meta_venta','metas_controller@existeFechaMetaVenta');
+Route::post('/addDataRecuToDB','metas_controller@addDataRecuToDB');
+Route::post('/getHistoriaMetaRecu','metas_controller@getHistoriaMetaRecu');
+
+//RUTAS DETALLE DE VENTAS
+Route::get('/detalles/{tipo}/{mes}/{anio}/{cliente}/{articulo}/{ruta}','dashboard_controller@getDetalleVentas');
+Route::get('/detallesdia/{dia}/{mes}/{anio}/{seg}','dashboard_controller@getDetalleVentasDia');
+Route::get('/detallesVentasRuta/{mes}/{anio}/{ruta}','dashboard_controller@getDetalleVentasXRuta');
+Route::get('/detallesVentasRutaDia/{dia}/{mes}/{anio}/{ruta}','dashboard_controller@get_Vta_Ruta_dia');
+Route::get('/detallesTodosItems/{dia}/{mes}/{anio}/{segmento}','dashboard_controller@get_Vta_all_items');
+Route::get('/excelAllTop10/{dia}/{mes}/{anio}/{segmento}','dashboard_controller@get_all_top');
+Route::get('/graficaSegmento/{mes}/{anio}/{bolson}/{Segmento}','dashboard_controller@GetTop10Productos');
+Route::get('/graficaSegmentoCL/{mes}/{anio}/{bolson}/{Segmento}','dashboard_controller@getTop10Clientes');
+//Route::get('/ruta/{mes}/{anio}','dashboard_controller@getTotalRutaXVentas');
+Route::get('/unidadxProd/{mes}/{anio}','dashboard_controller@getTotalUnidadesXRutaXVentas');
+Route::get('/ClientesNoFacturados/{mes}/{anio}','dashboard_controller@ClientesNoFacturados');
+Route::get('/ArticuloNoFacturado/{mes}/{anio}','dashboard_controller@ArticuloNoFacturado');
+Route::get('/getClientesSinComprar/{mes}/{anio}','dashboard_controller@getClientesSinComprar');
+
+
+
+
+
+//RUTAS GRAFICAS DASHBOARDS
+Route::get('/dataGraf/{mes}/{anio}/{xbolsones}','dashboard_controller@getDataGraficas');
+Route::get('/Grafselect/{mes}/{anio}/{xbolsones}/{segmento}','dashboard_controller@getDataGrafSelect');
+
+Route::get('/detailsAllCls/{mes}/{anio}/{categoria}/{bolson}','dashboard_controller@getAllClientsByCategory');
+
+
+Route::get('/dataVentasMens/{xbolsones}','dashboard_controller@getVentasMensuales');
+
+
+Route::get('/dtaComportamientoAnuales/{xbolsones}','dashboard_controller@getComportamiento');
+
+Route::get('/dataRealVtsMensuales/{xbolsones}/{segmentos}','dashboard_controller@getRealVentasMensuales');
+Route::get('/top10Cls','dashboard_controller@getTop10Clientes');
+Route::get('/valBodegas','dashboard_controller@getValBodegas');
+Route::post('/dataCate', 'dashboard_controller@ventaXCategorias');
+Route::get('/getRecuRowsByRoutes/{mes}/{anio}/{pageName}','dashboard_controller@getRecuRowsByRoutes');
+
+//RUTAS REPORTES VENTAS
+Route::post('/ventasDetalle','reportes_controller@detalleVentas');
+Route::post('/getDetFactVenta','reportes_controller@getDetFactVenta');
+
+//RUTAS RECUPERACION
+Route::get('/getMoneyRecuRowsByRoutes/{mes}/{anio}/{pageName}','recuperacion_controller@getMoneyRecuRowsByRoutes');
+Route::post('/agregarMetaRecup','recuperacion_controller@agregarMetaRecup');
+Route::post('/actualizarMetaRecup','recuperacion_controller@actualizarMetaRecup');
+Route::get('/obtenerRutasRecu/{mes}/{anio}','recuperacion_controller@obtenerRutasRecu');
+
+//RUTAS SALDOS
+Route::get('/saldoAlls','saldos_controller@saldosAll');
+Route::post('/saldoxRuta','saldos_controller@saldosXRuta');
+
+//RUTAS PROYECCIONES
+Route::post('dataProyeccion','proyecciones_controller@dataProyeccionXTipo');
+Route::post('artProyectado', 'proyecciones_controller@dataProyeccionXArticulo');
+
+//RUTAS COMENTARIOS
+Route::post('/paginateDataSearch', 'inteligenciaMercado_controller@searchComentarios');
+Route::post('/dowloadComents', 'inteligenciaMercado_controller@descargarComentarios');
+Route::get('countim', 'inteligenciaMercado_controller@countim');
+
+//RUTAS VENTAS POR PROYECTOS
+Route::get('/dataVTS','ventasProyectos_controller@comparateDateVentas');
+
+//RUTAS MINUTAS CORPORATIVAS
+Route::post('/paginateDataSearchBlogs', 'minutasCorp_controller@searchBlogs');
+Route::get('/minutaCU', 'minutasCorp_controller@createUpdateMinuta');
+Route::post('saveMinuta', 'minutasCorp_controller@guardarMinuta');
+Route::get('minuta/{idMinuta}/{action}', 'minutasCorp_controller@getDataMinuta');
+Route::get('deleteMinuta/{idMinuta}', 'minutasCorp_controller@deleteMinuta');
+Route::post('updateMinuta', 'minutasCorp_controller@actulizarMinutaCorp');
+
+//RUTAS MENUS
+Route::post('menu-rol', 'menus_controller@guardar');
+Route::get('menu/crear', 'menus_controller@crear')->name('menu/crear');
+Route::post('menu/guardar', 'menus_controller@guardarNuevoMenu')->name('menu/guardar');
+
+//RUTAS ROLES
+Route::get('rol/crear', 'rol@crear')->name('rol/crear');
+Route::post('rol/guardar', 'rol@guardar')->name('rol/guardar');
+
+//RUTAS RECUPERACION POR PROYECTOS
+Route::get('dataRECUP', 'recupProyectos_controller@comparateDateRecup');
+
+//RUTAS ORDENES DE COMPRA
+Route::get('ordenes', 'ordenesCompra_controller@getDataOrdenesCompra');
+Route::post('/lineasOrden','ordenesCompra_controller@getDetalleOrdenCompra');
+
+//TODAS LAS RUTAS QUE TENGAN QUE VER CON VIÑETAS
+Route::get('vineta', 'vinneta_controller@index');
+Route::get('getVinnetas', 'vinneta_controller@getVinnetas');
+Route::get('getPagadoRuta', 'vinneta_controller@getPagadoRuta');
+Route::get('getVinnetasResumen', 'vinneta_controller@getVinnetasResumen');
+
+Route::get('liqvineta', 'vinetaliq_controller@index');
+Route::get('getSolicitudes', 'vinetaliq_controller@getSolicitudes');
+Route::get('getLiquidaciones', 'vinetaliq_controller@getLiquidaciones');
+
+Route::post('PushLiq', 'vinetaliq_controller@pushliq');
+Route::post('cancelarliq', 'vinetaliq_controller@cancelarliq');
+Route::post('Deleteliq', 'vinetaliq_controller@Deleteliq');
+Route::post('Anular_Vineta', 'vinetaliq_controller@AnularVineta');
+Route::post('HistorialFactura', 'vinneta_controller@getHistorialFactura');
+
+Route::post('pagado', 'vinneta_controller@getpagado');
+
+Route::get('resumen', 'vinetaliq_controller@resumenpdf');
+Route::get('rePrint', 'vinetaliq_controller@rePrint');
+
+Route::get('clean', 'vinetaliq_controller@getClear');
+
+//RUTAS PARA EL DETALLE DE ORDENES
+Route::get('/getMateriaPrima/{numOrden}','DetalleOrdenController@getMateriaPrima');
+Route::get('/getMOD/{numOrden}','DetalleOrdenController@getMOD');
+Route::get('/getQuimicos/{numOrden}','DetalleOrdenController@getQuimicos');
+Route::get('/getSubCostos/{numOrden}','DetalleOrdenController@getSubCostos');
+Route::get('/getOtrosConsumos/{numOrden}','DetalleOrdenController@getOtrosConsumos');
+Route::get('/getDetailSumary/{numOrden}','DetalleOrdenController@getDetailSumary');
+Route::get('/getHrasProducidas/{numOrden}','DetalleOrdenController@getHrasProducidas');
+Route::get('/getData','DetalleOrdenController@getData');
+
+
+
+
+//RUTAS PARA LOS RECIBOS
+Route::get('recibos', 'recibos_controller@index');  
+Route::get('getRecibos', 'recibos_controller@getRecibos');
+
+Route::get('Cartera', 'recibos_controller@getReporte');  
+Route::get('getCartera', 'recibos_controller@getCartera');
+Route::get('getOneRecibos', 'recibos_controller@getOneRecibos');
+
+Route::post('getAttachFile', 'recibos_controller@getAttachFile');
+Route::post('push_recibo', 'recibos_controller@push_recibo');
+Route::post('push_verificado', 'recibos_controller@push_verificado');
+Route::get('print_resumen', 'recibos_controller@print_resumen');
+
+
+// RUTAS PARA PROMOCIONES DE INNOVA
+Route::get('promocion_Vueno', 'promocion_controller@index');
+Route::get('getPromocion', 'promocion_controller@getPromocion');
+Route::post('getHistorialFactura','promocion_controller@getHistorialFactura');
+Route::get('getResumen', 'promocion_controller@getResumen');
+
+// RUTAS PARA INFORMACION DE FACTURA DE EXPORTACIONES
+Route::get('exportacion', 'exportacion_controller@index');
+Route::get('getVentasExportacion', 'exportacion_controller@getVentasExportacion');
+Route::get('/dtaVentaExportacion/{xbolsones}/{segmentos}','dashboard_controller@getVentasExportacion');

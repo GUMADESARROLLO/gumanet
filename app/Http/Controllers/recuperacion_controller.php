@@ -53,7 +53,7 @@ class recuperacion_controller extends Controller
 
     public function getMoneyRecuRowsByRoutes($mes, $anio, $pageName){
 
-        $otroTipoVende = array('F01','F12','F16','F18','F19');//quitar la ruta f2 y f4
+        $otroTipoVende = array('F01','F12','F16');//quitar la ruta f2 y f4
         $request = Request();
         $fecha =  date('Y-m-d', strtotime($anio.'-'.$mes.'-01'));
         $recuperacion = array();
@@ -260,7 +260,7 @@ class recuperacion_controller extends Controller
 
     public function obtenerRutasRecu($mes, $anio, request $request){
 
-        $otroTipoVende = "'F01','F12','F16','F18','F19'"; //quitar f2 y f4
+        $otroTipoVende = "'F01','F12','F16'"; //quitar f2 y f4
         $fecha =  date('Y-m-d', strtotime($anio.'-'.$mes.'-01'));
         $sql_server = new \sql_server();
 

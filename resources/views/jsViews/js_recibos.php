@@ -182,8 +182,9 @@ function attach_file(idRecibo){
         },
         async: true,
         success: function(response) {
+        var CardConten =  ``;
 
-        if (response.length==0) {
+        /*if (response.length==0) {
             CardConten = `
 							<div class="card-body">
 								<p class="text-center font-weight-bolder">No se encontraron registros</p>
@@ -196,7 +197,7 @@ function attach_file(idRecibo){
             CardConten +='<div class="col"><div class="card border-light mb-3 shadow-sm bg-white rounded">'+
 			'<div class="card-body">'+
 				
-                    '<img src="http://192.168.1.139:8448/gmv3/upload/recibos/'+item.IMAGEN+'" width="200" class="img-fluid rounded" style="cursor: pointer" />'+
+                    '<img src="http://186.1.15.166:8448/gmv3/upload/recibos/'+item.IMAGEN+'" width="200" class="img-fluid rounded" style="cursor: pointer" />'+
                 
 			'</div></div></div>';
 
@@ -209,6 +210,35 @@ function attach_file(idRecibo){
                 
 			'</div>'+
 		'</div>';
+
+        $('#id_contenido_history').html(vBody);*/
+
+         $('#id_contenido_history').html("");
+
+         $.each(response, function (i, item) {
+
+            CardConten +=`
+                <div class="mb-3 col-md-6 col-lg-3">
+                  <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">
+                    <div class="overflow-hidden">
+                      <div class="position-relative rounded-top overflow-hidden">
+                      <a class="d-block" href="#!"style="cursor: pointer">
+                        <img class="img-fluid rounded-top" src="http://186.1.15.166:8448/gmv3/upload/recibos/`+item.IMAGEN+`" alt="" /></a>
+                      </div>
+                    </div>                    
+                  </div>
+                </div>`;
+
+        });
+
+
+         vBody =`<div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            `+CardConten+`
+                        </div>
+                    </div>
+                </div>`;
 
         $('#id_contenido_history').html(vBody);
 

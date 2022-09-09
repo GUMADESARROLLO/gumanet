@@ -139,7 +139,18 @@ class recibos_controller extends Controller {
         return view('pages.recibos', compact('data', 'clientes','rutas'));
     }
 
-   
+    public function getReporte() {
+        $this->agregarDatosASession();
+
+        $rutas      = reportes_model::rutas();
+
+        $data = [
+            'name' =>  'GUMA@NET',
+            'page' => 'Ventas'
+        ];
+        
+        return view('pages.cartera', compact('data','rutas'));
+    }
 
     public function agregarDatosASession() {
         $request = Request();
@@ -191,7 +202,7 @@ class recibos_controller extends Controller {
 
         $data = array();
 
-        $query = DB::table('tbl_order_recibo')->whereBetween('date_time', [$from, $to])->whereNotIn('status', array(3));
+        $query = DB::table('tbl_order_recibo')->whereBetween('fecha_recibo', [$from, $to])->whereNotIn('status', array(3));
 
         if($Ruta != '') {
             $query->where('ruta', $Ruta);
@@ -205,7 +216,7 @@ class recibos_controller extends Controller {
             $query->whereIn('status', array($Stat));
         }
 
-        $obj = $query->get();
+        $obj = $query->orderBy('id', 'DESC')->get();
 
     
         foreach ($obj as $qR => $key) {
@@ -216,12 +227,12 @@ class recibos_controller extends Controller {
 
 
             $data[$i]["DETALLE"]        = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
-            $data[$i]['ID']             = $key->recibo;
+            $data[$i]['ID']             = $key->id;
             $data[$i]['STATUS']         = $key->status;
             $data[$i]['VENDEDOR']       = $key->ruta;
             $data[$i]['CLIENTE']        = substr(TRIM($key->cod_cliente),0,-1);;
             $data[$i]['NOMBRE_CLIENTE'] = $key->name_cliente;
-            $data[$i]['FECHA']          = date('d/m/Y', strtotime($key->date_time));       
+            $data[$i]['FECHA']          = date('d/m/Y', strtotime($key->fecha_recibo));       
             $data[$i]['TOTAL']          = $key->order_total;
             
             $data[$i]['RECIBO']         = $key->recibo;            
@@ -307,6 +318,151 @@ class recibos_controller extends Controller {
 
     }
 
+    public static function getOneRecibos(Request $request) {
+        
+        $Id   = $request->input('id_recibo');
+        $data = array();
+        $i=0;
+
+        $query = DB::table('tbl_order_recibo')->where('id', $Id)->get();
+        $rutas      = reportes_model::rutas();
+     
+        
+        foreach ($query as $qR => $key) {
+            $arrDetalles = array();
+
+            $found_key = array_search($key->ruta, array_column($rutas, 'VENDEDOR'));
+
+            $Nombre = ($found_key == false) ? 'N/D' : $rutas[$found_key]['NOMBRE'];
+
+            $data[$i]['VENDEDOR']       = $key->ruta;
+            $data[$i]['NOMBREV']        = $Nombre;
+            $data[$i]['FECHA']          = date('d/m/Y', strtotime($key->fecha_recibo));       
+            $data[$i]['TOTAL']          = $key->order_total;
+            $data[$i]['COMMENT']        = $key->comment;
+
+            $OrdenList  = $key->order_list;
+            $Lineas     = explode("],", $OrdenList);
+            $cLineas    = count($Lineas) - 1;
+
+            for ($l=0; $l < $cLineas ; $l++){
+                
+                $Lineas_detalles     = explode(";", $Lineas[$l]);
+
+                $arrDetalles[$l]['FACTURA']         = str_replace('[', '', $Lineas_detalles[0]);
+                $arrDetalles[$l]['VALORFACTURA']    = number_format($Lineas_detalles[1],2);
+                $arrDetalles[$l]['NOTACREDITO']     = number_format($Lineas_detalles[2],2);
+                $arrDetalles[$l]['RETENCION']       = number_format($Lineas_detalles[3],2);
+                $arrDetalles[$l]['DESCUENTO']       = number_format($Lineas_detalles[4],2);
+                $arrDetalles[$l]['VALORRECIBIDO']   = number_format($Lineas_detalles[5],2);
+                $arrDetalles[$l]['TIPO']            =  (!isset($Lineas_detalles[8])) ? "N/D" : $Lineas_detalles[8] ;
+
+                
+            }
+            $data[$i]['DETALLES']       = $arrDetalles;
+            $i++;
+
+        }
+        
+        return response()->json($data);
+
+    }
+
+    public static function getCartera(Request $request) 
+    {
+        $data = array();
+        $i=0;
+
+
+        $from   = $request->input('f1').' 00:00:00';
+        $to     = $request->input('f2').' 23:59:59';
+        
+        $Ruta   = $request->input('RU');
+        $Stat   = $request->input('St');
+
+        $Role = $request->session()->get('user_role');
+
+        $rutas      = reportes_model::rutas();
+
+      
+
+        if (!$from) {
+           return response()->json(false);
+        }
+
+        $query = DB::table('tbl_order_recibo')
+        ->select(DB::raw("
+            ruta ,		
+            COUNT(CASE WHEN status = '0' THEN 1 ELSE NULL END) as count_ingress,
+            COUNT(CASE WHEN status = '1' THEN 1 ELSE NULL END) as count_process,
+            COUNT(CASE WHEN status = '4' THEN 1 ELSE NULL END) as count_anulado,
+            COUNT(*) count_total,
+            SUM(CASE WHEN status = '0' THEN CleanAmount ( order_total ) else 0 end) as sum_ingress,		
+            SUM(CASE WHEN status = '1' THEN CleanAmount ( order_total ) else 0 end) as sum_process,
+            SUM(CleanAmount ( order_total )) sum_total
+        "))
+        ->whereNotIn('status', array(3))
+        ->whereBetween('fecha_recibo', [$from, $to]);
+
+       
+
+        if($Stat != '') {
+            $query->whereIn('status', array($Stat));
+        }
+
+        if($Ruta != '') {
+            $query->where('ruta', $Ruta);
+        }       
+        
+
+        $obj = $query->groupBy('ruta')->get()->toArray();
+
+
+        
+        foreach ($rutas as $ruta => $key){
+            
+            $found_key = array_search($key['VENDEDOR'], array_column($obj, 'ruta'));
+
+            $SUM_INGRESS = ($found_key === false) ? 0 : $obj[$found_key]->sum_ingress ;
+            $SUM_PROCESS = ($found_key === false) ? 0 : $obj[$found_key]->sum_process ;
+            $SUM_TOTAL = ($found_key == false) ? 0 : $obj[$found_key]->sum_total ;
+            
+            $COUNT_INGRESS = ($found_key === false) ? 0 : $obj[$found_key]->count_ingress ;
+            $COUNT_PROCESS = ($found_key === false) ? 0 : $obj[$found_key]->count_process ;
+            $COUNT_ANULA = ($found_key === false) ? 0 : $obj[$found_key]->count_anulado ;
+            $COUNT_TOTAL = ($found_key === false) ? 0 : $obj[$found_key]->count_total ;
+
+           
+
+            
+            $data[$i]["DETALLE"]            = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+            $data[$i]['VENDEDOR']           = $key['VENDEDOR'];
+            $data[$i]['NOMBRE']             = $key['NOMBRE'];
+            
+            $data[$i]['SUM_INGRESS']        = $SUM_INGRESS;
+            $data[$i]['SUM_PROCESS']        = $SUM_PROCESS;
+            $data[$i]['MONTO']              = $SUM_TOTAL;
+
+            $data[$i]['COUNT_INGRESS']      = $COUNT_INGRESS;
+            $data[$i]['COUNT_PROCESS']      = $COUNT_PROCESS;
+            $data[$i]['COUNT_ANULA']        = $COUNT_ANULA;
+
+            $data[$i]['COUNT_TOTAL']        = $COUNT_TOTAL;
+
+            $i++;
+
+            
+
+            
+
+        }
+
+
+        
+        return response()->json($data);
+
+    }
+
     public static function getLiquidaciones(Request $request) {
         
 
@@ -343,7 +499,7 @@ class recibos_controller extends Controller {
             $Saldo      = $Fondo - $Reembolso;
 
 
-            $data[$i]["DETALLE"]        = '<a id="exp_more_liq" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+            $data[$i]["DETALLE"]        = '<a id="expa_recibos" class="expa_recibos" href="#!"><i class="material-icons expa_recibos ">expand_more</i></a>';
             $data[$i]['ID']             = $key->Id;
             $data[$i]['VENDEDOR']       = $key->Ruta;           
             $data[$i]['RUTA_NAME']      = $key->Ruta_name;           

@@ -282,12 +282,6 @@
             vendedores = table.cell( i, 1 ).data();
             vendedores = (vendedores.replace('<span style="text-align: left; float: left">', '')).replace('</span>','');
 
-            console.log(vendedores);
-            
-
-
-       
-
                 data[j] = {
                     ruta: table.cell( i, 0 ).data(),
                     vendedor: vendedores,
@@ -300,8 +294,6 @@
           
             
         }
-
-        console.log(data);
         
          
 

@@ -1323,24 +1323,53 @@ reports and or just some feedback.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="glossary.html" title="Glossary"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="copyright.html" title="Copyright"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">phpMyAdmin 4.9.7 documentation</a> &#187;</li> 
-      </ul>
+  </div>
+</div>
+<!-- Modal:ClientesSinComprar -->
+<div class="modal fade" id="mdl_clientes_sin_comprar" tabindex="-1" role="dialog" aria-labelledby="titleModal" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleModal-comportamiento">Clientes sin Facturar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="">   
+        <div class="row" id="">
+            <div class="col-sm-4">
+                <p class="text-muted m-0" id="id_lbl_txt_anterior">0000</p>
+                <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_lbl_val_anterior">0.00</p>
+            </div>            
+            <div class="col-sm-4  border-right">                    
+                <p class="text-muted m-0" id="id_lbl_txt_actual">000</p>
+                <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_lbl_val_actual">0.00</p>
+            </div>
+            
+            <div class="col-sm-4">
+                <p class="text-muted m-0">Diferencia en %</p>
+                <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_lbl_val_dif">0.00</p>
+            </div>
+        </div>     
+        <div class="row col-sm-12 " id="">            
+        
+            <div class="col-sm-12 ">
+                <div class="input-group mt-3 mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                    </div>
+                    <input type="text" id="Search_cliente_sin_facturar" class="form-control" placeholder="Buscar...">
+                </div>
+                <table class="table table-striped table-bordered table-sm post_back mt-1" width="100%" id="tblClientesSinComprar">
+                    <thead class="bg-blue text-light"></thead>
+                </table>
+            </div>
+        </div>
+      </div>
     </div>
     <div class="footer" role="contentinfo">
         &#169; <a href="copyright.html">Copyright</a> 2012 - 2018, The phpMyAdmin devel team.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
     </div>
   </body>
-</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+</html>

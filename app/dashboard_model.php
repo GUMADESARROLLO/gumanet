@@ -19,7 +19,7 @@ use PHPExcel_IOFactory;
 use PHPExcel_Style_Alignment;
 use PHPExcel_Style;
 use PHPExcel_Style_Border;
-
+use Session;
 use Illuminate\Database\Eloquent\Model;
 
 class dashboard_model extends Model {
@@ -79,13 +79,19 @@ class dashboard_model extends Model {
             'data' => dashboard_model::dataProyectos($mes, $anio, $company_user)
         );
 
-        /*$f1 = $anio."-".$mes."-01";
-        $f2 = $anio."-".$mes."-".date('t',strtotime('today'));*/
 
-        $Resultado = exportacion_model::getVentasExportacion("", "");
 
-        $TOTAL_FACTURA = array_sum(array_column($Resultado,'TOTAL_FACTURA'));
-        $TOTAL_MONEDA_LOCAL = array_sum(array_column($Resultado,'TOTAL_MONEDA_LOCAL'));
+        $f1 = $anio."-".$mes."-01";
+        $f2 = $anio."-".$mes."-".date('t',strtotime('today'));
+        $TOTAL_FACTURA = 0;
+        $TOTAL_MONEDA_LOCAL = 0;
+
+        if( Session::get('company_id')==4 ){
+            $Resultado = exportacion_model::getVentasExportacion($f1, $f2);
+            $TOTAL_FACTURA = array_sum(array_column($Resultado,'TOTAL_FACTURA'));
+            $TOTAL_MONEDA_LOCAL = array_sum(array_column($Resultado,'TOTAL_MONEDA_LOCAL'));                
+        }
+        
         
         $dtaDolares[] = array(
             'tipo' => 'vtsDolares',
