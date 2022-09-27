@@ -326,7 +326,6 @@ class recibos_controller extends Controller {
 
         $query = DB::table('tbl_order_recibo')->where('id', $Id)->get();
         $rutas      = reportes_model::rutas();
-     
         
         foreach ($query as $qR => $key) {
             $arrDetalles = array();
@@ -384,14 +383,12 @@ class recibos_controller extends Controller {
 
         $rutas      = reportes_model::rutas();
 
-      
 
         if (!$from) {
-           return response()->json(false);
+            return response()->json(false);
         }
 
-        $query = DB::table('tbl_order_recibo')
-        ->select(DB::raw("
+        $query = DB::table('tbl_order_recibo')->select(DB::raw("
             ruta ,		
             COUNT(CASE WHEN status = '0' THEN 1 ELSE NULL END) as count_ingress,
             COUNT(CASE WHEN status = '1' THEN 1 ELSE NULL END) as count_process,
@@ -401,11 +398,9 @@ class recibos_controller extends Controller {
             SUM(CASE WHEN status = '1' THEN CleanAmount ( order_total ) else 0 end) as sum_process,
             SUM(CleanAmount ( order_total )) sum_total
         "))
-        ->whereNotIn('status', array(3))
-        ->whereBetween('fecha_recibo', [$from, $to]);
+        ->whereNotIn('status', array(3))->whereBetween('fecha_recibo', [$from, $to]);
 
-       
-
+    
         if($Stat != '') {
             $query->whereIn('status', array($Stat));
         }
@@ -417,23 +412,19 @@ class recibos_controller extends Controller {
 
         $obj = $query->groupBy('ruta')->get()->toArray();
 
-
         
         foreach ($rutas as $ruta => $key){
             
             $found_key = array_search($key['VENDEDOR'], array_column($obj, 'ruta'));
 
-            $SUM_INGRESS = ($found_key === false) ? 0 : $obj[$found_key]->sum_ingress ;
-            $SUM_PROCESS = ($found_key === false) ? 0 : $obj[$found_key]->sum_process ;
-            $SUM_TOTAL = ($found_key == false) ? 0 : $obj[$found_key]->sum_total ;
+            $SUM_INGRESS    = ($found_key === false) ? 0 : $obj[$found_key]->sum_ingress ;
+            $SUM_PROCESS    = ($found_key === false) ? 0 : $obj[$found_key]->sum_process ;
+            $SUM_TOTAL      = ($found_key === false) ? 0 : $obj[$found_key]->sum_total ;
             
-            $COUNT_INGRESS = ($found_key === false) ? 0 : $obj[$found_key]->count_ingress ;
-            $COUNT_PROCESS = ($found_key === false) ? 0 : $obj[$found_key]->count_process ;
-            $COUNT_ANULA = ($found_key === false) ? 0 : $obj[$found_key]->count_anulado ;
-            $COUNT_TOTAL = ($found_key === false) ? 0 : $obj[$found_key]->count_total ;
-
-           
-
+            $COUNT_INGRESS  = ($found_key === false) ? 0 : $obj[$found_key]->count_ingress ;
+            $COUNT_PROCESS  = ($found_key === false) ? 0 : $obj[$found_key]->count_process ;
+            $COUNT_ANULA    = ($found_key === false) ? 0 : $obj[$found_key]->count_anulado ;
+            $COUNT_TOTAL    = ($found_key === false) ? 0 : $obj[$found_key]->count_total ;
             
             $data[$i]["DETALLE"]            = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
             $data[$i]['VENDEDOR']           = $key['VENDEDOR'];

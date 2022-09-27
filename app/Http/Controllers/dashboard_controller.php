@@ -18,12 +18,9 @@ class dashboard_controller extends Controller {
   public function index() {
 
     $this->agregarDatosASession();
-
-
       $data = [
           'name' =>  'GUMA@NET'
-      ];
-      
+      ];      
       return view('pages.dashboard',$data);
   }
 
