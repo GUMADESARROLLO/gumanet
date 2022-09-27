@@ -425,7 +425,7 @@ class recibos_controller extends Controller {
 
             $SUM_INGRESS = ($found_key === false) ? 0 : $obj[$found_key]->sum_ingress ;
             $SUM_PROCESS = ($found_key === false) ? 0 : $obj[$found_key]->sum_process ;
-            $SUM_TOTAL = ($found_key == false) ? 0 : $obj[$found_key]->sum_total ;
+            $SUM_TOTAL = ($found_key === false) ? 0 : $obj[$found_key]->sum_total ;
             
             $COUNT_INGRESS = ($found_key === false) ? 0 : $obj[$found_key]->count_ingress ;
             $COUNT_PROCESS = ($found_key === false) ? 0 : $obj[$found_key]->count_process ;
