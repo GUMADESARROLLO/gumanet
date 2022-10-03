@@ -82,7 +82,7 @@ class dashboard_model extends Model {
 
 
         $f1 = $anio."-".$mes."-01";
-        $f2 = $anio."-".$mes."-".date('t',strtotime('today'));
+        $f2 = date('Y-m-t',strtotime($f1));
         $TOTAL_FACTURA = 0;
         $TOTAL_MONEDA_LOCAL = 0;
 
@@ -122,6 +122,8 @@ class dashboard_model extends Model {
         $f2 = $anio.'-12-31 23 : 59 : 59 : 998';
 
         $sql_exec = "EXEC gnet_ventas_exportacion_grafica '".$f1."','".$f2."'";
+
+        
         
         $query = $sql_server->fetchArray( $sql_exec , SQLSRV_FETCH_ASSOC);
 
@@ -1234,10 +1236,11 @@ class dashboard_model extends Model {
                 break;
             case 'clien':
                 foreach ($query as $fila) {
-                    $json[$i]["ARTICULO"]       = $fila["articulo"];
-                    $json[$i]["DESCRIPCION"]    = $fila["descripcion"];
-                    $json[$i]["CANTIDAD"]       = number_format($fila["Cantidad"], 2);
-                    $json[$i]["TOTAL"]          = number_format($fila["total"], 2);
+                    $json[$i]["ARTICULO"]           = $fila["articulo"];
+                    $json[$i]["DESCRIPCION"]        = $fila["descripcion"];
+                    $json[$i]["CANTIDAD"]           = number_format($fila["Cantidad"], 2);
+                    $json[$i]["PRECIO_UNITARIO"]    = "C$ ".number_format($fila["precioUnitario"], 2);
+                    $json[$i]["TOTAL"]              = number_format($fila["total"], 2);
                     $i++;
                 }
                 break;

@@ -402,4 +402,11 @@ class inventario_controller extends Controller
 			return response()->json($obj);
 		}
 	}
+
+	public function getLotes(Request $request) {
+		if($request->isMethod('post')){
+			$obj = inventario_model::getLotes($request->input('articulo'));
+			return response()->json($obj);
+		}
+	}
 }

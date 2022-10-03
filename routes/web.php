@@ -63,6 +63,7 @@ Route::get('/objIndicadores/{articulo}','inventario_controller@objIndicadores');
 
 Route::post('/transacciones','inventario_controller@transaccionesDetalle');
 Route::post('/lotes','inventario_controller@getLotesArticulo');
+Route::post('/getLotes','inventario_controller@getLotes');
 Route::get('/liqMeses/{valor}','inventario_controller@liquidacionMeses');
 Route::get('/desInventario/{tipo}/{valor}', 'inventario_controller@descargarInventario');
 Route::get('/invCompleto', 'inventario_controller@inventarioCompleto');

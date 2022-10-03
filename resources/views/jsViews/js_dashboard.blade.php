@@ -1136,6 +1136,7 @@ $(document).ready(function() {
                 events: {
                     click: function(e) {
                         detalleVentasMes('clien', `[`+this.category+`] - `+this.name, this.category, 'ND');
+                       $("#id_card_info,#cjLotes").hide()
                     }
                 }
             }
@@ -1205,14 +1206,9 @@ $(document).ready(function() {
                 },
                 point: {
                 events: {
-                    click: function(e) {
-
-                        
-                        const _this = this.series.chart.options.series[0].data[this.x];    
-
-
+                    click: function(e) {                        
+                        const _this = this.series.chart.options.series[0].data[this.x];   
                         var dta_send = [];
-
                         dta_send.push({
                             total_fact      : _this.Total,
                             unit_Fact       : _this.und,
@@ -1227,8 +1223,10 @@ $(document).ready(function() {
                             dtpro           : _this.dtpro
                         })
 
-
                         detalleVentasMes('artic', `[`+_this.Descripcion+`] - `+_this.Articulo, dta_send, _this.Articulo);
+                        $("#id_card_info,#cjLotes").show()
+                        get_lotes_articulo(_this.Articulo)
+                        
                     
                     }
                 }
@@ -1265,7 +1263,53 @@ $(document).ready(function() {
         }
     }
 
+    function get_lotes_articulo ( articulo_ ) {
 
+        $("#dtLOTES").dataTable({
+                responsive: true,
+                "autoWidth":false,
+                "ajax":{
+                    "url": "getLotes",
+                    "type": 'POST',
+                    'dataSrc': '',
+                    "data": {                
+                        articulo: articulo_        
+                    }
+                },
+                "destroy" : true,
+                "info":    false,
+                "lengthMenu": [[30,50,-1], [30,100,"Todo"]],
+                "language": {
+                    "zeroRecords": "Cargando...",
+                    "paginate": {
+                        "first":      "Primera",
+                        "last":       "Última ",
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    },
+                    "lengthMenu": "MOSTRAR _MENU_",
+                    "emptyTable": "NO HAY DATOS DISPONIBLES",
+                    "search":     "BUSCAR"
+                },
+                'columns': [
+                    { "title": "LOTE",              "data": "LOTE" },
+                    { "title": "BODEGA",              "data": "BODEGA" },
+                    { "title": "CANT. DISPONIBLE",            "data": "CANT_DISPONIBLE" },
+                    { "title": "CANT. INGRESADA POR COMPRA",       "data": "CANTIDAD_INGRESADA" },
+                    { "title": "FECHA ULTM. INGRESO COMPRA",       "data": "FECHA_INGRESO" },
+                    { "title": "FECHA DE CREACION",   "data": "FECHA_ENTRADA" },
+                    { "title": "FECHA VENCIMIENTO",        "data": "FECHA_VENCIMIENTO" },                    
+                ],
+                "columnDefs": [
+                    {"className": "dt-right", "targets": [2,3  ]},
+                    {"className": "dt-center", "targets": [ 0,1,4,5,6 ]}
+                ],
+                
+            });
+            $("#dtLOTES_filter,#dtLOTES_length").hide();
+
+        
+    }
 
     grafiacas_productos_Diarios = {
         chart: {
@@ -3233,6 +3277,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
 
         break;
         case 'clien':
+            $("#id_div_detalles_vendedores").hide();
             $("#cjRecuperacion").hide();
             $("#cjVentas").hide();
             $('#cumplMetaContent').hide();
@@ -3265,13 +3310,14 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                     "search":     "BUSCAR"
                 },
                 'columns': [
-                    { "title": "Articulo",      "data": "ARTICULO" },
-                    { "title": "Descripcion",   "data": "DESCRIPCION" },
-                    { "title": "Cantidad",      "data": "CANTIDAD" },
-                    { "title": "Total",         "data": "TOTAL" }
+                    { "title": "Articulo",          "data": "ARTICULO" },
+                    { "title": "Descripcion",       "data": "DESCRIPCION" },
+                    { "title": "Cantidad",          "data": "CANTIDAD" },
+                    { "title": "Precio Unitario",   "data": "PRECIO_UNITARIO" },
+                    { "title": "Total",             "data": "TOTAL" }
                 ],
                 "columnDefs": [
-                    {"className": "dt-right", "targets": [ 2, 3 ]},
+                    {"className": "dt-right", "targets": [ 2, 3,4 ]},
                     {"className": "dt-center", "targets": [ 0 ]}
                 ],
                 "footerCallback": function ( row, data, start, end, display ) {
@@ -3296,6 +3342,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                     $('#txtMontoMeta').text('');
                 }
             });
+           
         break;
         case 'artic':
 
@@ -3395,6 +3442,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                     
                 }
             });
+            
         break;
         default:
         mensaje("Ups... algo ha salido mal")

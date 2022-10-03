@@ -216,7 +216,7 @@ class recibos_controller extends Controller {
             $query->whereIn('status', array($Stat));
         }
 
-        $obj = $query->orderBy('id', 'DESC')->get();
+        $obj = $query->orderBy('id', 'ASC')->get();
 
     
         foreach ($obj as $qR => $key) {

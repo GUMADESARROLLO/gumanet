@@ -1347,6 +1347,50 @@ class inventario_model extends Model {
         return $json;
     }
 
+    public static function getLotes($articulo) {
+        
+        $sql_server = new \sql_server();
+        
+        $sql_exec = '';
+        $request = Request();
+        $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
+
+        switch ($company_user) {
+            case '1':
+                $sql_exec = 'SELECT * FROM iweb_lotes WHERE ARTICULO = '."'".$articulo."'".' ';
+                break;
+            case '2':
+                $sql_exec = 'SELECT * FROM gp_iweb_lotes WHERE ARTICULO = '."'".$articulo."'".' ';
+                break;
+            case '3':
+                return false;
+                break;
+            case '4':
+                $sql_exec = 'SELECT * FROM inn_iweb_lotes WHERE ARTICULO = '."'".$articulo."'".' ';
+                break;
+            default:                
+                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
+                break;
+        }
+
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+        $i = 0;
+        $json = array();
+        foreach ($query as $fila) {
+            $json[$i]["ARTICULO"] = $fila["ARTICULO"];
+            $json[$i]["BODEGA"] = $fila["BODEGA"];
+            $json[$i]["CANT_DISPONIBLE"] = number_format($fila["CANT_DISPONIBLE"], 2);
+            $json[$i]["LOTE"] = $fila["LOTE"];
+            $json[$i]["FECHA_INGRESO"] = date('d/m/Y',strtotime($fila["FECHA_ENTR"]));
+            $json[$i]["CANTIDAD_INGRESADA"] = number_format($fila["CANTIDAD_INGRESADA"], 2);
+            $json[$i]["FECHA_ENTRADA"] = date('d/m/Y',strtotime($fila["FECHA_ENTRADA"]));
+            $json[$i]["FECHA_VENCIMIENTO"] = date('d/m/Y',strtotime($fila["FECHA_VENCIMIENTO"]));
+            $i++;
+        }
+        $sql_server->close();
+        return $json;
+    }
+
     public static function getLotesArticulo($bodega, $articulo) {
         
         $sql_server = new \sql_server();

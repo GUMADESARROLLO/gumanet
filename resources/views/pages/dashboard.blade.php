@@ -444,7 +444,7 @@
                                                  
                 </div>
             <div>         
-            <div class="row mt-3" >
+            <div class="row mt-3" id="id_card_info">
             <div class="col-12 col-lg-6 col-xl">
                         <div class="card">
                             <div class="card-body">
@@ -530,6 +530,15 @@
                     <div id="cjCliente">
                         <p class="font-weight-bold">ARTICULOS FACTURADOS</p>
                         <table class="table table-bordered table-sm" width="100%" id="dtCliente"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 mt-2">
+                <div class="table-responsive">
+                    <div id="cjLotes">
+                        <p class="font-weight-bold">LOTES</p>
+                        <table class="table table-bordered table-sm" width="100%" id="dtLOTES"></table>
+                        
                     </div>
                 </div>
             </div>
