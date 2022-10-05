@@ -1357,7 +1357,7 @@ class inventario_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = 'SELECT * FROM iweb_lotes WHERE ARTICULO = '."'".$articulo."'".' ';
+                $sql_exec = 'SELECT * FROM iweb_lotes WHERE ARTICULO = '."'".$articulo."'".' ORDER BY BODEGA ';
                 break;
             case '2':
                 $sql_exec = 'SELECT * FROM gp_iweb_lotes WHERE ARTICULO = '."'".$articulo."'".' ';
