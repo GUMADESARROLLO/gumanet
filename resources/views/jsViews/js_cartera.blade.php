@@ -552,6 +552,7 @@ function format ( callback, dta ) {
                             '<td class="text-left">' + item['NOMBRE_CLIENTE'] + '</td>'+
                             '<td class="text-center">' + item['FECHA'] + '</td>'+
                             '<td class="text-center">' + item['TOTAL'] + '</td>'+
+                            '<td class="text-center">' + item['ADBJ'] + '</td>'+
                         '</tr>';
 
                 });
@@ -564,6 +565,7 @@ function format ( callback, dta ) {
                             <th class="center">NOMBRE</th>
                             <th class="center"style="width: 75px;">FECHA</th>
                             <th class="center"style="width: 95px;">TOTAL</th> 
+                            <th class="center"style="width: 95px;">ADJUNTO</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -579,7 +581,7 @@ function format ( callback, dta ) {
 
         }
     });
-$('#id_exp_detalle_recibo').DataTable();
+    //$('#id_exp_detalle_recibo').DataTable();
     
 }
 

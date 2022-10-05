@@ -234,6 +234,7 @@ class recibos_controller extends Controller {
             $data[$i]['NOMBRE_CLIENTE'] = $key->name_cliente;
             $data[$i]['FECHA']          = date('d/m/Y', strtotime($key->fecha_recibo));       
             $data[$i]['TOTAL']          = $key->order_total;
+            $data[$i]['ADBJ']           = recibos_controller::isAdjunto($key->id);
             
             $data[$i]['RECIBO']         = $key->recibo;            
             $data[$i]['COMMENT']        = $key->comment;
@@ -741,6 +742,14 @@ class recibos_controller extends Controller {
         }
 
         return $res;
+        
+    }
+
+    public static function isAdjunto($id){
+        $query = DB::table('tbl_order_recibo_adjuntos')->where('id_recibo',$id)->count();
+
+        $isAttanche = ($query > 0) ? 'SI' : 'NO' ;
+        return $isAttanche;
         
     }
 
