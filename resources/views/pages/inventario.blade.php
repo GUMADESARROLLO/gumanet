@@ -170,6 +170,7 @@
                         <tr>
                             <th></th>
                             <th>Bodega</th>
+                            <th>Unidad</th>
                             <th>Nombre</th>
                             <th>Cant. Disponible</th>
                         </tr>

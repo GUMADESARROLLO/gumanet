@@ -5,44 +5,38 @@ $(document).ready(function() {
     $("#item-nav-01").after(`<li class="breadcrumb-item active"><a href="{{url('/Inventario')}}">Inventario</a></li><li class="breadcrumb-item active">Inventario completo</li>`);
 
     $('#dtInvCompleto').DataTable({
-    	"ajax":{
-    		"url": "invTotalizadoDT",
-    		'dataSrc': '',
-    	},
-    	'info': false,
-    	"lengthMenu": [[100,200,300,400,-1], [100,200,300,400,"Todo"]],
-    	"language": {
-            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-    	    "zeroRecords": "No hay coincidencias",
-            "loadingRecords": "Cargando datos...",
-    	    "paginate": {
-    	        "first":      "Primera",
-    	        "last":       "Última ",
-    	        "next":       "Siguiente",
-    	        "previous":   "Anterior"
-    	    },
-    	    "lengthMenu": "MOSTRAR _MENU_",
-    	    "emptyTable": "NO HAY DATOS DISPONIBLES",
-    	    "search":     "BUSCAR"
-    	},
-	    'columns': [
-	        {"title": "BODEGA", 			"data": "BODEGA" },		        
-	        {"title": "ARTICULO", 		"data": "ARTICULO" },
+		"ajax":{
+			"url": "invTotalizadoDT",
+			'dataSrc': '',
+		},
+		'info': false,
+		"lengthMenu": [[100,200,300,400,-1], [100,200,300,400,"Todo"]],
+		"language": {
+			"infoFiltered": "(Filtrado de _MAX_ total entradas)",
+			"zeroRecords": "No hay coincidencias",
+			"loadingRecords": "Cargando datos...",
+			"paginate": {
+				"first":      "Primera",
+				"last":       "Última ",
+				"next":       "Siguiente",
+				"previous":   "Anterior"
+			},
+			"lengthMenu": "MOSTRAR _MENU_",
+			"emptyTable": "NO HAY DATOS DISPONIBLES",
+			"search":     "BUSCAR"
+		},
+		'columns': [	
+			{ "data": "DETALLE"},        
+			{"title": "ARTICULO", 		"data": "ARTICULO" },
 			{"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION" },
-	        {"title": "ACTIVO", "data": "ACTIVO" },
-	        {"title": "LABORATORIO", "data": "LABORATORIO" },
-	        {"title": "UNIT.MED.", "data": "UNIDAD_MEDIDA" },
-	        {"title": "LOTE", "data": "LOTE" },
-	        {"title": "CANT.DISPONIBLE", "data": "CANT_DISPONIBLE" },
-	        {"title": "FCH.VENCIMIENTO", "data": "FECHA_VENCIMIENTO" },
-	        {"title": "COD.BARRAS.VENT.", 	"data": "CODIGO_BARRAS_VENT" }
-	    ],
-	    "columnDefs": [
-	        {"className": "dt-center", "targets": [ 0, 3, 4, 5, 6, 8, 9 ]},
-	        {"className": "dt-right", "targets": [ 7 ]},
-	        {"width":"20%","targets":[ 2 ]},
-	        {"width":"5%","targets":[ 0, 1, 3, 4, 5, 6, 7, 8, 9 ]}
-	    ],
+			{"title": "CANT.DISPONIBLE", "data": "CANT_DISPONIBLE" },
+		],
+		"columnDefs": [
+			{"className": "dt-center", "targets": [0, 1 ]},
+			{"className": "dt-right", "targets": [3]},
+			{"width":"20%","targets":[]},
+			{"width":"5%","targets":[0,1]}
+		],
     });
 
     $("#dtInvCompleto_length").hide();
@@ -62,6 +56,78 @@ $(document).ready(function() {
 	    location.href = "desInvTotal2";
 	})
     
-    
+    $(document).on('click', '#exp_more', function(ef) {
+		var table = $('#dtInvCompleto').DataTable();
+		var tr = $(this).closest('tr');
+		var row = table.row(tr);
+		var data = table.row($(this).parents('tr')).data();
+
+
+		if (row.child.isShown()) {
+			row.child.hide();
+			tr.removeClass('shown');
+			ef.target.innerHTML = "expand_more";
+			ef.target.style.background = '#e2e2e2';
+			ef.target.style.color = '#007bff';
+		} else {
+			//VALIDA SI EN LA TABLA HAY TABLAS SECUNDARIAS ABIERTAS
+			table.rows().eq(0).each( function ( idx ) {
+				var row = table.row( idx );
+
+				if ( row.child.isShown() ) {
+					row.child.hide();
+					ef.target.innerHTML = "expand_more";
+
+					var c_1 = $(".expan_more");
+					c_1.text('expand_more');
+					c_1.css({
+						background: '#e2e2e2',
+						color: '#007bff',
+					});
+				}
+			} );
+
+			format(row.child,data.BODEGA,data.ARTICULO);
+			tr.addClass('shown');
+			
+			ef.target.innerHTML = "expand_less";
+			ef.target.style.background = '#ff5252';
+			ef.target.style.color = '#e2e2e2';
+		}
+	});
+	function format ( callback, bodega_, articulo_ ) {
+    var thead = tbody = '';            
+        thead =`<table class="" width='100%'>
+                    <tr>
+                        <th class="dt-center">BODEGA</th>                        
+                        <th class="dt-center">UNIDAD</th>
+                        <th class="dt-center">CANT. DISPONIBLE</th>
+                    </tr>
+                <tbody>`;
+    $.ajax({
+        type: "POST",
+        url: "getAllBodegas",
+        data:{
+            articulo: articulo_        
+        },        
+        success: function ( data ) {
+            if (data.length==0) {
+                tbody +=`<tr>
+                            <td colspan='6'><center>Bodega sin existencia</center></td>
+                        </tr>`;
+                callback(thead + tbody).show();
+            }
+            $.each(data, function (i, item) {
+				tbody +=`<tr class="center">
+								<td class= "dt-center">` + item['BODEGA'] + `</td>								
+								<td  class= "dt-center">V` + item['UNIDAD'] + `</td>
+								<td class="dt-right">` + item['CANT_DISPONIBLE'] + `</td>
+							</tr>`;
+            });
+            tbody += `</tbody></table>`;
+            callback(thead + tbody).show();
+        }
+    });
+}
 });
 </script>

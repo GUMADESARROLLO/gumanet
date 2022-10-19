@@ -14,7 +14,7 @@ use App\Models;
 use App\tbl_temporal;
 use DataTables;
 use DB;
-
+use Illuminate\Http\Request;
 class inventario_model extends Model {
     
     public static function getArticulos() {        
@@ -285,22 +285,13 @@ class inventario_model extends Model {
         switch ($company_user) {
             case '1':
                 $sql_exec = "SELECT
-                            INV_TOMA_FISICA_UMK.BODEGA,
-                            INV_TOMA_FISICA_UMK.ARTICULO,
-                            INV_TOMA_FISICA_UMK.DESCRIPCION,
-                            INV_TOMA_FISICA_UMK.CODIGO_BARRAS_VENT,
-                            INV_TOMA_FISICA_UMK.LOCALIZACION,
-                            INV_TOMA_FISICA_UMK.LOTE,
-                            INV_TOMA_FISICA_UMK.Estado,
-                            INV_TOMA_FISICA_UMK.CANT_DISPONIBLE,
-                            INV_TOMA_FISICA_UMK.UNIDAD_MEDIDA,
-                            INV_TOMA_FISICA_UMK.LABORATORIO,
-                            convert(varchar(25), INV_TOMA_FISICA_UMK.FECHA_VENCIMIENTO, 120) as FECHA_VENCIMIENTO,
-                            INV_TOMA_FISICA_UMK.ACTIVO
-                        FROM
-                            Softland.dbo.INV_TOMA_FISICA_UMK INV_TOMA_FISICA_UMK
-                        WHERE
-                            ( INV_TOMA_FISICA_UMK.ARTICULO NOT LIKE '%-B' )";
+                                T0.ARTICULO,
+                                T0.DESCRIPCION,
+                                SUM (T0.CANT_DISPONIBLE) CANT_DISPONIBLE
+                            FROM
+                                Softland.dbo.INV_TOMA_FISICA_UMK T0 
+                            WHERE T0.ARTICULO NOT LIKE '%-B' and T0.Bodega not in ('004')
+                            GROUP BY T0.ARTICULO,T0.DESCRIPCION";
                 break;
             case '2':
                 return false;
@@ -321,18 +312,10 @@ class inventario_model extends Model {
 
         $query1 = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
         foreach ($query1 as $key) {
-            $query[$i]['BODEGA']                    = $key['BODEGA'];
+            $query[$i]["DETALLE"]            = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
             $query[$i]['ARTICULO']                  = $key['ARTICULO'];
             $query[$i]['DESCRIPCION']               = $key['DESCRIPCION'];
-            $query[$i]['CODIGO_BARRAS_VENT']        = ($key['CODIGO_BARRAS_VENT']=='')?'-':$key['CODIGO_BARRAS_VENT'];
-            $query[$i]['LOCALIZACION']              = $key['LOCALIZACION'];
-            $query[$i]['LOTE']                      = $key['LOTE'];
-            $query[$i]['Estado']                    = $key['Estado'];
             $query[$i]['CANT_DISPONIBLE']           = number_format($key['CANT_DISPONIBLE'], 2);
-            $query[$i]['UNIDAD_MEDIDA']             = $key['UNIDAD_MEDIDA'];
-            $query[$i]['LABORATORIO']               = $key['LABORATORIO'];
-            $query[$i]['FECHA_VENCIMIENTO']         = date('d/m/Y', strtotime($key['FECHA_VENCIMIENTO']));
-            $query[$i]['ACTIVO']                    = $key['ACTIVO'];
             $i++;
         }
         $sql_server->close();
@@ -746,36 +729,75 @@ class inventario_model extends Model {
     public static function getBodegaInventario($articulo) {
         
         $sql_server     = new \sql_server();
-        
+        $i = 0;
+        $json = array();
         $sql_exec       = '';
         $request        = Request();
         $company_user   = Company::where('id',$request->session()->get('company_id'))->first()->id;
+        $lbl = '';
 
         switch ($company_user) {
             case '1':
-                $sql_exec = 'SELECT * FROM iweb_bodegas WHERE ARTICULO = '."'".$articulo."'".'';
+                $sql_exec = "SELECT * FROM gnet_master_bodegas WHERE ARTICULO = '".$articulo."' AND  BODEGA not in ('004')";
+                $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+                foreach ($query as $fila) {
+                    $json[$i]["id"]                 = $i;
+                    $json[$i]["DETALLE"]            = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+                    $json[$i]["BODEGA"]             = $fila["BODEGA"];
+                    $json[$i]["UNIDAD"]             =  $fila["UNIDAD"];
+                    $json[$i]["NOMBRE"]             = $fila["NOMBRE"];
+                    $json[$i]["CANT_DISPONIBLE"]    = number_format($fila["CANT_DISPONIBLE"],2);
+                    $i++;
+                }
+
+              
                 break;
             case '2':
                 $sql_exec = 'SELECT * FROM gp_iweb_bodegas WHERE ARTICULO = '."'".$articulo."'".'';
+                $lbl='GUMAPHARMA';
                 break;
             case '3':
                 return false;
                 break;
             case '4':
                 $sql_exec = 'SELECT * FROM INN_iweb_bodegas WHERE ARTICULO = '."'".$articulo."'".'';
+                $lbl = 'INNOVA';
                 break;
             default:                
                 dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
                 break;
         }
-        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+        if ($company_user != 1) {
+            $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+            foreach ($query as $fila) {
+                $json[$i]["id"]                 = $i;
+                $json[$i]["DETALLE"]            = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
+                $json[$i]["BODEGA"]             = $fila["BODEGA"];
+                $json[$i]["UNIDAD"]             = $lbl;
+                $json[$i]["NOMBRE"]             = $fila["NOMBRE"];
+                $json[$i]["CANT_DISPONIBLE"]    = number_format($fila["CANT_DISPONIBLE"],2);
+                $i++;
+            }
+        }
 
+        $sql_server->close();
+        return $json;
+    }
+
+    public static function getAllBodegas(Request $request) {
+        
+        $sql_server     = new \sql_server();
         $i = 0;
-        $json = array();
+        $json = array(); 
+        
+        $Articulo  = $request->input('articulo');
+
+        $sql_exec = "SELECT * FROM gnet_master_bodegas WHERE ARTICULO = '".$Articulo."' AND  BODEGA not in ('004')";
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
         foreach ($query as $fila) {
             $json[$i]["id"]                 = $i;
-            $json[$i]["DETALLE"]            = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
             $json[$i]["BODEGA"]             = $fila["BODEGA"];
+            $json[$i]["UNIDAD"]             = $fila["UNIDAD"];
             $json[$i]["NOMBRE"]             = $fila["NOMBRE"];
             $json[$i]["CANT_DISPONIBLE"]    = number_format($fila["CANT_DISPONIBLE"],2);
             $i++;
@@ -1391,35 +1413,25 @@ class inventario_model extends Model {
         return $json;
     }
 
-    public static function getLotesArticulo($bodega, $articulo) {
+    public static function getLotesArticulo($bodega, $articulo,$Unidad) {
         
-        $sql_server = new \sql_server();
-        
+        $sql_server = new \sql_server();        
         $sql_exec = '';
-        $request = Request();
-        $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
-
-        switch ($company_user) {
-            case '1':
-                $sql_exec = 'SELECT * FROM iweb_lotes WHERE BODEGA = '."'".$bodega."'".' AND ARTICULO = '."'".$articulo."'".' ';
-                break;
-            case '2':
-                $sql_exec = 'SELECT * FROM gp_iweb_lotes WHERE BODEGA = '."'".$bodega."'".' AND ARTICULO = '."'".$articulo."'".' ';
-                break;
-            case '3':
-                return false;
-                break;
-            case '4':
-                $sql_exec = 'SELECT * FROM inn_iweb_lotes WHERE BODEGA = '."'".$bodega."'".' AND ARTICULO = '."'".$articulo."'".' ';
-                break;
-            default:                
-                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
-                break;
-        }
-
-        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
         $i = 0;
         $json = array();
+        $request = Request();
+        
+        $array_unidades = array(
+            "iweb_lotes"=>"UMK" , 
+            "gp_iweb_lotes" => "GP",
+            "inn_iweb_lotes" => "INN" 
+        );
+
+        $view = array_search($Unidad, $array_unidades);
+
+        $sql_exec = "SELECT * FROM ".$view." WHERE BODEGA = '".$bodega."' AND  ARTICULO = '".$articulo."' ";
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+
         foreach ($query as $fila) {
             $json[$i]["ARTICULO"] = $fila["ARTICULO"];
             $json[$i]["BODEGA"] = $fila["BODEGA"];

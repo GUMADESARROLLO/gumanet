@@ -333,13 +333,14 @@ function getDataBodega(articulo) {
         "columns":[
             { "data": "DETALLE"},
             { "data": "BODEGA" },
+            { "data": "UNIDAD" },
             { "data": "NOMBRE" },
             { "data": "CANT_DISPONIBLE" }
         ],
         "columnDefs": [
-            { "width": "5%", "targets": [ 0, 1 ] },
-            {"className":"dt-right", "targets": [ 3 ] },
-            {"className":"dt-center", "targets": [ 1 ] }
+            { "width": "5%", "targets": [ 0, 1 ,2] },
+            {"className":"dt-right", "targets": [ 4 ] },
+            {"className":"dt-center", "targets": [ 1,2 ] }
         ],
         "info": false,
         "language": {            
@@ -528,6 +529,8 @@ $(document).on('click', '#exp_more', function(ef) {
     var row = table.row(tr);
     var data = table.row($(this).parents('tr')).data();
 
+
+
     if (row.child.isShown()) {
         row.child.hide();
         tr.removeClass('shown');
@@ -552,7 +555,7 @@ $(document).on('click', '#exp_more', function(ef) {
             }
         } );
 
-        format(row.child,data.BODEGA,articulo_g);
+        format(row.child,data.BODEGA,articulo_g,data.UNIDAD);
         tr.addClass('shown');
         
         ef.target.innerHTML = "expand_less";
@@ -561,7 +564,7 @@ $(document).on('click', '#exp_more', function(ef) {
     }
 });
 
-function format ( callback, bodega_, articulo_ ) {
+function format ( callback, bodega_, articulo_, Unidad_ ) {
     var thead = tbody = '';            
         thead =`<table class="" width='100%'>
                     <tr>
@@ -578,7 +581,8 @@ function format ( callback, bodega_, articulo_ ) {
         url: "lotes",
         data:{
             bodega: bodega_,
-            articulo: articulo_        
+            articulo: articulo_,
+            Unidad: Unidad_,        
         },        
         success: function ( data ) {
             if (data.length==0) {
@@ -590,7 +594,7 @@ function format ( callback, bodega_, articulo_ ) {
             $.each(data, function (i, item) {
                tbody +=`<tr class="center">
                             <td>` + item['LOTE'] + `</td>
-                            <td clasitems="negra">` + item['CANT_DISPONIBLE'] + `</td>
+                            <td>` + item['CANT_DISPONIBLE'] + `</td>
                             <td>` + item['CANTIDAD_INGRESADA'] + `</td>
                             <td>` + item['FECHA_INGRESO'] + `</td>
                             <td>` + item['FECHA_ENTRADA'] + `</td>

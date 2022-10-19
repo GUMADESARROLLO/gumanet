@@ -70,6 +70,7 @@ Route::get('/invCompleto', 'inventario_controller@inventarioCompleto');
 Route::get('/invTotalizadoDT', 'inventario_controller@inventarioCompletoTable');
 Route::get('/desInvTotal2', 'inventario_controller@descargarInventarioCompleto');
 Route::get('/invenVencidos', 'inventario_controller@invenVencidos');
+Route::post('/getAllBodegas','inventario_controller@getAllBodegas');
 
 
 //RUTAS INVENTARIO TOTALIZADO 
