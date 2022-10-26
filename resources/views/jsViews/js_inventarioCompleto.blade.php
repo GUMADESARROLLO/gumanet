@@ -28,7 +28,25 @@ $(document).ready(function() {
 		'columns': [	
 			{ "data": "DETALLE"},        
 			{"title": "ARTICULO", 		"data": "ARTICULO" },
-			{"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION" },
+			{"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION", "render": function(data, type, row, meta) { 
+
+				return`<div class="row justify-content-between">
+                                <div class="col">
+                                  <div class="d-flex">
+                                    <div class="avatar avatar-2xl status-online">
+                                      <img class="rounded-circle" src="{{ asset('images/item.png') }}" alt="" />
+                                    </div>
+                                    <div class="flex-1 align-self-center ms-2">
+                                        <h6 class="mb-1 fs-1 fw-semi-bold">`+ row.DESCRIPCION +`</h6>
+                                        <p class="mb-0 fs--1">
+                                            <span class="badge badge-pill badge-primary"><span class="fas fa-check"></span> `+ row.UNIDAD +`</span>
+                                        </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>`
+
+			}},
 			{"title": "CANT.DISPONIBLE", "data": "CANT_DISPONIBLE" },
 		],
 		"columnDefs": [
@@ -87,7 +105,7 @@ $(document).ready(function() {
 				}
 			} );
 
-			format(row.child,data.BODEGA,data.ARTICULO);
+			format(row.child,data.UNIDAD,data.ARTICULO);
 			tr.addClass('shown');
 			
 			ef.target.innerHTML = "expand_less";
@@ -95,7 +113,10 @@ $(document).ready(function() {
 			ef.target.style.color = '#e2e2e2';
 		}
 	});
+	
 	function format ( callback, bodega_, articulo_ ) {
+
+		console.log(bodega_)
     var thead = tbody = '';            
         thead =`<table class="" width='100%'>
                     <tr>
@@ -108,7 +129,8 @@ $(document).ready(function() {
         type: "POST",
         url: "getAllBodegas",
         data:{
-            articulo: articulo_        
+            articulo: articulo_  ,
+			UNIDAD: bodega_      
         },        
         success: function ( data ) {
             if (data.length==0) {
@@ -120,7 +142,7 @@ $(document).ready(function() {
             $.each(data, function (i, item) {
 				tbody +=`<tr class="center">
 								<td class= "dt-center">` + item['BODEGA'] + `</td>								
-								<td  class= "dt-center">V` + item['UNIDAD'] + `</td>
+								<td  class= "dt-center">` + item['UNIDAD'] + `</td>
 								<td class="dt-right">` + item['CANT_DISPONIBLE'] + `</td>
 							</tr>`;
             });

@@ -278,35 +278,8 @@ class inventario_model extends Model {
 
     public static function getInventarioCompleto() {
         $sql_server = new \sql_server();        
-        $request = Request();
-        $sql_exec = '';
-        $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
-        
-        switch ($company_user) {
-            case '1':
-                $sql_exec = "SELECT
-                                T0.ARTICULO,
-                                T0.DESCRIPCION,
-                                SUM (T0.CANT_DISPONIBLE) CANT_DISPONIBLE
-                            FROM
-                                Softland.dbo.INV_TOMA_FISICA_UMK T0 
-                            WHERE T0.ARTICULO NOT LIKE '%-B' and T0.Bodega not in ('004')
-                            GROUP BY T0.ARTICULO,T0.DESCRIPCION";
-                break;
-            case '2':
-                return false;
-                break;
-            case '3':
-                return false;
-                break;
-            case '4':
-                return false;
-                break; 
-            default:                
-                dd("Ups... al parecer sucedio un error al tratar de encontrar articulos para esta empresa. ". $company->id);
-                break;
-        }
-
+       
+        $sql_exec = "SELECT T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD, SUM(T0.TOTAL) TOTAL FROM inventario_totalizado T0 GROUP BY T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD";
         $query = array();
         $i=0;
 
@@ -315,7 +288,8 @@ class inventario_model extends Model {
             $query[$i]["DETALLE"]            = '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
             $query[$i]['ARTICULO']                  = $key['ARTICULO'];
             $query[$i]['DESCRIPCION']               = $key['DESCRIPCION'];
-            $query[$i]['CANT_DISPONIBLE']           = number_format($key['CANT_DISPONIBLE'], 2);
+            $query[$i]['UNIDAD']               = $key['UNIDAD'];
+            $query[$i]['CANT_DISPONIBLE']           = number_format($key['TOTAL'], 2);
             $i++;
         }
         $sql_server->close();
@@ -790,9 +764,10 @@ class inventario_model extends Model {
         $i = 0;
         $json = array(); 
         
-        $Articulo  = $request->input('articulo');
+        $Articulo   = $request->input('articulo');
+        $Unidad     = $request->input('UNIDAD');
 
-        $sql_exec = "SELECT * FROM gnet_master_bodegas WHERE ARTICULO = '".$Articulo."' AND  BODEGA not in ('004')";
+        $sql_exec = "SELECT * FROM gnet_master_bodegas WHERE ARTICULO = '".$Articulo."' AND UNIDAD = '".$Unidad."' AND BODEGA not in ('004')";
         $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
         foreach ($query as $fila) {
             $json[$i]["id"]                 = $i;
