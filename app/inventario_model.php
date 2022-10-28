@@ -279,7 +279,7 @@ class inventario_model extends Model {
     public static function getInventarioCompleto() {
         $sql_server = new \sql_server();        
        
-        $sql_exec = "SELECT T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD, SUM(T0.TOTAL) TOTAL FROM inventario_totalizado T0 GROUP BY T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD";
+        $sql_exec = "SELECT T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD, SUM(T0.TOTAL) TOTAL FROM inventario_totalizado T0 WHERE T0.TOTAL > 0 GROUP BY T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD";
         $query = array();
         $i=0;
 
