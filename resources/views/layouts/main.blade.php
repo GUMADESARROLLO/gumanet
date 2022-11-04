@@ -126,6 +126,7 @@
 <script src="{{ url('js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ url('js/js_general.js') }}"></script>
 <script src="{{ url('js/sweetalert2.all.js') }}"></script>
+<script src="{{ url('js/sweetalert2.all.min.js') }}"></script>
 <script src="{{ url('js/jquery.cookie.js') }}"></script>
 <script src="{{ url('js/Numeral.js') }}"></script>
 <script src="{{ url('js/xlsx.full.min.js') }}"></script>
