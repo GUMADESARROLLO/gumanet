@@ -237,3 +237,4 @@ Route::get('getResumen', 'promocion_controller@getResumen');
 Route::get('exportacion', 'exportacion_controller@index');
 Route::get('getVentasExportacion', 'exportacion_controller@getVentasExportacion');
 Route::get('/dtaVentaExportacion/{xbolsones}/{segmentos}','dashboard_controller@getVentasExportacion');
+Route::post('AnularFactura', 'exportacion_controller@AnularFactura')->name('AnularFactura');
