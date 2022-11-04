@@ -65,7 +65,7 @@ function dataVentaExportacion(f1, f2) {
             { "title": "ANULADO", "data":"FACTURA", "render": function(data, type, row, meta) {
 
                 return  ` <td class="align-middle">
-                    <div class="d-flex align-items-center position-relative"><img class="rounded-1 border border-200" alt="" width="60">
+                    <div class="d-flex align-items-center position-relative">
                         <div class="flex-1 ms-3">
                             
                             <div class="d-flex align-items-center">
