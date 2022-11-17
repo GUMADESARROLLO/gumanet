@@ -1908,14 +1908,29 @@ class inventario_model extends Model {
         $i = 0;
         $json = array();
         $request = Request();
-        
-       
 
-        $view = ($Unidad=='GUMAPHARMA') ? 'gp_iweb_lotes' : '' ;
-        $view = ($Unidad=='UMK') ? 'iweb_lotes' : '' ;
-        $view = ($Unidad=='INN') ? 'inn_iweb_lotes' : '' ;
-        $view = ($Unidad=='GP' || $Unidad=='GUMAPHARMA') ? 'gp_iweb_lotes' : '' ;
+        if($Unidad==="UMK"){
+            $view =  'iweb_lotes' ;
+        }
+
+        if($Unidad==="GUMAPHARMA"){
+            $view =  'gp_iweb_lotes' ;
+        }
+
+        if($Unidad==="INN"){
+            $view =  'inn_iweb_lotes' ;
+        }
+
+        if($Unidad==="GP"){
+            $view =  'gp_iweb_lotes' ;
+        }
+        
+
+        
         $sql_exec = "SELECT * FROM $view WHERE BODEGA = '".$bodega."' AND  ARTICULO = '".$articulo."' ";
+
+
+    
 
      
         

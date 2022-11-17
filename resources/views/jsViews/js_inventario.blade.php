@@ -579,6 +579,8 @@ $(document).on('click', '#exp_more', function(ef) {
 });
 
 function format ( callback, bodega_, articulo_, Unidad_ ) {
+
+    
     var thead = tbody = '';            
         thead =`<table class="" width='100%'>
                     <tr>
