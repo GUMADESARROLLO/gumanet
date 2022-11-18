@@ -1928,12 +1928,6 @@ class inventario_model extends Model {
 
         
         $sql_exec = "SELECT * FROM $view WHERE BODEGA = '".$bodega."' AND  ARTICULO = '".$articulo."' ";
-
-
-    
-
-     
-        
  
 
         $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);

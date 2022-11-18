@@ -32,6 +32,7 @@ Route::get('/DetalleOrden', 'DetalleOrdenController@index');
 
 //RUTAS LOGIN
 Route::get('/','Auth\LoginController@showLoginForm');//pagina login
+Route::get('/home','Auth\LoginController@showLoginForm');//pagina login
 Auth::routes();//dentro de la funcion routes() se encunetran todas las rutas para login del Auth "Vendor/laravel/src/illuminate/routing/router.php"
 Route::get('/Dashboard','dashboard_controller@index')->name('Dashboard');
 Route::get('/getCompanies','Auth\LoginController@getCompanies');
