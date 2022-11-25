@@ -284,12 +284,24 @@ class inventario_model extends Model {
         $query = array();
         $i=0;
 
+        
+
+       
+
+        
+
         $query1 = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
         foreach ($query1 as $key) {
-            $query[$i]['ARTICULO']                  = $key['ARTICULO'];
-            $query[$i]['DESCRIPCION']               = $key['DESCRIPCION'];
-            $query[$i]['UNIDAD']               = $key['UNIDAD'];
-            $query[$i]['CANT_DISPONIBLE']           = number_format($key['TOTAL'], 2);
+
+            $ArticuloVinneta      = ArticuloVinneta::WHERE('ARTICULO',$key['ARTICULO'])->get();
+            $retVal = (count($ArticuloVinneta) >0) ? 'Tiene Viñeta' : '' ;
+
+
+            $query[$i]['ARTICULO']          = $key['ARTICULO'];
+            $query[$i]['DESCRIPCION']       = $key['DESCRIPCION'];
+            $query[$i]['UNIDAD']            = $key['UNIDAD'];
+            $query[$i]['CANT_DISPONIBLE']   = number_format($key['TOTAL'], 2);
+            $query[$i]['VINNETA']       = $retVal;
             $i++;
         }
         $sql_server->close();

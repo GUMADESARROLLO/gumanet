@@ -36,6 +36,10 @@ $(document).ready(function() {
 
 			}},
 			{"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION", "render": function(data, type, row, meta) { 
+                var lblVinneta =''
+                if(row.VINNETA != ''){
+                    var lblVinneta = `<span class="badge badge-pill badge-success"> `+ row.VINNETA +`</span>`
+                }
 
 				return`<div class="row justify-content-between">
                                 <div class="col">
@@ -47,6 +51,9 @@ $(document).ready(function() {
                                         <h6 class="mb-1 fs-1 fw-semi-bold">`+ row.DESCRIPCION +`</h6>
                                         <p class="mb-0 fs--1">
                                             <span class="badge badge-pill badge-primary"><span class="fas fa-check"></span> `+ row.UNIDAD +`</span>
+                                            `+lblVinneta+`
+                                            
+                                            
                                         </p>
                                     </div>
                                   </div>
