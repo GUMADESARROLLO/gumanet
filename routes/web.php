@@ -11,6 +11,13 @@
 |
 */
 
+
+
+Route::get('/infraestructura','infraestructura_controller@home');
+Route::get('/getProyects','infraestructura_controller@getProyects');
+Route::post('/getTasksProjects','infraestructura_controller@getTasksProjects');
+
+
 //RUTAS MENU
 Route::get('/Inventario','inventario_controller@index');
 Route::get('/Metas','metas_controller@index');

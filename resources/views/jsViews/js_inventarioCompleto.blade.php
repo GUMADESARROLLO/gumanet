@@ -126,7 +126,7 @@ $(document).ready(function() {
 	
 	
 	function format ( callback, bodega_, articulo_, Unidad_ ) {
-    var thead = tbody = '';            
+        var thead = tbody = '';            
         thead =`<table class="" width='100%'>
                     <tr>
                         <th class="center">LOTE</th>
@@ -137,14 +137,14 @@ $(document).ready(function() {
                         <th class="center">FECHA VENCIMIENTO</th>
                     </tr>
                 <tbody>`;
-    $.ajax({
-        type: "POST",
-        url: "lotes",
-        data:{
-            bodega: bodega_,
-            articulo: articulo_,
-            Unidad: Unidad_,        
-        },        
+        $.ajax({
+            type: "POST",
+            url: "lotes",
+            data:{
+                bodega: bodega_,
+                articulo: articulo_,
+                Unidad: Unidad_,        
+            },        
         success: function ( data ) {
             if (data.length==0) {
                 tbody +=`<tr>
@@ -153,7 +153,7 @@ $(document).ready(function() {
                 callback(thead + tbody).show();
             }
             $.each(data, function (i, item) {
-               tbody +=`<tr class="center">
+                tbody +=`<tr class="center">
                             <td>` + item['LOTE'] + `</td>
                             <td>` + item['CANT_DISPONIBLE'] + `</td>
                             <td>` + item['CANTIDAD_INGRESADA'] + `</td>
@@ -164,9 +164,9 @@ $(document).ready(function() {
             });
             tbody += `</tbody></table>`;
             callback(thead + tbody).show();
-        }
-    });
-}
+            }
+        });
+    }
 
 
 });

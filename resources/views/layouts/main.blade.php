@@ -32,6 +32,12 @@
       background-color: #c8f5bf !important;
   }
 
+  .tbl_rows_done{
+      color: #c7c7c7
+  }
+
+  
+
 </style>
 <!-- Custom styles for this template -->
 <link rel="stylesheet" href="{{ url('css/dashboard.css') }}">
