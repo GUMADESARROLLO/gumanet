@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sac-app
+  name: gnet-app
   namespace: grupoguma
   labels:
-    app: sac
+    app: gumanet
 spec:
   replicas: 3
   selector:
