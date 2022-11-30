@@ -37,6 +37,8 @@ spec:
           env:
             - name: APP_KEY
               value: base64:y2IqhqsLzpUjz3S9Fa1J6lejtgUFmvB9dS8zItVE+DI=
+            - name: DB_DATABASE
+              value: gumanet
           resources:
             requests:
               memory: "64Mi"
