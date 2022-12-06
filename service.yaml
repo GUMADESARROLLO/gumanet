@@ -4,6 +4,8 @@ metadata:
   name: gnet-svc
   namespace: grupoguma
 spec:
+  selector:    
+    app: gnet-app
   ports:
     - protocol: TCP
       port: 80
