@@ -23,7 +23,7 @@ spec:
         - name: regcred
       containers:
         - name: cn-gnet-app
-          image: gumadesarrollo/gumanet:v1.0.{{BUILD_NUMBER}}
+          image: gumadesarrollo/gumanet:v1.1.{{BUILD_NUMBER}}
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -42,3 +42,16 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "144m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnet-svc
+  namespace: grupoguma
+spec:
+  selector:    
+    app: gnet-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
