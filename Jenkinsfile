@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
 		DOCKERHUB_CREDENTIALS=credentials('DockerHub')
-        APP_VERSION = 'v1.0'
+        APP_VERSION = 'v1.1'
 	}
     stages {
         stage('Docker Build') {
