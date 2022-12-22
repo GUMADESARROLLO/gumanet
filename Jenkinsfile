@@ -24,7 +24,6 @@ pipeline {
         stage('Apply Kubernetes'){
             steps {
                 sh 'cat Deployment.yaml | sed "s/${APP_VERSION}.{{BUILD_NUMBER}}/${APP_VERSION}.$BUILD_NUMBER/g" | kubectl apply -f -'
-                sh 'kubectl apply -f service.yaml'            
             }
         }
     }
