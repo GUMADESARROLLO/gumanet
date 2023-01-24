@@ -297,6 +297,9 @@ $('nav .nav.nav-tabs a').click(function(){
         case 'navIndicadores':        
             getIndicadores(articulo_g)
         break;
+        case 'navVinneta':  
+            getVineta(articulo_g)
+        break;
         default:
             alert('Al parecer alguio salio mal :(')
     }    
@@ -311,8 +314,7 @@ function getDetalleArticulo(articulo, descripcion) {
     var target = '#nav-bod';
     $('a[data-toggle=tab][href=' + target + ']').tab('show');
 
-    $("#tbody1")
-    .empty()
+    $("#tbody1").empty()
     .append(`<tr><td colspan='5'><center>Aún no ha realizado ninguna busqueda</center></td></tr>`);
 
     $("#mdDetalleArt").modal('show');
@@ -333,13 +335,14 @@ function getDataBodega(articulo) {
         "columns":[
             { "data": "DETALLE"},
             { "data": "BODEGA" },
+            { "data": "UNIDAD" },
             { "data": "NOMBRE" },
             { "data": "CANT_DISPONIBLE" }
         ],
         "columnDefs": [
-            { "width": "5%", "targets": [ 0, 1 ] },
-            {"className":"dt-right", "targets": [ 3 ] },
-            {"className":"dt-center", "targets": [ 1 ] }
+            { "width": "5%", "targets": [ 0, 1 ,2] },
+            {"className":"dt-right", "targets": [ 4 ] },
+            {"className":"dt-center", "targets": [ 1,2 ] }
         ],
         "info": false,
         "language": {            
@@ -419,6 +422,18 @@ function getOtros(articulo) {
             $("#id_existencia_minima").text(data[0]['MINIMO'])
             $("#id_punto_de_reoden").text(data[0]['REORDEN']);
             $("#id_plazo_rebast").text(data[0]['REABASTECIMIENTO'])
+        }
+    })
+}
+
+function getVineta(articulo) {   
+    $.ajax({
+        url: "objVineta/"+articulo,
+        type: 'get',
+        data: {},
+        async: true,
+        success: function(data) {
+            $("#id_vineta_valor").text("C$ " + numeral(data[0]['VINNETA']).format("0,00.00"))
         }
     })
 }
@@ -528,6 +543,8 @@ $(document).on('click', '#exp_more', function(ef) {
     var row = table.row(tr);
     var data = table.row($(this).parents('tr')).data();
 
+
+
     if (row.child.isShown()) {
         row.child.hide();
         tr.removeClass('shown');
@@ -552,7 +569,7 @@ $(document).on('click', '#exp_more', function(ef) {
             }
         } );
 
-        format(row.child,data.BODEGA,articulo_g);
+        format(row.child,data.BODEGA,articulo_g,data.UNIDAD);
         tr.addClass('shown');
         
         ef.target.innerHTML = "expand_less";
@@ -561,7 +578,9 @@ $(document).on('click', '#exp_more', function(ef) {
     }
 });
 
-function format ( callback, bodega_, articulo_ ) {
+function format ( callback, bodega_, articulo_, Unidad_ ) {
+
+    
     var thead = tbody = '';            
         thead =`<table class="" width='100%'>
                     <tr>
@@ -578,9 +597,12 @@ function format ( callback, bodega_, articulo_ ) {
         url: "lotes",
         data:{
             bodega: bodega_,
-            articulo: articulo_        
+            articulo: articulo_,
+            Unidad: Unidad_,        
         },        
         success: function ( data ) {
+
+
             if (data.length==0) {
                 tbody +=`<tr>
                             <td colspan='6'><center>Bodega sin existencia</center></td>
@@ -588,9 +610,9 @@ function format ( callback, bodega_, articulo_ ) {
                 callback(thead + tbody).show();
             }
             $.each(data, function (i, item) {
-               tbody +=`<tr class="center">
+                tbody +=`<tr class="center">
                             <td>` + item['LOTE'] + `</td>
-                            <td clasitems="negra">` + item['CANT_DISPONIBLE'] + `</td>
+                            <td>` + item['CANT_DISPONIBLE'] + `</td>
                             <td>` + item['CANTIDAD_INGRESADA'] + `</td>
                             <td>` + item['FECHA_INGRESO'] + `</td>
                             <td>` + item['FECHA_ENTRADA'] + `</td>

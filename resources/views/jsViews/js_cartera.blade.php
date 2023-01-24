@@ -90,19 +90,20 @@ $('#dtVinneta').DataTable({
         { "title": "",                      "data": "DETALLE","className":'text-center detalles-rutas-recibos'},
         { "title": "VENDEDOR",              "data": "VENDEDOR" },
         { "title": "NOMBRE",                "data": "NOMBRE" },
+        { "title": "GRUPO",                "data": "GRUPO" },
         
         { "title": "CREADO POR VENDEDOR",                 "data": "SUM_INGRESS" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
         { "title": "INGRESADO A EXACTUS",                 "data": "SUM_PROCESS" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
         { "title": "TOTAL",                 "data": "MONTO" ,render: $.fn.dataTable.render.number( ',', '.', 2  , 'C$ ' )},
 
-        { "title": "REC. PENDIENTE INGRESADO",       "data": "COUNT_INGRESS" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
-        { "title": "REC. PRONCESADO",       "data": "COUNT_PROCESS" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+        { "title": "REC. CREADO POR VENDEDOR",       "data": "COUNT_INGRESS" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+        { "title": "REC. INGRESADO A SISTEMA",       "data": "COUNT_PROCESS" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
         { "title": "REC. ANULADO",       "data": "COUNT_ANULA" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
         { "title": "REC. TOTAL",    "data": "COUNT_TOTAL" ,render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
 
     ],
     "columnDefs": [
-        {"className": "dt-center", "targets": [1,3,4,5,6,7,8,9 ]},
+        {"className": "dt-center", "targets": [1,3,4,5,6,7,8,9,10 ]},
         {"className": "dt-left", "targets": [2]},
         { "width": "8%", "targets": [0,1,3,4,5] },
         { "width": "12%", "targets": [ 2 ] },
@@ -172,7 +173,7 @@ function attach_file(idRecibo){
             CardConten +='<div class="col"><div class="card border-light mb-3 shadow-sm bg-white rounded">'+
 			'<div class="card-body">'+
 				
-                    '<img src="http://192.168.1.15:8448/gmv3/upload/recibos/'+item.IMAGEN+'" width="200" class="img-fluid rounded" style="cursor: pointer" />'+
+                    '<img src="http://186.1.15.166:8448/gmv3/upload/recibos/'+item.IMAGEN+'" width="200" class="img-fluid rounded" style="cursor: pointer" />'+
                 
 			'</div></div></div>';
 
@@ -552,6 +553,7 @@ function format ( callback, dta ) {
                             '<td class="text-left">' + item['NOMBRE_CLIENTE'] + '</td>'+
                             '<td class="text-center">' + item['FECHA'] + '</td>'+
                             '<td class="text-center">' + item['TOTAL'] + '</td>'+
+                            '<td class="text-center">' + item['ADBJ'] + '</td>'+
                         '</tr>';
 
                 });
@@ -564,6 +566,7 @@ function format ( callback, dta ) {
                             <th class="center">NOMBRE</th>
                             <th class="center"style="width: 75px;">FECHA</th>
                             <th class="center"style="width: 95px;">TOTAL</th> 
+                            <th class="center"style="width: 95px;">ADJUNTO</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -579,7 +582,7 @@ function format ( callback, dta ) {
 
         }
     });
-$('#id_exp_detalle_recibo').DataTable();
+    //$('#id_exp_detalle_recibo').DataTable();
     
 }
 

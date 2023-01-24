@@ -75,11 +75,11 @@
 			<div class="card-body col-sm-12">
 				<div class="row" >
 				<div class="col-sm-3">
-					<p class="text-muted m-0" >Total creadp por vendedor.  <i class="material-icons text-secondary font-weight-bold" style="font-size:15px">done</i></p>
+					<p class="text-muted m-0" >Total creado por vendedor.  <i class="material-icons text-secondary font-weight-bold" style="font-size:15px">done</i></p>
 					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_pendiente">C$ 0.00</p>
 				</div>
 				<div class="col-sm-5">
-					<p class="text-muted m-0" id="text-anio-pasado">Total ingresado a aistema exactus. <i class="material-icons text-success font-weight-bold" style="font-size:15px">done_all</i></p>
+					<p class="text-muted m-0" id="text-anio-pasado">Total ingresado a sistema exactus. <i class="material-icons text-success font-weight-bold" style="font-size:15px">done_all</i></p>
 					<p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_valor_ingresado">C$ 0.00</p>
 				</div>
 				<div class="col-sm-2 border-right" style="display:none">

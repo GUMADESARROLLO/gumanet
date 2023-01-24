@@ -82,7 +82,7 @@ class dashboard_model extends Model {
 
 
         $f1 = $anio."-".$mes."-01";
-        $f2 = $anio."-".$mes."-".date('t',strtotime('today'));
+        $f2 = date('Y-m-t',strtotime($f1));
         $TOTAL_FACTURA = 0;
         $TOTAL_MONEDA_LOCAL = 0;
 
@@ -122,6 +122,8 @@ class dashboard_model extends Model {
         $f2 = $anio.'-12-31 23 : 59 : 59 : 998';
 
         $sql_exec = "EXEC gnet_ventas_exportacion_grafica '".$f1."','".$f2."'";
+
+        
         
         $query = $sql_server->fetchArray( $sql_exec , SQLSRV_FETCH_ASSOC);
 
@@ -694,6 +696,7 @@ class dashboard_model extends Model {
 
         switch ($company_user) {
             case '1':
+
                 $sql_exec = "EXEC umk_VentaArticulo_Vendedor ".$mes.", ".$anio.", '".$ruta."'";
                 
                 break;
@@ -975,11 +978,13 @@ class dashboard_model extends Model {
                                 isnull(sum(T1.venta),0) MontoVenta,
                                 AVG (T1.[P. Unitario]) as AVG_,         
                                 T1.[Costo Unitario] AS COSTO_PROM,
-                                isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.VtasTotal_UMK T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año]) AND  ".$qSegmento."  $Sql_Dia  AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni
-                    
-                                from Softland.dbo.VtasTotal_UMK T1 Where ".$mes." = T1.nMes and $anio = T1.[Año] and T1.[P. Unitario] > 0
+                                isnull((SELECT SUM(T2.cantidad) FROM  Softland.dbo.VtasTotal_UMK T2 WHERE (T2.[P. Unitario] = 0) and (".$mes." = T2.nMes) AND (".$anio." = T2.[Año]) AND  ".$qSegmento."  $Sql_Dia  AND ARTICULO = T1.ARTICULO  ), 0) AS Cantida_boni,
+                                t3.UNIDADES
+                                from Softland.dbo.VtasTotal_UMK T1 
+                                INNER JOIN iweb_articulos T3 ON T1.ARTICULO = T3.ARTICULO 
+                                Where ".$mes." = T1.nMes and $anio = T1.[Año] and T1.[P. Unitario] > 0
                                 AND  T1.".$qSegmento." $Sql_Dia
-                                group by T1.Articulo,T1.Descripcion,T1.[Costo Unitario]
+                                group by T1.Articulo,T1.Descripcion,T1.[Costo Unitario], t3.UNIDADES
                                 order by MontoVenta desc;";
 
                     
@@ -1041,9 +1046,16 @@ class dashboard_model extends Model {
 
             $prom_contribucion = (( $AVG - floatval($COSTO_PROM) ) / $AVG) * 100;
 
+            $oItem = tbl_temporal::where('articulo', $fila['Articulo'])->get()->first();
 
+            $vst_anno_Actual = ($oItem) ? $oItem->VstAnnoActual : 0 ;
 
+            $PromedioActual = number_format(($vst_anno_Actual / date('n')), 2,".","");
 
+            $tempoEstimado = ($fila["EXISTENCIA"]> 0.10 && $PromedioActual > 0.10) ? $fila["EXISTENCIA"]  / $PromedioActual : "0.00" ;
+            $TIEMPO_ESTIMADO = number_format(floatval($tempoEstimado),2);
+
+            $json[$i]["Detalle"]           = '<a id="exp_more_detalle" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>';
             $json[$i]["Articulo"]           = $fila["Articulo"];
             $json[$i]["Descripcion"]        = $fila["Descripcion"];            
             $json[$i]["TotalFacturado"]     = number_format($Total_Facturado,2);
@@ -1054,6 +1066,11 @@ class dashboard_model extends Model {
             $json[$i]["CostProm"]           = number_format($COSTO_PROM, 2);
             $json[$i]["Contribu"]           = number_format($Monto_Contribucion, 2);
             $json[$i]["MargenBruto"]        = number_format($prom_contribucion, 2);
+            
+            $json[$i]["UNIDADES"]           = number_format($fila["UNIDADES"], 2);
+            $json[$i]["PromedioActual"]           = number_format($PromedioActual, 2);
+            $json[$i]["TIEMPO_ESTIMADO"]           = number_format($TIEMPO_ESTIMADO, 2);
+            
 
             
             $i++;
@@ -1153,7 +1170,16 @@ class dashboard_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = "EXEC gnet_Ventas_detalle ".$mes.", ".$anio.", '', '".$cliente."', '".$articulo."', ''";
+                if($tipo=='clien'){
+                    $sql_exec ="SELECT T0.VENDEDOR,T0.FACTURA,T0.FECHA,T1.ARTICULO AS articulo,T2.DESCRIPCION AS descripcion,T1.CANTIDAD AS Cantidad,T1.PRECIO_UNITARIO AS precioUnitario,T1.PRECIO_TOTAL AS total FROM Softland.umk.FACTURA T0 
+                    INNER JOIN Softland.umk.FACTURA_LINEA T1 ON T0.FACTURA = T1.FACTURA
+                    INNER JOIN Softland.umk.ARTICULO T2 ON T2.ARTICULO = T1.ARTICULO
+                    WHERE MONTH(T0.FECHA)=".$mes." AND YEAR(T0.FECHA)=".$anio." AND T0.CLIENTE='".$cliente."' 
+                    ORDER BY T1.FACTURA,T1.LINEA";
+                }else{
+                    $sql_exec = "EXEC gnet_Ventas_detalle ".$mes.", ".$anio.", '', '".$cliente."', '".$articulo."', ''";
+                }
+
                 break;
             case '2':
                 $sql_exec = "EXEC gnet_Ventas_detalle_gp ".$mes.", ".$anio.", '', '".$cliente."', '".$articulo."', ''";
@@ -1234,10 +1260,11 @@ class dashboard_model extends Model {
                 break;
             case 'clien':
                 foreach ($query as $fila) {
-                    $json[$i]["ARTICULO"]       = $fila["articulo"];
-                    $json[$i]["DESCRIPCION"]    = $fila["descripcion"];
-                    $json[$i]["CANTIDAD"]       = number_format($fila["Cantidad"], 2);
-                    $json[$i]["TOTAL"]          = number_format($fila["total"], 2);
+                    $json[$i]["ARTICULO"]           = $fila["articulo"];
+                    $json[$i]["DESCRIPCION"]        = $fila["descripcion"];
+                    $json[$i]["CANTIDAD"]           = number_format($fila["Cantidad"], 2);
+                    $json[$i]["PRECIO_UNITARIO"]    = "C$ ".number_format($fila["precioUnitario"], 2);
+                    $json[$i]["TOTAL"]              = number_format($fila["total"], 2);
                     $i++;
                 }
                 break;

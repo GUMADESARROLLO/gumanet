@@ -1136,6 +1136,7 @@ $(document).ready(function() {
                 events: {
                     click: function(e) {
                         detalleVentasMes('clien', `[`+this.category+`] - `+this.name, this.category, 'ND');
+                       $("#id_card_info,#cjLotes").hide()
                     }
                 }
             }
@@ -1205,14 +1206,9 @@ $(document).ready(function() {
                 },
                 point: {
                 events: {
-                    click: function(e) {
-
-                        
-                        const _this = this.series.chart.options.series[0].data[this.x];    
-
-
+                    click: function(e) {                        
+                        const _this = this.series.chart.options.series[0].data[this.x];   
                         var dta_send = [];
-
                         dta_send.push({
                             total_fact      : _this.Total,
                             unit_Fact       : _this.und,
@@ -1227,8 +1223,10 @@ $(document).ready(function() {
                             dtpro           : _this.dtpro
                         })
 
-
                         detalleVentasMes('artic', `[`+_this.Descripcion+`] - `+_this.Articulo, dta_send, _this.Articulo);
+                        $("#id_card_info,#cjLotes").show()
+                        get_lotes_articulo(_this.Articulo)
+                        
                     
                     }
                 }
@@ -1265,7 +1263,53 @@ $(document).ready(function() {
         }
     }
 
+    function get_lotes_articulo ( articulo_ ) {
 
+        $("#dtLOTES").dataTable({
+                responsive: true,
+                "autoWidth":false,
+                "ajax":{
+                    "url": "getLotes",
+                    "type": 'POST',
+                    'dataSrc': '',
+                    "data": {                
+                        articulo: articulo_        
+                    }
+                },
+                "destroy" : true,
+                "info":    false,
+                "lengthMenu": [[30,50,-1], [30,100,"Todo"]],
+                "language": {
+                    "zeroRecords": "Cargando...",
+                    "paginate": {
+                        "first":      "Primera",
+                        "last":       "Última ",
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    },
+                    "lengthMenu": "MOSTRAR _MENU_",
+                    "emptyTable": "NO HAY DATOS DISPONIBLES",
+                    "search":     "BUSCAR"
+                },
+                'columns': [
+                    { "title": "LOTE",              "data": "LOTE" },
+                    { "title": "BODEGA",              "data": "BODEGA" },
+                    { "title": "CANT. DISPONIBLE",            "data": "CANT_DISPONIBLE" },
+                    { "title": "CANT. INGRESADA POR COMPRA",       "data": "CANTIDAD_INGRESADA" },
+                    { "title": "FECHA ULTM. INGRESO COMPRA",       "data": "FECHA_INGRESO" },
+                    { "title": "FECHA DE CREACION",   "data": "FECHA_ENTRADA" },
+                    { "title": "FECHA VENCIMIENTO",        "data": "FECHA_VENCIMIENTO" },                    
+                ],
+                "columnDefs": [
+                    {"className": "dt-right", "targets": [2,3  ]},
+                    {"className": "dt-center", "targets": [ 0,1,4,5,6 ]}
+                ],
+                
+            });
+            $("#dtLOTES_filter,#dtLOTES_length").hide();
+
+        
+    }
 
     grafiacas_productos_Diarios = {
         chart: {
@@ -3233,6 +3277,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
 
         break;
         case 'clien':
+            $("#id_div_detalles_vendedores").hide();
             $("#cjRecuperacion").hide();
             $("#cjVentas").hide();
             $('#cumplMetaContent').hide();
@@ -3265,13 +3310,14 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                     "search":     "BUSCAR"
                 },
                 'columns': [
-                    { "title": "Articulo",      "data": "ARTICULO" },
-                    { "title": "Descripcion",   "data": "DESCRIPCION" },
-                    { "title": "Cantidad",      "data": "CANTIDAD" },
-                    { "title": "Total",         "data": "TOTAL" }
+                    { "title": "Articulo",          "data": "ARTICULO" },
+                    { "title": "Descripcion",       "data": "DESCRIPCION" },
+                    { "title": "Cantidad",          "data": "CANTIDAD" },
+                    { "title": "Precio Unitario",   "data": "PRECIO_UNITARIO" },
+                    { "title": "Total",             "data": "TOTAL" }
                 ],
                 "columnDefs": [
-                    {"className": "dt-right", "targets": [ 2, 3 ]},
+                    {"className": "dt-right", "targets": [ 2, 3,4 ]},
                     {"className": "dt-center", "targets": [ 0 ]}
                 ],
                 "footerCallback": function ( row, data, start, end, display ) {
@@ -3296,6 +3342,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                     $('#txtMontoMeta').text('');
                 }
             });
+           
         break;
         case 'artic':
 
@@ -3395,6 +3442,7 @@ function detalleVentasMes(tipo, title, cliente, articulo) {
                     
                 }
             });
+            
         break;
         default:
         mensaje("Ups... algo ha salido mal")
@@ -3571,6 +3619,7 @@ function Todos_Los_Items(){
         },
         
         'columns': [
+            { "title"   : "Detalle",           "data"  : "Detalle" },
             { "title"   : "ARTICULO",           "data"  : "Articulo" },
             { "title"   : "DESCRIPCION",        "data"  : "Descripcion" },
             { "title"   : "CANT. DISP",         "data"  : "Existencia" },
@@ -3580,12 +3629,16 @@ function Todos_Los_Items(){
             { "title"   : "PREC. PROM.",        "data"  : "PrecProm" },
             { "title"   : "COST. PROM. UNIT.",  "data"  : "CostProm" },
             { "title"   : "CONTRIBUCION",       "data"  : "Contribu" },
-            { "title"   : "% MARGEN BRUTO",     "data"  : "MargenBruto" }
+            { "title"   : "% MARGEN BRUTO",     "data"  : "MargenBruto" }, 
+
+            { "title"   : "CANT. DISP. UNDS. B002",     "data"  : "UNIDADES" }, 
+            { "title"   : "PROM. UNDS. MES. 2022",     "data"  : "PromedioActual" }, 
+            { "title"   : "CANT. DISP. MES.",     "data"  : "TIEMPO_ESTIMADO" }, 
         ],
         "columnDefs": [
             {"className": "dt-center", "targets": [0]},
-            {"className": "dt-right", "targets": [ 2,3,4,5,6,7,8,9]},            
-            {"width": "20%", "targets": [ 1]},
+            {"className": "dt-right", "targets": [ 3,4,5,6,7,8,9,10,11,12,13]},            
+            {"width": "20%", "targets": [ 2]},
             
         ],
         "footerCallback": function ( row, data, start, end, display ) {
@@ -3607,6 +3660,90 @@ function Todos_Los_Items(){
     $(tableActive + "_length").hide();
     $(tableActive + "_filter").hide();
 }
+
+$(document).on('click', '#exp_more_detalle', function(ef) {
+    var table = $('#tblAllItems').DataTable();
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
+    var data = table.row($(this).parents('tr')).data();
+
+
+    if (row.child.isShown()) {
+        row.child.hide();
+        tr.removeClass('shown');
+        ef.target.innerHTML = "expand_more";
+        ef.target.style.background = '#e2e2e2';
+        ef.target.style.color = '#007bff';
+    } else {
+        //VALIDA SI EN LA TABLA HAY TABLAS SECUNDARIAS ABIERTAS
+        table.rows().eq(0).each( function ( idx ) {
+            var row = table.row( idx );
+
+            if ( row.child.isShown() ) {
+                row.child.hide();
+                ef.target.innerHTML = "expand_more";
+
+                var c_1 = $(".expan_more");
+                c_1.text('expand_more');
+                c_1.css({
+                    background: '#e2e2e2',
+                    color: '#007bff',
+                });
+            }
+        } );
+
+        format_tbl(row.child,data.Articulo);
+        tr.addClass('shown');
+        
+        ef.target.innerHTML = "expand_less";
+        ef.target.style.background = '#ff5252';
+        ef.target.style.color = '#e2e2e2';
+    }
+});
+
+function format_tbl ( callback, articulo_ ) {
+    var thead = tbody = '';            
+        thead =`<table class="" width='100%'>
+                    <tr>
+                        <th class="dt-center">LOTE</th>
+                        <th class="dt-center">BODEGA</th>
+                        <th class="dt-center">CANT. DISPONIBLE</th>
+                        <th class="dt-center">CANT. INGRESADA POR COMPRA</th>
+                        <th class="dt-center">FECHA ULTM. INGRESO COMPRA</th>
+                        <th class="dt-center">FECHA DE CREACION</th>
+                        <th class="dt-center">FECHA VENCIMIENTO</th>
+                    </tr>
+                <tbody>`;
+    $.ajax({
+        type: "POST",
+        url: "getLotes",
+        data:{
+            articulo: articulo_        
+        },        
+        success: function ( data ) {
+            if (data.length==0) {
+                tbody +=`<tr>
+                            <td colspan='6'><center>Bodega sin existencia</center></td>
+                        </tr>`;
+                callback(thead + tbody).show();
+            }
+            $.each(data, function (i, item) {
+               tbody +=`<tr class="dt-center">
+                            <td>` + item['LOTE'] + `</td>
+                            <td>` + item['BODEGA'] + `</td>
+                            <td class="dt-right">` + item['CANT_DISPONIBLE'] + `</td>
+                            <td class="dt-right">` + item['CANTIDAD_INGRESADA'] + `</td>
+                            <td>` + item['FECHA_INGRESO'] + `</td>
+                            <td>` + item['FECHA_ENTRADA'] + `</td>
+                            <td>` + item['FECHA_VENCIMIENTO'] + `</td>
+                        </tr>`;
+            });
+            tbody += `</tbody></table>`;
+            callback(thead + tbody).show();
+        }
+    });
+}
+
 function Todos_Los_Items_Diario(dia,mes,anio,segmento){
 
 tableActive = '';
