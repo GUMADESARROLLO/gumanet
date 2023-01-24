@@ -294,7 +294,7 @@ class inventario_model extends Model {
         foreach ($query1 as $key) {
 
             $ArticuloVinneta      = ArticuloVinneta::WHERE('ARTICULO',$key['ARTICULO'])->get();
-            $retVal = (count($ArticuloVinneta) >0) ? 'Tiene Viñeta' : '' ;
+            $retVal = (count($ArticuloVinneta) >0) ? 'VIÑETA' : '' ;
 
 
             $query[$i]['ARTICULO']          = $key['ARTICULO'];

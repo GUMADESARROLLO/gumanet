@@ -26,7 +26,7 @@ $(document).ready(function() {
 			"search":     "BUSCAR"
 		},
 		'columns': [	
-			{"title": "DESCRIPCIÓN","data": "ARTICULO", "render": function(data, type, row, meta) { 
+			{"title": "ARTICULO","data": "ARTICULO", "render": function(data, type, row, meta) { 
 
 				var obj = {
 				a: "hello"
