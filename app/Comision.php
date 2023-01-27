@@ -21,6 +21,7 @@ class Comision extends Model{
 
             $RutaArray[$i]['VENDEDOR']                   = $v->VENDEDOR;
             $RutaArray[$i]['NOMBRE']                     = $v->NOMBRE;
+            $RutaArray[$i]['ZONA']                       = Comision::ZonaRuta($v->VENDEDOR);
             $RutaArray[$i]['BASICO']                     = $Salariobasico;
             $RutaArray[$i]['DATARESULT']                 = Comision::CalculoCommision($v->VENDEDOR,$Mes,$Anno,$Salariobasico);
             
@@ -50,6 +51,9 @@ class Comision extends Model{
         $query      = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_calc_8020 "'.$Mes.'","'.$Anno.'","'.$Ruta.'", "'.'N/D'.'" ');
         $qCobertura = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_calc_BonoCobertura "'.$Ruta.'"');
 
+        // CARGA LOS ARTICULOS QUE NUEVOS QUE NO SE ALLAN FACTURADO EN EL PERIODO EVALUADO
+        DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_articulo_new "'.$Ruta.'"');
+        
         if (count($qCobertura )>0) {
             $cliente_prom=number_format($qCobertura[0]->PROMEDIOANUAL,0);
             $cliente_meta=number_format($qCobertura[0]->METAMES,0);
@@ -184,5 +188,27 @@ class Comision extends Model{
             return ($Valor >= $factor->meta) ? $factor->valor : 3 ;
         }
 
+    }
+
+
+    public static function ZonaRuta($ruta){
+        $zona = DB::table('zonas')->where('Ruta', $ruta)->pluck('Zona');
+
+        return $zona;
+    }
+
+    public static function getHistoryItem($Mes, $Anno, $Ruta){
+        $json = array();
+        $i = 0;
+        
+        $query      = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_calc_8020 "'.$Mes.'","'.$Anno.'","'.$Ruta.'", "'.'N/D'.'" ');
+
+        if(count($query) > 0){
+            foreach($query as $item){
+                $json[] = $item;
+            }
+        }
+
+        return $json;
     }
 }

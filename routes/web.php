@@ -37,6 +37,7 @@ Route::get('/ordenesCompra', 'ordenesCompra_controller@index');
 Route::get('/DetalleOrden', 'DetalleOrdenController@index');
 Route::get('/Comiciones', 'ComisionController@index')->name('/Comiciones');
 Route::get('/getDataComiciones', 'ComisionController@getDataComiciones')->name('/getDataComiciones');
+Route::get('/getHistoryItem', 'ComisionController@getHistoryItem')->name('/getHistoryItem');
 
 //RUTAS LOGIN
 Route::get('/','Auth\LoginController@showLoginForm');//pagina login

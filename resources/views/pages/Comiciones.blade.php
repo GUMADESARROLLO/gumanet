@@ -89,4 +89,67 @@
     </div>
 			
 </div>
+<!--=====================================
+MODAL 
+======================================-->
+
+<div class="modal fade" id="modalHistoryItem" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+		<div class="modal-header bg-blue text-light" >
+      <div class="row col-md-5">
+      <b><label for="f2">Listado de Articulos que Confirman el 80 / 20 de la ruta</label></b></br>
+      <div class="input-group" style="padding-top: 10px;">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+        </div>								
+        <input type="text" id="id_txt_History" class="form-control" placeholder="Buscar...">
+      </div>
+    </div>
+      <div class="col-sm-7 border-left">
+        <div class="row ">
+        <div class="col-sm-2 ">
+            <div class="form-group">                
+              <b><label for="f2">SKUS</label></b></br>
+              <label for="f1" id="lbl_80"> </label> <span class="badge rounded-pill badge-light text-primary"><span class="fas fa-caret-up text-primary" ></span> 80 %</span>
+            </div>
+          </div>	<div class="col-sm-2 border-left">
+            <div class="form-group">                
+              <b><label for="f2">SKUS</label></b></br>
+              <label for="f1" id="lbl_20"> </label> <span class="badge rounded-pill badge-light text-primary"><span class="fas fa-caret-up text-primary"></span> 20 %</span>
+            </div>
+          </div>	
+          <div class="col-sm-2 border-left">
+            <div class="form-group">                
+              <b><label for="f1">META UND</label></b></br>
+              <label for="f1" id="lbl_meta"></label>
+            </div>
+          </div>
+          <div class="col-sm-3 border-left">
+            <div class="form-group">                
+              <b><label for="f1">VENTA UND</label></b></br>
+              <label for="f1" id="lbl_venta"></label>
+            </div>
+          </div>
+          <div class="col-sm-3 border-left">
+            <div class="form-group">                
+              <b><label for="f2">VENTA VALOR</label></b>
+              <label for="f1" id="lbl_val"></label>
+            </div>
+          </div>
+                      
+        </div>
+			</div>
+		</div>
+		<div class="modal-body">	
+      
+			<div class="mt-3" id="dtViewHistory"></div>
+
+		</div>
+		<div class="modal-footer">			
+		</div>
+		</div>
+	</div>
+</div>
+
 @endsection('content')
