@@ -183,11 +183,21 @@ class Comision extends Model{
 
     public static function NivelFactorComision($Count,$Valor)
     {
-        $factor = Factor::where('min', '<=', $Count)->where('max', '>=', $Count)->first();
-        if ($factor) {
-            return ($Valor >= $factor->meta) ? $factor->valor : 3 ;
+        if ($Count < 20) {
+            $porcentaje = 3;
+        } else if ($Count >= 50 && $Valor >= 395000) {
+            $porcentaje = 6;
+        } else if ($Count >= 40 && $Valor >= 345000) {
+            $porcentaje = 5.5;
+        } else if ($Count >= 30 && $Valor >= 285000) {
+            $porcentaje = 5;
+        } else if ($Count >= 20 && $Valor >= 235000) {
+            $porcentaje = 4.5;
+        } else {
+            $porcentaje = 3;
         }
-
+        
+        return $porcentaje;
     }
 
 
