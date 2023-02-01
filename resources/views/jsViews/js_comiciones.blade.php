@@ -247,7 +247,7 @@ $(document).ready(function() {
             url: "getHistoryItem",
             type: 'GET',
             data:{
-                mes :   mes,
+                mes :   1,
                 anno:   anno,
                 ruta:   ruta
             },
@@ -282,12 +282,12 @@ $(document).ready(function() {
                     tbody +='<tr>'+
                             '<td class="text-center" >' + item['ARTICULO'] + '</td>'+
                             '<td>' + item['DESCRIPCION'] + '</td>'+
-                            '<td class="text-right">' + numeral(item['Venta']).format('0,0.00') + '</td>'+
+                            '<td class="text-right">C$ ' + numeral(item['Venta']).format('0,0.00') + '</td>'+
                             '<td class="text-right">' + numeral(item['Aporte']).format('0,0.00') + '</td>'+
                             '<td class="text-right">' + item['Lista'] + '</td>'+
                             '<td class="text-right">' + numeral(item['MetaUND']).format('0,0') + '</td>'+
                             '<td class="text-right">' + numeral(item['VentaUND']).format('0,0') + '</td>'+
-                            '<td class="text-right">' + numeral(item['VentaVAL']).format('0,0.00') + '</td>'+
+                            '<td class="text-right">C$ ' + numeral(item['VentaVAL']).format('0,0.00') + '</td>'+
                             '<td class="text-right">' + numeral(item['Cumple']).format('0,0.00') + '</td>'+
                             '<td class="text-right">' + item['isCumpl'] + '</td>'+
                         '</tr>';
