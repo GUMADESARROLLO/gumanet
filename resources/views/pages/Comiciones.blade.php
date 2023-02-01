@@ -133,8 +133,8 @@ MODAL
           </div>
           <div class="col-sm-3 border-left">
             <div class="form-group">                
-              <b><label for="f2">VENTA VALOR</label></b>
-              <label for="f1" id="lbl_val"></label>
+              <b><label for="f2">VENTA VALOR</label></b></br>
+              C$<label for="f1" id="lbl_val"> </label>
             </div>
           </div>
                       
