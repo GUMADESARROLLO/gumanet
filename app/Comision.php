@@ -28,7 +28,6 @@ class Comision extends Model{
             $i++;
         }
         
-        
         return $RutaArray;
     }
 
@@ -50,15 +49,14 @@ class Comision extends Model{
         
         $query      = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_calc_8020 "'.$Mes.'","'.$Anno.'","'.$Ruta.'", "'.'N/D'.'" ');
         $qCobertura = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_calc_BonoCobertura "'.$Mes.'","'.$Anno.'","'.$Ruta.'"');
-        // CARGA LOS ARTICULOS QUE NUEVOS QUE NO SE ALLAN FACTURADO EN EL PERIODO EVALUADO
-        DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_articulo_new "'.$Ruta.'"');
-        
+        DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_articulo_new "'.$Mes.'","'.$Anno.'","'.$Ruta.'"');
+
         if (count($qCobertura )>0) {
-            $cliente_prom=number_format($qCobertura[0]->PROMEDIOANUAL,0);
-            $cliente_meta=number_format($qCobertura[0]->METAMES,0);
-            $cliente_fact=number_format($qCobertura[0]->MESFACTURADO,0);
-            $cliente_CUMp=number_format($qCobertura[0]->CUMPLI,2);
-            $Cliente_cober= $qCobertura[0]->isCumple;
+            $cliente_prom   = number_format($qCobertura[0]->PROMEDIOANUAL,0,'.','');
+            $cliente_meta   = number_format($qCobertura[0]->METAMES,0,'.','');
+            $cliente_fact   = number_format($qCobertura[0]->MESFACTURADO,0,'.','');
+            $cliente_CUMp   = number_format($qCobertura[0]->CUMPLI,2,'.','');
+            $Cliente_cober  = $qCobertura[0]->isCumple;
         }
         
         
@@ -103,6 +101,18 @@ class Comision extends Model{
                                                 }
                                             })); 
         $sum_venta_articulos_lista20        = array_sum(array_column($Array_articulos_lista20,'VentaVAL'));
+
+        //RESTA LAS NOTAS DE CREDITO QUE TIENE LA RUTA AL MES APLICADO
+
+        $NotaCredito_val80 = abs(Comision::NotasCredito($Mes,$Anno,$Ruta,"80",0));
+        $NotaCredito_val20 = abs(Comision::NotasCredito($Mes,$Anno,$Ruta,"20",0));        
+
+        $sum_venta_articulos_lista80 = $sum_venta_articulos_lista80 - $NotaCredito_val80;
+        $sum_venta_articulos_lista20 = $sum_venta_articulos_lista20 - $NotaCredito_val20;
+
+        $NotaCredito_total = $NotaCredito_val80 + $NotaCredito_val20;
+
+
         $factor_comision_venta_lista20      = Comision::NivelFactorComision($count_articulos_lista20,$sum_venta_articulos_lista20);
     
         $Total_articulos_cumplen            = $count_articulos_lista80  + $count_articulos_lista20; 
@@ -119,33 +129,33 @@ class Comision extends Model{
         $Comision_de_venta = [
             'Lista80' => [
                 $count_articulos_lista80,
-                number_format($sum_venta_articulos_lista80, 2),
+                number_format($sum_venta_articulos_lista80, 2,'.',''),
                 $factor_comision_venta_lista80,
-                number_format($Comision80,2)
+                number_format($Comision80,2,'.','')
             ],
             'Lista20' => [
                 $count_articulos_lista20,
-                number_format($sum_venta_articulos_lista20, 2),
+                number_format($sum_venta_articulos_lista20, 2,'.',''),
                 $factor_comision_venta_lista20,
-                number_format($Comision20,2)
+                number_format($Comision20,2,'.','')
             ],
             'Total' => [
                 $Total_articulos_cumplen,
-                number_format($sum_venta_articulos_Total, 2),
+                number_format($sum_venta_articulos_Total, 2,'.',''),
                 $factor_comision_venta_Total,
-                number_format($ttComision,2)
+                number_format($ttComision,2,'.','')
             ]
         ];
 
-        $Bono_de_cobertura = Comision::BonoCobertura($Cliente_cober);
+        $Bono_de_cobertura  = Comision::BonoCobertura($Cliente_cober);
         
         $ComisionesMasBonos = ($Bono_de_cobertura);
 
       
         $Totales_finales = [
-            number_format($Bono_de_cobertura,0),
-            number_format( ($Bono_de_cobertura + $ttComision) ,2),
-            number_format($ComisionesMasBonos,0),
+            number_format($Bono_de_cobertura,0,'.',''),
+            number_format( ($Bono_de_cobertura + $ttComision) ,2,'.',''),
+            number_format($ComisionesMasBonos,0,'.',''),
             $cliente_CUMp,
             $cliente_prom,
             $cliente_meta,
@@ -156,10 +166,32 @@ class Comision extends Model{
 
         $RutaArray['Comision_de_venta']          = $Comision_de_venta ;
         $RutaArray['Totales_finales']            = $Totales_finales ;
-        $RutaArray['Total_Compensacion']         = number_format(($Salariobasico + $Bono_de_cobertura + $ttComision),2);
+        $RutaArray['Total_Compensacion']         = number_format(($Salariobasico + $Bono_de_cobertura + $ttComision),2,'.','');
+
+        $RutaArray['NotaCredito_val80']          = $NotaCredito_val80 ;
+        $RutaArray['NotaCredito_val20']          = $NotaCredito_val20 ;
+        $RutaArray['NotaCredito_total']          = $NotaCredito_total ;
+        
 
         
         return $RutaArray;
+    
+    }
+    public static function NotasCredito($Mh,$Yr,$Rt,$Ls,$Vl)
+    {
+
+        $ValorNotasCredito = NotasCredito::where('RUTA',$Rt)->where('MES',$Mh)->where('ANNO',$Yr)->where('TIPO',$Ls);
+
+        if($ValorNotasCredito->count() > 0){
+            
+            $rsValor = $ValorNotasCredito->get();
+
+            $Vl = $Vl - $rsValor[0]->VALOR;
+
+        }
+
+        return $Vl;
+
     }
     public static function BonoCobertura($cump)
     { 
