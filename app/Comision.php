@@ -31,6 +31,29 @@ class Comision extends Model{
         return $RutaArray;
     }
 
+    public static function CalcClose()
+    {
+
+        $Vendedor   = Vendedor::getVendedorComision();
+        $Mes        = date('n');
+        $Anno       = date('Y');
+        
+        foreach ($Vendedor as $v){
+            
+            $Ruta   = $v['VENDEDOR'];
+           // DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_articulo "'.$Ruta.'"');
+            //DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_articulo_new "'.$Mes.'","'.$Anno.'","'.$Ruta.'"');
+            DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_calc_8020_close "'.$Mes.'","'.$Anno.'","'.$Ruta.'", "'.'N/D'.'" ');
+            DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_calc_BonoCobertura_close "'.$Mes.'","'.$Anno.'","'.$Ruta.'"');
+            
+            
+        }
+
+
+        
+        
+    }
+
     public static function CalculoCommision($Ruta,$Mes,$Anno,$Salariobasico)
     {
 
@@ -46,10 +69,26 @@ class Comision extends Model{
         $cliente_fact=0;
         $cliente_CUMp=0;
         $Cliente_cober=0;
+
+        $Query_Articulos = '';
+        $Query_Clientes  = '';
+
         
-        $query      = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_calc_8020 "'.$Mes.'","'.$Anno.'","'.$Ruta.'", "'.'N/D'.'" ');
-        $qCobertura = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_calc_BonoCobertura "'.$Mes.'","'.$Anno.'","'.$Ruta.'"');
-        DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_articulo_new "'.$Mes.'","'.$Anno.'","'.$Ruta.'"');
+        if(date('n') == $Mes){
+            DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_articulo_new "'.$Mes.'","'.$Anno.'","'.$Ruta.'"');
+            $Query_Articulos = 'EXEC PRODUCCION.dbo.fn_comision_calc_8020 "'.$Mes.'","'.$Anno.'","'.$Ruta.'", "'.'N/D'.'" ';
+            $Query_Clientes  = 'EXEC PRODUCCION.dbo.fn_comision_calc_BonoCobertura "'.$Mes.'","'.$Anno.'","'.$Ruta.'"';
+        }else{
+            $Query_Articulos = "SELECT * FROM PRODUCCION.dbo.table_comision_calc_8020 T0 WHERE T0.VENDEDOR = '".$Ruta."' AND T0.nMes = ".$Mes." AND T0.nYear = ".$Anno."";
+            $Query_Clientes  = "SELECT * FROM PRODUCCION.dbo.table_comision_calc_BonoCobertura T0 WHERE T0.VENDEDOR = '".$Ruta."' AND T0.nMes = ".$Mes." AND T0.nYear = ".$Anno."";
+        }
+
+        
+        
+        $query      = DB::connection('sqlsrv')->select($Query_Articulos);
+        $qCobertura = DB::connection('sqlsrv')->select($Query_Clientes);
+
+        
 
         if (count($qCobertura )>0) {
             $cliente_prom   = number_format($qCobertura[0]->PROMEDIOANUAL,0,'.','');
@@ -129,21 +168,21 @@ class Comision extends Model{
         $Comision_de_venta = [
             'Lista80' => [
                 $count_articulos_lista80,
-                number_format($sum_venta_articulos_lista80, 2),
+                number_format($sum_venta_articulos_lista80, 2,'.',''),
                 $factor_comision_venta_lista80,
-                number_format($Comision80,2)
+                number_format($Comision80,2,'.','')
             ],
             'Lista20' => [
                 $count_articulos_lista20,
-                number_format($sum_venta_articulos_lista20, 2),
+                number_format($sum_venta_articulos_lista20, 2,'.',''),
                 $factor_comision_venta_lista20,
-                number_format($Comision20,2)
+                number_format($Comision20,2,'.','')
             ],
             'Total' => [
                 $Total_articulos_cumplen,
-                number_format($sum_venta_articulos_Total, 2),
+                number_format($sum_venta_articulos_Total, 2,'.',''),
                 $factor_comision_venta_Total,
-                number_format($ttComision,2)
+                number_format($ttComision,2,'.','')
             ]
         ];
 
@@ -153,9 +192,9 @@ class Comision extends Model{
 
       
         $Totales_finales = [
-            number_format($Bono_de_cobertura,0),
-            number_format( ($Bono_de_cobertura + $ttComision) ,2),
-            number_format($ComisionesMasBonos,0),
+            number_format($Bono_de_cobertura,0,'.',''),
+            number_format( ($Bono_de_cobertura + $ttComision) ,2,'.',''),
+            number_format($ComisionesMasBonos,0,'.',''),
             $cliente_CUMp,
             $cliente_prom,
             $cliente_meta,
@@ -166,7 +205,12 @@ class Comision extends Model{
 
         $RutaArray['Comision_de_venta']          = $Comision_de_venta ;
         $RutaArray['Totales_finales']            = $Totales_finales ;
-        $RutaArray['Total_Compensacion']         = number_format(($Salariobasico + $Bono_de_cobertura + $ttComision),2);
+        $RutaArray['Total_Compensacion']         = number_format(($Salariobasico + $Bono_de_cobertura + $ttComision),2,'.','');
+
+        $RutaArray['NotaCredito_val80']          = $NotaCredito_val80 ;
+        $RutaArray['NotaCredito_val20']          = $NotaCredito_val20 ;
+        $RutaArray['NotaCredito_total']          = $NotaCredito_total ;
+        
 
         $RutaArray['NotaCredito_val80']          = number_format($NotaCredito_val80,2) ;
         $RutaArray['NotaCredito_val20']          = number_format($NotaCredito_val20,2) ;
@@ -231,6 +275,22 @@ class Comision extends Model{
         return $porcentaje;
     }
 
+    public static function NotasCredito($Mh,$Yr,$Rt,$Ls,$Vl)
+    {
+
+        $ValorNotasCredito = NotasCreditos::where('RUTA',$Rt)->where('MES',$Mh)->where('ANNO',$Yr)->where('TIPO',$Ls);
+
+        if($ValorNotasCredito->count() > 0){
+            
+            $rsValor = $ValorNotasCredito->get();
+
+            $Vl = $Vl - $rsValor[0]->VALOR;
+
+        }
+
+        return $Vl;
+
+    }
 
     public static function ZonaRuta($ruta){
         $zona = DB::table('zonas')->where('Ruta', $ruta)->pluck('Zona');

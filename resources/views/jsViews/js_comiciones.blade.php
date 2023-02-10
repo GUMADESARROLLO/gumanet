@@ -93,7 +93,7 @@ $(document).ready(function() {
                                 return  `<div class="pe-4 border-sm-end border-200">
                                             <h7 class="fs--2 text-secondary mb-1"><b>Ventas Val.</b></h7>
                                             <div class="d-flex align-items-center">
-                                            <h6 class="fs-0 text-900 mb-0 me-2">C$ `+row.DATARESULT.Comision_de_venta.Total[1]+` </h6>
+                                            <h6 class="fs-0 text-900 mb-0 me-2">C$ `+numeral(row.DATARESULT.Comision_de_venta.Total[1]).format('0,0.00')+` </h6>
                                             </div>
                                         </div>`
 
@@ -105,7 +105,7 @@ $(document).ready(function() {
                                             <div class="dropdown font-sans-serif btn-reveal-trigger">
                                             <button class="btn btn-link btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-total-sales" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
                                                 <div class="d-flex align-items-center">
-                                                <h6 class="fs-0 text-dark mb-0 me-2">C$ `+row.DATARESULT.Comision_de_venta.Total[3]+`</h6>
+                                                <h6 class="fs-0 text-dark mb-0 me-2">C$ `+numeral(row.DATARESULT.Comision_de_venta.Total[3]).format('0,0.00')+`</h6>
                                                 <span class="badge rounded-pill badge-primary">
                                                 `+row.DATARESULT.Comision_de_venta.Total[2]+`%
                                                     </span>
@@ -129,28 +129,60 @@ $(document).ready(function() {
                                                     <h6 class="mb-0 text-nowrap">80% </h6>
                                                     </td>
                                                     <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Lista80[0]+`</td>
-                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista80[1]+` </td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista80[1]).format('0,0.00')+` </td>
                                                     <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista80[2]+` %</td>                                          
-                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista80[3]+` </td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista80[3]).format('0,0.00')+` </td>
                                                 </tr>
                                                 <tr class="border-200">
                                                     <td class="align-middle">
                                                     <h6 class="mb-0 text-nowrap">20% </h6>
                                                     </td>
                                                     <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Lista20[0]+`</td>
-                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista20[1]+` </td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20[1]).format('0,0.00')+` </td>
                                                     <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista20[2]+` %</td>                                          
-                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista20[3]+` </td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20[3]).format('0,0.00')+` </td>
                                                 </tr>
                                                 <tr class="border-200">
                                                     <td class="align-middle">
                                                     <h6 class="mb-0 text-nowrap">Total </h6>
                                                     </td>
                                                     <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Total[0]+`</td>
-                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Total[1]+` </td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Total[1]).format('0,0.00')+` </td>
                                                     <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Total[2]+` %</td>                                          
-                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Total[3]+` </td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Total[3]).format('0,0.00')+` </td>
                                                 </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="table" style="border: 2px solid black;"> 
+                                                <thead class="bg-200 text-900">
+                                                <tr class="bg-primary text-light">
+                                                    <th colspan="2">ANULACIÓN NOTA DE CRÉDITOS</th>
+                                                    
+                                                </tr>
+                                                <tr>                       
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>     
+                                                <tbody>
+                                                    <tr class="border-200">
+                                                        <td class="align-middle">
+                                                        <h6 class="mb-0 text-nowrap">80% </h6>
+                                                        </td>
+                                                        <td class="align-middle text-right ">C$ `+numeral(row.DATARESULT.NotaCredito_val80).format('0,0.00')+` </td>
+                                                    </tr>
+                                                    <tr class="border-200">
+                                                        <td class="align-middle">
+                                                        <h6 class="mb-0 text-nowrap">20% </h6>
+                                                        </td>
+                                                        <td class="align-middle text-right">C$ `+numeral(row.DATARESULT.NotaCredito_val20).format('0,0.00')+` </td>
+                                                    </tr>
+                                                    <tr class="border-200">
+                                                        <td class="align-middle">
+                                                        <h6 class="mb-0 text-nowrap">Total </h6>
+                                                        </td>
+                                                        <td class="align-middle text-right">C$ `+numeral(row.DATARESULT.NotaCredito_total).format('0,0.00')+` </td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                             </div>
@@ -194,7 +226,7 @@ $(document).ready(function() {
                                 return  `<div class="pe-4 border-sm-end border-200">
                                             <h7 class="fs--2 text-secondary mb-1"><b>Bono.Cobertura</b></h7>
                                             <div class="d-flex align-items-center">
-                                            <h6 class="fs-0 text-dark mb-0 me-2">C$ `+row.DATARESULT.Totales_finales[0]+`</h6>
+                                            <h6 class="fs-0 text-dark mb-0 me-2">C$ `+numeral(row.DATARESULT.Totales_finales[0]).format('0,0.00')+`</h6>
                                             <span class="badge rounded-pill badge-primary">`+row.DATARESULT.Totales_finales[3]+`%</span>
                                             </div>
                                         </div> `
@@ -205,7 +237,7 @@ $(document).ready(function() {
                                 return  `<div class="pe-4 border-sm-end border-200" >
                                             <h7 class="fs--2 text-secondary mb-1"><b>Comisión + Bono</b></h7>
                                             <div class="d-flex align-items-center">
-                                            <h6 class="fs-0 text-900 mb-0 me-2">C$ `+row.DATARESULT.Totales_finales[1]+`</h6>
+                                            <h6 class="fs-0 text-900 mb-0 me-2">C$ `+numeral(row.DATARESULT.Totales_finales[1]).format('0,0.00')+`</h6>
                                             </div>
                                         </div>`
 
@@ -215,7 +247,7 @@ $(document).ready(function() {
                                 return  `<div class="">
                                             <h7 class="fs--2 text-secondary mb-1"><b>Total Comp.</b></h7>
                                             <div class="d-flex align-items-center">
-                                            <h6 class="fs-0 text-900 mb-0 me-2">C$ `+row.DATARESULT.Total_Compensacion+`</h6>                                  
+                                            <h6 class="fs-0 text-900 mb-0 me-2">C$ `+numeral(row.DATARESULT.Total_Compensacion).format('0,0.00')+`</h6>                                  
                                             </div>
                                         </div>`
 

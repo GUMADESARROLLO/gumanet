@@ -18,8 +18,8 @@
 								<input type="text" id="id_txt_buscar" class="form-control" placeholder="Buscar...">
 							</div>
 						</div>
-            <div class="col-md-2"></div>
-              <div class="col-md-2">
+            <div class="col-md-1"></div>
+              <div class="col-md-2 border-left">
                 <select class="custom-select"  id="id_select_mes">
                   
                 @for ($i = 1; $i <= 12; $i++)
@@ -27,7 +27,7 @@
                 @endfor
                 </select>
               </div>
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <div class="input-group" >
                   <select class="custom-select"  id="id_select_year">
                       @foreach (range(date('Y'),date('Y')-1) as $year)
@@ -37,6 +37,9 @@
                   <div class="btn input-group-text bg-transparent" id="id_btn_new">
                         <span class="fas fa-history fs--1 text-600"></span>
                     </div>
+                    <!--<div class="btn input-group-text bg-transparent" onClick="{{url('creditosIndex')}}" id="id_credito_new">
+                        <span class="fas fa-file-invoice fs--1 text-600"></span>
+                    </div>-->
                 </div>
               </div> 
               <div class="col-md-1 ">
