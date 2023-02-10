@@ -22,12 +22,11 @@ class Comision extends Model{
             $RutaArray[$i]['VENDEDOR']                   = $v->VENDEDOR;
             $RutaArray[$i]['NOMBRE']                     = $v->NOMBRE;
             $RutaArray[$i]['ZONA']                       = Comision::ZonaRuta($v->VENDEDOR);
-            $RutaArray[$i]['BASICO']                     = $Salariobasico;
+            $RutaArray[$i]['BASICO']                     = number_format($Salariobasico,2);
             $RutaArray[$i]['DATARESULT']                 = Comision::CalculoCommision($v->VENDEDOR,$Mes,$Anno,$Salariobasico);
             
             $i++;
         }
-        
         
         return $RutaArray;
     }
@@ -75,7 +74,6 @@ class Comision extends Model{
         $Query_Clientes  = '';
 
         
-
         if(date('n') == $Mes){
             DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_articulo_new "'.$Mes.'","'.$Anno.'","'.$Ruta.'"');
             $Query_Articulos = 'EXEC PRODUCCION.dbo.fn_comision_calc_8020 "'.$Mes.'","'.$Anno.'","'.$Ruta.'", "'.'N/D'.'" ';
@@ -91,10 +89,6 @@ class Comision extends Model{
         $qCobertura = DB::connection('sqlsrv')->select($Query_Clientes);
 
         
-
-        
-
-
 
         if (count($qCobertura )>0) {
             $cliente_prom   = number_format($qCobertura[0]->PROMEDIOANUAL,0,'.','');
@@ -218,8 +212,30 @@ class Comision extends Model{
         $RutaArray['NotaCredito_total']          = $NotaCredito_total ;
         
 
+        $RutaArray['NotaCredito_val80']          = number_format($NotaCredito_val80,2) ;
+        $RutaArray['NotaCredito_val20']          = number_format($NotaCredito_val20,2) ;
+        $RutaArray['NotaCredito_total']          = number_format($NotaCredito_total,2) ;
+        
+
         
         return $RutaArray;
+    
+    }
+    public static function NotasCredito($Mh,$Yr,$Rt,$Ls,$Vl)
+    {
+
+        $ValorNotasCredito = NotasCredito::where('RUTA',$Rt)->where('MES',$Mh)->where('ANNO',$Yr)->where('TIPO',$Ls);
+
+        if($ValorNotasCredito->count() > 0){
+            
+            $rsValor = $ValorNotasCredito->get();
+
+            $Vl = $Vl - $rsValor[0]->VALOR;
+
+        }
+
+        return $Vl;
+
     }
     public static function BonoCobertura($cump)
     { 
