@@ -153,6 +153,38 @@ $(document).ready(function() {
                                                 </tr>
                                                 </tbody>
                                             </table>
+                                            <table class="table" style="border: 2px solid black;"> 
+                                                <thead class="bg-200 text-900">
+                                                <tr class="bg-primary text-light">
+                                                    <th colspan="2">ANULACIÓN NOTA DE CRÉDITOS</th>
+                                                    
+                                                </tr>
+                                                <tr>                       
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>     
+                                                <tbody>
+                                                    <tr class="border-200">
+                                                        <td class="align-middle">
+                                                        <h6 class="mb-0 text-nowrap">80% </h6>
+                                                        </td>
+                                                        <td class="align-middle text-right ">C$ `+numeral(row.DATARESULT.NotaCredito_val80).format('0,0.00')+` </td>
+                                                    </tr>
+                                                    <tr class="border-200">
+                                                        <td class="align-middle">
+                                                        <h6 class="mb-0 text-nowrap">20% </h6>
+                                                        </td>
+                                                        <td class="align-middle text-right">C$ `+numeral(row.DATARESULT.NotaCredito_val20).format('0,0.00')+` </td>
+                                                    </tr>
+                                                    <tr class="border-200">
+                                                        <td class="align-middle">
+                                                        <h6 class="mb-0 text-nowrap">Total </h6>
+                                                        </td>
+                                                        <td class="align-middle text-right">C$ `+numeral(row.DATARESULT.NotaCredito_total).format('0,0.00')+` </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                             </div>
                                             </div>
                                             
