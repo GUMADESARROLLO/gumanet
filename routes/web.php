@@ -38,8 +38,6 @@ Route::get('/DetalleOrden', 'DetalleOrdenController@index');
 Route::get('/Comiciones', 'ComisionController@index')->name('/Comiciones');
 Route::get('/getDataComiciones', 'ComisionController@getDataComiciones')->name('/getDataComiciones');
 Route::get('/getHistoryItem', 'ComisionController@getHistoryItem')->name('/getHistoryItem');
-Route::get('/creditosIndex', 'CreditoController@index');
-Route::get('/getFacturas', 'CreditoController@getFacturas');
 
 //RUTAS LOGIN
 Route::get('/','Auth\LoginController@showLoginForm');//pagina login
