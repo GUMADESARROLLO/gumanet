@@ -275,6 +275,7 @@ class Comision extends Model{
         return $porcentaje;
     }
 
+
     public static function ZonaRuta($ruta){
         $zona = DB::table('gumanet.zonas')->where('Ruta', $ruta)->pluck('Zona');
 
