@@ -101,7 +101,7 @@ $(document).ready(function() {
                             {    "data": "VENDEDOR", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200">
-                                            <h7 class="fs--2 text-secondary mb-1"><b>Comisión</b></h7>
+                                            <h7 class="fs--2 text-secondary mb-1"><b>Comición</b></h7>
                                             <div class="dropdown font-sans-serif btn-reveal-trigger">
                                             <button class="btn btn-link btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-total-sales" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
                                                 <div class="d-flex align-items-center">
@@ -235,7 +235,7 @@ $(document).ready(function() {
                             {   "data": "BASICO", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200" >
-                                            <h7 class="fs--2 text-secondary mb-1"><b>Comisión + Bono</b></h7>
+                                            <h7 class="fs--2 text-secondary mb-1"><b>Comición + Bono</b></h7>
                                             <div class="d-flex align-items-center">
                                             <h6 class="fs-0 text-900 mb-0 me-2">C$ `+numeral(row.DATARESULT.Totales_finales[1]).format('0,0.00')+`</h6>
                                             </div>
@@ -253,6 +253,30 @@ $(document).ready(function() {
 
                             } },
                         ],
+                        "footerCallback": function ( row, data, start, end, display ) {
+                        var api = this.api();
+                        var Total       = 0;
+
+                        var intVal = function ( i ) {
+                                return typeof i === 'string' ?
+                                i.replace(/[^0-9.]/g, '')*1 :
+                                typeof i === 'number' ?
+                                i : 0;
+                            };
+                            
+                        total = api.column( 4 ).data().reduce( function (a, b){
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                        for (var i = 0; i < data.length; i++) {
+ 
+                            Total += intVal(data[i].DATARESULT.Total_Compensacion);
+                        }
+                        //Total = Pendiete + Ingresado + Verificado;
+                            
+                        $(api.column(8).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL PAGADO EN COMICIONES: </h6>');
+                        $(api.column(9).footer()).html('<div class="d-flex align-items-center"><h6 class="fs-0 text-900 mb-0 me-2">C$ '+numeral(Total).format('0,0.00')+'</h6></div>');
+                    },
                     })
                     //OCULTA DE LA PANTALLA EL FILTRO DE PAGINADO Y FORM DE BUSQUEDA
                     $("#table_comisiones_length").hide();
