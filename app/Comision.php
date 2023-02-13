@@ -275,25 +275,8 @@ class Comision extends Model{
         return $porcentaje;
     }
 
-    public static function NotasCredito($Mh,$Yr,$Rt,$Ls,$Vl)
-    {
-
-        $ValorNotasCredito = NotasCreditos::where('RUTA',$Rt)->where('MES',$Mh)->where('ANNO',$Yr)->where('TIPO',$Ls);
-
-        if($ValorNotasCredito->count() > 0){
-            
-            $rsValor = $ValorNotasCredito->get();
-
-            $Vl = $Vl - $rsValor[0]->VALOR;
-
-        }
-
-        return $Vl;
-
-    }
-
     public static function ZonaRuta($ruta){
-        $zona = DB::table('zonas')->where('Ruta', $ruta)->pluck('Zona');
+        $zona = DB::table('gumanet.zonas')->where('Ruta', $ruta)->pluck('Zona');
 
         return $zona;
     }

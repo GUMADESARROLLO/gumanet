@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\NotaCreditos;
+use App\NotasCreditos;
 use App\Vendedor;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ class CreditoController extends Controller
         $anno = $request->input('anno');
         $ruta = $request->input('ruta');
         
-        $facturas = NotaCreditos::where('nMes', $mes)->where('nYear', $anno)->where('VENDEDOR', $ruta)->get();
+        $facturas = NotasCreditos::where('nMes', $mes)->where('nYear', $anno)->where('VENDEDOR', $ruta)->get();
         return response()->json($facturas);
     }
 }
