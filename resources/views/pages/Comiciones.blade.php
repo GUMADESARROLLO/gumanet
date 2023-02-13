@@ -65,9 +65,9 @@
               <thead>
                 <tr class="bg-blue text-light">
                   <th colspan="2">VENDEDOR</th>
-                  <th colspan="2">COMISIÓN DE VENTA</th>
-                  <th colspan="4">TOTAL BONOS Y COMISIONES</th>
-                  <th>TOTAL BONOS Y COMISIONES</th>
+                  <th colspan="2">COMICIÓN DE VENTA</th>
+                  <th colspan="4">TOTAL BONOS Y COMICIONES</th>
+                  <th>TOTAL BONOS Y COMICIONES</th>
                   <th>TOTAL</th>
                   
                 </tr>
@@ -85,6 +85,12 @@
                 </tr>
               </thead>
               <tbody><tr><td colspan="10" style="text-align: center;"><b>Cargando...</b></td></tr></tbody>
+              <tfoot>
+                <tr class="bg-blue text-light">
+                    <th colspan="9" style="text-align:right"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
             </table>
           </div>
         </div>
