@@ -1,7 +1,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
     const fecha = new Date();
-    
+    $('#id_txt_History2').hide();
+
     dataComisiones(fecha.getMonth()+1, fecha.getFullYear());
 });
     // INICIALIZA Y ASIGNA LA FECHA EN EL DATEPICKER
@@ -29,10 +30,18 @@ $(document).ready(function() {
     });
        
     $('#id_txt_History').on( 'keyup', function () {
-        var table = $('#tb_history').DataTable();
+        var table = $('#tb_history80').DataTable();
         
-        $("#tb_history_length").hide();
-        $("#tb_history_filter").hide();
+        $("#tb_history80_length").hide();
+        $("#tb_history80_filter").hide();
+        table.search(this.value).draw();
+    });
+
+    $('#id_txt_History2').on( 'keyup', function () {
+        var table = $('#tb_history20').DataTable();
+        
+        $("#tb_history20_length").hide();
+        $("#tb_history20_filter").hide();
         table.search(this.value).draw();
     });
 
@@ -289,34 +298,46 @@ $(document).ready(function() {
 
     $(document).on('click', '#itemHistory', function(ef) {
         const fecha = new Date();
-        var i = j = venta = meta = valor =  0;
-
-       
+        var i = j = venta = meta = valor = k = l = 0;
+        $('#id_txt_History2').val("");
 
         $('#id_txt_History').val("");
         var mes = fecha.getMonth()+1;
         var anno = fecha.getFullYear();
         var ruta = $(this).attr('idRuta');
-        var thead = tbody = '';
+        var thead = tbody = thead2 = tbody2 ='';
 
             $.ajax({
             url: "getHistoryItem",
             type: 'GET',
             data:{
-                mes :   1,
+                mes :   mes,
                 anno:   anno,
                 ruta:   ruta
             },
             async: true,
             success: function(response) {
-                 thead =`<table <table class="table table-striped table-bordered table-sm" id="tb_history" width="100%">
+                 thead =`<table class="table table-striped table-bordered table-sm" id="tb_history80" width="100%">
                         <thead c class="bg-blue text-light">
                             <tr>
                                 <th class="center" width="10%">ARTICULO</th>
-                                <th class="center" width="50%">DESCRIPCION</th>
+                                <th class="center" width="60%">DESCRIPCION</th>
                                 <th class="center" width="10%">P.UNIT</th>
-                                <th class="center" width="10%">APORTE</th>
-                                <th class="center" width="5%">SKU</th>
+                                <th class="center" width="10%">META UND</th>
+                                <th class="center" width="10%">VENTA UND</th>
+                                <th class="center" width="10%">VENTA VAL.</th>
+                                <th class="center" width="10%">CUM.%</th>
+                                <th class="center" width="10%">CUM. META</th>
+                                
+                            </tr>
+                        </thead>
+                        </tbody>`;
+                    thead2 =`<table class="table table-striped table-bordered table-sm" id="tb_history20" width="100%">
+                        <thead c class="bg-blue text-light">
+                            <tr>
+                                <th class="center" width="10%">ARTICULO</th>
+                                <th class="center" width="60%">DESCRIPCION</th>
+                                <th class="center" width="10%">P.UNIT</th>
                                 <th class="center" width="10%">META UND</th>
                                 <th class="center" width="10%">VENTA UND</th>
                                 <th class="center" width="10%">VENTA VAL.</th>
@@ -335,29 +356,54 @@ $(document).ready(function() {
                     valor += Number(item['VentaVAL']);
                     meta += Number(item['MetaUND']);
                     venta += Number(item['VentaUND']);
-                    tbody +='<tr>'+
-                            '<td class="text-center" >' + item['ARTICULO'] + '</td>'+
-                            '<td>' + item['DESCRIPCION'] + '</td>'+
-                            '<td class="text-right">C$ ' + numeral(item['Venta']).format('0,0.00') + '</td>'+
-                            '<td class="text-right">' + numeral(item['Aporte']).format('0,0.00') + '</td>'+
-                            '<td class="text-right">' + item['Lista'] + '</td>'+
-                            '<td class="text-right">' + numeral(item['MetaUND']).format('0,0') + '</td>'+
-                            '<td class="text-right">' + numeral(item['VentaUND']).format('0,0') + '</td>'+
-                            '<td class="text-right">C$ ' + numeral(item['VentaVAL']).format('0,0.00') + '</td>'+
-                            '<td class="text-right">' + numeral(item['Cumple']).format('0,0.00') + '</td>'+
-                            '<td class="text-right">' + item['isCumpl'] + '</td>'+
-                        '</tr>';
+                    if(item['Lista'] == 80){
+                        if(item['VentaUND'] > 0){
+                            tbody += '<tr style="background-color:rgb(134 239 172);">';
+                            k += 1;
+                        }else{
+                            tbody += '<tr>';
+                        }
+                        tbody +='<td class="text-center" >' + item['ARTICULO'] + '</td>'+
+                                '<td width="60%">' + item['DESCRIPCION'] + '</td>'+
+                                '<td class="text-center text-right">C$ ' + numeral(item['Venta']).format('0,0.00') + '</td>'+
+                                '<td class="text-center text-right">' + numeral(item['MetaUND']).format('0,0') + '</td>'+
+                                '<td class="text-right">' + numeral(item['VentaUND']).format('0,0') + '</td>'+
+                                '<td class="text-right">C$ ' + numeral(item['VentaVAL']).format('0,0.00') + '</td>'+
+                                '<td class="text-right">' + numeral(item['Cumple']).format('0,0.00') + '</td>'+
+                                '<td class="text-center text-right">' + item['isCumpl'] + '</td>'+
+                            '</tr>';
+                    }
+                    if(item['Lista'] == 20){
+                        if(numeral(item['VentaUND']).format('0,0') > 0){
+                            tbody2 += '<tr  style="background-color:rgb(134 239 172);">';
+                            l += 1;
+                        }else{
+                            tbody2 += '<tr>';
+                        }
+                        tbody2 +='<td class="text-center" >' + item['ARTICULO'] + '</td>'+
+                                '<td width="60%">' + item['DESCRIPCION'] + '</td>'+
+                                '<td class="text-center text-right">C$ ' + numeral(item['Venta']).format('0,0.00') + '</td>'+
+                                '<td class="text-center text-right">' + numeral(item['MetaUND']).format('0,0') + '</td>'+
+                                '<td class="text-right">' + numeral(item['VentaUND']).format('0,0') + '</td>'+
+                                '<td class="text-right">C$ ' + numeral(item['VentaVAL']).format('0,0.00') + '</td>'+
+                                '<td class="text-right">' + numeral(item['Cumple']).format('0,0.00') + '</td>'+
+                                '<td class="text-center text-right">' + item['isCumpl'] + '</td>'+
+                            '</tr>';
+                    }
                 })
                 
-                $('#lbl_80').html(i);
-                $('#lbl_20').html(j);
+                $('#lbl_80').html(k+' / '+i+' <span class="badge rounded-pill badge-light text-primary"><span class="fas fa-caret-up text-primary"></span> '+ numeral((k/i)*100).format('0,0.00')+' %</span>');
+                $('#lbl_20').html(l+' / '+j+' <span class="badge rounded-pill badge-light text-primary"><span class="fas fa-caret-up text-primary"></span> '+ numeral((l/j)*100).format('0,0.00')+' %</span>');
                 $('#lbl_venta').html(numeral(venta).format('0,0'));
                 $('#lbl_meta').html(numeral(meta).format('0,0'));
                 $('#lbl_val').html(numeral(valor).format('0,0.00'));
                 tbody += `</tbody> </table>`;
+                tbody2 += `</tbody> </table>`;
                 temp = thead + tbody;
-                $("#dtViewHistory").empty().append(temp);
-                $('#tb_history').DataTable({
+                $("#sku-80").empty().append(temp);
+                temp2 = thead2 + tbody2;
+                $("#sku-20").empty().append(temp2);
+                $('#tb_history80').DataTable({
                     "destroy": true,
                     "info": false,
                     "lengthMenu": [
@@ -377,8 +423,30 @@ $(document).ready(function() {
                         "search": "BUSCAR"
                     },
                 });
-                $("#tb_history_length").hide();
-                $("#tb_history_filter").hide();
+                $('#tb_history20').DataTable({
+                    "destroy": true,
+                    "info": false,
+                    "lengthMenu": [
+                        [10, -1],
+                        [10, "Todo"]
+                    ],
+                    "language": {
+                        "zeroRecords": "NO HAY COINCIDENCIAS",
+                        "paginate": {
+                            "first": "Primera",
+                            "last": "Última ",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        },
+                        "lengthMenu": "MOSTRAR _MENU_",
+                        "emptyTable": "-",
+                        "search": "BUSCAR"
+                    },
+                });
+                $("#tb_history80_length").hide();
+                $("#tb_history80_filter").hide();
+                $("#tb_history20_length").hide();
+                $("#tb_history20_filter").hide();
                 
             },
             
@@ -388,5 +456,28 @@ $(document).ready(function() {
         
     });
     
+    $("#sku-20-tab").click( function() {
+        $('#id_txt_History').hide();
+        $('#id_txt_History2').show();
+        $('#sku-80-tab').removeClass('bg-blue');
+        $('#sku-80-tab').removeClass('text-light');
+        $('#sku-80-tab').addClass('text-dark');
+
+        $(this).removeClass('text-dark');
+        $(this).addClass('bg-blue');
+        $(this).addClass('text-light');
+    });
+
+    $("#sku-80-tab").click( function() {
+        $('#id_txt_History2').hide();
+        $('#id_txt_History').show();
+        $('#sku-20-tab').removeClass('bg-blue');
+        $('#sku-20-tab').removeClass('text-light');
+        $('#sku-20-tab').addClass('text-dark');
+
+        $(this).removeClass('text-dark');
+        $(this).addClass('bg-blue');
+        $(this).addClass('text-light');
+    });
 
 </script>
