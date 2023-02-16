@@ -107,25 +107,26 @@ MODAL
 		<div class="modal-content">
 		<div class="modal-header bg-blue text-light" >
       <div class="row col-md-5">
-      <b><label for="f2">Listado de Articulos que Confirman el 80 / 20 de la ruta</label></b></br>
+      <b><label for="f2">Listado de Articulos que Confirman el 80/20 de la ruta</label></b></br>
       <div class="input-group" style="padding-top: 10px;">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
         </div>								
         <input type="text" id="id_txt_History" class="form-control" placeholder="Buscar...">
+        <input type="text" id="id_txt_History2" class="form-control" placeholder="Buscar...">
       </div>
     </div>
-      <div class="col-sm-7 border-left">
+      <div class="col-md-7 border-left">
         <div class="row ">
-        <div class="col-sm-2 ">
+        <div class="col-sm-3 ">
             <div class="form-group">                
-              <b><label for="f2">SKUS</label></b></br>
-              <label for="f1" id="lbl_80"> </label> <span class="badge rounded-pill badge-light text-primary"><span class="fas fa-caret-up text-primary" ></span> 80 %</span>
+              <b><label for="f2">SKUS 80</label></b></br>
+              <label for="f1" id="lbl_80"> </label>
             </div>
-          </div>	<div class="col-sm-2 border-left">
+          </div>	<div class="col-sm-3 border-left">
             <div class="form-group">                
-              <b><label for="f2">SKUS</label></b></br>
-              <label for="f1" id="lbl_20"> </label> <span class="badge rounded-pill badge-light text-primary"><span class="fas fa-caret-up text-primary"></span> 20 %</span>
+              <b><label for="f2">SKUS 20</label></b></br>
+              <label for="f1" id="lbl_20"> </label>
             </div>
           </div>	
           <div class="col-sm-2 border-left">
@@ -134,15 +135,15 @@ MODAL
               <label for="f1" id="lbl_meta"></label>
             </div>
           </div>
-          <div class="col-sm-3 border-left">
+          <div class="col-sm-2 border-left">
             <div class="form-group">                
               <b><label for="f1">VENTA UND</label></b></br>
               <label for="f1" id="lbl_venta"></label>
             </div>
           </div>
-          <div class="col-sm-3 border-left">
-            <div class="form-group">                
-              <b><label for="f2">VENTA VALOR</label></b></br>
+          <div class="col-sm-2.5 border-left">
+            <div class="form-group ml-2">                
+              <b><label for="f2" > VENTA VALOR</label></b></br>
               C$<label for="f1" id="lbl_val"> </label>
             </div>
           </div>
@@ -151,10 +152,34 @@ MODAL
 			</div>
 		</div>
 		<div class="modal-body">	
-      
-			<div class="mt-3" id="dtViewHistory"></div>
-
-		</div>
+      <div class="card">
+        <div class="card-header d-flex flex-between-center ps-0 py-0 border-bottom">
+          <ul class="nav nav-tabs border-0 flex-nowrap tab-active-caret" id="crm-revenue-chart-tab" role="tablist" data-tab-has-echarts="data-tab-has-echarts">
+          
+              <li class="nav-item" role="presentation"><a class="nav-link py-3 mb-0 bg-blue text-light active" id="sku-80-tab" data-toggle="tab" href="#sku-80" role="tab" aria-controls="sku-80" aria-selected="false">SKUs 80</a></li>  
+              <li class="nav-item" role="presentation"><a class="nav-link py-3 mb-0 text-dark" id="sku-20-tab" data-toggle="tab" href="#sku-20" role="tab" aria-controls="sku-20" aria-selected="false">SKUs 20</a></li> 
+          
+          </ul>
+        </div>
+                
+        <div class="card-body">
+          <div class="row g-1">                   
+            <div class="col-md-12">
+              <div class="tab-content">
+              <div class="tab-pane active" id="sku-80" role="tabpanel" aria-labelledby="sku-80-tab">
+                                            
+                </div>
+                <div class="tab-pane" id="sku-20" role="tabpanel" aria-labelledby="sku-20-tab">
+                                            
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!---->
 		<div class="modal-footer">			
 		</div>
 		</div>
