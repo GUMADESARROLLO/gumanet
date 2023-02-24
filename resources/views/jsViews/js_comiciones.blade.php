@@ -80,7 +80,7 @@ $(document).ready(function() {
 
                                 return  `   <div class="d-flex align-items-center position-relative mt-2">
                                                 <div class="flex-1 ms-3" style="text-align: left;">
-                                                    <h7 class="mb-0 fw-semi-bold"><a class="stretched-link text-900 fw-semi-bold" href="#!" id="itemHistory" idRuta="`+row.VENDEDOR+`"  data-toggle="modal" data-target="#modalHistoryItem"><div class="stretched-link text-dark"><b>`+row.NOMBRE+`</b></div></a></h7>
+                                                    <h7 class="mb-0 fw-semi-bold"><a class="stretched-link text-900 fw-semi-bold" href="#!" id="itemHistory" idRuta="`+row.VENDEDOR+`" iZona="`+row.ZONA+`"  data-toggle="modal" data-target="#modalHistoryItem"><div class="stretched-link text-dark"><b>`+row.NOMBRE+`</b></div></a></h7>
                                                     <p class="text-secondary fs--2 mb-0">`+row.VENDEDOR+` | `+row.ZONA+` </p>
                                                 </div>
                                             </div>
@@ -90,7 +90,7 @@ $(document).ready(function() {
                             {   "data": "VENDEDOR", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200">
-                                            <h7 class="fs--2 text-secondary mb-1"><b>Basico</b></h7>
+                                            <h7 class="fs--2 text-secondary mb-1"><b>Salario Garantizado</b></h7>
                                             <div class="d-flex align-items-center">
                                             <h6 class="fs-0 text-900 mb-0 me-1">C$ `+row.BASICO+` </h6>
                                             </div>
@@ -110,7 +110,7 @@ $(document).ready(function() {
                             {    "data": "VENDEDOR", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200">
-                                            <h7 class="fs--2 text-secondary mb-1"><b>Comición</b></h7>
+                                            <h7 class="fs--2 text-secondary mb-1"><b>Comisión</b></h7>
                                             <div class="dropdown font-sans-serif btn-reveal-trigger">
                                             <button class="btn btn-link btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-total-sales" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
                                                 <div class="d-flex align-items-center">
@@ -244,7 +244,7 @@ $(document).ready(function() {
                             {   "data": "BASICO", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200" >
-                                            <h7 class="fs--2 text-secondary mb-1"><b>Comición + Bono</b></h7>
+                                            <h7 class="fs--2 text-secondary mb-1"><b>Comisión + Bono</b></h7>
                                             <div class="d-flex align-items-center">
                                             <h6 class="fs-0 text-900 mb-0 me-2">C$ `+numeral(row.DATARESULT.Totales_finales[1]).format('0,0.00')+`</h6>
                                             </div>
@@ -298,16 +298,24 @@ $(document).ready(function() {
 
     $(document).on('click', '#itemHistory', function(ef) {
         const fecha = new Date();
-        var i = j = venta = meta = valor = k = l = 0;
         $('#id_txt_History2').val("");
 
         $('#id_txt_History').val("");
         var mes = fecha.getMonth()+1;
         var anno = fecha.getFullYear();
         var ruta = $(this).attr('idRuta');
-        var thead = tbody = thead2 = tbody2 ='';
+        var Zona = $(this).attr('iZona');
+        var nombre = $(this).text();
 
-            $.ajax({
+        var ventaValor  = 0;
+        var VentaUND    = 0;
+        var MetaUND     = 0;
+        var Item80      = 0;
+        var Item20      = 0;
+        var ItemC80     = 0;
+        var ItemC20     = 0;
+
+        $.ajax({
             url: "getHistoryItem",
             type: 'GET',
             data:{
@@ -316,152 +324,187 @@ $(document).ready(function() {
                 ruta:   ruta
             },
             async: true,
-            success: function(response) {
-                 thead =`<table class="table table-striped table-bordered table-sm" id="tb_history80" width="100%">
-                        <thead c class="bg-blue text-light">
-                            <tr>
-                                <th class="center" width="10%">ARTICULO</th>
-                                <th class="center" width="60%">DESCRIPCION</th>
-                                <th class="center" width="10%">P.UNIT</th>
-                                <th class="center" width="10%">META UND</th>
-                                <th class="center" width="10%">VENTA UND</th>
-                                <th class="center" width="10%">VENTA VAL.</th>
-                                <th class="center" width="10%">CUM.%</th>
-                                <th class="center" width="10%">CUM. META</th>
-                                
-                            </tr>
-                        </thead>
-                        </tbody>`;
-                    thead2 =`<table class="table table-striped table-bordered table-sm" id="tb_history20" width="100%">
-                        <thead c class="bg-blue text-light">
-                            <tr>
-                                <th class="center" width="10%">ARTICULO</th>
-                                <th class="center" width="60%">DESCRIPCION</th>
-                                <th class="center" width="10%">P.UNIT</th>
-                                <th class="center" width="10%">META UND</th>
-                                <th class="center" width="10%">VENTA UND</th>
-                                <th class="center" width="10%">VENTA VAL.</th>
-                                <th class="center" width="10%">CUM.%</th>
-                                <th class="center" width="10%">CUM. META</th>
-                                
-                            </tr>
-                        </thead>
-                        </tbody>`;
-                $.each( response, function( key, item ) {
-                    if(item['Lista'] === '80'){
-                        i += 1;
-                    }else{
-                        j +=1;
-                    }
-                    valor += Number(item['VentaVAL']);
-                    meta += Number(item['MetaUND']);
-                    venta += Number(item['VentaUND']);
-                    if(item['Lista'] == 80){
-                        if(item['VentaUND'] > 0){
-                            tbody += '<tr style="background-color:rgb(134 239 172);">';
-                            k += 1;
-                        }else{
-                            tbody += '<tr>';
+            dataType: "json",
+            success: function(data) {
+                            
+                if (data.length > 0) {
+                    dta_table_80 = [];
+                    dta_table_20 = [];
+                    dta_table_header = [
+                        {"data": "ROW_ID"}, 
+                        {"data": "ARTICULO",
+                            "render": function(data, type, row, meta) {
+                            return `<div class="d-flex align-items-center position-relative ">
+                                    <div class="flex-1">
+                                        <h6 class="mb-0 fw-semi-bold">
+                                            <a class="stretched-link text-dark fw-semi-bold" href="#!" >
+                                                <div class="stretched-link text-dark">`+ row.DESCRIPCION +`</div>
+                                            </a>
+                                        </h6>
+                                        <p class="text-secondary fs--2 mb-0">`+ row.ARTICULO +` </p>
+                                    </div>
+                                </div>`
+                        }},
+                        {"data": "MetaUND","render": function(data, type, row, meta) {return data + ' UND'}},                         
+                        {"data": "VentaUND","render": function(data, type, row, meta) {return data + ' UND'}}, 
+                        {"data": "VentaVAL","render": function(data, type, row, meta) {
+                            return `<div class="pe-4">
+                                <div class="d-flex align-items-center">
+                                  <h6 class="fs-0 text-dark mb-0 me-2">C$ `+ row.VentaVAL +`</h6>
+                                  <span class="badge rounded-pill badge-primary">`+ row.Cumple +` %</span>
+                                </div>
+                              </div>`
+                        }},
+                        {"data": "isCumpl","render": function(data, type, row, meta) {
+                            var lbl = '';
+                            if ( row.isCumpl == 'SI' ) {
+                                lbl = '<span class="badge badge rounded-pill d-block p-2 badge-primary">Cumplio<span class="ms-1 fas fa-dollar-sign" data-fa-transform="shrink-2"></span></span>'
+                            } 
+                            return lbl
+                        }}, 
+                    ]
+                    
+                    $.each(data,function(key, registro) {
+
+                        ventaValor  += parseFloat(numeral(registro.VentaVAL).format('00.00'));
+                        VentaUND    += parseFloat(registro.VentaUND.replace(/,/g, ''), 10); 
+                        MetaUND     += parseFloat(registro.MetaUND.replace(/,/g, ''), 10);   
+
+                        Item80      +=  (registro.Lista==80)? 1 : 0
+                        Item20      +=  (registro.Lista==20)? 1 : 0
+
+                        ItemC80     +=  (registro.Lista==80 && registro.VentaUND > '0.00')? 1 : 0
+                        ItemC20     +=  (registro.Lista==20 && registro.VentaUND > '0.00')? 1 : 0
+
+                        if(registro.Lista == 80){                       
+                            dta_table_80.push({ 
+                                ROW_ID: registro.ROW_ID,
+                                ARTICULO: registro.ARTICULO,
+                                DESCRIPCION: registro.DESCRIPCION,
+                                Venta: numeral(registro.Venta).format('0,0,00.00'),
+                                Aporte: numeral(registro.Aporte).format('0,0,00.00'),
+                                Lista: registro.Lista,
+                                MetaUND: registro.MetaUND,
+                                VentaUND: registro.VentaUND,
+                                VentaVAL: numeral(registro.VentaVAL).format('0,0,00.00'),
+                                Cumple: numeral(registro.Cumple).format('0,0,00.00') ,
+                                isCumpl: registro.isCumpl
+                            })
+                        }else if(registro.Lista == 20){
+                            dta_table_20.push({ 
+                                ROW_ID: registro.ROW_ID,
+                                ARTICULO: registro.ARTICULO,
+                                DESCRIPCION: registro.DESCRIPCION,
+                                Venta: numeral(registro.Venta).format('0,0,00.00'),
+                                Aporte: numeral(registro.Aporte).format('0,0,00.00'),
+                                Lista: registro.Lista,
+                                MetaUND: registro.MetaUND,
+                                VentaUND: registro.VentaUND,
+                                VentaVAL: numeral(registro.VentaVAL).format('0,0,00.00'),
+                                Cumple: numeral(registro.Cumple).format('0,0,00.00') ,
+                                isCumpl: registro.isCumpl
+                            })
                         }
-                        tbody +='<td class="text-center" >' + item['ARTICULO'] + '</td>'+
-                                '<td width="60%">' + item['DESCRIPCION'] + '</td>'+
-                                '<td class="text-center text-right">C$ ' + numeral(item['Venta']).format('0,0.00') + '</td>'+
-                                '<td class="text-center text-right">' + numeral(item['MetaUND']).format('0,0') + '</td>'+
-                                '<td class="text-right">' + numeral(item['VentaUND']).format('0,0') + '</td>'+
-                                '<td class="text-right">C$ ' + numeral(item['VentaVAL']).format('0,0.00') + '</td>'+
-                                '<td class="text-right">' + numeral(item['Cumple']).format('0,0.00') + '</td>'+
-                                '<td class="text-center text-right">' + item['isCumpl'] + '</td>'+
-                            '</tr>';
-                    }
-                    if(item['Lista'] == 20){
-                        if(numeral(item['VentaUND']).format('0,0') > 0){
-                            tbody2 += '<tr  style="background-color:rgb(134 239 172);">';
-                            l += 1;
-                        }else{
-                            tbody2 += '<tr>';
-                        }
-                        tbody2 +='<td class="text-center" >' + item['ARTICULO'] + '</td>'+
-                                '<td width="60%">' + item['DESCRIPCION'] + '</td>'+
-                                '<td class="text-center text-right">C$ ' + numeral(item['Venta']).format('0,0.00') + '</td>'+
-                                '<td class="text-center text-right">' + numeral(item['MetaUND']).format('0,0') + '</td>'+
-                                '<td class="text-right">' + numeral(item['VentaUND']).format('0,0') + '</td>'+
-                                '<td class="text-right">C$ ' + numeral(item['VentaVAL']).format('0,0.00') + '</td>'+
-                                '<td class="text-right">' + numeral(item['Cumple']).format('0,0.00') + '</td>'+
-                                '<td class="text-center text-right">' + item['isCumpl'] + '</td>'+
-                            '</tr>';
-                    }
-                })
-                
-                $('#lbl_80').html(k+' / '+i+' <span class="badge rounded-pill badge-light text-primary"><span class="fas fa-caret-up text-primary"></span> '+ numeral((k/i)*100).format('0,0.00')+' %</span>');
-                $('#lbl_20').html(l+' / '+j+' <span class="badge rounded-pill badge-light text-primary"><span class="fas fa-caret-up text-primary"></span> '+ numeral((l/j)*100).format('0,0.00')+' %</span>');
-                $('#lbl_venta').html(numeral(venta).format('0,0'));
-                $('#lbl_meta').html(numeral(meta).format('0,0'));
-                $('#lbl_val').html(numeral(valor).format('0,0.00'));
-                tbody += `</tbody> </table>`;
-                tbody2 += `</tbody> </table>`;
-                temp = thead + tbody;
-                $("#sku-80").empty().append(temp);
-                temp2 = thead2 + tbody2;
-                $("#sku-20").empty().append(temp2);
-                $('#tb_history80').DataTable({
-                    "destroy": true,
-                    "info": false,
-                    "lengthMenu": [
-                        [10, -1],
-                        [10, "Todo"]
-                    ],
-                    "language": {
-                        "zeroRecords": "NO HAY COINCIDENCIAS",
-                        "paginate": {
-                            "first": "Primera",
-                            "last": "Última ",
-                            "next": "Siguiente",
-                            "previous": "Anterior"
-                        },
-                        "lengthMenu": "MOSTRAR _MENU_",
-                        "emptyTable": "-",
-                        "search": "BUSCAR"
-                    },
-                });
-                $('#tb_history20').DataTable({
-                    "destroy": true,
-                    "info": false,
-                    "lengthMenu": [
-                        [10, -1],
-                        [10, "Todo"]
-                    ],
-                    "language": {
-                        "zeroRecords": "NO HAY COINCIDENCIAS",
-                        "paginate": {
-                            "first": "Primera",
-                            "last": "Última ",
-                            "next": "Siguiente",
-                            "previous": "Anterior"
-                        },
-                        "lengthMenu": "MOSTRAR _MENU_",
-                        "emptyTable": "-",
-                        "search": "BUSCAR"
-                    },
-                });
-                $("#tb_history80_length").hide();
-                $("#tb_history80_filter").hide();
-                $("#tb_history20_length").hide();
-                $("#tb_history20_filter").hide();
-                
+                    });
+
+                    table_render('#tb_history80',dta_table_80,dta_table_header,false)   
+                    table_render('#tb_history2023',dta_table_20,dta_table_header,false)     
+                    
+                    ventaValor = "C$ " +numeral(ventaValor).format('0,0,00.00') 
+                    $("#lbl_val").text(ventaValor)
+
+                    VentaUND = numeral(VentaUND).format('0,0,00') 
+                    $("#lbl_venta").text(VentaUND)
+
+                    MetaUND = numeral(MetaUND).format('0,0,00') 
+                    $("#lbl_meta").text(MetaUND)
+
+                    $("#lbl_80").text(ItemC80 + " / " + Item80 )
+                    $("#lbl_20").text(ItemC20 + " / " + Item20)
+
+                    var v80 = (((ItemC80 / Item80 ) * 100) )
+                    var v20 = (((ItemC20 / Item20 ) * 100) )
+
+                    v80 = numeral(v80).format('0,0,00.00')
+                    v20 = numeral(v20).format('0,0,00.00')
+
+                    $("#id_prom_ls80").text(v80+" %")
+                    $("#id_prom_ls20").text(v20+" %")
+
+                    $("#nombre_ruta_modal").text(nombre)
+                    $("#nombre_ruta_zona_modal").text(ruta + " | " + Zona)
+                                                           
+
+                }
+
             },
             
         });
-
-        
         
     });
     
+    function table_render(Table,datos,Header,Filter){
+        $(Table).DataTable({
+            "data": datos,
+            "destroy": true,
+            "info": false,
+            "bPaginate": true,
+            "order": [
+                [0, "asc"]
+            ],
+            "lengthMenu": [
+                [10, -1],
+                [10, "Todo"]
+            ],
+            "language": {
+                "zeroRecords": "NO HAY COINCIDENCIAS",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Última ",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "lengthMenu": "MOSTRAR _MENU_",
+                "emptyTable": "-",
+                "search": "BUSCAR"
+            },
+            'columns': Header,
+            "columnDefs": [
+                {
+                    "visible": false,
+                    "searchable": false,
+                    "targets": [0]
+                },
+                { "width": "60%", "targets": [1] },
+                { "width": "10%", "targets": [2,3,4,5] },
+                
+            ],
+            "createdRow": function( row, data, dataIndex ) {
+                if ( data.VentaUND > '0.00') {        
+                    $(row).addClass('table-success');
+                }else{
+                    $(row).addClass('table-white');
+                }
+            },
+            rowCallback: function( row, data, index ) {
+                if ( data.Index < 0 ) {
+                    $(row).addClass('table-danger');
+                } 
+            }
+        });
+        if(!Filter){
+            $(Table+"_length").hide();
+            $(Table+"_filter").hide();
+        }
+    }
+
     $("#sku-20-tab").click( function() {
         $('#id_txt_History').hide();
         $('#id_txt_History2').show();
         $('#sku-80-tab').removeClass('bg-blue');
         $('#sku-80-tab').removeClass('text-light');
         $('#sku-80-tab').addClass('text-dark');
+      
 
         $(this).removeClass('text-dark');
         $(this).addClass('bg-blue');
