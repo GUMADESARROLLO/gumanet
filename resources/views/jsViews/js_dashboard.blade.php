@@ -2204,10 +2204,10 @@ function modalSegmento(data){
     tbody = `<tr>
         <th scope="row" style="font-size: 1rem!important">Instituciones</th>
         <td class="text-right">
-            <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(metaGRP1__).format('0,0') +`</p>
+            <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(metaGRP1__).format('0,0') +`</p>
         </td>
         <td class="text-right">
-            <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(realGRP1__).format('0,0') +`</p>
+            <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(realGRP1__).format('0,0') +`</p>
         </td>
         <td class="text-right">
             <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(cumplGRP1).format('0.0') +` %</p>
@@ -2216,10 +2216,10 @@ function modalSegmento(data){
         <tr>
         <th scope="row" style="font-size: 1rem!important">Mayoristas</th>
         <td class="text-right">
-            <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(metaGRP2__).format('0,0') +`</p>
+            <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(metaGRP2__).format('0,0') +`</p>
         </td>
         <td class="text-right">
-            <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(realGRP2__).format('0,0') +`</p>
+            <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(realGRP2__).format('0,0') +`</p>
         </td>
         <td class="text-right">
             <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(cumplGRP2).format('0.0') +` %</p>
@@ -2228,10 +2228,10 @@ function modalSegmento(data){
         <tr>
         <th scope="row" style="font-size: 1rem!important">Farmacia</th>
         <td class="text-right">
-            <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(metaGRP3__).format('0,0') +`</p>
+            <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(metaGRP3__).format('0,0') +`</p>
         </td>
         <td class="text-right">
-            <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(realGRP3__).format('0,0') +`</p>
+            <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(realGRP3__).format('0,0') +`</p>
         </td>
         <td class="text-right">
             <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(cumplGRP3).format('0.0') +` %</p>
@@ -2240,10 +2240,10 @@ function modalSegmento(data){
         <tr>
         <th scope="row" style="font-size: 1rem!important">Total</th>
         <td class="text-right">
-            <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(totalMETA__).format('0,0') +`</p>
+            <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(totalMETA__).format('0,0') +`</p>
         </td>
         <td class="text-right">
-            <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(totalREAL__).format('0,0') +`</p>
+            <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(totalREAL__).format('0,0') +`</p>
         </td>
         <td class="text-right">
             <p class="font-weight-bolder text-center" style="font-size: 1rem!important">`+ numeral(cumplTOTAL).format('0.0') +` %</p>

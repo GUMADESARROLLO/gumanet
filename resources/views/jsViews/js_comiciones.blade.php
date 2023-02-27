@@ -38,10 +38,10 @@ $(document).ready(function() {
     });
 
     $('#id_txt_History2').on( 'keyup', function () {
-        var table = $('#tb_history20').DataTable();
+        var table = $('#tb_history2023').DataTable();
         
-        $("#tb_history20_length").hide();
-        $("#tb_history20_filter").hide();
+        $("#tb_history2023_length").hide();
+        $("#tb_history2023_filter").hide();
         table.search(this.value).draw();
     });
 
@@ -244,7 +244,7 @@ $(document).ready(function() {
                             {   "data": "BASICO", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200" >
-                                            <h7 class="fs--2 text-secondary mb-1"><b>Comisión + Bono</b></h7>
+                                            <h7 class="fs--2 text-secondary mb-1"><b>Comisión</b></h7>
                                             <div class="d-flex align-items-center">
                                             <h6 class="fs-0 text-900 mb-0 me-2">C$ `+numeral(row.DATARESULT.Totales_finales[1]).format('0,0.00')+`</h6>
                                             </div>
@@ -337,9 +337,7 @@ $(document).ready(function() {
                             return `<div class="d-flex align-items-center position-relative ">
                                     <div class="flex-1">
                                         <h6 class="mb-0 fw-semi-bold">
-                                            <a class="stretched-link text-dark fw-semi-bold" href="#!" >
-                                                <div class="stretched-link text-dark">`+ row.DESCRIPCION +`</div>
-                                            </a>
+                                            <div class="stretched-link text-dark">`+ row.DESCRIPCION +`</div>
                                         </h6>
                                         <p class="text-secondary fs--2 mb-0">`+ row.ARTICULO +` </p>
                                     </div>

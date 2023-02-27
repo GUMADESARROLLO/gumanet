@@ -66,8 +66,7 @@
                 <tr class="bg-blue text-light">
                   <th colspan="2">VENDEDOR</th>
                   <th colspan="2">COMISIÓN DE VENTA</th>
-                  <th colspan="4">TOTAL BONOS Y COMISIONES</th>
-                  <th>TOTAL BONOS Y COMISIONES</th>
+                  <th colspan="5">TOTAL COMISIONES</th>
                   <th>TOTAL</th>
                   
                 </tr>
