@@ -13,6 +13,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
+        "league/flysystem-aws-s3-v3": "^1.0",
         "phpoffice/phpexcel": "dev-master",
         "snapappointments/bootstrap-select": "^1.13",
         "vsmoraes/laravel-pdf": "^2.0",

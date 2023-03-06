@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use GPDF;
 use PDF;
 use App\app_onesignal;
+use Illuminate\Support\Facades\Storage;
 
 class recibos_controller extends Controller {
     public function __construct() {
@@ -174,7 +175,7 @@ class recibos_controller extends Controller {
         $obj = $query->get();
 
         foreach ($obj as $qR => $key) {
-            $data[$i]['IMAGEN'] = $key->Nombre_imagen;
+            $data[$i]['IMAGEN'] = Storage::Disk('s3')->temporaryUrl('Adjuntos-Recibos/'.$key->Nombre_imagen, now()->addMinutes(5));
             $i++;
 
         }  
