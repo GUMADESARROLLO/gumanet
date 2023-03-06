@@ -111,7 +111,6 @@ class inventario_model extends Model {
 
         $query = array();
         $i=0;
-        DD($sql_vent_art);
 
         $query1 = $sql_server->fetchArray( $sql_exec , SQLSRV_FETCH_ASSOC);
         $query_vent_art = $sql_server->fetchArray($sql_vent_art, SQLSRV_FETCH_ASSOC);

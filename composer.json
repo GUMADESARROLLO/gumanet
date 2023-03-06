@@ -36,7 +36,7 @@
             "kylekatarnls/update-helper": true
         },
         "platform": {
-            "php": "7.3.20"
+            "php": "7.2.14"
         }
     },
     "extra": {
