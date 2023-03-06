@@ -283,7 +283,7 @@ $(document).ready(function() {
                         }
                         //Total = Pendiete + Ingresado + Verificado;
                             
-                        $(api.column(8).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL PAGADO EN COMICIONES: </h6>');
+                        $(api.column(8).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL PAGADO EN COMISIONES: </h6>');
                         $(api.column(9).footer()).html('<div class="d-flex align-items-center"><h6 class="fs-0 text-900 mb-0 me-2">C$ '+numeral(Total).format('0,0.00')+'</h6></div>');
                     },
                     })
@@ -297,12 +297,11 @@ $(document).ready(function() {
     
 
     $(document).on('click', '#itemHistory', function(ef) {
-        const fecha = new Date();
         $('#id_txt_History2').val("");
 
         $('#id_txt_History').val("");
-        var mes = fecha.getMonth()+1;
-        var anno = fecha.getFullYear();
+        var mes = $('#id_select_mes').val();
+        var anno = $('#id_select_year').val();
         var ruta = $(this).attr('idRuta');
         var Zona = $(this).attr('iZona');
         var nombre = $(this).text();
