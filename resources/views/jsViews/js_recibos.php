@@ -176,14 +176,14 @@ function attach_file(idRecibo){
 
     $.ajax({
         url: 'getAttachFile',
-        type: 'post',
+        type: 'get',
         data: {
             iRecibo     : idRecibo
         },
         async: true,
         success: function(response) {
         var CardConten =  ``;
-
+        
         /*if (response.length==0) {
             CardConten = `
 							<div class="card-body">
@@ -223,7 +223,7 @@ function attach_file(idRecibo){
                     <div class="overflow-hidden">
                       <div class="position-relative rounded-top overflow-hidden">
                       <a class="d-block" href="#!"style="cursor: pointer">
-                        <img class="img-fluid rounded-top" src="http://186.1.15.166:8448/gmv3/upload/recibos/`+item.IMAGEN+`" alt="" /></a>
+                        <img class="img-fluid rounded-top" src="`+item.IMAGEN+`" alt="" /></a>
                       </div>
                     </div>                    
                   </div>
