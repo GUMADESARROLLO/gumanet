@@ -183,35 +183,8 @@ function attach_file(idRecibo){
         async: true,
         success: function(response) {
         var CardConten =  ``;
-        
-        /*if (response.length==0) {
-            CardConten = `
-							<div class="card-body">
-								<p class="text-center font-weight-bolder">No se encontraron registros</p>
-								<center><img src="./images/icon_sinresultados.png" width="100" class="mt-4 mb-4" /></center>
-							</div>`;
-        }		
 
-        $.each(response, function (i, item) {
-
-            CardConten +='<div class="col"><div class="card border-light mb-3 shadow-sm bg-white rounded">'+
-			'<div class="card-body">'+
-				
-                    '<img src="http://186.1.15.166:8448/gmv3/upload/recibos/'+item.IMAGEN+'" width="200" class="img-fluid rounded" style="cursor: pointer" />'+
-                
-			'</div></div></div>';
-
-        });
-
-        vBody ='<div class="container">'+
-			'<div class="row">'+
-				
-                CardConten+
-                
-			'</div>'+
-		'</div>';
-
-        $('#id_contenido_history').html(vBody);*/
+       
 
          $('#id_contenido_history').html("");
 

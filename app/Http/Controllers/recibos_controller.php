@@ -174,8 +174,11 @@ class recibos_controller extends Controller {
 
         //$obj = $query->get();
 
-        foreach ($query as $key) {
+
+        foreach ($obj as $qR => $key) {
+           
             $data[$i]['IMAGEN'] = Storage::temporaryUrl('Adjuntos-Recibos/'.$key->Nombre_imagen, now()->addMinutes(5));
+
             $i++;
 
         }  
