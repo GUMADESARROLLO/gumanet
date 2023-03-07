@@ -170,12 +170,15 @@ class recibos_controller extends Controller {
             return response()->json(false);
         }
 
-        $query = DB::table('tbl_order_recibo_adjuntos')->where('id_recibo', $Recibo);
+        $query = DB::table('tbl_order_recibo_adjuntos')->where('id_recibo', $Recibo)->get();
 
-        $obj = $query->get();
+        //$obj = $query->get();
+
 
         foreach ($obj as $qR => $key) {
-            $data[$i]['IMAGEN'] = Storage::Disk('s3')->temporaryUrl('Adjuntos-Recibos/'.$key->Nombre_imagen, now()->addMinutes(5));
+           
+            $data[$i]['IMAGEN'] = Storage::temporaryUrl('Adjuntos-Recibos/'.$key->Nombre_imagen, now()->addMinutes(5));
+
             $i++;
 
         }  

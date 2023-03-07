@@ -16,4 +16,12 @@ class Vendedor extends Model
         return Vendedor::whereNotIn('VENDEDOR',['F01','F12','F02','F18',"F15",'F24',"F23","F22"])->get();
         //return Vendedor::whereIn('VENDEDOR',['F09'])->get();
     }
+
+    public static function getVendedores()
+    {
+        
+
+        return Vendedor::whereNotIn('VENDEDOR',['F01','F02','F04','F24'])->get();
+        
+    }
 }
