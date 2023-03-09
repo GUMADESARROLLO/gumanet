@@ -7,8 +7,8 @@
     <div class="card border-0 shadow-sm mt-3 ">
         <div class="col-sm-auto">
             <div class="card-body">					
-                <div class="row">
-                    <div class="col-md-5">
+                <div class="row bg-primary text-white">                    
+                    <div class="col-md-4 mt-2">
                         <span id="id_form_role" style="display:none">{{ Session::get('user_role') }}</span>                        
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -17,17 +17,32 @@
                             <input type="text" id="id_txt_buscar" class="form-control" placeholder="Buscar...">
                         </div>
                     </div>
-                    <div class="col-md-6"></div>
-                                         
-                    <div class="col-md-1.5 ">
-                        <div class="input-group">
-                            <select class="custom-select" id="frm_lab_row" name="frm_lab_row">
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="-1">*</option>
-                            </select>
+                   
+                    <div class="col-md-2 border-left">
+                        <div class="form-group mt-2">                
+                            <b><label for="f1">META VAL.</label></b></br>
+                            <label for="f1" id="lbl_metaVal">C$ {{ @number_format($totalMv, 2, '.', ',') }}</label>
+                            </div>
                         </div>
-                    </div>
+                        <div class="col-md-2 border-left">
+                            <div class="form-group mt-2">                
+                            <b><label for="f1">VENTA VAL.</label></b></br>
+                            <label for="f1" id="lbl_ventaVal">C$ {{ @number_format($totalVv, 2, '.', ',') }}</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 border-left">
+                            <div class="form-group mt-2">
+                            <b><label for="f1">META UND.</label></b></br>
+                            <label for="f1" id="lbl_metaUnd">{{ @number_format($totalMu, 0, '.', ',') }}</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 border-left">
+                            <div class="form-group mt-2">                
+                            <b><label for="f1">VENTA UND.</label></b></br>
+                            <label for="f1" id="lbl_ventaUnd">{{ @number_format($totalVu, 0, '.', ',') }}</label>
+                            </div>
+                        </div>    
+                    
                 </div>
             </div>
         </div>

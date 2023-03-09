@@ -10,59 +10,6 @@ use Illuminate\Support\Facades\DB;
 class PromocionDetalle extends Model
 {
     protected $table = "gumadesk.view_resumen_promocion";
-    /*public static function getDetalles($ID)
-    {  
-        $i      = 0;
-        $json   = array();
-        $Rows       = PromocionDetalle::where('id_promocion',$ID)->get();
-
-        $iPromo     = Promocion::where('id',$ID)->get();
-        $fecha_ini  = $iPromo[0]->original['fecha_ini'];
-        $fecha_end  = $iPromo[0]->original['fecha_end'];
-
-        foreach($Rows as $r){
-
-
-            $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_venta_item "'.$fecha_ini.'","'.$fecha_end.'","'.$r->Articulo.'" ';            
-            $query      = DB::connection('sqlsrv')->select($strQuery);
-
-            $Venta          = 0;
-            $PromVenta      = 0;
-            $VentaUND       = 0;
-            $PromVentaUND   = 0;
-
-            if (count($query )>0) {
-                $Venta          = number_format($query[0]->VAL,2,'.','');
-                $VentaUND       = number_format($query[0]->UND,2,'.','');
-            }
-
-            $PromVenta      = ( $Venta !=0 ) ? ( $Venta / $r->ValMeta  ) * 100 : 0;
-            $PromVentaUND   = ( $VentaUND !=0 ) ? ( $VentaUND / $r->MetaUnd  ) * 100 : 0;
-
-
-
-            $json[$i]['id']                 = $r->id;
-            $json[$i]['id_promocion']       = $r->id_promocion;
-            $json[$i]['Articulo']           = $r->Articulo;
-            $json[$i]['Descripcion']        = $r->Descripcion;
-            $json[$i]['Precio']             = $r->Precio;
-            $json[$i]['NuevaBonificacion']  = $r->NuevaBonificacion;
-            $json[$i]['ValorVinneta']       = $r->ValorVinneta;
-            $json[$i]['ValMeta']            = $r->ValMeta;
-            $json[$i]['MetaUnd']            = $r->MetaUnd;
-            $json[$i]['Promedio_VAL']       = $r->Promedio_VAL;
-            $json[$i]['Promedio_UND']       = $r->Promedio_UND;
-            $json[$i]['RangeProme']         = $r->RangeProme;
-            $json[$i]['Venta']              = $Venta;
-            $json[$i]['PromVenta']          = $PromVenta;
-            $json[$i]['VentaUND']           = $VentaUND;
-            $json[$i]['PromVentaUND']       = $PromVentaUND;
-            $i++;
-
-        }
-        return  $json;
-    }*/
-
     public static function getDetalles()
     {  
         $i      = 0;
