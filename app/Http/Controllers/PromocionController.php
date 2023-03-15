@@ -26,5 +26,11 @@ class PromocionController extends Controller
         
         return view('pages.promocionesRuta',compact('Promociones','totalMv', 'totalVv', 'totalMu', 'totalVu'));
     }
+
+    public function getPromoMes(Request $request){
+        $articulo = $request->articulo;
+        $promo = PromocionDetalle::getPromoMes($articulo);
+        return response()->json($promo);
+    }
     
 }

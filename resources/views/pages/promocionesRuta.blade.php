@@ -62,10 +62,10 @@
                   <th>VAL. PROM.</th>
                   <th>META VAL.</th>
                   <th>VENTA</th>
-                  <th>VENTA {{ Carbon\Carbon::createFromFormat('m', @date('m'))->format('F') }}</th>
                   <th>UND PROM.</th>
                   <th>META UND.</th>
                   <th>VENTA UND.</th>
+                  <th>VENTA {{ Carbon\Carbon::createFromFormat('m', @date('m'))->format('F') }}</th>
                   <th>VENTA UND. {{ Carbon\Carbon::createFromFormat('m', @date('m'))->format('F') }}</th>
                 </tr>
               </thead>
@@ -75,7 +75,7 @@
                             <td>
                                 <div class="d-flex align-items-center position-relative mt-2">                                
                                     <div class="flex-1 ms-3">
-                                    <h6 class="mb-0 fw-semi-bold"><div class="stretched-link text-900">{{ $p['Descripcion'] }}</div></h6>
+                                    <a href="#!" id="exp_more" class="exp_more text-dark" idArt="{{ $p['Articulo'] }}"><h6 class="mb-0 fw-semi-bold"><div class="stretched-link text-900">{{ $p['Descripcion'] }}</div></h6></a>
                                     <p class="text-500 fs--2 mb-0">{{ $p['Articulo'] }} </p>
                                     </div>
                                 </div>
@@ -114,11 +114,6 @@
                                 </div> 
                             </td>
                             <td>
-                                <div class="pe-4 border-sm-end border-200">
-                                    <h6 class="fs--2 text-600 mb-1">C${{ @number_format($p['VentaMActual'],2) }}</span></h6>                    
-                                </div> 
-                            </td>
-                            <td>
                                 <div class="pe-4 border-sm-end border-200 text-center">
                                     <h6 class="fs--2 text-600 mb-1">0</h6>                    
                                 </div> 
@@ -131,6 +126,11 @@
                             <td>
                                 <div class="pe-4 border-sm-end border-200 text-center">
                                     <h6 class="fs--2 text-600 mb-1">{{ $p['VentaUND'] }} <span class="badge rounded-pill badge-primary">{{ @number_format($p['PromVentaUND'],2) }}%</span></h6>                    
+                                </div> 
+                            </td>
+                            <td>
+                                <div class="pe-4 border-sm-end border-200">
+                                    <h6 class="fs--2 text-600 mb-1">C${{ @number_format($p['VentaMActual'],2) }}</span></h6>                    
                                 </div> 
                             </td>
                             <td>
