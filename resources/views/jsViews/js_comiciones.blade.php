@@ -1,14 +1,14 @@
 <script type="text/javascript">
-$(document).ready(function() {
-    const fecha = new Date();
-    $('#id_txt_History2').hide();
+    $(document).ready(function() {
+        const fecha = new Date();
+        $('#id_txt_History2').hide();
 
-    dataComisiones(fecha.getMonth()+1, fecha.getFullYear());
-});
+        dataComisiones(fecha.getMonth()+1, fecha.getFullYear());
+    });
     // INICIALIZA Y ASIGNA LA FECHA EN EL DATEPICKER
     const startOfMonth  = moment().subtract(1,'days').format('YYYY-MM-DD');
     const endOfMonth    = moment().subtract(0, "days").format("YYYY-MM-DD");
-    var labelRange      = startOfMonth + " to " + endOfMonth;      
+    var labelRange      = startOfMonth + " to " + endOfMonth;
     $('#id_range_select').val(labelRange);
 
     $("#id_btn_new").click( function() {
@@ -28,10 +28,10 @@ $(document).ready(function() {
         var table = $('#table_comisiones').DataTable();
         table.page.len(this.value).draw();
     });
-       
+
     $('#id_txt_History').on( 'keyup', function () {
         var table = $('#tb_history80').DataTable();
-        
+
         $("#tb_history80_length").hide();
         $("#tb_history80_filter").hide();
         table.search(this.value).draw();
@@ -39,7 +39,7 @@ $(document).ready(function() {
 
     $('#id_txt_History2').on( 'keyup', function () {
         var table = $('#tb_history2023').DataTable();
-        
+
         $("#tb_history2023_length").hide();
         $("#tb_history2023_filter").hide();
         table.search(this.value).draw();
@@ -50,33 +50,33 @@ $(document).ready(function() {
         //var anno = $('#id_select_year').val();
 
         $.ajax({
-                url: "getDataComiciones",
-                type: 'get',
-                data: {
-                    mes      : mes,
-                    anno     : anno
-                },
-                async: false,
-                success: function(response) {
-                    $('#table_comisiones').DataTable({
-                        "data":response,
-                        "destroy" : true,
-                        "info":    false,
-                        "lengthMenu": [[5,10,-1], [5,10,"Todo"]],
-                        "language": {
-                            "zeroRecords": "NO HAY COINCIDENCIAS",
-                            "paginate": {
-                                "first":      "Primera",
-                                "last":       "Última ",
-                                "next":       "Siguiente",
-                                "previous":   "Anterior"
-                            },
-                            "lengthMenu": "MOSTRAR _MENU_",
-                            "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
-                            "search":     "BUSCAR"
+            url: "getDataComiciones",
+            type: 'get',
+            data: {
+                mes      : mes,
+                anno     : anno
+            },
+            async: false,
+            success: function(response) {
+                $('#table_comisiones').DataTable({
+                    "data":response,
+                    "destroy" : true,
+                    "info":    false,
+                    "lengthMenu": [[5,10,-1], [5,10,"Todo"]],
+                    "language": {
+                        "zeroRecords": "NO HAY COINCIDENCIAS",
+                        "paginate": {
+                            "first":      "Primera",
+                            "last":       "Última ",
+                            "next":       "Siguiente",
+                            "previous":   "Anterior"
                         },
-                        'columns': [
-                            {    "data": "NOMBRE", "render": function(data, type, row, meta) {
+                        "lengthMenu": "MOSTRAR _MENU_",
+                        "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+                        "search":     "BUSCAR"
+                    },
+                    'columns': [
+                        {    "data": "NOMBRE", "render": function(data, type, row, meta) {
 
                                 return  `   <div class="d-flex align-items-center position-relative mt-2">
                                                 <div class="flex-1 ms-3" style="text-align: left;">
@@ -86,8 +86,8 @@ $(document).ready(function() {
                                             </div>
                                         `
 
-                            }},        
-                            {   "data": "VENDEDOR", "render": function(data, type, row, meta) {
+                            }},
+                        {   "data": "VENDEDOR", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200">
                                             <h7 class="fs--2 text-secondary mb-1"><b>Salario Garantizado</b></h7>
@@ -96,8 +96,8 @@ $(document).ready(function() {
                                             </div>
                                         </div>`
 
-                            } },    
-                            {   "data": "BASICO", "render": function(data, type, row, meta) {
+                            } },
+                        {   "data": "BASICO", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200">
                                             <h7 class="fs--2 text-secondary mb-1"><b>Ventas Val.</b></h7>
@@ -107,7 +107,7 @@ $(document).ready(function() {
                                         </div>`
 
                             } },
-                            {    "data": "VENDEDOR", "render": function(data, type, row, meta) {
+                        {    "data": "VENDEDOR", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200">
                                             <h7 class="fs--2 text-secondary mb-1"><b>Comisión</b></h7>
@@ -121,8 +121,8 @@ $(document).ready(function() {
                                                 </div>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-total-sales">
-                                                
-                                            <table class="table" style="border: 2px solid black;">                                  
+
+                                            <table class="table" style="border: 2px solid black;">
                                                 <thead class="bg-200 text-900">
                                                 <tr class="bg-primary text-light">
                                                     <th class="">CLASIF</th>
@@ -139,7 +139,7 @@ $(document).ready(function() {
                                                     </td>
                                                     <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Lista80[0]+`</td>
                                                     <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista80[1]).format('0,0.00')+` </td>
-                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista80[2]+` %</td>                                          
+                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista80[2]+` %</td>
                                                     <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista80[3]).format('0,0.00')+` </td>
                                                 </tr>
                                                 <tr class="border-200">
@@ -148,7 +148,7 @@ $(document).ready(function() {
                                                     </td>
                                                     <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Lista20[0]+`</td>
                                                     <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20[1]).format('0,0.00')+` </td>
-                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista20[2]+` %</td>                                          
+                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista20[2]+` %</td>
                                                     <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20[3]).format('0,0.00')+` </td>
                                                 </tr>
                                                 <tr class="border-200">
@@ -157,22 +157,22 @@ $(document).ready(function() {
                                                     </td>
                                                     <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Total[0]+`</td>
                                                     <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Total[1]).format('0,0.00')+` </td>
-                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Total[2]+` %</td>                                          
+                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Total[2]+` %</td>
                                                     <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Total[3]).format('0,0.00')+` </td>
                                                 </tr>
                                                 </tbody>
                                             </table>
-                                            <table class="table" style="border: 2px solid black;"> 
+                                            <table class="table" style="border: 2px solid black;">
                                                 <thead class="bg-200 text-900">
                                                 <tr class="bg-primary text-light">
                                                     <th colspan="2">ANULACIÓN NOTA DE CRÉDITOS</th>
-                                                    
+
                                                 </tr>
-                                                <tr>                       
+                                                <tr>
                                                     <th></th>
                                                     <th></th>
                                                 </tr>
-                                                </thead>     
+                                                </thead>
                                                 <tbody>
                                                     <tr class="border-200">
                                                         <td class="align-middle">
@@ -196,41 +196,41 @@ $(document).ready(function() {
                                             </table>
                                             </div>
                                             </div>
-                                            
+
                                         </div>`
 
-                            }},        
-                            {   "data": "VENDEDOR", "render": function(data, type, row, meta) {
+                            }},
+                        {   "data": "VENDEDOR", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200">
-                                            <h7 class="fs--2 text-secondary mb-1"><b>Prom.</b></h7>
+                                            <h7 class="fs--2 text-secondary mb-1"><b>Prom. CLTE.</b></h7>
                                             <div class="d-flex align-items-center">
                                             <h6 class="fs-0 text-900 mb-0 me-2">`+row.DATARESULT.Totales_finales[4]+`</h6>
                                             </div>
                                         </div>`
 
-                            } },    
-                            {  "data": "BASICO", "render": function(data, type, row, meta) {
+                            } },
+                        {  "data": "BASICO", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200">
-                                            <h7 class="fs--2 text-secondary mb-1"><b>Meta.</b></h7>
+                                            <h7 class="fs--2 text-secondary mb-1"><b>Meta. CLTE.</b></h7>
                                             <div class="d-flex align-items-center">
                                             <h6 class="fs-0 text-900 mb-0 me-2">`+row.DATARESULT.Totales_finales[5]+`</h6>
                                             </div>
                                         </div>`
 
                             } },
-                            {    "data": "NOMBRE", "render": function(data, type, row, meta) {
+                        {    "data": "NOMBRE", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200">
-                                            <h7 class="fs--2 text-secondary mb-1"><b>Fact.</b></h7>
+                                            <h7 class="fs--2 text-secondary mb-1"><b>Fact. CLTE.</b></h7>
                                             <div class="d-flex align-items-center">
                                             <h6 class="fs-0 text-900 mb-0 me-2">`+row.DATARESULT.Totales_finales[6]+`</h6>
                                             </div>
                                         </div>`
 
-                            }},        
-                            {   "data": "VENDEDOR", "render": function(data, type, row, meta) {
+                            }},
+                        {   "data": "VENDEDOR", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200">
                                             <h7 class="fs--2 text-secondary mb-1"><b>Bono.Cobertura</b></h7>
@@ -240,8 +240,8 @@ $(document).ready(function() {
                                             </div>
                                         </div> `
 
-                            } },    
-                            {   "data": "BASICO", "render": function(data, type, row, meta) {
+                            } },
+                        {   "data": "BASICO", "render": function(data, type, row, meta) {
 
                                 return  `<div class="pe-4 border-sm-end border-200" >
                                             <h7 class="fs--2 text-secondary mb-1"><b>Comisión</b></h7>
@@ -251,50 +251,50 @@ $(document).ready(function() {
                                         </div>`
 
                             } },
-                            {   "data": "BASICO", "render": function(data, type, row, meta) {
+                        {   "data": "BASICO", "render": function(data, type, row, meta) {
 
                                 return  `<div class="">
                                             <h7 class="fs--2 text-secondary mb-1"><b>Total Comp.</b></h7>
                                             <div class="d-flex align-items-center">
-                                            <h6 class="fs-0 text-900 mb-0 me-2">C$ `+numeral(row.DATARESULT.Total_Compensacion).format('0,0.00')+`</h6>                                  
+                                            <h6 class="fs-0 text-900 mb-0 me-2">C$ `+numeral(row.DATARESULT.Total_Compensacion).format('0,0.00')+`</h6>
                                             </div>
                                         </div>`
 
                             } },
-                        ],
-                        "footerCallback": function ( row, data, start, end, display ) {
+                    ],
+                    "footerCallback": function ( row, data, start, end, display ) {
                         var api = this.api();
                         var Total       = 0;
 
                         var intVal = function ( i ) {
-                                return typeof i === 'string' ?
+                            return typeof i === 'string' ?
                                 i.replace(/[^0-9.]/g, '')*1 :
                                 typeof i === 'number' ?
-                                i : 0;
-                            };
-                            
+                                    i : 0;
+                        };
+
                         total = api.column( 4 ).data().reduce( function (a, b){
                             return intVal(a) + intVal(b);
                         }, 0 );
 
                         for (var i = 0; i < data.length; i++) {
- 
+
                             Total += intVal(data[i].DATARESULT.Total_Compensacion);
                         }
                         //Total = Pendiete + Ingresado + Verificado;
-                            
+
                         $(api.column(8).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL PAGADO EN COMISIONES: </h6>');
                         $(api.column(9).footer()).html('<div class="d-flex align-items-center"><h6 class="fs-0 text-900 mb-0 me-2">C$ '+numeral(Total).format('0,0.00')+'</h6></div>');
                     },
-                    })
-                    //OCULTA DE LA PANTALLA EL FILTRO DE PAGINADO Y FORM DE BUSQUEDA
-                    $("#table_comisiones_length").hide();
-                    $("#table_comisiones_filter").hide();
-                }
+                })
+                //OCULTA DE LA PANTALLA EL FILTRO DE PAGINADO Y FORM DE BUSQUEDA
+                $("#table_comisiones_length").hide();
+                $("#table_comisiones_filter").hide();
+            }
         });
     }
 
-    
+
 
     $(document).on('click', '#itemHistory', function(ef) {
         $('#id_txt_History2').val("");
@@ -325,15 +325,15 @@ $(document).ready(function() {
             async: true,
             dataType: "json",
             success: function(data) {
-                            
+
                 if (data.length > 0) {
                     dta_table_80 = [];
                     dta_table_20 = [];
                     dta_table_header = [
-                        {"data": "ROW_ID"}, 
+                        {"data": "ROW_ID"},
                         {"data": "ARTICULO",
                             "render": function(data, type, row, meta) {
-                            return `<div class="d-flex align-items-center position-relative ">
+                                return `<div class="d-flex align-items-center position-relative ">
                                     <div class="flex-1">
                                         <h6 class="mb-0 fw-semi-bold">
                                             <div class="stretched-link text-dark">`+ row.DESCRIPCION +`</div>
@@ -341,40 +341,40 @@ $(document).ready(function() {
                                         <p class="text-secondary fs--2 mb-0">`+ row.ARTICULO +` </p>
                                     </div>
                                 </div>`
-                        }},
-                        {"data": "MetaUND","render": function(data, type, row, meta) {return data + ' UND'}},                         
-                        {"data": "VentaUND","render": function(data, type, row, meta) {return data + ' UND'}}, 
+                            }},
+                        {"data": "MetaUND","render": function(data, type, row, meta) {return data + ' UND'}},
+                        {"data": "VentaUND","render": function(data, type, row, meta) {return data + ' UND'}},
                         {"data": "VentaVAL","render": function(data, type, row, meta) {
-                            return `<div class="pe-4">
+                                return `<div class="pe-4">
                                 <div class="d-flex align-items-center">
                                   <h6 class="fs-0 text-dark mb-0 me-2">C$ `+ row.VentaVAL +`</h6>
                                   <span class="badge rounded-pill badge-primary">`+ row.Cumple +` %</span>
                                 </div>
                               </div>`
-                        }},
+                            }},
                         {"data": "isCumpl","render": function(data, type, row, meta) {
-                            var lbl = '';
-                            if ( row.isCumpl == 'SI' ) {
-                                lbl = '<span class="badge badge rounded-pill d-block p-2 badge-primary">Cumplio<span class="ms-1 fas fa-dollar-sign" data-fa-transform="shrink-2"></span></span>'
-                            } 
-                            return lbl
-                        }}, 
+                                var lbl = '';
+                                if ( row.isCumpl == 'SI' ) {
+                                    lbl = '<span class="badge badge rounded-pill d-block p-2 badge-primary">Cumplio<span class="ms-1 fas fa-dollar-sign" data-fa-transform="shrink-2"></span></span>'
+                                }
+                                return lbl
+                            }},
                     ]
-                    
+
                     $.each(data,function(key, registro) {
 
                         ventaValor  += parseFloat(numeral(registro.VentaVAL).format('00.00'));
-                        VentaUND    += parseFloat(registro.VentaUND.replace(/,/g, ''), 10); 
-                        MetaUND     += parseFloat(registro.MetaUND.replace(/,/g, ''), 10);   
+                        VentaUND    += parseFloat(registro.VentaUND.replace(/,/g, ''), 10);
+                        MetaUND     += parseFloat(registro.MetaUND.replace(/,/g, ''), 10);
 
                         Item80      +=  (registro.Lista==80)? 1 : 0
                         Item20      +=  (registro.Lista==20)? 1 : 0
 
                         ItemC80     +=  (registro.Lista==80 && registro.VentaUND > '0.00')? 1 : 0
-                        ItemC20     +=  (registro.Lista==20 && registro.VentaUND > '0.00')? 1 : 0
+                        ItemC20     +=  (registro.Lista==20 && registro.isCumpl == 'SI')? 1 : 0
 
-                        if(registro.Lista == 80){                       
-                            dta_table_80.push({ 
+                        if(registro.Lista == 80){
+                            dta_table_80.push({
                                 ROW_ID: registro.ROW_ID,
                                 ARTICULO: registro.ARTICULO,
                                 DESCRIPCION: registro.DESCRIPCION,
@@ -388,7 +388,7 @@ $(document).ready(function() {
                                 isCumpl: registro.isCumpl
                             })
                         }else if(registro.Lista == 20){
-                            dta_table_20.push({ 
+                            dta_table_20.push({
                                 ROW_ID: registro.ROW_ID,
                                 ARTICULO: registro.ARTICULO,
                                 DESCRIPCION: registro.DESCRIPCION,
@@ -404,16 +404,16 @@ $(document).ready(function() {
                         }
                     });
 
-                    table_render('#tb_history80',dta_table_80,dta_table_header,false)   
-                    table_render('#tb_history2023',dta_table_20,dta_table_header,false)     
-                    
-                    ventaValor = "C$ " +numeral(ventaValor).format('0,0,00.00') 
+                    table_render('#tb_history80',dta_table_80,dta_table_header,false)
+                    table_render('#tb_history2023',dta_table_20,dta_table_header,false)
+
+                    ventaValor = "C$ " +numeral(ventaValor).format('0,0,00.00')
                     $("#lbl_val").text(ventaValor)
 
-                    VentaUND = numeral(VentaUND).format('0,0,00') 
+                    VentaUND = numeral(VentaUND).format('0,0,00')
                     $("#lbl_venta").text(VentaUND)
 
-                    MetaUND = numeral(MetaUND).format('0,0,00') 
+                    MetaUND = numeral(MetaUND).format('0,0,00')
                     $("#lbl_meta").text(MetaUND)
 
                     $("#lbl_80").text(ItemC80 + " / " + Item80 )
@@ -430,16 +430,16 @@ $(document).ready(function() {
 
                     $("#nombre_ruta_modal").text(nombre)
                     $("#nombre_ruta_zona_modal").text(ruta + " | " + Zona)
-                                                           
+
 
                 }
 
             },
-            
+
         });
-        
+
     });
-    
+
     function table_render(Table,datos,Header,Filter){
         $(Table).DataTable({
             "data": datos,
@@ -474,10 +474,10 @@ $(document).ready(function() {
                 },
                 { "width": "60%", "targets": [1] },
                 { "width": "10%", "targets": [2,3,4,5] },
-                
+
             ],
             "createdRow": function( row, data, dataIndex ) {
-                if ( data.VentaUND > '0.00') {        
+                if ( data.VentaUND > '0.00') {
                     $(row).addClass('table-success');
                 }else{
                     $(row).addClass('table-white');
@@ -486,7 +486,7 @@ $(document).ready(function() {
             rowCallback: function( row, data, index ) {
                 if ( data.Index < 0 ) {
                     $(row).addClass('table-danger');
-                } 
+                }
             }
         });
         if(!Filter){
@@ -501,7 +501,7 @@ $(document).ready(function() {
         $('#sku-80-tab').removeClass('bg-blue');
         $('#sku-80-tab').removeClass('text-light');
         $('#sku-80-tab').addClass('text-dark');
-      
+
 
         $(this).removeClass('text-dark');
         $(this).addClass('bg-blue');
