@@ -285,33 +285,15 @@ $(document).on('click', '#exp_more', function(ef) {
 function format ( callback, articulo) {
     var thead = tbody = '';
     const anno = new Date();
-
-    /*tabla = `<table class="table table-striped table-bordered table-sm">
+    
+    tabla = `<table class="table table-striped table-bordered table-sm">
         <thead class="text-center bg-secondary text-light">
-            <tr>
-                <div id="sending" class="col-lg-12" style="display:none;">
-                    <h3>Procesando...</h3>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" data-progress="0" style="width: 0%;">
-                            0%
-                        </div>
-                    </div>
-                    <div class="counter-sending">
-                        (<span id="done">0</span>/<span id="total">0</span>)
-                    </div>
-                
-                    <div class="execute-time-content">
-                        Tiempo transcurrido: <span class="execute-time">0 segundos</span>
-                    </div>
-                
-                    <div class="end-process" style="display:none;">
-                        <div class="alert alert-success">El proceso ha sido completado.</a></div>
-                    </div>    
-                </div>
+            <tr> <th class="text-center"><b>Cargando...</b></th>
             </tr>
         </thead>
-    </table>`;*/
+    </table>`;
 
+    callback(tabla).show();
 
     thead =`<table class="table table-striped table-bordered table-sm">
                 <thead class="text-center bg-secondary text-light">
@@ -340,7 +322,7 @@ function format ( callback, articulo) {
             articulo: articulo
         },
         success: function ( data ) {
-            if (data.length==0) {
+           if (data.length==0) {
                 tbody +=`<tr>
                             <td colspan='6'><center>Cero ventas</center></td>
                         </tr>`;
@@ -391,8 +373,34 @@ function format ( callback, articulo) {
                 </div>`;
 
             callback(temp).show();            
-        }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            if (textStatus == 'parsererror') {
+                textStatus = 'Technical error: Unexpected response returned by server. Sending stopped.';
+            }
+            alert(textStatus);
+       }
 
+    });
+}
+
+function executeProcess(offset, batch = false) {
+    
+ 
+    $.ajax({ 
+        type: 'POST',
+        dataType: "json",
+        url : "process.php", 
+        data: {
+            id_process: 1,
+            offset: offset,
+            batch: batch
+        },
+        success: function(response) {
+           
+ 
+          
+        }
     });
 }
     
