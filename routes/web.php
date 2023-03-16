@@ -250,9 +250,4 @@ Route::post('AnularFactura', 'exportacion_controller@AnularFactura')->name('Anul
 Route::get('/ArticuloDetalles/{articulo}/{unidad}','inventario_controller@getArticuloDetalles')->name('ArticuloDetalles');;
 
 Route::get('Promocion', 'PromocionController@getPromocion')->name('Promocion');
-Route::get('SavePromo', 'PromocionController@SavePromo')->name('SavePromo');
-Route::get('SaveDetalles', 'PromocionController@SaveDetalles')->name('SaveDetalles');
-Route::get('getDetalles', 'PromocionController@getDetalles')->name('getDetalles');
-Route::post('DeleteItems', 'PromocionController@DeleteItems')->name('DeleteItems');
-Route::post('rmPromocion', 'PromocionController@rmPromocion')->name('rmPromocion');
-Route::post('updtFechas', 'PromocionController@updtFechas')->name('updtFechas');
+Route::get('getPromoMes', 'PromocionController@getPromoMes')->name('getPromoMes');

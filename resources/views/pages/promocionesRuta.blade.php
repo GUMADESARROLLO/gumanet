@@ -7,8 +7,8 @@
     <div class="card border-0 shadow-sm mt-3 ">
         <div class="col-sm-auto">
             <div class="card-body">					
-                <div class="row">
-                    <div class="col-md-5">
+                <div class="row bg-primary text-white">                    
+                    <div class="col-md-4 mt-2">
                         <span id="id_form_role" style="display:none">{{ Session::get('user_role') }}</span>                        
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -17,17 +17,32 @@
                             <input type="text" id="id_txt_buscar" class="form-control" placeholder="Buscar...">
                         </div>
                     </div>
-                    <div class="col-md-6"></div>
-                                         
-                    <div class="col-md-1.5 ">
-                        <div class="input-group">
-                            <select class="custom-select" id="frm_lab_row" name="frm_lab_row">
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="-1">*</option>
-                            </select>
+                   
+                    <div class="col-md-2 border-left">
+                        <div class="form-group mt-2">                
+                            <b><label for="f1">META VAL.</label></b></br>
+                            <label for="f1" id="lbl_metaVal">C$ {{ @number_format($totalMv, 2, '.', ',') }}</label>
+                            </div>
                         </div>
-                    </div>
+                        <div class="col-md-2 border-left">
+                            <div class="form-group mt-2">                
+                            <b><label for="f1">VENTA VAL.</label></b></br>
+                            <label for="f1" id="lbl_ventaVal">C$ {{ @number_format($totalVv, 2, '.', ',') }}</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 border-left">
+                            <div class="form-group mt-2">
+                            <b><label for="f1">META UND.</label></b></br>
+                            <label for="f1" id="lbl_metaUnd">{{ @number_format($totalMu, 0, '.', ',') }}</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 border-left">
+                            <div class="form-group mt-2">                
+                            <b><label for="f1">VENTA UND.</label></b></br>
+                            <label for="f1" id="lbl_ventaUnd">{{ @number_format($totalVu, 0, '.', ',') }}</label>
+                            </div>
+                        </div>    
+                    
                 </div>
             </div>
         </div>
@@ -47,10 +62,10 @@
                   <th>VAL. PROM.</th>
                   <th>META VAL.</th>
                   <th>VENTA</th>
-                  <th>VENTA {{ Carbon\Carbon::createFromFormat('m', @date('m'))->format('F') }}</th>
                   <th>UND PROM.</th>
                   <th>META UND.</th>
                   <th>VENTA UND.</th>
+                  <th>VENTA {{ Carbon\Carbon::createFromFormat('m', @date('m'))->format('F') }}</th>
                   <th>VENTA UND. {{ Carbon\Carbon::createFromFormat('m', @date('m'))->format('F') }}</th>
                 </tr>
               </thead>
@@ -60,7 +75,7 @@
                             <td>
                                 <div class="d-flex align-items-center position-relative mt-2">                                
                                     <div class="flex-1 ms-3">
-                                    <h6 class="mb-0 fw-semi-bold"><div class="stretched-link text-900">{{ $p['Descripcion'] }}</div></h6>
+                                    <a href="#!" id="exp_more" class="exp_more text-dark" idArt="{{ $p['Articulo'] }}"><h6 class="mb-0 fw-semi-bold"><div class="stretched-link text-900">{{ $p['Descripcion'] }}</div></h6></a>
                                     <p class="text-500 fs--2 mb-0">{{ $p['Articulo'] }} </p>
                                     </div>
                                 </div>
@@ -99,11 +114,6 @@
                                 </div> 
                             </td>
                             <td>
-                                <div class="pe-4 border-sm-end border-200">
-                                    <h6 class="fs--2 text-600 mb-1">C${{ @number_format($p['VentaMActual'],2) }}</span></h6>                    
-                                </div> 
-                            </td>
-                            <td>
                                 <div class="pe-4 border-sm-end border-200 text-center">
                                     <h6 class="fs--2 text-600 mb-1">0</h6>                    
                                 </div> 
@@ -116,6 +126,11 @@
                             <td>
                                 <div class="pe-4 border-sm-end border-200 text-center">
                                     <h6 class="fs--2 text-600 mb-1">{{ $p['VentaUND'] }} <span class="badge rounded-pill badge-primary">{{ @number_format($p['PromVentaUND'],2) }}%</span></h6>                    
+                                </div> 
+                            </td>
+                            <td>
+                                <div class="pe-4 border-sm-end border-200">
+                                    <h6 class="fs--2 text-600 mb-1">C${{ @number_format($p['VentaMActual'],2) }}</span></h6>                    
                                 </div> 
                             </td>
                             <td>

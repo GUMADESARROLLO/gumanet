@@ -17,8 +17,8 @@
         "info": false,
         "bPaginate": true,
         "lengthMenu": [
-            [10,20, -1],
-            [10,20, "Todo"]
+            [5,20, -1],
+            [5,20, "Todo"]
         ],
         "language": {
             "zeroRecords": "NO HAY COINCIDENCIAS",
@@ -188,8 +188,8 @@
                 [0, "asc"]
             ],
             "lengthMenu": [
-                [5,10, -1],
-                [5,10, "Todo"]
+                [10, -1],
+                [10, "Todo"]
             ],
             "language": {
                 "zeroRecords": "NO HAY COINCIDENCIAS",
@@ -244,9 +244,156 @@
 
     }
 
-    if ( $("#id_spinner_load").hasClass('visible') ) {
-            $("#id_spinner_load").removeClass('visible');
-            $("#id_spinner_load").addClass('invisible');
+if ( $("#id_spinner_load").hasClass('visible') ) {
+        $("#id_spinner_load").removeClass('visible');
+        $("#id_spinner_load").addClass('invisible');
+}
+
+
+$(document).on('click', '#exp_more', function(ef) {
+    var table = $('#table_promociones').DataTable();
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
+    var articulo = $(this).attr('idArt');
+    var data = table.row($(this).parents('tr')).data();
+
+    if (row.child.isShown()) {
+        row.child.hide();
+        tr.removeClass('shown');
+        
+    } else {
+        //VALIDA SI EN LA TABLA HAY TABLAS SECUNDARIAS ABIERTAS
+        table.rows().eq(0).each( function ( idx ) {
+            var row = table.row( idx );
+
+            if ( row.child.isShown() ) {
+                row.child.hide();                
+            }
+        } );
+
+        format(row.child, articulo);
+        tr.addClass('shown');
+        
+    }
+
+    
+
+});
+
+
+
+function format ( callback, articulo) {
+    var thead = tbody = '';
+    const anno = new Date();
+
+    /*tabla = `<table class="table table-striped table-bordered table-sm">
+        <thead class="text-center bg-secondary text-light">
+            <tr>
+                <div id="sending" class="col-lg-12" style="display:none;">
+                    <h3>Procesando...</h3>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" data-progress="0" style="width: 0%;">
+                            0%
+                        </div>
+                    </div>
+                    <div class="counter-sending">
+                        (<span id="done">0</span>/<span id="total">0</span>)
+                    </div>
+                
+                    <div class="execute-time-content">
+                        Tiempo transcurrido: <span class="execute-time">0 segundos</span>
+                    </div>
+                
+                    <div class="end-process" style="display:none;">
+                        <div class="alert alert-success">El proceso ha sido completado.</a></div>
+                    </div>    
+                </div>
+            </tr>
+        </thead>
+    </table>`;*/
+
+
+    thead =`<table class="table table-striped table-bordered table-sm">
+                <thead class="text-center bg-secondary text-light">
+                    <tr>
+                        <th class="center">`+anno.getFullYear()+`</th>
+                        <th class="center">ENERO</th>
+                        <th class="center">FEBRERO.</th>
+                        <th class="center">MARZO</th>
+                        <th class="center">ABRIL</th>
+                        <th class="center">MAYO</th>
+                        <th class="center">JUNIO</th>
+                        <th class="center">JULIO</th>
+                        <th class="center">AGOSTO</th>
+                        <th class="center">SEPTIEMBRE</th>
+                        <th class="center">OCTUBRE</th>
+                        <th class="center">NOVIEMBRE</th>
+                        <th class="center">DICIEMBRE</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>`;                
+    $.ajax({
+        type: "get",
+        url: "getPromoMes",
+        data:{
+            articulo: articulo
+        },
+        success: function ( data ) {
+            if (data.length==0) {
+                tbody +=`<tr>
+                            <td colspan='6'><center>Cero ventas</center></td>
+                        </tr>`;
+                callback(thead + tbody).show();
+            }
+
+                tbody +='<tr>'+
+                            '<td class="text-center bg-secondary text-light">C$</td>'+
+                            '<td class="text-center">' + data[1]['venta'] + '</td>'+
+                            '<td class="text-center">' + data[2]['venta'] + '</td>'+
+                            '<td class="text-center">' + data[3]['venta'] + '</td>'+
+                            '<td class="text-center">' + data[4]['venta'] + '</td>'+
+                            '<td class="text-center">' + data[5]['venta'] + '</td>'+
+                            '<td class="text-center">' + data[6]['venta'] + '</td>'+
+                            '<td class="text-center">' + data[7]['venta'] + '</td>'+
+                            '<td class="text-center">' + data[8]['venta'] + '</td>'+
+                            '<td class="text-center">' + data[9]['venta'] + '</td>'+
+                            '<td class="text-center">' + data[10]['venta'] + '</td>'+
+                            '<td class="text-center">' + data[11]['venta'] + '</td>'+
+                            '<td class="text-center">' + data[12]['venta'] + '</td>'+
+                        '</tr>'+
+                        '<tr>'+
+                            '<td class="text-center bg-secondary text-light">UND</td>'+
+                            '<td class="text-center">' + data[1]['unidad'] + '</td>'+
+                            '<td class="text-center">' + data[2]['unidad'] + '</td>'+
+                            '<td class="text-center">' + data[3]['unidad'] + '</td>'+
+                            '<td class="text-center">' + data[4]['unidad'] + '</td>'+
+                            '<td class="text-center">' + data[5]['unidad'] + '</td>'+
+                            '<td class="text-center">' + data[6]['unidad'] + '</td>'+
+                            '<td class="text-center">' + data[7]['unidad'] + '</td>'+
+                            '<td class="text-center">' + data[8]['unidad'] + '</td>'+
+                            '<td class="text-center">' + data[9]['unidad'] + '</td>'+
+                            '<td class="text-center">' + data[10]['unidad'] + '</td>'+
+                            '<td class="text-center">' + data[11]['unidad'] + '</td>'+
+                            '<td class="text-center">' + data[12]['unidad'] + '</td>'+
+                        '</tr>';
+            tbody += `</tbody></table>`;
+            
+            temp = `
+                <div style="
+                margin: 0 auto;
+                height: auto;
+                width:100%;
+                overflow: auto">
+                <pre dir="ltr" style="margin: 0px;padding:6px;">
+                    `+thead+tbody+`
+                </pre>
+                </div>`;
+
+            callback(temp).show();            
         }
+
+    });
+}
     
 </script>

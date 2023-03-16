@@ -14,8 +14,23 @@ class PromocionController extends Controller
         $Mes   = date('n');
         $Anno   = date('Y');
 
+        $totalMv = $totalVv = $totalMu = $totalVu = 0;
         $Promociones   = PromocionDetalle::getDetalles();
-        return view('pages.promocionesRuta',compact('Promociones'));
+
+        foreach($Promociones as $p){
+            $totalMv += $p['ValMeta'];
+            $totalVv += $p['Venta'];
+            $totalMu += $p['MetaUnd'];
+            $totalVu += $p['VentaUND'];
+        }
+        
+        return view('pages.promocionesRuta',compact('Promociones','totalMv', 'totalVv', 'totalMu', 'totalVu'));
+    }
+
+    public function getPromoMes(Request $request){
+        $articulo = $request->articulo;
+        $promo = PromocionDetalle::getPromoMes($articulo);
+        return response()->json($promo);
     }
     
 }
