@@ -300,7 +300,7 @@ function format ( callback, articulo) {
                     <tr>
                         <th class="center">`+anno.getFullYear()+`</th>
                         <th class="center">ENERO</th>
-                        <th class="center">FEBRERO.</th>
+                        <th class="center">FEBRERO</th>
                         <th class="center">MARZO</th>
                         <th class="center">ABRIL</th>
                         <th class="center">MAYO</th>
@@ -321,8 +321,8 @@ function format ( callback, articulo) {
         data:{
             articulo: articulo
         },
-        success: function ( data ) {
-           if (data.length==0) {
+        success: function ( data ) { console.log(data);
+           if (data.length==0) { console.log(data);
                 tbody +=`<tr>
                             <td colspan='6'><center>Cero ventas</center></td>
                         </tr>`;
@@ -331,33 +331,33 @@ function format ( callback, articulo) {
 
                 tbody +='<tr>'+
                             '<td class="text-center bg-secondary text-light">C$</td>'+
-                            '<td class="text-center">' + data[1]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[2]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[3]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[4]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[5]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[6]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[7]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[8]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[9]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[10]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[11]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[12]['venta'] + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['ENE']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['FEB']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['MAR']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['ABR']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['MAY']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['JUN']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['JUL']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['AGO']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['SEP']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['OCT']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['NOV']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['DIC']).toFixed(2) + '</td>'+
                         '</tr>'+
                         '<tr>'+
                             '<td class="text-center bg-secondary text-light">UND</td>'+
-                            '<td class="text-center">' + data[1]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[2]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[3]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[4]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[5]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[6]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[7]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[8]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[9]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[10]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[11]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[12]['unidad'] + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['ENE']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['FEB']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['MAR']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['ABR']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['MAY']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['JUN']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['JUL']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['AGO']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['SEP']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['OCT']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['NOV']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['DIC']).toFixed(0) + '</td>'+
                         '</tr>';
             tbody += `</tbody></table>`;
             

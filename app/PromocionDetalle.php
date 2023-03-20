@@ -14,7 +14,9 @@ class PromocionDetalle extends Model
     {  
         $i      = 0;
         $json   = array();
-        $Rows       = PromocionDetalle::where('anno', '2023')->get();
+        $anno   = Date('Y');
+        $meses = arraY('ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC');
+        $Rows       = PromocionDetalle::where('anno', $anno)->get();
         
         $iPromo     = Promocion::where('id',$Rows[0]->id_promocion)->get();
         $fecha_ini  = $iPromo[0]->original['fecha_ini'];
@@ -22,28 +24,32 @@ class PromocionDetalle extends Model
 
         foreach($Rows as $r){
 
-
-            $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_venta_item "'.$fecha_ini.'","'.$fecha_end.'","'.$r->Articulo.'" ';            
+            $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_item_venta "'.$fecha_ini.'","'.$fecha_end.'","'.$r->Articulo.'" ';            
             $query      = DB::connection('sqlsrv')->select($strQuery);
 
-           
+            $sql   = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$r->Articulo.'" ';            
+            $resp      = DB::connection('sqlsrv')->select($sql);
 
-            $strQuery2   = 'EXEC PRODUCCION.dbo.fn_promocion_venta_item "'.PromocionDetalle::data_first_month_day().'","'.PromocionDetalle::data_last_month_day(date('m')+1).'","'.$r->Articulo.'" ';            
-            $query2      = DB::connection('sqlsrv')->select($strQuery2);
 
             $Venta          = 0;
             $PromVenta      = 0;
             $VentaUND       = 0;
             $PromVentaUND   = 0;
+            $VentaMesA      = 0;
+            $VentaUNDMesA   = 0;
+            $j      = 1;
 
-            if (count($query )>0) {
-                $Venta          = number_format($query[0]->VAL,2,'.','');
-                $VentaUND       = number_format($query[0]->UND,0,'.','');
+            foreach($meses as $mes){
+                if($j == Date('n')){
+                    $VentaMesA = $resp[1]->$mes;
+                    $VentaUNDMesA = $resp[0]->$mes;
+                }
+                $j++;
             }
 
-            if (count($query2 )>0) {
-                $VentaMesA          = number_format($query2[0]->VAL,2,'.','');
-                $VentaUNDMesA       = number_format($query2[0]->UND,0,'.','');
+            foreach($query as $item){
+                $Venta          += number_format($item->VAL,2,'.','');
+                $VentaUND       += number_format($item->UND,0,'.','');
             }
 
             $PromVenta      = ( $Venta !=0 ) ? ( $Venta / $r->ValMeta  ) * 100 : 0;
@@ -72,47 +78,18 @@ class PromocionDetalle extends Model
         return  $json;
     }
 
-    public static function data_last_month_day($month) { 
-        $year = date('Y');
-        $day = date("d", mktime(0,0,0, $month, 0, $year));
-   
-        return date('Y-m-d', mktime(0,0,0, $month, $day, $year));
-    }
-   
-    /** Actual month first day **/
-    public static function data_first_month_day() {
-        $month = date('m');
-        $year = date('Y');
-        return date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-    }
-
     public static function getPromoMes($articulo){
 
         $json = array();
-        
-        for($i = 1; $i <= 12; $i++){
-            $fecha_ini = Date('Y')."/".$i."/"."01";
-            $fecha_end = PromocionDetalle::data_last_month_day($i);
-            if($i <= (date('m')+1)){
-                $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_venta_item "'.$fecha_ini.'","'.$fecha_end.'","'.$articulo.'" ';            
-                $query      = DB::connection('sqlsrv')->select($strQuery);
+        $anno = Date('Y');
 
-                $Venta = $VentaUND = 0;
-                if (count($query )>0) {
-                    $Venta          = number_format($query[0]->VAL,2,'.',',');
-                    $VentaUND       = number_format($query[0]->UND,0,'.',',');
-                }
+        $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$articulo.'" ';            
+        $query      = DB::connection('sqlsrv')->select($strQuery);
 
-                $json[$i]['venta'] = $Venta;
-                $json[$i]['unidad'] = $VentaUND;
-
-            }else{
-                $json[$i]['venta'] = 0.00;
-                $json[$i]['unidad'] = 0;
-            }
-            
-            
+        if(count($query)){
+            $json[] = $query;
         }
+                
         return $json;
     }    
 }
