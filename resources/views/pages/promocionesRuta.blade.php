@@ -100,7 +100,7 @@
 
                             <td>
                                 <div class="pe-4 border-sm-end border-200 text-center">
-                                    <h6 class="fs--2 text-600 mb-1"C$>0</h6>                  
+                                    <h6 class="fs--2 text-600 mb-1"> C$ {{@number_format($p['Promedio_VAL'],2) }}</h6>                  
                                 </div> 
                             </td>
                             <td>
@@ -115,7 +115,7 @@
                             </td>
                             <td>
                                 <div class="pe-4 border-sm-end border-200 text-center">
-                                    <h6 class="fs--2 text-600 mb-1">0</h6>                    
+                                    <h6 class="fs--2 text-600 mb-1">{{@number_format($p['Promedio_UND'],2) }}</h6>                    
                                 </div> 
                             </td>
                             <td>
