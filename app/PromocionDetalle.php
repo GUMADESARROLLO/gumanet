@@ -15,6 +15,7 @@ class PromocionDetalle extends Model
         $i      = 0;
         $json   = array();
         $anno   = Date('Y');
+        $nMes   = date('n');
         $meses = arraY('ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC');
         $Rows       = PromocionDetalle::where('anno', $anno)->get();
         
@@ -24,36 +25,54 @@ class PromocionDetalle extends Model
 
         foreach($Rows as $r){
 
+            $Articulos = trim($r->Articulo) ;
+            //$strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_venta_item "'.$fecha_ini.'","'.$fecha_end.'","'.$Articulos.'" ';            
+            //$query      = DB::connection('sqlsrv')->select($strQuery);
+           
             $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_item_venta "'.$fecha_ini.'","'.$fecha_end.'","'.$r->Articulo.'" ';            
             $query      = DB::connection('sqlsrv')->select($strQuery);
-
             $sql   = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$r->Articulo.'" ';            
             $resp      = DB::connection('sqlsrv')->select($sql);
 
-
+            $resp = json_decode(json_encode($resp), true);
+         
             $Venta          = 0;
             $PromVenta      = 0;
             $VentaUND       = 0;
             $PromVentaUND   = 0;
             $VentaMesA      = 0;
             $VentaUNDMesA   = 0;
+            $AVG_VLR = 0;
+            $AVG_UND = 0;
             $j      = 1;
 
-            foreach($meses as $mes){
-                if($j == Date('n')){
-                    $VentaMesA = $resp[1]->$mes;
-                    $VentaUNDMesA = $resp[0]->$mes;
-                }
-                $j++;
+            if (count($query )>0) {
+                $Venta              += number_format($query[0]->VAL,2,'.','');
+                $VentaUND           += number_format($query[0]->UND,0,'.','');
+                //$VentaMesA          = number_format($query[0]->VentaMesActual,2,'.','');
+                //$VentaUNDMesA       = number_format($query[0]->UNDMesActual,0,'.','');
+
+                //$AVG_VLR           = number_format($query[0]->AVG_VALOR_LAST_YEAR,2,'.','');
+                //$AVG_UND           = number_format($query[0]->AVG_UND_LAST_YEAR,0,'.','');  
             }
 
-            foreach($query as $item){
-                $Venta          += number_format($item->VAL,2,'.','');
-                $VentaUND       += number_format($item->UND,0,'.','');
+            if (count($resp) > 0) {
+                $VentaMesA      = $resp[1][$meses[$nMes - 1]];
+                $VentaUNDMesA   = $resp[0][$meses[$nMes - 1]];
+            } else {
+                $VentaMesA      = 0;
+                $VentaUNDMesA   = 0;
             }
+            
+           
+            
+            
+
+         
 
             $PromVenta      = ( $Venta !=0 ) ? ( $Venta / $r->ValMeta  ) * 100 : 0;
             $PromVentaUND   = ( $VentaUND !=0 ) ? ( $VentaUND / $r->MetaUnd  ) * 100 : 0;
+
 
 
             $json[$i]['id_promocion']       = $r->id_promocion;
@@ -64,8 +83,8 @@ class PromocionDetalle extends Model
             $json[$i]['ValorVinneta']       = $r->ValorVinneta;
             $json[$i]['ValMeta']            = $r->ValMeta;
             $json[$i]['MetaUnd']            = $r->MetaUnd;
-            //$json[$i]['Promedio_VAL']       = $r->Promedio_VAL;
-            //$json[$i]['Promedio_UND']       = $r->Promedio_UND;
+            $json[$i]['Promedio_VAL']       = $AVG_VLR;
+            $json[$i]['Promedio_UND']       = $AVG_UND;
             $json[$i]['Venta']              = $Venta;
             $json[$i]['PromVenta']          = $PromVenta;
             $json[$i]['VentaMActual']       = $VentaMesA;
