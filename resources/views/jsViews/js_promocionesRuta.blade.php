@@ -285,40 +285,22 @@ $(document).on('click', '#exp_more', function(ef) {
 function format ( callback, articulo) {
     var thead = tbody = '';
     const anno = new Date();
-
-    /*tabla = `<table class="table table-striped table-bordered table-sm">
+    
+    tabla = `<table class="table table-striped table-bordered table-sm">
         <thead class="text-center bg-secondary text-light">
-            <tr>
-                <div id="sending" class="col-lg-12" style="display:none;">
-                    <h3>Procesando...</h3>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" data-progress="0" style="width: 0%;">
-                            0%
-                        </div>
-                    </div>
-                    <div class="counter-sending">
-                        (<span id="done">0</span>/<span id="total">0</span>)
-                    </div>
-                
-                    <div class="execute-time-content">
-                        Tiempo transcurrido: <span class="execute-time">0 segundos</span>
-                    </div>
-                
-                    <div class="end-process" style="display:none;">
-                        <div class="alert alert-success">El proceso ha sido completado.</a></div>
-                    </div>    
-                </div>
+            <tr> <th class="text-center"><b>Cargando...</b></th>
             </tr>
         </thead>
-    </table>`;*/
+    </table>`;
 
+    callback(tabla).show();
 
     thead =`<table class="table table-striped table-bordered table-sm">
                 <thead class="text-center bg-secondary text-light">
                     <tr>
                         <th class="center">`+anno.getFullYear()+`</th>
                         <th class="center">ENERO</th>
-                        <th class="center">FEBRERO.</th>
+                        <th class="center">FEBRERO</th>
                         <th class="center">MARZO</th>
                         <th class="center">ABRIL</th>
                         <th class="center">MAYO</th>
@@ -339,8 +321,8 @@ function format ( callback, articulo) {
         data:{
             articulo: articulo
         },
-        success: function ( data ) {
-            if (data.length==0) {
+        success: function ( data ) { console.log(data);
+           if (data.length==0) { console.log(data);
                 tbody +=`<tr>
                             <td colspan='6'><center>Cero ventas</center></td>
                         </tr>`;
@@ -349,33 +331,33 @@ function format ( callback, articulo) {
 
                 tbody +='<tr>'+
                             '<td class="text-center bg-secondary text-light">C$</td>'+
-                            '<td class="text-center">' + data[1]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[2]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[3]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[4]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[5]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[6]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[7]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[8]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[9]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[10]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[11]['venta'] + '</td>'+
-                            '<td class="text-center">' + data[12]['venta'] + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['ENE']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['FEB']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['MAR']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['ABR']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['MAY']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['JUN']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['JUL']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['AGO']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['SEP']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['OCT']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['NOV']).toFixed(2) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][1]['DIC']).toFixed(2) + '</td>'+
                         '</tr>'+
                         '<tr>'+
                             '<td class="text-center bg-secondary text-light">UND</td>'+
-                            '<td class="text-center">' + data[1]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[2]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[3]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[4]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[5]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[6]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[7]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[8]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[9]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[10]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[11]['unidad'] + '</td>'+
-                            '<td class="text-center">' + data[12]['unidad'] + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['ENE']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['FEB']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['MAR']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['ABR']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['MAY']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['JUN']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['JUL']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['AGO']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['SEP']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['OCT']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['NOV']).toFixed(0) + '</td>'+
+                            '<td class="text-center">' + Number(data[0][0]['DIC']).toFixed(0) + '</td>'+
                         '</tr>';
             tbody += `</tbody></table>`;
             
@@ -391,8 +373,34 @@ function format ( callback, articulo) {
                 </div>`;
 
             callback(temp).show();            
-        }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            if (textStatus == 'parsererror') {
+                textStatus = 'Technical error: Unexpected response returned by server. Sending stopped.';
+            }
+            alert(textStatus);
+       }
 
+    });
+}
+
+function executeProcess(offset, batch = false) {
+    
+ 
+    $.ajax({ 
+        type: 'POST',
+        dataType: "json",
+        url : "process.php", 
+        data: {
+            id_process: 1,
+            offset: offset,
+            batch: batch
+        },
+        success: function(response) {
+           
+ 
+          
+        }
     });
 }
     
