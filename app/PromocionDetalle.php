@@ -14,7 +14,9 @@ class PromocionDetalle extends Model
     {  
         $i      = 0;
         $json   = array();
-        $Rows       = PromocionDetalle::where('anno', '2023')->get();
+        $anno   = Date('Y');
+        $meses = arraY('ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC');
+        $Rows       = PromocionDetalle::where('anno', $anno)->get();
         
         $iPromo     = Promocion::where('id',$Rows[0]->id_promocion)->get();
         $fecha_ini  = $iPromo[0]->original['fecha_ini'];
@@ -23,16 +25,19 @@ class PromocionDetalle extends Model
         foreach($Rows as $r){
 
             $Articulos = trim($r->Articulo) ;
-
-
             $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_venta_item "'.$fecha_ini.'","'.$fecha_end.'","'.$Articulos.'" ';            
             $query      = DB::connection('sqlsrv')->select($strQuery);
 
+            //sql   = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$r->Articulo.'" ';            
+            //$resp      = DB::connection('sqlsrv')->select($sql);
 
             $Venta          = 0;
             $PromVenta      = 0;
             $VentaUND       = 0;
             $PromVentaUND   = 0;
+            $VentaMesA      = 0;
+            $VentaUNDMesA   = 0;
+            $j      = 1;
 
             if (count($query )>0) {
                 $Venta              = number_format($query[0]->VAL,2,'.','');
@@ -72,47 +77,18 @@ class PromocionDetalle extends Model
         return  $json;
     }
 
-    public static function data_last_month_day($month) { 
-        $year = date('Y');
-        $day = date("d", mktime(0,0,0, $month, 0, $year));
-   
-        return date('Y-m-d', mktime(0,0,0, $month, $day, $year));
-    }
-   
-    /** Actual month first day **/
-    public static function data_first_month_day() {
-        $month = date('m');
-        $year = date('Y');
-        return date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-    }
-
     public static function getPromoMes($articulo){
 
         $json = array();
-        
-        for($i = 1; $i <= 12; $i++){
-            $fecha_ini = Date('Y')."/".$i."/"."01";
-            $fecha_end = PromocionDetalle::data_last_month_day($i);
-            if($i <= (date('m')+1)){
-                $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_venta_item "'.$fecha_ini.'","'.$fecha_end.'","'.$articulo.'" ';            
-                $query      = DB::connection('sqlsrv')->select($strQuery);
+        $anno = Date('Y');
 
-                $Venta = $VentaUND = 0;
-                if (count($query )>0) {
-                    $Venta          = number_format($query[0]->VAL,2,'.',',');
-                    $VentaUND       = number_format($query[0]->UND,0,'.',',');
-                }
+        $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$articulo.'" ';            
+        $query      = DB::connection('sqlsrv')->select($strQuery);
 
-                $json[$i]['venta'] = $Venta;
-                $json[$i]['unidad'] = $VentaUND;
-
-            }else{
-                $json[$i]['venta'] = 0.00;
-                $json[$i]['unidad'] = 0;
-            }
-            
-            
+        if(count($query)){
+            $json[] = $query;
         }
+                
         return $json;
     }    
 }
