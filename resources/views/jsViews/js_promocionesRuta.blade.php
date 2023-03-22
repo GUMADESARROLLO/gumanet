@@ -128,9 +128,9 @@ function format ( callback, articulo) {
             articulo: articulo
         },
         success: function ( data ) { console.log(data);
-           if (data.length==0) { console.log(data);
+           if (data.length==0) {
                 tbody +=`<tr>
-                            <td colspan='6'><center>Cero ventas</center></td>
+                            <td colspan='13'><center><b>CERO VENTAS</b></center></td>
                         </tr>`;
                 callback(thead + tbody).show();
             }
