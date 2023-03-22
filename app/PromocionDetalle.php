@@ -16,22 +16,23 @@ class PromocionDetalle extends Model
         $json   = array();
         $anno   = Date('Y');
         $nMes   = date('n');
-        $meses = arraY('ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC');
+        $meses = array('ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC');
         $Rows       = PromocionDetalle::where('anno', $anno)->get();
         
-        $iPromo     = Promocion::where('id',$Rows[0]->id_promocion)->get();
-        $fecha_ini  = $iPromo[0]->original['fecha_ini'];
-        $fecha_end  = $iPromo[0]->original['fecha_end'];
+       
 
         foreach($Rows as $r){
 
+            $iPromo     = Promocion::where('id',$Rows[$i]->id_promocion)->get();
+            $fecha_ini  = $iPromo[0]->original['fecha_ini'];
+            $fecha_end  = $iPromo[0]->original['fecha_end'];
             $Articulos = trim($r->Articulo) ;
             //$strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_venta_item "'.$fecha_ini.'","'.$fecha_end.'","'.$Articulos.'" ';            
             //$query      = DB::connection('sqlsrv')->select($strQuery);
            
-            $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_item_venta "'.$fecha_ini.'","'.$fecha_end.'","'.$r->Articulo.'" ';            
+            $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_item_venta "'.$fecha_ini.'","'.$fecha_end.'","'.$Articulos.'" ';            
             $query      = DB::connection('sqlsrv')->select($strQuery);
-            $sql   = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$r->Articulo.'" ';            
+            $sql   = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$Articulos.'" ';            
             $resp      = DB::connection('sqlsrv')->select($sql);
 
             $resp = json_decode(json_encode($resp), true);
@@ -47,13 +48,15 @@ class PromocionDetalle extends Model
             $j      = 1;
 
             if (count($query )>0) {
-                $Venta              += number_format($query[0]->VAL,2,'.','');
-                $VentaUND           += number_format($query[0]->UND,0,'.','');
-                //$VentaMesA          = number_format($query[0]->VentaMesActual,2,'.','');
-                //$VentaUNDMesA       = number_format($query[0]->UNDMesActual,0,'.','');
+                foreach($query as $item){
+                    $Venta              += number_format($item->VAL,2,'.','');
+                    $VentaUND           += number_format($item->UND,0,'.','');
+                    //$VentaMesA          = number_format($query[0]->VentaMesActual,2,'.','');
+                    //$VentaUNDMesA       = number_format($query[0]->UNDMesActual,0,'.','');
 
-                //$AVG_VLR           = number_format($query[0]->AVG_VALOR_LAST_YEAR,2,'.','');
-                //$AVG_UND           = number_format($query[0]->AVG_UND_LAST_YEAR,0,'.','');  
+                    //$AVG_VLR           = number_format($query[0]->AVG_VALOR_LAST_YEAR,2,'.','');
+                    //$AVG_UND           = number_format($query[0]->AVG_UND_LAST_YEAR,0,'.','');  
+                }
             }
 
             if (count($resp) > 0) {
@@ -77,6 +80,7 @@ class PromocionDetalle extends Model
 
             $json[$i]['id_promocion']       = $r->id_promocion;
             $json[$i]['Articulo']           = $r->Articulo;
+            $json[$i]['Promocion']          = $iPromo[0]->Titulo;
             $json[$i]['Descripcion']        = $r->Descripcion;
             $json[$i]['Precio']             = $r->precio;
             $json[$i]['NuevaBonificacion']  = $r->NuevaBonificacion;
