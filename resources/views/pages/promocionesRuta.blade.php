@@ -47,23 +47,16 @@
                                     
             </div>
             <div class="card border-0 shadow-sm mt-3 ">
-                <div class="col-sm-auto">
-                    <div class="card-body">					
-                        
-                    </div>
-                </div>
-            </div>
-            <div class="card border-0 shadow-sm mt-3 ">
                 <div class="card-body col-sm-12 p-0 mb-2">
-                <div class="col-md-12 " >
-                            <span id="id_form_role" style="display:none">{{ Session::get('user_role') }}</span>                        
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
-                                </div>								
-                                <input type="text" id="id_txt_buscar" class="form-control" placeholder="Buscar...">
-                            </div>
-                        </div>	
+                    <div class="col-md-12 mb-3" >
+                        <span id="id_form_role" style="display:none">{{ Session::get('user_role') }}</span>                        
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                            </div>								
+                            <input type="text" id="id_txt_buscar" class="form-control" placeholder="Buscar...">
+                        </div>
+                    </div>	
                     <div class="p-0 px-car">
                     <div class="table-responsive flex-between-center scrollbar border border-1 border-300 rounded-2">
                         <table id="table_promociones" class="table table-striped table-bordered table-sm mt-3 fs--1" width="100%">
