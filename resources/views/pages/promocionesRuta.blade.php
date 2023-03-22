@@ -4,21 +4,6 @@
 @endsection
 @section('content')
 <div class="container-fluid"> 
-    <div class="card border-0 shadow-sm mt-3 ">
-        <div class="col-sm-auto">
-            <div class="card-body">					
-                <div class="col-md-6">
-                    <span id="id_form_role" style="display:none">{{ Session::get('user_role') }}</span>                        
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
-                        </div>								
-                        <input type="text" id="id_txt_buscar" class="form-control" placeholder="Buscar...">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="card border-0 shadow-sm mt-3">			
         <div class="card-body col-sm-12">
             <h5 class="card-title"></h5>
@@ -62,15 +47,29 @@
                                     
             </div>
             <div class="card border-0 shadow-sm mt-3 ">
-                <div class="card-body col-sm-12 p-0 mb-2">	
+                <div class="col-sm-auto">
+                    <div class="card-body">					
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="card border-0 shadow-sm mt-3 ">
+                <div class="card-body col-sm-12 p-0 mb-2">
+                <div class="col-md-12 " >
+                            <span id="id_form_role" style="display:none">{{ Session::get('user_role') }}</span>                        
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                                </div>								
+                                <input type="text" id="id_txt_buscar" class="form-control" placeholder="Buscar...">
+                            </div>
+                        </div>	
                     <div class="p-0 px-car">
                     <div class="table-responsive flex-between-center scrollbar border border-1 border-300 rounded-2">
                         <table id="table_promociones" class="table table-striped table-bordered table-sm mt-3 fs--1" width="100%">
                         <thead>
                             <tr class="bg-blue text-light">
-                            <th>DESCRIPCIÓN</th>
-                            <th>PRECIO</th>
-                            <th>NUEVA BONIF.</th>
+                            <th style="width: 700px;">DESCRIPCIÓN</th>
                             <th>VIÑETA</th>
                             <th>VAL. PROM.</th>
                             <th>META VAL.</th>
@@ -85,26 +84,17 @@
                             <tbody>
                                 @foreach($Promociones as $p)
                                     <tr>
-                                        <td>
+                                        <td style="width: 700px;">
                                             <div class="d-flex align-items-center position-relative mt-2">                                
                                                 <div class="flex-1 ms-3">
                                                 <a href="#!" id="exp_more" class="exp_more text-dark" idArt="{{ $p['Articulo'] }}"><h6 class="mb-0 fw-semi-bold"><div class="stretched-link text-900">{{ $p['Descripcion'] }}</div></h6></a>
-                                                <p class="text-500 fs--2 mb-0">{{ $p['Articulo'] }} </p>
+                                                <p class="text-500 fs--2 mb-0">{{ $p['Articulo'] }}  |  C$ {{ @number_format($p['Precio'],2) }}  |  {{ $p['NuevaBonificacion'] }}</p>
+                                                <p class="text-500 fs--2 mb-0"><b>{{ $p['Promocion'] }}</b></p>
                                                 </div>
                                             </div>
                                         </td>
 
-                                        <td>
-                                            <div class="pe-4 border-sm-end border-200 mt-2">
-                                                <h6 class="mb-0 fw-semi-bold">C${{ @number_format($p['Precio'],2) }} </h6>                                        
-                                            </div> 
-                                        </td>
-
-                                        <td>
-                                            <div class="pe-4 border-sm-end border-200 text-center">
-                                                <h6 class="fs--2 text-600 mb-1">{{ $p['NuevaBonificacion'] }}</h6>                                
-                                            </div> 
-                                        </td>
+                                       
                                         <td>
                                             <div class="pe-4 border-sm-end border-200">
                                                 <h6 class="fs--2 text-600 mb-1">C${{ @number_format($p['ValorVinneta'],2) }}</h6>                    
@@ -133,12 +123,12 @@
                                         </td>
                                         <td>
                                             <div class="pe-4 border-sm-end border-200 text-center">
-                                                <h6 class="fs--2 text-600 mb-1">{{ $p['MetaUnd'] }}</h6>                    
+                                                <h6 class="fs--2 text-600 mb-1">{{ @number_format($p['MetaUnd'],0) }}</h6>                    
                                             </div> 
                                         </td>
                                         <td>
                                             <div class="pe-4 border-sm-end border-200 text-center">
-                                                <h6 class="fs--2 text-600 mb-1">{{ $p['VentaUND'] }} <span class="badge rounded-pill badge-primary">{{ @number_format($p['PromVentaUND'],2) }}%</span></h6>                    
+                                                <h6 class="fs--2 text-600 mb-1">{{ @number_format($p['VentaUND'],0) }} <span class="badge rounded-pill badge-primary">{{ @number_format($p['PromVentaUND'],2) }}%</span></h6>                    
                                             </div> 
                                         </td>
                                         <td>
