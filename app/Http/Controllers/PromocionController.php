@@ -5,17 +5,19 @@ namespace App\Http\Controllers;
 use App\Promocion;
 use App\PromocionDetalle;
 use App\Vendedor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PromocionController extends Controller
 {
     public function getPromocion()
     {  
-        $Mes   = date('n');
-        $Anno   = date('Y');
-
         $totalMv = $totalVv = $totalMu = $totalVu = 0;
         $Promociones   = PromocionDetalle::getDetalles();
+
+        $instance = Carbon::createFromFormat('Y-m-d', Date('Y-m-d'));
+        setlocale(LC_TIME, NULL);
+        $mesActual = $instance->formatLocalized('%B');
 
         foreach($Promociones as $p){
             $totalMv += $p['ValMeta'];
@@ -24,7 +26,7 @@ class PromocionController extends Controller
             $totalVu += $p['VentaUND'];
         }
         
-        return view('pages.promocionesRuta',compact('Promociones','totalMv', 'totalVv', 'totalMu', 'totalVu'));
+        return view('pages.promocionesRuta',compact('Promociones','totalMv', 'totalVv', 'totalMu', 'totalVu', 'mesActual'));
     }
 
     public function getPromoMes(Request $request){
