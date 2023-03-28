@@ -40,7 +40,7 @@ class ventasProyectos_model extends Model {
 		$query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
 		$proyectos = proyectos_model::orderBy('priori', 'asc')->get();
 		$dtlles = array();		
-
+$Vendedores = Vendedor::get()->toArray();
 		foreach ( $proyectos as $proyecto ) {
 			$dtlles = proyectosDetalle_model::select('rutas.vendedor','rutas.nombre','rutas.zona')
                 ->join('rutas', 'proyectos_rutas.ruta_id', '=', 'rutas.id')
@@ -51,7 +51,8 @@ class ventasProyectos_model extends Model {
 			foreach ( $dtlles as $fila ) {
 				if( array_search( $fila['nombre'], array_column( $json, 'nombre' ) ) === false) {
 					$ruta = $fila['vendedor'];
-					$nombre = $fila['nombre'];
+					$index_key = array_search($fila['vendedor'], array_column($Vendedores, 'VENDEDOR'));
+					$nombre = $Vendedores[$index_key]['NOMBRE'];
 					$temp = array_filter( $query, function($item) use($ruta) { return $item['RUTA']==$ruta; } );
 
 					$json[$i]['ruta'] 			= $fila['vendedor'];
