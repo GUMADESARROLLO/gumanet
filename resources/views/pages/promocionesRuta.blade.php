@@ -62,22 +62,23 @@
                         <table id="table_promociones" class="table table-striped table-bordered table-sm mt-3 fs--1" width="100%">
                         <thead>
                             <tr class="bg-blue text-light">
-                            <th style="width: 700px;">DESCRIPCIÓN</th>
-                            <th>VIÑETA</th>
+                            <th style="width: 550px;">DESCRIPCIÓN</th>
+                            <th style="width: 70px;">Fecha Inicio</th>
+                            <th style="width: 80px;">Fecha Fin</th>
                             <th>VAL. PROM.</th>
                             <th>META VAL.</th>
                             <th>VENTA</th>
                             <th>UND PROM.</th>
                             <th>META UND.</th>
                             <th>VENTA UND.</th>
-                            <th>VENTA {{ Carbon\Carbon::createFromFormat('m', @date('m'))->format('F') }}</th>
-                            <th>VENTA UND. {{ Carbon\Carbon::createFromFormat('m', @date('m'))->format('F') }}</th>
+                            <th>VENTA {{ @strtoupper($mesActual) }}</th>
+                            <th>VENTA UND. {{ @strtoupper($mesActual) }}</th>
                             </tr>
                         </thead>
                             <tbody>
                                 @foreach($Promociones as $p)
                                     <tr>
-                                        <td style="width: 700px;">
+                                        <td style="width: 550px;">
                                             <div class="d-flex align-items-center position-relative mt-2">                                
                                                 <div class="flex-1 ms-3">
                                                 <a href="#!" id="exp_more" class="exp_more text-dark" idArt="{{ $p['Articulo'] }}"><h6 class="mb-0 fw-semi-bold"><div class="stretched-link text-900">{{ $p['Descripcion'] }}</div></h6></a>
@@ -88,12 +89,17 @@
                                         </td>
 
                                        
-                                        <td>
+                                        <td  style="width: 120px;">
                                             <div class="pe-4 border-sm-end border-200">
-                                                <h6 class="fs--2 text-600 mb-1">C${{ @number_format($p['ValorVinneta'],2) }}</h6>                    
+                                                <h6 class="fs--2 text-600 mb-1">{{ $p['fechaIni'] }}</h6>                    
                                             </div> 
                                         </td>
 
+                                        <td  style="width: 120px;">
+                                            <div class="pe-4 border-sm-end border-200">
+                                                <h6 class="fs--2 text-600 mb-1">{{ $p['fechaFin'] }}</h6>                    
+                                            </div> 
+                                        </td>
                                         <td>
                                             <div class="pe-4 border-sm-end border-200 text-center">
                                                 <h6 class="fs--2 text-600 mb-1"C$>0</h6>                  

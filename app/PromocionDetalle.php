@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -68,9 +69,6 @@ class PromocionDetalle extends Model
             }
             
            
-            
-            
-
          
 
             $PromVenta      = ( $Venta !=0 ) ? ( $Venta / $r->ValMeta  ) * 100 : 0;
@@ -81,6 +79,8 @@ class PromocionDetalle extends Model
             $json[$i]['id_promocion']       = $r->id_promocion;
             $json[$i]['Articulo']           = $r->Articulo;
             $json[$i]['Promocion']          = $iPromo[0]->Titulo;
+            $json[$i]['fechaIni']           = date_format(date_create($fecha_ini), 'd M, Y');
+            $json[$i]['fechaFin']           = date_format(date_create($fecha_end), 'd M, Y');
             $json[$i]['Descripcion']        = $r->Descripcion;
             $json[$i]['Precio']             = $r->precio;
             $json[$i]['NuevaBonificacion']  = $r->NuevaBonificacion;
