@@ -229,7 +229,7 @@ Route::get('Cartera', 'recibos_controller@getReporte');
 Route::get('getCartera', 'recibos_controller@getCartera');
 Route::get('getOneRecibos', 'recibos_controller@getOneRecibos');
 
-Route::post('getAttachFile', 'recibos_controller@getAttachFile');
+Route::get('getAttachFile', 'recibos_controller@getAttachFile');
 Route::post('push_recibo', 'recibos_controller@push_recibo');
 Route::post('push_verificado', 'recibos_controller@push_verificado');
 Route::get('print_resumen', 'recibos_controller@print_resumen');
@@ -249,3 +249,5 @@ Route::post('AnularFactura', 'exportacion_controller@AnularFactura')->name('Anul
 
 Route::get('/ArticuloDetalles/{articulo}/{unidad}','inventario_controller@getArticuloDetalles')->name('ArticuloDetalles');;
 
+Route::get('Promocion', 'PromocionController@getPromocion')->name('Promocion');
+Route::get('getPromoMes', 'PromocionController@getPromoMes')->name('getPromoMes');
