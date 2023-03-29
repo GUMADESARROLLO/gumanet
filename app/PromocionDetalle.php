@@ -20,7 +20,9 @@ class PromocionDetalle extends Model
         $meses = array('ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC');
         $Rows       = PromocionDetalle::where('anno', $anno)->get();
         
-       
+          
+        $Articulos_promedio_anual      = DB::connection('sqlsrv')->select('SELECT * FROM PRODUCCION.dbo.tbl_promedio_articulos');
+     
 
         foreach($Rows as $r){
 
@@ -28,24 +30,24 @@ class PromocionDetalle extends Model
             $fecha_ini  = $iPromo[0]->original['fecha_ini'];
             $fecha_end  = $iPromo[0]->original['fecha_end'];
             $Articulos = trim($r->Articulo) ;
-            //$strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_venta_item "'.$fecha_ini.'","'.$fecha_end.'","'.$Articulos.'" ';            
-            //$query      = DB::connection('sqlsrv')->select($strQuery);
-           
+            
+            $index_key = array_search($r->Articulo, array_column($Articulos_promedio_anual, 'ARTICULO'));
+            
             $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_item_venta "'.$fecha_ini.'","'.$fecha_end.'","'.$Articulos.'" ';            
             $query      = DB::connection('sqlsrv')->select($strQuery);
             $sql   = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$Articulos.'" ';            
             $resp      = DB::connection('sqlsrv')->select($sql);
 
             $resp = json_decode(json_encode($resp), true);
-         
+
             $Venta          = 0;
             $PromVenta      = 0;
             $VentaUND       = 0;
             $PromVentaUND   = 0;
             $VentaMesA      = 0;
             $VentaUNDMesA   = 0;
-            $AVG_VLR = 0;
-            $AVG_UND = 0;
+            $AVG_VLR = $Articulos_promedio_anual[$index_key]->VENTA_NETA;
+            $AVG_UND = $Articulos_promedio_anual[$index_key]->PROMEDIO_CANTIDAD_FACT;
             $j      = 1;
 
             if (count($query )>0) {
