@@ -29,9 +29,11 @@
                         <thead>
                             <tr class="bg-blue text-light">
                                 <th style="width: 700px;">DESCRIPCIÓN</th>
-                                <th style="width: 160px;">CANTIDAD</th>
+                                <th>BODEGA</th>
                                 <th style="width: 120px;">UND</th>
+                                <th style="width: 160px;">CANTIDAD</th>
                                 <th style="width: 160px;">JUMBOS</th>
+                                <th>ULTIMA MODIFICACION</th>
                             </tr>
                         </thead>
                             <tbody>
@@ -46,9 +48,9 @@
                                             </div>
                                         </td>
                                        
-                                        <td style="width: 160px; text-align:right;">
+                                        <td style="width: 120px; text-align:center;">
                                             <div class="pe-4 border-sm-end border-200">
-                                                <h6 class="fs--2 text-600 mb-1">{{ $iv['CANTIDAD'] }}</h6>
+                                                <h6 class="fs--2 text-600 mb-1"> {{ ($iv['ID_USER'] == '3') ? 'MATERIA PRIMA' : 'PRODUCTO TERMINADO' }}</h6>                    
                                             </div> 
                                         </td>
 
@@ -57,11 +59,24 @@
                                                 <h6 class="fs--2 text-600 mb-1">{{ $iv['UND'] }}</h6>                    
                                             </div> 
                                         </td>
+                                        
                                         <td style="width: 160px; text-align:right;">
                                             <div class="pe-4 border-sm-end border-200">
-                                                <h6 class="fs--2 text-600 mb-1">{{ $iv['JUMBOS'] }}</h6>                  
+                                                <h6 class="fs--2 text-600 mb-1">{{ number_format($iv['CANTIDAD'],2) }}</h6>
                                             </div> 
                                         </td>
+
+                                        <td style="width: 160px; text-align:right;">
+                                            <div class="pe-4 border-sm-end border-200">
+                                                <h6 class="fs--2 text-600 mb-1">{{ number_format($iv['JUMBOS'],2) }}</h6>                  
+                                            </div> 
+                                        </td>
+                                        <td style="width: 120px; text-align:center;">
+                                            <div class="pe-4 border-sm-end border-200">
+                                                <h6 class="fs--2 text-600 mb-1">{{ date('d M, Y H:i', strtotime($iv['created_at'])) }}</h6>                    
+                                            </div> 
+                                        </td>
+                                        
                                     </tr>
                                 @endforeach
                         </tbody>
