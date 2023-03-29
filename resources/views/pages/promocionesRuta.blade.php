@@ -3,7 +3,7 @@
 @include('jsViews.js_promocionesRuta')
 @endsection
 @section('content')
-<div class="container-fluid"> 
+<div class="container-fluid">
     <div class="card border-0 shadow-sm mt-3">			
         <div class="card-body col-sm-12">
             <h5 class="card-title"></h5>
