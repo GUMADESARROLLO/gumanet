@@ -251,3 +251,5 @@ Route::get('/ArticuloDetalles/{articulo}/{unidad}','inventario_controller@getArt
 
 Route::get('Promocion', 'PromocionController@getPromocion')->name('Promocion');
 Route::get('getPromoMes', 'PromocionController@getPromoMes')->name('getPromoMes');
+
+Route::get('inventarioInnova', 'InnovaController@inventarioInnova')->name('inventarioInnova');
