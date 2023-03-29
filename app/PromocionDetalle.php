@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class PromocionDetalle extends Model
 {
-    protected $table = "gumadesk.view_resumen_promocion";
+    protected $table = "db_estadisticas.view_resumen_promocion";
     public static function getDetalles()
     {  
 
