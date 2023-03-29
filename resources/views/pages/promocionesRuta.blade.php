@@ -7,45 +7,7 @@
     <div class="card border-0 shadow-sm mt-3">			
         <div class="card-body col-sm-12">
             <h5 class="card-title"></h5>
-            <div class="row mt-3">
-                <div class="col-sm-3">						
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h4 class="card-title" id="numero_factura">C$ {{ @number_format($totalMv, 2, '.', ',') }}</h4>
-                            <p class="card-text" id="">META VAL.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-3">						
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h4 class="card-title" id="id_total_Facturado">C$ {{ @number_format($totalVv, 2, '.', ',') }}</h4>
-                            <p class="card-text" id="">VENTA VAL.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-3">						
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h4 class="card-title" id="id_total_moneda_local">{{ @number_format($totalMu, 0, '.', ',') }}</h4>
-                            <p class="card-text" id="">META UND.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">						
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h4 class="card-title" id="id_total_ton">{{ @number_format($totalVu, 0, '.', ',') }}</h4>
-                            <p class="card-text" id="">VENTA UND.</p>
-                        </div>
-                    </div>
-                </div>
-
-                
-                                    
-            </div>
+            
             <div class="card border-0 shadow-sm mt-3 ">
                 <div class="card-body col-sm-12 p-0 mb-2">
                     <div class="col-md-12 mb-3" >
@@ -63,14 +25,14 @@
                         <thead>
                             <tr class="bg-blue text-light">
                             <th style="width: 550px;">DESCRIPCIÓN</th>
-                            <th style="width: 70px;">Fecha Inicio</th>
-                            <th style="width: 80px;">Fecha Fin</th>
-                            <th>VAL. PROM.</th>
-                            <th>META VAL.</th>
-                            <th>VENTA</th>
-                            <th>UND PROM.</th>
-                            <th>META UND.</th>
-                            <th>VENTA UND.</th>
+                            <th style="width: 70px;">FECHA DE INICIO</th>
+                            <th style="width: 80px;">FEHA DE FIN</th>
+                            <th>META DE VENTA.</th>
+                            <th>META DE UND.</th>
+                            <th>VTA. PROM. {{date('Y') -1}}</th>
+                            <th>UND PROM. {{date('Y') -1}}</th>
+                            <th>VENTA ACUMULADAS</th>
+                            <th>VENTA ACUMULADAS UND.</th>
                             <th>VENTA {{ @strtoupper($mesActual) }}</th>
                             <th>VENTA UND. {{ @strtoupper($mesActual) }}</th>
                             </tr>
@@ -88,7 +50,6 @@
                                             </div>
                                         </td>
 
-                                       
                                         <td  style="width: 120px;">
                                             <div class="pe-4 border-sm-end border-200">
                                                 <h6 class="fs--2 text-600 mb-1">{{ $p['fechaIni'] }}</h6>                    
@@ -100,31 +61,38 @@
                                                 <h6 class="fs--2 text-600 mb-1">{{ $p['fechaFin'] }}</h6>                    
                                             </div> 
                                         </td>
-                                        <td>
-                                            <div class="pe-4 border-sm-end border-200 text-center">
-                                                <h6 class="fs--2 text-600 mb-1"C$>0</h6>                  
-                                            </div> 
-                                        </td>
+
                                         <td>
                                             <div class="pe-4 border-sm-end border-200">
-                                                <h6 class="fs--2 text-600 mb-1">C${{ @number_format($p['ValMeta'],2) }}</h6>
+                                                <h6 class="fs--2 text-600 mb-1">C$ {{ @number_format($p['ValMeta'],2) }}</h6>
                                             </div>
                                         </td>
-                                        <td>
-                                            <div class="pe-4 border-sm-end border-200">
-                                                <h6 class="fs--2 text-600 mb-1">C${{ @number_format($p['Venta'],2) }} <span class="badge rounded-pill badge-primary">{{ @number_format($p['PromVenta'],2) }}%</span></h6>                    
-                                            </div> 
-                                        </td>
-                                        <td>
-                                            <div class="pe-4 border-sm-end border-200 text-center">
-                                                <h6 class="fs--2 text-600 mb-1">0</h6>                    
-                                            </div> 
-                                        </td>
+
                                         <td>
                                             <div class="pe-4 border-sm-end border-200 text-center">
                                                 <h6 class="fs--2 text-600 mb-1">{{ @number_format($p['MetaUnd'],0) }}</h6>                    
                                             </div> 
                                         </td>
+
+                                        <td>
+                                            <div class="pe-4 border-sm-end border-200 text-center">
+                                                <h6 class="fs--2 text-600 mb-1"C$>C$ {{ @number_format($p['Promedio_VAL'],2) }}</h6>                  
+                                            </div> 
+                                        </td>
+                                        <td>
+                                            <div class="pe-4 border-sm-end border-200 text-center">
+                                                <h6 class="fs--2 text-600 mb-1">{{ @number_format($p['Promedio_UND'],2) }}</h6>                    
+                                            </div> 
+                                        </td>
+
+                                       
+                                        <td>
+                                            <div class="pe-4 border-sm-end border-200">
+                                                <h6 class="fs--2 text-600 mb-1">C$ {{ @number_format($p['Venta'],2) }} <span class="badge rounded-pill badge-primary">{{ @number_format($p['PromVenta'],2) }}%</span></h6>                    
+                                            </div> 
+                                        </td>
+                                        
+                                        
                                         <td>
                                             <div class="pe-4 border-sm-end border-200 text-center">
                                                 <h6 class="fs--2 text-600 mb-1">{{ @number_format($p['VentaUND'],0) }} <span class="badge rounded-pill badge-primary">{{ @number_format($p['PromVentaUND'],2) }}%</span></h6>                    
