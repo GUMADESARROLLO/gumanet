@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class InnovaController extends Controller
 {
     public function inventarioInnova(){
-        $inventario = InnovaModel::get();
+        $inventario = InnovaModel::getAll();
         return view('pages.inventarioINN', compact('inventario'));
     }
 }
