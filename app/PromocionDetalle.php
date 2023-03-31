@@ -13,6 +13,11 @@ class PromocionDetalle extends Model
     protected $table = "gumadesk.view_resumen_promocion";
     public static function getDetalles()
     {  
+
+        
+       
+
+        //----------------------------------------------
         $i      = 0;
         $json   = array();
         $anno   = Date('Y');
@@ -108,10 +113,10 @@ class PromocionDetalle extends Model
         $json = array();
         $anno = Date('Y');
 
-        $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$articulo.'" ';            
+        $strQuery   = 'EXEC PRODUCCION.dbo.fn_history_item_sale_promocion "2022-11-20", "2023-03-31", "'.$articulo.'" ';            
         $query      = DB::connection('sqlsrv')->select($strQuery);
 
-        if(count($query)){
+        if(count($query) > 0){
             $json[] = $query;
         }
                 

@@ -101,33 +101,29 @@ function format ( callback, articulo) {
 
     callback(tabla).show();
 
-    thead =`<table class="table table-striped table-bordered table-sm">
-                <thead class="text-center bg-secondary text-light">
-                    <tr>
-                        <th class="center">`+anno.getFullYear()+`</th>
-                        <th class="center">ENERO</th>
-                        <th class="center">FEBRERO</th>
-                        <th class="center">MARZO</th>
-                        <th class="center">ABRIL</th>
-                        <th class="center">MAYO</th>
-                        <th class="center">JUNIO</th>
-                        <th class="center">JULIO</th>
-                        <th class="center">AGOSTO</th>
-                        <th class="center">SEPTIEMBRE</th>
-                        <th class="center">OCTUBRE</th>
-                        <th class="center">NOVIEMBRE</th>
-                        <th class="center">DICIEMBRE</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>`;                
-    $.ajax({
+                   
+    $.ajax({//AGREGAR PARAMETRO DE FECHA DE INICIO Y FINAL
         type: "get",
         url: "getPromoMes",
         data:{
             articulo: articulo
         },
-        success: function ( data ) { console.log(data);
+        success: function ( data ) { 
+            var meses = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+
+            thead +=`<table class="table table-striped table-bordered table-sm">
+                <thead class="text-center bg-secondary text-light">
+                    <tr>
+                        <th class="center"></th>`;
+
+                        $.each(data[0],function(key, registro) { 
+                            thead +=  '<th class="text-center">' + meses[registro.mes-1] + '</th>';
+                        });
+                        
+                        
+            thead += `</tr>
+                </thead>
+                <tbody>`; 
            if (data.length==0) {
                 tbody +=`<tr>
                             <td colspan='13'><center><b>CERO VENTAS</b></center></td>
@@ -135,21 +131,13 @@ function format ( callback, articulo) {
                 callback(thead + tbody).show();
             }
 
-                tbody +='<tr>'+
-                            '<td class="text-center bg-secondary text-light">C$</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['ENE']).toFixed(2)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['FEB']).toFixed(2)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['MAR']).toFixed(2)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['ABR']).toFixed(2)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['MAY']).toFixed(2)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['JUN']).toFixed(2)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['JUL']).toFixed(2)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['AGO']).toFixed(2)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['SEP']).toFixed(2)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['OCT']).toFixed(2)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['NOV']).toFixed(2)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][1]['DIC']).toFixed(2)).toLocaleString('en') + '</td>'+
-                        '</tr>'+
+                tbody +='<tr>' +
+                        '<td class="text-center bg-secondary text-light">C$</td>';
+                        $.each(data[0],function(key, registro) { 
+                            tbody +=  '<td class="text-center">' + Number(Number(registro.VENTA_NETA).toFixed(2)).toLocaleString('en') + '</td>';
+                        });
+                tbody += '</tr>';
+                /*tbody +=
                         '<tr>'+
                             '<td class="text-center bg-secondary text-light">UND</td>'+
                             '<td class="text-center">' + Number(Number(data[0][0]['ENE']).toFixed(0)).toLocaleString('en') + '</td>'+
@@ -164,7 +152,7 @@ function format ( callback, articulo) {
                             '<td class="text-center">' + Number(Number(data[0][0]['OCT']).toFixed(0)).toLocaleString('en') + '</td>'+
                             '<td class="text-center">' + Number(Number(data[0][0]['NOV']).toFixed(0)).toLocaleString('en') + '</td>'+
                             '<td class="text-center">' + Number(Number(data[0][0]['DIC']).toFixed(0)).toLocaleString('en') + '</td>'+
-                        '</tr>';
+                        '</tr>';*/
             tbody += `</tbody></table>`;
             
             temp = `
