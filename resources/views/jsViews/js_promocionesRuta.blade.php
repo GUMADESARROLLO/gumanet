@@ -61,6 +61,8 @@ $(document).on('click', '#exp_more', function(ef) {
     var tr = $(this).closest('tr');
     var row = table.row(tr);
     var articulo = $(this).attr('idArt');
+    var ini = $(this).attr('ini');
+    var ends = $(this).attr('ends');
     var data = table.row($(this).parents('tr')).data();
 
     if (row.child.isShown()) {
@@ -77,7 +79,7 @@ $(document).on('click', '#exp_more', function(ef) {
             }
         } );
 
-        format(row.child, articulo);
+        format(row.child, articulo, ini, ends);
         tr.addClass('shown');
         
     }
@@ -88,7 +90,7 @@ $(document).on('click', '#exp_more', function(ef) {
 
 
 
-function format ( callback, articulo) {
+function format ( callback, articulo, ini, ends) {
     var thead = tbody = '';
     const anno = new Date();
     
@@ -102,11 +104,13 @@ function format ( callback, articulo) {
     callback(tabla).show();
 
                    
-    $.ajax({//AGREGAR PARAMETRO DE FECHA DE INICIO Y FINAL
+    $.ajax({//AGREGAR PARAMETRO DE FECHA DE INICIO Y FI
         type: "get",
         url: "getPromoMes",
         data:{
-            articulo: articulo
+            articulo: articulo,
+            ini:    ini,
+            ends:   ends
         },
         success: function ( data ) { 
             var meses = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
@@ -136,23 +140,14 @@ function format ( callback, articulo) {
                         $.each(data[0],function(key, registro) { 
                             tbody +=  '<td class="text-center">' + Number(Number(registro.VENTA_NETA).toFixed(2)).toLocaleString('en') + '</td>';
                         });
+                tbody += '</tr>'+
+                        '<tr>' +
+                        '<td class="text-center bg-secondary text-light">UND</td>';
+                        $.each(data[0],function(key, registro) { 
+                            tbody +=  '<td class="text-center">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</td>';
+                        });
                 tbody += '</tr>';
-                /*tbody +=
-                        '<tr>'+
-                            '<td class="text-center bg-secondary text-light">UND</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['ENE']).toFixed(0)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['FEB']).toFixed(0)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['MAR']).toFixed(0)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['ABR']).toFixed(0)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['MAY']).toFixed(0)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['JUN']).toFixed(0)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['JUL']).toFixed(0)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['AGO']).toFixed(0)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['SEP']).toFixed(0)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['OCT']).toFixed(0)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['NOV']).toFixed(0)).toLocaleString('en') + '</td>'+
-                            '<td class="text-center">' + Number(Number(data[0][0]['DIC']).toFixed(0)).toLocaleString('en') + '</td>'+
-                        '</tr>';*/
+               
             tbody += `</tbody></table>`;
             
             temp = `
