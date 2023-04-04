@@ -13,6 +13,11 @@ class PromocionDetalle extends Model
     protected $table = "gumadesk.view_resumen_promocion";
     public static function getDetalles()
     {  
+
+        
+       
+
+        //----------------------------------------------
         $i      = 0;
         $json   = array();
         $anno   = Date('Y');
@@ -81,8 +86,8 @@ class PromocionDetalle extends Model
             $json[$i]['id_promocion']       = $r->id_promocion;
             $json[$i]['Articulo']           = $r->Articulo;
             $json[$i]['Promocion']          = $iPromo[0]->Titulo;
-            $json[$i]['fechaIni']           = date_format(date_create($fecha_ini), 'd M, Y');
-            $json[$i]['fechaFin']           = date_format(date_create($fecha_end), 'd M, Y');
+            $json[$i]['fechaIni']           = $fecha_ini;
+            $json[$i]['fechaFin']           = $fecha_end;
             $json[$i]['Descripcion']        = $r->Descripcion;
             $json[$i]['Precio']             = $r->precio;
             $json[$i]['NuevaBonificacion']  = $r->NuevaBonificacion;
@@ -103,15 +108,15 @@ class PromocionDetalle extends Model
         return  $json;
     }
 
-    public static function getPromoMes($articulo){
+    public static function getPromoMes($articulo, $ini, $fin){
 
         $json = array();
         $anno = Date('Y');
 
-        $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$articulo.'" ';            
+        $strQuery   = 'EXEC PRODUCCION.dbo.fn_history_item_sale_promocion "'.$ini.'", "'.$fin.'", "'.$articulo.'" ';            
         $query      = DB::connection('sqlsrv')->select($strQuery);
 
-        if(count($query)){
+        if(count($query) > 0){
             $json[] = $query;
         }
                 
