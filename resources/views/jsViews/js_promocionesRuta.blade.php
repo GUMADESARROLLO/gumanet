@@ -121,7 +121,7 @@ function format ( callback, articulo, ini, ends) {
                         <th class="center"></th>`;
 
                         $.each(data[0],function(key, registro) { 
-                            thead +=  '<th class="text-center">' + meses[registro.mes-1] + ' - ' + registro.years + '</th>';
+                            thead +=  '<th class="text-center">' + meses[registro.mes-1] + ' ' + registro.years + '</th>';
                         });
                         
                         

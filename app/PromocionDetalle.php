@@ -40,8 +40,9 @@ class PromocionDetalle extends Model
             
             $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_item_venta "'.$fecha_ini.'","'.$fecha_end.'","'.$Articulos.'" ';            
             $query      = DB::connection('sqlsrv')->select($strQuery);
-            $sql   = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$Articulos.'" ';            
-            $resp      = DB::connection('sqlsrv')->select($sql);
+            
+            $sql        = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$Articulos.'" ';            
+            $resp       = DB::connection('sqlsrv')->select($sql);
 
             $resp = json_decode(json_encode($resp), true);
 
@@ -51,9 +52,9 @@ class PromocionDetalle extends Model
             $PromVentaUND   = 0;
             $VentaMesA      = 0;
             $VentaUNDMesA   = 0;
-            $AVG_VLR = $Articulos_promedio_anual[$index_key]->VENTA_NETA;
-            $AVG_UND = $Articulos_promedio_anual[$index_key]->PROMEDIO_CANTIDAD_FACT;
-            $j      = 1;
+            $AVG_VLR        = $Articulos_promedio_anual[$index_key]->VENTA_NETA;
+            $AVG_UND        = $Articulos_promedio_anual[$index_key]->PROMEDIO_CANTIDAD_FACT;
+            $j              = 1;
 
             if (count($query )>0) {
                 foreach($query as $item){
