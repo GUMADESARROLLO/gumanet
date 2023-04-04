@@ -113,7 +113,7 @@ function format ( callback, articulo, ini, ends) {
             ends:   ends
         },
         success: function ( data ) { 
-            var meses = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+            var meses = ["ENE.", "FEB.", "MAR.", "ABR.", "MAY.", "JUN.", "JUL.", "AGO.", "SEP.", "OCT.", "NOV.", "DIC."];
 
             thead +=`<table class="table table-striped table-bordered table-sm">
                 <thead class="text-center bg-secondary text-light">
@@ -121,7 +121,7 @@ function format ( callback, articulo, ini, ends) {
                         <th class="center"></th>`;
 
                         $.each(data[0],function(key, registro) { 
-                            thead +=  '<th class="text-center">' + meses[registro.mes-1] + '</th>';
+                            thead +=  '<th class="text-center">' + meses[registro.mes-1] + ' - ' + registro.years + '</th>';
                         });
                         
                         
