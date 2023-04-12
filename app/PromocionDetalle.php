@@ -14,9 +14,6 @@ class PromocionDetalle extends Model
     public static function getDetalles()
     {  
 
-        
-       
-
         //----------------------------------------------
         $i      = 0;
         $json   = array();
