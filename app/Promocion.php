@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class Promocion extends Model
 {
-    protected $table = "estadistica.promocions";
+    protected $table = "gumadesk.promocions";
     public function Vendor(){
         return $this->belongsTo('App\Vendedor','Ruta','VENDEDOR');
     }
