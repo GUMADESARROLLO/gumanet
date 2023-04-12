@@ -63,6 +63,7 @@ $(document).on('click', '#exp_more', function(ef) {
     var articulo = $(this).attr('idArt');
     var ini = $(this).attr('ini');
     var ends = $(this).attr('ends');
+    var meta = $(this).attr('met');
     var data = table.row($(this).parents('tr')).data();
 
     if (row.child.isShown()) {
@@ -79,7 +80,7 @@ $(document).on('click', '#exp_more', function(ef) {
             }
         } );
 
-        format(row.child, articulo, ini, ends);
+        format(row.child, articulo, ini, ends, meta);
         tr.addClass('shown');
         
     }
@@ -90,7 +91,7 @@ $(document).on('click', '#exp_more', function(ef) {
 
 
 
-function format ( callback, articulo, ini, ends) {
+function format ( callback, articulo, ini, ends, meta) {
     var thead = tbody = '';
     const anno = new Date();
     
@@ -144,7 +145,7 @@ function format ( callback, articulo, ini, ends) {
                         '<tr>' +
                         '<td class="text-center bg-secondary text-light">UND</td>';
                         $.each(data[0],function(key, registro) { 
-                            tbody +=  '<td class="text-center">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</td>';
+                            tbody +=  '<td class="text-center">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + ' / ' + meta + '</td>';
                         });
                 tbody += '</tr>';
                
