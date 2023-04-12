@@ -31,7 +31,10 @@ class PromocionController extends Controller
 
     public function getPromoMes(Request $request){
         $articulo = $request->articulo;
-        $promo = PromocionDetalle::getPromoMes($articulo);
+        $ini = $request->ini;
+        $fin = $request->ends;
+
+        $promo = PromocionDetalle::getPromoMes($articulo, $ini, $fin);
         return response()->json($promo);
     }
     

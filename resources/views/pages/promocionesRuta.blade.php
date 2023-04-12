@@ -43,7 +43,7 @@
                                         <td style="width: 550px;">
                                             <div class="d-flex align-items-center position-relative mt-2">                                
                                                 <div class="flex-1 ms-3">
-                                                <a href="#!" id="exp_more" class="exp_more text-dark" idArt="{{ $p['Articulo'] }}"><h6 class="mb-0 fw-semi-bold"><div class="stretched-link text-900">{{ $p['Descripcion'] }}</div></h6></a>
+                                                <a href="#!" id="exp_more" class="exp_more text-dark" idArt="{{ $p['Articulo'] }}" ini="{{$p['fechaIni']}}" ends="{{$p['fechaFin']}}" met="{{ number_format($p['MetaUnd'],0) }}"><h6 class="mb-0 fw-semi-bold"><div class="stretched-link text-900">{{ $p['Descripcion'] }}</div></h6></a>
                                                 <p class="text-500 fs--2 mb-0">{{ $p['Articulo'] }}  |  C$ {{ @number_format($p['Precio'],2) }}  |  {{ $p['NuevaBonificacion'] }}</p>
                                                 <p class="text-500 fs--2 mb-0"><b>{{ $p['Promocion'] }}</b></p>
                                                 </div>
@@ -52,13 +52,13 @@
 
                                         <td  style="width: 120px;">
                                             <div class="pe-4 border-sm-end border-200">
-                                                <h6 class="fs--2 text-600 mb-1">{{ $p['fechaIni'] }}</h6>                    
+                                                <h6 class="fs--2 text-600 mb-1">{{ date('d M, Y', strtotime($p['fechaIni'])) }}</h6>                    
                                             </div> 
                                         </td>
 
                                         <td  style="width: 120px;">
                                             <div class="pe-4 border-sm-end border-200">
-                                                <h6 class="fs--2 text-600 mb-1">{{ $p['fechaFin'] }}</h6>                    
+                                                <h6 class="fs--2 text-600 mb-1">{{ date('d M, Y', strtotime($p['fechaFin'])) }}</h6>                    
                                             </div> 
                                         </td>
 
@@ -88,14 +88,14 @@
                                        
                                         <td>
                                             <div class="pe-4 border-sm-end border-200">
-                                                <h6 class="fs--2 text-600 mb-1">C$ {{ @number_format($p['Venta'],2) }} <span class="badge rounded-pill badge-primary">{{ @number_format($p['PromVenta'],2) }}%</span></h6>                    
+                                                <h6 class="fs--2 text-600 mb-1">C$ {{ @number_format($p['Venta'],2) }} </h6>                    
                                             </div> 
                                         </td>
                                         
                                         
                                         <td>
                                             <div class="pe-4 border-sm-end border-200 text-center">
-                                                <h6 class="fs--2 text-600 mb-1">{{ @number_format($p['VentaUND'],0) }} <span class="badge rounded-pill badge-primary">{{ @number_format($p['PromVentaUND'],2) }}%</span></h6>                    
+                                                <h6 class="fs--2 text-600 mb-1">{{ @number_format($p['VentaUND'],0) }}</h6>                    
                                             </div> 
                                         </td>
                                         <td>
