@@ -376,7 +376,9 @@
                         <div class="col-sm-6 mt-2">
                             <div class="table-responsive" id="id_div_titulo_Ventas_Rutas">
                                 <div id="cjRutVentasRutas">
-                                    <table class="table table-bordered table-sm" width="100%" id="dtVentaRuta" ></table>
+                                    <table class="table table-bordered table-sm" width="100%" id="dtVentaRuta" >
+                                        
+                                    </table>
                                 </div>        
                             </div>
 

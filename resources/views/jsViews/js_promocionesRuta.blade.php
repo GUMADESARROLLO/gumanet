@@ -122,7 +122,7 @@ function format ( callback, articulo, ini, ends, meta) {
                         <th class="center"></th>`;
 
                         $.each(data[0],function(key, registro) { 
-                            thead +=  '<th class="text-center">' + meses[registro.mes-1] + ' - ' + registro.years + '</th>';
+                            thead +=  '<th class="text-center">' + meses[registro.mes-1] + ' ' + registro.years + '</th>';
                         });
                         
                         
@@ -147,9 +147,15 @@ function format ( callback, articulo, ini, ends, meta) {
                         $.each(data[0],function(key, registro) { 
                             porc = (Number(registro.CANTIDAD_FACT).toFixed(0)/meta) * 100;
                             if((meta - Number(registro.CANTIDAD_FACT).toFixed(0)) <= 0){  
+
                                 tbody +=  '<td class="text-center"><font color="green">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</font> / ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '(' +Number(porc).toFixed(1)+'%)</td>';
                             }else{
                                 tbody +=  '<td class="text-center"><font color="red">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</font> / ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '(' +Number(porc).toFixed(1)+'%)</td>';
+
+                                tbody +=  '<td class="text-center"><font color="green">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</font> <font size=4><span class="me-1 text-success fa fa-caret-up text-success"></span> </font>/ ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '</td>';
+                            }else{
+                                tbody +=  '<td class="text-center"><font color="red">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</font> <font size=4><span class="me-1 text-success fa fa-caret-down text-danger"></span> </font>/ ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '</td>';
+
                             }
                         });
                 tbody += '</tr>';

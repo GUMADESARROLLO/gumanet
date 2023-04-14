@@ -1620,6 +1620,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         dta.push({
                             name  :'Dia ' + x['articulo'],
                             mAVG  : x['dtAVG'],
+                            FACT  : x['FACTURAS'],
                             dtavg : x['dtavg_'],
                             y     : x['data'], 
                             und   : (x['dtUnd'] > 0 ) ?  x['dtUnd']  : '  '
@@ -1633,7 +1634,8 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
                     moneda = (xbolsones)? "" :"C$ "
                     temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';                   
+                    temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';  
+                    temporal += '<span style="color:black">\u25CF</span> Nº FACT.: <b>  {point.FACT} </b><br/>';                   
                     grafiacas_productos_Diarios.tooltip = {
                         pointFormat : temporal
                     }
@@ -3145,20 +3147,23 @@ function detalles_ventas_diarias($dia,$mAVG)
                     "emptyTable": "NO HAY DATOS DISPONIBLES",
                     "search":     "BUSCAR"
                 },
-                'columns': [
-                    { "title": "Ruta",              "data": "RUTA" },
+                'columns': [   
+                    { "title": "Ruta",              "data": "RUTA"},                    
                     { "title": "Nombre",            "data": "VENDE" },
                     { "title": "Real Vtas.",        "data": "REALE" },
+                    { "title": "Nº Fact.",          "data": "FACTURA" },
                 ],
                 "columnDefs": [
                     {"className": "dt-back-unit", "targets": [ 2 ]},
                     {"className": "dt-left", "targets": [ 1 ]},
-                    {"className": "dt-center", "targets": [ 0 ]}
+                    {"className": "dt-center", "targets": [ 0,3 ]}
                     
                 ],
+               
                 "footerCallback": function ( row, data, start, end, display ) {
                         dta_pie_rutas = [];
                         var api = this.api(), data;
+                        var ttFactura = 0;
                         
                         var intVal = function ( i ) {
                             return typeof i === 'string' ?
@@ -3172,7 +3177,13 @@ function detalles_ventas_diarias($dia,$mAVG)
                             return intVal(a) + intVal(b);
                         }, 0 );
 
+                        ttFactura = api.column( 3 ).data().reduce( function (a, b) 
+                        {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
                         tmp = parseFloat($('#MontoMeta').text().replace(/[\ U,C$]/g, ''));
+
                         cump = (tmp>0)?(( parseFloat(total) / tmp ) * 100):0;     
 
                         api.rows().data().each(function (value) {
@@ -3188,7 +3199,11 @@ function detalles_ventas_diarias($dia,$mAVG)
 
                         $('#cumplMeta').text(numeral(cump).format('0.00')+'%');
                         $('#MontoReal').text('C$ '+ numeral(total).format('0,0.00'));
-                        
+                        $('#ttFactura').text(numeral(ttFactura).format('0,0'));
+
+                      
+
+                       
                         
                         ventasXCateg.tooltip = {
                             pointFormat : ''
@@ -3197,12 +3212,26 @@ function detalles_ventas_diarias($dia,$mAVG)
                         ventas_por_rutas.series[0].data = dta_pie_rutas ;
                         chart = new Highcharts.Chart(ventas_por_rutas);
                         Todos_Los_Items_Diario($dia,mes,anio,ElSegmento);
+
+                        
                     },
                 
             });
-            
             $('#txtMontoReal').text('Total real ventas');
             $('#txtMontoMeta').text('Total Venta Diario');
+
+            $("#dtVentaRuta thead").html(`
+                    <tr role="row">
+                        <th colspan="3">Total de Faturas </th>
+                        <th class='dt-center' id='ttFactura'> 0 </th>
+                    </tr>
+                    <tr role="row">
+                        <th class='dt-center'>Ruta</th>
+                        <th class='dt-left'>Nombre</th>
+                        <th class='dt-back-unit'>Real Vtas.</th>
+                        <th class='dt-center'>Nº Fact.</th>
+                    </tr>
+                    `);
 
             $("#dtVentaRuta_length").hide();
             $("#dtVentaRuta_filter,#dtVentaRuta_paginate").hide();
