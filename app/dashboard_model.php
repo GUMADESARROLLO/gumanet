@@ -103,7 +103,7 @@ class dashboard_model extends Model {
         );
 
         $array_merge = array_merge($dtaBodega, $dtaTop10Cl, $dtaTop10Pr, $dtaVtasMes, $dtaRecupera, $dtaCompMesesVentas, $dtaCompMesesItems, $dtaVentasXCateg, $dtaClientes, $dtaProyectos,$dtaVtnDiarias,$dtaDolares);
-        //$array_merge = array_merge($dtaDolares);
+        //$array_merge = array_merge($dtaVtnDiarias);
         return $array_merge;
         $sql_server->close();
     }
@@ -167,7 +167,7 @@ class dashboard_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = " EXEC gnet_vnts_diaria_generico ".$mes.", ".$anio.", 'VtasTotal_UMK', ".$Segmento." "; 
+                $sql_exec = " EXEC gnet_vnts_diaria_generico_dev ".$mes.", ".$anio.", 'VtasTotal_UMK', ".$Segmento." "; 
                 break;
             case '2':
                 $sql_exec = " EXEC gnet_vnts_diaria_gp ".$mes.", ".$anio." ";
@@ -223,6 +223,7 @@ class dashboard_model extends Model {
 
                 $json[$i]['name']       = $key['dey'];
                 $json[$i]['articulo']   = $key['dey'];
+                $json[$i]['FACTURAS']       = $key['FACTURA'];
 
                 if ( $company_user==4 ) {
                     $tem_ = ($xbolsones) ? intval($key['Cantidad']): (float) number_format(floatval($key['MontoVenta']),2,".","");
@@ -1200,13 +1201,13 @@ class dashboard_model extends Model {
                         
                     }
                 }
-                $sql_exec =" SELECT Ruta, SUM ( VENTA ) AS Monto, SUM ( Cantidad ) AS Cantidad 
+                $sql_exec =" SELECT Ruta, SUM ( VENTA ) AS Monto, SUM ( Cantidad ) AS Cantidad,COUNT ( DISTINCT FACTURA ) AS FACTURA 
                 FROM Softland.DBO.VtasTotal_UMK ( nolock ) 
                 WHERE DAY ( DIA ) =".$dia." AND MONTH ( DIA ) = ".$mes."  AND YEAR ( DIA ) = ".$anio."  AND [P. Unitario] > 0  AND Ruta NOT IN ( 'F01', 'F12' ) AND  ".$qSegmento."
                 GROUP BY Ruta ORDER BY Ruta";
                 break;
             case '2':
-                $sql_exec =" SELECT Ruta, SUM ( VENTA ) AS Monto, SUM ( Cantidad ) AS Cantidad 
+                $sql_exec =" SELECT Ruta, SUM ( VENTA ) AS Monto, SUM ( Cantidad ) AS Cantidad ,COUNT ( DISTINCT FACTURA ) AS FACTURA
                 FROM Softland.DBO.GP_VtasTotal_UMK ( nolock ) 
                 WHERE DAY ( DIA ) =".$dia." AND MONTH ( DIA ) = ".$mes."  AND YEAR ( DIA ) = ".$anio."  AND [P. Unitario] > 0 
                 GROUP BY Ruta ORDER BY Ruta";
@@ -1215,7 +1216,7 @@ class dashboard_model extends Model {
                 $sql_exec = "";
                 break;     
             case '4':
-                $sql_exec =" SELECT Ruta, SUM ( VENTA ) AS Monto, SUM ( Cantidad ) AS Cantidad 
+                $sql_exec =" SELECT Ruta, SUM ( VENTA ) AS Monto, SUM ( Cantidad ) AS Cantidad ,COUNT ( DISTINCT FACTURA ) AS FACTURA
                 FROM Softland.DBO.INV_VtasTotal_UMK_Temporal ( nolock ) 
                 WHERE DAY ( DIA ) =".$dia." AND MONTH ( DIA ) = ".$mes."  AND YEAR ( DIA ) = ".$anio."  AND [P. Unitario] > 0 
                 GROUP BY Ruta ORDER BY Ruta";
@@ -1226,7 +1227,7 @@ class dashboard_model extends Model {
         }
 
 
-
+   
         $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
 
         $i = 0;
@@ -1234,9 +1235,10 @@ class dashboard_model extends Model {
 
         foreach ($query as $fila) {
             $VENDEDOR = dashboard_model::buscarVendedorXRuta($fila["Ruta"], $company_user);                        
-            $json[$i]["RUTA"] = '<a href="#!" onclick="get_Detalle_Venta_dia('.$dia.','.$mes.','.$anio.','."'".$fila["Ruta"]."'".', '."'".$VENDEDOR."'".')" >'.$fila["Ruta"].'</a>';
-            $json[$i]["VENDE"] = $VENDEDOR;
-            $json[$i]["REALE"] = "C$ ".number_format($fila["Monto"],2);
+            $json[$i]["RUTA"]       = '<a href="#!" onclick="get_Detalle_Venta_dia('.$dia.','.$mes.','.$anio.','."'".$fila["Ruta"]."'".', '."'".$VENDEDOR."'".')" >'.$fila["Ruta"].'</a>';
+            $json[$i]["VENDE"]      = $VENDEDOR;
+            $json[$i]["REALE"]      = "C$ ".number_format($fila["Monto"],2);
+            $json[$i]["FACTURA"]    = number_format($fila["FACTURA"],0);
             $i++;
         }
         $sql_server->close();

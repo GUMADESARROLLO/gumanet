@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class PromocionDetalle extends Model
 {
-    protected $table = "estadisticas.view_resumen_promocion";
+    protected $table = "gumadesk.view_resumen_promocion";
     public static function getDetalles()
     {  
 
@@ -25,23 +25,25 @@ class PromocionDetalle extends Model
         $meses = array('ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC');
         $Rows       = PromocionDetalle::where('anno', $anno)->get();
         
-          
+
         $Articulos_promedio_anual      = DB::connection('sqlsrv')->select('SELECT * FROM PRODUCCION.dbo.tbl_promedio_articulos');
-     
+
 
         foreach($Rows as $r){
 
             $iPromo     = Promocion::where('id',$Rows[$i]->id_promocion)->get();
+
+            $Segmentos  = $iPromo[0]->Segmentos;
             $fecha_ini  = $iPromo[0]->original['fecha_ini'];
             $fecha_end  = $iPromo[0]->original['fecha_end'];
-            $Articulos = trim($r->Articulo) ;
+            $Articulos  = trim($r->Articulo) ;
             
             $index_key = array_search($r->Articulo, array_column($Articulos_promedio_anual, 'ARTICULO'));
             
-            $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_item_venta "'.$fecha_ini.'","'.$fecha_end.'","'.$Articulos.'" ';            
+            $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_item_venta_dev "'.$fecha_ini.'","'.$fecha_end.'","'.$Articulos.'" ';            
             $query      = DB::connection('sqlsrv')->select($strQuery);
             
-            $sql        = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$Articulos.'" ';            
+            $sql        = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale_dev "'.$anno.'","'.$Articulos.'"';            
             $resp       = DB::connection('sqlsrv')->select($sql);
 
             $resp = json_decode(json_encode($resp), true);
@@ -76,8 +78,7 @@ class PromocionDetalle extends Model
                 $VentaUNDMesA   = 0;
             }
             
-           
-         
+
 
             $PromVenta      = ( $Venta !=0 ) ? ( $Venta / $r->ValMeta  ) * 100 : 0;
             $PromVentaUND   = ( $VentaUND !=0 ) ? ( $VentaUND / $r->MetaUnd  ) * 100 : 0;
@@ -114,7 +115,7 @@ class PromocionDetalle extends Model
         $json = array();
         $anno = Date('Y');
 
-        $strQuery   = 'EXEC PRODUCCION.dbo.fn_history_item_sale_promocion "'.$ini.'", "'.$fin.'", "'.$articulo.'" ';            
+        $strQuery   = 'EXEC PRODUCCION.dbo.fn_history_item_sale_promocion_dev "'.$ini.'", "'.$fin.'", "'.$articulo.'" ';            
         $query      = DB::connection('sqlsrv')->select($strQuery);
 
         if(count($query) > 0){
