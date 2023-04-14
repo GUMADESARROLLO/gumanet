@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class Promocion extends Model
 {
-    protected $table = "estadistica.promocions";
+    protected $table = "db_estadisticas.promocions";
     public function Vendor(){
         return $this->belongsTo('App\Vendedor','Ruta','VENDEDOR');
     }
