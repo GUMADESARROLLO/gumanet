@@ -40,10 +40,10 @@ class PromocionDetalle extends Model
             
             $index_key = array_search($r->Articulo, array_column($Articulos_promedio_anual, 'ARTICULO'));
             
-            $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_item_venta_dev "'.$fecha_ini.'","'.$fecha_end.'","'.$Articulos.'" ';            
+            $strQuery   = 'EXEC PRODUCCION.dbo.fn_promocion_item_venta "'.$fecha_ini.'","'.$fecha_end.'","'.$Articulos.'" ';            
             $query      = DB::connection('sqlsrv')->select($strQuery);
             
-            $sql        = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale_dev "'.$anno.'","'.$Articulos.'"';            
+            $sql        = 'EXEC PRODUCCION.dbo.fn_promocion_history_item_sale "'.$anno.'","'.$Articulos.'"';            
             $resp       = DB::connection('sqlsrv')->select($sql);
 
             $resp = json_decode(json_encode($resp), true);
@@ -115,7 +115,7 @@ class PromocionDetalle extends Model
         $json = array();
         $anno = Date('Y');
 
-        $strQuery   = 'EXEC PRODUCCION.dbo.fn_history_item_sale_promocion_dev "'.$ini.'", "'.$fin.'", "'.$articulo.'" ';            
+        $strQuery   = 'EXEC PRODUCCION.dbo.fn_history_item_sale_promocion "'.$ini.'", "'.$fin.'", "'.$articulo.'" ';            
         $query      = DB::connection('sqlsrv')->select($strQuery);
 
         if(count($query) > 0){
