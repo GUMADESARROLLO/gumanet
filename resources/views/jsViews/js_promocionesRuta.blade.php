@@ -146,9 +146,9 @@ function format ( callback, articulo, ini, ends, meta) {
                         '<td class="text-center bg-secondary text-light">UND</td>';
                         $.each(data[0],function(key, registro) { 
                             if((meta - Number(registro.CANTIDAD_FACT).toFixed(0)) <= 0){  
-                                tbody +=  '<td class="text-center">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '<span class="me-1 text-success fa fa-caret-up text-success"></span>/ ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '</td>';
+                                tbody +=  '<td class="text-center"><font color="green">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</font><font size=5><span class="me-1 text-success fa fa-caret-up text-success"></span></font>/ ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '</td>';
                             }else{
-                                tbody +=  '<td class="text-center">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '<span class="me-1 text-success fa fa-caret-down text-danger"></span>/ ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '</td>';
+                                tbody +=  '<td class="text-center"><font color="red">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</font><font size=5><span class="me-1 text-success fa fa-caret-down text-danger"></span></font>/ ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '</td>';
                             }
                         });
                 tbody += '</tr>';
