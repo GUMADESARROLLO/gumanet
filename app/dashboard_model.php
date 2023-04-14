@@ -1157,7 +1157,7 @@ class dashboard_model extends Model {
             
             $json[$i]["UNIDADES"]           = number_format($fila["UNIDADES"], 2);
             $json[$i]["PromedioActual"]           = number_format($PromedioActual, 2);
-            $json[$i]["TIEMPO_ESTIMADO"]           = number_format($TIEMPO_ESTIMADO, 2);
+            $json[$i]["TIEMPO_ESTIMADO"]    = $TIEMPO_ESTIMADO;
             
 
             
