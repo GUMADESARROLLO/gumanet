@@ -1635,7 +1635,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     moneda = (xbolsones)? "" :"C$ "
                     temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';  
-                    temporal += '<span style="color:black">\u25CF</span> Nº FACT.: <b>  {point.FACT} </b><br/>';                   
+                    temporal += '<span style="color:black">\u25CF</span> CANT. FACT.: <b>  {point.FACT} </b><br/>';                   
                     grafiacas_productos_Diarios.tooltip = {
                         pointFormat : temporal
                     }
@@ -3151,7 +3151,7 @@ function detalles_ventas_diarias($dia,$mAVG)
                     { "title": "Ruta",              "data": "RUTA"},                    
                     { "title": "Nombre",            "data": "VENDE" },
                     { "title": "Real Vtas.",        "data": "REALE" },
-                    { "title": "Nº Fact.",          "data": "FACTURA" },
+                    { "title": "CANT. Fact.",          "data": "FACTURA" },
                 ],
                 "columnDefs": [
                     {"className": "dt-back-unit", "targets": [ 2 ]},
@@ -3229,7 +3229,7 @@ function detalles_ventas_diarias($dia,$mAVG)
                         <th class='dt-center'>Ruta</th>
                         <th class='dt-left'>Nombre</th>
                         <th class='dt-back-unit'>Real Vtas.</th>
-                        <th class='dt-center'>Nº Fact.</th>
+                        <th class='dt-center'>Cant. Fact.</th>
                     </tr>
                     `);
 
