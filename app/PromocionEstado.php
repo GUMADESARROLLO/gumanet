@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class PromocionEstado extends Model
 {
-    protected $table = "estadistica.promocion_estados";
+    protected $table = "db_estadisticas.promocion_estados";
 }
