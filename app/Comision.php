@@ -285,7 +285,7 @@ class Comision extends Model{
     public static function getHistoryItem($Mes, $Anno, $Ruta){
         $json = array();
         $i = 0;
-        
+        DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_articulo_new "'.$Mes.'","'.$Anno.'","'.$Ruta.'"');
         $query      = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_calc_8020 "'.$Mes.'","'.$Anno.'","'.$Ruta.'", "'.'N/D'.'" ');
 
         if(count($query) > 0){
