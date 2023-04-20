@@ -285,15 +285,62 @@ class Comision extends Model{
     public static function getHistoryItem($Mes, $Anno, $Ruta){
         $json = array();
         $i = 0;
-        
+        $afact = array();
+
+        DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_articulo_new "'.$Mes.'","'.$Anno.'","'.$Ruta.'"');
         $query      = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.fn_comision_calc_8020 "'.$Mes.'","'.$Anno.'","'.$Ruta.'", "'.'N/D'.'" ');
 
-        if(count($query) > 0){
-            foreach($query as $item){
-                $json[] = $item;
-            }
+        foreach($query as $item){
+            $afact[] = $item->ARTICULO;
         }
 
+        // Retrieve metadata from database using Eloquent ORM.
+        $Meta = Meta::whereRaw('MONTH(Fecha) = ? AND YEAR(Fecha) = ?', [$Mes, $Anno])->first();
+
+        // Filter details using article codes from query results.
+        $detalles = $Meta->detalles()
+                    ->whereNotIn('CodProducto',$afact)
+                    ->where('CodVendedor',$Ruta)
+                    ->get();
+
+        // Build JSON array using metadata and query results.
+        foreach ($detalles as $key => $value) {            
+
+            $json[$i]['ROW_ID']         = '9999'.$i;
+            $json[$i]['VENDEDOR']       = $Ruta;
+            $json[$i]['ARTICULO']       = $value->CodProducto;
+            $json[$i]['DESCRIPCION']    = $value->NombreProducto;;            
+            $json[$i]['Venta']          = '0.00';
+            $json[$i]['Aporte']         = '0.00';
+            $json[$i]['Acumulado']      = '0.00';
+            $json[$i]['Lista']          = '20';
+            $json[$i]['MetaUND']        = $value->Meta;;
+            $json[$i]['VentaUND']       = '0.00';
+            $json[$i]['VentaVAL']       = '0.00';
+            $json[$i]['Cumple']         = '0.00';
+            $json[$i]['isCumpl']        = 'NO';
+            $i++;
+        }
+
+        // Add query results to JSON array.
+        foreach ($query as $key => $value) {
+
+            $json[$i]['ROW_ID']         = $value->ROW_ID;
+            $json[$i]['VENDEDOR']       = $value->VENDEDOR;
+            $json[$i]['ARTICULO']       = $value->ARTICULO;
+            $json[$i]['DESCRIPCION']    = $value->DESCRIPCION;            
+            $json[$i]['Venta']          = $value->Venta;
+            $json[$i]['Aporte']         = $value->Aporte;
+            $json[$i]['Acumulado']      = $value->Acumulado;
+            $json[$i]['Lista']          = $value->Lista;
+            $json[$i]['MetaUND']        = $value->MetaUND;
+            $json[$i]['VentaUND']       = $value->VentaUND;
+            $json[$i]['VentaVAL']       = $value->VentaVAL;
+            $json[$i]['Cumple']         = $value->Cumple;
+            $json[$i]['isCumpl']        = $value->isCumpl;
+            $i++;
+        }
+        
         return $json;
     }
 }
