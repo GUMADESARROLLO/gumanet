@@ -12,6 +12,7 @@ use PHPExcel_Style;
 use PHPExcel_Style_Border;
 use PHPExcel_Style_Fill;
 use App\Company;
+use App\InnovaKardex;
 use App\InnovaModel;
 use Illuminate\Support\Facades\Session;
 
@@ -33,7 +34,7 @@ class inventario_controller extends Controller
 		);
 		
 		if($companie == 4){
-			$inventario = InnovaModel::get();
+			$inventario = InnovaKardex::get();
 			return view('pages.inventarioINN', compact('inventario'));
 		}else{
 			return view('pages.inventario', $data);

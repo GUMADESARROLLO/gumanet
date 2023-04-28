@@ -150,12 +150,7 @@ function format ( callback, articulo, ini, ends, meta) {
 
                                 tbody +=  '<td class="text-center"><font color="green">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</font> / ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '(' +Number(porc).toFixed(1)+'%)</td>';
                             }else{
-                                tbody +=  '<td class="text-center"><font color="red">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</font> / ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '(' +Number(porc).toFixed(1)+'%)</td>';
-
-                                tbody +=  '<td class="text-center"><font color="green">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</font> <font size=4><span class="me-1 text-success fa fa-caret-up text-success"></span> </font>/ ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '</td>';
-                            }else{
-                                tbody +=  '<td class="text-center"><font color="red">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</font> <font size=4><span class="me-1 text-success fa fa-caret-down text-danger"></span> </font>/ ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '</td>';
-
+                                tbody +=  '<td class="text-center"><font color="red">' + Number(Number(registro.CANTIDAD_FACT).toFixed(2)).toLocaleString('en') + '</font> / ' + Number(Number(meta).toFixed(2)).toLocaleString('en') + '(' +Number(porc).toFixed(1)+'%)</td>';                               
                             }
                         });
                 tbody += '</tr>';
