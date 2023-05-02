@@ -39,19 +39,13 @@
   
 
 </style>
-<!-- Custom styles for this template -->
 <link rel="stylesheet" href="{{ url('css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ url('css/fuente.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url('css/daterangepicker.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url('css/jquery.dataTables.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url('css/bootstrap-select.css') }}">
-<link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"/>
-<link href="https://cdn.datatables.net/fixedcolumns/3.2.2/css/fixedColumns.dataTables.min.css" rel="stylesheet"/>
-<link href="{{ url('css/jquery.dataTables.min.css') }}" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.2.2/css/fixedColumns.bulma.min.css">
-
 <!--Import Google Icon Font-->
 <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"/>
+  <link href="https://cdn.datatables.net/fixedcolumns/3.2.2/css/fixedColumns.dataTables.min.css" rel="stylesheet"/>
+  
 </head>
 <body>
 @include('layouts.menu')
@@ -121,43 +115,21 @@
     </div>
   </div>
 </div>
-<script src="{{ url('js/ext/feather.min.js') }}"></script>
-<script src="{{ url('js/ext/Chart.min.js') }}"></script>
-<script src="{{ url('js/jquery-2.1.1.min.js') }}"></script>
-<script src="{{ url('js/jquery.maskMoney.js') }}"></script>
-<script src="{{ url('js/jquery.mask.js') }}"></script>
-<script src="{{ url('js/highcharts.js') }}"></script>
-<script src="{{ url('js/highcharts-3d.js') }}"></script>
-<script src="{{ url('js/all.min.js') }}"></script>
-<script src="{{ url('js/popper.min.js') }}"></script>
-<script src="{{ url('js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ url('js/bootstrap.bundle.js') }}"></script>
-<script src="{{ url('js/bootstrap.min.js') }}"></script>
-<script src="{{ url('js/bootstrap-select.js') }}"></script>
-<script src="{{ url('js/bootstrap.js') }}"></script>
-<script src="{{ url('js/ext/moment.js') }}"></script>
-<script src="{{ url('js/ext/daterangepicker.js') }}"></script>
-<script src="{{ url('js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ url('js/js_general.js') }}"></script>
-<script src="{{ url('js/sweetalert2.all.js') }}"></script>
-<script src="{{ url('js/sweetalert2.all.min.js') }}"></script>
-<script src="{{ url('js/jquery.cookie.js') }}"></script>
-<script src="{{ url('js/Numeral.js') }}"></script>
-<script src="{{ url('js/xlsx.full.min.js') }}"></script>
-<script src="{{ url('js/jszip.js') }}"></script>
-<script src="{{ url('js/no-data-to-display.js') }}"></script>
-<script src="{{ url('js/jquery.daterangepicker.min.js') }}"></script>
-<script src="{{ url('js/dataTables.rowGroup.min.js') }}"></script>
-<script src="{{ url('js/ckeditor/ckeditor.js') }}"></script>
-<script src="{{ url('js/ckeditor/adapters/jquery.js') }}"></script>
-<script src="{{ url('js/grouped-categories.js') }}"></script>
-<script src="{{ url('js/jquery.dataTables.min.js') }}"></script> 
+
+<script src="{{ asset('js/jquery-2.1.1.min.js') }}"></script>    
+<script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>  
 <script src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bulma.min.js"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ url('js/ext/moment.js') }}"></script>
+<script src="{{ url('js/Numeral.js') }}"></script>
+<script src="{{ url('js/all.min.js') }}"></script>
+
+<script src="{{ url('js/ext/feather.min.js') }}"></script>
+<script src="{{ url('js/js_general.js') }}"></script>
 
 
-<script src="{{ url('js/exporting.js') }}"></script>
-<script src="{{ url('js/export-data.js') }}"></script>
+
+
 
 @yield('metodosjs')
 </body>
