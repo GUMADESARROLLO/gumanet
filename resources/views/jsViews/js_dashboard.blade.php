@@ -2156,13 +2156,15 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     $('.vts-month-dolar').attr('title', inCordobas);  
                     $('[data-toggle="tooltip"]').tooltip();
 
-                    if (xbolsones==1) {
+                    /*if (xbolsones==1) {
                         $("#id_ventas_totales").html("Total Venta C$. 0.00")
-                        $("#id_ventas_dolares").html("Venta Exportación $ 0.00")
+                        $("#id_ventas_dolares").html("Venta Exportación $ ->0.00")
                     } else {
                         $("#id_ventas_dolares").html("<a href='exportacion'> Venta Exportación $ " + numeral(item['data']['Dolar']).format('0,0.00')+"</a>")
                         $("#id_ventas_totales").html("Total Venta C$ " + numeral(val_vts_month).format('0,0.00'))
-                    }
+                    }*/
+                    $("#id_ventas_dolares").html("Venta Exportación $ " + numeral(item['data']['Dolar']).format('0,0.00'))
+                    $("#id_ventas_totales").html("Total Venta C$ " + numeral(val_vts_month).format('0,0.00'))
 
                 break;
 
