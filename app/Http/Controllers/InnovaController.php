@@ -17,7 +17,7 @@ class InnovaController extends Controller
         $ini = $request->ini;
         $end = $request->end;
        
-        $kardex = InnovaKardex::getReporteKardex($request);
+        $kardex = InnovaKardex::getReporteKardex($ini, $end);
         return response()->json($kardex);
     }
 }

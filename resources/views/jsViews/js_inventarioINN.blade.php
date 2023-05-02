@@ -1,43 +1,68 @@
 <script type="text/javascript">
-onload = tblKardex();
-
-function tblKardex(articulo, unidad) {
+$(document).ready(function() {
     var date = new Date();
 
-    var primerDia = new Date(date.getFullYear(), date.getMonth() + 1, 1);
-    var ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    var inicio = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+    var final = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    var primerDia = inicio.getFullYear()+'-'+(inicio.getMonth())+'-'+inicio.getDate();
+    var ultimoDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+final.getDate();
+
+    tblKardex(primerDia, ultimoDia);
+});
+
+$("#id_btn_new").click( function() {
+    var date = new Date();
+
+    var mes = $('#id_select_mes').val();
+
+    var inicio = new Date(date.getFullYear(), mes, 1);
+    var final = new Date(date.getFullYear(), mes, 0);
+
+    var primerDia = inicio.getFullYear()+'-'+(inicio.getMonth())+'-'+inicio.getDate();
+    var ultimoDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+final.getDate();
+
+   console.log(ultimoDia);
+    tblKardex(primerDia, ultimoDia);
+});
+
+
+function tblKardex(primerDia, ultimoDia) {
+    
+ 
     $.ajax({
         url: `getKerdex`,
         type: 'get',
         data: { 
             ini : primerDia, 
-            end : ultimoDia 
+            end : ultimoDia
         },
         async: true,
-        success: function(data) { console.log(data);
+        success: function(data) { 
             table =  `<thead>`+
                         `<tr class="bg-blue text-light">`+
                             `<th style="width: 700px;" rowspan="2">ARTICULO</th>`;
                             $.each(data['header_date'], function (i, item) {
-                                table += `<th colspan="3" style="text-align:center">`+moment(item).format('DD-MM-YYYY')+`</th>`;
-                            })
+                                table += `<th colspan="3" style="text-align:center">`+moment(item).format('DD-MM-YYYY')+`</th>`;                                
+                                })
                         
                 table +=`</tr><tr>`;                        
                         $.each(data['header_date'], function (i, item) {
                             table += `<th>Entrada</th>`+
                                     `<th>Salida</th>`+
                                     `<th>Saldo</th>`;
+                                   
                         })
                     
                 table +=`</tr></thead>`+
-                    `<tbody>`;
+                    `<tbody style="scrollbar: collapse;">`;
                         $.each(data['header_date_rows'], function (i, item) {
                             table +=`<tr>`+
                                         `<td style="width: 700px; ">`+
                                             `<div class="d-flex position-relative">`+
                                                 `<div class="flex-1" style="width: 400px; ">`+
                                                     `<h6 class="mb-0 fw-semi-bold">`+ item.DESCRIPCION +`</h6>`+
-                                                    `<p class="text-500 fs--2 mb-0">`+ item.ARTICULO +` | UND</p>`+
+                                                    `<p class="text-500 fs--2 mb-0">`+ item.ARTICULO +` | `+item.UND+`</p>`+
                                                 `</div>`+
                                             `</div>`+
                                         `</td>`;
@@ -48,7 +73,7 @@ function tblKardex(articulo, unidad) {
                                         });
                                 table += `</tr>`;
                                 
-                                table += `</tr>`;
+                               
                     });
                 
                 table +=`</tbody>`;
@@ -56,32 +81,27 @@ function tblKardex(articulo, unidad) {
    			$('#tbl_kardex')
    			.empty()
    			.append(table).DataTable({
-                "destroy": true,
-                "info": false,
-                "bPaginate": true,
-                "lengthMenu": [
-                    [5,20, -1],
-                    [5,20, "Todo"]
-                ],
+                "destroy" : true,
+                        "info":    false,
+                        "lengthMenu": [[5,10,-1], [5,10,"Todo"]],
+                        "language": {
+                            "zeroRecords": "NO HAY COINCIDENCIAS",
+                            "paginate": {
+                                "first":      "Primera",
+                                "last":       "Última ",
+                                "next":       "Siguiente",
+                                "previous":   "Anterior"
+                            },
+                            "lengthMenu": "MOSTRAR _MENU_",
+                            "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+                            "search":     "BUSCAR"
+                        },
                 "scrollY":        "900px",
                 "scrollX":        true,
                 "scrollCollapse": true,
-                "paging":         true,
                 "fixedColumns": {
                     leftColumns: 1,
                     rightColumns: 3
-                },
-                "language": {
-                    "zeroRecords": "NO HAY COINCIDENCIAS",
-                    "paginate": {
-                        "first": "Primera",
-                        "last": "Última ",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
-                    },
-                    "lengthMenu": "MOSTRAR _MENU_",
-                    "emptyTable": "-",
-                    "search": "BUSCAR"
                 },
                 createdRow: function (row, data, index) {
                     // Obtener la referencia a la tabla DataTable
@@ -108,6 +128,7 @@ function tblKardex(articulo, unidad) {
             });
             $("#tbl_kardex_length").hide();
             $("#tbl_kardex_filter").hide();
+            $("#tbl_kardex_paginate").hide();
 
             $('#id_txt_buscar').on('keyup', function() {        
                 var vTablePedido = $('#tbl_kardex').DataTable();

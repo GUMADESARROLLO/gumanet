@@ -25,10 +25,10 @@ class InnovaKardex extends Model
                 ->get();
     }
 
-    public static function getReporteKardex(Request $request)
+    public static function getReporteKardex($ini, $end)
     {
-        $d1 = '2023-04-01';//$request->input('ini');
-        $d2 = '2023-04-30';//$request->input('end');
+        $d1 = $ini;
+        $d2 = $end;
 
         $json_arrays = array();
         $i = 0 ;
@@ -50,6 +50,7 @@ class InnovaKardex extends Model
         foreach($Rows as $r){
             $json_arrays['header_date_rows'][$i]['ARTICULO'] = $r->ARTICULO;
             $json_arrays['header_date_rows'][$i]['DESCRIPCION'] = $r->DESCRIPCION;
+            $json_arrays['header_date_rows'][$i]['UND'] = $r->UND;
             foreach($json_arrays['header_date'] as $dtFecha => $valor){
 
                 $rows_in = 'IN01_'.date('Ymd',strtotime($valor));

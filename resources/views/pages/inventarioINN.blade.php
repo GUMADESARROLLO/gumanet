@@ -9,6 +9,54 @@
             <h4 class="h4 mb-4">Inventario Innova</h4>
         </div>
 	</div>
+
+    <div class="card border-0 shadow-sm mt-3">			
+        <div class="card-body col-sm-12">
+            <div class="row mt-3">
+                <div class="col-sm-3">						
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h3 class="card-title" id="numero_factura">0.00</h3>
+                            <p class="card-text" id="">-----</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">						
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h3 class="card-title" id="id_total_Facturado">C$ 0.00</h3>
+                            <p class="card-text" id="">-----</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h3 class="card-title" id="MontoVinneta">C$ 0.00</h3>
+                            <p class="card-text">-----</p>
+                        </div>
+                    </div>
+                </div>	
+                
+                <div class="col-sm-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h3 class="card-title" id="id_roi"> 0.00</h3>
+                            <p class="card-text">-----</p>
+                        </div>
+                    </div>
+                </div>	
+            </div>
+            <div class="col-sm-12">						
+                <table class="table table-striped table-bordered table-sm post_back mt-3" width="100%" id="dtVinneta">
+                    <thead class="bg-blue text-light"></thead>
+                </table>
+            </div>	
+        </div>
+    </div>
+
     <div class="card border-0 shadow-sm mt-3">			
         <div class="card-body col-sm-12">
             <h5 class="card-title"></h5>
@@ -36,8 +84,8 @@
                         </div>
                     </div>	
                     <div class="p-0 px-car">
-                    <div class="flex-between-center mb-3" id="kardex">
-                        <table class="table table-bordered" id="tbl_kardex" style="width:100%;">
+                    <div class="flex-between-center responsive mb-3" id="kardex">
+                        <table class="table table-bordered " id="tbl_kardex" style="width:100%; border-collapse: collapse;">
 
                         </table>
                     </div>
