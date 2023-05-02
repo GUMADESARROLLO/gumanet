@@ -22,7 +22,6 @@ $("#id_btn_new").click( function() {
     var primerDia = inicio.getFullYear()+'-'+(inicio.getMonth())+'-'+inicio.getDate();
     var ultimoDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+final.getDate();
 
-   console.log(ultimoDia);
     tblKardex(primerDia, ultimoDia);
 });
 
@@ -83,7 +82,7 @@ function tblKardex(primerDia, ultimoDia) {
    			.append(table).DataTable({
                 "destroy" : true,
                         "info":    false,
-                        "lengthMenu": [[5,10,-1], [5,10,"Todo"]],
+                        "lengthMenu": [[15,10,-1], [15,10,"Todo"]],
                         "language": {
                             "zeroRecords": "NO HAY COINCIDENCIAS",
                             "paginate": {
@@ -96,7 +95,7 @@ function tblKardex(primerDia, ultimoDia) {
                             "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
                             "search":     "BUSCAR"
                         },
-                "scrollY":        "900px",
+                "scrollY":        "1200px",
                 "scrollX":        true,
                 "scrollCollapse": true,
                 "fixedColumns": {
@@ -128,7 +127,6 @@ function tblKardex(primerDia, ultimoDia) {
             });
             $("#tbl_kardex_length").hide();
             $("#tbl_kardex_filter").hide();
-            $("#tbl_kardex_paginate").hide();
 
             $('#id_txt_buscar').on('keyup', function() {        
                 var vTablePedido = $('#tbl_kardex').DataTable();
