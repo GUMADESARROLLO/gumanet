@@ -34,7 +34,7 @@ class inventario_controller extends Controller
 		);
 		
 		if($companie == 4){
-			$inventario = InnovaKardex::get();
+      $inventario = InnovaModel::getAll();
 			return view('pages.inventarioINN', compact('inventario'));
 		}else{
 			return view('pages.inventario', $data);

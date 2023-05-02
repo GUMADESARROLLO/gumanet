@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Zona extends Model
 {
-    protected $table = "estadistica.zonas";
+    protected $table = "gumadesk.zonas";
 }

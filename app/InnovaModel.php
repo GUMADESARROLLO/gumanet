@@ -9,4 +9,9 @@ class InnovaModel extends Model
     protected $connection = 'sqlsrv';
     public $timestamps = false;
     protected $table = "PRODUCCION.dbo.tbl_inventario_innova";
+
+    public static function getAll()
+    {
+        return InnovaModel::WHERE('CANTIDAD ', '>',0)->get();
+    }
 }

@@ -1635,7 +1635,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     moneda = (xbolsones)? "" :"C$ "
                     temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';  
-                    temporal += '<span style="color:black">\u25CF</span> Nº FACT.: <b>  {point.FACT} </b><br/>';                   
+                    temporal += '<span style="color:black">\u25CF</span> CANT. FACT.: <b>  {point.FACT} </b><br/>';                   
                     grafiacas_productos_Diarios.tooltip = {
                         pointFormat : temporal
                     }
@@ -2153,16 +2153,18 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     var inCordobas = "C$. " +numeral(item['data']['Local']).format('0,0.00')
                     
                     $('.has_standard_tooltip').attr('data-toggle', 'tooltip');
-	                $('.vts-month-dolar').attr('title', inCordobas);  
+                    $('.vts-month-dolar').attr('title', inCordobas);  
                     $('[data-toggle="tooltip"]').tooltip();
 
-                    if (xbolsones==1) {
+                    /*if (xbolsones==1) {
                         $("#id_ventas_totales").html("Total Venta C$. 0.00")
-                        $("#id_ventas_dolares").html("Venta Exportación $ 0.00")
+                        $("#id_ventas_dolares").html("Venta Exportación $ ->0.00")
                     } else {
                         $("#id_ventas_dolares").html("<a href='exportacion'> Venta Exportación $ " + numeral(item['data']['Dolar']).format('0,0.00')+"</a>")
                         $("#id_ventas_totales").html("Total Venta C$ " + numeral(val_vts_month).format('0,0.00'))
-                    }
+                    }*/
+                    $("#id_ventas_dolares").html("Venta Exportación $ " + numeral(item['data']['Dolar']).format('0,0.00'))
+                    $("#id_ventas_totales").html("Total Venta C$ " + numeral(val_vts_month).format('0,0.00'))
 
                 break;
 
@@ -3151,7 +3153,7 @@ function detalles_ventas_diarias($dia,$mAVG)
                     { "title": "Ruta",              "data": "RUTA"},                    
                     { "title": "Nombre",            "data": "VENDE" },
                     { "title": "Real Vtas.",        "data": "REALE" },
-                    { "title": "Nº Fact.",          "data": "FACTURA" },
+                    { "title": "CANT. Fact.",          "data": "FACTURA" },
                 ],
                 "columnDefs": [
                     {"className": "dt-back-unit", "targets": [ 2 ]},
@@ -3229,7 +3231,7 @@ function detalles_ventas_diarias($dia,$mAVG)
                         <th class='dt-center'>Ruta</th>
                         <th class='dt-left'>Nombre</th>
                         <th class='dt-back-unit'>Real Vtas.</th>
-                        <th class='dt-center'>Nº Fact.</th>
+                        <th class='dt-center'>Cant. Fact.</th>
                     </tr>
                     `);
 

@@ -53,6 +53,9 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => false,
+            'options'   => [
+                \PDO::ATTR_EMULATE_PREPARES => true
+            ],
             'engine' => null,
         ],
 
