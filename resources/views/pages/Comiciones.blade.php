@@ -60,7 +60,7 @@
     <div class="card border-0 shadow-sm mt-3 ">
       <div class="card-body col-sm-12 p-0 mb-2">	
         <div class="p-0 px-car">
-          <div class="flex-between-center border border-1 border-300 rounded-2">
+          <div class="flex-between-center scrollbar border border-1 border-300 rounded-2">
             <table id="table_comisiones" class="table table-striped table-bordered table-sm mt-3 fs--1" width="100%">
               <thead>
                 <tr class="bg-blue text-light">
