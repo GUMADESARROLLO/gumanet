@@ -25,7 +25,7 @@
                 <div class="col-sm-3">						
                     <div class="card text-center">
                         <div class="card-body">
-                            <h3 class="card-title" id="id_total_Facturado">C$ 0.00</h3>
+                            <h3 class="card-title" id="id_total_Facturado">0.00</h3>
                             <p class="card-text" id="">-----</p>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                 <div class="col-sm-3">
                     <div class="card text-center">
                         <div class="card-body">
-                            <h3 class="card-title" id="MontoVinneta">C$ 0.00</h3>
+                            <h3 class="card-title" id="MontoVinneta">0.00</h3>
                             <p class="card-text">-----</p>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                 <div class="col-sm-3">
                     <div class="card text-center">
                         <div class="card-body">
-                            <h3 class="card-title" id="id_roi"> 0.00</h3>
+                            <h3 class="card-title" id="id_roi">0.00</h3>
                             <p class="card-text">-----</p>
                         </div>
                     </div>
@@ -73,9 +73,11 @@
                         <div class="col-md-3 border-left">
                             <div class="input-group">
                                 <select class="custom-select"  id="id_select_mes">
-                                    @for ($i = 1; $i <= 12; $i++)
-                                        <option value="{{ $i }}" {{ $i == date('m') ? 'selected' : '' }}>{{ Carbon\Carbon::createFromFormat('m', $i)->format('F') }}</option>
-                                    @endfor
+                                   
+                                        <option value="1" >1 MES</option>
+                                        <option value="3" >3 MESES</option>
+                                        <option value="6" >6 MESES</option>
+                                   
                                 </select>
                                 <div class="btn input-group-text bg-transparent" id="id_btn_new">
                                     <span class="fas fa-history fs--1 text-600"></span>
@@ -86,7 +88,18 @@
                     <div class="p-0 px-car">
                     <div class="flex-between-center responsive mb-3" id="kardex">
                         <table class="table table-bordered " id="tbl_kardex" style="width:100%; border-collapse: collapse;">
-
+                            <thead>
+                                <tr>
+                                    <td class="bg-blue text-light text-center">
+                                        ARTICULO
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <b>NO HAY REGISTROS PARA ESTE MES</b>
+                                    </td>
+                                </tr>
+                            </thead>
                         </table>
                     </div>
                     </div>
