@@ -2,12 +2,12 @@
 $(document).ready(function() {
     var date = new Date();
 
-    var inicio = new Date(date.getFullYear(), date.getMonth(), 1);
+    var inicio = new Date(date.getFullYear(), date.getMonth()-2, 1);
     var final = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
     var primerDia = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
     var ultimoDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+final.getDate();
-console.log(primerDia);
+
     tblKardex(primerDia, ultimoDia);
 });
 
@@ -63,7 +63,7 @@ function tblKardex(primerDia, ultimoDia) {
                                             `<div class="d-flex position-relative">`+
                                                 `<div class="flex-1" style="width: 400px; ">`+
                                                     `<h6 class="mb-0 fw-semi-bold">`+ item.DESCRIPCION +`</h6>`+
-                                                    `<p class="text-500 fs--2 mb-0">`+ item.ARTICULO +` | `+item.UND+` | `+item.USUARIO  +`</p>`+
+                                                    `<p class="text-500 fs--2 mb-0">`+ item.ARTICULO +` | `+item.UND+` | <b>`+item.USUARIO  +`</b></p>`+
                                                 `</div>`+
                                             `</div>`+
                                         `</td>`;
@@ -114,18 +114,21 @@ function tblKardex(primerDia, ultimoDia) {
                     // Agregar la clase CSS personalizada a esas celdas
                     lastCells.addClass('colorTable');
                     lastCells.addClass('encabezadoInv');
+                    
 
                     // Obtener las cabeceras de las últimas tres celdas de la tabla
                     var lastHeaders = $('th', table.table().header()).slice(-3);
 
                     // Agregar la clase CSS personalizada a esas cabeceras
                     lastHeaders.addClass('colorTable');
+                    
 
                     // Obtener la última cabecera de la tabla (corresponde a las tres ultimas columnas)
                     var lastHeader = $('th:last-child', '#tbl_kardex');
 
                     // Agregar la clase CSS personalizada a esa cabecera
                     lastHeader.addClass('colorTable');
+                    lastHeader.addClass('text-dark');
                 }
             });
             $("#tbl_kardex_length").hide();
