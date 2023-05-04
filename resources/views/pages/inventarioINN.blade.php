@@ -74,9 +74,9 @@
                             <div class="input-group">
                                 <select class="custom-select"  id="id_select_mes">
                                    
-                                        <option value="1" >1 MES</option>
                                         <option value="3" >3 MESES</option>
                                         <option value="6" >6 MESES</option>
+                                        <option value="12" >12 MESES</option>
                                    
                                 </select>
                                 <div class="btn input-group-text bg-transparent" id="id_btn_new">
@@ -88,18 +88,7 @@
                     <div class="p-0 px-car">
                     <div class="flex-between-center responsive mb-3" id="kardex">
                         <table class="table table-bordered " id="tbl_kardex" style="width:100%; border-collapse: collapse;">
-                            <thead>
-                                <tr>
-                                    <td class="bg-blue text-light text-center">
-                                        ARTICULO
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">
-                                        <b>NO HAY REGISTROS PARA ESTE MES</b>
-                                    </td>
-                                </tr>
-                            </thead>
+                            
                         </table>
                     </div>
                     </div>
