@@ -63,7 +63,7 @@ function tblKardex(primerDia, ultimoDia) {
                                             `<div class="d-flex position-relative">`+
                                                 `<div class="flex-1" style="width: 400px; ">`+
                                                     `<h6 class="mb-0 fw-semi-bold">`+ item.DESCRIPCION +`</h6>`+
-                                                    `<p class="text-500 fs--2 mb-0">`+ item.ARTICULO +` | `+item.UND+` | <b>`+item.USUARIO  +`</b></p>`+
+                                                    `<p class="text-500 fs--2 mb-0">`+ item.ARTICULO +` | `+item.UND+` | <span class="badge rounded-pill badge-primary">`+item.USUARIO  +`</span></b></p>`+
                                                 `</div>`+
                                             `</div>`+
                                         `</td>`;
