@@ -39,13 +39,14 @@ function tblKardex(primerDia, ultimoDia) {
             end : ultimoDia
         },
         async: true,
-        success: function(data) { 
+        success: function(data) {  console.log(data);
             table =  `<thead>`+
                         `<tr class="bg-blue text-light">`+
                             `<th style="width: 700px;" rowspan="2">ARTICULO</th>`;
                             $.each(data['header_date'], function (i, item) {
-                                table += `<th colspan="3" style="text-align:center;" width="10px">`+moment(item).format('DD-MMM-YYYY')+`</th>`;                                
+                                table += `<th colspan="3" style="text-align:center;" width="10px">`+ ((item == "TOTAL") ? item : moment(item).format('DD-MMM-YYYY'))+`</th>`;                                
                                 })
+                            
                         
                 table +=`</tr><tr>`;                        
                         $.each(data['header_date'], function (i, item) {
@@ -68,11 +69,17 @@ function tblKardex(primerDia, ultimoDia) {
                                             `</div>`+
                                         `</td>`;
                                         $.each(data['header_date'], function (i, kar) {
-                                            table += `<td> <p class="text-right" style="width: 60px;">`+numeral(item['IN01_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p> </td>`+
-                                                `<td> <p class="text-right" style="width: 60px;">`+numeral(item['OUT02_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p></td>`+
-                                                `<td> <p class="text-right" style="width: 60px;">`+numeral(item['STOCK03_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p></td>`;
+                                            if(kar != 'TOTAL'){
+                                                table += `<td> <p class="text-right" style="width: 60px;">`+numeral(item['IN01_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p> </td>`+
+                                                    `<td> <p class="text-right" style="width: 60px;">`+numeral(item['OUT02_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p></td>`+
+                                                    `<td> <p class="text-right" style="width: 60px;">`+numeral(item['STOCK03_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p></td>`;
+                                            }else{
+                                                table += `<td> <p class="text-right" style="width: 60px;">`+numeral(item['IN_TODAY']).format('0,0.00')+`</p> </td>`+
+                                                `<td> <p class="text-right" style="width: 60px;">`+numeral(item['OUT_TODAY']).format('0,0.00')+`</p></td>`+
+                                                `<td> <p class="text-right" style="width: 60px;">`+numeral(item['STOCK_TODAY']).format('0,0.00')+`</p></td>`;
+                                            }
                                         });
-                                table += `</tr>`;
+                                        table += `</tr>`;
                                 
                                
                     });
