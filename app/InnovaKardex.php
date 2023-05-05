@@ -48,7 +48,7 @@ class InnovaKardex extends Model
                 $json_arrays['header_date'][$i] = $f->FECHA;
                 $i++;
             }
-            $json_arrays['header_date'][$i+1] = 'TOTAL';
+            $json_arrays['header_date'][$i+1] = 'Ult. Registro.';
             
             $Rows = DB::connection('sqlsrv')->select('SET NOCOUNT ON ;EXEC PRODUCCION.dbo.gnet_calcular_kardex '."'".$d1."'".','."'".$d2."'".",''" );
             foreach($Rows as $r){
@@ -65,7 +65,7 @@ class InnovaKardex extends Model
                     $rows_out = 'OUT02_'.date('Ymd',strtotime($valor));
                     $rows_stock = 'STOCK03_'.date('Ymd',strtotime($valor));
                     
-                    if($valor == 'TOTAL'){
+                    if($valor == 'Ult. Registro.'){
                         $rows_in = 'IN_TODAY';
                         $rows_out = 'OUT_TODAY';
                         $rows_stock = 'STOCK_TODAY';
