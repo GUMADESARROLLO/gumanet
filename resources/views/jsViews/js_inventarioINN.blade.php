@@ -44,7 +44,7 @@ function tblKardex(primerDia, ultimoDia) {
                         `<tr class="bg-blue text-light">`+
                             `<th style="width: 700px;" rowspan="2">ARTICULO</th>`;
                             $.each(data['header_date'], function (i, item) {
-                                table += `<th colspan="3" style="text-align:center;" width="10px">`+ ((item == "TOTAL") ? item : moment(item).format('DD-MMM-YYYY'))+`</th>`;                                
+                                table += `<th colspan="3" style="text-align:center;" width="10px">`+ ((item == "Ult. Registro.") ? item : moment(item).format('DD-MMM-YYYY'))+`</th>`;                                
                                 })
                             
                         
@@ -69,7 +69,7 @@ function tblKardex(primerDia, ultimoDia) {
                                             `</div>`+
                                         `</td>`;
                                         $.each(data['header_date'], function (i, kar) {
-                                            if(kar != 'TOTAL'){
+                                            if(kar != 'Ult. Registro.'){
                                                 table += `<td> <p class="text-right" style="width: 60px;">`+numeral(item['IN01_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p> </td>`+
                                                     `<td> <p class="text-right" style="width: 60px;">`+numeral(item['OUT02_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p></td>`+
                                                     `<td> <p class="text-right" style="width: 60px;">`+numeral(item['STOCK03_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p></td>`;
