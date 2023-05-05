@@ -8,7 +8,7 @@ class InnovaModel extends Model
 {
     protected $connection = 'sqlsrv';
     public $timestamps = false;
-    protected $table = "PRODUCCION.dbo.tbl_inventario_innova";
+    protected $table = "PRODUCCION.dbo.tbl_inventario_innova_dev";
 
     public static function getAll()
     {
