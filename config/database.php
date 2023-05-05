@@ -58,6 +58,24 @@ return [
             ],
             'engine' => null,
         ],
+        'mysql_kardex_inn' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_kardex', '127.0.0.1'),
+            'port' => env('DB_PORT_kardex', '3306'),
+            'database' => env('DB_DATABASE_kardex', 'forge'),
+            'username' => env('DB_USERNAME_kardex', 'forge'),
+            'password' => env('DB_PASSWORD_kardex', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => false,
+            'options'   => [
+                \PDO::ATTR_EMULATE_PREPARES => true
+            ],
+            'engine' => null,
+        ],
 
         'pgsql' => [
             'driver' => 'pgsql',

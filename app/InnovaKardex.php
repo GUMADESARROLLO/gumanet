@@ -14,6 +14,8 @@ class InnovaKardex extends Model
     public $timestamps = false;
     protected $table = "PRODUCCION.dbo.tbl_inventario_innova_kardex";
 
+    
+
     public static function getKardex(Request $request)
     {
         $id = $request->input('ArticuloID');
@@ -49,10 +51,13 @@ class InnovaKardex extends Model
             
             $Rows = DB::connection('sqlsrv')->select('SET NOCOUNT ON ;EXEC PRODUCCION.dbo.gnet_calcular_kardex '."'".$d1."'".','."'".$d2."'".",''" );
             foreach($Rows as $r){
+
+                $RoleUsr = KardexUsuario::find($r->USUARIO);
+                
                 $json_arrays['header_date_rows'][$i]['ARTICULO'] = $r->ARTICULO;
                 $json_arrays['header_date_rows'][$i]['DESCRIPCION'] = $r->DESCRIPCION;
                 $json_arrays['header_date_rows'][$i]['UND'] = $r->UND;
-                $json_arrays['header_date_rows'][$i]['USUARIO'] = ($r->USUARIO == 3) ? 'PRODUCTO TERMINADO' : 'MATERIA PRIMA';
+                $json_arrays['header_date_rows'][$i]['USUARIO'] = $RoleUsr->rol->descripcion;
                 foreach($json_arrays['header_date'] as $dtFecha => $valor){
 
                     $rows_in = 'IN01_'.date('Ymd',strtotime($valor));
@@ -67,7 +72,9 @@ class InnovaKardex extends Model
             }
             return $json_arrays;
         }catch(Exception $e){
-            return $json_arrays;
+            $mensaje =  'Excepción capturada: ' . $e->getMessage() . "\n";
+                return response()->json($mensaje);
+            //return $json_arrays;
         }
 
        
