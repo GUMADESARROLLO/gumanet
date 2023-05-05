@@ -48,10 +48,11 @@ class InnovaKardex extends Model
                 $json_arrays['header_date'][$i] = $f->FECHA;
                 $i++;
             }
+            $json_arrays['header_date'][$i+1] = 'TOTAL';
             
             $Rows = DB::connection('sqlsrv')->select('SET NOCOUNT ON ;EXEC PRODUCCION.dbo.gnet_calcular_kardex '."'".$d1."'".','."'".$d2."'".",''" );
             foreach($Rows as $r){
-
+                
                 $RoleUsr = KardexUsuario::find($r->USUARIO);
                 
                 $json_arrays['header_date_rows'][$i]['ARTICULO'] = $r->ARTICULO;
@@ -63,6 +64,12 @@ class InnovaKardex extends Model
                     $rows_in = 'IN01_'.date('Ymd',strtotime($valor));
                     $rows_out = 'OUT02_'.date('Ymd',strtotime($valor));
                     $rows_stock = 'STOCK03_'.date('Ymd',strtotime($valor));
+                    
+                    if($valor == 'TOTAL'){
+                        $rows_in = 'IN_TODAY';
+                        $rows_out = 'OUT_TODAY';
+                        $rows_stock = 'STOCK_TODAY';
+                    }
 
                     $json_arrays['header_date_rows'][$i][$rows_in] = ($r->$rows_in=='0.0' || $r->$rows_in=='00.00') ? '' : number_format($r->$rows_in,2)  ;
                     $json_arrays['header_date_rows'][$i][$rows_out] = ($r->$rows_out=='0.0' || $r->$rows_out=='00.00') ? '' : number_format($r->$rows_out,2);
@@ -70,6 +77,7 @@ class InnovaKardex extends Model
                 }
                 $i++;
             }
+            //DD($json_arrays);
             return $json_arrays;
         }catch(Exception $e){
             $mensaje =  'Excepción capturada: ' . $e->getMessage() . "\n";
