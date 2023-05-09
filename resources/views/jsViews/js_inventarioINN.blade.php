@@ -29,8 +29,7 @@ $("#id_btn_new").click( function() {
 
 
 function tblKardex(primerDia, ultimoDia) {
-    
- 
+    tblResumen();
     $.ajax({
         url: `getKerdex`,
         type: 'get',
@@ -39,7 +38,7 @@ function tblKardex(primerDia, ultimoDia) {
             end : ultimoDia
         },
         async: true,
-        success: function(data) {  console.log(data);
+        success: function(data) {
             table =  `<thead>`+
                         `<tr class="bg-blue text-light">`+
                             `<th style="width: 700px;" rowspan="2">ARTICULO</th>`;
@@ -149,8 +148,111 @@ function tblKardex(primerDia, ultimoDia) {
     });
 
     
+}
 
-    
+function tblResumen(){
+
+    $.ajax({
+        url: `getResumenKardex`,
+        type: 'get',
+        async: true,
+        success: function(data) {
+            console.log(data);
+            $('#table_resumen').DataTable({
+                "data":data,
+                "destroy" : true,
+                "info":    false,
+                "lengthMenu": [[5,10,-1], [5,10,"Todo"]],
+                "language": {
+                    "zeroRecords": "NO HAY COINCIDENCIAS",
+                    "paginate": {
+                        "first":      "Primera",
+                        "last":       "Última ",
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    },
+                    "lengthMenu": "MOSTRAR _MENU_",
+                    "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+                    "search":     "BUSCAR"
+                },
+                'columns': [
+                    { "data": "Product","render": function(data, type, row, meta) {
+
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="d-flex align-items-center">
+                                    <h6 class="fs-0 text-900 mb-0 me-2">`+row.Product+`</h6>
+                                    </div>
+                                </div>`
+
+                    }  },
+                    { "data": "PT","render": function(data, type, row, meta) {
+
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.PT).format('0,0.00')+`
+                                    </div>
+                                </div>`
+
+                    } },
+                    { "data": "JR","render": function(data, type, row, meta) {
+
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.JR).format('0,0.00')+`
+                                    </div>
+                                </div>`
+
+                    } },
+                    { "data": "MP","render": function(data, type, row, meta) {
+
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.MP).format('0,0.00')+`
+                                    </div>
+                                </div>`
+
+                    } },
+                    { "data": "TE","render": function(data, type, row, meta) {
+
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.TE).format('0,0.00')+`
+                                    </div>
+                                </div>`
+
+                    } },
+                ],
+                "footerCallback": function ( row, data, start, end, display ) {
+                        var api = this.api();
+                        var Total  = 0;
+
+                        var intVal = function ( i ) {
+                            return typeof i === 'string' ?
+                                i.replace(/[^0-9.]/g, '')*1 :
+                                typeof i === 'number' ?
+                                    i : 0;
+                        };
+
+                        total = api.column( 4 ).data().reduce( function (a, b){
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                        for (var i = 0; i < data.length; i++) {
+                            Total += intVal(data[i].TE);
+                        }
+                        
+                        $(api.column(3).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL: </h6>');
+                        $(api.column(4).footer()).html('<h6 class="text-right">'+numeral(Total).format('0,0.00')+'</h6>');
+                    },
+                             
+            })
+
+            //OCULTA DE LA PANTALLA EL FILTRO DE PAGINADO Y FORM DE BUSQUEDA
+            $("#table_resumen_length").hide();
+            $("#table_resumen_filter").hide();
+            $("#table_resumen_paginate").hide();
+        }
+    })
 }
 
 </script>

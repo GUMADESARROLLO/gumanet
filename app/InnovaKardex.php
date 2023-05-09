@@ -113,4 +113,18 @@ class InnovaKardex extends Model
             return response()->json($mensaje);
         }
     }
+
+    public static function getResumenKardex(){
+        $json = array();
+        $i = 0;
+
+        $result = DB::connection('sqlsrv')->select('SELECT * FROM PRODUCCION.dbo.view_stats_inventario_innova');
+     
+        foreach($result as $row){
+            $json[$i] = $row;
+            $i++;
+        }
+
+        return $json;
+    }
 }
