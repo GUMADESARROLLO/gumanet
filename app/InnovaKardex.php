@@ -121,9 +121,18 @@ class InnovaKardex extends Model
         $result = DB::connection('sqlsrv')->select('SELECT * FROM PRODUCCION.dbo.view_stats_inventario_innova');
      
         foreach($result as $row){
-            $json[$i] = $row;
+            $json[$i]['Product'] = $row->Product;
+            $json[$i]['PT'] = $row->PT;
+            $json[$i]['JR'] = $row->JR;
+            $json[$i]['MP'] = $row->MP;
+            $json[$i]['TE'] = $row->TE;
             $i++;
         }
+            $json[$i]['Product'] = 'CHOLIN GIGANTE';
+            $json[$i]['PT'] = "0";
+            $json[$i]['JR'] = "0";
+            $json[$i]['MP'] = "0";
+            $json[$i]['TE'] = "0";
 
         return $json;
     }

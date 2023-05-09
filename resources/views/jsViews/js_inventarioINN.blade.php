@@ -157,12 +157,12 @@ function tblResumen(){
         type: 'get',
         async: true,
         success: function(data) {
-            console.log(data);
             $('#table_resumen').DataTable({
                 "data":data,
                 "destroy" : true,
                 "info":    false,
-                "lengthMenu": [[5,10,-1], [5,10,"Todo"]],
+                order: [[1, 'desc']],
+                "lengthMenu": [[5,-1], [5,"Todo"]],
                 "language": {
                     "zeroRecords": "NO HAY COINCIDENCIAS",
                     "paginate": {
