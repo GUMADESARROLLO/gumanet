@@ -121,11 +121,21 @@ class InnovaKardex extends Model
         $result = DB::connection('sqlsrv')->select('SELECT * FROM PRODUCCION.dbo.view_stats_inventario_innova');
      
         foreach($result as $row){
+
+            //5 ES EL PESO DEL BOLSON
+            $JR_KG          = ($row->JR) / 5;
+
+            //SE LE RESTA EL 8% DE MERMA UNA VES QUE PASA A PROCESO SECO
+            $JR_KG_MERMA    = $JR_KG - ($JR_KG * 0.08);
+
+            //SUMATORIA DE TOTAL ESTIMADO
+            $TT_ESTIMADO    = $row->PT + $JR_KG_MERMA + $row->MP;
+
             $json[$i]['Product'] = $row->Product;
             $json[$i]['PT'] = $row->PT;
-            $json[$i]['JR'] = $row->JR;
+            $json[$i]['JR'] = $JR_KG_MERMA;
             $json[$i]['MP'] = $row->MP;
-            $json[$i]['TE'] = $row->TE;
+            $json[$i]['TE'] = $TT_ESTIMADO;
             $i++;
         }
             $json[$i]['Product'] = 'CHOLIN GIGANTE';
