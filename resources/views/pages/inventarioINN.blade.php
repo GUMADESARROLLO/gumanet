@@ -10,92 +10,78 @@
         </div>
 	</div>
 
-    <div class="card border-0 shadow-sm mt-3">			
-        <div class="card-body col-sm-12">
-            <div class="row mt-3">
-                <div class="col-sm-3">						
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h3 class="card-title" id="numero_factura">0.00</h3>
-                            <p class="card-text" id="">-----</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-3">						
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h3 class="card-title" id="id_total_Facturado">0.00</h3>
-                            <p class="card-text" id="">-----</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h3 class="card-title" id="MontoVinneta">0.00</h3>
-                            <p class="card-text">-----</p>
-                        </div>
-                    </div>
-                </div>	
+    <div class="card border-0 shadow-sm mt-3 ">
+      <div class="card-body col-sm-12 p-0 mb-2">	
+        <div class="p-0 px-car">
+          <div class="flex-between-center scrollbar border border-1 border-300 rounded-2">
+            <table id="table_resumen" class="table table-striped table-bordered table-sm mt-3 fs--1" width="100%">
+              <thead>
+                <tr class="bg-blue text-light">
+                  <th >SKU</th>
+                  <th >PRODUCTO TERMINADO</th>
+                  <th >JUMBO ROL</th>
+                  <th>MATERIA PRIMA</th>
+                  <th>TOTAL ESTIMADO</th>
+                  
+                </tr>
                 
-                <div class="col-sm-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h3 class="card-title" id="id_roi">0.00</h3>
-                            <p class="card-text">-----</p>
-                        </div>
-                    </div>
-                </div>	
-            </div>
-            <div class="col-sm-12">						
-                <table class="table table-striped table-bordered table-sm post_back mt-3" width="100%" id="dtVinneta">
-                    <thead class="bg-blue text-light"></thead>
-                </table>
-            </div>	
+              </thead>
+              <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+              <tfoot>
+                <tr class="bg-blue text-light">
+                    <th colspan="4" style="text-align:right"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
 
-    <div class="card border-0 shadow-sm mt-3">			
-        <div class="card-body col-sm-12">
-            <h5 class="card-title"></h5>
-            <div class="card border-0 shadow-sm mt-3 ">
-                <div class="card-body col-sm-12 p-0 mb-2">
-                    <div class="row col-md-12 mb-3" >
-                        <span id="id_form_role" style="display:none">{{ Session::get('user_role') }}</span>                        
-                        <div class="input-group col-md-9">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
-                            </div>								
-                            <input type="text" id="id_txt_buscar" class="form-control" placeholder="Buscar...">
-                        </div>
-                        <div class="col-md-3 border-left">
-                            <div class="input-group">
-                                <select class="custom-select"  id="id_select_mes">
-                                   
-                                        <option value="3" >3 MESES</option>
-                                        <option value="6" >6 MESES</option>
-                                        <option value="12" >12 MESES</option>
-                                   
-                                </select>
-                                <div class="btn input-group-text bg-transparent" id="id_btn_new">
-                                    <span class="fas fa-history fs--1 text-600"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>	
-                    <div class="p-0 px-car">
-                    <div class="flex-between-center responsive mb-3" id="kardex">
-                        <table class="table table-bordered " id="tbl_kardex" style="width:100%; border-collapse: collapse;">
+    <div class="card border-0 shadow-sm mt-3 ">
+        <div class="card-body col-sm-12 p-0 mb-2">
+            <div class="row col-md-12 mb-3" >
+                <span id="id_form_role" style="display:none">{{ Session::get('user_role') }}</span>                        
+                <div class="input-group col-md-9">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                    </div>								
+                    <input type="text" id="id_txt_buscar" class="form-control" placeholder="Buscar...">
+                </div>
+                <div class="col-md-3 border-left">
+                    <div class="input-group">
+                        <select class="custom-select"  id="id_select_mes">
                             
-                        </table>
-                    </div>
+                                <option value="3" >3 MESES</option>
+                                <option value="6" >6 MESES</option>
+                                <option value="12" >12 MESES</option>
+                            
+                        </select>
+                        <div class="btn input-group-text bg-transparent" id="id_btn_new">
+                            <span class="fas fa-history fs--1 text-600"></span>
+                        </div>
                     </div>
                 </div>
+            </div>	
+            <div class="p-0 px-car">
+            <div class="flex-between-center responsive mb-3" id="kardex">
+                <table class="table table-bordered " id="tbl_kardex" style="width:100%; border-collapse: collapse;">
+                    
+                </table>
+            </div>
             </div>
         </div>
-    </div>      
+    </div>
+              
 
 </div>
 

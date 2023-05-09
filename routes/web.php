@@ -254,3 +254,4 @@ Route::get('getPromoMes', 'PromocionController@getPromoMes')->name('getPromoMes'
 
 Route::get('inventarioInnova', 'InnovaController@inventarioInnova')->name('inventarioInnova');
 Route::get('getKerdex', 'InnovaController@getKerdex')->name('getKerdex');
+Route::get('getResumenKardex', 'InnovaController@getResumenKardex')->name('getRasumenKardex');
