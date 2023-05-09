@@ -17,11 +17,11 @@
             <table id="table_resumen" class="table table-striped table-bordered table-sm mt-3 fs--1" width="100%">
               <thead>
                 <tr class="bg-blue text-light">
-                  <th >SKU</th>
-                  <th >PRODUCTO TERMINADO</th>
-                  <th >JUMBO ROL</th>
-                  <th>MATERIA PRIMA</th>
-                  <th>TOTAL ESTIMADO</th>
+                  <th >PRODUCTO</th>
+                  <th >PT</th>
+                  <th >JR</th>
+                  <th>MP</th>
+                  <th>TOTAL</th>
                   
                 </tr>
                 
