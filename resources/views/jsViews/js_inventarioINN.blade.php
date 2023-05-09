@@ -120,6 +120,7 @@ function tblKardex(primerDia, ultimoDia) {
                     // Agregar la clase CSS personalizada a esas celdas
                     lastCells.addClass('colorTable');
                     lastCells.addClass('encabezadoInv');
+                    lastCells.hide();
                     
 
                     // Obtener las cabeceras de las últimas tres celdas de la tabla
@@ -127,6 +128,7 @@ function tblKardex(primerDia, ultimoDia) {
 
                     // Agregar la clase CSS personalizada a esas cabeceras
                     lastHeaders.addClass('colorTable');
+                    lastHeaders.hide();
                     
 
                     // Obtener la última cabecera de la tabla (corresponde a las tres ultimas columnas)
@@ -135,6 +137,8 @@ function tblKardex(primerDia, ultimoDia) {
                     // Agregar la clase CSS personalizada a esa cabecera
                     lastHeader.addClass('colorTable');
                     lastHeader.addClass('text-dark');
+                    lastHeader.hide();
+                    
                 }
             });
             $("#tbl_kardex_length").hide();
@@ -241,7 +245,7 @@ function tblResumen(){
                             Total += intVal(data[i].TE);
                         }
                         
-                        $(api.column(3).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL: </h6>');
+                        $(api.column(3).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL ESTIMADO EN BOLSONES: </h6>');
                         $(api.column(4).footer()).html('<h6 class="text-right">'+numeral(Total).format('0,0.00')+'</h6>');
                     },
                              
