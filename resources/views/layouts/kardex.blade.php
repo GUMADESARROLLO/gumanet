@@ -128,6 +128,7 @@
 <script src="{{ url('js/all.min.js') }}"></script>
 <script src="{{ url('js/ext/feather.min.js') }}"></script>
 <script src="{{ url('js/js_general.js') }}"></script>
+<script src="{{ url('js/jquery.cookie.js') }}"></script>
 
 
 
