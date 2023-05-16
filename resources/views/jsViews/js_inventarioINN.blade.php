@@ -184,7 +184,32 @@ function tblResumen(){
 
                         return  `<div class="pe-4 border-sm-end border-200" >
                                     <div class="d-flex align-items-center">
-                                    <h6 class="fs-0 text-900 mb-0 me-2">`+row.Product+`</h6>
+                                    <div class="tooltip-container">
+                                        <h6 class="fs-0 text-900 mb-0 me-2">`+row.Product+`</h6>
+                                        <span class="tooltip">
+                                        <table class="table">
+                                                <thead class="bg-200 text-900">
+                                                <tr class="bg-primary text-light">
+                                                    <th colspan="2">`+row.Product+`</th>
+                                                </tr>
+                                               
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="border-200">
+                                                        <td class="align-middle text-left ">
+                                                        Lorem ipsum dolor sit amet, consectetuer | 6IN0000
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="border-200">                                                        
+                                                        <td class="align-middle text-left ">
+                                                        Lorem ipsum dolor sit amet, consectetuer | 6IN0000
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        
+                                        </span>
+                                    </div>
                                     </div>
                                 </div>`
 
