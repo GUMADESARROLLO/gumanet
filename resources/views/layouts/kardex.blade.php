@@ -41,6 +41,7 @@
 </style>
 <link rel="stylesheet" href="{{ url('css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ url('css/fuente.css') }}">
+<link rel="stylesheet" href="{{ url('css/Tooltip.css') }}">
 <!--Import Google Icon Font-->
 <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"/>
@@ -119,11 +120,12 @@
 <script src="{{ asset('js/jquery-2.1.1.min.js') }}"></script>    
 <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>  
 <script src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
+<script src="{{ url('js/popper.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="{{ url('js/ext/moment.js') }}"></script>
 <script src="{{ url('js/Numeral.js') }}"></script>
 <script src="{{ url('js/all.min.js') }}"></script>
-
 <script src="{{ url('js/ext/feather.min.js') }}"></script>
 <script src="{{ url('js/js_general.js') }}"></script>
 
