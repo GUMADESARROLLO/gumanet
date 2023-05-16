@@ -2,7 +2,7 @@
 $(document).ready(function() {
     var date = new Date();
 
-    var inicio = new Date(date.getFullYear(), date.getMonth()-2, 1);
+    var inicio = new Date(date.getFullYear(), date.getMonth(), 1);
     var final = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
     var primerDia = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
@@ -16,14 +16,14 @@ $("#id_btn_new").click( function() {
 
     var mes = $('#id_select_mes').val();
 
-    var invM = (mes == 1) ? date.getMonth() : (date.getMonth() + 1) - mes;
-
+    var invM = (date.getMonth() + 1) - mes;
+    
     var inicio = new Date(date.getFullYear(), invM, 1);
     var final = new Date(date.getFullYear(),date.getMonth() + 1, 0);
 
     var primerDia = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
     var ultimoDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+final.getDate();
-
+    
     tblKardex(primerDia, ultimoDia);
 });
 
