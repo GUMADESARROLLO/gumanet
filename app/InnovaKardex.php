@@ -119,8 +119,18 @@ class InnovaKardex extends Model
         $i = 0;
 
         $result = DB::connection('sqlsrv')->select('SELECT * FROM PRODUCCION.dbo.view_stats_inventario_innova');
-     
-        foreach($result as $row){
+    
+        foreach($result as $row ){
+
+            $Product = $row->Product;
+
+            $articulos = ArticuloInnova::select('ARTICULO', 'DESCRIPCION')
+            ->whereHas('clasificacion1', function ($query) use ($Product) {
+                $query->where('DESCRIPCION', $Product);
+            })
+            ->where('Clasificacion_1', '>', 1)
+            ->get()
+            ->toArray();
 
             //5 ES EL PESO DEL BOLSON
             $JR_KG          = ($row->JR) / 5;
@@ -131,18 +141,20 @@ class InnovaKardex extends Model
             //SUMATORIA DE TOTAL ESTIMADO
             $TT_ESTIMADO    = $row->PT + $JR_KG_MERMA + $row->MP;
 
-            $json[$i]['Product'] = $row->Product;
+            $json[$i]['Product'] = $Product;
             $json[$i]['PT'] = $row->PT;
             $json[$i]['JR'] = $JR_KG_MERMA;
             $json[$i]['MP'] = $row->MP;
             $json[$i]['TE'] = $TT_ESTIMADO;
+            $json[$i]['AT'] = $articulos;
+
             $i++;
         }
-            $json[$i]['Product'] = 'CHOLIN GIGANTE';
+            /*$json[$i]['Product'] = 'CHOLIN GIGANTE';
             $json[$i]['PT'] = "0";
             $json[$i]['JR'] = "0";
             $json[$i]['MP'] = "0";
-            $json[$i]['TE'] = "0";
+            $json[$i]['TE'] = "0";*/
 
         return $json;
     }

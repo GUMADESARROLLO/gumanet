@@ -9,7 +9,17 @@ class ArticuloInnova extends Model
 {
     protected $connection = 'sqlsrv';
     public $timestamps = false;
-    protected $table = "PRODUCCION.dbo.tbl_inventario_innova_dev";
+    protected $table = "PRODUCCION.dbo.tbl_inventario_innova";
+
+    public function clasificacion1()
+    {
+        return $this->belongsTo(InventarioInnovaClasificacion::class, 'Clasificacion_1', 'ID');
+    }
+
+    public function clasificacion2()
+    {
+        return $this->belongsTo(InventarioInnovaClasificacion::class, 'Clasificacion_2', 'ID');
+    }
 
   
     public function user()
