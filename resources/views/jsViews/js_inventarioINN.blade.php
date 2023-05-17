@@ -161,6 +161,8 @@ function tblResumen(){
         type: 'get',
         async: true,
         success: function(data) {
+
+
             $('#table_resumen').DataTable({
                 "data":data,
                 "destroy" : true,
@@ -181,120 +183,16 @@ function tblResumen(){
                 },
                 'columns': [
                     { "data": "Product","render": function(data, type, row, meta) {
-
+                        
                         var tBody = '';
 
-                        if (row.Product == 'PAPIEL') {
-                            tBody = `<tr class="border-200">
+                        $.each(row.AT, function (i, obj) {
+                            tBody += `<tr class="border-200">
                                         <td class="align-middle text-left ">
-                                        PAPIEL ECO PLUS; PH, 1000 HS, 24 X 1 ROLLO | 6IN00002
+                                        `+ obj.DESCRIPCION +` |  `+ obj.ARTICULO +`
                                         </td>
-                                    </tr>
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        PAPIEL ECO PLUS; PH, 1000 HS, 6 X 4 ROLLOS | 6IN00010
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        CHOLIN; PH, 1000 HS, 4 X 6 ROLLOS | 6IN00058
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        PAPEL HIGIENICO VUENO 1000 HOJAS SENCILLAS 1X24 | 6IN00097
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        PH GENÉRICO - B | 7IN00018-B
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        JUMBO  ROLL ECO PLUS 100% RC | 2IN00067
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        JUMBO RLL CHINO 14GSM | 2IN00069
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        JUMBO ROLL TOALLA BLANCA | 2IN00072
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        JUMB ROLL CHOLIN 100 % RC (GENERICO) | 2IN00076
-                                        </td>
-                                    </tr>
-                                    
-                                    `
-                        } else if(row.Product == 'VUENO') {
-
-                            tBody = `<tr class="border-200">
-                                        <td class="align-middle text-left ">
-                                        PH VUENO 1000HS + AMOXICILINA 500 MG | 6IN00105
-                                        </td>
-                                    </tr>
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        PH VUENO 1000 HS + LOMBRIKILL (ALBENDAZOL) 400MG | 6IN00106
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        PH VUENO 1000 HS + DOLFEMAC | 6IN00107
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        PH VUENO 1000 HS + RELAXOLAN | 6IN00108
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        PH VUENO 1000 HS + ÁCIDO ACETILSALICILICO( 5 BLISTER) | 6IN00110
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                        JUMBO ROLL PH VUENO | 21N00087
-                                        </td>
-                                    </tr>
-                                    
-                                    `
-
-                                    	
-                        }else {
-
-                            tBody = `<tr class="border-200">
-                                        <td class="align-middle text-left ">
-                                            PH VUENO 1X24 ROLLO + CHOLIN GIGANTE 1 ROLLO | 6IN00113
-                                        </td>
-                                    </tr>
-                                    <tr class="border-200">                                                        
-                                        <td class="align-middle text-left ">
-                                            PH CHOLIN GIGANTE, ROLLO 360M | 6IN00112
-                                        </td>
-                                    </tr>
-                                    
-                                    `
-                            
-                        }
+                                    </tr>`                            
+                        });
 
                         return  `<div class="pe-4 border-sm-end border-200" >
                                     <div class="d-flex align-items-center">
