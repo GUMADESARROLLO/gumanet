@@ -62,6 +62,8 @@
                     <div class="input-group">
                         <select class="custom-select"  id="id_select_mes">
                             
+                                <option value="7" >1 SEMANA</option>
+                                <option value="15" >2 SEMANAS</option>
                                 <option value="1" >1 MES</option>
                                 <option value="3" >3 MESES</option>
                                 <option value="6" >6 MESES</option>
@@ -76,9 +78,8 @@
             </div>	
             <div class="p-0 px-car">
             <div class="flex-between-center responsive mb-3" id="kardex">
-                <table class="table table-bordered " id="tbl_kardex" style="width:100%; border-collapse: collapse;">
                     
-                </table>
+                
             </div>
             </div>
         </div>
