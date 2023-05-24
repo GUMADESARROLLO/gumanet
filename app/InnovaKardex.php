@@ -74,6 +74,7 @@ class InnovaKardex extends Model
                     }
 
                     $Stock = ($r->$rows_stock=='0.0' || $r->$rows_stock=='00.00') ? ($Stock + $r->$rows_in - $r->$rows_out): $r->$rows_stock ;
+                    $Stock= ( $Stock < 0 ) ? $r->$rows_stock : $Stock ;
 
                     $json_arrays['header_date_rows'][$i][$rows_in] = ($r->$rows_in=='0.0' || $r->$rows_in=='00.00') ? '' : number_format($r->$rows_in,2)  ;
                     $json_arrays['header_date_rows'][$i][$rows_out] = ($r->$rows_out=='0.0' || $r->$rows_out=='00.00') ? '' : number_format($r->$rows_out,2);
