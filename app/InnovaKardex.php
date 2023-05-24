@@ -51,7 +51,6 @@ class InnovaKardex extends Model
             $json_arrays['header_date'][$i+1] = 'Ult. Registro.';
 
             $Stock = 0 ;
-            $d = 1 ;
             
             $Rows = DB::connection('sqlsrv')->select('SET NOCOUNT ON ;EXEC PRODUCCION.dbo.gnet_calcular_kardex '."'".$d1."'".','."'".$d2."'".",''" );
             foreach($Rows as $r){
