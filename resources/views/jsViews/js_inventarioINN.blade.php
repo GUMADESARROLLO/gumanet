@@ -8,6 +8,15 @@ $(document).ready(function() {
     var primerDia = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
     var ultimoDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+final.getDate();
 
+    var dia = date.getDate() - 6;
+
+    if(dia > 0){
+        primerDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+dia;
+    }else{
+        var final = new Date(date.getFullYear(),date.getMonth(), 0);
+        primerDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+(final.getDate()+dia);
+    }
+
     tblKardex(primerDia, ultimoDia);
 });
 
@@ -24,12 +33,23 @@ $("#id_btn_new").click( function() {
     var primerDia = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
     var ultimoDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+final.getDate();
     
+    if(mes == 7 || mes == 15){
+        var dia = (date.getDate()+1) - mes;
+        if(dia > 0){
+            primerDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+dia;
+        }else{
+            var final = new Date(date.getFullYear(),date.getMonth(), 0);
+            primerDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+(final.getDate()+dia);
+        }
+    }
+
     tblKardex(primerDia, ultimoDia);
 });
 
 
 function tblKardex(primerDia, ultimoDia) {
     tblResumen();
+    
     $.ajax({
         url: `getKerdex`,
         type: 'get',
@@ -39,7 +59,7 @@ function tblKardex(primerDia, ultimoDia) {
         },
         async: true,
         success: function(data) {
-            table =  `<thead>`+
+            table =  `<table class="table table-bordered " id="tbl_kardex" style="width:100%; border-collapse: collapse;"><thead>`+
                         `<tr class="bg-blue text-light">`+
                             `<th style="width: 700px;" rowspan="2">ARTICULO</th>`;
                             $.each(data['header_date'], function (i, item) {
@@ -83,26 +103,28 @@ function tblKardex(primerDia, ultimoDia) {
                                
                     });
                 
-                table +=`</tbody>`;
+                table +=`</tbody></table>`;
 
-   			$('#tbl_kardex')
+   			$('#kardex')
    			.empty()
-   			.append(table).DataTable({
+   			.append(table);
+            
+            $('#tbl_kardex').DataTable({
                 "destroy" : true,
-                        "info":    false,
-                        "lengthMenu": [[15,10,-1], [15,10,"Todo"]],
-                        "language": {
-                            "zeroRecords": "NO HAY COINCIDENCIAS",
-                            "paginate": {
-                                "first":      "Primera",
-                                "last":       "Última ",
-                                "next":       "Siguiente",
-                                "previous":   "Anterior"
-                            },
-                            "lengthMenu": "MOSTRAR _MENU_",
-                            "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
-                            "search":     "BUSCAR"
-                        },
+                "info":    false,
+                "lengthMenu": [[15,10,-1], [15,10,"Todo"]],
+                "language": {
+                    "zeroRecords": "NO HAY COINCIDENCIAS",
+                    "paginate": {
+                        "first":      "Primera",
+                        "last":       "Última ",
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    },
+                    "lengthMenu": "MOSTRAR _MENU_",
+                    "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+                    "search":     "BUSCAR"
+                },
                 "scrollY":        "1200px",
                 "scrollX":        true,
                 "scrollCollapse": true,
