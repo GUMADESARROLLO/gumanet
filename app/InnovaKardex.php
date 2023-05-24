@@ -78,7 +78,6 @@ class InnovaKardex extends Model
                     $json_arrays['header_date_rows'][$i][$rows_in] = ($r->$rows_in=='0.0' || $r->$rows_in=='00.00') ? '' : number_format($r->$rows_in,2)  ;
                     $json_arrays['header_date_rows'][$i][$rows_out] = ($r->$rows_out=='0.0' || $r->$rows_out=='00.00') ? '' : number_format($r->$rows_out,2);
                     $json_arrays['header_date_rows'][$i][$rows_stock] =  number_format($Stock,2);
-                    $d++;
 
 
                 }
