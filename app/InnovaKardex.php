@@ -49,12 +49,14 @@ class InnovaKardex extends Model
                 $i++;
             }
             $json_arrays['header_date'][$i+1] = 'Ult. Registro.';
+
+            $Stock = 0 ;
             
             $Rows = DB::connection('sqlsrv')->select('SET NOCOUNT ON ;EXEC PRODUCCION.dbo.gnet_calcular_kardex '."'".$d1."'".','."'".$d2."'".",''" );
             foreach($Rows as $r){
-                
+
                 $RoleUsr = KardexUsuario::find($r->USUARIO);
-                
+            
                 $json_arrays['header_date_rows'][$i]['ARTICULO'] = $r->ARTICULO;
                 $json_arrays['header_date_rows'][$i]['DESCRIPCION'] = $r->DESCRIPCION;
                 $json_arrays['header_date_rows'][$i]['UND'] = $r->UND;
@@ -71,10 +73,15 @@ class InnovaKardex extends Model
                         $rows_stock = 'STOCK_TODAY';
                     }
 
+                    $Stock = ($r->$rows_stock=='0.0' || $r->$rows_stock=='00.00') ? ($Stock + $r->$rows_in - $r->$rows_out): $r->$rows_stock ;
+
                     $json_arrays['header_date_rows'][$i][$rows_in] = ($r->$rows_in=='0.0' || $r->$rows_in=='00.00') ? '' : number_format($r->$rows_in,2)  ;
                     $json_arrays['header_date_rows'][$i][$rows_out] = ($r->$rows_out=='0.0' || $r->$rows_out=='00.00') ? '' : number_format($r->$rows_out,2);
-                    $json_arrays['header_date_rows'][$i][$rows_stock] =($r->$rows_stock=='0.0' || $r->$rows_stock=='00.00') ? '' : number_format($r->$rows_stock,2) ;
+                    $json_arrays['header_date_rows'][$i][$rows_stock] =  number_format($Stock,2);
+
+
                 }
+                $Stock = 0 ;
                 $i++;
             }
             //DD($json_arrays);
