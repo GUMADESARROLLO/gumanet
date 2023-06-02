@@ -19,6 +19,7 @@ class InnovaEstadisticas extends Model
 
         $query_stat_sale = "EXEC PRODUCCION.dbo.getInnStatSale @Mes = ?, @Anio = ?";
         $resul_stat_sale = DB::connection('sqlsrv')->select($query_stat_sale, [$mes, $anio]);
+   
         
         $data = array(); 
         $key = 0;
@@ -27,14 +28,14 @@ class InnovaEstadisticas extends Model
 
         foreach ($Targets as $item) {
 
-            $index_key = array_search($item, array_column($resul_stat_sale, 'Target'));  
+            $index_key = array_search($item, array_column($resul_stat_sale, 'DESCRIPCION'));  
 
-            $Cantidad       = ($index_key !== false) ? $resul_stat_sale[$index_key]->Cantidad : 0 ;
+            $Cantidad       = ($index_key !== false) ? $resul_stat_sale[$index_key]->CANTIDAD : 0 ;
             $Target         = $item;
-            $Venta_SinIVA   = ($index_key !== false) ? $resul_stat_sale[$index_key]->Venta_SinIVA : 0 ;
-            $Venta_ConIVA   = ($index_key !== false) ? $resul_stat_sale[$index_key]->Venta_ConIVA : 0 ;
-            $AVG_SinIVA     = ($index_key !== false) ? $resul_stat_sale[$index_key]->AVG_SinIVA : 0 ;
-            $AVG_ConIVA     = ($index_key !== false) ? $resul_stat_sale[$index_key]->AVG_ConIVA : 0 ;
+            $Venta_SinIVA   = ($index_key !== false) ? $resul_stat_sale[$index_key]->VENTA_SIN_IVA : 0 ;
+            $Venta_ConIVA   = ($index_key !== false) ? $resul_stat_sale[$index_key]->VENTA_CON_IVA : 0 ;
+            $AVG_SinIVA     = ($index_key !== false) ? $resul_stat_sale[$index_key]->AVG_SIN_IVA : 0 ;
+            $AVG_ConIVA     = ($index_key !== false) ? $resul_stat_sale[$index_key]->AVG_CON_IVA : 0 ;
 
             $data[$key]['DESCRIPCION']      = $Target;
             $data[$key]['CANTIDAD']         = number_format($Cantidad, 2,".","");
@@ -65,14 +66,14 @@ class InnovaEstadisticas extends Model
         foreach ($Targets as $item) {
 
             $v = VendedorInnova::WHERE('VENDEDOR',$item)->get()->toArray();
-            $index_key = array_search($item, array_column($resul_stat_ruta, 'Ruta'));  
+            $index_key = array_search($item, array_column($resul_stat_ruta, 'DESCRIPCION'));  
             
-            $Cantidad       = ($index_key !== false) ? $resul_stat_ruta[$index_key]->Cantidad : 0 ;
+            $Cantidad       = ($index_key !== false) ? $resul_stat_ruta[$index_key]->CANTIDAD : 0 ;
             $Target         = $item;
-            $Venta_SinIVA   = ($index_key !== false) ? $resul_stat_ruta[$index_key]->Venta_SinIVA : 0 ;
-            $Venta_ConIVA   = ($index_key !== false) ? $resul_stat_ruta[$index_key]->Venta_ConIVA : 0 ;
-            $AVG_SinIVA     = ($index_key !== false) ? $resul_stat_ruta[$index_key]->AVG_SinIVA : 0 ;
-            $AVG_ConIVA     = ($index_key !== false) ? $resul_stat_ruta[$index_key]->AVG_ConIVA : 0 ;
+            $Venta_SinIVA   = ($index_key !== false) ? $resul_stat_ruta[$index_key]->VENTA_SIN_IVA : 0 ;
+            $Venta_ConIVA   = ($index_key !== false) ? $resul_stat_ruta[$index_key]->VENTA_CON_IVA : 0 ;
+            $AVG_SinIVA     = ($index_key !== false) ? $resul_stat_ruta[$index_key]->AVG_SIN_IVA : 0 ;
+            $AVG_ConIVA     = ($index_key !== false) ? $resul_stat_ruta[$index_key]->AVG_CON_IVA : 0 ;
 
             $data[$key]['DESCRIPCION']      = $v[0]['NOMBRE'];
             $data[$key]['CANTIDAD']         = number_format($Cantidad, 2,".","");
