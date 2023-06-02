@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\InnovaKardex;
 use App\InnovaModel;
+use App\InnovaEstadisticas;
 use Illuminate\Http\Request;
 
 class InnovaController extends Controller
@@ -24,5 +25,20 @@ class InnovaController extends Controller
     public function getResumenKardex(){
         $resumen = InnovaKardex::getResumenKardex();
         return response()->json($resumen);
+    }
+
+    public function getStatsInn(Request $request)
+    {
+
+        $dta[] = array(
+            'dtVenta' => InnovaEstadisticas::getInnStatSale($request),
+            'dtaRuta' => InnovaEstadisticas::getInnStatRuta($request)
+        );
+        return $dta;
+    }
+
+    public function saveInnStat()
+    {
+        InnovaEstadisticas::saveInnStat(5, 2023);
     }
 }
