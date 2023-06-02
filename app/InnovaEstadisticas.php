@@ -64,6 +64,7 @@ class InnovaEstadisticas extends Model
 
         foreach ($Targets as $item) {
 
+            $v = VendedorInnova::WHERE('VENDEDOR',$item)->get()->toArray();
             $index_key = array_search($item, array_column($resul_stat_ruta, 'Ruta'));  
             
             $Cantidad       = ($index_key !== false) ? $resul_stat_ruta[$index_key]->Cantidad : 0 ;
@@ -73,7 +74,7 @@ class InnovaEstadisticas extends Model
             $AVG_SinIVA     = ($index_key !== false) ? $resul_stat_ruta[$index_key]->AVG_SinIVA : 0 ;
             $AVG_ConIVA     = ($index_key !== false) ? $resul_stat_ruta[$index_key]->AVG_ConIVA : 0 ;
 
-            $data[$key]['DESCRIPCION']      = $Target;
+            $data[$key]['DESCRIPCION']      = $v[0]['NOMBRE'];
             $data[$key]['CANTIDAD']         = number_format($Cantidad, 2,".","");
             $data[$key]['VENTA_SIN_IVA']    = number_format($Venta_SinIVA, 2,".","");
             $data[$key]['VENTA_CON_IVA']    = number_format($Venta_ConIVA, 2,".","");
