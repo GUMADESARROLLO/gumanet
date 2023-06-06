@@ -14,9 +14,10 @@ class InnovaEstadisticas extends Model
 
     public static function getInnStatSale(Request $request)
     {
-        $mes    = 5;
-        $anio   = 2023;
 
+        $mes    = $request->input('mes');
+        $anio   = $request->input('anio');
+        
         $query_stat_sale = "EXEC PRODUCCION.dbo.getInnStatSale @Mes = ?, @Anio = ?";
         $resul_stat_sale = DB::connection('sqlsrv')->select($query_stat_sale, [$mes, $anio]);
         
@@ -51,8 +52,9 @@ class InnovaEstadisticas extends Model
     }
     public static function getInnStatRuta(Request $request)
     {
-        $mes    = 6;
-        $anio   = 2023;
+
+        $mes    = $request->mes;
+        $anio   = $request->anio;
         $isUp   = null;
 
         $query_stat_ruta = "EXEC PRODUCCION.dbo.getInnStatRuta @Mes = ?, @Anio = ?";
@@ -60,8 +62,12 @@ class InnovaEstadisticas extends Model
 
         $resul_last_month = DB::connection('sqlsrv')->select($query_stat_ruta, [$mes -1, $anio]);
 
-        $isUp = (floatval($resul_last_month[0]->AVG_SIN_IVA) > floatval($resul_stat_ruta[0]->AVG_SIN_IVA)) ? false : true ;
-
+        if(count($resul_last_month) && count($resul_stat_ruta)){
+            $isUp = (floatval($resul_last_month[0]->AVG_SIN_IVA) > floatval($resul_stat_ruta[0]->AVG_SIN_IVA)) ? false : true ;
+        }else{
+            $isUp = false;
+        }
+        
         $data = array(); 
         $key = 0;
 

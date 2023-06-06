@@ -90,7 +90,71 @@
             </div>              
         </div>
         @endif
-        
+
+                                
+        @if( Session::get('company_id')==4 )
+        <div class="card border-0 shadow-sm mt-3 ">
+            <div class="card-body col-sm-12 p-0 mb-2">	
+                <div class="p-0 px-car">
+                    <div class="flex-between-center scrollbar border border-1 border-300 rounded-2">
+                        <table id="table_cierreMesInn" class="table table-striped table-bordered table-sm mt-3 fs--1" width="100%" style="border-collapse: collapse;">
+                            <thead>
+                                <tr class="bg-blue text-light">
+                            
+                                    <th colspan="6">CIERRE MES DE <label id="cierreMes"></label> DEL <label id='cierreAnio'></label></th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody id='mesCierre'>
+                                <tr class="bg-blue text-light text-center">                       
+                                    <th>EJECUTIVO</th>
+                                    <th>BULTOS</th>
+                                    <th>MONTO S/IVA</th>
+                                    <th>MONTO C/IVA</th>
+                                    <th rowspan="3">PRECIO PROMEDIO S/IVA</th>
+                                    <th rowspan="3">PRECIO PROMEDIO C/IVA</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card border-0 shadow-sm mt-3 ">
+            <div class="card-body col-sm-12 p-0 mb-2">	
+                <div class="p-0 px-car">
+                    <div class="flex-between-center scrollbar border border-1 border-300 rounded-2">
+                        <table id="table_VentaCategoria" class="table table-striped table-bordered table-sm mt-3 fs--1" width="100%" style="border-collapse: collapse;">
+                            <thead>
+                                <tr class="bg-blue text-light">
+                            
+                                    <th colspan="4">VENTA POR CATEGORIA</th>
+                                    <th rowspan="2">PRECIO PROMEDIO S/IVA</th>
+                                    <th rowspan="2">PRECIO PROMEDIO C/IVA</th>
+                            
+                                </tr>
+                                <tr>
+                                    <th ></th>
+                                    <th >BULTOS</th>
+                                    <th >MONTO S/IVA</th>
+                                    <th >MONTO C/IVA</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr class="bg-blue text-light" style="text-align:right">
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th colspan="2"></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
         <div class="row" id="ct04">
             <div class="graf col-sm-12 mt-3">
                 <div class="container-vms" id="grafVtsDiario" style="width: 100%; margin: 0 auto"></div>
