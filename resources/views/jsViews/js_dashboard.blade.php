@@ -4498,6 +4498,7 @@ function tableCierreMesInnova(mes, anio, lmes){
             success: function(data) {
                 var tbody = "";
                 var bulto = msiva = mciva = avgs = avgc = 0;
+                var avgup = false;
                
                 tbody = `<tr class="bg-blue text-light text-center">                       
                             <th>EJECUTIVO</th>
@@ -4544,6 +4545,7 @@ function tableCierreMesInnova(mes, anio, lmes){
                         mciva +=Number(item.VENTA_CON_IVA);
                         avgs = Number(item.AVG_SIN_IVA);
                         avgc = Number(item.AVG_CON_IVA);
+                        avgup = item.AVG_IS_UP;
                     })
 
                 tbody += `<tr class="bg-blue text-light text-right">                       
@@ -4551,8 +4553,8 @@ function tableCierreMesInnova(mes, anio, lmes){
                             `<th>`+numeral(bulto).format('0,0.00')+`</th>`+
                             `<th>C$ `+numeral(msiva).format('0,0.00')+`</th>`+
                             `<th>C$ `+numeral(mciva).format('0,0.00')+`</th>`+
-                            `<th>C$ `+numeral(avgs).format('0,0.00')+` <span class="fa fa-caret-up text-success" style="font-size: 20px;"></span></th>`+
-                            `<th>C$ `+numeral(avgc).format('0,0.00')+` <span class="fa fa-caret-down text-danger" style="font-size: 20px;"></span></th></tr>`;
+                            `<th>C$ `+numeral(avgs).format('0,0.00')+``+ ((avgup == true) ? ` <span class="fa fa-caret-up text-success" style="font-size: 20px;"></span>` : ` <span class="fa fa-caret-down text-danger" style="font-size: 20px;"></span>`)+`</th>`+
+                            `<th>C$ `+numeral(avgc).format('0,0.00')+``+ ((avgup == true) ? ` <span class="fa fa-caret-up text-success" style="font-size: 20px;"></span>` : ` <span class="fa fa-caret-down text-danger" style="font-size: 20px;"></span>`)+`</th>`;
                 
                 $('#mesCierre')
                 .empty()
