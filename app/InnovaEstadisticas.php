@@ -14,9 +14,10 @@ class InnovaEstadisticas extends Model
 
     public static function getInnStatSale(Request $request)
     {
-        $mes    = 6;
-        $anio   = 2023;
+        $mes    = $request->input('mes');
+        $anio   = $request->input('anio');
 
+        
         $query_stat_sale = "EXEC PRODUCCION.dbo.getInnStatSale @Mes = ?, @Anio = ?";
         $resul_stat_sale = DB::connection('sqlsrv')->select($query_stat_sale, [$mes, $anio]);
    
@@ -24,7 +25,7 @@ class InnovaEstadisticas extends Model
         $data = array(); 
         $key = 0;
 
-        $Targets = ["VUENO", "CHOLIN 6000", "GENÉRICO", "ECHO PLUS"];
+        $Targets = ["VUENO", "CHOLIN 6000", "GENÉRICO", "ECO PLUS"];
 
         foreach ($Targets as $item) {
 
@@ -52,8 +53,8 @@ class InnovaEstadisticas extends Model
     }
     public static function getInnStatRuta(Request $request)
     {
-        $mes    = 6;
-        $anio   = 2023;
+        $mes    = $request->mes;
+        $anio   = $request->anio;
 
         $query_stat_ruta = "EXEC PRODUCCION.dbo.getInnStatRuta @Mes = ?, @Anio = ?";
         $resul_stat_ruta = DB::connection('sqlsrv')->select($query_stat_ruta, [$mes, $anio]);

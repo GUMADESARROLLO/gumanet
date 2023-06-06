@@ -1387,6 +1387,9 @@ $(document).ready(function() {
         }]
     };   
 
+    var lmes = $('#opcMes option:selected').text();
+    tableCierreMesInnova(mes, anio, lmes);
+
 });
 
 var colors = ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
@@ -1394,6 +1397,7 @@ var colors = ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', 
 $("#filterM_A").click( function(e) {
     var mes = $('#opcMes option:selected').val();
     var anio = $('#opcAnio option:selected').val();
+    var lmes = $('#opcMes option:selected').text();
 
     if ($('#customSwitch1').is(':checked')) {
         actualizandoGraficasDashboard(mes, anio, 1);
@@ -1401,6 +1405,8 @@ $("#filterM_A").click( function(e) {
     else {
         actualizandoGraficasDashboard(mes, anio, 0);
     }
+
+    tableCierreMesInnova(mes, anio, lmes);
 
 });
 
@@ -4473,6 +4479,191 @@ function FormatPretty(number) {
         numberString += scale
     }
     return numberString;
+}
+
+function tableCierreMesInnova(mes, anio, lmes){
+
+    $('#cierreMes').text(lmes.toUpperCase());
+    $('#cierreAnio').text(anio);
+
+    $.ajax({
+            url: "getStatsInn",
+            type: 'get',
+            data:{
+                mes :   mes,
+                anio:   anio
+            },
+            async: true,
+            dataType: "json",
+            success: function(data) {
+                var tbody = "";
+                var bulto = msiva = mciva = avgs = avgc = 0;
+               
+                tbody = `<tr class="bg-blue text-light text-center">                       
+                            <th>EJECUTIVO</th>
+                            <th>BULTOS</th>
+                            <th>MONTO S/IVA</th>
+                            <th>MONTO C/IVA</th>
+                            <th rowspan="3">PRECIO PROMEDIO S/IVA</th>
+                            <th rowspan="3">PRECIO PROMEDIO C/IVA</th>
+                        </tr>`;
+               
+                $.each(data[0]['dtaRuta'], function (i, item) {
+                    tbody +=`<tr>`+
+                        `<td style="width: 300px; ">`+
+                            `<div class="d-flex position-relative">`+
+                                `<div class="flex-1" style="width: 350px; ">`+
+                                    `<h6 class="mb-0 fw-semi-bold">`+ item.DESCRIPCION +`</h6>`+
+                                `</div>`+
+                            `</div>`+
+                        `</td>`+
+                        `<td >`+
+                            `<div class="d-flex position-relative">`+
+                                `<div class="flex-1 text-right" style="width: 150px; ">`+
+                                    numeral(item.CANTIDAD).format('0,0.00') +
+                                `</div>`+
+                            `</div>`+
+                        `</td>`+
+                        `<td>`+
+                            `<div class="d-flex position-relative">`+
+                                `<div class="flex-1 text-right" style="width: 150px; ">C$ `+
+                                     numeral(item.VENTA_SIN_IVA).format('0,0.00') +
+                                `</div>`+
+                            `</div>`+
+                        `</td>`+
+                        `<td>`+
+                            `<div class="d-flex position-relative">`+
+                                `<div class="flex-1 text-right" style="width: 150px; ">C$ `+
+                                     numeral(item.VENTA_CON_IVA).format('0,0.00') +
+                                `</div>`+
+                            `</div>`+
+                        `</td></tr>`;
+                    
+                        bulto += Number(item.CANTIDAD);
+                        msiva +=Number(item.VENTA_SIN_IVA);
+                        mciva +=Number(item.VENTA_CON_IVA);
+                        avgs = Number(item.AVG_SIN_IVA);
+                        avgc = Number(item.AVG_CON_IVA);
+                    })
+
+                tbody += `<tr class="bg-blue text-light text-right">                       
+                            <th>TOTAL</th>`+
+                            `<th>`+numeral(bulto).format('0,0.00')+`</th>`+
+                            `<th>C$ `+numeral(msiva).format('0,0.00')+`</th>`+
+                            `<th>C$ `+numeral(mciva).format('0,0.00')+`</th>`+
+                            `<th>C$ `+numeral(avgs).format('0,0.00')+` <span class="fa fa-caret-up text-success" style="font-size: 20px;"></span></th>`+
+                            `<th>C$ `+numeral(avgc).format('0,0.00')+` <span class="fa fa-caret-down text-danger" style="font-size: 20px;"></span></th></tr>`;
+                
+                $('#mesCierre')
+                .empty()
+                .append(tbody);
+                
+
+                $('#table_VentaCategoria').DataTable({
+                    "data":data[0]['dtVenta'],
+                    "destroy" : true,
+                    "info":    false,
+                    "lengthMenu": [[10,-1], [10,"Todo"]],
+                    "language": {
+                        "zeroRecords": "NO HAY COINCIDENCIAS",
+                        "paginate": {
+                            "first":      "Primera",
+                            "last":       "Última ",
+                            "next":       "Siguiente",
+                            "previous":   "Anterior"
+                        },
+                        "lengthMenu": "MOSTRAR _MENU_",
+                        "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+                        "search":     "BUSCAR"
+                    },
+                    'columns': [
+                        {    "data": "DESCRIPCION", "render": function(data, type, row, meta) {
+                                return  `<div class="d-flex position-relative">`+
+                                                `<div class="flex-1" style="width: 300px;">`+
+                                                    `<h6 class="mb-0 fw-semi-bold">`+ row.DESCRIPCION +`</h6>`+
+                                                `</div>`+
+                                            `</div>`
+                            }
+                        }, 
+                        {    "data": "DESCRIPCION", "render": function(data, type, row, meta) {
+                                return `<div class="d-flex position-relative">`+
+                                                `<div class="flex-1 text-right" style="width: 150px;">`+
+                                                    numeral(row.CANTIDAD).format('0,0.00') +
+                                                `</div>`+
+                                            `</div>`
+                            }
+                        },
+                        {    "data": "DESCRIPCION", "render": function(data, type, row, meta) {
+                                return `<div class="d-flex position-relative">`+
+                                                `<div class="flex-1 text-right" style="width: 150px;">C$ `+
+                                                    numeral(row.VENTA_SIN_IVA).format('0,0.00') +
+                                                `</div>`+
+                                            `</div>`
+                            }
+                        },
+                        {    "data": "DESCRIPCION", "render": function(data, type, row, meta) {
+                                return  `<div class="d-flex position-relative">`+
+                                                `<div class="flex-1 text-right" style="width: 150px;">C$ `+
+                                                    numeral(row.VENTA_CON_IVA).format('0,0.00') +
+                                                `</div>`+
+                                            `</div>`
+                            }
+                        },
+                        {    "data": "DESCRIPCION", "render": function(data, type, row, meta) {
+                                return  `<div class="d-flex position-relative"> `+
+                                                `<div class="flex-1 text-right" style="width: 100%;">C$ `+
+                                                    numeral(row.AVG_SIN_IVA).format('0,0.00') +
+                                                `</div>`+
+                                            `</div>`
+                            }
+                        },
+                        {    "data": "DESCRIPCION", "render": function(data, type, row, meta) {
+                                return  `<div class="d-flex position-relative text-right"> `+
+                                                `<div class="flex-1 text-right" style="width: 100%;">C$ `+
+                                                    numeral(row.AVG_CON_IVA).format('0,0.00') +
+                                                `</div>`+
+                                            `</div>`
+                            }
+                        },
+                                       
+                    ],
+                    "footerCallback": function ( row, data, start, end, display ) {
+                        var api = this.api();
+                        var Totalb  = Totalms = Totalmc = 0;
+
+                        var intVal = function ( i ) {
+                            return typeof i === 'string' ?
+                                i.replace(/[^0-9.]/g, '')*1 :
+                                typeof i === 'number' ?
+                                    i : 0;
+                        };
+
+                        total = api.column( 4 ).data().reduce( function (a, b){
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                        for (var i = 0; i < data.length; i++) {
+                            Totalb += intVal(data[i].CANTIDAD);
+                            Totalms += intVal(data[i].VENTA_SIN_IVA);
+                            Totalmc += intVal(data[i].VENTA_CON_IVA);
+                        }
+
+                        $(api.column(0).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL: </h6>');
+                        $(api.column(1).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">C$ '+numeral(Totalb).format('0,0.00')+'</h6>');
+                        $(api.column(2).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">C$ '+numeral(Totalms).format('0,0.00')+'</h6>');
+                        $(api.column(3).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">C$ '+numeral(Totalmc).format('0,0.00')+'</h6>');
+                    },
+                })
+
+                $("#table_VentaCategoria_length").hide();
+                $("#table_VentaCategoria_filter").hide();
+                $("#table_VentaCategoria_paginate").hide();
+
+            },
+
+    });
+
+   
 }
 
 </script>
