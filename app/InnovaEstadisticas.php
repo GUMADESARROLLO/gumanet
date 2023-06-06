@@ -14,17 +14,16 @@ class InnovaEstadisticas extends Model
 
     public static function getInnStatSale(Request $request)
     {
-        $mes    = 6;
+        $mes    = 5;
         $anio   = 2023;
 
         $query_stat_sale = "EXEC PRODUCCION.dbo.getInnStatSale @Mes = ?, @Anio = ?";
         $resul_stat_sale = DB::connection('sqlsrv')->select($query_stat_sale, [$mes, $anio]);
-   
         
         $data = array(); 
         $key = 0;
 
-        $Targets = ["VUENO", "CHOLIN 6000", "GENÉRICO", "ECHO PLUS"];
+        $Targets = ["VUENO", "CHOLIN 6000", "GENÉRICO", "ECO PLUS"];
 
         foreach ($Targets as $item) {
 
@@ -54,9 +53,14 @@ class InnovaEstadisticas extends Model
     {
         $mes    = 6;
         $anio   = 2023;
+        $isUp   = null;
 
         $query_stat_ruta = "EXEC PRODUCCION.dbo.getInnStatRuta @Mes = ?, @Anio = ?";
         $resul_stat_ruta = DB::connection('sqlsrv')->select($query_stat_ruta, [$mes, $anio]);
+
+        $resul_last_month = DB::connection('sqlsrv')->select($query_stat_ruta, [$mes -1, $anio]);
+
+        $isUp = (floatval($resul_last_month[0]->AVG_SIN_IVA) > floatval($resul_stat_ruta[0]->AVG_SIN_IVA)) ? false : true ;
 
         $data = array(); 
         $key = 0;
@@ -81,6 +85,8 @@ class InnovaEstadisticas extends Model
             $data[$key]['VENTA_CON_IVA']    = number_format($Venta_ConIVA, 2,".","");
             $data[$key]['AVG_SIN_IVA']      = number_format($AVG_SinIVA, 2,".","");
             $data[$key]['AVG_CON_IVA']      = number_format($AVG_ConIVA, 2,".","");
+            $data[$key]['AVG_IS_UP']        = $isUp;
+            
             $key++;
         }
 
