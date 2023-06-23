@@ -129,27 +129,50 @@
                                                     <th class="">SKU</th>
                                                     <th class="">Val. C$.</th>
                                                     <th class="">Fct.%</th>
+                                                    <th class="">N. Crédito</th>
                                                     <th class="">Comision</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <tr class="border-200">
                                                     <td class="align-middle">
-                                                    <h6 class="mb-0 text-nowrap">80% </h6>
+                                                    <h6 class="mb-0 text-nowrap">SKU_80 </h6>
                                                     </td>
                                                     <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Lista80[0]+`</td>
                                                     <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista80[1]).format('0,0.00')+` </td>
                                                     <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista80[2]+` %</td>
+                                                    <td class="align-middle text-right ">C$ `+numeral(row.DATARESULT.NotaCredito_val80).format('0,0.00')+` </td>
                                                     <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista80[3]).format('0,0.00')+` </td>
                                                 </tr>
                                                 <tr class="border-200">
                                                     <td class="align-middle">
-                                                    <h6 class="mb-0 text-nowrap">20% </h6>
+                                                    <h6 class="mb-0 text-nowrap">SKU_20_A </h6>
                                                     </td>
-                                                    <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Lista20[0]+`</td>
-                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20[1]).format('0,0.00')+` </td>
-                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista20[2]+` %</td>
-                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20[3]).format('0,0.00')+` </td>
+                                                    <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Lista20A[0]+`</td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20A[1]).format('0,0.00')+` </td>
+                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista20A[2]+` %</td>
+                                                    <td class="align-middle text-right">C$ `+numeral(row.DATARESULT.NotaCredito_val20).format('0,0.00')+` </td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20A[3]).format('0,0.00')+` </td>
+                                                </tr>
+                                                <tr class="border-200">
+                                                    <td class="align-middle">
+                                                    <h6 class="mb-0 text-nowrap">SKU_20_B </h6>
+                                                    </td>
+                                                    <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Lista20B[0]+`</td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20B[1]).format('0,0.00')+` </td>
+                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista20B[2]+` %</td>
+                                                    <td class="align-middle text-end">C$  - </td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20B[3]).format('0,0.00')+` </td>
+                                                </tr>
+                                                <tr class="border-200">
+                                                    <td class="align-middle">
+                                                    <h6 class="mb-0 text-nowrap">SKU_20_C </h6>
+                                                    </td>
+                                                    <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Lista20C[0]+`</td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20C[1]).format('0,0.00')+` </td>
+                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Lista20C[2]+` %</td>
+                                                    <td class="align-middle text-end">C$  - </td>
+                                                    <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Lista20C[3]).format('0,0.00')+` </td>
                                                 </tr>
                                                 <tr class="border-200">
                                                     <td class="align-middle">
@@ -157,43 +180,13 @@
                                                     </td>
                                                     <td class="align-middle text-center">`+row.DATARESULT.Comision_de_venta.Total[0]+`</td>
                                                     <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Total[1]).format('0,0.00')+` </td>
-                                                    <td class="align-middle text-end ">`+row.DATARESULT.Comision_de_venta.Total[2]+` %</td>
+                                                    <td class="align-middle text-end">  - </td>
+                                                    <td class="align-middle text-right">C$ `+numeral(row.DATARESULT.NotaCredito_total).format('0,0.00')+` </td>
                                                     <td class="align-middle text-end ">`+numeral(row.DATARESULT.Comision_de_venta.Total[3]).format('0,0.00')+` </td>
                                                 </tr>
                                                 </tbody>
                                             </table>
-                                            <table class="table" style="border: 2px solid black;">
-                                                <thead class="bg-200 text-900">
-                                                <tr class="bg-primary text-light">
-                                                    <th colspan="2">ANULACIÓN NOTA DE CRÉDITOS</th>
-
-                                                </tr>
-                                                <tr>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="border-200">
-                                                        <td class="align-middle">
-                                                        <h6 class="mb-0 text-nowrap">80% </h6>
-                                                        </td>
-                                                        <td class="align-middle text-right ">C$ `+numeral(row.DATARESULT.NotaCredito_val80).format('0,0.00')+` </td>
-                                                    </tr>
-                                                    <tr class="border-200">
-                                                        <td class="align-middle">
-                                                        <h6 class="mb-0 text-nowrap">20% </h6>
-                                                        </td>
-                                                        <td class="align-middle text-right">C$ `+numeral(row.DATARESULT.NotaCredito_val20).format('0,0.00')+` </td>
-                                                    </tr>
-                                                    <tr class="border-200">
-                                                        <td class="align-middle">
-                                                        <h6 class="mb-0 text-nowrap">Total </h6>
-                                                        </td>
-                                                        <td class="align-middle text-right">C$ `+numeral(row.DATARESULT.NotaCredito_total).format('0,0.00')+` </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            
                                             </div>
                                             </div>
 
@@ -324,15 +317,22 @@
             },
             async: true,
             dataType: "json",
-            success: function(data) {
+            success: function(data) { 
 
-                if (data.length > 0) {
-                    dta_table_80 = [];
+                Item80      = data['LISTA_80']
+                Item20      =  data['LISTA_20']
+
+                ItemC80     = data['LISTA_80C_FACT']
+                ItemC20     = data['LISTA_20_FACT']
+
+                if (data['dt'].length > 0) {
+                    dta_table_80 = []; 
                     dta_table_20 = [];
                     dta_table_header = [
                         {"data": "ROW_ID"},
                         {"data": "ARTICULO",
                             "render": function(data, type, row, meta) {
+                               
                                 return `<div class="d-flex align-items-center position-relative ">
                                     <div class="flex-1">
                                         <h6 class="mb-0 fw-semi-bold">
@@ -361,19 +361,13 @@
                             }},
                     ]
 
-                    $.each(data,function(key, registro) {
+                    $.each(data['dt'],function(key, registro) {
 
                         ventaValor  += parseFloat(numeral(registro.VentaVAL).format('00.00'));
                         VentaUND    += parseFloat(registro.VentaUND.replace(/,/g, ''), 10);
                         MetaUND     += parseFloat(registro.MetaUND.replace(/,/g, ''), 10);
-
-                        Item80      +=  (registro.Lista==80)? 1 : 0
-                        Item20      +=  (registro.Lista==20)? 1 : 0
-
-                        ItemC80     +=  (registro.Lista==80 && registro.VentaUND > '0.00')? 1 : 0
-                        ItemC20     +=  (registro.Lista==20 && registro.isCumpl == 'SI')? 1 : 0
-
-                        if(registro.Lista == 80){
+                       
+                        if(registro.Lista == 'SKU_80'){
                             dta_table_80.push({
                                 ROW_ID: registro.ROW_ID,
                                 ARTICULO: registro.ARTICULO,
@@ -387,7 +381,7 @@
                                 Cumple: numeral(registro.Cumple).format('0,0,00.00') ,
                                 isCumpl: registro.isCumpl
                             })
-                        }else if(registro.Lista == 20){
+                        }else if(registro.Lista == 'SKU_20_A' || registro.Lista == 'SKU_20_B' || registro.Lista == 'SKU_20_C'){
                             dta_table_20.push({
                                 ROW_ID: registro.ROW_ID,
                                 ARTICULO: registro.ARTICULO,

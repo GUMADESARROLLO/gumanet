@@ -109,7 +109,7 @@ MODAL
           <div class="row col-md-4">
           <div class="d-flex align-items-center position-relative mt-0">
                         <div class="avatar avatar-xl ">
-                          <img class="rounded-circle mr-3 ml-4" src="http://186.1.15.164.sslip.io/estadistica/images/user/avatar-4.jpg" width="30px">
+                          <img class="rounded-circle mr-3 ml-4" src="{{ asset('images/avatar-4.jpg') }}" width="30px">
                         </div>
                           <div class="flex-1 ms-3">
                             <h6 class="mb-0 fw-semi-bold">
