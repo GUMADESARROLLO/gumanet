@@ -59,7 +59,7 @@
         </div>
     </div>
     @if( Session::get('company_id')==4 )
-        <div class="row">
+        <div class="row" style="display: none;">
             <div class="col">
                 <div class="custom-control custom-switch mt-2">
                     <input type="checkbox" class="custom-control-input" id="customSwitch1">
