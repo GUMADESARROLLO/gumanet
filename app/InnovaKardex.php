@@ -50,8 +50,7 @@ class InnovaKardex extends Model
             }
             $json_arrays['header_date'][$i+1] = 'Ult. Registro.';
 
-            $Stock = 0 ;
-            
+            $lastStock = 0; 
             $Rows = DB::connection('sqlsrv')->select('SET NOCOUNT ON ;EXEC PRODUCCION.dbo.gnet_calcular_kardex '."'".$d1."'".','."'".$d2."'".",''" );
             foreach($Rows as $r){
 
@@ -62,10 +61,7 @@ class InnovaKardex extends Model
                 $json_arrays['header_date_rows'][$i]['UND'] = $r->UND;
                 $json_arrays['header_date_rows'][$i]['USUARIO'] = $RoleUsr->rol->descripcion;
 
-                $ult = InnovaKardex::select('STOCK')
-                    ->where('ARTICULO', $r->ARTICULO)
-                    ->orderBy('FECHA', 'desc')
-                    ->first();
+        
 
                 foreach($json_arrays['header_date'] as $dtFecha => $valor){
 
@@ -79,30 +75,32 @@ class InnovaKardex extends Model
                         $rows_stock = 'STOCK_TODAY';
                     }
 
-                    $Stock = ($r->$rows_stock=='0.0' || $r->$rows_stock=='00.00') ? ($Stock + $r->$rows_in - $r->$rows_out): $r->$rows_stock ;
-                    $Stock= ( $Stock < 0 ) ? $r->$rows_stock : $Stock ;
-                    if($Stock == '0.0' || $Stock == '00.00'){
-                        $Stock = $ult->original['STOCK'];
+                    if ($r->$rows_stock == '0.00' && $r->$rows_in == '0.00' && $r->$rows_out == '0.00') {
+                        $LastStock = $lastStock; 
+                    } else {
+                        $LastStock = $r->$rows_stock;
+                        $lastStock = $r->$rows_stock;
                     }
 
-                    $json_arrays['header_date_rows'][$i][$rows_in] = ($r->$rows_in=='0.0' || $r->$rows_in=='00.00') ? '' : number_format($r->$rows_in,2)  ;
-                    $json_arrays['header_date_rows'][$i][$rows_out] = ($r->$rows_out=='0.0' || $r->$rows_out=='00.00') ? '' : number_format($r->$rows_out,2);
-                    $json_arrays['header_date_rows'][$i][$rows_stock] =  number_format($Stock,2);
+
+
+                    $json_arrays['header_date_rows'][$i][$rows_in] = number_format($r->$rows_in,2)  ;
+                    $json_arrays['header_date_rows'][$i][$rows_out] = number_format($r->$rows_out,2);
+                    $json_arrays['header_date_rows'][$i][$rows_stock] =  number_format($LastStock,2);
+
+                
 
 
                 }
-                $Stock = 0 ;
                 $i++;
+                $lastStock = 0; 
             }
-            //DD($json_arrays);
             return $json_arrays;
         }catch(Exception $e){
             $mensaje =  'Excepción capturada: ' . $e->getMessage() . "\n";
-                return response()->json($mensaje);
-            //return $json_arrays;
+            return response()->json($mensaje);
         }
 
-       
     }
 
     public static function InitKardex(Request $request){

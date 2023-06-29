@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class PromocionDetalle extends Model
 {
-    protected $table = "gumadesk.view_resumen_promocion";    
+    protected $table = "view_resumen_promocion";  
+    protected $connection = 'mysql_stat';
     public static function getDetalles()
     {  
 

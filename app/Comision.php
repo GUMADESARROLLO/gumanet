@@ -310,7 +310,7 @@ class Comision extends Model{
 
 
     public static function ZonaRuta($ruta){
-        $zona = DB::table('gumanet.zonas')->where('Ruta', $ruta)->pluck('Zona');
+        $zona = DB::connection('mysql')->table('zonas')->where('Ruta', $ruta)->pluck('Zona');
 
         return $zona;
     }

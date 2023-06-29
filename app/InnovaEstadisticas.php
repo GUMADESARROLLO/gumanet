@@ -62,11 +62,7 @@ class InnovaEstadisticas extends Model
 
         $resul_last_month = DB::connection('sqlsrv')->select($query_stat_ruta, [$mes -1, $anio]);
 
-        if(count($resul_last_month) && count($resul_stat_ruta)){
-            $isUp = (floatval($resul_last_month[0]->AVG_SIN_IVA) > floatval($resul_stat_ruta[0]->AVG_SIN_IVA)) ? false : true ;
-        }else{
-            $isUp = false;
-        }
+        $isUp = (count($resul_last_month) && count($resul_stat_ruta)) ? (floatval($resul_last_month[0]->AVG_SIN_IVA) > floatval($resul_stat_ruta[0]->AVG_SIN_IVA)) ? false : true : false ;
         
         $data = array(); 
         $key = 0;
