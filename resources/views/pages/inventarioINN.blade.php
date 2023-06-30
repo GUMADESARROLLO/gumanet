@@ -62,7 +62,6 @@
                     <div class="input-group">
                         <select class="custom-select"  id="id_select_mes">
                             
-                                <option value="7" >1 SEMANA</option>
                                 <option value="15" >2 SEMANAS</option>
                                 <option value="1" >1 MES</option>
                                 <option value="3" >3 MESES</option>
