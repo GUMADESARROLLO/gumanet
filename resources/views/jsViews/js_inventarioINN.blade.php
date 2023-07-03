@@ -8,7 +8,8 @@ $(document).ready(function() {
     var primerDia = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
     var ultimoDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+final.getDate();
 
-    var dia = date.getDate() - 6;
+    var dia = date.getDate() - 14;
+    console.log(dia);
 
     if(dia > 0){
         primerDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+dia;

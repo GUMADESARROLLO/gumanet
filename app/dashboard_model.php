@@ -270,8 +270,8 @@ class dashboard_model extends Model {
 
         $segmentos[2] = array(
             'name' => 'Farmacias',
-            'line' => "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20'",
-            'ruta' => ['F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F15','F20']
+            'line' => "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F19','F20','F21','F22'",
+            'ruta' => ['F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F19','F20','F21','F22']
         );
 
         switch ($company_user) {
