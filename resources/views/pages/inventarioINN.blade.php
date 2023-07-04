@@ -4,14 +4,15 @@
 @endsection
 @section('content')
 <div class="container-fluid"> 
-    <div class="row">
-        <div class="col-md-12">
-            <h4 class="h4 mb-4">Inventario Innova</h4>
-        </div>
-	</div>
+  <div style="padding:20px">
+      <div class="d-flex align-items-center">
+      <h4 class="h4">Inventario Innova</h4>
+        <div id="id_Status" class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
+      </div>
+  </div>
   
 
-    <div class="card border-0 shadow-sm mt-3 ">
+    <div class="card border-0 shadow-sm ">
       <div class="card-body col-sm-12 p-0 mb-2">	
         <div class="p-0 px-car">
           <div class="flex-between-center scrollbar border border-1 border-300 rounded-2">
@@ -23,7 +24,6 @@
                   <th >JR</th>
                   <th>MP</th>
                   <th>TOTAL</th>
-                  
                 </tr>
                 
               </thead>
