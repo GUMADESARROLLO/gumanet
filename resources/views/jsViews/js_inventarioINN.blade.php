@@ -23,6 +23,7 @@ $(document).ready(function() {
 
 $("#id_btn_new").click( function() {
     var date = new Date();
+    $("#id_Status").show();
 
     var mes = $('#id_select_mes').val();
 
@@ -162,10 +163,13 @@ function tblKardex(primerDia, ultimoDia) {
                     lastHeader.addClass('text-dark');
                     lastHeader.hide();
                     
+                    
                 }
             });
             $("#tbl_kardex_length").hide();
             $("#tbl_kardex_filter").hide();
+            $("#id_Status").hide();
+            
 
             $('#id_txt_buscar').on('keyup', function() {        
                 var vTablePedido = $('#tbl_kardex').DataTable();
