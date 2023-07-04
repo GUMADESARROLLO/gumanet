@@ -48,10 +48,7 @@ class InnovaKardex extends Model
                 $json_arrays['header_date'][$i] = $f->FECHA;
                 $i++;
             }
-            $json_arrays['header_date'][$i+1] = 'Ult. Registro.';
-
-            $lastStock = 0; 
-            $Rows = DB::connection('sqlsrv')->select('SET NOCOUNT ON ;EXEC PRODUCCION.dbo.gnet_calcular_kardex '."'".$d1."'".','."'".$d2."'".",''" );
+            $Rows = DB::connection('sqlsrv')->select('SET NOCOUNT ON ;EXEC PRODUCCION.dbo.gnet_calc_kardex '."'".$d1."'".','."'".$d2."'".",''" );
             foreach($Rows as $r){
 
                 $RoleUsr = KardexUsuario::find($r->USUARIO);
@@ -61,42 +58,19 @@ class InnovaKardex extends Model
                 $json_arrays['header_date_rows'][$i]['UND'] = $r->UND;
                 $json_arrays['header_date_rows'][$i]['USUARIO'] = $RoleUsr->rol->descripcion;
 
-                $dtInit = date('Ymd',strtotime($json_arrays['header_date'][0]));
-                $Articu = $r->ARTICULO;
-
-
-                foreach($json_arrays['header_date'] as $dtFecha => $valor){
+                
+                foreach($json_arrays['header_date'] as $dtFecha => $valor){                    
 
                     $rows_in    = 'IN01_'.date('Ymd',strtotime($valor));
                     $rows_out   = 'OUT02_'.date('Ymd',strtotime($valor));
                     $rows_stock = 'STOCK03_'.date('Ymd',strtotime($valor));
-                    
-                    if($valor == 'Ult. Registro.'){
-                        $rows_in    = 'IN_TODAY';
-                        $rows_out   = 'OUT_TODAY';
-                        $rows_stock = 'STOCK_TODAY';
-                    }
-
-
-                    if ($r->$rows_stock == '0.00' && $r->$rows_in == '0.00' && $r->$rows_out == '0.00') {
-                        $LastStock = $lastStock; 
-                    } else {
-                        $LastStock = $r->$rows_stock;
-                        $lastStock = $r->$rows_stock;
-                    }
-
-
 
                     $json_arrays['header_date_rows'][$i][$rows_in]      = number_format($r->$rows_in,2)  ;
                     $json_arrays['header_date_rows'][$i][$rows_out]     = number_format($r->$rows_out,2);
-                    $json_arrays['header_date_rows'][$i][$rows_stock]   =  number_format($LastStock,2);
-
-                
-
+                    $json_arrays['header_date_rows'][$i][$rows_stock]   =  number_format($r->$rows_stock,2);
 
                 }
                 $i++;
-                $lastStock = 0; 
             }
             return $json_arrays;
         }catch(Exception $e){
