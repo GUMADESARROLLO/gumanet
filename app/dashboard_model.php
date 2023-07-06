@@ -167,7 +167,7 @@ class dashboard_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = " EXEC gnet_vnts_diaria_generico ".$mes.", ".$anio.", 'VtasTotal_UMK', ".$Segmento." "; 
+                $sql_exec = " EXEC gnet_vnts_diaria_generico_dev ".$mes.", ".$anio.", 'view_master_pedidos_umk_v2', ".$Segmento." "; 
                 break;
             case '2':
                 $sql_exec = " EXEC gnet_vnts_diaria_gp ".$mes.", ".$anio." ";
@@ -252,9 +252,11 @@ class dashboard_model extends Model {
         $array = array();
         $line = '';
         $meta = 0;
-        $fecha = new DateTime($anio.'-'.$mes.'-01');
+        $fecha = date($anio.'-'.$mes.'-01');
         $idPeriodo = Metacuota_gumanet::where(['Fecha' => $fecha,'IdCompany'=> $company_user])->pluck('IdPeriodo');
         $i=0;
+
+        
 
         $segmentos[0] = array(
             'name' => 'Instituciones',
@@ -270,8 +272,8 @@ class dashboard_model extends Model {
 
         $segmentos[2] = array(
             'name' => 'Farmacias',
-            'line' => "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F19','F20','F21','F22'",
-            'ruta' => ['F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F19','F20','F21','F22']
+            'line' => "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F19','F20','F21','F22','F24'",
+            'ruta' => ['F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F19','F20','F21','F22','F24']
         );
 
         switch ($company_user) {
@@ -292,7 +294,7 @@ class dashboard_model extends Model {
                         ($r === end($rutas))?$line .= ''."'".$r['ruta']."'".'':$line .= ''."'".$r['ruta']."'".',';
                     }*/
 
-                    $sql_exec = "SELECT
+                    /*$sql_exec = "SELECT
                                 SUM(venta) as total
                                 FROM
                                     Softland.dbo.VtasTotal_UMK (nolock)
@@ -301,8 +303,17 @@ class dashboard_model extends Model {
                                 AND [P. Unitario] > 0
                                 GROUP BY
                                     [P. Unitario],
-                                    Cantidad";
+                                    Cantidad";*/
 
+                    $sql_exec = "SELECT
+                                    SUM(TOTAL_LINEA) as total
+                                    FROM
+                                            PRODUCCION.dbo.view_master_pedidos_umk_v2 T0
+                                    WHERE
+                                            T0.FECHA_PEDIDO BETWEEN '".$fecha."' AND '".date('Y-m-t',strtotime($fecha))."'  AND T0.VENDEDOR  IN (".$key['line']." )
+                                    GROUP BY
+                                            T0.VENDEDOR";
+                                            
                     $rutas =     $key['ruta'];
                     
                     $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
@@ -310,7 +321,7 @@ class dashboard_model extends Model {
                     if ( count($idPeriodo)>0 ) {
                         $meta =  Gn_couta_x_producto::where('IdPeriodo', $idPeriodo)
                                     ->where(function ($query) use ($rutas) {                                     
-                                        $query->whereIn('CodVendedor', $rutas);
+                                        $query->whereIn('codVendedor', $rutas);
                                     })->sum('val');
                     }
 
