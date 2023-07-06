@@ -128,14 +128,17 @@ class InnovaKardex extends Model
             $JR_KG          = ($row->JR) / 5;
 
             //SE LE RESTA EL 8% DE MERMA UNA VES QUE PASA A PROCESO SECO
-            $JR_KG_MERMA    = $JR_KG - ($JR_KG * 0.08);
+            $JR_KG_MERMA    = $JR_KG * 0.92;
 
             //SUMATORIA DE TOTAL ESTIMADO
             $TT_ESTIMADO    = $row->PT + $JR_KG_MERMA + $row->MP;
 
+            
+
             $json[$i]['Product'] = $Product;
             $json[$i]['PT'] = $row->PT;
             $json[$i]['JR'] = $JR_KG_MERMA;
+            $json[$i]['JR_KG'] = $row->JR;
             $json[$i]['MP'] = $row->MP;
             $json[$i]['TE'] = $TT_ESTIMADO;
             $json[$i]['AT'] = $articulos;

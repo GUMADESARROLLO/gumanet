@@ -16,19 +16,23 @@
       <div class="card-body col-sm-12 p-0 mb-2">	
         <div class="p-0 px-car">
           <div class="flex-between-center scrollbar border border-1 border-300 rounded-2">
+          
             <table id="table_resumen" class="table table-striped table-bordered table-sm mt-3 fs--1" width="100%">
               <thead>
                 <tr class="bg-blue text-light">
-                  <th >PRODUCTO</th>
+                  <th style="width: 200px;" rowspan="1">PRODUCTO</th>
                   <th >PT</th>
-                  <th >JR</th>
+                  <th style="width: 200px;">JR_SKU</th>
+                  <th>JR_TOTAL KG</th>
+                  <th>JR_ESTIM. BULTO</th>
                   <th>MP</th>
                   <th>TOTAL</th>
                 </tr>
-                
               </thead>
               <tbody>
                 <tr>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -38,7 +42,7 @@
             </tbody>
               <tfoot>
                 <tr class="bg-blue text-light">
-                    <th colspan="4" style="text-align:right"></th>
+                    <th colspan="6" style="text-align:right"></th>
                     <th></th>
                 </tr>
             </tfoot>

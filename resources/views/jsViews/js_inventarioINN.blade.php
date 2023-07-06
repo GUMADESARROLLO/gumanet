@@ -65,8 +65,8 @@ function tblKardex(primerDia, ultimoDia) {
                         `<tr class="bg-blue text-light">`+
                             `<th style="width: 700px;" rowspan="2">ARTICULO</th>`;
                             $.each(data['header_date'], function (i, item) {
-                                table += `<th colspan="3" style="text-align:center;" width="10px">`+ ((item == "Ult. Registro.") ? item : moment(item).format('DD-MMM-YYYY'))+`</th>`;                                
-                                })
+                                table += `<th colspan="3" style="text-align:center;" width="10px">`+  moment(item).format('DD-MMM-YYYY') +`</th>`;                                
+                            })
                             
                         
                 table +=`</tr><tr>`;                        
@@ -90,15 +90,9 @@ function tblKardex(primerDia, ultimoDia) {
                                             `</div>`+
                                         `</td>`;
                                         $.each(data['header_date'], function (i, kar) {
-                                            if(kar != 'Ult. Registro.'){
-                                                table += `<td> <p class="text-right" style="width: 60px;">`+numeral(item['IN01_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p> </td>`+
+                                            table += `<td> <p class="text-right" style="width: 60px;">`+numeral(item['IN01_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p> </td>`+
                                                     `<td> <p class="text-right" style="width: 60px;">`+numeral(item['OUT02_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p></td>`+
                                                     `<td> <p class="text-right" style="width: 60px;">`+numeral(item['STOCK03_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p></td>`;
-                                            }else{
-                                                table += `<td> <p class="text-right" style="width: 60px;">`+numeral(item['IN_TODAY']).format('0,0.00')+`</p> </td>`+
-                                                `<td> <p class="text-right" style="width: 60px;">`+numeral(item['OUT_TODAY']).format('0,0.00')+`</p></td>`+
-                                                `<td> <p class="text-right" style="width: 60px;">`+numeral(item['STOCK_TODAY']).format('0,0.00')+`</p></td>`;
-                                            }
                                         });
                                         table += `</tr>`;
                                 
@@ -183,6 +177,8 @@ function tblKardex(primerDia, ultimoDia) {
 
 function tblResumen(){
 
+    var ItemJumbo = '';
+
     $.ajax({
         url: `getResumenKardex`,
         type: 'get',
@@ -212,14 +208,21 @@ function tblResumen(){
                     { "data": "Product","render": function(data, type, row, meta) {
                         
                         var tBody = '';
-
+                        ItemJumbo = '';
                         $.each(row.AT, function (i, obj) {
                             tBody += `<tr class="border-200">
                                         <td class="align-middle text-left ">
                                         `+ obj.DESCRIPCION +` |  `+ obj.ARTICULO +`
                                         </td>
-                                    </tr>`                            
+                                    </tr>`                                       
+                                    
+                                    ItemJumbo += (obj.DESCRIPCION.includes("JUMBO R")) ? obj.ARTICULO + ' | ': ''
                         });
+
+                        ItemJumbo = (ItemJumbo !== "") ?  ItemJumbo.slice(0, -2) : ''
+
+                        
+                        
 
                         return  `<div class="pe-4 border-sm-end border-200" >
                                     <div class="d-flex align-items-center">
@@ -253,15 +256,34 @@ function tblResumen(){
                                 </div>`
 
                     } },
-                    { "data": "JR","render": function(data, type, row, meta) {
+                    { "data": "JR","render": function(data, type, row, meta) {              
 
                         return  `<div class="pe-4 border-sm-end border-200" >
                                     <div class="text-right">
-                                    `+numeral(row.JR).format('0,0.00')+`
+                                    `+ItemJumbo+`
+                                    
                                     </div>
                                 </div>`
 
                     } },
+                    { "data": "JR","render": function(data, type, row, meta) {              
+
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.JR_KG).format('0,0.00')+` KG
+                                    </div>
+                                </div>`
+
+                        } },
+                        { "data": "JR","render": function(data, type, row, meta) {              
+
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.JR).format('0,0.00')+` B.
+                                    </div>
+                                </div>`
+
+                        } },
                     { "data": "MP","render": function(data, type, row, meta) {
 
                         return  `<div class="pe-4 border-sm-end border-200" >
@@ -300,10 +322,9 @@ function tblResumen(){
                             Total += intVal(data[i].TE);
                         }
                         
-                        $(api.column(3).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL ESTIMADO EN BOLSONES: </h6>');
-                        $(api.column(4).footer()).html('<h6 class="text-right">'+numeral(Total).format('0,0.00')+'</h6>');
-                    },
-                             
+                        $(api.column(5).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL ESTIMADO EN BOLSONES: </h6>');
+                        $(api.column(6).footer()).html('<h6 class="text-right">'+numeral(Total).format('0,0.00')+'</h6>');
+                    }, 
             })
 
             //OCULTA DE LA PANTALLA EL FILTRO DE PAGINADO Y FORM DE BUSQUEDA
