@@ -9,7 +9,7 @@ $(document).ready(function() {
     var ultimoDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+final.getDate();
 
     var dia = date.getDate() - 14;
-    console.log(dia);
+    
 
     if(dia > 0){
         primerDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+dia;
@@ -18,6 +18,8 @@ $(document).ready(function() {
         primerDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+(final.getDate()+dia);
     }
 
+    console.log('primerDia: ' + primerDia + ' ultimoDia: ' + ultimoDia);
+
     tblKardex(primerDia, ultimoDia);
 });
 
@@ -25,6 +27,8 @@ $("#id_btn_new").click( function() {
     var date = new Date();
 
     var mes = $('#id_select_mes').val();
+
+    
 
     var invM = (date.getMonth() + 1) - mes;
     
@@ -50,7 +54,7 @@ $("#id_btn_new").click( function() {
 
 function tblKardex(primerDia, ultimoDia) {
     tblResumen();
-    
+    $("#id_Status").show();
     $.ajax({
         url: `getKerdex`,
         type: 'get',
@@ -160,6 +164,7 @@ function tblKardex(primerDia, ultimoDia) {
             });
             $("#tbl_kardex_length").hide();
             $("#tbl_kardex_filter").hide();
+            $("#id_Status").hide();
 
             $('#id_txt_buscar').on('keyup', function() {        
                 var vTablePedido = $('#tbl_kardex').DataTable();
