@@ -1089,7 +1089,7 @@ MODAL
                         <tr>
                             <th scope="col" class="text-center">#</th>
                             <th scope="col" class="text-center">CADENA</th>
-                            <th scope="col" class="text-center">REAL</th>
+                            <th scope="col" class="text-center">VENTA EN C$</th>
                         </tr>
                     </thead>
                     <tbody id="tbodySegmento"></tbody>

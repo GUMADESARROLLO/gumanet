@@ -2137,7 +2137,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                 <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(cumplGRP3).format('0,0.00') +` %</p>
                             </td>
                             </tr>
-                            <th scope="row" style="font-size: 1rem!important"  onclick="ShowSaleCadena()" >Cadena de Farmacia.</th>
+                            <th scope="row" style="font-size: 1rem!important"  onclick="ShowSaleCadena()" >Cadenas de Farmacias</th>
                             <td class="text-right">
                                 <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP4__).format('0,0.00') +`</p>
                             </td>
@@ -2317,7 +2317,7 @@ function ShowSaleCadena(){
         'columns': [   
             { "title": "#",         "data": "NUMBER"},   
             { "title": "CADENA",    "data": "CADENA"},   
-            { "title": "REAL C$.",  "data": "VENDE", render: $.fn.dataTable.render.number( ',', '.', 2, 'C$ ' )},
+            { "title": "VENTA EN C$",  "data": "VENDE", render: $.fn.dataTable.render.number( ',', '.', 2, 'C$ ' )},
 
         ],
         "columnDefs": [
@@ -2343,8 +2343,8 @@ function ShowSaleCadena(){
             }, 0 );
 
            
-            $(api.column(0).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL ESTIMADO EN BOLSONES: </h6>');
-            $(api.column(2).footer()).html('<h6 class="text-right">C$. '+numeral(Total).format('0,0.00')+'</h6>');
+            $(api.column(0).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL</h6>');
+            $(api.column(2).footer()).html('<h6 class="text-right">C$ '+numeral(Total).format('0,0.00')+'</h6>');
                 
 
                 
