@@ -259,3 +259,6 @@ Route::get('getResumenKardex', 'InnovaController@getResumenKardex')->name('getRa
 
 Route::get('getStatsInn', 'InnovaController@getStatsInn')->name('getStatsInn');
 Route::get('saveInnStat', 'InnovaController@saveInnStat')->name('saveInnStat');
+
+Route::post('getSaleCadena', 'dashboard_controller@getSaleCadena');
+
