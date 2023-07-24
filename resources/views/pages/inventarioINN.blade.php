@@ -17,7 +17,7 @@
         <div class="p-0 px-car">
           <div class="flex-between-center scrollbar border border-1 border-300 rounded-2">
           
-            <table id="table_resumen" class="table table-striped table-bordered table-sm mt-3 fs--1" width="100%">
+            <table id="table_resumen" class="table table-striped table-bordered table-sm fs--1" width="100%">
               <thead>
                 <tr class="bg-blue text-light">
                   <th style="width: 200px;" rowspan="1">PRODUCTO</th>
@@ -25,7 +25,6 @@
                   <th style="width: 200px;">JR_SKU</th>
                   <th>JR_TOTAL KG</th>
                   <th>JR_ESTIM. BULTO</th>
-                  <th>MP</th>
                   <th>TOTAL</th>
                 </tr>
               </thead>
@@ -37,9 +36,49 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
                 </tr>
             </tbody>
+              <tfoot>
+                <tr class="bg-blue text-light">
+                    <th colspan="5" style="text-align:right"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm ">
+      <div class="card-body col-sm-12 p-0">	
+        <div class="p-0 px-car">
+          <div class="">
+          
+            <table id="table_materia_prima" class="table table-striped table-bordered table-sm fs--1" width="100%">
+              <thead>
+                <tr class="bg-blue text-light">
+                  <th></th>
+                  <th style="width: 200px;" rowspan="1">BLANCO IMPRESO</th>
+                  <th >BLANCO MEZCLADO</th>
+                  <th style="width: 200px;">TETRA PACK</th>
+                  <th>CARTONCILLO</th>
+                  <th>PRENSA</th>                  
+                  <th>CARTON</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> </td>
+                </tr>
+              </tbody>
+              </tbody>
               <tfoot>
                 <tr class="bg-blue text-light">
                     <th colspan="6" style="text-align:right"></th>
@@ -51,6 +90,11 @@
         </div>
       </div>
     </div>
+
+
+
+
+
 
     <div class="card border-0 shadow-sm mt-3 ">
         <div class="card-body col-sm-12 p-0 mb-2">

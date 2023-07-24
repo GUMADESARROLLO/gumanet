@@ -153,4 +153,22 @@ class InnovaKardex extends Model
 
         return $json;
     }
+    public static function getMateriaPrima(){
+        $json = array();
+
+        $result = DB::connection('sqlsrv')->select('SELECT * FROM PRODUCCION.dbo.view_stats_materia_prima');
+    
+        foreach ($result as $key => $val) {
+            $json[$key]['UND'] = 'KG';
+            $json[$key]['BLANCO_IMPRESO'] = $val->BLANCO_IMPRESO;
+            $json[$key]['BLANCO_MEZCLADO'] = $val->BLANCO_MEZCLADO;
+            $json[$key]['TETRA_PACK'] = $val->TETRA_PACK;
+            $json[$key]['CARTONCILLO'] = 'O.OO';
+            $json[$key]['PRENSA'] = $val->PRENSA;
+            $json[$key]['CARTON'] = $val->CARTON;
+        }
+
+
+        return $json;
+    }
 }

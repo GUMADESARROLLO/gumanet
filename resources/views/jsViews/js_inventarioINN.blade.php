@@ -54,6 +54,7 @@ $("#id_btn_new").click( function() {
 
 function tblKardex(primerDia, ultimoDia) {
     tblResumen();
+    tblMateriaPrima();
     $("#id_Status").show();
     $.ajax({
         url: `getKerdex`,
@@ -176,6 +177,100 @@ function tblKardex(primerDia, ultimoDia) {
     
 }
 
+function tblMateriaPrima(){
+    $.ajax({
+        url: `getMateriaPrima`,
+        type: 'get',
+        async: true,
+        success: function(data) {
+
+
+
+            $('#table_materia_prima').DataTable({
+                "data":data,
+                "destroy" : true,
+                "info":    false,
+                order: [[1, 'desc']],
+                "lengthMenu": [[5,-1], [5,"Todo"]],
+                "language": {
+                    "zeroRecords": "NO HAY COINCIDENCIAS",
+                    "paginate": {
+                        "first":      "Primera",
+                        "last":       "Última ",
+                        "next":       "Siguiente",
+                        "previous":   "Anterior"
+                    },
+                    "lengthMenu": "MOSTRAR _MENU_",
+                    "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+                    "search":     "BUSCAR"
+                },
+                'columns': [
+                    { "data": "UND","render": function(data, type, row, meta) {
+                        
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+row.UND+`
+                                    </div>
+                                </div>`
+                    }  },
+                    { "data": "BLANCO_IMPRESO","render": function(data, type, row, meta) {
+
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.BLANCO_IMPRESO).format('0,0.00')+`
+                                    </div>
+                                </div>`
+                    } },
+                    { "data": "BLANCO_MEZCLADO","render": function(data, type, row, meta) {              
+
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.BLANCO_MEZCLADO).format('0,0.00')+`
+                                    </div>
+                                </div>`
+                    } },
+                    { "data": "TETRA_PACK","render": function(data, type, row, meta) {              
+
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.TETRA_PACK).format('0,0.00')+`
+                                    </div>
+                                </div>`
+                    } },
+                    { "data": "CARTONCILLO","render": function(data, type, row, meta) {              
+
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                <div class="text-right">
+                                `+numeral(row.CARTONCILLO).format('0,0.00')+`
+                                </div>
+                            </div>`
+
+                    } },
+                    { "data": "PRENSA","render": function(data, type, row, meta) {
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.PRENSA).format('0,0.00')+`
+                                    </div>
+                                </div>`
+                    } },
+                    { "data": "CARTON","render": function(data, type, row, meta) {
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.CARTON).format('0,0.00')+`
+                                    </div>
+                                </div>`
+                    } },
+                ],
+            })
+            $("#table_materia_prima_length").hide();
+            $("#table_materia_prima_filter").hide();
+            $("#table_materia_prima_paginate").hide();
+
+
+        }
+    })
+}
+
 function tblResumen(){
 
     var ItemJumbo = '';
@@ -285,15 +380,7 @@ function tblResumen(){
                                 </div>`
 
                         } },
-                    { "data": "MP","render": function(data, type, row, meta) {
-
-                        return  `<div class="pe-4 border-sm-end border-200" >
-                                    <div class="text-right">
-                                    `+numeral(row.MP).format('0,0.00')+`
-                                    </div>
-                                </div>`
-
-                    } },
+                  
                     { "data": "TE","render": function(data, type, row, meta) {
 
                         return  `<div class="pe-4 border-sm-end border-200" >
@@ -315,7 +402,7 @@ function tblResumen(){
                                     i : 0;
                         };
 
-                        total = api.column( 4 ).data().reduce( function (a, b){
+                        total = api.column( 3 ).data().reduce( function (a, b){
                             return intVal(a) + intVal(b);
                         }, 0 );
 
@@ -323,15 +410,15 @@ function tblResumen(){
                             Total += intVal(data[i].TE);
                         }
                         
-                        $(api.column(5).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL ESTIMADO EN BOLSONES: </h6>');
-                        $(api.column(6).footer()).html('<h6 class="text-right">'+numeral(Total).format('0,0.00')+'</h6>');
+                        $(api.column(4).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL ESTIMADO EN BOLSONES: </h6>');
+                        $(api.column(5).footer()).html('<h6 class="text-right">'+numeral(Total).format('0,0.00')+'</h6>');
                     }, 
             })
-
-            //OCULTA DE LA PANTALLA EL FILTRO DE PAGINADO Y FORM DE BUSQUEDA
             $("#table_resumen_length").hide();
             $("#table_resumen_filter").hide();
             $("#table_resumen_paginate").hide();
+
+
         }
     })
 }
