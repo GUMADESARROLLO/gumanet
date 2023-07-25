@@ -62,7 +62,7 @@
                   <th style="width: 200px;" rowspan="1">BLANCO IMPRESO</th>
                   <th >BLANCO MEZCLADO</th>
                   <th style="width: 200px;">TETRA PACK</th>
-                  <th>CARTONCILLO</th>
+                  <th>TERMOMECÁNICO</th>
                   <th>PRENSA</th>                  
                   <th>CARTON</th>
                 </tr>

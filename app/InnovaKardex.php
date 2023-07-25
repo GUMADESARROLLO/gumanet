@@ -163,7 +163,7 @@ class InnovaKardex extends Model
             $json[$key]['BLANCO_IMPRESO'] = $val->BLANCO_IMPRESO;
             $json[$key]['BLANCO_MEZCLADO'] = $val->BLANCO_MEZCLADO;
             $json[$key]['TETRA_PACK'] = $val->TETRA_PACK;
-            $json[$key]['CARTONCILLO'] = 'O.OO';
+            $json[$key]['TERMOMECANICO'] = $val->TERMOMECANICO;
             $json[$key]['PRENSA'] = $val->PRENSA;
             $json[$key]['CARTON'] = $val->CARTON;
         }

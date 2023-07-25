@@ -237,11 +237,11 @@ function tblMateriaPrima(){
                                     </div>
                                 </div>`
                     } },
-                    { "data": "CARTONCILLO","render": function(data, type, row, meta) {              
+                    { "data": "TERMOMECANICO","render": function(data, type, row, meta) {              
 
                         return  `<div class="pe-4 border-sm-end border-200" >
                                 <div class="text-right">
-                                `+numeral(row.CARTONCILLO).format('0,0.00')+`
+                                `+numeral(row.TERMOMECANICO).format('0,0.00')+`
                                 </div>
                             </div>`
 
