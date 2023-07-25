@@ -65,6 +65,8 @@
                   <th>TERMOMECÁNICO</th>
                   <th>PRENSA</th>                  
                   <th>CARTON</th>
+                  <th>FOLDER</th>
+                  <th>COLOR</th>
                 </tr>
               </thead>
               <tbody>
@@ -81,7 +83,7 @@
               </tbody>
               <tfoot>
                 <tr class="bg-blue text-light">
-                    <th colspan="6" style="text-align:right"></th>
+                    <th colspan="8" style="text-align:right"></th>
                     <th></th>
                 </tr>
             </tfoot>

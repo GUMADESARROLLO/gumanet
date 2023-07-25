@@ -260,6 +260,20 @@ function tblMateriaPrima(){
                                     </div>
                                 </div>`
                     } },
+                    { "data": "FOLDER","render": function(data, type, row, meta) {
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.FOLDER).format('0,0.00')+`
+                                    </div>
+                                </div>`
+                    } },
+                    { "data": "COLOR","render": function(data, type, row, meta) {
+                        return  `<div class="pe-4 border-sm-end border-200" >
+                                    <div class="text-right">
+                                    `+numeral(row.COLOR).format('0,0.00')+`
+                                    </div>
+                                </div>`
+                    } },
                 ],
             })
             $("#table_materia_prima_length").hide();

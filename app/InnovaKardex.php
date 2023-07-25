@@ -160,14 +160,15 @@ class InnovaKardex extends Model
     
         foreach ($result as $key => $val) {
             $json[$key]['UND'] = 'KG';
-            $json[$key]['BLANCO_IMPRESO'] = $val->BLANCO_IMPRESO;
-            $json[$key]['BLANCO_MEZCLADO'] = $val->BLANCO_MEZCLADO;
-            $json[$key]['TETRA_PACK'] = $val->TETRA_PACK;
-            $json[$key]['TERMOMECANICO'] = $val->TERMOMECANICO;
-            $json[$key]['PRENSA'] = $val->PRENSA;
-            $json[$key]['CARTON'] = $val->CARTON;
+            $json[$key]['BLANCO_IMPRESO']   = $val->BLANCO_IMPRESO;
+            $json[$key]['BLANCO_MEZCLADO']  = $val->BLANCO_MEZCLADO;
+            $json[$key]['TETRA_PACK']       = $val->TETRA_PACK;
+            $json[$key]['TERMOMECANICO']    = $val->TERMOMECANICO;
+            $json[$key]['PRENSA']           = $val->PRENSA;
+            $json[$key]['CARTON']           = $val->CARTON;
+            $json[$key]['FOLDER']           = $val->FOLDER;
+            $json[$key]['COLOR']            = $val->COLOR;
         }
-
 
         return $json;
     }
