@@ -128,14 +128,17 @@ class InnovaKardex extends Model
             $JR_KG          = ($row->JR) / 5;
 
             //SE LE RESTA EL 8% DE MERMA UNA VES QUE PASA A PROCESO SECO
-            $JR_KG_MERMA    = $JR_KG - ($JR_KG * 0.08);
+            $JR_KG_MERMA    = $JR_KG * 0.92;
 
             //SUMATORIA DE TOTAL ESTIMADO
             $TT_ESTIMADO    = $row->PT + $JR_KG_MERMA + $row->MP;
 
+            
+
             $json[$i]['Product'] = $Product;
             $json[$i]['PT'] = $row->PT;
             $json[$i]['JR'] = $JR_KG_MERMA;
+            $json[$i]['JR_KG'] = $row->JR;
             $json[$i]['MP'] = $row->MP;
             $json[$i]['TE'] = $TT_ESTIMADO;
             $json[$i]['AT'] = $articulos;
@@ -147,6 +150,25 @@ class InnovaKardex extends Model
             $json[$i]['JR'] = "0";
             $json[$i]['MP'] = "0";
             $json[$i]['TE'] = "0";*/
+
+        return $json;
+    }
+    public static function getMateriaPrima(){
+        $json = array();
+
+        $result = DB::connection('sqlsrv')->select('SELECT * FROM PRODUCCION.dbo.view_stats_materia_prima');
+    
+        foreach ($result as $key => $val) {
+            $json[$key]['UND'] = 'KG';
+            $json[$key]['BLANCO_IMPRESO']   = $val->BLANCO_IMPRESO;
+            $json[$key]['BLANCO_MEZCLADO']  = $val->BLANCO_MEZCLADO;
+            $json[$key]['TETRA_PACK']       = $val->TETRA_PACK;
+            $json[$key]['TERMOMECANICO']    = $val->TERMOMECANICO;
+            $json[$key]['PRENSA']           = $val->PRENSA;
+            $json[$key]['CARTON']           = $val->CARTON;
+            $json[$key]['FOLDER']           = $val->FOLDER;
+            $json[$key]['COLOR']            = $val->COLOR;
+        }
 
         return $json;
     }

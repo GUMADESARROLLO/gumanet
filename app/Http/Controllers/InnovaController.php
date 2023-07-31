@@ -26,6 +26,10 @@ class InnovaController extends Controller
         $resumen = InnovaKardex::getResumenKardex();
         return response()->json($resumen);
     }
+    public function getMateriaPrima(){
+        $resumen = InnovaKardex::getMateriaPrima();
+        return response()->json($resumen);
+    }
 
     public function getStatsInn(Request $request)
     {

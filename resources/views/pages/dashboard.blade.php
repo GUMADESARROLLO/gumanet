@@ -1070,4 +1070,43 @@ MODAL
     </div>
 </div>
 
+
+<div class="modal fade bd-example-modal-lg" id="mCadenaFarmacia" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+		    <div class="modal-header bg-blue text-light" >
+                <div class="row col-md-12">
+                    <div class="col-md-12 text-center">
+                        <b>CADENAS DE FARMACIAS</b>
+                    </div>
+                    
+                </div>
+               
+		    </div>
+		    <div class="modal-body">	
+                <table class="table table-striped table-bordered table-sm" id="tb_cadena_farmacia" width="100%">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="text-center">CADENA</th>
+                            <th scope="col" class="text-center">VENTA EN C$</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodySegmento"></tbody>
+                    <tfoot>
+                <tr class="bg-blue text-light">
+                    <th colspan="2"  style="text-align:center"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+                </table>  
+            </div>
+    
+            <!---->
+		    <div class="modal-footer">			
+		    </div>
+	    </div>
+    </div>
+</div>
+
 @endsection

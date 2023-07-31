@@ -2055,25 +2055,14 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                    
 
                     var tbody = '';
-                    var metaGRP1__ = metaGRP2__ = metaGRP3__ = 0;
-                    var realGRP1__ = realGRP2__ = realGRP3__ = 0;
+                    var metaGRP1__ = metaGRP2__ = metaGRP3__ = metaGRP4__ = 0;
+                    var realGRP1__ = realGRP2__ = realGRP3__ = realGRP4__ = 0;
                     var totalMETA__ = totalREAL__ = totalALC__ = 0;
                    
                     if (item['data'].length>0) {
                         $.each(item['data'], function(i, x) {
+                            
                             temp = x['proyecto'];
-
-                            /*if ( temp.indexOf('1')!== -1 ) {
-                                console.log()
-                                metaGRP1__ = x['meta'];
-                                realGRP1__ = x['real'];
-                            }else if ( temp.indexOf('2')!== -1 ) {
-                                metaGRP2__ = x['meta'];
-                                realGRP2__ = x['real'];
-                            }else if ( temp.indexOf('3') !== -1 ) {
-                                metaGRP3__= x['meta'];
-                                realGRP3__ = x['real'];
-                            }*/
 
                             if ( temp=='Instituciones' ) {
                                 metaGRP1__ = x['meta'];
@@ -2084,19 +2073,32 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             }else if ( temp=='Farmacias' ) {
                                 metaGRP3__= x['meta'];
                                 realGRP3__ = x['real'];
+                            }else if ( temp=='Cadena_farmacia' ) {
+                                metaGRP4__= x['meta'];
+                                realGRP4__ = x['real'];
                             }
 
                             totalMETA__ = totalMETA__ + parseFloat(x['meta']);
                             totalREAL__ = totalREAL__ + parseFloat(x['real']);
 
 
+                            
+
+
                             cumplGRP1 = (parseFloat(realGRP1__)/parseFloat(metaGRP1__))*100;
                             cumplGRP2 = (parseFloat(realGRP2__)/parseFloat(metaGRP2__))*100;
+
+                            metaGRP3__ = (metaGRP3__  - metaGRP4__)
                             cumplGRP3 = (parseFloat(realGRP3__)/parseFloat(metaGRP3__))*100;
+                            cumplGRP4 = (parseFloat(realGRP4__)/parseFloat(metaGRP4__))*100;
+
+                            totalMETA__ = (totalMETA__  - metaGRP4__)
                             cumplTOTAL = (parseFloat(totalREAL__)/parseFloat(totalMETA__))*100;
                         });
 
                         //modalSegmento(item['data'], item['data2']);
+
+                       
                         
 
                         tbody = `<tr>
@@ -2135,6 +2137,17 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                 <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(cumplGRP3).format('0,0.00') +` %</p>
                             </td>
                             </tr>
+                            <th scope="row" style="font-size: 1rem!important"  onclick="ShowSaleCadena()" >Cadenas de Farmacias</th>
+                            <td class="text-right">
+                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP4__).format('0,0.00') +`</p>
+                            </td>
+                            <td class="text-right">
+                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(realGRP4__).format('0,0.00') +`</p>
+                            </td>
+                            <td class="text-right">
+                                <p class="font-weight-bolder" style="font-size: 1rem!important" >`+ numeral(cumplGRP4).format('0,0.00') +` %</p>
+                            </td>
+                            </tr>
                             <tr>
                             <th scope="row" style="font-size: 1rem!important">Total</th>
                             <td class="text-right">
@@ -2147,6 +2160,10 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                 <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(cumplTOTAL).format('0,0.00') +` %</p>
                             </td>
                             </tr>`;
+
+
+
+
                         $('#tbody02').empty().append(tbody);
                     }               
 
@@ -2262,8 +2279,82 @@ function modalSegmento(data){
     $('#tbodySegmento').empty().append(tbody);
         
 }
-function mostrar(d, l){
-    console.log(l);
+function ShowSaleCadena(){
+
+    $('#mCadenaFarmacia').modal('show');
+
+    var mes = $('#opcMes option:selected').val();
+    var anio = $('#opcAnio option:selected').val();
+
+    $("#tb_cadena_farmacia").dataTable({
+        "scrollX": false,
+        "ordering": false,
+        "ajax":{
+            "url": "getSaleCadena",
+            "type": 'POST',
+            'dataSrc': '',
+            "data": {                
+                mes: mes,
+                annio: anio        
+            }
+        },
+        
+        "destroy" : true,
+        "info":    false,
+        "lengthMenu": [[20,-1], [20,"Todo"]],
+        "language": {
+            "zeroRecords": "Cargando...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Última ",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+            "lengthMenu": "MOSTRAR _MENU_",
+            "emptyTable": "NO HAY DATOS DISPONIBLES",
+            "search":     "BUSCAR"
+        },
+        'columns': [   
+            { "title": "#",         "data": "NUMBER"},   
+            { "title": "CADENA",    "data": "CADENA"},   
+            { "title": "VENTA EN C$",  "data": "VENDE", render: $.fn.dataTable.render.number( ',', '.', 2, 'C$ ' )},
+
+        ],
+        "columnDefs": [
+            {"className": "dt-back-unit", "targets": []},
+            {"className": "dt-center", "targets": [ 0 ]},
+            {"className": "dt-right", "targets": [ 2 ]}
+            
+        ],
+        
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api();
+            var Total  = 0;
+
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[^0-9.]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            Total = api.column( 2 ).data().reduce( function (a, b){
+                return intVal(a) + intVal(b);
+            }, 0 );
+
+           
+            $(api.column(0).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL</h6>');
+            $(api.column(2).footer()).html('<h6 class="text-right">C$ '+numeral(Total).format('0,0.00')+'</h6>');
+                
+
+                
+        },
+        
+    });
+    $("#tb_cadena_farmacia_length").hide();
+    $("#tb_cadena_farmacia_filter").hide();
+    $("#tb_cadena_farmacia_paginate").hide();
+    
 }
 /*function modalSegmento(data, data2){
     var metaGRP1__ = metaGRP2__ = metaGRP3__ = 0;
