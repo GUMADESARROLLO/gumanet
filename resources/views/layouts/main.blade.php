@@ -46,7 +46,7 @@
 <link rel="stylesheet" type="text/css" href="{{ url('css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url('css/bootstrap-select.css') }}">
 <!--Import Google Icon Font-->
-<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 @include('layouts.menu')

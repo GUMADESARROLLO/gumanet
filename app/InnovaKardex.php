@@ -108,13 +108,12 @@ class InnovaKardex extends Model
 
     public static function getResumenKardex(){
         $json = array();
-        $i = 0;
 
         $result = DB::connection('sqlsrv')->select('SELECT * FROM PRODUCCION.dbo.view_stats_inventario_innova');
     
-        foreach($result as $row ){
+        foreach($result as $row => $r){
 
-            $Product = $row->Product;
+            $Product = $r->Product;
 
             $articulos = ArticuloInnova::select('ARTICULO', 'DESCRIPCION')
             ->whereHas('clasificacion1', function ($query) use ($Product) {
@@ -125,31 +124,23 @@ class InnovaKardex extends Model
             ->toArray();
 
             //5 ES EL PESO DEL BOLSON
-            $JR_KG          = ($row->JR) / 5;
+            $JR_KG          = ($r->JR) / 5;
 
             //SE LE RESTA EL 8% DE MERMA UNA VES QUE PASA A PROCESO SECO
             $JR_KG_MERMA    = $JR_KG * 0.92;
 
             //SUMATORIA DE TOTAL ESTIMADO
-            $TT_ESTIMADO    = $row->PT + $JR_KG_MERMA + $row->MP;
-
+            $TT_ESTIMADO    = $r->PT + $JR_KG_MERMA + $r->MP;
             
 
-            $json[$i]['Product'] = $Product;
-            $json[$i]['PT'] = $row->PT;
-            $json[$i]['JR'] = $JR_KG_MERMA;
-            $json[$i]['JR_KG'] = $row->JR;
-            $json[$i]['MP'] = $row->MP;
-            $json[$i]['TE'] = $TT_ESTIMADO;
-            $json[$i]['AT'] = $articulos;
-
-            $i++;
+            $json[$row]['Product'] = $Product;
+            $json[$row]['PT'] = $r->PT;
+            $json[$row]['JR'] = $JR_KG_MERMA;
+            $json[$row]['JR_KG'] = $r->JR;
+            $json[$row]['MP'] = $r->MP;
+            $json[$row]['TE'] = $TT_ESTIMADO;
+            $json[$row]['AT'] = $articulos;
         }
-            /*$json[$i]['Product'] = 'CHOLIN GIGANTE';
-            $json[$i]['PT'] = "0";
-            $json[$i]['JR'] = "0";
-            $json[$i]['MP'] = "0";
-            $json[$i]['TE'] = "0";*/
 
         return $json;
     }

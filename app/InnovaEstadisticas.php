@@ -102,16 +102,15 @@ class InnovaEstadisticas extends Model
 
         $query_stat_ruta = "EXEC PRODUCCION.dbo.getInnStatRuta @Mes = ?, @Anio = ?";
         $resul_stat_ruta = DB::connection('sqlsrv')->select($query_stat_ruta, [$mes, $anio]);
-
         $datos_a_insertar = array();
 
         foreach ($resul_stat_ruta as $key => $value) {
-            $datos_a_insertar[$key]['DESCRIPCION']      = $value->Ruta;
-            $datos_a_insertar[$key]['CANTIDAD']         = $value->Cantidad;
-            $datos_a_insertar[$key]['VENTA_SIN_IVA']    = $value->Venta_SinIVA;
-            $datos_a_insertar[$key]['VENTA_CON_IVA']    = $value->Venta_ConIVA;
-            $datos_a_insertar[$key]['AVG_SIN_IVA']      = $value->AVG_SinIVA;       
-            $datos_a_insertar[$key]['AVG_CON_IVA']      = $value->AVG_ConIVA;      
+            $datos_a_insertar[$key]['DESCRIPCION']      = $value->DESCRIPCION;
+            $datos_a_insertar[$key]['CANTIDAD']         = $value->CANTIDAD;
+            $datos_a_insertar[$key]['VENTA_SIN_IVA']    = $value->VENTA_SIN_IVA;
+            $datos_a_insertar[$key]['VENTA_CON_IVA']    = $value->VENTA_CON_IVA;
+            $datos_a_insertar[$key]['AVG_SIN_IVA']      = $value->AVG_SIN_IVA;       
+            $datos_a_insertar[$key]['AVG_CON_IVA']      = $value->AVG_CON_IVA;      
             $datos_a_insertar[$key]['MES']              = $mes;       
             $datos_a_insertar[$key]['ANNIO']            = $anio;          
         }
@@ -123,12 +122,12 @@ class InnovaEstadisticas extends Model
         $datos_a_insertar = array(); 
 
         foreach ($resul_stat_sale as $key => $value) {
-            $datos_a_insertar[$key]['DESCRIPCION']      = $value->Target;
-            $datos_a_insertar[$key]['CANTIDAD']         = $value->Cantidad;
-            $datos_a_insertar[$key]['VENTA_SIN_IVA']    = $value->Venta_SinIVA;
-            $datos_a_insertar[$key]['VENTA_CON_IVA']    = $value->Venta_ConIVA;
-            $datos_a_insertar[$key]['AVG_SIN_IVA']      = $value->AVG_SinIVA;       
-            $datos_a_insertar[$key]['AVG_CON_IVA']      = $value->AVG_ConIVA;  
+            $datos_a_insertar[$key]['DESCRIPCION']      = $value->DESCRIPCION;
+            $datos_a_insertar[$key]['CANTIDAD']         = $value->CANTIDAD;
+            $datos_a_insertar[$key]['VENTA_SIN_IVA']    = $value->VENTA_SIN_IVA;
+            $datos_a_insertar[$key]['VENTA_CON_IVA']    = $value->VENTA_CON_IVA;
+            $datos_a_insertar[$key]['AVG_SIN_IVA']      = $value->AVG_SIN_IVA;       
+            $datos_a_insertar[$key]['AVG_CON_IVA']      = $value->AVG_CON_IVA;  
             $datos_a_insertar[$key]['MES']              = $mes;       
             $datos_a_insertar[$key]['ANNIO']            = $anio;       
         } 
