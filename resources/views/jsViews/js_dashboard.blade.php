@@ -2315,6 +2315,9 @@ function ShowSaleCadena(){
             "search":     "BUSCAR"
         },
         'columns': [   
+            {"title": "", "data": 'CADENA', "render": function(data, type, row, meta) {
+                return  `<a id="exp_more_cadena" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>`
+            }},
             { "title": "#",         "data": "NUMBER"},   
             { "title": "CADENA",    "data": "CADENA"},   
             { "title": "VENTA EN C$",  "data": "VENDE", render: $.fn.dataTable.render.number( ',', '.', 2, 'C$ ' )},
@@ -2322,8 +2325,8 @@ function ShowSaleCadena(){
         ],
         "columnDefs": [
             {"className": "dt-back-unit", "targets": []},
-            {"className": "dt-center", "targets": [ 0 ]},
-            {"className": "dt-right", "targets": [ 2 ]}
+            {"className": "dt-center", "targets": [ 0,1 ]},
+            {"className": "dt-right", "targets": [ 3 ]}
             
         ],
         
@@ -2338,13 +2341,13 @@ function ShowSaleCadena(){
                         i : 0;
             };
 
-            Total = api.column( 2 ).data().reduce( function (a, b){
+            Total = api.column( 3 ).data().reduce( function (a, b){
                 return intVal(a) + intVal(b);
             }, 0 );
 
            
             $(api.column(0).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL</h6>');
-            $(api.column(2).footer()).html('<h6 class="text-right">C$ '+numeral(Total).format('0,0.00')+'</h6>');
+            $(api.column(3).footer()).html('<h6 class="text-right">C$ '+numeral(Total).format('0,0.00')+'</h6>');
                 
 
                 
@@ -2356,6 +2359,93 @@ function ShowSaleCadena(){
     $("#tb_cadena_farmacia_paginate").hide();
     
 }
+
+$(document).on('click', '#exp_more_cadena', function(ef) {
+    var table = $('#tb_cadena_farmacia').DataTable();
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
+    var data = table.row($(this).parents('tr')).data();
+
+
+    if (row.child.isShown()) {
+        row.child.hide();
+        tr.removeClass('shown');
+        ef.target.innerHTML = "expand_more";
+        ef.target.style.background = '#e2e2e2';
+        ef.target.style.color = '#007bff';
+    } else {
+        //VALIDA SI EN LA TABLA HAY TABLAS SECUNDARIAS ABIERTAS
+        table.rows().eq(0).each( function ( idx ) {
+            var row = table.row( idx );
+
+            if ( row.child.isShown() ) {
+                row.child.hide();
+                ef.target.innerHTML = "expand_more";
+
+                var c_1 = $(".expan_more");
+                c_1.text('expand_more');
+                c_1.css({
+                    background: '#e2e2e2',
+                    color: '#007bff',
+                });
+            }
+        } );
+
+        format_cad(row.child, data.CADENA);
+        tr.addClass('shown');
+        
+        ef.target.innerHTML = "expand_less";
+        ef.target.style.background = '#ff5252';
+        ef.target.style.color = '#e2e2e2';
+    }
+});
+
+function format_cad ( callback, cadena) {
+
+    var mes = $('#opcMes option:selected').val();
+    var anio = $('#opcAnio option:selected').val();
+
+    var thead = tbody = '';            
+        thead =`<table class="" width='100%'>
+                    <tr>
+                        <th class="dt-center">ARTICULO</th>
+                        <th class="dt-center">DESCRIPCION</th>
+                        <th class="dt-center">VENTA</th>
+                    </tr>
+                <tbody>`;
+                
+    $.ajax({
+        url: "getSaleCadenaDetalle",
+        type: 'POST',
+        data: {                
+            mes: mes,
+            annio: anio,
+            cadena: cadena     
+        },        
+        success: function ( data ) {
+            if (data.length==0) {
+                tbody +=`<tr>
+                            <td colspan='6'><center>Sin ventas</center></td>
+                        </tr>`;
+                callback(thead + tbody).show();
+            }
+            $.each(data, function (i, item) {
+               tbody +=`<tr >
+                            <td class="dt-center" width="50px">` + item['ARTICULO'] + `</td>
+                            <td >` + item['DESCRIPCION'] + `</td>
+                            <td class="dt-right" width="90px">C$ ` + item['VENDE'] + `</td>
+                        </tr>`;
+            });
+            tbody += `</tbody><tfoot>
+                <tr class="bg-blue text-light">
+                    <th colspan="3"  style="text-align:center"></th>
+                </tr>
+            </tfoot></table>`;
+            callback(thead + tbody).show();
+        }
+    });
+}
+
 /*function modalSegmento(data, data2){
     var metaGRP1__ = metaGRP2__ = metaGRP3__ = 0;
     var realGRP1__ = realGRP2__ = realGRP3__ = 0;

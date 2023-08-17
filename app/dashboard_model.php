@@ -2148,6 +2148,44 @@ class dashboard_model extends Model {
 
     }
 
+    public static function getSaleCadenaDetalle(Request $request) {
+
+        $nMes  = $request->input('mes');
+        $nAnio = $request->input('annio');
+        $nCadena = $request->input('cadena');
+
+        $sql_server = new \sql_server();
+        
+
+        $sql_exec = "SELECT
+                        T2.ARTICULO,
+                        T2.DESCRIPCION,
+                        SUM(T0.TOTAL_LINEA) AS TOTAL
+                    FROM
+                        view_master_pedidos_umk_v2 T0
+                        INNER JOIN tbl_cadena_de_farmacia T1 ON T0.CLIENTE = T1.CLIENTE
+                        INNER JOIN iweb_articulos T2 ON T0.ARTICULO = T2.ARTICULO
+                    WHERE MONTH(FECHA_PEDIDO)  = ".$nMes." AND YEAR(FECHA_PEDIDO) = ".$nAnio." AND T1.CADENA = '".$nCadena."'
+                    GROUP BY
+                        T2.ARTICULO,
+                        T2.DESCRIPCION
+                    ORDER BY
+                        TOTAL DESC";
+
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+        $json = array();
+        
+        foreach($query as $key => $value) {
+            $json[$key]['ARTICULO'] = $value['ARTICULO'];
+            $json[$key]['DESCRIPCION'] = $value['DESCRIPCION'];
+            $json[$key]['VENDE']  = number_format($value['TOTAL'],2,'.',',');
+        }
+        
+        $sql_server->close();  
+        return $json;
+
+    }
+
     public static function ventaXCategorias($mes, $anio, $cate) {
         $sql_server = new \sql_server();
         $Dta = array();

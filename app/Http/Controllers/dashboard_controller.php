@@ -97,6 +97,13 @@ class dashboard_controller extends Controller {
     }
   }
 
+  public function getSaleCadenaDetalle(Request $request) {
+    if($request->isMethod('post')) {
+      $obj = dashboard_model::getSaleCadenaDetalle($request);
+      return response()->json($obj);
+    }
+  }
+
   public function ventaXCategorias(Request $request) {
     if($request->isMethod('post')) {
       $obj = dashboard_model::ventaXCategorias($request->input('mes'),$request->input('anio'),$request->input('cate'));
