@@ -262,4 +262,5 @@ Route::get('getStatsInn', 'InnovaController@getStatsInn')->name('getStatsInn');
 Route::get('saveInnStat', 'InnovaController@saveInnStat')->name('saveInnStat');
 
 Route::post('getSaleCadena', 'dashboard_controller@getSaleCadena');
+Route::post('getSaleCadenaDetalle', 'dashboard_controller@getSaleCadenaDetalle')->name('getSaleCadenaDetalle');
 
