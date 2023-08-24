@@ -212,6 +212,7 @@ Route::get('rePrint', 'vinetaliq_controller@rePrint');
 Route::get('clean', 'vinetaliq_controller@getClear');
 
 //RUTAS PARA EL DETALLE DE ORDENES
+Route::get('/DetalleOrdenesDT', 'DetalleOrdenController@getDetalleOrdenes');  
 Route::get('/getMateriaPrima/{numOrden}','DetalleOrdenController@getMateriaPrima');
 Route::get('/getMOD/{numOrden}','DetalleOrdenController@getMOD');
 Route::get('/getQuimicos/{numOrden}','DetalleOrdenController@getQuimicos');
