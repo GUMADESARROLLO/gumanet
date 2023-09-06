@@ -2160,7 +2160,9 @@ class dashboard_model extends Model {
         $sql_exec = "SELECT
                         T2.ARTICULO,
                         T2.DESCRIPCION,
-                        SUM(T0.TOTAL_LINEA) AS TOTAL
+                        SUM ( T0.CANTIDAD_PEDIDA ) AS CANTIDAD,
+                        T2.UNIDAD_ALMACEN,
+                        SUM(T0.TOTAL_LINEA) AS VALOR
                     FROM
                         view_master_pedidos_umk_v2 T0
                         INNER JOIN tbl_cadena_de_farmacia T1 ON T0.CLIENTE = T1.CLIENTE
@@ -2168,17 +2170,20 @@ class dashboard_model extends Model {
                     WHERE MONTH(FECHA_PEDIDO)  = ".$nMes." AND YEAR(FECHA_PEDIDO) = ".$nAnio." AND T1.CADENA = '".$nCadena."'
                     GROUP BY
                         T2.ARTICULO,
-                        T2.DESCRIPCION
+                        T2.DESCRIPCION,
+                        T2.UNIDAD_ALMACEN
                     ORDER BY
-                        TOTAL DESC";
+                        VALOR DESC";
 
         $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
         $json = array();
         
         foreach($query as $key => $value) {
             $json[$key]['ARTICULO'] = $value['ARTICULO'];
-            $json[$key]['DESCRIPCION'] = $value['DESCRIPCION'];
-            $json[$key]['VENDE']  = number_format($value['TOTAL'],2,'.',',');
+            $json[$key]['DESCRIPCION'] = strtoupper($value['DESCRIPCION']);
+            $json[$key]['CANTIDAD']  = number_format($value['CANTIDAD'],2,'.',',');
+            $json[$key]['UNIDAD_ALMACEN'] = $value['UNIDAD_ALMACEN'];
+            $json[$key]['VALOR']  = number_format($value['VALOR'],2,'.',',');
         }
         
         $sql_server->close();  
