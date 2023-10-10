@@ -504,6 +504,7 @@ function getBonificados(articulo) {
 
 $("#btnSearch").click(function() {    
     var tbody = '';
+    var Total = 0 ;
     $.ajax({
         type: "POST",
         url: "transacciones",
@@ -530,7 +531,16 @@ $("#btnSearch").click(function() {
                                 <td>`+item['CANTIDAD']+`</td>
                                 <td>`+item['REFERENCIA']+`</td>
                             </tr>`;
+
+                            Total += Number(item['CANTIDAD']); 
                 });
+
+                tbody +=`<tr class="bg-blue text-light">
+                                <td class="text-light" colspan='3'> TOTAL</td>
+                                
+                                <td class="text-light">`+Total+`</td>
+                                <td></td>
+                            </tr>`;
             }
             $("#tbody1").append(tbody);
         }
