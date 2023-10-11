@@ -539,7 +539,7 @@ $("#btnSearch").click(function() {
                 });
 
                 tbody +=`<tr class="bg-blue text-light">
-                                <td class="text-light" colspan='3'> TOTAL</td>
+                                <td class="text-light" colspan='6'> TOTAL</td>
                                 
                                 <td class="text-light">`+Total+`</td>
                                 <td></td>
