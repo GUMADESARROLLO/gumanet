@@ -247,12 +247,12 @@
                       <tr>
                           <th>Fecha</th>
                           <th>Lote</th>
-                          <th>Aplicacion</th>
+                          <th>Factura</th>
                           <th>Tipo</th>
                           <th>Cantidad</th>
                           <th>Referencia</th>
-                          <th>Codigo</th>
-                          <th>Nombre</th>
+                          <th>Código</th>
+                          <th>Cliente</th>
                       </tr>
                     </thead>
                     <tbody id="tbody1">
