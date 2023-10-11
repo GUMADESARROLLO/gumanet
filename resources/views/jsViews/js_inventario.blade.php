@@ -527,9 +527,12 @@ $("#btnSearch").click(function() {
                     tbody +=`<tr>
                                 <td>`+item['FECHA']+`</td>
                                 <td>`+item['LOTE']+`</td>
+                                <td>`+item['APLICACION']+`</td>
                                 <td>`+item['DESCRTIPO']+`</td>
                                 <td>`+item['CANTIDAD']+`</td>
                                 <td>`+item['REFERENCIA']+`</td>
+                                <td>`+item['CODIGO_CLIENTE']+`</td>
+                                <td>`+item['NOMBRE']+`</td>
                             </tr>`;
 
                             Total += Number(item['CANTIDAD']); 
