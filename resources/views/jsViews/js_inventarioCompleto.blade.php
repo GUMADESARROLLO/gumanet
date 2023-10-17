@@ -280,11 +280,12 @@ $("#btnSearch").click(function() {
                             Total += numeral(item['CANTIDAD']).value(); 
                 });
 
+                
                 tbody +=`<tr class="bg-blue text-light">
                                 <td class="text-light" colspan='4'> TOTAL UNIDADES DESPLAZADAS</td>
                                 
                                 <td class="text-light text-right" >`+Total+`</td>
-                                <td class="text-right" colspan='3'> * CANTIDAD BONIFICADA</td>
+                                <td class="text-right" colspan='3'></td>
                             </tr>`;
             }
             $("#tbl_transacciones").append(tbody);
