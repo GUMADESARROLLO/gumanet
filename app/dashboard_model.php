@@ -309,13 +309,15 @@ class dashboard_model extends Model {
                                     [P. Unitario],
                                     Cantidad";*/
 
+                    $retVal = ($key['name'] === 'Farmacias') ? "" : 'AND T0.CLIENTE NOT IN (SELECT CLIENTE FROM view_cadena_de_farmacia)' ;
+
                     $sql_exec = "SELECT
                                     SUM(TOTAL_LINEA) as total
                                     FROM
                                             PRODUCCION.dbo.view_master_pedidos_umk_v2 T0
                                     WHERE
                                             T0.FECHA_PEDIDO BETWEEN '".$fechaInicio."' AND '".$fechaFin."'  AND T0.VENDEDOR  IN (".$key['line']." )
-                                            AND T0.CLIENTE NOT IN (SELECT CLIENTE FROM view_cadena_de_farmacia)
+                                            ".$retVal."
                                     GROUP BY T0.VENDEDOR";
                     
                                             

@@ -1856,11 +1856,14 @@ class inventario_model extends Model {
         $i=0;
         $json = array();
         foreach($query as $fila){
+
+
             $json[$i]["FECHA"]          = date_format($fila["FECHA"],"d/m/Y");
             $json[$i]["LOTE"]           = $fila["LOTE"];
             $json[$i]["APLICACION"]     = $fila["APLICACION"];
-            $json[$i]["DESCRTIPO"]      = $fila["DESCRTIPO"];
-            $json[$i]["CANTIDAD"]       = number_format($fila["CANTIDAD"],2);
+            $json[$i]["DESCRTIPO"]      = strtoupper($fila["DESCRTIPO"]) ;
+            $json[$i]["CANT"]           = ($fila["BONIFICADO"]=='S') ? '<span class="text-success">* '. number_format($fila["CANTIDAD"],2) .'</span>' : number_format($fila["CANTIDAD"],2) ;
+            $json[$i]["CANTIDAD"]           = number_format($fila["CANTIDAD"],2);
             $json[$i]["REFERENCIA"]     = $fila["REFERENCIA"];
             $json[$i]["CODIGO_CLIENTE"] = $fila["CODIGO_CLIENTE"];
             $json[$i]["NOMBRE"]         = $fila["NOMBRE"];

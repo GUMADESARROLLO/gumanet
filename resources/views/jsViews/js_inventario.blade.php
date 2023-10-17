@@ -529,21 +529,20 @@ $("#btnSearch").click(function() {
                                 <td>`+item['LOTE']+`</td>
                                 <td>`+item['APLICACION']+`</td>
                                 <td>`+item['DESCRTIPO']+`</td>
-                                <td>`+item['CANTIDAD']+`</td>
+                                <td class="text-right">`+item['CANT']+`</td>
                                 <td>`+item['REFERENCIA']+`</td>
                                 <td>`+item['CODIGO_CLIENTE']+`</td>
                                 <td>`+item['NOMBRE']+`</td>
                             </tr>`;
 
-                            Total += Number(item['CANTIDAD']); 
+                            Total += numeral(item['CANTIDAD']).value(); 
                 });
-
                 tbody +=`<tr class="bg-blue text-light">
-                                <td class="text-light" colspan='6'> TOTAL</td>
-                                
-                                <td class="text-light">`+Total+`</td>
-                                <td></td>
-                            </tr>`;
+                            <td class="text-light" colspan='4'> TOTAL UNIDADES DESPLAZADAS</td>
+                            
+                            <td class="text-light text-right" >`+Total+`</td>
+                            <td class="text-right" colspan='3'> * CANTIDAD BONIFICADA</td>
+                        </tr>`;
             }
             $("#tbody1").append(tbody);
         }
