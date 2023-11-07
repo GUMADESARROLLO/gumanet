@@ -2313,7 +2313,9 @@ $("#tb_cadena_farmacia").dataTable({
         "search":     "BUSCAR"
     },
     'columns': [   
-        {"title": "CLIENTE", "data": 'CLIENTE'},
+        {"title": "#", "data": 'CLIENTE', "render": function(data, type, row, meta) {
+                return  `<a id="exp_more_insta" class="exp_more" href="#!"> ▼</a>`
+            }},
         { "title": "NOMBRE",    "data": "CADENA"},   
         { "title": "VENTA EN C$",  "data": "VENDE", render: $.fn.dataTable.render.number( ',', '.', 2, 'C$ ' )},
     ],
@@ -2429,6 +2431,41 @@ function ShowSaleCadena(){
     
 }
 
+$(document).on('click', '#exp_more_insta', function(ef) {
+    var table = $('#tb_cadena_farmacia').DataTable();
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
+    var data = table.row($(this).parents('tr')).data();
+
+
+    if (row.child.isShown()) {
+        row.child.hide();
+        tr.removeClass('shown');
+        ef.target.innerHTML = '▼';
+        ef.target.style.color = '#007bff';
+    } else {
+        //VALIDA SI EN LA TABLA HAY TABLAS SECUNDARIAS ABIERTAS
+        table.rows().eq(0).each( function ( idx ) {
+            var row = table.row( idx );
+
+            if ( row.child.isShown() ) {
+                row.child.hide();
+                ef.target.innerHTML =  '▼ ';
+
+                var c_1 = $(".expan_more");
+                c_1.text( '▼ ');
+               
+            }
+        } );
+
+        format_insta(row.child, data.CLIENTE);
+        
+        tr.addClass('shown');
+        
+        ef.target.innerHTML =  '▲';
+    }
+});
+
 $(document).on('click', '#exp_more_cadena', function(ef) {
     var table = $('#tb_cadena_farmacia').DataTable();
     var tr = $(this).closest('tr');
@@ -2462,6 +2499,52 @@ $(document).on('click', '#exp_more_cadena', function(ef) {
         ef.target.innerHTML =  '▲';
     }
 });
+
+function format_insta ( callback, cadena) {
+
+var mes = $('#opcMes option:selected').val();
+var anio = $('#opcAnio option:selected').val();
+
+var thead = tbody = '';            
+    thead =`<table  width='100%'>
+                <tr class="bg-blue text-light">
+                    <th class="dt-center">DESCRIPCION</th>
+                    <th class="dt-center">CANTIDAD</th>
+                    <th class="dt-center">VENTA</th>
+                </tr>
+            <tbody>`;
+            
+$.ajax({
+    url: "getSaleDetalleInsta",
+    type: 'POST',
+    data: {                
+        mes: mes,
+        annio: anio,
+        cadena: cadena     
+    },        
+    success: function ( data ) {
+        if (data.length==0) {
+            tbody +=`<tr>
+                        <td colspan='6'><center>Sin Resultados</center></td>
+                    </tr>`;
+            callback(thead + tbody).show();
+        }
+        $.each(data, function (i, item) {
+           tbody +=`<tr >
+                        <td >` + item['DESCRIPCION'] + ' - ' +item['ARTICULO'] + `</td>                            
+                        <td class="dt-right" width="90px">` + item['CANTIDAD']+ ' ' + item['UNIDAD_ALMACEN'] + `</td>
+                        <td class="dt-right" width="90px">C$ ` + item['VALOR'] + `</td>
+                    </tr>`;
+        });
+        tbody += `</tbody><tfoot>
+            <tr class="bg-blue text-light">
+                <th colspan="3"  style="text-align:center"></th>
+            </tr>
+        </tfoot></table>`;
+        callback(thead + tbody).show();
+    }
+});
+}
 
 function format_cad ( callback, cadena) {
 

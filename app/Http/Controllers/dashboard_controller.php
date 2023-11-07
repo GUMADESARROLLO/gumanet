@@ -110,6 +110,12 @@ class dashboard_controller extends Controller {
       return response()->json($obj);
     }
   }
+  public function getSaleDetalleInsta(Request $request) {
+    if($request->isMethod('post')) {
+      $obj = dashboard_model::getSaleDetalleInsta($request);
+      return response()->json($obj);
+    }
+  }
 
   public function ventaXCategorias(Request $request) {
     if($request->isMethod('post')) {
