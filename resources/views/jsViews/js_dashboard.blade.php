@@ -2102,7 +2102,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                         
 
                         tbody = `<tr>
-                            <th scope="row" style="font-size: 1rem!important">Instituciones</th>
+                            <th scope="row" style="font-size: 1rem!important"  onclick="ShowSaleInstitucion()" >Instituciones</th>
                             <td class="text-right">
                                 <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP1__).format('0,0.00') +`</p>
                             </td>
@@ -2279,8 +2279,78 @@ function modalSegmento(data){
     $('#tbodySegmento').empty().append(tbody);
         
 }
-function ShowSaleCadena(){
+function ShowSaleInstitucion(){
+$('#mCadenaFarmacia').modal('show');
+$("#id_lbl_mdl_detalles").html('<b>INSTITUCIONALES</b>');
+var mes = $('#opcMes option:selected').val();
+var anio = $('#opcAnio option:selected').val();
+$("#tb_cadena_farmacia").dataTable({
+    "scrollX": false,
+    "ordering": false,
+    "ajax":{
+        "url": "getSaleInstitucion",
+        "type": 'POST',
+        'dataSrc': '',
+        "data": {                
+            mes: mes,
+            annio: anio        
+        }
+    },
+    
+    "destroy" : true,
+    "info":    false,
+    "lengthMenu": [[20,-1], [20,"Todo"]],
+    "language": {
+        "zeroRecords": "Cargando...",
+        "paginate": {
+            "first":      "Primera",
+            "last":       "Última ",
+            "next":       "Siguiente",
+            "previous":   "Anterior"
+        },
+        "lengthMenu": "MOSTRAR _MENU_",
+        "emptyTable": "NO HAY DATOS DISPONIBLES",
+        "search":     "BUSCAR"
+    },
+    'columns': [   
+        {"title": "CLIENTE", "data": 'CLIENTE'},
+        { "title": "NOMBRE",    "data": "CADENA"},   
+        { "title": "VENTA EN C$",  "data": "VENDE", render: $.fn.dataTable.render.number( ',', '.', 2, 'C$ ' )},
+    ],
+    "columnDefs": [
+        {"className": "dt-back-unit", "targets": []},
+        {"className": "dt-center", "targets": [ 0,1 ]},
+        {"className": "dt-right", "targets": [ 2 ]}
+        
+    ],
+    
+    "footerCallback": function ( row, data, start, end, display ) {
+        var api = this.api();
+        var Total  = 0;
+        var intVal = function ( i ) {
+            return typeof i === 'string' ?
+                i.replace(/[^0-9.]/g, '')*1 :
+                typeof i === 'number' ?
+                    i : 0;
+        };
+        Total = api.column( 2 ).data().reduce( function (a, b){
+            return intVal(a) + intVal(b);
+        }, 0 );
+       
+        $(api.column(0).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL</h6>');
+        $(api.column(2).footer()).html('<h6 class="text-right">C$ '+numeral(Total).format('0,0.00')+'</h6>');
+            
+            
+    },
+    
+});
+$("#tb_cadena_farmacia_length").hide();
+$("#tb_cadena_farmacia_filter").hide();
+$("#tb_cadena_farmacia_paginate").hide();
+}
 
+function ShowSaleCadena(){
+    $("#id_lbl_mdl_detalles").html('<b>CADENAS DE FARMACIAS</b>')
     $('#mCadenaFarmacia').modal('show');
 
     var mes = $('#opcMes option:selected').val();
