@@ -86,11 +86,11 @@ $(document).ready(function() {
 
 			}},
             {"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION"},
-			{"title": "EXISTENCIAS PROX. A VENCER <=12 Meses", 		"data": "CANTIDAD"},
-            {"title": "ROTACION PREVISTA EXISTENCIAS POR VENCER", 		"data": "CANTIDAD"},
-            {"title": "EXISTENCIAS LOTE >=7 Meses", 		"data": "CANTIDAD"},
-            {"title": "LOTE MAS PROX. A VENCER", 		"data": "CANTIDAD"},
-            {"title": "EXISTENCIA EN LORE MAS PROX. POR VENCERSE", 		"data": "CANTIDAD"},
+			{"title": "EXISTENCIAS PROX. A VENCER <=12 Meses", 		"data": "VENCE_MENOS_IGUAL_12"},
+            {"title": "ROTACION PREVISTA EXISTENCIAS POR VENCER", 		"data": "ROTACION_PREVISTA"},
+            {"title": "EXISTENCIAS LOTE >=7 Meses", 		"data": "VENCE_MAS_IGUAL_7"},
+            {"title": "LOTE MAS PROX. A VENCER", 		"data": "LOTE_MAS_PROX_VENCER"},
+            {"title": "EXISTENCIA EN LORE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
             
 		],
 		"columnDefs": [
@@ -119,14 +119,14 @@ $(document).ready(function() {
 
 function getDetalleArticulo(Articulos,Descripcion,Undiad) {
     articulo_g = Articulos;
-	$("#tArticulo").html(Descripcion+`<p class="text-muted" id="id_cod_articulo">`+Articulos+`</p>`);
+	$("#id_titulo_modal_all_items").html(Descripcion+`<p class="text-muted" id="id_cod_articulo">`+Articulos+`</p>`);
 	
 	var target = '#nav-bod';
     $('a[data-toggle=tab][href=' + target + ']').tab('show');
 
     //$("#tbody1").empty().append(`<tr><td colspan='5'><center>Aún no ha realizado ninguna busqueda</center></td></tr>`);
 	$("#mdDetalleArt").modal('show');
-    grafVentasMensuales()
+    grafVentasMensuales(Articulos)
 
 }
 
@@ -164,7 +164,7 @@ function FormatPretty(number) {
     }
     return numberString;
 }  
-function grafVentasMensuales() {
+function grafVentasMensuales(Articulos) {
 
 var temporal = "";
 $("#grafVtsMes")
@@ -182,19 +182,10 @@ $(".divSpinner")
 $("#anioAcumulado").empty();
 $("#porcentaje").empty();
 
-
-
-
-
-$.getJSON("dtGraf/10/2023", function(json) {
-
-
-
+$.getJSON("dtGraf/" +Articulos, function(json) {
         dta = [];
-        dta_avr = [];
         title = [];
         tmp_total = 0;
-        Tendencia = 1;
         Day_Max = [];
 
         var vVtsDiarias;
@@ -205,29 +196,21 @@ $.getJSON("dtGraf/10/2023", function(json) {
             tmp_total = tmp_total + parseFloat(x['data']);
 
             dta.push({
-                name  :'Dia ' + x['articulo'],
-                mAVG  : x['dtAVG'],
-                FACT  : x['FACTURAS'],
-                dtavg : x['dtavg_'],
+                name  : x['Mes'],
                 y     : x['data'], 
-                und   : (x['dtUnd'] > 0 ) ?  x['dtUnd']  : '  '
             });
 
-            goal = x['dtAVG']
             title.push(x['name']); 
             Day_Max.push(x['data']); 
         }); 
 
-        moneda = "C$ "
-        temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
-        temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';  
-        temporal += '<span style="color:black">\u25CF</span> CANT. FACT.: <b>  {point.FACT} </b><br/>';                   
+        temporal = '<span style="color:black">\u25CF</span> CANTIDAD :<b>{point.y} </b><br/>';                
         grafiacas_productos_Diarios.tooltip = {
             pointFormat : temporal
         }
         vVtsDiarias = numeral(tmp_total).format('0,0.00');
         grafiacas_productos_Diarios.xAxis.categories = title;
-        grafiacas_productos_Diarios.subtitle.text = moneda + vVtsDiarias + " Total";
+        grafiacas_productos_Diarios.subtitle.text = vVtsDiarias + " Total";
         grafiacas_productos_Diarios.series[0].data = dta;
 
 

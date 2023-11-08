@@ -46,6 +46,12 @@
 <div class="modal fade modal-fullscreen" data-backdrop="static" data-keyboard="false" id="mdDetalleArt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title font-weight-bolder text-info" id="id_titulo_modal_all_items" >-----</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
       <div class="modal-header d-block">
       <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">

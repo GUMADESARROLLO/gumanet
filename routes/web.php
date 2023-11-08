@@ -269,5 +269,5 @@ Route::post('getSaleCadenaDetalle', 'dashboard_controller@getSaleCadenaDetalle')
 // TODAS LAS RUTAS DEL REORDER POINT
 Route::get('ReporderPoint', 'ReOrderPointController@ReOrderPoint')->name('ReporderPoint');
 Route::get('getData', 'ReOrderPointController@getData')->name('getData');
-Route::get('dtGraf/{mes}/{anio}','ReOrderPointController@getDataGrafica')->name('dtGraf/{mes}/{anio}');
+Route::get('dtGraf/{articulo}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}');
 
