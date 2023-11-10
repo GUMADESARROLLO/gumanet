@@ -35,7 +35,7 @@ class ReOrderPoint extends Model
         $Sales = ReOrderSales::WHERE('ARTICULO',$Articulos)->first();
         for ($i=1; $i <= 12; $i++) { 
             $array[$i] = [
-                "Mes"                 => $nMes,
+                "Mes"                 => "Mes".$i,
                 "data" => (float) number_format(floatval($Sales->$i),2,".",""),
             ];
         }

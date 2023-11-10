@@ -119,7 +119,7 @@ $(document).ready(function() {
 
 function getDetalleArticulo(Articulos,Descripcion,Undiad) {
     articulo_g = Articulos;
-	$("#id_titulo_modal_all_items").html(Descripcion+`<p class="text-muted" id="id_cod_articulo">`+Articulos+`</p>`);
+	$("#id_titulo_modal_all_items").html(Descripcion+` | `+Articulos);
 	
 	var target = '#nav-bod';
     $('a[data-toggle=tab][href=' + target + ']').tab('show');
@@ -127,7 +127,20 @@ function getDetalleArticulo(Articulos,Descripcion,Undiad) {
     //$("#tbody1").empty().append(`<tr><td colspan='5'><center>Aún no ha realizado ninguna busqueda</center></td></tr>`);
 	$("#mdDetalleArt").modal('show');
     grafVentasMensuales(Articulos)
+    dataVinneta(0,0,'','');
 
+}
+
+function dataVinneta(f1, f2,Ruta,Cliente,Stat) {
+    $('#dtInfo,#dtEstimacion').DataTable({
+        responsive: true,
+        "info":    false,
+        "bPaginate": true,
+        
+    });
+    $("#dtInfo_length,#dtEstimacion_length").hide();
+    $("#dtInfo_filter,#dtEstimacion_filter").hide();
+    
 }
 
 function FormatPretty(number) {
@@ -167,7 +180,7 @@ function FormatPretty(number) {
 function grafVentasMensuales(Articulos) {
 
 var temporal = "";
-$("#grafVtsMes")
+$("#grafVtsDiario")
 .empty()
 .append(`<div style="height:400px; background:#ffff; padding:20px">
             <div class="d-flex align-items-center">
