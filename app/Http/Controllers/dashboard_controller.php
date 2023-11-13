@@ -133,7 +133,7 @@ class dashboard_controller extends Controller {
         $obj = $cached;
     } else {
         $obj = json_encode(dashboard_model::getRealVentasMensuales($xbolsones,$segmentos));
-        Redis::setex($Key, 600, $obj); 
+        Redis::setex($Key, 900, $obj); 
     }
     return response()->json(json_decode($obj));
   }
@@ -144,7 +144,7 @@ class dashboard_controller extends Controller {
         $obj = $cached;
     } else {
         $obj = json_encode(dashboard_model::getDataGraficas($mes, $anio, $xbolsones));
-        Redis::setex($Key, 600, $obj); 
+        Redis::setex($Key, 900, $obj); 
     }
     return response()->json(json_decode($obj));
   }
@@ -155,7 +155,7 @@ class dashboard_controller extends Controller {
         $obj = $cached;
     } else {
         $obj = json_encode(dashboard_model::getComportamiento($elemento));
-        Redis::setex($Key, 600, $obj); 
+        Redis::setex($Key, 900, $obj); 
     }
     return response()->json(json_decode($obj));
   }
