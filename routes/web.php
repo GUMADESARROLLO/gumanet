@@ -267,3 +267,9 @@ Route::post('getSaleCadenaDetalle', 'dashboard_controller@getSaleCadenaDetalle')
 Route::post('getSaleInstitucion', 'dashboard_controller@getSaleInstitucion');
 Route::post('getSaleDetalleInsta', 'dashboard_controller@getSaleDetalleInsta')->name('getSaleDetalleInsta');
 
+
+// TODAS LAS RUTAS DEL REORDER POINT
+Route::get('ReporderPoint', 'ReOrderPointController@ReOrderPoint')->name('ReporderPoint');
+Route::get('getData', 'ReOrderPointController@getData')->name('getData');
+Route::get('dtGraf/{articulo}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}');
+
