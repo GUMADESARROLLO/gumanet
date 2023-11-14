@@ -18,7 +18,6 @@ $(document).ready(function() {
         primerDia = final.getFullYear()+'-'+(final.getMonth()+1)+'-'+(final.getDate()+dia);
     }
 
-    console.log('primerDia: ' + primerDia + ' ultimoDia: ' + ultimoDia);
 
     tblKardex(primerDia, ultimoDia);
 });

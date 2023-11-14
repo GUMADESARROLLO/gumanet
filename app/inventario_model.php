@@ -803,7 +803,9 @@ class inventario_model extends Model {
 
         //BODEGA DE ARTICULO SEGUN UNIDAD DE NEGOCIO
         $i = 0;
-        $sql_bodegas = "SELECT * FROM gnet_master_bodegas WHERE ARTICULO = '".$Articulo."' AND UNIDAD = '".$Unidad."' AND BODEGA not in ('004')";
+        $sql_bodegas = "SELECT ARTICULO,BODEGA,UNIDAD,NOMBRE,SUM (CANT_DISPONIBLE) AS CANT_DISPONIBLE FROM gnet_master_bodegas WHERE ARTICULO = '".$Articulo."' AND UNIDAD = '".$Unidad."' AND BODEGA not in ('004') GROUP BY  ARTICULO,BODEGA,UNIDAD,NOMBRE";
+
+
         $rBodegas = $sql_server->fetchArray($sql_bodegas, SQLSRV_FETCH_ASSOC);
         foreach ($rBodegas as $fila) {
             $json_bodega[$i]["id"]                 = $i;

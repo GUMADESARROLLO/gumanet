@@ -43,8 +43,8 @@ class inventario_controller extends Controller
 		}
 	}
 	public function getArticuloDetalles($Articulo,$Unidad) {
-	$obj = inventario_model::getArticuloDetalles($Articulo,$Unidad);
-	return response()->json($obj);
+		$obj = inventario_model::getArticuloDetalles($Articulo,$Unidad);
+		return response()->json($obj);
 	}
     public function agregarDatosASession(){
         $request = Request();
