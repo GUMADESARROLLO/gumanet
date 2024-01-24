@@ -2071,6 +2071,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                 metaGRP2__ = x['meta'];
                                 realGRP2__ = x['real'];
                             }else if ( temp=='Farmacias' ) {
+
                                 metaGRP3__= x['meta'];
                                 realGRP3__ = x['real'];
                             }else if ( temp=='Cadena_farmacia' ) {
@@ -2082,24 +2083,22 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             totalREAL__ = totalREAL__ + parseFloat(x['real']);
 
 
-                            
-
-
                             cumplGRP1 = (parseFloat(realGRP1__)/parseFloat(metaGRP1__))*100;
                             cumplGRP2 = (parseFloat(realGRP2__)/parseFloat(metaGRP2__))*100;
 
-                            metaGRP3__ = (metaGRP3__  - metaGRP4__)
+                            //metaGRP3__ = (metaGRP3__  - metaGRP4__)
+                            
+                            
                             cumplGRP3 = (parseFloat(realGRP3__)/parseFloat(metaGRP3__))*100;
                             cumplGRP4 = (parseFloat(realGRP4__)/parseFloat(metaGRP4__))*100;
 
-                            totalMETA__ = (totalMETA__  - metaGRP4__)
+                            //totalMETA__ = (totalMETA__  - metaGRP4__) + parseFloat(metaGRP4__)
+                            //totalREAL__ = totalREAL__ + parseFloat(realGRP4__)
                             cumplTOTAL = (parseFloat(totalREAL__)/parseFloat(totalMETA__))*100;
+
+
+                            
                         });
-
-                        //modalSegmento(item['data'], item['data2']);
-
-                       
-                        
 
                         tbody = `<tr>
                             <th scope="row" style="font-size: 1rem!important"  onclick="ShowSaleInstitucion()" >Instituciones</th>

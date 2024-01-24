@@ -1843,14 +1843,20 @@ class dashboard_model extends Model {
             //$clientesMeta = clientes_x_rutas::sum('cantidad');
             $sql_count="SELECT T0.CLIENTE  FROM Softland.umk.FACTURA T0  WHERE YEAR ( T0.FECHA ) = YEAR ( GETDATE( ) ) - 1 	GROUP BY T0.CLIENTE";
             $qCount = $sql_server->fetchArray($sql_count, SQLSRV_FETCH_ASSOC);
+
+            $dtSett = date($anio.'-'.$mes.'-01');
+            $dtIni = date('Y-m-d',strtotime($dtSett));
+            $dtEnd = date('Y-m-t',strtotime($dtSett));
+            $CadenaFarmacia = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.gnet_cal_cadena_farmacia "'.$dtIni.'","'.$dtEnd.'"');
+            
             $clientesMeta = count($qCount);
 
             if (count($metas)>0) {
                 $array[0]['title'] = 'real';
-                $array[0]['data'] = $metas[0]['data'];
+                $array[0]['data'] = $metas[0]['data'] + $CadenaFarmacia[0]->Venta;
 
                 $array[1]['title'] = 'meta';
-                $array[1]['data'] = $metas[1]['data'];
+                $array[1]['data'] = $metas[1]['data'] +  $CadenaFarmacia[0]->Meta;
 
                 $array[2]['title'] = 'clientesMeta';
                 $array[2]['data'] = $clientesMeta;
