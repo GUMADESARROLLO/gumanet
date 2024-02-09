@@ -4977,7 +4977,7 @@ function tableCierreMesInnova(mes, anio, lmes){
                         }
 
                         $(api.column(0).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL: </h6>');
-                        $(api.column(1).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">C$ '+numeral(Totalb).format('0,0.00')+'</h6>');
+                        $(api.column(1).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">'+numeral(Totalb).format('0,0.00')+'</h6>');
                         $(api.column(2).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">C$ '+numeral(Totalms).format('0,0.00')+'</h6>');
                         $(api.column(3).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">C$ '+numeral(Totalmc).format('0,0.00')+'</h6>');
                     },
