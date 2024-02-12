@@ -273,3 +273,9 @@ Route::get('ReporderPoint', 'ReOrderPointController@ReOrderPoint')->name('Repord
 Route::get('getData', 'ReOrderPointController@getData')->name('getData');
 Route::get('dtGraf/{articulo}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}');
 
+
+// ROUTER DE PROYECTO 71 & 89
+Route::get('Presupuesto', 'BudgetController@ViewBudget')->name('Presupuesto');
+Route::get('dtProyect', 'BudgetController@dtProyect')->name('dtProyect');
+
+
