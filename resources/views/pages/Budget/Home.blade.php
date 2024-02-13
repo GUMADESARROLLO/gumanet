@@ -1,10 +1,9 @@
-@extends('layouts.main')
-@section('title' , $name)
-@section('name_user' , 'Administrador')
+
+@extends('layouts.Budget')
 @section('metodosjs')
-@include('jsViews.js_Budget');
+@include('jsViews.js_Budget')
 @endsection
-@section('content')  
+@section('content')
 <div class="container-fluid">	
 	<div class="card border-0 shadow-sm mt-3">			
 	    <div class="card-body col-sm-12">
@@ -37,9 +36,13 @@
                         </div>
                     </div>  
 				</div>
-                <table class="table table-striped table-bordered table-sm post_back mt-3" width="100%" id="dtProyect89">
+                <div class="flex-between-center responsive mb-3" >
+                    <table class="stripe row-border order-column" style="width:100%" id="dtProyect89">
                     
-                </table>
+                    </table>
+                
+                    </div>
+             
 				</div>	
 			</div>
 		</div>
@@ -77,10 +80,16 @@
                         </div>
                     </div>  
 				</div>
-							<table class="table table-striped table-bordered table-sm post_back" width="100%" id="dtProyect71" >
-							
-                           
-							</table>
+
+                <div class="flex-between-center responsive mb-3" >
+                    <table class="stripe row-border order-column" style="width:100%" id="dtProyect71">
+                    
+                    </table>
+                
+                    </div>
+             
+				</div>	
+						
 						</div>
 						
 					</div>

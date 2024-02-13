@@ -1,8 +1,14 @@
-<script>
-  $("#item-nav-01").after(`<li class="breadcrumb-item active">Presupuesto</li>`);
+<script type="text/javascript">
+
+$(document).ready(function() {
+    $("#item-nav-01").after(`<li class="breadcrumb-item active">Presupuesto</li>`);
     inicializaControlFecha();
     
     CalcIndicadores();
+});
+
+
+
 
 
 $("#btnCalcular").click( function() {
@@ -34,14 +40,38 @@ function CalcIndicadores(){
         tbl_header = [
             { "title": "ARTI.", "data": "ARTICULO" },
             { "title": "DESC.", "data": "DESCRIPCION" },
-            { "title": "PRESUPUESTO", "data": "PRESUPUESTO" },
+            { "title": "PRESUPUESTO", "data": "PRESUPUESTO" , render: $.fn.dataTable.render.number(',', '.', 0, '')},
             { "title": "C$ VALOR.", "data": "CS_VALOR", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-            { "title": "PREC. PROM.", "data": "TOTAL", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-            { "title": "CONTRIBUCION", "data": "CANT_LIQUIDADA", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            { "title": "PREC. PROM.", "data": "PREC_PROM", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            { "title": "CONTRIBUCION", "data": "CONTRIBUCION", render: $.fn.dataTable.render.number(',', '.', 0, '') },
         ];
 
         $.each(dataset[0]['FECHA'], function(key, val) {
-            tbl_header.push({ "title": val.mes, "data": val.mes, render: $.fn.dataTable.render.number(',', '.', 0, '')  });
+            tbl_header.push({ "title": val.mes, "data": val.mes,"render": function(data, type, row, meta) {
+
+                console.log()
+
+                table =  `<table>
+                            <thead>
+                                <tr>
+                                    <th class="bg-blue text-light">META</th>
+                                    <th class="bg-blue text-light">META VAL. C$</th>
+                                    <th class="bg-blue text-light">FACT.</th>                                    
+                                    <th class="bg-blue text-light">FACT. C$</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td> <p class="text-right">`+numeral(row.UND_MES).format('0,0.00')+`</p></td>
+                                    <td> <p class="text-right">`+numeral(row.VAL_MES).format('0,0.00')+`</p></td>
+                                    <td> <p class="text-right">`+numeral(data).format('0,0.00')+`</p></td>
+                                    <td> <p class="text-right">`+numeral(10000).format('0,0.00')+`</p></td>
+                                </tr>
+                            </tbody>
+                        </table>`;
+  
+                return  table
+            } });
             Header_Align.push(c)
             c++;
         });
@@ -65,8 +95,6 @@ function dataProyect(datos, Header,Table,Align) {
         dataTable.clear().destroy();
         
 
-
-    $(Table).empty().css("width", "100%");
         
     }
     $(Table).DataTable({
@@ -87,11 +115,16 @@ function dataProyect(datos, Header,Table,Align) {
             "search":     "BUSCAR"
         },
         'columns': Header,
-        "fixedColumns": {
-                    leftColumns: 1,
-                    rightColumns: 3
-                },
+        fixedColumns: {
+            left: 6,
+            right: 0
+        },
+        paging: false,
+        scrollCollapse: true,
+        scrollX: true,
+        scrollY: 500,
         "columnDefs": [
+            {"className": "bg-white text-black","targets": [0,1,2,3,4,5]},
             {"className": "dt-right","targets": Align},
             
         ],

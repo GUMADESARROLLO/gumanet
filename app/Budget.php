@@ -11,37 +11,35 @@ class Budget extends Model
         $startDate = $request->input('f1');
         $endDate = $request->input('f2');
 
-        $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.GetProyects8971 ?, ?', [$startDate, $endDate]);
+        $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_GetProyects8971 ?, ?', [$startDate, $endDate]);
 
         // Formatear los resultados según lo esperado por DataTables
         $datosFormateados = [];
+
         foreach ($resultados as $resultado) {
             $fila = [
                 'ARTICULO' => $resultado->ARTICULO,
-                'DESCRIPCION' => $resultado->ARTICULO,
-                'PRESUPUESTO' => 0,
-                'CS_VALOR' => 0,
-                'FECHA' => [], // Aquí debes colocar los datos de los meses
-                'TOTAL' => 0,
-                'CANT_LIQUIDADA' => 0
+                'DESCRIPCION' => $resultado->DESCRIPCION,
+                'PRESUPUESTO' => $resultado->UND_ANUAL,
+                'CS_VALOR' => $resultado->VAL_ANUAL,
+                'FECHA' => [], 
+                'PREC_PROM' => 0,
+                'CONTRIBUCION' => 0,
+                'UND_MES' => $resultado->UND_MES,
+                'VAL_MES' => $resultado->VAL_MES
             ];
 
        
 
         foreach ($resultado as $columna => $valor) {
-            if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'CANT_LIQUIDADA') {
+            if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'UND_ANUAL'  && $columna !== 'VAL_ANUAL'  && $columna !== 'UND_MES' && $columna !== 'VAL_MES') {
                 $fila[$columna] = $valor;
-            }
-        }
-         // Recorre los datos de los meses y añádelos a la fila
-         foreach ($resultado as $columna => $valor) {
-            if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'CANT_LIQUIDADA') {
                 $fila['FECHA'][] = [
                     'mes' => $columna,
                 ];
             }
         }
-
+        
 
         $datosFormateados[] = $fila;
     }
