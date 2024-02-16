@@ -38,18 +38,21 @@ function CalcIndicadores(){
         
 
         tbl_header = [
-            { "title": "ARTI.", "data": "ARTICULO" },
-            { "title": "DESC.", "data": "DESCRIPCION" },
+            { "title": "ARTICULO", "data": "ARTICULO" },
+            { "title": "DESCRIPCION.", "data": "DESCRIPCION" },
             { "title": "PRESUPUESTO", "data": "PRESUPUESTO" , render: $.fn.dataTable.render.number(',', '.', 0, '')},
             { "title": "C$ VALOR.", "data": "CS_VALOR", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-            { "title": "PREC. PROM.", "data": "PREC_PROM", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            { "title": "PREC. PROM.", "data": "PREC_PROM", render: $.fn.dataTable.render.number(',', '.', 4, '') },
             { "title": "CONTRIBUCION", "data": "CONTRIBUCION", render: $.fn.dataTable.render.number(',', '.', 0, '') },
         ];
 
         $.each(dataset[0]['FECHA'], function(key, val) {
-            tbl_header.push({ "title": val.mes, "data": val.mes,"render": function(data, type, row, meta) {
+            tbl_header.push({ "title": val.mes, "data": val,"render": function(data, type, row, meta) {
 
-                console.log()
+                var month_UND = val.mes + '_VAL'
+                var month_VAL = val.mes + '_UND'
+
+                var Cumpli = (( row[month_VAL] / row.VAL_MES ) * 100) 
 
                 table =  `<table>
                             <thead>
@@ -58,19 +61,20 @@ function CalcIndicadores(){
                                     <th class="bg-blue text-light">META VAL. C$</th>
                                     <th class="bg-blue text-light">FACT.</th>                                    
                                     <th class="bg-blue text-light">FACT. C$</th>
-                                </tr>
+                                    <th class="bg-blue text-light">%</th>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td> <p class="text-right">`+numeral(row.UND_MES).format('0,0.00')+`</p></td>
                                     <td> <p class="text-right">`+numeral(row.VAL_MES).format('0,0.00')+`</p></td>
-                                    <td> <p class="text-right">`+numeral(data).format('0,0.00')+`</p></td>
-                                    <td> <p class="text-right">`+numeral(10000).format('0,0.00')+`</p></td>
+                                    <td> <p class="text-right">`+numeral(row[month_UND]).format('0,0.00')+`</p></td>
+                                    <td> <p class="text-right">`+numeral(row[month_VAL]).format('0,0.00')+`</p></td>
+                                    <td> <p class="text-right">`+numeral(Cumpli).format('0,0.00')+`</p></td>
                                 </tr>
                             </tbody>
                         </table>`;
   
-                return  table
+                return  table;
             } });
             Header_Align.push(c)
             c++;
@@ -93,6 +97,8 @@ function dataProyect(datos, Header,Table,Align) {
         var dataTable = $(Table).DataTable();
 
         dataTable.clear().destroy();
+
+        $(Table).empty();
         
 
         
@@ -124,7 +130,7 @@ function dataProyect(datos, Header,Table,Align) {
         scrollX: true,
         scrollY: 500,
         "columnDefs": [
-            {"className": "bg-white text-black","targets": [0,1,2,3,4,5]},
+            {"className": "bg-white text-black","targets": [0,1,2,3,4,5,]},
             {"className": "dt-right","targets": Align},
             
         ],
