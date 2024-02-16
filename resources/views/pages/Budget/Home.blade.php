@@ -2,6 +2,7 @@
 @extends('layouts.Budget')
 @section('metodosjs')
 @include('jsViews.js_Budget')
+@include('jsViews.js_Budget_char')
 @endsection
 @section('content')
 <div class="container-fluid">	
@@ -97,6 +98,24 @@
 			</div>
 		</div>		
 	</div>
+</div>
+
+<div class="modal fade modal-fullscreen" id="mdl_char_product" tabindex="-1" role="dialog" aria-labelledby="titleModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bolder text-info" id="id_titulo_modal_all_items" ></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="bodyModal">            
+                <div class="graf col-sm-12 mt-3">
+                    <div class="container-vms" id="grafSkuAnual" style="width: 100%; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

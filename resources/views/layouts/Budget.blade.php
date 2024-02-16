@@ -104,6 +104,12 @@
 <script src="{{ url('js/ext/feather.min.js') }}"></script>
 <script src="{{ url('js/ext/daterangepicker.js') }}"></script>
 <script src="{{ url('js/js_general.js') }}"></script>
+<script src="{{ url('js/highcharts.js') }}"></script>
+<script src="{{ url('js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url('js/bootstrap.bundle.js') }}"></script>
+<script src="{{ url('js/bootstrap.min.js') }}"></script>
+<script src="{{ url('js/bootstrap-select.js') }}"></script>
+<script src="{{ url('js/bootstrap.js') }}"></script>
 
 <script src="{{ url('js/jquery.cookie.js') }}"></script>
 <script src="{{ url('js/Numeral.js') }}"></script>

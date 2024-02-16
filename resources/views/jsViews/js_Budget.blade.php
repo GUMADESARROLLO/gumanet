@@ -39,7 +39,13 @@ function CalcIndicadores(){
 
         tbl_header = [
             { "title": "ARTICULO", "data": "ARTICULO" },
-            { "title": "DESCRIPCION.", "data": "DESCRIPCION" },
+            {"title": "DESCRIPCION","data": "DESCRIPCION", "render": function(data, type, row, meta) { 
+
+         
+
+            return`<a href="#!" onclick="OpenModal(`+ "'" +row.ARTICULO + "'" +` )" >`+ row.DESCRIPCION +`</a>`
+
+            }},
             { "title": "PRESUPUESTO", "data": "PRESUPUESTO" , render: $.fn.dataTable.render.number(',', '.', 0, '')},
             { "title": "C$ VALOR.", "data": "CS_VALOR", render: $.fn.dataTable.render.number(',', '.', 0, '') },
             { "title": "PREC. PROM.", "data": "PREC_PROM", render: $.fn.dataTable.render.number(',', '.', 4, '') },
@@ -49,8 +55,8 @@ function CalcIndicadores(){
         $.each(dataset[0]['FECHA'], function(key, val) {
             tbl_header.push({ "title": val.mes, "data": val,"render": function(data, type, row, meta) {
 
-                var month_UND = val.mes + '_VAL'
-                var month_VAL = val.mes + '_UND'
+                var month_UND = val.mes + '_UND'
+                var month_VAL = val.mes + '_VAL'
 
                 var Cumpli = (( row[month_VAL] / row.VAL_MES ) * 100) 
 
@@ -81,17 +87,20 @@ function CalcIndicadores(){
         });
 
         dataProyect(dataset, tbl_header,'#dtProyect89',Header_Align);
-        dataProyect(dataset, tbl_header,'#dtProyect71',Header_Align);
+        //dataProyect(dataset, tbl_header,'#dtProyect71',Header_Align);
     
     
     })
 }
 
 
+function OpenModal(ARTICULO) {
+    $("#mdl_char_product").modal();
+    bluid_char(ARTICULO);
+}
 
 
 function dataProyect(datos, Header,Table,Align) {
-   
     if ( $.fn.DataTable.isDataTable(Table) ) {
 
         var dataTable = $(Table).DataTable();

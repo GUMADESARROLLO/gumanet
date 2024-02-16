@@ -37,8 +37,8 @@ class Budget extends Model
                 'VAL_MES' => $resultado->VAL_MES
             ];
 
-       
-            $columnas_agregadas = [];
+    
+        $columnas_agregadas = [];
         foreach ($resultado as $columna => $valor) {
             if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'UND_ANUAL'  && $columna !== 'VAL_ANUAL'  && $columna !== 'UND_MES' && $columna !== 'VAL_MES' && $columna !== 'PREC_PROM' && $columna !== 'CONTRIBUCION' ) {
                 
@@ -65,8 +65,44 @@ class Budget extends Model
 
         $datosFormateados[] = $fila;
     }
-
-
         return $datosFormateados;
     }
+
+    public static function dtArticulo($request) {        
+        
+        $startDate  = $request->input('f1');
+        $endDate    = $request->input('f2');
+        $ARTICULO   = $request->input('ARTICULO');
+
+        $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_articulos ?, ?, ?', [$startDate, $endDate,$ARTICULO]);
+
+        foreach ($resultados as $resultado) {
+            $fila = [
+                'ARTICULO' => $resultado->ARTICULO,
+                'FECHA' => [], 
+                'UND_MES' => $resultado->UND_MES,
+            ];
+
+    
+        $columnas_agregadas = [];
+        foreach ($resultado as $columna => $valor) {
+            if ($columna !== 'ARTICULO' && $columna !== 'UND_MES' ) {
+                
+                $fila[$columna] = $valor;
+                $fila['FECHA'][] = [
+                    'mes' => $columna,
+                ];
+              
+            }
+        }
+        
+
+        $datosFormateados[] = $fila;
+    }
+        return $datosFormateados;
+    }
+
+
+
+    
 }
