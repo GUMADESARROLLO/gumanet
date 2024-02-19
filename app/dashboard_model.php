@@ -309,13 +309,15 @@ class dashboard_model extends Model {
                                     [P. Unitario],
                                     Cantidad";*/
 
+                    $retVal = ($key['name'] === 'Farmacias') ? "" : 'AND T0.CLIENTE NOT IN (SELECT CLIENTE FROM view_cadena_de_farmacia)' ;
+
                     $sql_exec = "SELECT
                                     SUM(TOTAL_LINEA) as total
                                     FROM
                                             PRODUCCION.dbo.view_master_pedidos_umk_v2 T0
                                     WHERE
                                             T0.FECHA_PEDIDO BETWEEN '".$fechaInicio."' AND '".$fechaFin."'  AND T0.VENDEDOR  IN (".$key['line']." )
-                                            AND T0.CLIENTE NOT IN (SELECT CLIENTE FROM view_cadena_de_farmacia)
+                                            ".$retVal."
                                     GROUP BY T0.VENDEDOR";
                     
                                             
@@ -1841,14 +1843,20 @@ class dashboard_model extends Model {
             //$clientesMeta = clientes_x_rutas::sum('cantidad');
             $sql_count="SELECT T0.CLIENTE  FROM Softland.umk.FACTURA T0  WHERE YEAR ( T0.FECHA ) = YEAR ( GETDATE( ) ) - 1 	GROUP BY T0.CLIENTE";
             $qCount = $sql_server->fetchArray($sql_count, SQLSRV_FETCH_ASSOC);
+
+            $dtSett = date($anio.'-'.$mes.'-01');
+            $dtIni = date('Y-m-d',strtotime($dtSett));
+            $dtEnd = date('Y-m-t',strtotime($dtSett));
+            $CadenaFarmacia = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.gnet_cal_cadena_farmacia "'.$dtIni.'","'.$dtEnd.'"');
+            
             $clientesMeta = count($qCount);
 
             if (count($metas)>0) {
                 $array[0]['title'] = 'real';
-                $array[0]['data'] = $metas[0]['data'];
+                $array[0]['data'] = $metas[0]['data'] + $CadenaFarmacia[0]->Venta;
 
                 $array[1]['title'] = 'meta';
-                $array[1]['data'] = $metas[1]['data'];
+                $array[1]['data'] = $metas[1]['data'] +  $CadenaFarmacia[0]->Meta;
 
                 $array[2]['title'] = 'clientesMeta';
                 $array[2]['data'] = $clientesMeta;
@@ -2114,6 +2122,36 @@ class dashboard_model extends Model {
         return $json;
         $sql_server->close();
     }
+
+    public static function getSaleInstitucion(Request $request) {
+        $nMes  = $request->input('mes');
+        $nAnio = $request->input('annio'); 
+        $sql_server = new \sql_server();
+        $sql_exec = "SELECT
+                        T0.CLIENTE,
+                        T0.NOMBRE,
+                        SUM ( T0.TOTAL_LINEA ) AS TOTAL
+                    FROM
+                        view_master_pedidos_umk_v2 T0
+                    WHERE MONTH(T0.FECHA_PEDIDO)  = ".$nMes." AND YEAR(T0.FECHA_PEDIDO) = ".$nAnio." AND T0.VENDEDOR IN ( 'F02' ) 
+                    GROUP BY
+                        T0.CLIENTE,T0.NOMBRE
+                    ORDER BY
+                        TOTAL DESC";
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+        $json = array();
+        
+        foreach($query as $key => $value) {
+            $json[$key]['NUMBER'] = $key + 1;
+            $json[$key]['CLIENTE'] = $value['CLIENTE'];
+            $json[$key]['CADENA'] = $value['NOMBRE'];
+            $json[$key]['VENDE']  = $value['TOTAL'];
+        }
+        
+        $sql_server->close();           
+        return $json;
+    }
+    
     public static function getSaleCadena(Request $request) {
 
         $nMes  = $request->input('mes');
@@ -2190,6 +2228,49 @@ class dashboard_model extends Model {
         return $json;
 
     }
+
+    public static function getSaleDetalleInsta(Request $request) {
+
+        $nMes  = $request->input('mes');
+        $nAnio = $request->input('annio');
+        $nCadena = $request->input('cadena');
+
+        $sql_server = new \sql_server();
+        
+
+        $sql_exec = "SELECT
+                        T2.ARTICULO,
+                        T2.DESCRIPCION,
+                        SUM ( T0.CANTIDAD_PEDIDA ) AS CANTIDAD,
+                        T2.UNIDAD_ALMACEN,
+                        SUM(T0.TOTAL_LINEA) AS VALOR
+                    FROM
+                        view_master_pedidos_umk_v2 T0
+                        INNER JOIN iweb_articulos T2 ON T0.ARTICULO = T2.ARTICULO
+                    WHERE MONTH(FECHA_PEDIDO)  = ".$nMes." AND YEAR(FECHA_PEDIDO) = ".$nAnio." AND T0.CLIENTE = '".$nCadena."'
+                    GROUP BY
+                        T2.ARTICULO,
+                        T2.DESCRIPCION,
+                        T2.UNIDAD_ALMACEN
+                    ORDER BY
+                        VALOR DESC";
+
+        $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
+        $json = array();
+        
+        foreach($query as $key => $value) {
+            $json[$key]['ARTICULO'] = $value['ARTICULO'];
+            $json[$key]['DESCRIPCION'] = strtoupper($value['DESCRIPCION']);
+            $json[$key]['CANTIDAD']  = number_format($value['CANTIDAD'],2,'.',',');
+            $json[$key]['UNIDAD_ALMACEN'] = $value['UNIDAD_ALMACEN'];
+            $json[$key]['VALOR']  = number_format($value['VALOR'],2,'.',',');
+        }
+        
+        $sql_server->close();  
+        return $json;
+
+    }
+
 
     public static function ventaXCategorias($mes, $anio, $cate) {
         $sql_server = new \sql_server();

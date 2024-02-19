@@ -67,7 +67,7 @@ class InnovaEstadisticas extends Model
         $data = array(); 
         $key = 0;
 
-        $Targets = ["V00", "V15"];
+        $Targets = ["V00", "V15",'ND'];
 
         foreach ($Targets as $item) {
 

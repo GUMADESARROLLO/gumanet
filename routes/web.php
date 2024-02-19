@@ -212,6 +212,7 @@ Route::get('rePrint', 'vinetaliq_controller@rePrint');
 Route::get('clean', 'vinetaliq_controller@getClear');
 
 //RUTAS PARA EL DETALLE DE ORDENES
+Route::get('/DetalleOrdenesDT', 'DetalleOrdenController@getDetalleOrdenes');  
 Route::get('/getMateriaPrima/{numOrden}','DetalleOrdenController@getMateriaPrima');
 Route::get('/getMOD/{numOrden}','DetalleOrdenController@getMOD');
 Route::get('/getQuimicos/{numOrden}','DetalleOrdenController@getQuimicos');
@@ -263,4 +264,19 @@ Route::get('saveInnStat', 'InnovaController@saveInnStat')->name('saveInnStat');
 
 Route::post('getSaleCadena', 'dashboard_controller@getSaleCadena');
 Route::post('getSaleCadenaDetalle', 'dashboard_controller@getSaleCadenaDetalle')->name('getSaleCadenaDetalle');
+Route::post('getSaleInstitucion', 'dashboard_controller@getSaleInstitucion');
+Route::post('getSaleDetalleInsta', 'dashboard_controller@getSaleDetalleInsta')->name('getSaleDetalleInsta');
+
+
+// TODAS LAS RUTAS DEL REORDER POINT
+Route::get('ReporderPoint', 'ReOrderPointController@ReOrderPoint')->name('ReporderPoint');
+Route::get('getData', 'ReOrderPointController@getData')->name('getData');
+Route::get('dtGraf/{articulo}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}');
+
+
+// ROUTER DE PROYECTO 71 & 89
+Route::get('Presupuesto', 'BudgetController@ViewBudget')->name('Presupuesto');
+Route::get('dtProyect', 'BudgetController@dtProyect')->name('dtProyect');
+Route::get('dtArticulo', 'BudgetController@dtArticulo')->name('dtArticulo');
+
 

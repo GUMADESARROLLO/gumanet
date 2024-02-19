@@ -1076,9 +1076,7 @@ MODAL
 	    <div class="modal-content">
 		    <div class="modal-header bg-blue text-light" >
                 <div class="row col-md-12">
-                    <div class="col-md-12 text-center">
-                        <b>CADENAS DE FARMACIAS</b>
-                    </div>
+                   <div class="col-md-12 text-center" id="id_lbl_mdl_detalles"></div>
                     
                 </div>
                
@@ -1088,7 +1086,7 @@ MODAL
                     <thead>
                         <tr>
                             <th scope="col" class="text-center">#</th>
-                            <th scope="col" class="text-center">CADENA</th>
+                            <th scope="col" class="text-center">CADENAS</th>
                             <th scope="col" class="text-center">VENTA EN C$</th>
                         </tr>
                     </thead>

@@ -15,6 +15,8 @@ use App\Company;
 use App\InnovaKardex;
 use App\InnovaModel;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class inventario_controller extends Controller
 {
@@ -41,8 +43,8 @@ class inventario_controller extends Controller
 		}
 	}
 	public function getArticuloDetalles($Articulo,$Unidad) {
-	$obj = inventario_model::getArticuloDetalles($Articulo,$Unidad);
-	return response()->json($obj);
+		$obj = inventario_model::getArticuloDetalles($Articulo,$Unidad);
+		return response()->json($obj);
 	}
     public function agregarDatosASession(){
         $request = Request();
@@ -86,8 +88,18 @@ class inventario_controller extends Controller
     }
 
 	public function getArticulos() {
-		$obj = inventario_model::getArticulos();
-		return response()->json($obj);
+		// $obj = inventario_model::getArticulos();
+		// return response()->json($obj);
+
+		$Key = 'gnet_Inventario_getArticulos';
+		$cached = Redis::get($Key);
+		if ($cached) {
+			$obj = $cached;
+		} else {
+			$obj = json_encode(inventario_model::getArticulos());
+			Redis::setex($Key, 900, $obj); 
+		}
+		return response()->json(json_decode($obj));
 	}
 
 	public function descargarInventarioCompleto() {
