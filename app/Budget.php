@@ -6,27 +6,37 @@ use Illuminate\Support\Facades\DB;
 
 class Budget extends Model
 {
+
+
     public static function dtProyect($request) {        
         
         $startDate  = $request->input('f1');
         $endDate    = $request->input('f2');
 
-      
-      
-        // ACTUALIZA PRIMERO LOS CAMPOS DE PRECIO PROMEDIO Y MARGEN DE CONTRIBUCION TOMANDO EN CUENTA EL RANGO SOLICITADO
-        DB::connection("sqlsrv")->select("EXEC PRODUCCION.dbo.gnet_presupuesto_update '$startDate', '$endDate'");
-
-        //CONTRUYE LA METRICA DE NUMERO DE MES A
-        $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_calc ?, ?', [$startDate, $endDate]);
-
-        
-
         // Formatear los resultados según lo esperado por DataTables
         $datosFormateados = [];
+        $Prefijo = "";
+
+
+        $p  = $request->input('pr');
+
+        if ($p === "1") {
+            DB::connection("sqlsrv")->select("EXEC PRODUCCION.dbo.gnet_presupuesto_update '$startDate', '$endDate'");
+            $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_calc ?, ?', [$startDate, $endDate]);
+    
+        } elseif ($p === "2") {
+            DB::connection("sqlsrv")->select("EXEC PRODUCCION.dbo.gnet_presupuesto_update_71 '$startDate', '$endDate'");
+            $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_calc_71 ?, ?', [$startDate, $endDate]);
+            $Prefijo = '_71';
+        }
+
 
         foreach ($resultados as $resultado) {
+
+
+
             $fila = [
-                'DETALLE'  => '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>',
+                'DETALLE'  => '<a id="exp_more'.$Prefijo.'" class="exp_more'.$Prefijo.'" href="#!"><i class="material-icons expan_more">expand_more</i></a>',
                 'ARTICULO' => $resultado->ARTICULO,
                 'DESCRIPCION' => strtoupper($resultado->DESCRIPCION),
                 'PRESUPUESTO' => $resultado->UND_ANUAL,
@@ -74,8 +84,20 @@ class Budget extends Model
         $startDate  = $request->input('f1');
         $endDate    = $request->input('f2');
         $ARTICULO   = $request->input('ARTICULO');
+        $Pro        = $request->input('Pro');
 
-        $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_articulos ?, ?, ?', [$startDate, $endDate,$ARTICULO]);
+        $datosFormateados = [];
+
+     
+
+        if ($Pro === "1") {
+            $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_articulos ?, ?, ?', [$startDate, $endDate,$ARTICULO]);
+        } else {
+            $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_articulos_71 ?, ?, ?', [$startDate, $endDate,$ARTICULO]);
+        }
+
+
+
 
         foreach ($resultados as $resultado) {
             $fila = [                
@@ -87,8 +109,7 @@ class Budget extends Model
     
         $columnas_agregadas = [];
         foreach ($resultado as $columna => $valor) {
-            if ($columna !== 'ARTICULO' && $columna !== 'UND_MES' ) {
-                
+            if ($columna !== 'ARTICULO' && $columna !== 'UND_MES' ) {                
                 $fila[$columna] = $valor;
                 $fila['FECHA'][] = [
                     'mes' => $columna,

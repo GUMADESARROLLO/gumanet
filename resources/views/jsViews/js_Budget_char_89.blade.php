@@ -68,7 +68,21 @@ SkusAnual = {
         }
     };
 
-function bluid_char(ARTICULO) {
+function isValue(value, def, is_return) {
+    if ( $.type(value) == 'null'
+        || $.type(value) == 'undefined'
+        || $.trim(value) == '(en blanco)'
+        || $.trim(value) == ''
+        || ($.type(value) == 'number' && !$.isNumeric(value))
+        || ($.type(value) == 'array' && value.length == 0)
+        || ($.type(value) == 'object' && $.isEmptyObject(value)) ) {
+        return ($.type(def) != 'undefined') ? def : false;
+    } else {
+        return ($.type(is_return) == 'boolean' && is_return === true ? value : true);
+    }
+}
+
+function bluid_char(ARTICULO,Pro) {
     
     var temporal = "";
 
@@ -80,14 +94,18 @@ function bluid_char(ARTICULO) {
             </div>`);
 
 
-    $("#grafSkuAnual").empty();
-    
-    f1 = $("#f1").val();
-    f2 = $("#f2").val();
+    if (Pro === 1) {
+        f1 = $("#f1").val();
+        f2 = $("#f2").val();
+    } else {
+        f1 = $("#f1_p71").val();
+        f2 = $("#f2_p71").val();
+    }
+   
 
     SkusAnual.series = [];
     SkusAnual.xAxis.categories = [];
-    $.getJSON("dtArticulo?f1="+f1+"&f2="+f2+"&ARTICULO=" + ARTICULO, function(json) {
+    $.getJSON("dtArticulo?f1="+f1+"&f2="+f2+"&ARTICULO=" + ARTICULO+"&Pro=" + Pro, function(json) {
         var SeriesVenta;
         var SeriesMetas;
         var sumTotales = [];
@@ -105,8 +123,8 @@ function bluid_char(ARTICULO) {
          
             temporal = '<span style="color:black"><b>{point.y:,.0f} Items </b></span>';
 
-            VENTAS.push(parseFloat(json[0][item.mes]));
-            METAS.push(parseFloat(json[0].UND_MES));
+            VENTAS.push(parseFloat( isValue(json[0][item.mes],0,true) ));
+            METAS.push(parseFloat( isValue(json[0].UND_MES,0,true) ));
 
             SeriesVenta = {};
             SeriesVenta.data = VENTAS;
@@ -114,11 +132,13 @@ function bluid_char(ARTICULO) {
             SeriesVenta.color = colors_[1];
             SkusAnual.series.push(SeriesVenta);
 
-            SeriesVenta = {};
-            SeriesVenta.data = METAS;
-            SeriesVenta.name = 'METAS';
-            SeriesVenta.color = colors_[2];
-            SkusAnual.series.push(SeriesVenta);
+            if (Pro != 2) {
+                SeriesVenta = {};
+                SeriesVenta.data = METAS;
+                SeriesVenta.name = 'METAS';
+                SeriesVenta.color = colors_[2];
+                SkusAnual.series.push(SeriesVenta);
+            }
             
             SkusAnual.xAxis.categories.push(item.mes);
 

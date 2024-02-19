@@ -142,7 +142,7 @@ function CalcIndicadores_89(){
             { "title": "DETALLES",      "data": "DETALLE" },   
             { "title": "ARTICULO",      "data": "ARTICULO" },
             {"title": "DESCRIPCION",    "data": "DESCRIPCION", "render": function(data, type, row, meta) { 
-                return`<a href="#!" onclick="OpenModal(`+ "'" +row.ARTICULO + "'" +` )" >`+ row.DESCRIPCION +`</a>`
+                return`<a href="#!" onclick="OpenModal_Pro89(`+ "'" +row.ARTICULO + "'" +` )" >`+ row.DESCRIPCION +`</a>`
             }},
             { "title": "PRESUPUESTO",   "data": "PRESUPUESTO" , render: $.fn.dataTable.render.number(',', '.', 0, '')},
             { "title": "C$ VALOR.",     "data": "CS_VALOR", render: $.fn.dataTable.render.number(',', '.', 0, '') },
@@ -194,9 +194,9 @@ function CalcIndicadores_89(){
 }
 
 
-function OpenModal(ARTICULO) {
+function OpenModal_Pro89(ARTICULO) {
     $("#mdl_char_product").modal();
-    bluid_char(ARTICULO);
+    bluid_char(ARTICULO,1);
 }
 
 

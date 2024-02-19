@@ -22,11 +22,13 @@ class BudgetController extends Controller {
         
     }
     public function dtProyect(Request $request) {
-      $obj = Budget::dtProyect($request);
-      return response()->json($obj);
+
+        $obj = Budget::dtProyect($request);
+        return response()->json($obj);
+      
+      
     }
     public function dtArticulo(Request $request) {
-      
       $obj = Budget::dtArticulo($request);
       return response()->json($obj);
     }

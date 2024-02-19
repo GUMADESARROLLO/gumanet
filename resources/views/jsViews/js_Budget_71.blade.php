@@ -1,10 +1,96 @@
 <script type="text/javascript">
+    $('#txt_Search71').on( 'keyup', function () {
+        var table = $('#dtProyect71').DataTable();
+        table.search(this.value).draw();
+    });
+
+    $(document).on('click', '#exp_more_71', function(ef) {
+        var table = $('#dtProyect71').DataTable();
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+        var data = table.row($(this).parents('tr')).data();
+
+        if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass('shown');
+            ef.target.innerHTML = "expand_more";
+            ef.target.style.background = '#e2e2e2';
+            ef.target.style.color = '#007bff';
+        } else {
+            //VALIDA SI EN LA TABLA HAY TABLAS SECUNDARIAS ABIERTAS
+            table.rows().eq(0).each( function ( idx ) {
+                var row = table.row( idx );
+
+                if ( row.child.isShown() ) {
+                    row.child.hide();
+                    ef.target.innerHTML = "expand_more";
+
+                    var c_1 = $(".expan_more");
+                    c_1.text('expand_more');
+                    c_1.css({
+                        background: '#e2e2e2',
+                        color: '#007bff',
+                    });
+                }
+            } );
+
+            Draw_Table_71(row.child,data);
+            tr.addClass('shown');
+            
+            ef.target.innerHTML = "expand_less";
+            ef.target.style.background = '#ff5252';
+            ef.target.style.color = '#e2e2e2';
+        }
+    });
+
+    function Draw_Table_71 ( callback, dta ) {    
+        var table = thead = tBody  = '';
+        $.each(dta.FECHA, function (i, item) {
+            
+            var month_UND = item.mes + '_UND'
+            var month_VAL = item.mes + '_VAL'
+
+            thead += `<th class="center">`+item.mes+`</th>`;
+
+            tBody +=  `<td><table class="table table-striped table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="bg-blue text-light">FACT.</th>                                    
+                                    <th class="bg-blue text-light">FACT. C$</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td> <p class="text-right">`+numeral(dta[month_UND]).format('0,0.00')+`</p></td>
+                                    <td> <p class="text-right">`+numeral(dta[month_VAL]).format('0,0.00')+`</p></td>
+                                </tr>
+                            </tbody>
+                        </table></td>`;
 
 
-$("#btnTable71").click( function() {
-    DrawTable71();
-   
-});
+
+        });
+
+        table = `<table class="table table-striped table-bordered table-sm">
+                        <thead class="text-center bg-secondary text-black">
+                            <tr>`+thead+`</tr>
+                        </thead>
+                        <tbody>
+                            <tr>`+tBody+`</tr>
+                        </tbody>
+                        </table>`;
+
+
+
+        
+
+    callback(table).show();
+        
+    }
+
+    $("#btnTable71").click( function() {
+        DrawTable71();
+    
+    });
 
     function DrawTable71(){
 
@@ -38,55 +124,23 @@ $("#btnTable71").click( function() {
                 { "title": "DETALLES",      "data": "DETALLE" },   
                 { "title": "ARTICULO",      "data": "ARTICULO" },
                 {"title": "DESCRIPCION",    "data": "DESCRIPCION", "render": function(data, type, row, meta) { 
-                    return`<a href="#!" onclick="OpenModal(`+ "'" +row.ARTICULO + "'" +` )" >`+ row.DESCRIPCION +`</a>`
+                    return`<a href="#!" onclick="OpenModal_Pro71(`+ "'" +row.ARTICULO + "'" +` )" >`+ row.DESCRIPCION +`</a>`
                 }},
-                { "title": "PRESUPUESTO",   "data": "PRESUPUESTO" , render: $.fn.dataTable.render.number(',', '.', 0, '')},
-                { "title": "C$ VALOR.",     "data": "CS_VALOR", render: $.fn.dataTable.render.number(',', '.', 0, '') },
                 { "title": "PREC. PROM.",   "data": "PREC_PROM", render: $.fn.dataTable.render.number(',', '.', 4, '') },
                 { "title": "CONTRIBUCION",  "data": "CONTRIBUCION", render: $.fn.dataTable.render.number(',', '.', 0, '') },
             ];
 
-            // $.each(dataset[0]['FECHA'], function(key, val) {
-            //     tbl_header.push({ "title": val.mes, "data": val,"render": function(data, type, row, meta) {
-
-            //         var month_UND = val.mes + '_UND'
-            //         var month_VAL = val.mes + '_VAL'
-
-            //         var Cumpli = (( row[month_VAL] / row.VAL_MES ) * 100) 
-
-            //         table =  `<table>
-            //                     <thead>
-            //                         <tr>
-            //                             <th class="bg-blue text-light">META</th>
-            //                             <th class="bg-blue text-light">META VAL. C$</th>
-            //                             <th class="bg-blue text-light">FACT.</th>                                    
-            //                             <th class="bg-blue text-light">FACT. C$</th>
-            //                             <th class="bg-blue text-light">%</th>
-            //                     </thead>
-            //                     <tbody>
-            //                         <tr>
-            //                             <td> <p class="text-right">`+numeral(row.UND_MES).format('0,0.00')+`</p></td>
-            //                             <td> <p class="text-right">`+numeral(row.VAL_MES).format('0,0.00')+`</p></td>
-            //                             <td> <p class="text-right">`+numeral(row[month_UND]).format('0,0.00')+`</p></td>
-            //                             <td> <p class="text-right">`+numeral(row[month_VAL]).format('0,0.00')+`</p></td>
-            //                             <td> <p class="text-right">`+numeral(Cumpli).format('0,0.00')+`</p></td>
-            //                         </tr>
-            //                     </tbody>
-            //                 </table>`;
-
-            //         return  table;
-            //     } });
-            //     Header_Align.push(c)
-            //     c++;
-            // });
-
 
             
 
-            TblInit(dataset, tbl_header,'#dtProyect71',[3,4,5,6]);
+            TblInit(dataset, tbl_header,'#dtProyect71',[3,4]);
 
 
         })
+    }
+    function OpenModal_Pro71(ARTICULO) {
+        $("#mdl_char_product").modal();
+        bluid_char(ARTICULO,2);
     }
 
     function TblInit(datos, Header,Table,Align) {

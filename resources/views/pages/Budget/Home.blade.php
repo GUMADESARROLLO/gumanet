@@ -1,9 +1,10 @@
 
 @extends('layouts.Budget')
 @section('metodosjs')
+@include('jsViews.js_Budget_char_89')
 @include('jsViews.js_Budget_89')
 @include('jsViews.js_Budget_71')
-@include('jsViews.js_Budget_char_89')
+
 @endsection
 @section('content')
 <div class="container-fluid">	
@@ -110,6 +111,8 @@
                     </table>
                 
                     </div>
+
+                    
              
 				</div>	
 						
