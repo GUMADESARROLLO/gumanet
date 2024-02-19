@@ -26,8 +26,9 @@ class Budget extends Model
 
         foreach ($resultados as $resultado) {
             $fila = [
+                'DETALLE'  => '<a id="exp_more" class="exp_more" href="#!"><i class="material-icons expan_more">expand_more</i></a>',
                 'ARTICULO' => $resultado->ARTICULO,
-                'DESCRIPCION' => $resultado->DESCRIPCION,
+                'DESCRIPCION' => strtoupper($resultado->DESCRIPCION),
                 'PRESUPUESTO' => $resultado->UND_ANUAL,
                 'CS_VALOR' => $resultado->VAL_ANUAL,
                 'FECHA' => [], 
@@ -77,7 +78,7 @@ class Budget extends Model
         $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_articulos ?, ?, ?', [$startDate, $endDate,$ARTICULO]);
 
         foreach ($resultados as $resultado) {
-            $fila = [
+            $fila = [                
                 'ARTICULO' => $resultado->ARTICULO,
                 'FECHA' => [], 
                 'UND_MES' => $resultado->UND_MES,

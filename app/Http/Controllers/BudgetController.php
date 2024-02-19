@@ -26,6 +26,7 @@ class BudgetController extends Controller {
       return response()->json($obj);
     }
     public function dtArticulo(Request $request) {
+      
       $obj = Budget::dtArticulo($request);
       return response()->json($obj);
     }

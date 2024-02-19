@@ -69,7 +69,9 @@ SkusAnual = {
     };
 
 function bluid_char(ARTICULO) {
+    
     var temporal = "";
+
     $("#grafSkuAnual").empty().append(`<div style="height:400px; background:#ffff; padding:20px">
                 <div class="d-flex align-items-center">
                     <strong class="text-info">Cargando...</strong>
@@ -78,8 +80,7 @@ function bluid_char(ARTICULO) {
             </div>`);
 
 
-    $("#anioAcumulado").empty();
-    $("#porcentaje").empty();
+    $("#grafSkuAnual").empty();
     
     f1 = $("#f1").val();
     f2 = $("#f2").val();
