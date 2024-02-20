@@ -122,18 +122,14 @@
             var c = 2 ; 
             var Header_Align = [];
             var tbl_header = [];
-
-
-            
-
             tbl_header = [
                 { "title": "DETALLES",      "data": "DETALLE" },   
                 { "title": "ARTICULO",      "data": "ARTICULO" },
                 {"title": "DESCRIPCION",    "data": "DESCRIPCION", "render": function(data, type, row, meta) { 
                     return`<a href="#!" onclick="OpenModal_Pro71(`+ "'" +row.ARTICULO + "'" +` )" >`+ row.DESCRIPCION +`</a>`
                 }},
-                { "title": "PREC. PROM.",   "data": "PREC_PROM", render: $.fn.dataTable.render.number(',', '.', 4, '') },
-                { "title": "CONTRIBUCION",  "data": "CONTRIBUCION", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "title": "UND. FACT.",   "data": "CANTI_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "title": "VALOR FACT. C$",  "data": "VALOR_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 2, '') },
             ];
 
 
