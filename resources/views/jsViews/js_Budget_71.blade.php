@@ -1,4 +1,10 @@
 <script type="text/javascript">
+    $(document).ready(function() {
+    $("#item-nav-01").after(`<li class="breadcrumb-item active">Presupuesto</li>`);
+    inicializaControlFecha();    
+    DrawTable71();
+
+});
     $('#txt_Search71').on( 'keyup', function () {
         var table = $('#dtProyect71').DataTable();
         table.search(this.value).draw();
