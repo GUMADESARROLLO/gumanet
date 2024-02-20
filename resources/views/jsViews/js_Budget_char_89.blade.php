@@ -9,7 +9,7 @@ SkusAnual = {
         },
         exporting: {enabled: false},
         title: {
-            text: `<p class="font-weight-bolder">VENTAS EN PROMEDIO </p>`
+            text: `<p class="font-weight-bolder">PRESUPESTO UNIDADES VS EJECUTADO </p>`
         },
         xAxis: {
             categories: []

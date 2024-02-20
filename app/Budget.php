@@ -42,8 +42,8 @@ class Budget extends Model
                 'PRESUPUESTO' => $resultado->UND_ANUAL,
                 'CS_VALOR' => $resultado->VAL_ANUAL,
                 'FECHA' => [], 
-                'PREC_PROM' => $resultado->PREC_PROM,
-                'CONTRIBUCION' => $resultado->CONTRIBUCION,
+                'CANTI_FACT_MES' => $resultado->CANTI_FACT_MES,
+                'VALOR_FACT_MES' => $resultado->VALOR_FACT_MES,
                 'UND_MES' => $resultado->UND_MES,
                 'VAL_MES' => $resultado->VAL_MES
             ];
@@ -51,7 +51,7 @@ class Budget extends Model
     
         $columnas_agregadas = [];
         foreach ($resultado as $columna => $valor) {
-            if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'UND_ANUAL'  && $columna !== 'VAL_ANUAL'  && $columna !== 'UND_MES' && $columna !== 'VAL_MES' && $columna !== 'PREC_PROM' && $columna !== 'CONTRIBUCION' ) {
+            if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'UND_ANUAL'  && $columna !== 'VAL_ANUAL'  && $columna !== 'UND_MES' && $columna !== 'VAL_MES' && $columna !== 'CANTI_FACT_MES' && $columna !== 'VALOR_FACT_MES' ) {
                 
                 $fila[$columna] = $valor;
                 $nombre_columna = strstr($columna, '_', true);

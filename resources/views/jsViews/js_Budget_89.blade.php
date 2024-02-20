@@ -145,9 +145,9 @@ function CalcIndicadores_89(){
                 return`<a href="#!" onclick="OpenModal_Pro89(`+ "'" +row.ARTICULO + "'" +` )" >`+ row.DESCRIPCION +`</a>`
             }},
             { "title": "UNIDADES",   "data": "PRESUPUESTO" , render: $.fn.dataTable.render.number(',', '.', 0, '')},
-            { "title": "MONTO. C$",     "data": "CS_VALOR", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-            // { "title": "PREC. PROM.",   "data": "PREC_PROM", render: $.fn.dataTable.render.number(',', '.', 4, '') },
-            // { "title": "CONTRIBUCION",  "data": "CONTRIBUCION", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            { "title": "MONTO. C$",     "data": "CS_VALOR", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+            { "title": "UND. FACT.",   "data": "CANTI_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            { "title": "VALOR FACT. C$",  "data": "VALOR_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 2, '') },
         ];
 
         // $.each(dataset[0]['FECHA'], function(key, val) {
@@ -187,7 +187,7 @@ function CalcIndicadores_89(){
 
         
 
-        dataProyect(dataset, tbl_header,'#dtProyect89',[3,4]);
+        dataProyect(dataset, tbl_header,'#dtProyect89',[3,4,5,6,]);
     
     
     })
