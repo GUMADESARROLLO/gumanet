@@ -132,9 +132,6 @@
                 { "title": "VALOR FACT. C$",  "data": "VALOR_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 2, '') },
             ];
 
-
-            
-
             TblInit(dataset, tbl_header,'#dtProyect71',[3,4]);
 
 
@@ -163,6 +160,7 @@
             "data": datos,
             "destroy" : true,
             "info":    true,
+            "order": [[3, 'desc']],
             "lengthMenu": [[10,-1], [10,"Todo"]],
             "language": {
                 "zeroRecords": "NO HAY COINCIDENCIAS",

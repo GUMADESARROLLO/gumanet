@@ -218,6 +218,7 @@ function dataProyect(datos, Header,Table,Align) {
         "data": datos,
         "destroy" : true,
         "info":    true,
+        "order": [[3, 'desc']],
         "lengthMenu": [[10,-1], [10,"Todo"]],
         "language": {
             "zeroRecords": "NO HAY COINCIDENCIAS",
