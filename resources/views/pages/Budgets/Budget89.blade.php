@@ -14,7 +14,7 @@
 			<div class="col-sm-12">
                 <div id="Id_Progress_Bar"></div>
                 <h5 class="card-title pb-0 mb-0">Proyecto 89 </h5>
-                <p class="font-italic text-muted pt-0 mt-0">Moviemientos del periodo entre <span id="spn_dtIni"></span> al <span id="spn_dtEnd"></span></p>
+                <p class="font-italic text-muted pt-0 mt-0">Movimientos del periodo entre <span id="spn_dtIni"></span> al <span id="spn_dtEnd"></span></p>
                 <div class="row ">
                     
 					<div class="col-sm-9 mt-4 ">	

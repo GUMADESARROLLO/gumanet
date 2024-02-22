@@ -46,7 +46,7 @@ SkusAnual = {
         },
         tooltip: {},
         legend: {
-            enabled:false,
+            enabled:true,
             align: 'center',
             verticalAlign: 'top',
             borderWidth: 0
@@ -117,38 +117,39 @@ function bluid_char(ARTICULO,Pro) {
 
         var VENTAS  = []
         var METAS   = []
+        var LEGNS   = []
 
         
         $.each(json[0]['FECHA'], function (i, item) {
-         
-            temporal = '<span style="color:black"><b>{point.y:,.0f} Items </b></span>';
-
             VENTAS.push(parseFloat( isValue(json[0][item.mes],0,true) ));
             METAS.push(parseFloat( isValue(json[0].UND_MES,0,true) ));
-
-            SeriesVenta = {};
-            SeriesVenta.data = VENTAS;
-            SeriesVenta.name = 'VENTAS';
-            SeriesVenta.color = colors_[1];
-            SkusAnual.series.push(SeriesVenta);
-
-            if (Pro != 2) {
-                SeriesVenta = {};
-                SeriesVenta.data = METAS;
-                SeriesVenta.name = 'METAS';
-                SeriesVenta.color = colors_[2];
-                SkusAnual.series.push(SeriesVenta);
-            }
-            
+            LEGNS.push(item.mes)
             SkusAnual.xAxis.categories.push(item.mes);
-
-            SkusAnual.tooltip = {
-                pointFormat : temporal
-            };
-
-            var chart = new Highcharts.Chart(SkusAnual);
-            
         })    
+
+       
+
+        SeriesVenta = {};
+        SeriesVenta.data = VENTAS;
+        SeriesVenta.name = 'VENTAS';
+        SeriesVenta.color = colors_[1];
+        SkusAnual.series.push(SeriesVenta);
+
+        if (Pro != 2) {
+            SeriesVenta = {};
+            SeriesVenta.data = METAS;
+            SeriesVenta.name = 'METAS';
+            SeriesVenta.color = colors_[2];
+            SkusAnual.series.push(SeriesVenta);
+        }
+        
+        
+
+        SkusAnual.tooltip = {
+            pointFormat : '<span style="color:black"><b>{point.y:,.0f} Items </b></span>'
+        };
+
+        var chart = new Highcharts.Chart(SkusAnual);
     })    
         
     

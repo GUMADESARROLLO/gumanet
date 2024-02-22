@@ -45,13 +45,14 @@ class Budget extends Model
                 'CANTI_FACT_MES' => $resultado->CANTI_FACT_MES,
                 'VALOR_FACT_MES' => $resultado->VALOR_FACT_MES,
                 'UND_MES' => $resultado->UND_MES,
-                'VAL_MES' => $resultado->VAL_MES
+                'VAL_MES' => $resultado->VAL_MES,
+                'COSTO_PROM' => $resultado->COSTO_PROM
             ];
 
     
         $columnas_agregadas = [];
         foreach ($resultado as $columna => $valor) {
-            if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'UND_ANUAL'  && $columna !== 'VAL_ANUAL'  && $columna !== 'UND_MES' && $columna !== 'VAL_MES' && $columna !== 'CANTI_FACT_MES' && $columna !== 'VALOR_FACT_MES' ) {
+            if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'UND_ANUAL'  && $columna !== 'VAL_ANUAL'  && $columna !== 'UND_MES' && $columna !== 'VAL_MES' && $columna !== 'CANTI_FACT_MES' && $columna !== 'VALOR_FACT_MES'  && $columna !== 'COSTO_PROM' ) {
                 
                 $fila[$columna] = $valor;
                 $nombre_columna = strstr($columna, '_', true);
