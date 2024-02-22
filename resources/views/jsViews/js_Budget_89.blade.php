@@ -57,12 +57,14 @@ function Draw_Table ( callback, dta ) {
         
         var month_UND = item.mes + '_UND'
         var month_VAL = item.mes + '_VAL'
-        
+
         //var Cumpli = (( dta[month_VAL] / dta.VAL_MES ) * 100) 
         var Cumpli = (dta[month_VAL] * 100 ) / dta.VAL_MES
 
         var prec_prom = dta[month_VAL] / dta[month_UND] ; 
-        var Contribucion  =  dta[month_VAL] - dta[month_UND] * dta.COSTO_PROM
+        //var Contribucion  =  dta[month_VAL] - dta[month_UND] * dta.COSTO_PROM
+
+        var prom_contribucion = (( prec_prom - dta.COSTO_PROM ) / prec_prom) * 100;
 
         thead += `<th class="center">`+item.mes+`</th>`;
 
@@ -85,7 +87,7 @@ function Draw_Table ( callback, dta ) {
                                 <td> <p class="text-right">`+numeral(dta[month_VAL]).format('0,0.00')+`</p></td>
                                 <td> <p class="text-right">`+numeral(Cumpli).format('0,0.00')+`</p></td>
                                 <td> <p class="text-right">`+numeral(prec_prom).format('0,0.[00]', Math.floor) +`</p></td>
-                                <td> <p class="text-right">`+numeral(Contribucion).format('0,0.[00]', Math.floor)+`</p></td>
+                                <td> <p class="text-right">`+numeral(prom_contribucion).format('0,0.[00]', Math.floor)+`</p></td>
                             </tr>
                         </tbody>
                     </table></td>`;

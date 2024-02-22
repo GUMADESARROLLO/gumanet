@@ -131,14 +131,14 @@ function bluid_char(ARTICULO,Pro) {
 
         SeriesVenta = {};
         SeriesVenta.data = VENTAS;
-        SeriesVenta.name = 'VENTAS';
+        SeriesVenta.name = 'EJECUTADO';
         SeriesVenta.color = colors_[1];
         SkusAnual.series.push(SeriesVenta);
 
         if (Pro != 2) {
             SeriesVenta = {};
             SeriesVenta.data = METAS;
-            SeriesVenta.name = 'METAS';
+            SeriesVenta.name = 'PRESUPUESTO';
             SeriesVenta.color = colors_[2];
             SkusAnual.series.push(SeriesVenta);
         }
