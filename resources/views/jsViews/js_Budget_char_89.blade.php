@@ -105,6 +105,7 @@ function bluid_char(ARTICULO,Pro) {
 
     SkusAnual.series = [];
     SkusAnual.xAxis.categories = [];
+    
     $.getJSON("dtArticulo?f1="+f1+"&f2="+f2+"&ARTICULO=" + ARTICULO+"&Pro=" + Pro, function(json) {
         var SeriesVenta;
         var SeriesMetas;

@@ -61,12 +61,12 @@
             tBody +=  `<td><table class="table table-striped table-bordered table-sm">
                             <thead>
                                 <tr>
-                                    <th class="bg-blue text-light">FACT.</th>                                    
-                                    <th class="bg-blue text-light">FACT. C$</th>
+                                    <th class="bg-blue text-light">UNITS FACT.</th>                                    
+                                    <th class="bg-blue text-light">MONTO FACT. C$</th>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td> <p class="text-right">`+numeral(dta[month_UND]).format('0,0.00')+`</p></td>
+                                    <td> <p class="text-right">`+numeral(dta[month_UND]).format('0,0')+`</p></td>
                                     <td> <p class="text-right">`+numeral(dta[month_VAL]).format('0,0.00')+`</p></td>
                                 </tr>
                             </tbody>
@@ -123,16 +123,41 @@
             var Header_Align = [];
             var tbl_header = [];
             tbl_header = [
-                { "title": "DETALLES",      "data": "DETALLE" },   
+                { "title": "DETALLE",      "data": "DETALLE" },   
                 { "title": "ARTICULO",      "data": "ARTICULO" },
                 {"title": "DESCRIPCION",    "data": "DESCRIPCION", "render": function(data, type, row, meta) { 
                     return`<a href="#!" onclick="OpenModal_Pro71(`+ "'" +row.ARTICULO + "'" +` )" >`+ row.DESCRIPCION +`</a>`
                 }},
-                { "title": "UND. FACT.",   "data": "CANTI_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-                { "title": "VALOR FACT. C$",  "data": "VALOR_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                { "title": "UNITS. FACT.",   "data": "CANTI_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "title": "MONTO FACT. C$",  "data": "VALOR_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                { "title": "TOTAL INVEN.",  "data": "TOTAL_INVENTARIO", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                {"title": "PREC. PROM",    "data": "CANTI_FACT_MES", "render": function(data, type, row, meta) { 
+                    var prec_prom = row.VALOR_FACT_MES / row.CANTI_FACT_MES
+                    return numeral(prec_prom).format('0,0.[00]', Math.floor);
+                }},
+                {"title": "CONTRIBUCION",    "data": "VALOR_FACT_MES", "render": function(data, type, row, meta) { 
+                    var monto_contribucion = row.VALOR_FACT_MES -  ( row.CANTI_FACT_MES * row.COSTO_PROM)
+
+                    monto_contribucion = (monto_contribucion < 0) ? 0.00 : monto_contribucion;
+
+                    return numeral(monto_contribucion).format('0,0.[00]', Math.floor);
+                }},
+                {"title": "% CONTRI",    "data": "VALOR_FACT_MES", "render": function(data, type, row, meta) { 
+
+                    var prec_prom = row.VALOR_FACT_MES / row.CANTI_FACT_MES ;
+                    
+                    var porcent_contribucion = (( prec_prom - row.COSTO_PROM ) / prec_prom) * 100;
+
+                    porcent_contribucion = (porcent_contribucion < 0) ? 0.00 : porcent_contribucion;
+
+
+                   // var porcent_contribucion = row.VALOR_FACT_MES / row.CANTI_FACT_MES
+                    return numeral(porcent_contribucion).format('0,0.[00]', Math.floor);
+                }},
+                
             ];
 
-            TblInit(dataset, tbl_header,'#dtProyect71',[3,4]);
+            TblInit(dataset, tbl_header,'#dtProyect71',[3,4,5,6,7,8]);
 
 
         })
@@ -160,7 +185,7 @@
             "data": datos,
             "destroy" : true,
             "info":    true,
-            "order": [[3, 'desc']],
+            "order": [[2, 'asc']],
             "lengthMenu": [[10,-1], [10,"Todo"]],
             "language": {
                 "zeroRecords": "NO HAY COINCIDENCIAS",

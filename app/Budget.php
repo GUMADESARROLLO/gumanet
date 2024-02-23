@@ -46,13 +46,14 @@ class Budget extends Model
                 'VALOR_FACT_MES' => $resultado->VALOR_FACT_MES,
                 'UND_MES' => $resultado->UND_MES,
                 'VAL_MES' => $resultado->VAL_MES,
-                'COSTO_PROM' => $resultado->COSTO_PROM
+                'COSTO_PROM' => $resultado->COSTO_PROM,
+                'TOTAL_INVENTARIO' => $resultado->TOTAL_INVENTARIO
             ];
 
     
         $columnas_agregadas = [];
         foreach ($resultado as $columna => $valor) {
-            if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'UND_ANUAL'  && $columna !== 'VAL_ANUAL'  && $columna !== 'UND_MES' && $columna !== 'VAL_MES' && $columna !== 'CANTI_FACT_MES' && $columna !== 'VALOR_FACT_MES'  && $columna !== 'COSTO_PROM' ) {
+            if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'UND_ANUAL'  && $columna !== 'VAL_ANUAL'  && $columna !== 'UND_MES' && $columna !== 'VAL_MES' && $columna !== 'CANTI_FACT_MES' && $columna !== 'VALOR_FACT_MES'  && $columna !== 'COSTO_PROM'&& $columna !== 'TOTAL_INVENTARIO' ) {
                 
                 $fila[$columna] = $valor;
                 $nombre_columna = strstr($columna, '_', true);
