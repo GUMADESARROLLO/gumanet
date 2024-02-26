@@ -67,7 +67,7 @@
                             <tbody>
                                 <tr>
                                     <td> <p class="text-right">`+numeral(dta[month_UND]).format('0,0')+`</p></td>
-                                    <td> <p class="text-right">`+numeral(dta[month_VAL]).format('0,0.00')+`</p></td>
+                                    <td> <p class="text-right">`+numeral(dta[month_VAL]).format('0,0')+`</p></td>
                                 </tr>
                             </tbody>
                         </table></td>`;
@@ -105,8 +105,8 @@
         f1 = $("#f1_p71").val();
         f2 = $("#f2_p71").val();
 
-        $("#spn_dtIni_71").html(moment(f1).format('MMM/YY'))
-        $("#spn_dtEnd_71").html(moment(f2).format('MMM/YY'))
+        $("#spn_dtIni_71").html(moment(f1).format('DD/MMM/YY'))
+        $("#spn_dtEnd_71").html(moment(f2).format('DD/MMM/YY'))
 
         $("#Id_Progress_Bar_71").empty().append(`<div>
                         <div class="d-flex align-items-center">
@@ -128,31 +128,35 @@
                 {"title": "DESCRIPCION",    "data": "DESCRIPCION", "render": function(data, type, row, meta) { 
                     return`<a href="#!" onclick="OpenModal_Pro71(`+ "'" +row.ARTICULO + "'" +` )" >`+ row.DESCRIPCION +`</a>`
                 }},
+                { "title": "TOTAL INVEN.",  "data": "TOTAL_INVENTARIO", render: $.fn.dataTable.render.number(',', '.', 0, '') },
                 { "title": "UNITS. FACT.",   "data": "CANTI_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-                { "title": "MONTO FACT. C$",  "data": "VALOR_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 2, '') },
-                { "title": "TOTAL INVEN.",  "data": "TOTAL_INVENTARIO", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                { "title": "MONTO FACT. C$",  "data": "VALOR_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                
                 {"title": "PREC. PROM",    "data": "CANTI_FACT_MES", "render": function(data, type, row, meta) { 
                     var prec_prom = row.VALOR_FACT_MES / row.CANTI_FACT_MES
-                    return numeral(prec_prom).format('0,0.[00]', Math.floor);
+                    return numeral(prec_prom).format('0,0');
                 }},
                 {"title": "CONTRIBUCION",    "data": "VALOR_FACT_MES", "render": function(data, type, row, meta) { 
+
                     var monto_contribucion = row.VALOR_FACT_MES -  ( row.CANTI_FACT_MES * row.COSTO_PROM)
 
                     monto_contribucion = (monto_contribucion < 0) ? 0.00 : monto_contribucion;
 
-                    return numeral(monto_contribucion).format('0,0.[00]', Math.floor);
+                    return numeral(monto_contribucion).format('0,0');
                 }},
-                {"title": "% CONTRI",    "data": "VALOR_FACT_MES", "render": function(data, type, row, meta) { 
+                {"title": "% MARGEN BRUTO",    "data": "VALOR_FACT_MES", "render": function(data, type, row, meta) { 
 
-                    var prec_prom = row.VALOR_FACT_MES / row.CANTI_FACT_MES ;
+                    var monto_contribucion      = row.VALOR_FACT_MES -  ( row.CANTI_FACT_MES * row.COSTO_PROM)
+                    var porcent_contribucion    = (row.VALOR_FACT_MES / monto_contribucion ) *  100
+
                     
-                    var porcent_contribucion = (( prec_prom - row.COSTO_PROM ) / prec_prom) * 100;
+                    //var porcent_contribucion = (( prec_prom - row.COSTO_PROM ) / prec_prom) * 100;
 
-                    porcent_contribucion = (porcent_contribucion < 0) ? 0.00 : porcent_contribucion;
+                    porcent_contribucion = (porcent_contribucion < 0) ? 0 : porcent_contribucion;
 
 
                    // var porcent_contribucion = row.VALOR_FACT_MES / row.CANTI_FACT_MES
-                    return numeral(porcent_contribucion).format('0,0.[00]', Math.floor);
+                    return numeral(porcent_contribucion).format('0,0');
                 }},
                 
             ];

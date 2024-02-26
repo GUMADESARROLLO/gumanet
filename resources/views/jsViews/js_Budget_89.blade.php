@@ -58,13 +58,19 @@ function Draw_Table ( callback, dta ) {
         var month_UND = item.mes + '_UND'
         var month_VAL = item.mes + '_VAL'
 
+
+  
+
         //var Cumpli = (( dta[month_VAL] / dta.VAL_MES ) * 100) 
-        var Cumpli = (dta[month_VAL] * 100 ) / dta.VAL_MES
-
+        // var Cumpli = (dta[month_VAL] * 100 ) / dta.VAL_MES
+        var Cumpli = (dta[month_UND] * 100 ) / dta.UND_MES
         var prec_prom = dta[month_VAL] / dta[month_UND] ; 
-        //var Contribucion  =  dta[month_VAL] - dta[month_UND] * dta.COSTO_PROM
 
-        var prom_contribucion = (( prec_prom - dta.COSTO_PROM ) / prec_prom) * 100;
+        //var Contribucion  =  dta[month_VAL] - dta[month_UND] * dta.COSTO_PROM
+        // var prom_contribucion = (( prec_prom - dta.COSTO_PROM ) / prec_prom) * 100;
+        var contribucion =  (dta.VAL_MES - ( dta[month_UND] * dta.COSTO_PROM) ); 
+        var prom_contribucion = ( dta.VALOR_FACT_MES / contribucion ) *100
+
 
         thead += `<th class="center">`+item.mes+`</th>`;
 
@@ -75,19 +81,19 @@ function Draw_Table ( callback, dta ) {
                                 <th class="bg-blue text-light">MONTO VALOR C$</th>
                                 <th class="bg-blue text-light">UNITS FACT.</th>                                    
                                 <th class="bg-blue text-light">MONTO FACT. C$</th>
-                                <th class="bg-blue text-light">% CUMP.</th>
+                                <th class="bg-blue text-light">% CUMP. UNITS</th>
                                 <th class="bg-blue text-light">PREC. PROM.</th>
                                 <th class="bg-blue text-light">% MARGEN BRUTO </th>
                         </thead>
                         <tbody>
                             <tr>
                                 <td> <p class="text-right">`+numeral(dta.UND_MES).format('0,0')+`</p></td>
-                                <td> <p class="text-right">`+numeral(dta.VAL_MES).format('0,0.00')+`</p></td>
+                                <td> <p class="text-right">`+numeral(dta.VAL_MES).format('0,0')+`</p></td>
                                 <td> <p class="text-right">`+numeral(dta[month_UND]).format('0,0')+`</p></td>
-                                <td> <p class="text-right">`+numeral(dta[month_VAL]).format('0,0.00')+`</p></td>
-                                <td> <p class="text-right">`+numeral(Cumpli).format('0,0.00')+`</p></td>
-                                <td> <p class="text-right">`+numeral(prec_prom).format('0,0.[00]', Math.floor) +`</p></td>
-                                <td> <p class="text-right">`+numeral(prom_contribucion).format('0,0.[00]', Math.floor)+`</p></td>
+                                <td> <p class="text-right">`+numeral(dta[month_VAL]).format('0,0')+`</p></td>
+                                <td> <p class="text-right">`+numeral(Cumpli).format('0,0')+`</p></td>
+                                <td> <p class="text-right">`+ numeral(prec_prom).format('0,0') +`</p></td>
+                                <td> <p class="text-right">`+ numeral(prom_contribucion).format('0,0')+`</p></td>
                             </tr>
                         </tbody>
                     </table></td>`;
@@ -127,8 +133,8 @@ function CalcIndicadores_89(){
     f1 = $("#f1").val();
     f2 = $("#f2").val();
 
-    $("#spn_dtIni").html(f1)
-    $("#spn_dtEnd").html(f2)
+    $("#spn_dtIni").html(moment(f1).format('DD/MMM/YY'))
+    $("#spn_dtEnd").html(moment(f2).format('DD/MMM/YY'))
     
     $("#Id_Progress_Bar").empty().append(`<div>
                 <div class="d-flex align-items-center">
@@ -158,9 +164,9 @@ function CalcIndicadores_89(){
                 return`<a href="#!" onclick="OpenModal_Pro89(`+ "'" +row.ARTICULO + "'" +` )" >`+ row.DESCRIPCION +`</a>`
             }},
             { "title": "UNITS. META",   "data": "PRESUPUESTO" , render: $.fn.dataTable.render.number(',', '.', 0, '')},
-            { "title": "MONTO. META C$",     "data": "CS_VALOR", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+            { "title": "MONTO. META C$",     "data": "CS_VALOR", render: $.fn.dataTable.render.number(',', '.', 0, '') },
             { "title": "UNITS. FACT.",   "data": "CANTI_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-            { "title": "MONTO FACT. C$",  "data": "VALOR_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+            { "title": "MONTO FACT. C$",  "data": "VALOR_FACT_MES", render: $.fn.dataTable.render.number(',', '.', 0, '') },
         ];
 
         // $.each(dataset[0]['FECHA'], function(key, val) {
