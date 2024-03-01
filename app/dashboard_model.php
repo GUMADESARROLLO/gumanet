@@ -22,6 +22,7 @@ use PHPExcel_Style_Border;
 use Session;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class dashboard_model extends Model {
     public static function getDataGraficas($mes, $anio, $xbolsones) {
@@ -2978,4 +2979,28 @@ class dashboard_model extends Model {
 
         return $array;
     }
+
+    public static function getComportamientoMensual($fechaIni, $fechaFin, $articulo){
+
+        $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_comportamiento_mensual_articulo ?, ?, ?', [$fechaIni, $fechaFin,$articulo]);
+        
+        $comportamiento = array();
+        $categorias = array();
+        foreach ($resultados as $resultado) {
+            foreach ($resultado as $columna => $valor) {
+                if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' ) {
+                    
+                    array_push($comportamiento, floatval($valor));
+                    array_push($categorias, $columna);
+                
+                }
+            }
+       
+        }
+        $json[0]['title'] = 'Facturado + Bonificación';
+        $json[0]['data'] = $comportamiento;
+        $json[0]['categories'] = $categorias;
+        return $json;
+    }
+
 }

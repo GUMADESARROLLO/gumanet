@@ -307,6 +307,7 @@ $('nav .nav.nav-tabs a').click(function(){
 
 var articulo_g = 0;
 function getDetalleArticulo(articulo, descripcion) {
+    $("#idArti").val(articulo);
     articulo_g = articulo;
     $("#tArticulo").html(descripcion+`<p class="text-muted">`+articulo+`</p>`);
     getDataBodega(articulo);
@@ -318,6 +319,14 @@ function getDetalleArticulo(articulo, descripcion) {
     .append(`<tr><td colspan='5'><center>Aún no ha realizado ninguna busqueda</center></td></tr>`);
 
     $("#mdDetalleArt").modal('show');
+
+    var fecha = new Date();
+    var inicio = new Date(fecha.getFullYear(), (fecha.getMonth() + 1) - 3, 1);
+
+    var fechaIni = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
+    var fechaFin = fecha.getFullYear()+'-'+(fecha.getMonth()+1)+'-'+fecha.getDate();
+
+    comportamientoMensual(fechaIni,fechaFin,articulo);
 
 }
 
@@ -637,4 +646,135 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
         }
     });
 }
+
+
+    function comportamientoMensual(fechaIni, fechaFin, articulo) {
+        var temporal = "";
+        $("#comportamientoMen")
+        .empty()
+        .append(`<div style="height:400px; background:#ffff; padding:20px">
+                    <div class="d-flex align-items-center">
+                        <strong class="text-info">Cargando...</strong>
+                        <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
+                    </div>
+                </div>`);
+        
+             
+        $.getJSON("getComportamientoMensual/"+fechaIni+"/"+fechaFin+"/"+articulo, function(json) {
+            
+            newseries = {};
+            category = [];
+            $.each(json, function (i, item) { 
+
+                temporal = '<span style="color:black"><b>{point.y:,.0f}</b></span>';
+                
+                newseries.data = item['data'];
+                newseries.name = item['title'];
+                category = item['categories'];
+                newseries.colorIndex = 0;
+                                
+            })
+           
+            var chart = new Highcharts.Chart('comportamientoMen',{
+                chart: {
+                    type: 'spline'
+                },
+                exporting: {enabled: false},
+                title: {
+                    text: `<p class="font-weight-bolder">Comportamiento</p>`
+                },
+                xAxis: {
+                    categories: category
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    }                
+                },
+                plotOptions: {
+                    series: {
+                        allowPointSelect: false,
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            formatter: function() {
+                                return FormatPretty(this.y);
+                            }
+                        },
+                        events: {
+                            legendItemClick: function() {
+                                return false;
+                            }
+                        }
+                    },
+                },
+                tooltip: {},
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'top',
+                    borderWidth: 0
+                },
+                series: [newseries],
+                responsive: {
+                    rules: [{
+                        condition: {
+                        maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+            });
+            
+        })
+    }
+
+    $("#btnSearchComport").click(function(){
+        var fechaIni = $("#fci").val();
+        var fechaFin = $("#fcf").val();
+        var articulo = $("#idArti").val();
+
+        comportamientoMensual(fechaIni, fechaFin, articulo);
+
+    })
+
+    function FormatPretty(number) {
+        var numberString;
+        var scale = '';
+        if( isNaN( number ) || !isFinite( number ) ) {
+            numberString = 'N/A';
+        } else {
+            var negative = number < 0;
+            number = negative? -number : number;
+
+            if( number < 1000 ) {
+                scale = '';
+            } else if( number < 1000000 ) {
+                scale = 'K';
+                number = number/1000;
+            } else if( number < 1000000000 ) {
+                scale = 'M';
+                number = number/1000000;
+            } else if( number < 1000000000000 ) {
+                scale = 'B';
+                number = number/1000000000;
+            } else if( number < 1000000000000000 ) {
+                scale = 'T';
+                number = number/1000000000000;
+            }
+            var maxDecimals = 0;
+            if( number < 10 && scale != '' ) {
+                maxDecimals = 1;
+            }
+            number = negative ? -number : number;
+            numberString = number.toFixed( maxDecimals );
+            numberString += scale
+        }
+        return numberString;
+    }
 </script>
