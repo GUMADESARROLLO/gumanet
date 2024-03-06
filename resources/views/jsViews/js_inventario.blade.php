@@ -650,6 +650,10 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
 
     function comportamientoMensual(fechaIni, fechaFin, articulo) {
         var temporal = "";
+        $('#lbl1').text('0');
+        $("#lbl2").text('0');
+        $("#lbl3").text('0');
+        $("#lbl4").text('0');
         $("#comportamientoMen")
         .empty()
         .append(`<div style="height:400px; background:#ffff; padding:20px">
@@ -665,8 +669,11 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
             newseries = {};
             category = [];
             $.each(json, function (i, item) { 
-
-                temporal = '<span style="color:black"><b>{point.y:,.0f}</b></span>';
+                
+                $('#lbl1').text(item['precioPromedio']);
+                $("#lbl2").text(item['costoUnitario']);
+                $("#lbl3").text(item['contribucion']);
+                $("#lbl4").text(item['porcentajeContribucion']);
                 
                 newseries.data = item['data'];
                 newseries.name = item['title'];
@@ -674,7 +681,7 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
                 newseries.colorIndex = 0;
                                 
             })
-           
+          
             var chart = new Highcharts.Chart('comportamientoMen',{
                 chart: {
                     type: 'spline'
@@ -708,7 +715,7 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
                         }
                     },
                 },
-                tooltip: {},
+                tooltip: {pointFormat : '<span style="color:black"><b>{point.y:,.0f} Items </b></span>'},
                 legend: {
                     align: 'center',
                     verticalAlign: 'top',

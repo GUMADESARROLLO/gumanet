@@ -418,32 +418,38 @@
                 <div class="card" style="border-top: none">
                   <div class="card-body">
                     <div class="row">
-                      <div class="col-sm-2">
+                      <div class="col-sm-4">
                         <div class="form-group">
                           <label for="fci">Desde</label>
                           <input type="text" class="input-fecha" id="fci">
                         </div>
                       </div>
-                      <div class="col-sm-2">
+                      <div class="col-sm-4">
                         <div class="form-group">
                           <label for="fcf">Hasta</label>
                           <input type="text" class="input-fecha" id="fcf">
                         </div>
                       </div>
-                      <div class="col-sm-2">
+                      <div class="col-sm-3">
                         <a href="#!" id="btnSearchComport" class="btn btn-primary btn-sm mt-4">Buscar</a>
                       </div>
-                      <div class="col-sm-2 text-center border-left">
-                          <label for="lbl1">Precio Promedio</label></br>
-                          <label for="lbl1">0</label>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3 text-center border-top">
+                        <label for="lbl1">Precio Promedio</label></br>
+                        <label for="lbl1" id="lbl1">0</label>
                       </div>
-                      <div class="col-sm-2 text-center border-left">
-                          <label for="lbl2">Costo Unit.</label></br>
-                          <label for="lbl2">0</label>
+                      <div class="col-sm-3 text-center border-top">
+                        <label for="lbl2">Costo Unit.</label></br>
+                        <label for="lbl2" id="lbl2">0</label>
                       </div>
-                      <div class="col-sm-2 text-center border-left">
-                          <label for="lbl3">Contribución</label></br>
-                          <label for="lbl3">0</label>
+                      <div class="col-sm-3 text-center border-top">
+                        <label for="lbl3">Contribución</label></br>
+                        <label for="lbl3" id="lbl3">0</label>
+                      </div>
+                      <div class="col-sm-3 text-center border-top">
+                        <label for="lbl4">% Contribución</label></br>
+                        <label for="lbl4" id="lbl4">0</label>
                       </div>
                     </div>
                   </div>
