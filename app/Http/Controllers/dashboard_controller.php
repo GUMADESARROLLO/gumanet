@@ -125,6 +125,19 @@ class dashboard_controller extends Controller {
     }
   }
 
+  public function getComportamientoMensual($fechaIni,$fechaFin, $articulo) {
+    //$Key = 'getRealVentasMensuales_'.$segmentos."_".$xbolsones;
+    /*$cached = Redis::get($Key);
+    if ($cached) {
+        $obj = $cached;
+    } else {*/
+        $obj = json_encode(dashboard_model::getComportamientoMensual($fechaIni,$fechaFin, $articulo));
+        //Redis::setex($Key, 900, $obj); 
+    //}
+    return response()->json(json_decode($obj));
+  }
+
+
   //FUNCIONES QUE CALCULA EL DASHBOARD
   public function getRealVentasMensuales($xbolsones,$segmentos) {
     $Key = 'getRealVentasMensuales_'.$segmentos."_".$xbolsones;
@@ -137,6 +150,7 @@ class dashboard_controller extends Controller {
     }
     return response()->json(json_decode($obj));
   }
+
   public function getDataGraficas($mes, $anio, $xbolsones) {
     $Key = 'getDataGraficas_'.$mes."_".$anio."_".$xbolsones;
     $cached = Redis::get($Key);

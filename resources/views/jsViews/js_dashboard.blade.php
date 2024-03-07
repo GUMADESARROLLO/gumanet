@@ -2746,7 +2746,7 @@ function grafRealVentasMensuales(xbolsones,segmentos) {
     ventasRealMensuales.series = [];
     $.getJSON("dataRealVtsMensuales/"+xbolsones+"/"+segmentos, function(json) {
         var newseries;
-        
+        console.log(json)
         $.each(json, function (i, item) {
             temporal = (xbolsones)?'<span style="color:black"><b>{point.y:,.2f}</b></span>':'<span style="color:black"><b>C$ {point.y:,.2f}</b></span>';
 
