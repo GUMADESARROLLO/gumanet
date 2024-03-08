@@ -442,7 +442,7 @@
                         <label for="lbl1" id="lbl1">0</label>
                       </div>
                       <div class="col-sm-3 text-center border-top">
-                        <label for="lbl2" class="mt-4"><B>COST. UNIT. PROM.</B></label></br>
+                        <label for="lbl2" class="mt-4"><B>COST. UNITS. PROM.</B></label></br>
                         <label for="lbl2" id="lbl2">0</label>
                       </div>
                       <div class="col-sm-3 text-center border-top">
