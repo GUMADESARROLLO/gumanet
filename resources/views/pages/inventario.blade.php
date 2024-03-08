@@ -157,7 +157,7 @@
             <a class="nav-item nav-link" id="navOtros" data-toggle="tab" href="#nav-otros" role="tab" aria-controls="nav-otros" aria-selected="false">Otros</a>
             <a class="nav-item nav-link" id="navIndicadores" data-toggle="tab" href="#nav-Indicadores" role="tab" aria-controls="nav-Indicadores" aria-selected="false">Indicadores</a>
             <a class="nav-item nav-link" id="navVinneta" data-toggle="tab" href="#nav-Vinneta" role="tab" aria-controls="nav-Vineta" aria-selected="false">Viñeta</a>
-            <a class="nav-item nav-link" id="navVinneta" data-toggle="tab" href="#nav-Comportamiento" role="tab" aria-controls="nav-Comportamiento" aria-selected="false">Comportamiento</a>
+            <a class="nav-item nav-link" id="navComportamiento" data-toggle="tab" href="#nav-Comportamiento" role="tab" aria-controls="nav-Comportamiento" aria-selected="false">Comportamiento</a>
             
           </div>
         </nav>
@@ -412,7 +412,7 @@
             </div>
           </div>
 
-          <div class="tab-pane fade" id="nav-Comportamiento" role="tabpanel" aria-labelledby="navVinneta">
+          <div class="tab-pane fade" id="nav-Comportamiento" role="tabpanel" aria-labelledby="navComportamiento">
             <div class="row">
               <div class="col-sm-12" >
                 <div class="card" style="border-top: none">
