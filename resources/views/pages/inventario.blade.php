@@ -438,19 +438,19 @@
                     </div>
                     <div class="row">
                       <div class="col-sm-3 text-center border-top">
-                        <label for="lbl1" class="mt-4">Precio Promedio</label></br>
+                        <label for="lbl1" class="mt-4"><B>PRECIO PROMEDIO</B></label></br>
                         <label for="lbl1" id="lbl1">0</label>
                       </div>
                       <div class="col-sm-3 text-center border-top">
-                        <label for="lbl2" class="mt-4">Costo Unit.</label></br>
+                        <label for="lbl2" class="mt-4"><B>COST. UNIT. PROM.</B></label></br>
                         <label for="lbl2" id="lbl2">0</label>
                       </div>
                       <div class="col-sm-3 text-center border-top">
-                        <label for="lbl3" class="mt-4">Contribución</label></br>
+                        <label for="lbl3" class="mt-4"><B>CONTRIBUCION</B></label></br>
                         <label for="lbl3" id="lbl3">0</label>
                       </div>
                       <div class="col-sm-3 text-center border-top">
-                        <label for="lbl4" class="mt-4">% Contribución</label></br>
+                        <label for="lbl4" class="mt-4"><B>% CONTRIBUCION</B></label></br>
                         <label for="lbl4" id="lbl4">0</label>
                       </div>
                     </div>
