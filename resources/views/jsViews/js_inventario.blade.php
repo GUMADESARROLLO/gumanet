@@ -300,6 +300,15 @@ $('nav .nav.nav-tabs a').click(function(){
         case 'navVinneta':  
             getVineta(articulo_g)
         break;
+        case 'navComportamiento':  
+            var fecha = new Date();
+            var inicio = new Date(fecha.getFullYear(), (fecha.getMonth() + 1) - 3, 1);
+
+            var fechaIni = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
+            var fechaFin = fecha.getFullYear()+'-'+(fecha.getMonth()+1)+'-'+fecha.getDate();
+
+            comportamientoMensual(fechaIni,fechaFin,articulo_g);
+        break;
         default:
             alert('Al parecer alguio salio mal :(')
     }    
@@ -320,13 +329,7 @@ function getDetalleArticulo(articulo, descripcion) {
 
     $("#mdDetalleArt").modal('show');
 
-    var fecha = new Date();
-    var inicio = new Date(fecha.getFullYear(), (fecha.getMonth() + 1) - 3, 1);
-
-    var fechaIni = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
-    var fechaFin = fecha.getFullYear()+'-'+(fecha.getMonth()+1)+'-'+fecha.getDate();
-
-    comportamientoMensual(fechaIni,fechaFin,articulo);
+   
 
 }
 
