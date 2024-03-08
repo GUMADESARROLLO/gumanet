@@ -2984,25 +2984,20 @@ class dashboard_model extends Model {
 
         $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_comportamiento_mensual_articulo ?, ?, ?', [$fechaIni, $fechaFin,$articulo]);
         
-        $consult = DB::connection("sqlsrv")->select("SELECT SUM(CANTIDAD) as Cantidad, SUM(Venta) as Venta, [Costo Unitario] as Costo FROM Softland.dbo.VtasTotal_UMK WHERE Dia BETWEEN '".$fechaIni."' AND '".$fechaFin."' AND ARTICULO = '".$articulo."' AND Ruta NOT IN ('F12')
-                                                        GROUP BY [Costo Unitario]");
         $comportamiento = array();
         $categorias = array();
         $cantidadItem = $cantidadVentas = $costoUnitario = $precioProm = $porcentaje = 0;
         
-        foreach ($consult as $consul){
-            $cantidadItem = number_format($consul->Cantidad,2,'.','');
-            $cantidadVentas = number_format($consul->Venta,2,'.','');
-            $costoUnitario = number_format($consul->Costo,2,'.','');
-        }
 
         foreach ($resultados as $resultado) {
+            $cantidadVentas = $resultado->TotalVenta;
+            $costoUnitario = $resultado->costoUnitario;
             foreach ($resultado as $columna => $valor) {
-                if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' ) {
+                if ($columna !== 'ARTICULO' && $columna !== 'costoUnitario' && $columna !== 'TotalVenta' ) {
                     
                     array_push($comportamiento, floatval($valor));
                     array_push($categorias, $columna);
-                    
+                    $cantidadItem += $valor;
                 }
             }
        
@@ -3011,13 +3006,13 @@ class dashboard_model extends Model {
             $precioProm = floatval($cantidadVentas) / floatval($cantidadItem);
         }
         
-        $contribucion =floatval($cantidadVentas) - (floatval($cantidadItem) * floatval($costoUnitario));
+        $contribucion = floatval($cantidadVentas) - (floatval($cantidadItem) * floatval($costoUnitario));
         
-        if($cantidadVentas > 0){
-            $porcentaje = number_format(floatval($contribucion) / (floatval($cantidadVentas)) * 100,2,'.','');
+        if($contribucion > 0){
+            $porcentaje = number_format((floatval($cantidadVentas) / floatval($contribucion)) * 100,2,'.','');
         }
 
-        $json[0]['title'] = 'Facturado + Bonificación';
+        $json[0]['title'] = 'Articulos desplazados';
         $json[0]['precioPromedio'] = number_format($precioProm,2,'.',',');
         $json[0]['costoUnitario'] =  number_format($costoUnitario,2,'.',',');
         $json[0]['contribucion'] = number_format($contribucion,2,'.',',');
