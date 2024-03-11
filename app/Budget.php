@@ -33,8 +33,6 @@ class Budget extends Model
 
         foreach ($resultados as $resultado) {
 
-
-
             $fila = [
                 'DETALLE'  => '<a id="exp_more'.$Prefijo.'" class="exp_more'.$Prefijo.'" href="#!"><i class="material-icons expan_more">expand_more</i></a>',
                 'ARTICULO' => $resultado->ARTICULO,
@@ -53,25 +51,20 @@ class Budget extends Model
     
         $columnas_agregadas = [];
         foreach ($resultado as $columna => $valor) {
-            if ($columna !== 'ARTICULO' && $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'UND_ANUAL'  && $columna !== 'VAL_ANUAL'  && $columna !== 'UND_MES' && $columna !== 'VAL_MES' && $columna !== 'CANTI_FACT_MES' && $columna !== 'VALOR_FACT_MES'  && $columna !== 'COSTO_PROM'&& $columna !== 'TOTAL_INVENTARIO' ) {
+            if ($columna !== 'ARTICULO' &&  $columna !== 'DESCRIPCION' && $columna !== 'PRESUPUESTO' && $columna !== 'CS_VALOR' && $columna !== 'TOTAL' && $columna !== 'UND_ANUAL'  && $columna !== 'VAL_ANUAL'  && $columna !== 'UND_MES' && $columna !== 'VAL_MES' && $columna !== 'CANTI_FACT_MES' && $columna !== 'VALOR_FACT_MES'  && $columna !== 'COSTO_PROM'&& $columna !== 'TOTAL_INVENTARIO' ) {
                 
                 $fila[$columna] = $valor;
                 $nombre_columna = strstr($columna, '_', true);
 
-
                 if (!in_array($nombre_columna, $columnas_agregadas)) {
                     // Agregar el nombre de la columna al array de columnas agregadas
-                    $columnas_agregadas[] = $nombre_columna;
-        
+                    $columnas_agregadas[] = $nombre_columna;        
         
                     // Si necesitas agregar el nombre de la columna a un subarray 'FECHA'
                     $fila['FECHA'][] = [
                         'mes' => $nombre_columna,
                     ];
                 }
-
-                
-              
             }
         }
         

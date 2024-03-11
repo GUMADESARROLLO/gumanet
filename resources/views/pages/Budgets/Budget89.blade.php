@@ -14,38 +14,35 @@
 			<div class="col-sm-12">
                 <div id="Id_Progress_Bar"></div>
                 <h5 class="card-title pb-0 mb-0">Proyecto 89 </h5>
-                <p class="font-italic text-muted pt-0 mt-0">Movimientos del periodo entre <span id="spn_dtIni"></span> al <span id="spn_dtEnd"></span></p>
+                <p class="font-italic text-muted pt-0 mt-0">Articulos desplazados del <span id="spn_dtIni"></span> al <span id="spn_dtEnd"></span></p>
                 <div class="row ">
                     
 					<div class="col-sm-9 mt-4 ">	
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" ><i data-feather="search"></i></span>
-                            </div>
                             <input type="text" id="txt_Search89" class="form-control" placeholder="Buscar...">
+                            <div class="input-group-prepend">
+                                <span class="btn-change-color text-white input-group-text" id="btnCalcular" ><i data-feather="search"></i></span>
+                            </div>
+                            
                         </div>
 					</div>
 						
                     <div class="col-sm-3 border-left">
                         <div class="row ">
-                            <div class="col-sm-5 ">
+                            <div class="col-sm-6 ">
                                 <div class="form-group">                
                                     <label for="f1">Desde:</label>
                                     <input type="text" class="input-fecha" id="f1">
                                 </div>
                             </div>
-                            <div class="col-sm-5 ">
+                            <div class="col-sm-6 ">
                                 <div class="form-group">                
                                     <label for="f2">Hasta:</label>
                                     <input type="text" class="input-fecha" id="f2">
                                 </div>
                                 
                             </div>
-                            <div class="col-sm-2 mt-4 ">
-                                <a href="#!" class="btn btn-primary float-left" id="btnCalcular">
-                                    <i class="material-icons text-white mt-1"  style="font-size: 20px">filter_list_alt</i>
-                                </a>
-                            </div>
+                            
                         </div>
                     </div>  
 				</div>

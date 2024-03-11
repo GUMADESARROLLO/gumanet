@@ -94,6 +94,16 @@
     }
 
     $("#btnTable71").click( function() {
+        TblInit([], [{ "title": "DETALLE"},   
+                { "title": "ARTICULO"},
+                {"title": "DESCRIPCION"},
+                { "title": "TOTAL INVEN."},
+                { "title": "UNITS. FACT."},
+                { "title": "MONTO FACT. C$"},
+                
+                {"title": "PREC. PROM"},
+                {"title": "CONTRIBUCION"},
+                {"title": "% MARGEN BRUTO"}],'#dtProyect71',[3,4,5,6,7,8]);
         DrawTable71();
     
     });
@@ -200,7 +210,7 @@
                     "previous":   "Anterior"
                 },
                 "lengthMenu": "MOSTRAR _MENU_",
-                "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+                "emptyTable": " Calculando . . . ",
                 "search":     "BUSCAR"
             },
             'columns': Header,

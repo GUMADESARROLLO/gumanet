@@ -23,8 +23,9 @@
 
 
 <style>
-
-
+  span.btn-change-color {
+    background-color: #0072bc;
+  }
 </style>
 
 </head>
