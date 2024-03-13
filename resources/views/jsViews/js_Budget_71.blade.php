@@ -54,6 +54,7 @@
         $.each(dta.FECHA, function (i, item) {
             
             var month_UND = item.mes + '_UND'
+            var month_UND_B = item.mes + '_UND_B'
             var month_VAL = item.mes + '_VAL'
 
             thead += `<th class="center">`+item.mes+`</th>`;
@@ -61,12 +62,14 @@
             tBody +=  `<td><table class="table table-striped table-bordered table-sm">
                             <thead>
                                 <tr>
-                                    <th class="bg-blue text-light">UNITS FACT.</th>                                    
+                                    <th class="bg-blue text-light">UNITS FACT.</th>   
+                                    <th class="bg-blue text-light">UNITS BONIF.</th>                                   
                                     <th class="bg-blue text-light">MONTO FACT. C$</th>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td> <p class="text-right">`+numeral(dta[month_UND]).format('0,0')+`</p></td>
+                                    <td> <p class="text-right">`+numeral(dta[month_UND_B]).format('0,0')+`</p></td>
                                     <td> <p class="text-right">`+numeral(dta[month_VAL]).format('0,0')+`</p></td>
                                 </tr>
                             </tbody>

@@ -53,8 +53,9 @@ function Draw_Table ( callback, dta ) {
     var table = thead = tBody  = '';
     $.each(dta.FECHA, function (i, item) {
 
-        var month_UND = item.mes + '_UND'
-        var month_VAL = item.mes + '_VAL'
+        var month_UND   = item.mes + '_UND'
+        var month_UND_B = item.mes + '_UND_B'
+        var month_VAL   = item.mes + '_VAL'
 
         //var Cumpli = (( dta[month_VAL] / dta.VAL_MES ) * 100) 
         // var Cumpli = (dta[month_VAL] * 100 ) / dta.VAL_MES
@@ -86,7 +87,7 @@ function Draw_Table ( callback, dta ) {
                                 <td> <p class="text-right">`+numeral(dta.UND_MES).format('0,0')+`</p></td>
                                 <td> <p class="text-right">`+numeral(dta.VAL_MES).format('0,0')+`</p></td>
                                 <td> <p class="text-right">`+numeral(dta[month_UND]).format('0,0')+`</p></td>
-                                <td> <p class="text-right">`+numeral(444).format('0,0')+`</p></td>
+                                <td> <p class="text-right">`+numeral(dta[month_UND_B]).format('0,0')+`</p></td>
                                 <td> <p class="text-right">`+numeral(dta[month_VAL]).format('0,0')+`</p></td>
                                 <td> <p class="text-right">`+numeral(Cumpli).format('0,0')+`</p></td>
                                 <td> <p class="text-right">`+ numeral(prec_prom).format('0,0') +`</p></td>
