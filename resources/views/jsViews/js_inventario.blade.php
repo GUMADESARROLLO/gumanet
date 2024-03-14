@@ -718,7 +718,7 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
                         }
                     },
                 },
-                tooltip: {pointFormat : '<span style="color:black"><b>{point.y:,.0f} Items </b></span>'},
+                tooltip: {pointFormat : '<span style="color:black"><b>{point.y:,.0f} UNTS </b></span>'},
                 legend: {
                     align: 'center',
                     verticalAlign: 'top',

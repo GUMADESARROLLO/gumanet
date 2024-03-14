@@ -436,7 +436,7 @@
                         <a href="#!" id="btnSearchComport" class="btn btn-primary btn-sm mt-4">Buscar</a>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="display:none">
                       <div class="col-sm-3 text-center border-top">
                         <label for="lbl1" class="mt-4"><B>PRECIO PROMEDIO</B></label></br>
                         <label for="lbl1" id="lbl1">0</label>

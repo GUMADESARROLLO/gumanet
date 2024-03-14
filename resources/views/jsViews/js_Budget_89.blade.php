@@ -67,6 +67,7 @@ function Draw_Table ( callback, dta ) {
         var contribucion =  (dta.VAL_MES - ( dta[month_UND] * dta.COSTO_PROM) ); 
         var prom_contribucion = ( dta.VALOR_FACT_MES / contribucion ) *100
 
+        var TotalUnits = isValue(dta[month_UND],0,true)  + isValue(dta[month_UND_B],0,true) ;
 
         thead += `<th class="center">`+item.mes+`</th>`;
 
@@ -76,10 +77,11 @@ function Draw_Table ( callback, dta ) {
                                 <th class="bg-blue text-light">UNITS. META</th>
                                 <th class="bg-blue text-light">MONTO VALOR C$</th>
                                 <th class="bg-blue text-light">UNITS FACT.</th>     
-                                <th class="bg-blue text-light">UNITS BONIF.</th>                                    
+                                <th class="bg-blue text-light">UNITS BONIF.</th>   
+                                <th class="bg-blue text-light">UNITS TOTAL.</th>                                 
                                 <th class="bg-blue text-light">MONTO FACT. C$</th>
                                 <th class="bg-blue text-light">% CUMP. UNITS</th>
-                                <th class="bg-blue text-light">PREC. PROM.</th>
+                                
                         </thead>
                         <tbody>
                             <tr>
@@ -87,9 +89,9 @@ function Draw_Table ( callback, dta ) {
                                 <td> <p class="text-right">`+numeral(dta.VAL_MES).format('0,0')+`</p></td>
                                 <td> <p class="text-right">`+numeral(dta[month_UND]).format('0,0')+`</p></td>
                                 <td> <p class="text-right">`+numeral(dta[month_UND_B]).format('0,0')+`</p></td>
+                                <td> <p class="text-right">`+numeral(TotalUnits).format('0,0') +`</p></td>
                                 <td> <p class="text-right">`+numeral(dta[month_VAL]).format('0,0')+`</p></td>
                                 <td> <p class="text-right">`+numeral(Cumpli).format('0,0')+`</p></td>
-                                <td> <p class="text-right">`+ numeral(prec_prom).format('0,0') +`</p></td>
                             </tr>
                         </tbody>
                     </table></td>`;
