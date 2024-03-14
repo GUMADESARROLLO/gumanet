@@ -80,7 +80,6 @@ function Draw_Table ( callback, dta ) {
                                 <th class="bg-blue text-light">MONTO FACT. C$</th>
                                 <th class="bg-blue text-light">% CUMP. UNITS</th>
                                 <th class="bg-blue text-light">PREC. PROM.</th>
-                                <th class="bg-blue text-light">% MARGEN BRUTO </th>
                         </thead>
                         <tbody>
                             <tr>
@@ -91,7 +90,6 @@ function Draw_Table ( callback, dta ) {
                                 <td> <p class="text-right">`+numeral(dta[month_VAL]).format('0,0')+`</p></td>
                                 <td> <p class="text-right">`+numeral(Cumpli).format('0,0')+`</p></td>
                                 <td> <p class="text-right">`+ numeral(prec_prom).format('0,0') +`</p></td>
-                                <td> <p class="text-right">`+ numeral(prom_contribucion).format('0,0')+`</p></td>
                             </tr>
                         </tbody>
                     </table></td>`;
