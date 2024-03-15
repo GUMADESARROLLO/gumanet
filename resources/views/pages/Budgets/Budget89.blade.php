@@ -23,7 +23,6 @@
                             <div class="input-group-prepend">
                                 <span class="btn-change-color text-white input-group-text" id="btnCalcular" ><i data-feather="search"></i></span>
                             </div>
-                            
                         </div>
 					</div>
 						

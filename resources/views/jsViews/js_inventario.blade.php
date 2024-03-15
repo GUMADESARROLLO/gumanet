@@ -321,6 +321,10 @@ $('nav .nav.nav-tabs a').click(function(){
            
             comportamientoMensual(fechaIni, fechaFin, articulo_g, 1);
         break;
+
+        case 'navTransito':  
+            
+        break;
         default:
             alert('Al parecer alguio salio mal :(')
     }    
@@ -663,149 +667,155 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
 }
 
 
-    function comportamientoMensual(fechaIni, fechaFin, articulo, op) {
-        var temporal = "";
-        $('#lbl1').text('0');
-        $("#lbl2").text('0');
-        $("#lbl3").text('0');
-        $("#lbl4").text('0');
-        $("#comportamientoMen")
-        .empty()
-        .append(`<div style="height:400px; background:#ffff; padding:20px">
-                    <div class="d-flex align-items-center">
-                        <strong class="text-info">Cargando...</strong>
-                        <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
-                    </div>
-                </div>`);
-        
-             
-        $.getJSON("getComportamientoMensual/"+fechaIni+"/"+fechaFin+"/"+articulo+"/"+op, function(json) {
+function comportamientoMensual(fechaIni, fechaFin, articulo, op) {
+    var temporal = "";
+    $('#lbl1').text('0');
+    $("#lbl2").text('0');
+    $("#lbl3").text('0');
+    $("#lbl4").text('0');
+    $("#comportamientoMen")
+    .empty()
+    .append(`<div style="height:400px; background:#ffff; padding:20px">
+                <div class="d-flex align-items-center">
+                    <strong class="text-info">Cargando...</strong>
+                    <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
+                </div>
+            </div>`);
+    
             
-            newseries = {};
-            category = [];
-            units = "";
-            contr = "";
-            if(op == 1){
-                units = 'UNITS';
-            }
-            if(op == 2){
-                contr = 'C$';
-            }
-            $.each(json, function (i, item) { 
-                
-                $('#lbl1').text(item['precioPromedio']);
-                $("#lbl2").text(item['costoUnitario']);
-                $("#lbl3").text(item['contribucion']);
-                $("#lbl4").text(item['porcentajeContribucion']);
-                
-                newseries.data = item['data'];
-                newseries.name = item['title'];
-                category = item['categories'];
-                newseries.colorIndex = 0;
-                                
-            })
-          
-            var chart = new Highcharts.Chart('comportamientoMen',{
-                chart: {
-                    type: 'spline'
-                },
-                exporting: {enabled: false},
+    $.getJSON("getComportamientoMensual/"+fechaIni+"/"+fechaFin+"/"+articulo+"/"+op, function(json) {
+        
+        newseries = {};
+        category = [];
+        units = "";
+        contr = "";
+        if(op == 1){
+            units = 'UNITS';
+        }
+        if(op == 2){
+            contr = 'C$';
+        }
+        $.each(json, function (i, item) { 
+            
+            $('#lbl1').text(item['precioPromedio']);
+            $("#lbl2").text(item['costoUnitario']);
+            $("#lbl3").text(item['contribucion']);
+            $("#lbl4").text(item['porcentajeContribucion']);
+            
+            newseries.data = item['data'];
+            newseries.name = item['title'];
+            category = item['categories'];
+            newseries.colorIndex = 0;
+                            
+        })
+        
+        var chart = new Highcharts.Chart('comportamientoMen',{
+            chart: {
+                type: 'spline'
+            },
+            exporting: {enabled: false},
+            title: {
+                text: `<p class="font-weight-bolder">Comportamiento</p>`
+            },
+            xAxis: {
+                categories: category
+            },
+            yAxis: {
                 title: {
-                    text: `<p class="font-weight-bolder">Comportamiento</p>`
-                },
-                xAxis: {
-                    categories: category
-                },
-                yAxis: {
-                    title: {
-                        text: ''
-                    }                
-                },
-                tooltip: {pointFormat : '<b>'+contr+' </b><span style="color:black"><b>{point.y:,.0f} '+units+' </b></span>'},
-                plotOptions: {
-                    series: {
-                        allowPointSelect: false,
-                        borderWidth: 0,
-                        dataLabels: {
-                            enabled: true,
-                            formatter: function() {
-                                return FormatPretty(this.y);
-                            }
-                        },
-                        events: {
-                            legendItemClick: function() {
-                                return false;
-                            }
+                    text: ''
+                }                
+            },
+            tooltip: {pointFormat : '<b>'+contr+' </b><span style="color:black"><b>{point.y:,.0f} '+units+' </b></span>'},
+            plotOptions: {
+                series: {
+                    allowPointSelect: false,
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function() {
+                            return FormatPretty(this.y);
                         }
                     },
-                },
-                legend: {
-                    align: 'center',
-                    verticalAlign: 'top',
-                    borderWidth: 0
-                },
-                series: [newseries],
-                responsive: {
-                    rules: [{
-                        condition: {
-                        maxWidth: 500
-                        },
-                        chartOptions: {
-                            legend: {
-                            layout: 'horizontal',
-                            align: 'center',
-                            verticalAlign: 'bottom'
-                            }
+                    events: {
+                        legendItemClick: function() {
+                            return false;
                         }
-                    }]
-                }
-            });
-            
-        })
-    }
-
-    $("#btnSearchComport").click(function(){
-        var fechaIni = $("#fci").val();
-        var fechaFin = $("#fcf").val();
-        var articulo = $("#idArti").val();
-        var op = $("#orderComportamiento").val();
-
-        comportamientoMensual(fechaIni, fechaFin, articulo, op);
-
+                    }
+                },
+            },
+            legend: {
+                align: 'center',
+                verticalAlign: 'top',
+                borderWidth: 0
+            },
+            series: [newseries],
+            responsive: {
+                rules: [{
+                    condition: {
+                    maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+        });
+        
     })
+}
 
-    function FormatPretty(number) {
-        var numberString;
-        var scale = '';
-        if( isNaN( number ) || !isFinite( number ) ) {
-            numberString = 'N/A';
-        } else {
-            var negative = number < 0;
-            number = negative? -number : number;
+$("#btnSearchComport").click(function(){
+    var fechaIni = $("#fci").val();
+    var fechaFin = $("#fcf").val();
+    var articulo = $("#idArti").val();
+    var op = $("#orderComportamiento").val();
 
-            if( number < 1000 ) {
-                scale = '';
-            } else if( number < 1000000 ) {
-                scale = 'K';
-                number = number/1000;
-            } else if( number < 1000000000 ) {
-                scale = 'M';
-                number = number/1000000;
-            } else if( number < 1000000000000 ) {
-                scale = 'B';
-                number = number/1000000000;
-            } else if( number < 1000000000000000 ) {
-                scale = 'T';
-                number = number/1000000000000;
-            }
-            var maxDecimals = 0;
-            if( number < 10 && scale != '' ) {
-                maxDecimals = 1;
-            }
-            number = negative ? -number : number;
-            numberString = number.toFixed( maxDecimals );
-            numberString += scale
+    comportamientoMensual(fechaIni, fechaFin, articulo, op);
+
+})
+
+function FormatPretty(number) {
+    var numberString;
+    var scale = '';
+    if( isNaN( number ) || !isFinite( number ) ) {
+        numberString = 'N/A';
+    } else {
+        var negative = number < 0;
+        number = negative? -number : number;
+
+        if( number < 1000 ) {
+            scale = '';
+        } else if( number < 1000000 ) {
+            scale = 'K';
+            number = number/1000;
+        } else if( number < 1000000000 ) {
+            scale = 'M';
+            number = number/1000000;
+        } else if( number < 1000000000000 ) {
+            scale = 'B';
+            number = number/1000000000;
+        } else if( number < 1000000000000000 ) {
+            scale = 'T';
+            number = number/1000000000000;
         }
-        return numberString;
+        var maxDecimals = 0;
+        if( number < 10 && scale != '' ) {
+            maxDecimals = 1;
+        }
+        number = negative ? -number : number;
+        numberString = number.toFixed( maxDecimals );
+        numberString += scale
     }
+    return numberString;
+}
+
+
+$("#btnSaveTransito").click(function(){
+    
+
+})
 </script>
