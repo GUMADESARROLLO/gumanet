@@ -138,7 +138,7 @@ Route::get('/valBodegas','dashboard_controller@getValBodegas');
 Route::post('/dataCate', 'dashboard_controller@ventaXCategorias');
 Route::get('/getRecuRowsByRoutes/{mes}/{anio}/{pageName}','dashboard_controller@getRecuRowsByRoutes');
 
-Route::get('/getComportamientoMensual/{fechaIni}/{fechaFin}/{articulo}','dashboard_controller@getComportamientoMensual');
+Route::get('/getComportamientoMensual/{fechaIni}/{fechaFin}/{articulo}/{op}','dashboard_controller@getComportamientoMensual');
 
 //RUTAS REPORTES VENTAS
 Route::post('/ventasDetalle','reportes_controller@detalleVentas');
