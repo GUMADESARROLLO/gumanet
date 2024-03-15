@@ -250,6 +250,18 @@ $( "#orderByDate").change(function() {
     liquidacionPorMeses(valor)
 });
 
+$( "#orderComportamiento").change(function() {
+    valor = $( this ).val()  
+    var articulo = $("#idArti").val();
+    var fecha = new Date();
+    var inicio = new Date(fecha.getFullYear(), (fecha.getMonth() + 1) - 3, 1);
+
+    var fechaIni = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
+    var fechaFin = fecha.getFullYear()+'-'+(fecha.getMonth()+1)+'-'+fecha.getDate();
+    
+    comportamientoMensual(fechaIni, fechaFin, articulo, valor);
+});
+
 $( "#InputDtShowColumnsArtic").change(function() {
     var table = $('#dtInventarioArticulos').DataTable();
     table.page.len(this.value).draw();
@@ -306,8 +318,8 @@ $('nav .nav.nav-tabs a').click(function(){
 
             var fechaIni = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
             var fechaFin = fecha.getFullYear()+'-'+(fecha.getMonth()+1)+'-'+fecha.getDate();
-
-            comportamientoMensual(fechaIni,fechaFin,articulo_g);
+           
+            comportamientoMensual(fechaIni, fechaFin, articulo_g, 1);
         break;
         default:
             alert('Al parecer alguio salio mal :(')
@@ -651,7 +663,7 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
 }
 
 
-    function comportamientoMensual(fechaIni, fechaFin, articulo) {
+    function comportamientoMensual(fechaIni, fechaFin, articulo, op) {
         var temporal = "";
         $('#lbl1').text('0');
         $("#lbl2").text('0');
@@ -667,10 +679,18 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
                 </div>`);
         
              
-        $.getJSON("getComportamientoMensual/"+fechaIni+"/"+fechaFin+"/"+articulo, function(json) {
+        $.getJSON("getComportamientoMensual/"+fechaIni+"/"+fechaFin+"/"+articulo+"/"+op, function(json) {
             
             newseries = {};
             category = [];
+            units = "";
+            contr = "";
+            if(op == 1){
+                units = 'UNITS';
+            }
+            if(op == 2){
+                contr = 'C$';
+            }
             $.each(json, function (i, item) { 
                 
                 $('#lbl1').text(item['precioPromedio']);
@@ -701,6 +721,7 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
                         text: ''
                     }                
                 },
+                tooltip: {pointFormat : '<b>'+contr+' </b><span style="color:black"><b>{point.y:,.0f} '+units+' </b></span>'},
                 plotOptions: {
                     series: {
                         allowPointSelect: false,
@@ -718,7 +739,7 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
                         }
                     },
                 },
-                tooltip: {pointFormat : '<span style="color:black"><b>{point.y:,.0f} Items </b></span>'},
+                
                 legend: {
                     align: 'center',
                     verticalAlign: 'top',
@@ -748,8 +769,9 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
         var fechaIni = $("#fci").val();
         var fechaFin = $("#fcf").val();
         var articulo = $("#idArti").val();
+        var op = $("#orderComportamiento").val();
 
-        comportamientoMensual(fechaIni, fechaFin, articulo);
+        comportamientoMensual(fechaIni, fechaFin, articulo, op);
 
     })
 
