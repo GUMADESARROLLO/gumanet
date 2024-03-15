@@ -739,7 +739,6 @@ function format ( callback, bodega_, articulo_, Unidad_ ) {
                         }
                     },
                 },
-                
                 legend: {
                     align: 'center',
                     verticalAlign: 'top',

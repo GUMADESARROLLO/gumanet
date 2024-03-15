@@ -87,11 +87,12 @@ class inventario_controller extends Controller
 		return response()->json($obj);
     }
 
-	public function getArticulos() {
+	public function getArticulos(Request $request)  {
 		// $obj = inventario_model::getArticulos();
 		// return response()->json($obj);
+		$Company = $request->session()->get('company_id');
 
-		$Key = 'gnet_Inventario_getArticulos';
+		$Key = 'gnet_Inventario_getArticulos_'.$Company;
 		$cached = Redis::get($Key);
 		if ($cached) {
 			$obj = $cached;

@@ -3012,7 +3012,7 @@ class dashboard_model extends Model {
             $porcentaje = number_format((floatval($cantidadVentas) / floatval($contribucion)) * 100,2,'.','');
         }
 
-        $json[0]['title'] = 'Articulos desplazados';
+        $json[0]['title'] = 'Unidades Facturadas (Incluyen Bonificados)';
         $json[0]['precioPromedio'] = number_format($precioProm,2,'.',',');
         $json[0]['costoUnitario'] =  number_format($costoUnitario,2,'.',',');
         $json[0]['contribucion'] = number_format($contribucion,2,'.',',');
