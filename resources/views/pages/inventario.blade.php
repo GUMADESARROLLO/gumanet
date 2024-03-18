@@ -436,7 +436,7 @@
                           <label for="orderComportamiento" class="text-muted">Filtrar por</label>
                           <select class="form-control" id="orderComportamiento">
                             <option value="1">UNIDADES</option>
-                            <option value="2">CONTRIBUCION</option>
+                            <option value="2">MONTO FACTURADO</option>
                           </select>
                         </div>
                       </div>
