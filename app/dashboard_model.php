@@ -3022,4 +3022,45 @@ class dashboard_model extends Model {
         return $json;
     }
 
+    public static function getComportamientoMensualVentas($fechaIni, $fechaFin, $articulo){
+
+        $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_comportamiento_mensual_articulo_venta ?, ?, ?', [$fechaIni, $fechaFin,$articulo]);
+        
+        $comportamiento = array();
+        $categorias = array();
+        $cantidadItem = $cantidadVentas = $costoUnitario = $precioProm = $porcentaje = 0;
+        
+
+        foreach ($resultados as $resultado) {
+            $cantidadItem = $resultado->CANTIDAD;
+            $costoUnitario = $resultado->costoUnitario;
+            foreach ($resultado as $columna => $valor) {
+                if ($columna !== 'ARTICULO' && $columna !== 'costoUnitario' && $columna !== 'CANTIDAD' ) {
+                    
+                    array_push($comportamiento, floatval($valor));
+                    array_push($categorias, $columna);
+                    $cantidadVentas += floatval($valor);
+                }
+            }
+       
+        }
+        if($cantidadItem > 0){
+            $precioProm = floatval($cantidadVentas) / floatval($cantidadItem);
+        }
+        
+        $contribucion = floatval($cantidadVentas) - (floatval($cantidadItem) * floatval($costoUnitario));
+        
+        if($contribucion > 0){
+            $porcentaje = number_format((floatval($cantidadVentas) / floatval($contribucion)) * 100,2,'.','');
+        }
+
+        $json[0]['title'] = 'Articulos desplazados';
+        $json[0]['precioPromedio'] = number_format($precioProm,2,'.',',');
+        $json[0]['costoUnitario'] =  number_format($costoUnitario,2,'.',',');
+        $json[0]['contribucion'] = number_format($contribucion,2,'.',',');
+        $json[0]['porcentajeContribucion'] = $porcentaje;
+        $json[0]['data'] = $comportamiento;
+        $json[0]['categories'] = $categorias;
+        return $json;
+    }
 }

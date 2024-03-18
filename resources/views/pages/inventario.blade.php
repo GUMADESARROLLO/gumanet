@@ -418,8 +418,7 @@
                 <div class="card" style="border-top: none">
                   <div class="card-body">
                     <div class="row">
-                    <div class="col-sm-3">
-                    </div>
+                    
                       <div class="col-sm-4">
                         <div class="form-group">
                           <label for="fci">Desde</label>
@@ -430,6 +429,15 @@
                         <div class="form-group">
                           <label for="fcf">Hasta</label>
                           <input type="text" class="input-fecha" id="fcf">
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label for="orderComportamiento" class="text-muted">Filtrar por</label>
+                          <select class="form-control" id="orderComportamiento">
+                            <option value="1">UNIDADES</option>
+                            <option value="2">MONTO FACTURADO</option>
+                          </select>
                         </div>
                       </div>
                       <div class="col-sm-1">
