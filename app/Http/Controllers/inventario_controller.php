@@ -82,10 +82,25 @@ class inventario_controller extends Controller
 		return response()->json($obj);
     }
 
+	public function getTransito() {
+		$obj = inventario_model::getTransito();
+		return response()->json($obj);
+    }
+
 	public function invenVencidos() {
 		$obj = inventario_model::invenVencidos();
 		return response()->json($obj);
     }
+
+	public function InventarioTransito(){
+		$data = array(
+    		'page'		=> 'Inventario Transito',
+    		'name'		=> 'GUMA@NET',
+    		'hideTransaccion' => ''
+    	);
+
+    	return view('pages.Transito.Table', $data);
+	}
 
 	public function getArticulos(Request $request)  {
 		// $obj = inventario_model::getArticulos();
