@@ -242,15 +242,22 @@ function getDetalleArticulo(Articulos,Descripcion,Undiad) {
         }
     })
 
-    var fecha = new Date();
-    var inicio = new Date(fecha.getFullYear(), (fecha.getMonth() + 1) - 3, 1);
-
-    var fechaIni = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
-    var fechaFin = fecha.getFullYear()+'-'+(fecha.getMonth()+1)+'-'+fecha.getDate();
-
-    comportamientoMensual(fechaIni,fechaFin,Articulos);
-
 }
+
+$('nav .nav.nav-tabs a').click(function(){
+    var idNav = $(this).attr('id');
+    switch(idNav) {
+        case 'navComportamiento':  
+            var fecha = new Date();
+            var inicio = new Date(fecha.getFullYear(), (fecha.getMonth() + 1) - 3, 1);
+
+            var fechaIni = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
+            var fechaFin = fecha.getFullYear()+'-'+(fecha.getMonth()+1)+'-'+fecha.getDate();
+           
+            comportamientoMensual(fechaIni, fechaFin, articulo_g, 1);
+        break;
+    }    
+})
 
 $("#btnSearch").click(function() {    
     var tbody = '';
@@ -455,9 +462,25 @@ function ShowLotes(ID,Unidad_,articulo_){
 
 }
 
-    function comportamientoMensual(fechaIni, fechaFin, articulo) {
+    $( "#orderComportamiento").change(function() {
+        valor = $( this ).val()  
+        var articulo = $("#idArti").val();
+        var fecha = new Date();
+        var inicio = new Date(fecha.getFullYear(), (fecha.getMonth() + 1) - 3, 1);
+
+        var fechaIni = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
+        var fechaFin = fecha.getFullYear()+'-'+(fecha.getMonth()+1)+'-'+fecha.getDate();
+        
+        comportamientoMensual(fechaIni, fechaFin, articulo, valor);
+    });
+
+    function comportamientoMensual(fechaIni, fechaFin, articulo, op) {
         var temporal = "";
-        $("#comportamientoPro")
+        $('#lbl1').text('0');
+        $("#lbl2").text('0');
+        $("#lbl3").text('0');
+        $("#lbl4").text('0');
+        $("#comportamientoMen")
         .empty()
         .append(`<div style="height:400px; background:#ffff; padding:20px">
                     <div class="d-flex align-items-center">
@@ -465,17 +488,26 @@ function ShowLotes(ID,Unidad_,articulo_){
                         <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
                     </div>
                 </div>`);
-                
         
-
-      
-        $.getJSON("getComportamientoMensual/"+fechaIni+"/"+fechaFin+"/"+articulo, function(json) {
+             
+        $.getJSON("getComportamientoMensual/"+fechaIni+"/"+fechaFin+"/"+articulo+"/"+op, function(json) {
             
             newseries = {};
             category = [];
+            units = "";
+            contr = "";
+            if(op == 1){
+                units = 'UNITS';
+            }
+            if(op == 2){
+                contr = 'C$';
+            }
             $.each(json, function (i, item) { 
-
-                temporal = '<span style="color:black"><b>{point.y:,.0f}</b></span>';
+                
+                $('#lbl1').text(item['precioPromedio']);
+                $("#lbl2").text(item['costoUnitario']);
+                $("#lbl3").text(item['contribucion']);
+                $("#lbl4").text(item['porcentajeContribucion']);
                 
                 newseries.data = item['data'];
                 newseries.name = item['title'];
@@ -483,7 +515,8 @@ function ShowLotes(ID,Unidad_,articulo_){
                 newseries.colorIndex = 0;
                                 
             })
-            var chart = new Highcharts.Chart('comportamientoPro',{
+          
+            var chart = new Highcharts.Chart('comportamientoMen',{
                 chart: {
                     type: 'spline'
                 },
@@ -499,6 +532,7 @@ function ShowLotes(ID,Unidad_,articulo_){
                         text: ''
                     }                
                 },
+                tooltip: {pointFormat : '<b>'+contr+' </b><span style="color:black"><b>{point.y:,.0f} '+units+' </b></span>'},
                 plotOptions: {
                     series: {
                         allowPointSelect: false,
@@ -516,7 +550,7 @@ function ShowLotes(ID,Unidad_,articulo_){
                         }
                     },
                 },
-                tooltip: {},
+                
                 legend: {
                     align: 'center',
                     verticalAlign: 'top',
@@ -538,6 +572,7 @@ function ShowLotes(ID,Unidad_,articulo_){
                     }]
                 }
             });
+            
         })
     }
 
@@ -545,8 +580,9 @@ function ShowLotes(ID,Unidad_,articulo_){
         var fechaIni = $("#fci").val();
         var fechaFin = $("#fcf").val();
         var articulo = $("#idArti").val();
+        var op = $("#orderComportamiento").val();
 
-        comportamientoMensual(fechaIni, fechaFin, articulo);
+        comportamientoMensual(fechaIni, fechaFin, articulo, op);
 
     })
 

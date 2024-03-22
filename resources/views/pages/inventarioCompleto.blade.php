@@ -321,32 +321,60 @@
           </div>
 
           <div class="tab-pane fade" id="nav-comport" role="tabpanel" aria-labelledby="navComportamiento">
-            <div class="row">
-              <div class="col-sm-12">
+          <div class="row">
+              <div class="col-sm-12" >
                 <div class="card" style="border-top: none">
                   <div class="card-body">
                     <div class="row">
-                      <div class="col-sm-3">
+                    
+                      <div class="col-sm-4">
                         <div class="form-group">
                           <label for="fci">Desde</label>
                           <input type="text" class="input-fecha" id="fci">
                         </div>
                       </div>
-                      <div class="col-sm-3">
+                      <div class="col-sm-4">
                         <div class="form-group">
                           <label for="fcf">Hasta</label>
                           <input type="text" class="input-fecha" id="fcf">
                         </div>
                       </div>
-                      <div class="col-sm-3">
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label for="orderComportamiento" class="text-muted">Filtrar por</label>
+                          <select class="form-control" id="orderComportamiento">
+                            <option value="1">UNIDADES</option>
+                            <option value="2">CONTRIBUCION</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-1">
                         <a href="#!" id="btnSearchComport" class="btn btn-primary btn-sm mt-4">Buscar</a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3 text-center border-top">
+                        <label for="lbl1" class="mt-4"><B>PRECIO PROMEDIO</B></label></br>
+                        <label for="lbl1" id="lbl1">0</label>
+                      </div>
+                      <div class="col-sm-3 text-center border-top">
+                        <label for="lbl2" class="mt-4"><B>COST. UNIT. PROM.</B></label></br>
+                        <label for="lbl2" id="lbl2">0</label>
+                      </div>
+                      <div class="col-sm-3 text-center border-top">
+                        <label for="lbl3" class="mt-4"><B>CONTRIBUCION</B></label></br>
+                        <label for="lbl3" id="lbl3">0</label>
+                      </div>
+                      <div class="col-sm-3 text-center border-top">
+                        <label for="lbl4" class="mt-4"><B>% CONTRIBUCION</B></label></br>
+                        <label for="lbl4" id="lbl4">0</label>
                       </div>
                     </div>
                   </div>
                 </div>
                     <div class="graf col-sm-12 mt-3">
                         <input type="text" id="idArti" style="display: none;">
-                        <div class="container-rvts" id="comportamientoPro" style="width: 100%; margin: 0 auto;"></div>
+                        <div id="comportamientoMen" style="width: 100%; margin: 0 auto;"></div>
                     </div>
               </div>
             </div>
