@@ -16,6 +16,9 @@ use App\tbl_temporal;
 use DataTables;
 use DB;
 use Illuminate\Http\Request;
+use CodersFree\Date\Date;
+
+
 class inventario_model extends Model {
     
     public static function getArticulos() {        
@@ -283,18 +286,11 @@ class inventario_model extends Model {
         $query = array();
         $i=0;
 
-        
-
-       
-
-        
-
         $query1 = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
         foreach ($query1 as $key) {
 
             $ArticuloVinneta      = ArticuloVinneta::WHERE('ARTICULO',$key['ARTICULO'])->get();
             $retVal = (count($ArticuloVinneta) >0) ? 'VIÑETA' : '' ;
-
 
             $query[$i]['ARTICULO']          = $key['ARTICULO'];
             $query[$i]['DESCRIPCION']       = $key['DESCRIPCION'];
@@ -306,6 +302,28 @@ class inventario_model extends Model {
         $sql_server->close();
 
         return $query;
+    }
+
+    public static function getTransito() {
+        $sql_server = new \sql_server();        
+        $sql_exec = "SELECT T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD, SUM(T0.TOTAL) TOTAL FROM GNET_INVENTARIO_UNIFICADO_TRANSITO T0 WHERE T0.TOTAL > 0 GROUP BY T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD";
+        $Array = array();    
+
+        $result = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
+        foreach ($result as $k => $v) {
+            $Array[$k] = [
+                'ARTICULO'          => $v['ARTICULO'],
+                'DESCRIPCION'       => strtoupper($v['DESCRIPCION']),
+                'UNIDAD'            => $v['UNIDAD'],
+                'CANT_DISPONIBLE'   => number_format($v['TOTAL'], 2),
+                'FECHA_ESTIMADA'    => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
+                'FECHA_PEDIDO'      => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
+                'CANTIDAD'          => 9999999,
+            ];            
+        }
+        $sql_server->close();
+
+        return $Array;
     }
 
     public static function getInventarioTotalizado() {

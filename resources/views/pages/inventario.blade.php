@@ -158,6 +158,7 @@
             <a class="nav-item nav-link" id="navIndicadores" data-toggle="tab" href="#nav-Indicadores" role="tab" aria-controls="nav-Indicadores" aria-selected="false">Indicadores</a>
             <a class="nav-item nav-link" id="navVinneta" data-toggle="tab" href="#nav-Vinneta" role="tab" aria-controls="nav-Vineta" aria-selected="false">Viñeta</a>
             <a class="nav-item nav-link" id="navComportamiento" data-toggle="tab" href="#nav-Comportamiento" role="tab" aria-controls="nav-Comportamiento" aria-selected="false">Comportamiento</a>
+            <a class="nav-item nav-link" id="navTransito" data-toggle="tab" href="#nav-Transito" role="tab" aria-controls="nav-Transito" aria-selected="false">Transito</a>
             
           </div>
         </nav>
@@ -468,6 +469,111 @@
                         <input type="text" id="idArti" style="display: none;">
                         <div id="comportamientoMen" style="width: 100%; margin: 0 auto;"></div>
                     </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="nav-Transito" role="tabpanel" aria-labelledby="navTransito">
+
+          
+            
+            <div class="row">
+              <div class="col-sm-12" >
+                
+                <div class="card" style="border-top: none">
+                  <div class="card-body">
+                  
+                    <div class="form-row">     
+                                    
+                      <div class="col-sm-5">
+                        <div class="form-group">
+                          <input type="text" class="input-fecha" id="fci">
+                          <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                        </div>
+                      </div>
+                      <div class="col-sm-5">
+                        <div class="form-group">
+                          <input type="text" class="input-fecha" id="fcf">
+                          <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                        </div>
+                      </div>
+                      <div class="col-auto my-0">
+                        <button type="button" class="btn btn-primary btn-sm">Buscar</button>
+                      </div>
+                      <div class="col-auto my-0">
+                        <button type="button" class="btn btn-success btn-sm" id="btnSaveTransito">Guardar</button>
+                      </div>
+
+                    
+                    </div>
+                  </div>
+                </div>
+                <div class="graf col-sm-12 mt-3">
+                  <div class="row" >
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label for="fci">FECHA ESTIMADA:</label>
+                        <input type="text" class="input-fecha" id="">
+                        <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label for="fcf">FECHA PEDIDO:</label>
+                        <input type="text" class="input-fecha" id="">
+                        <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                      </div>
+                    </div>
+                  
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">DOCUMENTO:</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">CANTIDAD:</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                      </div>
+                    </div>
+                  
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                          <label for="exampleFormControlSelect1">MERCADO:</label>
+                          <select class="form-control" id="exampleFormControlSelect1">
+                            <option>N/D</option>
+                            <option>PRIVADOR</option>
+                            <option>INSTITUCION</option>
+                          </select>
+                          <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                          <label for="exampleFormControlSelect1">MIFIC:</label>
+                          <select class="form-control" id="exampleFormControlSelect1">
+                            <option>N/D</option>
+                            <option>SI</option>
+                            <option>NO</option>
+                          </select>
+                        <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 mb-3">
+                      <label for="validationTextarea">OBSERVACIONES: </label>
+                      <textarea class="form-control" id="validationTextarea" placeholder="Required example textarea" required></textarea>
+                      <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                    </div>
+
+                  </div>
+                </div>
               </div>
             </div>
           </div>
