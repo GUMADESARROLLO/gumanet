@@ -45,7 +45,7 @@
   <!--MODAL: DETALLE DE ARTICULO-->
 <div class="modal fade bd-example-modal-xl" data-backdrop="static" data-keyboard="false" id="mdDetalleArt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
+    <div class="modal-content" id="id_form_save">
       <div class="modal-header d-block">
         <h5 class="modal-title text-center" id="tArticulo"></h5>
       </div>
@@ -64,67 +64,67 @@
                   <div class="card-body">
                     <div class="col-sm-12 mt-3">
                         <div class="row" >
-                            <div class="col-sm-6">
+                          <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="fci">FECHA ESTIMADA:</label>
-                                <input type="text" class="input-fecha" id="">
-                                <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                                <label for="date_estimada">FECHA ESTIMADA:</label>
+                                <input type="text" class="input-fecha" id="date_estimada" >
+                                <small id="alert_fecha_estimada" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
                             </div>
-                            </div>
+                          </div>
 
-                            <div class="col-sm-6">
+                          <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="fcf">FECHA PEDIDO:</label>
-                                <input type="text" class="input-fecha" id="">
-                                <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                                <label for="date_pedido">FECHA PEDIDO:</label>
+                                <input type="text" class="input-fecha" id="date_pedido" >
+                                <small id="alert_fecha_pedido" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
                             </div>
-                            </div>
+                          </div>
                         
-                            <div class="col-sm-3">
+                          <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">DOCUMENTO:</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                                <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                                <input type="text" class="form-control" id="txtDocuments" >
+                                <small id="alert_documento" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
                             </div>
-                            </div>
+                          </div>
 
-                            <div class="col-sm-3">
+                          <div class="col-sm-3">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">CANTIDAD:</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                                <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                                <label for="txtCantidad">CANTIDAD:</label>
+                                <input type="text" class="form-control" id="txtCantidad">
+                                <small id="alert_cantidad" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
                             </div>
-                            </div>
+                          </div>
                         
-                            <div class="col-sm-3">
+                          <div class="col-sm-3">
                             <div class="form-group">
-                                <label for="exampleFormControlSelect1">MERCADO:</label>
-                                <select class="form-control" id="exampleFormControlSelect1">
+                                <label for="slcMercado">MERCADO:</label>
+                                <select class="form-control" id="slcMercado">
                                     <option>N/D</option>
                                     <option>PRIVADOR</option>
                                     <option>INSTITUCION</option>
                                 </select>
-                                <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                                <small id="alert_mercado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
                             </div>
-                            </div>
+                          </div>
 
-                            <div class="col-sm-3">
+                          <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">MIFIC:</label>
-                                <select class="form-control" id="exampleFormControlSelect1">
+                                <select class="form-control" id="slcMIFIC">
                                     <option>N/D</option>
                                     <option>SI</option>
                                     <option>NO</option>
                                 </select>
-                                <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                                <small id="alert_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
                             </div>
-                            </div>
+                          </div>
 
-                            <div class="col-sm-12 mb-3">
-                                <label for="validationTextarea">OBSERVACIONES: </label>
-                                <textarea class="form-control" id="validationTextarea" placeholder="Required example textarea" required></textarea>
-                                <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
-                            </div>
+                          <div class="col-sm-12 mb-3">
+                              <label for="validationTextarea">OBSERVACIONES: </label>
+                              <textarea class="form-control" id="txtObservacion" placeholder="Lorem ipsum dolor sit amet" required></textarea>
+                              <small id="alert_observaciones" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+                          </div>
                             
 
                         </div>
@@ -141,7 +141,7 @@
         </div>
       </div>
       <div class="modal-footer">
-      <button type="button" class="btn btn-success btn-sm" id="btnSaveTransito">Guardar</button>
+        <button type="button" class="btn btn-success btn-sm" id="btnSaveTransito" @click="SaveInformacion">Guardar</button>
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
       </div>
     </div>

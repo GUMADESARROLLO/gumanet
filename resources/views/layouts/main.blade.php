@@ -151,8 +151,8 @@
 <script src="{{ url('js/exporting.js') }}"></script>
 <script src="{{ url('js/export-data.js') }}"></script>
 
-
-
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>

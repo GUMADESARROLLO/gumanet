@@ -14,6 +14,7 @@ use PHPExcel_Style_Fill;
 use App\Company;
 use App\InnovaKardex;
 use App\InnovaModel;
+use App\ArticulosTransito;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
@@ -87,6 +88,34 @@ class inventario_controller extends Controller
 		return response()->json($obj);
     }
 
+	public function SaveTransito(Request $request)
+    {  
+		$request->validate([
+            'fecha_estimada' => 'required',
+            'fecha_pedido' => 'required',
+            'documento' => 'required',
+            'cantidad' => 'required',
+            'mercado' => 'required',
+            'mific' => 'required',
+            'observaciones' => 'required',
+        ]);
+
+		ArticulosTransito::create([
+            'fecha_estimada' => $request->fecha_estimada,
+            'fecha_pedido' => $request->fecha_pedido,
+            'documento' => $request->documento,
+            'cantidad' => $request->cantidad,
+            'mercado' => $request->mercado,
+            'mific' => $request->mific,
+            'observaciones' => $request->observaciones,
+        ]);
+
+        return response()->json(['message' => 'Información guardada correctamente']);
+
+		
+    }
+
+
 	public function invenVencidos() {
 		$obj = inventario_model::invenVencidos();
 		return response()->json($obj);
@@ -94,12 +123,12 @@ class inventario_controller extends Controller
 
 	public function InventarioTransito(){
 		$data = array(
-    		'page'		=> 'Inventario Transito',
-    		'name'		=> 'GUMA@NET',
-    		'hideTransaccion' => ''
-    	);
+			'page'		=> 'Inventario Transito',
+			'name'		=> 'GUMA@NET',
+			'hideTransaccion' => ''
+		);
 
-    	return view('pages.Transito.Table', $data);
+		return view('pages.Transito.Table', $data);
 	}
 
 	public function getArticulos(Request $request)  {

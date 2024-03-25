@@ -22,6 +22,7 @@ Route::post('/getTasksProjects','infraestructura_controller@getTasksProjects');
 Route::get('/Inventario','inventario_controller@index');
 Route::get('/Inventario/Transito','inventario_controller@InventarioTransito')->name('/Comiciones/Inventario');
 Route::get('/getTransito', 'inventario_controller@getTransito')->name("getTransito");
+Route::post('/SaveTransito', 'inventario_controller@SaveTransito')->name("SaveTransito");
 
 
 Route::get('/Metas','metas_controller@index');
