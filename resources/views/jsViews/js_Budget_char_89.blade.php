@@ -92,8 +92,6 @@ function bluid_char(ARTICULO,Pro) {
                     <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
                 </div>
             </div>`);
-
-
     if (Pro === 1) {
         f1 = $("#f1").val();
         f2 = $("#f2").val();
@@ -101,7 +99,6 @@ function bluid_char(ARTICULO,Pro) {
         f1 = $("#f1_p71").val();
         f2 = $("#f2_p71").val();
     }
-   
 
     SkusAnual.series = [];
     SkusAnual.xAxis.categories = [];

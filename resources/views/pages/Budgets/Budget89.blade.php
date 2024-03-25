@@ -23,7 +23,6 @@
                             <div class="input-group-prepend">
                                 <span class="btn-change-color text-white input-group-text" id="btnCalcular" ><i data-feather="search"></i></span>
                             </div>
-                            
                         </div>
 					</div>
 						
@@ -68,11 +67,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title font-weight-bolder text-info" id="id_titulo_modal_all_items" ></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                
+                <div class="form-group mr-3">
+                        <label for="orderComportamiento" class="text-muted">Filtrar por</label>
+                        <select class="form-control" id="orderComportamiento">
+                            <option value="1">UNIDADES</option>
+                            <option value="2">MONTO FACTURADO</option>
+                        </select>
+                    </div>
             </div>
-            <div class="modal-body" id="bodyModal">            
+            
+            <div class="modal-body" id="bodyModal">      
                 <div class="graf col-sm-12 mt-3">
                     <div class="container-vms" id="grafSkuAnual" style="width: 100%; margin: 0 auto"></div>
                 </div>
