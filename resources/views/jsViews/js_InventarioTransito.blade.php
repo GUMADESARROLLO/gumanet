@@ -21,6 +21,50 @@ $(document).ready(function() {
         table.page.len(this.value).draw();
 	});
 
+	$("#btn_add_item").click(function(){
+		Swal.fire({
+			title: "Articulo Nuevo",
+			input: "text",
+			inputAttributes: {
+				autocapitalize: "off"
+			},
+			showCancelButton: true,
+			confirmButtonText: "Guardar",
+			showLoaderOnConfirm: true,
+			preConfirm: async (Transito) => {
+				try {					
+					$.ajax({
+						url: "../SaveTransitoNew",
+						data: {
+							Articulo  : Transito,
+							_token  : "{{ csrf_token() }}" 
+						},
+						type: 'post',
+						async: true,
+						success: function(response) {
+							
+						},
+						error: function(response) {
+							Swal.fire("Oops", "No se ha podido guardar!", "error");
+						}
+					}).done(function(data) {
+					});
+        
+				} catch (error) {
+					Swal.showValidationMessage(`Request failed: ${error}`);
+				}
+			},
+			allowOutsideClick: () => !Swal.isLoading()
+			}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					title: "Articulo Fue Agregado"
+				});
+				InitTable()
+			}
+			});
+	})
+
 
 });
 
@@ -72,7 +116,9 @@ function InitTable(){
 function getDetalleArticulo(Articulos,Descripcion,Undiad) {
     $("#idArti").val(Articulos);
     articulo_g = Articulos;
-	$("#tArticulo").html(Descripcion+`<p class="text-muted" id="id_cod_articulo">`+Articulos+`</p>`);
+	
+	$("#txtArticulo").val(Articulos)
+	$("#txtDescripcion").val(Descripcion)
 	
 	var target = '#nav-bod';
     $('a[data-toggle=tab][href=' + target + ']').tab('show');
@@ -89,8 +135,12 @@ function getDetalleArticulo(Articulos,Descripcion,Undiad) {
         methods: {
             SaveInformacion() {
 				$(".text-danger").hide();
+
                 let formData = new FormData();
-                // Agregar los campos del formulario al objeto formData
+
+				formData.append('Articulo', document.getElementById('txtArticulo').value);
+				formData.append('Descripcion', document.getElementById('txtDescripcion').value);
+
                 formData.append('fecha_estimada', document.getElementById('date_estimada').value);
                 formData.append('fecha_pedido', document.getElementById('date_pedido').value);
                 formData.append('documento', document.getElementById('txtDocuments').value);

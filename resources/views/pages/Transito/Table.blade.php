@@ -18,6 +18,9 @@
           <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
         </div>
         <input type="text" id="InputDtShowSearchFilterArt" class="form-control" aria-describedby="basic-addon1">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="btn_add_item"><i data-feather="plus"></i></span>
+        </div>
       </div>
     </div>
     <div class="col-sm-1">
@@ -50,95 +53,86 @@
         <h5 class="modal-title text-center" id="tArticulo"></h5>
       </div>
       <div class="modal-body">
-        <nav>
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="navBodega" data-toggle="tab" href="#nav-bod" role="tab" aria-controls="nav-bod" aria-selected="true">Informacion</a>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-
-          <div class="tab-pane fade show active" id="nav-bod" role="tabpanel" aria-labelledby="navBodega">
-            <div class="row">
-              <div class="col-sm-12" >
-                
-                <div class="card" style="border-top: none">
-                  <div class="card-body">
-                    <div class="col-sm-12 mt-3">
-                        <div class="row" >
-                          <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="date_estimada">FECHA ESTIMADA:</label>
-                                <input type="text" class="input-fecha" id="date_estimada" >
-                                <small id="alert_fecha_estimada" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-                            </div>
-                          </div>
-
-                          <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="date_pedido">FECHA PEDIDO:</label>
-                                <input type="text" class="input-fecha" id="date_pedido" >
-                                <small id="alert_fecha_pedido" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-                            </div>
-                          </div>
-                        
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">DOCUMENTO:</label>
-                                <input type="text" class="form-control" id="txtDocuments" >
-                                <small id="alert_documento" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-                            </div>
-                          </div>
-
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                                <label for="txtCantidad">CANTIDAD:</label>
-                                <input type="text" class="form-control" id="txtCantidad">
-                                <small id="alert_cantidad" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-                            </div>
-                          </div>
-                        
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                                <label for="slcMercado">MERCADO:</label>
-                                <select class="form-control" id="slcMercado">
-                                    <option>N/D</option>
-                                    <option>PRIVADOR</option>
-                                    <option>INSTITUCION</option>
-                                </select>
-                                <small id="alert_mercado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-                            </div>
-                          </div>
-
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                                <label for="exampleFormControlSelect1">MIFIC:</label>
-                                <select class="form-control" id="slcMIFIC">
-                                    <option>N/D</option>
-                                    <option>SI</option>
-                                    <option>NO</option>
-                                </select>
-                                <small id="alert_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-                            </div>
-                          </div>
-
-                          <div class="col-sm-12 mb-3">
-                              <label for="validationTextarea">OBSERVACIONES: </label>
-                              <textarea class="form-control" id="txtObservacion" placeholder="Lorem ipsum dolor sit amet" required></textarea>
-                              <small id="alert_observaciones" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-                          </div>
-                            
-
-                        </div>
-                    </div>
-
-                    </div>
-                </div>
-              </div>
+        <div class="row" >
+          <div class="col-sm-3">
+            <div class="form-group">
+                <label for="txtArticulo">ARTICULO:</label>
+                <input type="text" class="form-control" id="txtArticulo" >
+                <small id="alert_Articulo" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
-          
 
+          <div class="col-sm-9">
+            <div class="form-group">
+                <label for="txtDescripcion">DESCRIPCION:</label>
+                <input type="text" class="form-control" id="txtDescripcion">
+                <small id="alert_Descripcion" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
 
-        </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+                <label for="date_estimada">FECHA ESTIMADA:</label>
+                <input type="text" class="input-fecha" id="date_estimada" >
+                <small id="alert_fecha_estimada" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group">
+                <label for="date_pedido">FECHA PEDIDO:</label>
+                <input type="text" class="input-fecha" id="date_pedido" >
+                <small id="alert_fecha_pedido" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+        
+          <div class="col-sm-3">
+            <div class="form-group">
+                <label for="exampleInputEmail1">DOCUMENTO:</label>
+                <input type="text" class="form-control" id="txtDocuments" >
+                <small id="alert_documento" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <div class="form-group">
+                <label for="txtCantidad">CANTIDAD:</label>
+                <input type="text" class="form-control" id="txtCantidad">
+                <small id="alert_cantidad" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+        
+          <div class="col-sm-3">
+            <div class="form-group">
+                <label for="slcMercado">MERCADO:</label>
+                <select class="form-control" id="slcMercado">
+                    <option>N/D</option>
+                    <option>PRIVADOR</option>
+                    <option>INSTITUCION</option>
+                </select>
+                <small id="alert_mercado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">MIFIC:</label>
+                <select class="form-control" id="slcMIFIC">
+                    <option>N/D</option>
+                    <option>SI</option>
+                    <option>NO</option>
+                </select>
+                <small id="alert_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+
+          <div class="col-sm-12 mb-3">
+              <label for="validationTextarea">OBSERVACIONES: </label>
+              <textarea class="form-control" id="txtObservacion" placeholder="Lorem ipsum dolor sit amet" required></textarea>
+              <small id="alert_observaciones" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+          </div>
+      </div>
+      
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success btn-sm" id="btnSaveTransito" @click="SaveInformacion">Guardar</button>
