@@ -184,9 +184,17 @@
         })
     }
     function OpenModal_Pro71(ARTICULO) {
+        $("#idArti").val(ARTICULO);
         $("#mdl_char_product").modal();
-        bluid_char(ARTICULO,2);
+        bluid_char(ARTICULO,2,1);
     }
+
+    $( "#orderComportamiento89").change(function() {
+        valor = $( this ).val()  
+        var articulo = $("#idArti").val();
+        
+        bluid_char(articulo, 2, valor);
+    });
 
     function TblInit(datos, Header,Table,Align) {
 

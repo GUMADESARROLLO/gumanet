@@ -77,15 +77,24 @@ class Budget extends Model
         $endDate    = $request->input('f2');
         $ARTICULO   = $request->input('ARTICULO');
         $Pro        = $request->input('Pro');
+        $tipo       = $request->input('tipo');
 
         $datosFormateados = [];
 
      
 
         if ($Pro === "1") {
-            $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_articulos ?, ?, ?', [$startDate, $endDate,$ARTICULO]);
+            if($tipo == "1"){
+                $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_articulos ?, ?, ?', [$startDate, $endDate,$ARTICULO]);
+            } else {
+                $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_articulos_monto ?, ?, ?', [$startDate, $endDate,$ARTICULO]);
+            }
         } else {
-            $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_articulos_71 ?, ?, ?', [$startDate, $endDate,$ARTICULO]);
+            if($tipo === "1"){
+                $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_articulos_71 ?, ?, ?', [$startDate, $endDate,$ARTICULO]);
+            }else{
+                $resultados = DB::connection("sqlsrv")->select('EXEC PRODUCCION.dbo.gnet_presupuesto_articulos_monto_71 ?, ?, ?', [$startDate, $endDate,$ARTICULO]);
+            }
         }
 
 
@@ -95,13 +104,13 @@ class Budget extends Model
             $fila = [                
                 'ARTICULO' => $resultado->ARTICULO,
                 'FECHA' => [], 
-                'UND_MES' => $resultado->UND_MES,
+                'UND_MES' => $resultado->META,
             ];
 
     
         $columnas_agregadas = [];
         foreach ($resultado as $columna => $valor) {
-            if ($columna !== 'ARTICULO' && $columna !== 'UND_MES' ) {                
+            if ($columna !== 'ARTICULO' && $columna !== 'META' ) {                
                 $fila[$columna] = $valor;
                 $fila['FECHA'][] = [
                     'mes' => $columna,

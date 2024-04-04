@@ -74,9 +74,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title font-weight-bolder text-info" id="id_titulo_modal_all_items" ></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+
+                <div class="form-group mr-3">
+                    <input type="text" id="idArti" style="display: none;">
+                    <label for="orderComportamiento" class="text-muted">Filtrar por</label>
+                    <select class="form-control" id="orderComportamiento89">
+                        <option value="1">UNIDADES</option>
+                        <option value="2">MONTO FACTURADO</option>
+                    </select>
+                </div>
+                
             </div>
             <div class="modal-body" id="bodyModal">            
                 <div class="graf col-sm-12 mt-3">
