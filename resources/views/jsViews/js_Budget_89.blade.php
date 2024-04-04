@@ -222,9 +222,17 @@ function CalcIndicadores_89(){
 
 
 function OpenModal_Pro89(ARTICULO) {
+    $("#idArti").val(ARTICULO);
     $("#mdl_char_product").modal();
-    bluid_char(ARTICULO,1);
+    bluid_char(ARTICULO,1,1);
 }
+
+$( "#orderComportamiento89").change(function() {
+    valor = $( this ).val()  
+    var articulo = $("#idArti").val();
+    
+    bluid_char(articulo, 1, valor);
+});
 
 
 function dataProyect(datos, Header,Table,Align) {

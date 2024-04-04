@@ -82,7 +82,7 @@ function isValue(value, def, is_return) {
     }
 }
 
-function bluid_char(ARTICULO,Pro) {
+function bluid_char(ARTICULO,Pro, tipo) {
     
     var temporal = "";
 
@@ -103,7 +103,7 @@ function bluid_char(ARTICULO,Pro) {
     SkusAnual.series = [];
     SkusAnual.xAxis.categories = [];
     
-    $.getJSON("dtArticulo?f1="+f1+"&f2="+f2+"&ARTICULO=" + ARTICULO+"&Pro=" + Pro, function(json) {
+    $.getJSON("dtArticulo?f1="+f1+"&f2="+f2+"&ARTICULO=" + ARTICULO+"&Pro=" + Pro +"&tipo="+tipo, function(json) {
         var SeriesVenta;
         var SeriesMetas;
         var sumTotales = [];
@@ -112,6 +112,15 @@ function bluid_char(ARTICULO,Pro) {
         var date  = new Date();
         var anio_ = parseInt(date.getFullYear());
         var mes_ = parseInt(date.getMonth()+1);
+
+        units = "";
+        monto = "";
+        if(tipo == 1){
+            units = 'Units';
+        }
+        if(tipo == 2){
+            monto = 'C$';
+        }
 
         var VENTAS  = []
         var METAS   = []
@@ -144,7 +153,7 @@ function bluid_char(ARTICULO,Pro) {
         
 
         SkusAnual.tooltip = {
-            pointFormat : '<span style="color:black"><b>{point.y:,.0f} Items </b></span>'
+            pointFormat : '<b>'+monto+' <span style="color:black"><b>{point.y:,.0f} '+units+' </b></span>'
         };
 
         var chart = new Highcharts.Chart(SkusAnual);
