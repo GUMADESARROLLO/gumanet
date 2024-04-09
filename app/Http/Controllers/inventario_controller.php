@@ -90,6 +90,8 @@ class inventario_controller extends Controller
 
 	public function SaveTransito(Request $request)
     {  
+		$Articulo = $request->Articulo;
+
 		$request->validate([
 			'Articulo' => 'required',
 			'Descripcion' => 'required',
@@ -102,18 +104,42 @@ class inventario_controller extends Controller
             'observaciones' => 'required',
         ]);
 
-		ArticulosTransito::create([
-			'Articulo' 			=> $request->Articulo,
-			'Descripcion'		=> $request->Descripcion,
-            'fecha_estimada' 	=> $request->fecha_estimada,
-            'fecha_pedido' 		=> $request->fecha_pedido,
-            'documento' 		=> $request->documento,
-            'cantidad' 			=> $request->cantidad,
-            'mercado'			=> $request->mercado,
-            'mific' 			=> $request->mific,
-            'observaciones' 	=> $request->observaciones,
-			'Nuevo' 			=> 'N',
-        ]);
+		// Busca el artículo por su ID
+		$articuloTransito = ArticulosTransito::find($Articulo);
+
+		// Verifica si el artículo existe
+		if ($articuloTransito) {
+			// Actualiza los campos del artículo existente
+			$articuloTransito->update([
+				'Descripcion' => $request->Descripcion,
+				'fecha_estimada' => $request->fecha_estimada,
+				'fecha_pedido' => $request->fecha_pedido,
+				'documento' => $request->documento,
+				'cantidad' => $request->cantidad,
+				'mercado' => $request->mercado,
+				'mific' => $request->mific,
+				'observaciones' => $request->observaciones,
+			]);
+	
+			$message = 'Información actualizada correctamente';
+		} else {
+			// Crea un nuevo artículo si no existe
+			ArticulosTransito::create([
+				'Articulo' => $Articulo,
+				'Descripcion' => $request->Descripcion,
+				'fecha_estimada' => $request->fecha_estimada,
+				'fecha_pedido' => $request->fecha_pedido,
+				'documento' => $request->documento,
+				'cantidad' => $request->cantidad,
+				'mercado' => $request->mercado,
+				'mific' => $request->mific,
+				'observaciones' => $request->observaciones,
+				'Nuevo' => 'N',
+			]);
+	
+			$message = 'Información guardada correctamente';
+		}
+	
 
         return response()->json(['message' => 'Información guardada correctamente']);
 	

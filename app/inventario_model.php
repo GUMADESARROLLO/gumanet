@@ -310,7 +310,7 @@ class inventario_model extends Model {
         $sql_exec = "SELECT T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD, SUM(T0.TOTAL) TOTAL FROM GNET_INVENTARIO_UNIFICADO_TRANSITO T0 WHERE T0.TOTAL > 0 GROUP BY T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD";
         $result = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
 
-        $sql_tran = "SELECT * FROM PRODUCCION.dbo.tbl_articulos_transito ";
+        $sql_tran = "SELECT * FROM PRODUCCION.dbo.tbl_articulos_transito WHERE ARTICULO LIKE  '%-N%'";
         $rTransit = $sql_server->fetchArray( $sql_tran ,SQLSRV_FETCH_ASSOC);
 
         $p = 0;
@@ -334,8 +334,8 @@ class inventario_model extends Model {
                 'DESCRIPCION'       => strtoupper($v['Descripcion']),
                 'UNIDAD'            => '',
                 'CANT_DISPONIBLE'   => number_format($v['cantidad'], 2),
-                'FECHA_ESTIMADA'    => \Date::parse($v['fecha_estimada'])->format('D, M d, Y'),
-                'FECHA_PEDIDO'      => \Date::parse($v['fecha_pedido'])->format('D, M d, Y'),
+                'FECHA_ESTIMADA'    => $v['fecha_estimada'],
+                'FECHA_PEDIDO'      => $v['fecha_pedido'],
                 'CANTIDAD'          => 0,
             ];       
             $p++;     
