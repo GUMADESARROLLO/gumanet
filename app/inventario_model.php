@@ -306,12 +306,17 @@ class inventario_model extends Model {
 
     public static function getTransito() {
         $sql_server = new \sql_server();        
+        $Array    = array();
         $sql_exec = "SELECT T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD, SUM(T0.TOTAL) TOTAL FROM GNET_INVENTARIO_UNIFICADO_TRANSITO T0 WHERE T0.TOTAL > 0 GROUP BY T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD";
-        $Array = array();    
-
         $result = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
+
+        $sql_tran = "SELECT * FROM PRODUCCION.dbo.tbl_articulos_transito WHERE ARTICULO LIKE  '%-N%'";
+        $rTransit = $sql_server->fetchArray( $sql_tran ,SQLSRV_FETCH_ASSOC);
+
+        $p = 0;
+
         foreach ($result as $k => $v) {
-            $Array[$k] = [
+            $Array[$p] = [
                 'ARTICULO'          => $v['ARTICULO'],
                 'DESCRIPCION'       => strtoupper($v['DESCRIPCION']),
                 'UNIDAD'            => $v['UNIDAD'],
@@ -319,10 +324,24 @@ class inventario_model extends Model {
                 'FECHA_ESTIMADA'    => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
                 'FECHA_PEDIDO'      => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
                 'CANTIDAD'          => 9999999,
-            ];            
+            ];       
+            $p++;     
         }
-        $sql_server->close();
 
+        foreach ($rTransit as $k => $v) {
+            $Array[$p] = [
+                'ARTICULO'          => $v['Articulo'],
+                'DESCRIPCION'       => strtoupper($v['Descripcion']),
+                'UNIDAD'            => '',
+                'CANT_DISPONIBLE'   => number_format($v['cantidad'], 2),
+                'FECHA_ESTIMADA'    => $v['fecha_estimada'],
+                'FECHA_PEDIDO'      => $v['fecha_pedido'],
+                'CANTIDAD'          => 0,
+            ];       
+            $p++;     
+        }
+
+        $sql_server->close();
         return $Array;
     }
 

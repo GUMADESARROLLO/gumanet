@@ -813,9 +813,4 @@ function FormatPretty(number) {
     return numberString;
 }
 
-
-$("#btnSaveTransito").click(function(){
-    
-
-})
 </script>
