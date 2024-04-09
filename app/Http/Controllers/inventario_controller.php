@@ -90,7 +90,11 @@ class inventario_controller extends Controller
 
 	public function SaveTransito(Request $request)
     {  
+		$Articulo = $request->Articulo;
+
 		$request->validate([
+			'Articulo' => 'required',
+			'Descripcion' => 'required',
             'fecha_estimada' => 'required',
             'fecha_pedido' => 'required',
             'documento' => 'required',
@@ -100,19 +104,61 @@ class inventario_controller extends Controller
             'observaciones' => 'required',
         ]);
 
+		// Busca el artículo por su ID
+		$articuloTransito = ArticulosTransito::find($Articulo);
+
+		// Verifica si el artículo existe
+		if ($articuloTransito) {
+			// Actualiza los campos del artículo existente
+			$articuloTransito->update([
+				'Descripcion' => $request->Descripcion,
+				'fecha_estimada' => $request->fecha_estimada,
+				'fecha_pedido' => $request->fecha_pedido,
+				'documento' => $request->documento,
+				'cantidad' => $request->cantidad,
+				'mercado' => $request->mercado,
+				'mific' => $request->mific,
+				'observaciones' => $request->observaciones,
+			]);
+	
+			$message = 'Información actualizada correctamente';
+		} else {
+			// Crea un nuevo artículo si no existe
+			ArticulosTransito::create([
+				'Articulo' => $Articulo,
+				'Descripcion' => $request->Descripcion,
+				'fecha_estimada' => $request->fecha_estimada,
+				'fecha_pedido' => $request->fecha_pedido,
+				'documento' => $request->documento,
+				'cantidad' => $request->cantidad,
+				'mercado' => $request->mercado,
+				'mific' => $request->mific,
+				'observaciones' => $request->observaciones,
+				'Nuevo' => 'N',
+			]);
+	
+			$message = 'Información guardada correctamente';
+		}
+	
+
+        return response()->json(['message' => 'Información guardada correctamente']);
+	
+    }
+
+	public function SaveTransitoNew(Request $request)
+    {  
+
+		$ARTICULO  = mt_rand(10000000, 99999999).'-N';
+
 		ArticulosTransito::create([
-            'fecha_estimada' => $request->fecha_estimada,
-            'fecha_pedido' => $request->fecha_pedido,
-            'documento' => $request->documento,
-            'cantidad' => $request->cantidad,
-            'mercado' => $request->mercado,
-            'mific' => $request->mific,
-            'observaciones' => $request->observaciones,
+			'Articulo' 		=> $ARTICULO,
+			'Descripcion'	=> $request->Articulo,
+            'observaciones' => 'Creacion del Codigo',
+			'Nuevo' 		=> 'S',
         ]);
 
         return response()->json(['message' => 'Información guardada correctamente']);
-
-		
+	
     }
 
 
