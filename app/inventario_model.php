@@ -345,16 +345,6 @@ class inventario_model extends Model {
         return $Array;
     }
 
-    public static function getArticuloTransito($articulo){
-        $sql_server = new \sql_server(); 
-
-        $sql_tran = "SELECT * FROM PRODUCCION.dbo.tbl_articulos_transito WHERE ARTICULO = '" . $articulo ."'";
-
-        $rTransit = $sql_server->fetchArray( $sql_tran ,SQLSRV_FETCH_ASSOC);
-         
-        return $rTransit;
-    }
-
     public static function getInventarioTotalizado() {
         $sql_server = new \sql_server();        
         $request = Request();

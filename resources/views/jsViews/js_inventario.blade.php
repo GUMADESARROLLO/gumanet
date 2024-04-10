@@ -813,29 +813,36 @@ function FormatPretty(number) {
     return numberString;
 }
 
-function articuloTransito(articulo){
+function articuloTransito(Articulo){
 
-    $.getJSON("getArticuloTransito/"+articulo, function(json) {
-
-        $('#lblEstimado').val(moment().format('YYYY-MM-DD'));
-        $('#lblPedido').val(moment().format('YYYY-MM-DD'));
-        $('#lblDocumento').val('');
-        $('#lblCantidad').val('');
-        $('#lblMercado').val('N/D');
-        $('#lblMific').val('N/D');
-        $('#lblObservacion').val('');
-        $.each(json, function (i, item) { 
-
-            $('#lblEstimado').val(moment(item['fecha_estimada']['date']).format('YYYY-MM-DD'));
-            $('#lblPedido').val(moment(item['fecha_pedido']['date']).format('YYYY-MM-DD'));
-            $('#lblDocumento').val(item['documento']);
-            $('#lblCantidad').val(item['cantidad']);
-            $('#lblMercado').val(item['mercado']);
-            $('#lblMific').val(item['mific']);
-            $('#lblObservacion').val(item['observaciones']);
-
-
-        });
+    $.ajax({
+			url: "getInfoArticulo",
+			data: {
+				Articulo  : Articulo,
+				_token  : "{{ csrf_token() }}" 
+			},
+			type: 'post',
+			async: true,
+			success: function(json) {
+                if (json !=0 ) {
+                    $('#lblEstimado').val(moment(json.fecha_pedido).format('YYYY-MM-DD'));
+                    $('#lblPedido').val(moment(json.fecha_estimada).format('YYYY-MM-DD'));
+                    $('#lblDocumento').val(json.documento);
+                    $('#lblCantidad').val(json.cantidad);
+                    $('#lblMercado').val(json.mercado);
+                    $('#lblMific').val(json.mific);
+                    $('#lblObservacion').val(json.observaciones);
+                }else {
+                    $('#lblEstimado').val(moment().format('YYYY-MM-DD'));
+                    $('#lblPedido').val(moment().format('YYYY-MM-DD'));
+                    $('#lblDocumento').val('');
+                    $('#lblCantidad').val('');
+                    $('#lblMercado').val('N/D');
+                    $('#lblMific').val('N/D');
+                    $('#lblObservacion').val('');
+                }
+   
+        }
     });
 }
 
