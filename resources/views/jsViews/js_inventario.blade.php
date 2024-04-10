@@ -323,7 +323,7 @@ $('nav .nav.nav-tabs a').click(function(){
         break;
 
         case 'navTransito':  
-            
+            articuloTransito(articulo_g);
         break;
         default:
             alert('Al parecer alguio salio mal :(')
@@ -811,6 +811,32 @@ function FormatPretty(number) {
         numberString += scale
     }
     return numberString;
+}
+
+function articuloTransito(articulo){
+
+    $.getJSON("getArticuloTransito/"+articulo, function(json) {
+
+        $('#lblEstimado').val(moment().format('YYYY-MM-DD'));
+        $('#lblPedido').val(moment().format('YYYY-MM-DD'));
+        $('#lblDocumento').val('');
+        $('#lblCantidad').val('');
+        $('#lblMercado').val('N/D');
+        $('#lblMific').val('N/D');
+        $('#lblObservacion').val('');
+        $.each(json, function (i, item) { 
+
+            $('#lblEstimado').val(moment(item['fecha_estimada']['date']).format('YYYY-MM-DD'));
+            $('#lblPedido').val(moment(item['fecha_pedido']['date']).format('YYYY-MM-DD'));
+            $('#lblDocumento').val(item['documento']);
+            $('#lblCantidad').val(item['cantidad']);
+            $('#lblMercado').val(item['mercado']);
+            $('#lblMific').val(item['mific']);
+            $('#lblObservacion').val(item['observaciones']);
+
+
+        });
+    });
 }
 
 </script>
