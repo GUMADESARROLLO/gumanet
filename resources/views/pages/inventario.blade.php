@@ -482,98 +482,68 @@
                 
                 <div class="card" style="border-top: none">
                   <div class="card-body">
-                  
-                    <div class="form-row">     
-                                    
-                      <div class="col-sm-5">
+                    <div class="graf col-sm-12 mt-3">
+                    <div class="row" >
+                      <div class="col-sm-6">
                         <div class="form-group">
-                          <input type="text" class="input-fecha" id="fci">
-                          <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
+                          <label for="lblEstimado">FECHA ESTIMADA:</label>
+                          <input type="text" class="input-fecha" disabled id="lblEstimado">
                         </div>
-                      </div>
-                      <div class="col-sm-5">
-                        <div class="form-group">
-                          <input type="text" class="input-fecha" id="fcf">
-                          <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
-                        </div>
-                      </div>
-                      <div class="col-auto my-0">
-                        <button type="button" class="btn btn-primary btn-sm">Buscar</button>
-                      </div>
-                      <div class="col-auto my-0">
-                        <button type="button" class="btn btn-success btn-sm" id="btnSaveTransito">Guardar</button>
                       </div>
 
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="lblPedido">FECHA PEDIDO:</label>
+                          <input type="text" class="input-fecha" disabled id="lblPedido">
+                        </div>
+                      </div>
                     
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label for="lblDocumento">DOCUMENTO:</label>
+                          <input type="email" class="form-control" readonly id="lblDocumento" aria-describedby="emailHelp">
+                        </div>
+                      </div>
+
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">CANTIDAD:</label>
+                          <input type="email" class="form-control" readonly id="lblCantidad" aria-describedby="emailHelp">
+                        </div>
+                      </div>
+                    
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="lblMercado">MERCADO:</label>
+                            <select class="form-control" disabled id="lblMercado">
+                              <option>N/D</option>
+                              <option>PRIVADOR</option>
+                              <option>INSTITUCION</option>
+                            </select>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="lblMific">MIFIC:</label>
+                            <select class="form-control" disabled id="lblMific">
+                              <option>N/D</option>
+                              <option>SI</option>
+                              <option>NO</option>
+                            </select>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-12 mb-3">
+                        <label for="validationTextarea">OBSERVACIONES: </label>
+                        <textarea class="form-control" readonly id="lblObservacion" placeholder="" required></textarea>
+                      </div>
+
                     </div>
                   </div>
-                </div>
-                <div class="graf col-sm-12 mt-3">
-                  <div class="row" >
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label for="fci">FECHA ESTIMADA:</label>
-                        <input type="text" class="input-fecha" id="">
-                        <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label for="fcf">FECHA PEDIDO:</label>
-                        <input type="text" class="input-fecha" id="">
-                        <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
-                      </div>
-                    </div>
-                  
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">DOCUMENTO:</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">CANTIDAD:</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
-                      </div>
-                    </div>
-                  
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                          <label for="exampleFormControlSelect1">MERCADO:</label>
-                          <select class="form-control" id="exampleFormControlSelect1">
-                            <option>N/D</option>
-                            <option>PRIVADOR</option>
-                            <option>INSTITUCION</option>
-                          </select>
-                          <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                          <label for="exampleFormControlSelect1">MIFIC:</label>
-                          <select class="form-control" id="exampleFormControlSelect1">
-                            <option>N/D</option>
-                            <option>SI</option>
-                            <option>NO</option>
-                          </select>
-                        <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-12 mb-3">
-                      <label for="validationTextarea">OBSERVACIONES: </label>
-                      <textarea class="form-control" id="validationTextarea" placeholder="Required example textarea" required></textarea>
-                      <small id="emailHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetuer.</small>
-                    </div>
-
                   </div>
                 </div>
+                
               </div>
             </div>
           </div>
