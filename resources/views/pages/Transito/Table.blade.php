@@ -106,9 +106,9 @@
             <div class="form-group">
                 <label for="slcMercado">MERCADO:</label>
                 <select class="form-control" id="slcMercado">
-                    <option>N/D</option>
-                    <option>PRIVADOR</option>
-                    <option>INSTITUCION</option>
+                    <option value="N/D">N/D</option>
+                    <option value="PRIVADOR">PRIVADOR</option>
+                    <option value="INSTITUCION">INSTITUCION</option>
                 </select>
                 <small id="alert_mercado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
@@ -118,9 +118,9 @@
             <div class="form-group">
                 <label for="exampleFormControlSelect1">MIFIC:</label>
                 <select class="form-control" id="slcMIFIC">
-                    <option>N/D</option>
-                    <option>SI</option>
-                    <option>NO</option>
+                    <option value="N/D">N/D</option>
+                    <option value="SI">SI</option>
+                    <option value="NO">NO</option>
                 </select>
                 <small id="alert_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
@@ -128,8 +128,8 @@
 
           <div class="col-sm-12 mb-3">
               <label for="validationTextarea">OBSERVACIONES: </label>
-              <textarea class="form-control" id="txtObservacion" placeholder="Lorem ipsum dolor sit amet" required></textarea>
-              <small id="alert_observaciones" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+              <textarea class="form-control" id="txtObservacion" placeholder="Comentarios maximo de 255 caracteres" required></textarea>
+              <small id="alert_observaciones" class="form-text text-danger"></small>
           </div>
       </div>
       

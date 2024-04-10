@@ -87,6 +87,29 @@ class inventario_controller extends Controller
 		$obj = inventario_model::getTransito();
 		return response()->json($obj);
     }
+	public function getInfoArticulo(Request $request)
+    {  
+		$Articulo = $request->Articulo;
+		
+		$ArticuloTransito = ArticulosTransito::where('Articulo',$Articulo)->get();
+		$datos_articulo =  [];
+
+		foreach ($ArticuloTransito as $k) {
+			$datos_articulo = [
+				'Articulo'          => strval($Articulo),
+				'fecha_estimada'	=> $k->fecha_estimada,
+				'fecha_pedido'      => $k->fecha_pedido,
+				'documento'         => $k->documento,
+				'cantidad'          => $k->cantidad,
+				'mercado'         	=> $k->mercado,
+				'mific'             => $k->mific,
+				'Nuevo'          	=> $k->Nuevo,
+				'Descripcion'       => strtoupper($k->Descripcion),
+				'observaciones'     => $k->observaciones
+			];
+		}
+		return response()->json($datos_articulo);
+	}
 
 	public function SaveTransito(Request $request)
     {  

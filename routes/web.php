@@ -24,6 +24,7 @@ Route::get('/Inventario/Transito','inventario_controller@InventarioTransito')->n
 Route::get('/getTransito', 'inventario_controller@getTransito')->name("getTransito");
 Route::post('/SaveTransito', 'inventario_controller@SaveTransito')->name("SaveTransito");
 Route::post('/SaveTransitoNew', 'inventario_controller@SaveTransitoNew')->name("SaveTransitoNew");
+Route::post('/getInfoArticulo', 'inventario_controller@getInfoArticulo')->name("getInfoArticulo");
 
 
 Route::get('/Metas','metas_controller@index');
