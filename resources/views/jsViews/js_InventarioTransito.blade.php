@@ -105,7 +105,7 @@ function InitTable(){
 		},
 		'columns': [	
 			{"title": "ARTICULO","data": "ARTICULO", "render": function(data, type, row, meta) { 
-				return`<a href="#!" id="idArticulo" onclick="getDetalleArticulo(`+ "'" +row.ARTICULO + "'" +`)" >`+ row.ARTICULO +`</a>`
+				return`<a href="#!" id="idArticulo" onclick="getDetalleArticulo(`+ "'" +row.ARTICULO + "'" +`  , ` + "'" +row.DESCRIPCION + "'" +`)" >`+ row.ARTICULO +`</a>`
 				
 			}},
 			{"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION"},
@@ -123,16 +123,16 @@ function InitTable(){
     $("#dtInvCompleto_length").hide();
     $("#dtInvCompleto_filter").hide();
 }
-function getDetalleArticulo(Articulo) {
+function getDetalleArticulo(Articulo,Descripcion) {
 
 	if(isNumeric(Articulo) == true){
 		$('#btnDeleteTransito').hide()
 	}else{
 		$('#btnDeleteTransito').show()
 	}
-	$("#txtArticulo").val("")
-	$("#txtDescripcion").val("")
-	
+	$("#txtArticulo").val(Articulo)
+	$("#txtDescripcion").val(Descripcion)
+
 	$("#date_estimada").val("")
 	$("#date_pedido").val("")
 	$("#txtDocuments").val("")
@@ -154,10 +154,7 @@ function getDetalleArticulo(Articulo) {
 				if (a !=0 ) {
 
 					var FechaPedido = moment(a.fecha_pedido, 'YYYY-MM-DD');
-					var FechaEstimada = moment(a.fecha_estimada, 'YYYY-MM-DD');
-				
-					$("#txtArticulo").val(a.Articulo)
-					$("#txtDescripcion").val(a.Descripcion)
+					var FechaEstimada = moment(a.fecha_estimada, 'YYYY-MM-DD');					
 
 					$("#date_estimada").val(FechaEstimada.format('YYYY-MM-DD'))
 					$("#date_pedido").val(FechaPedido.format('YYYY-MM-DD'))

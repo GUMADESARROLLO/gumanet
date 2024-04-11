@@ -7,19 +7,17 @@
 @section('content')
 <div class="container-fluid">
   <div class="row mb-5">
-    <div class="col-md-10">
+    <div class="col-md-8">
       <h4 class="h4">Inventario</h4>
     </div>
-    <div class="col-md-12 row">
-     
-      @if( Auth::User()->email=='asaenz@unimarksa.com' || Auth::User()->email=='admin@gmail.com' )
-        <div class="col-md-8 mr-5"></div>
-        <a id="" href="{{url('/Inventario/Transito')}}" class="btn btn-primary btn-block ml-5 mr-4 col-md-1"> Transito</a>
-        <div class="col-md-0.5"></div>
-        <a id="" href="{{url('/invCompleto')}}" class="btn btn-primary btn-block col-md-2">Inventario Completo</a>
-      @endif
-      
-    </div>
+    @if( Auth::User()->email=='asaenz@unimarksa.com' || Auth::User()->email=='admin@gmail.com'  )
+      <div class="col-md-2">
+        <a id="" href="{{url('/invCompleto')}}" class="btn btn-primary btn-block">Inventario Completo</a>
+      </div>
+      <div class="col-md-2">
+        <a id="" href="{{url('/Inventario/Transito')}}" class="btn btn-primary btn-block">Transito</a>
+      </div>
+    @endif
   </div>
   <div class="row mt-3">
     <div class="col-sm-9">
