@@ -111,11 +111,10 @@ class inventario_controller extends Controller
 		return response()->json($datos_articulo);
 	}
 
-	public function getArticuloTransito($articulo) {
-		$obj = inventario_model::getArticuloTransito($articulo);
-		return response()->json($obj);
-    }
-
+	public function DeleteArticuloTransito(Request $request){
+		$obj = inventario_model::DeleteArticuloTransito($request);
+        return response()->json($obj);
+	}
 	public function SaveTransito(Request $request)
     {  
 		$Articulo = $request->Articulo;
