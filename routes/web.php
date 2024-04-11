@@ -24,6 +24,8 @@ Route::get('/Inventario/Transito','inventario_controller@InventarioTransito')->n
 Route::get('/getTransito', 'inventario_controller@getTransito')->name("getTransito");
 Route::post('/SaveTransito', 'inventario_controller@SaveTransito')->name("SaveTransito");
 Route::post('/SaveTransitoNew', 'inventario_controller@SaveTransitoNew')->name("SaveTransitoNew");
+Route::post('/DeleteArticuloTransito', 'inventario_controller@DeleteArticuloTransito')->name("/DeleteArticuloTransito");
+
 
 //RUTA DE PRODUCCION
 Route::post('/getInfoArticulo', 'inventario_controller@getInfoArticulo')->name("getInfoArticulo");

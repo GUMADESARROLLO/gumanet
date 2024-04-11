@@ -135,6 +135,7 @@
       
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm" id="btnDeleteTransito" @click="DeleteInformacion">Borrar</button>
         <button type="button" class="btn btn-success btn-sm" id="btnSaveTransito" @click="SaveInformacion">Guardar</button>
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
       </div>

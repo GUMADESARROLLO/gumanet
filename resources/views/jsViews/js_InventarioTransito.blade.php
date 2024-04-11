@@ -109,15 +109,13 @@ function InitTable(){
 				
 			}},
 			{"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION"},
-            {"title": "UNIDAD", 		"data": "UNIDAD"},
             {"title": "FECHA ESTIMADA", "data": "FECHA_ESTIMADA" },
             {"title": "FECHA PEDIDO", "data": "FECHA_PEDIDO" },
-            {"title": "CANT.DISPONIBLE", "data": "CANT_DISPONIBLE" },
             {"title": "CANTIDAD", "data": "CANTIDAD" },
 		],
 		"columnDefs": [
-			{"className": "dt-center", "targets": [0, 1, 2,3,4 ]},
-			{"className": "dt-right", "targets": [5,6]},
+			{"className": "dt-center", "targets": [0, 1, 2,3 ]},
+			{"className": "dt-right", "targets": [4]},
 			{"width":"20%","targets":[]},
 			{"width":"5%","targets":[]}
 		],
@@ -127,6 +125,11 @@ function InitTable(){
 }
 function getDetalleArticulo(Articulo) {
 
+	if(isNumeric(Articulo) == true){
+		$('#btnDeleteTransito').hide()
+	}else{
+		$('#btnDeleteTransito').show()
+	}
 	$("#txtArticulo").val("")
 	$("#txtDescripcion").val("")
 	
@@ -149,8 +152,6 @@ function getDetalleArticulo(Articulo) {
 			success: function(a) {
 				a = isValue(a,0,true)
 				if (a !=0 ) {
-
-					console.log(a)
 
 					var FechaPedido = moment(a.fecha_pedido, 'YYYY-MM-DD');
 					var FechaEstimada = moment(a.fecha_estimada, 'YYYY-MM-DD');
@@ -237,9 +238,57 @@ new Vue({
 			// 		// Manejo de errores
 			// 		//alert('Error al guardar la información');
 			// 	});
+		},
+		DeleteInformacion(){
+			let articulo = document.getElementById('txtArticulo').value;
+
+			Swal.fire({
+				title: 'Eliminar Articulo',
+				text: "El articulo sera eliminado y no se podra recuperar ¿Desea continuar?",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Si!',
+				target:"",
+				showLoaderOnConfirm: true,
+				preConfirm: async (Transito) => {
+					$.ajax({
+						url: "../DeleteArticuloTransito",
+						type: 'post',
+						data: {
+							articulo      : articulo
+						},
+						async: true,
+						success: function(response) {
+							if(response.original){
+								Swal.fire({
+								title: 'Articulo Eliminado',
+								icon: 'success',
+								showCancelButton: false,
+								confirmButtonColor: '#3085d6',
+								cancelButtonColor: '#d33',
+								confirmButtonText: 'OK'
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.reload();
+									}
+								})
+							}
+						},
+						error: function(response) {
+						}
+					}).done(function(data) {
+						
+					});
+				},
+				allowOutsideClick: () => !Swal.isLoading()
+			})
 		}
 	}
 });
 
-
+function isNumeric(value) {
+    return !isNaN(value) && !isNaN(parseFloat(value));
+}
 </script>

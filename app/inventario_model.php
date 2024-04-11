@@ -306,43 +306,68 @@ class inventario_model extends Model {
 
     public static function getTransito() {
         $sql_server = new \sql_server();        
-        $Array    = array();
-        $sql_exec = "SELECT T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD, SUM(T0.TOTAL) TOTAL FROM GNET_INVENTARIO_UNIFICADO_TRANSITO T0 WHERE T0.TOTAL > 0 GROUP BY T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD";
-        $result = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
+        $Array    = $art = array();
 
-        $sql_tran = "SELECT * FROM PRODUCCION.dbo.tbl_articulos_transito WHERE ARTICULO LIKE  '%-N%'";
+        $sql_tran = "SELECT * FROM PRODUCCION.dbo.tbl_articulos_transito";
         $rTransit = $sql_server->fetchArray( $sql_tran ,SQLSRV_FETCH_ASSOC);
 
         $p = 0;
+        
+        foreach ($rTransit as $k => $v) {
+            if (is_numeric($v['Articulo'])) {
+                $art[] = "'".$v['Articulo']."'";
+            }
+           
+            $Array[$p] = [
+                'ARTICULO'          => $v['Articulo'],
+                'DESCRIPCION'       => strtoupper($v['Descripcion']),
+                'FECHA_ESTIMADA'    => $v['fecha_estimada'] != "" ? date_format($v['fecha_estimada'], 'D, M d, Y') : "",
+                'FECHA_PEDIDO'      => $v['fecha_pedido'] != "" ? date_format($v['fecha_pedido'], 'D, M d, Y') : "",
+                'CANTIDAD'          => number_format($v['cantidad'], 2),
+            ];       
+            $p++;     
+        }
 
+        $art_string = implode(',', $art);
+       
+        $sql_exec = "SELECT T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD, SUM(T0.TOTAL) TOTAL FROM GNET_INVENTARIO_UNIFICADO_TRANSITO T0 WHERE T0.TOTAL > 0 AND T0.ARTICULO NOT IN(".$art_string.") GROUP BY T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD";
+        $result = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
+        
         foreach ($result as $k => $v) {
             $Array[$p] = [
                 'ARTICULO'          => $v['ARTICULO'],
                 'DESCRIPCION'       => strtoupper($v['DESCRIPCION']),
-                'UNIDAD'            => $v['UNIDAD'],
-                'CANT_DISPONIBLE'   => number_format($v['TOTAL'], 2),
                 'FECHA_ESTIMADA'    => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
                 'FECHA_PEDIDO'      => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
-                'CANTIDAD'          => 9999999,
+                'CANTIDAD'          => number_format($v['TOTAL'], 2),
             ];       
             $p++;     
         }
 
-        foreach ($rTransit as $k => $v) {
-            $Array[$p] = [
-                'ARTICULO'          => $v['Articulo'],
-                'DESCRIPCION'       => strtoupper($v['Descripcion']),
-                'UNIDAD'            => '',
-                'CANT_DISPONIBLE'   => number_format($v['cantidad'], 2),
-                'FECHA_ESTIMADA'    => $v['fecha_estimada'],
-                'FECHA_PEDIDO'      => $v['fecha_pedido'],
-                'CANTIDAD'          => 0,
-            ];       
-            $p++;     
-        }
+        
 
         $sql_server->close();
         return $Array;
+    }
+
+    public static function DeleteArticuloTransito(Request $request){
+        if ($request->ajax()) {
+            try {
+                $sql_server = new \sql_server(); 
+                
+                $articulo     = $request->input('articulo');
+
+                $sql_tran = "DELETE FROM PRODUCCION.dbo.tbl_articulos_transito WHERE Articulo = '".$articulo."'";
+                $response = $sql_server->fetchArray( $sql_tran ,SQLSRV_FETCH_ASSOC);
+
+                return response()->json($response);
+
+
+            } catch (Exception $e) {
+                $mensaje =  'Excepción capturada: ' . $e->getMessage() . "\n";
+                return response()->json($mensaje);
+            }
+        }
     }
 
     public static function getInventarioTotalizado() {
