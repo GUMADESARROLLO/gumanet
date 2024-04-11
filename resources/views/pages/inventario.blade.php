@@ -520,7 +520,7 @@
                             <label for="lblMercado">MERCADO:</label>
                             <select class="form-control" disabled id="lblMercado">
                               <option>N/D</option>
-                              <option>PRIVADOR</option>
+                              <option>PRIVADO</option>
                               <option>INSTITUCION</option>
                             </select>
                         </div>

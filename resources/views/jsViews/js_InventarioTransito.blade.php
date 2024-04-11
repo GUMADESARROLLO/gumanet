@@ -205,36 +205,36 @@ new Vue({
 			formData.append('mific', document.getElementById('slcMIFIC').value);
 			formData.append('observaciones', document.getElementById('txtObservacion').value);
 
-			// axios.post('{{ route("SaveTransito") }}', formData)
-			// 	.then(response => {						
-			// 		Swal.fire({
-			// 			title: 'Correcto',
-			// 			text: response.data.message,
-			// 			icon: 'success',
-			// 			showCancelButton: false,
-			// 			confirmButtonColor: '#3085d6',
-			// 			cancelButtonColor: '#d33',
-			// 			confirmButtonText: 'OK'
-			// 			}).then((result) => {
-			// 				if (result.isConfirmed) {
-			// 					InitTable();
-			// 				}   
-			// 			})
-			// 	}).catch(e => {
-			// 		if (e.response.status === 422) {
-			// 			var eLabel = this.errors = e.response.data.errors;
+			axios.post('{{ route("SaveTransito") }}', formData)
+				.then(response => {						
+					Swal.fire({
+						title: 'Correcto',
+						text: response.data.message,
+						icon: 'success',
+						showCancelButton: false,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'OK'
+						}).then((result) => {
+							if (result.isConfirmed) {
+								InitTable();
+							}   
+						})
+				}).catch(e => {
+					if (e.response.status === 422) {
+						var eLabel = this.errors = e.response.data.errors;
 
-			// 			Object.entries(eLabel).forEach(([key, value]) => {
-			// 				$("#alert_" + key).show();
-			// 				$("#alert_" + key).html(value[0]);
+						Object.entries(eLabel).forEach(([key, value]) => {
+							$("#alert_" + key).show();
+							$("#alert_" + key).html(value[0]);
 
-			// 			})
+						})
 
 
-			// 		}
-			// 		// Manejo de errores
-			// 		//alert('Error al guardar la información');
-			// 	});
+					}
+					// Manejo de errores
+					//alert('Error al guardar la información');
+				});
 		},
 		DeleteInformacion(){
 			let articulo = document.getElementById('txtArticulo').value;
