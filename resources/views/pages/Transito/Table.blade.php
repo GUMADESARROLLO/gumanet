@@ -97,8 +97,8 @@
           <div class="col-sm-3">
             <div class="form-group">
                 <label for="txtCantidad">CANTIDAD:</label>
-                <input type="text" class="form-control" id="txtCantidad">
-                <small id="alert_cantidad" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+                <input type="number" class="form-control" id="txtCantidad">
+                <small id="alert_cantidad" class="form-text text-danger">0.00</small>
             </div>
           </div>
         
@@ -107,7 +107,7 @@
                 <label for="slcMercado">MERCADO:</label>
                 <select class="form-control" id="slcMercado">
                     <option value="N/D">N/D</option>
-                    <option value="PRIVADOR">PRIVADOR</option>
+                    <option value="PRIVADOR">PRIVADO</option>
                     <option value="INSTITUCION">INSTITUCION</option>
                 </select>
                 <small id="alert_mercado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
