@@ -97,7 +97,7 @@
           <div class="col-sm-3">
             <div class="form-group">
                 <label for="txtCantidad">CANTIDAD:</label>
-                <input type="number" class="form-control" id="txtCantidad" oninput="validateInput(this)">
+                <input type="text" class="form-control" id="txtCantidad" oninput="validateInput(this)">
                 <small id="alert_cantidad" class="form-text text-danger">0.00</small>
             </div>
           </div>

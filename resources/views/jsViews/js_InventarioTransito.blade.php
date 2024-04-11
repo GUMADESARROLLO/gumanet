@@ -290,6 +290,6 @@ function isNumeric(value) {
 }
 
 function validateInput(input) {
-    input.value = input.value.replace(/[^0-9.-]+/g, '');
+    input.value = input.value.replace(/[^0-9,.-]+/g, '');
 }
 </script>
