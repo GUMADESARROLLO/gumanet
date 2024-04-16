@@ -15,6 +15,7 @@ use App\Company;
 use App\InnovaKardex;
 use App\InnovaModel;
 use App\ArticulosTransito;
+use App\InventarioUnificadoTransito;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
@@ -83,11 +84,6 @@ class inventario_controller extends Controller
 		return response()->json($obj);
     }
 
-	public function getTransito($Id) {
-
-		$obj = ($Id == 0) ? inventario_model::getTransitoSinCodigo() : inventario_model::getTransitoCompleto() ;
-		return response()->json($obj);
-    }
 	public function getInfoArticulo(Request $request)
     {  
 		$Articulo = $request->Articulo;
@@ -188,6 +184,22 @@ class inventario_controller extends Controller
         return response()->json(['message' => 'Información guardada correctamente']);
 	
     }
+	public function SaveTransitoConCodigo(Request $request)
+    {  		
+		$ARTICULO = $request->Articulo;
+
+		$Art = InventarioUnificadoTransito::where('ARTICULO',$ARTICULO)->first();
+
+		ArticulosTransito::create([
+			'Articulo' 		=> $ARTICULO,
+			'Descripcion'	=> strtoupper($Art->DESCRIPCION),
+            'observaciones' => ' - ',
+			'Nuevo' 		=> 'N',
+        ]);
+
+        return response()->json(['message' => 'Información guardada correctamente']);
+	
+    }
 
 
 	public function invenVencidos() {
@@ -203,8 +215,17 @@ class inventario_controller extends Controller
 			'hideTransaccion' => ''
 		);
 
-		return view('pages.Transito.Table', $data);
+		$ArticulosConCodigos = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->get()->toArray();
+
+		$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', [$ArticulosConCodigos])->get();
+
+		return view('pages.Transito.Table', compact('data', 'Articulos'));
 	}
+
+	public function getTransito($Id) {
+		$obj = ($Id == 0) ? inventario_model::getTransitoSinCodigo() : inventario_model::getTransitoConCodigo() ;
+		return response()->json($obj);
+    }
 
 	public function getArticulos(Request $request)  {
 		// $obj = inventario_model::getArticulos();

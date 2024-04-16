@@ -16,7 +16,7 @@
       </div>
       
       <div class="col-md-2">
-        <a id="" href="{{url('/Inventario/Transito/1')}}" class="btn btn-primary btn-block">Transito Completo</a>
+        <a id="" href="{{url('/Inventario/Transito/1')}}" class="btn btn-primary btn-block">Transito Con Codigo</a>
       </div>
       <div class="col-md-2">
         <a id="" href="{{url('/Inventario/Transito/0')}}" class="btn btn-primary btn-block">Transito Sin Codigo</a>

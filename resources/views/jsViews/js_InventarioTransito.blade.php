@@ -2,12 +2,9 @@
 $(document).ready(function() {
     fullScreen();
     inicializaControlFecha();
-    //AGREGO LA RUTA AL NAVEGADOR
     $("#item-nav-01").after(`<li class="breadcrumb-item active"><a href="{{url('../Inventario')}}">Inventario</a></li><li class="breadcrumb-item active">Inventario completo</li>`);
 
 	InitTable();
-
-    
 
 	$('#InputDtShowSearchFilterArt').on( 'keyup', function () {
         var table = $('#dtInvCompleto').DataTable();
@@ -18,9 +15,43 @@ $(document).ready(function() {
         var table = $('#dtInvCompleto').DataTable();
         table.page.len(this.value).draw();
 	});
+	$("#btn_add_con_codigo").click(function(){
+
+		var Articulo   	  = $("#frm_select_articulo option:selected").val();  
+		try {					
+			$.ajax({
+				url: "../../SaveTransitoConCodigo",
+				data: {
+					Articulo  : Articulo,
+					_token  : "{{ csrf_token() }}" 
+				},
+				type: 'post',
+				async: true,
+				success: function(response) {
+
+					location.reload();
+					
+				},
+				error: function(response) {
+					Swal.fire("Oops", "No se ha podido guardar!", "error");
+				}
+			}).done(function(data) {
+			});
+
+		} catch (error) {
+			Swal.showValidationMessage(`Request failed: ${error}`);
+		}
+
+	})
 
 	$("#btn_add_item").click(function(){
-		Swal.fire({
+
+		var id = $("#id_frm_show").text();		
+
+		if (id == 1) {
+			$("#id_dml_add_articulo").modal('show');
+		} else {
+			Swal.fire({
 			input: "textarea",
 			inputLabel: "Nuevo Articulo",
 			inputPlaceholder: "Nombre del Artiulo nuevo...",
@@ -61,7 +92,10 @@ $(document).ready(function() {
 				});
 				InitTable()
 			}
-			});
+		});
+		}
+
+		
 	})
 
 
@@ -128,11 +162,7 @@ function InitTable(){
 }
 function getDetalleArticulo(Articulo,Descripcion) {
 
-	if(isNumeric(Articulo) == true){
-		$('#btnDeleteTransito').hide()
-	}else{
-		$('#btnDeleteTransito').show()
-	}
+	
 	$("#txtArticulo").val(Articulo)
 	$("#txtDescripcion").val(Descripcion)
 

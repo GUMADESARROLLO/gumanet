@@ -1,5 +1,7 @@
 @extends('layouts.main')
-@section('title' , $name)
+
+
+@section('title' , $data['name'])
 @section('name_user' , 'Administrador')
 @section('metodosjs')
   @include('jsViews.js_InventarioTransito');
@@ -8,17 +10,17 @@
 <div class="container-fluid">
   <div class="row mb-5">
     <div class="col-md-10">
-      <h4 class="h4">Inventario {{ ($ID == 0)? 'Transito Sin Codigo' : 'Transito Completo' }} </h4>
+      <h4 class="h4">Inventario {{ ($data['ID'] == 0)? 'Transito Sin Codigo' : 'Transito Con Codigo' }} </h4>
     </div>
   </div>
-  <span id="id_frm_show" style="display:none">{{$ID}}</span>
+  <span id="id_frm_show" style="display:none">{{ $data['ID'] }}</span>
   <div class="row mt-3">
     <div class="col-sm-11">
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
         </div>
-        <input type="text" id="InputDtShowSearchFilterArt" class="form-control" aria-describedby="basic-addon1">
+        <input type="text" id="InputDtShowSearchFilterArt" class="form-control" aria-describedby="basic-addon1" placeholder ="Buscar en Inventario">
         <div class="input-group-prepend">
           <span class="input-group-text" id="btn_add_item"><i data-feather="plus"></i></span>
         </div>
@@ -133,12 +135,42 @@
               <textarea class="form-control" id="txtObservacion" placeholder="Comentarios maximo de 255 caracteres" required></textarea>
               <small id="alert_observaciones" class="form-text text-danger"></small>
           </div>
-      </div>
-      
+      </div>      
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger btn-sm" id="btnDeleteTransito" @click="DeleteInformacion">Borrar</button>
         <button type="button" class="btn btn-success btn-sm" id="btnSaveTransito" @click="SaveInformacion">Guardar</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl" data-backdrop="static" data-keyboard="false" id="id_dml_add_articulo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content" id="xxxxxx">
+      <div class="modal-header d-block">
+        <h5 class="modal-title text-center">AGREGAR UN ARTICULO NUEVO</h5>
+      </div>
+      <div class="modal-body">
+        <div class="row" >
+          
+        
+          <div class="col-sm-12">
+            <div class="form-group">
+                <select class="selectpicker form-control form-control-sm" id="frm_select_articulo" data-show-subtext="true" data-live-search="true">                    
+                    @foreach($Articulos as $art)
+                    <option value="{{strtoupper($art->ARTICULO)}}">{{strtoupper($art->DESCRIPCION )}} - [{{strtoupper($art->ARTICULO)}} ]</option>
+                    @endforeach
+
+                </select>
+            </div>
+          </div>
+
+      </div>      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-sm" id="btn_add_con_codigo" >Guardar</button>
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
       </div>
     </div>

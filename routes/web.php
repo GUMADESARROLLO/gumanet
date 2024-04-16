@@ -24,6 +24,7 @@ Route::get('/Inventario/Transito/{id}','inventario_controller@InventarioTransito
 Route::get('/getTransito/{id}', 'inventario_controller@getTransito')->name("getTransito");
 Route::post('/SaveTransito', 'inventario_controller@SaveTransito')->name("SaveTransito");
 Route::post('/SaveTransitoNew', 'inventario_controller@SaveTransitoNew')->name("SaveTransitoNew");
+Route::post('/SaveTransitoConCodigo', 'inventario_controller@SaveTransitoConCodigo')->name("SaveTransitoConCodigo");
 Route::post('/DeleteArticuloTransito', 'inventario_controller@DeleteArticuloTransito')->name("/DeleteArticuloTransito");
 
 
