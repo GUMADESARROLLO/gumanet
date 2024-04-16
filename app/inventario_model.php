@@ -336,7 +336,7 @@ class inventario_model extends Model {
                 'DESCRIPCION'       => strtoupper($v['DESCRIPCION']),
                 'FECHA_ESTIMADA'    => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
                 'FECHA_PEDIDO'      => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
-                'CANTIDAD'          => number_format($v['TOTAL'], 2),
+                'CANTIDAD'          => number_format($v['TOTAL'], 0),
             ];       
             $p++;     
         }        
@@ -356,7 +356,7 @@ class inventario_model extends Model {
                 'DESCRIPCION'       => strtoupper($v['Descripcion']),
                 'FECHA_ESTIMADA'    => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
                 'FECHA_PEDIDO'      => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
-                'CANTIDAD'          => number_format($v['cantidad'], 2),
+                'CANTIDAD'          => number_format($v['cantidad'], 0),
             ];        
         }
 

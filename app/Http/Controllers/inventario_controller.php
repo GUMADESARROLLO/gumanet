@@ -101,7 +101,7 @@ class inventario_controller extends Controller
 				'fecha_estimada'	=> $k->fecha_estimada,
 				'fecha_pedido'      => $k->fecha_pedido,
 				'documento'         => $k->documento,
-				'cantidad'          => $k->cantidad,
+				'cantidad'          => number_format($k->cantidad,0,'.',''),
 				'mercado'         	=> $k->mercado,
 				'mific'             => $k->mific,
 				'Nuevo'          	=> $k->Nuevo,
