@@ -83,8 +83,9 @@ class inventario_controller extends Controller
 		return response()->json($obj);
     }
 
-	public function getTransito() {
-		$obj = inventario_model::getTransito();
+	public function getTransito($Id) {
+
+		$obj = ($Id == 0) ? inventario_model::getTransitoSinCodigo() : inventario_model::getTransitoCompleto() ;
 		return response()->json($obj);
     }
 	public function getInfoArticulo(Request $request)
@@ -194,10 +195,11 @@ class inventario_controller extends Controller
 		return response()->json($obj);
     }
 
-	public function InventarioTransito(){
+	public function InventarioTransito($ID){
 		$data = array(
 			'page'		=> 'Inventario Transito',
 			'name'		=> 'GUMA@NET',
+			'ID'		=> $ID,
 			'hideTransaccion' => ''
 		);
 

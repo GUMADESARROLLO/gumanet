@@ -33,7 +33,7 @@ $(document).ready(function() {
 			preConfirm: async (Transito) => {
 				try {					
 					$.ajax({
-						url: "../SaveTransitoNew",
+						url: "../../SaveTransitoNew",
 						data: {
 							Articulo  : Transito,
 							_token  : "{{ csrf_token() }}" 
@@ -81,9 +81,12 @@ function isValue(value, def, is_return) {
 }
 function InitTable(){
 	$(".text-danger").hide();
+	var id = $("#id_frm_show").text();
+
+
 	$('#dtInvCompleto').DataTable({
 		"ajax":{
-			"url": "../getTransito",
+			"url": "../../getTransito/" + id,
 			'dataSrc': '',
 		},
 		'destroy' : true,
@@ -142,7 +145,7 @@ function getDetalleArticulo(Articulo,Descripcion) {
 	$("#txtObservacion").val("")
 	try {					
 		$.ajax({
-			url: "../getInfoArticulo",
+			url: "../../getInfoArticulo",
 			data: {
 				Articulo  : Articulo,
 				_token  : "{{ csrf_token() }}" 
@@ -251,7 +254,7 @@ new Vue({
 				showLoaderOnConfirm: true,
 				preConfirm: async (Transito) => {
 					$.ajax({
-						url: "../DeleteArticuloTransito",
+						url: "../../DeleteArticuloTransito",
 						type: 'post',
 						data: {
 							articulo      : articulo

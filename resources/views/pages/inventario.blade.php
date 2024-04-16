@@ -7,15 +7,19 @@
 @section('content')
 <div class="container-fluid">
   <div class="row mb-5">
-    <div class="col-md-8">
+    <div class="col-md-6">
       <h4 class="h4">Inventario</h4>
     </div>
-    @if( Auth::User()->email=='asaenz@unimarksa.com' || Auth::User()->email=='admin@gmail.com'  )
+    @if( Auth::User()->email=='asaenz@unimarksa.com' || Auth::User()->email=='admin@gmail.com'  )    
       <div class="col-md-2">
         <a id="" href="{{url('/invCompleto')}}" class="btn btn-primary btn-block">Inventario Completo</a>
       </div>
+      
       <div class="col-md-2">
-        <a id="" href="{{url('/Inventario/Transito')}}" class="btn btn-primary btn-block">Transito</a>
+        <a id="" href="{{url('/Inventario/Transito/1')}}" class="btn btn-primary btn-block">Transito Completo</a>
+      </div>
+      <div class="col-md-2">
+        <a id="" href="{{url('/Inventario/Transito/0')}}" class="btn btn-primary btn-block">Transito Sin Codigo</a>
       </div>
     @endif
   </div>
@@ -489,21 +493,21 @@
                     <div class="row" >
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label for="lblEstimado">FECHA ESTIMADA:</label>
+                          <label for="lblEstimado">FECHA ESTIMADA DE ARRIBO:</label>
                           <input type="text" class="input-fecha" disabled id="lblEstimado">
                         </div>
                       </div>
 
                       <div class="col-sm-6">
                         <div class="form-group">
-                          <label for="lblPedido">FECHA PEDIDO:</label>
+                          <label for="lblPedido">FECHA CREACION PEDIDO:</label>
                           <input type="text" class="input-fecha" disabled id="lblPedido">
                         </div>
                       </div>
                     
                       <div class="col-sm-3">
                         <div class="form-group">
-                          <label for="lblDocumento">DOCUMENTO:</label>
+                          <label for="lblDocumento">DOC. (FACT. , BL/AWB ):</label>
                           <input type="email" class="form-control" readonly id="lblDocumento" aria-describedby="emailHelp">
                         </div>
                       </div>

@@ -304,20 +304,18 @@ class inventario_model extends Model {
         return $query;
     }
 
-    public static function getTransito() {
+    public static function getTransitoCompleto() {
         $sql_server = new \sql_server();        
         $Array    = $art = array();
 
         $sql_tran = "SELECT * FROM PRODUCCION.dbo.tbl_articulos_transito";
         $rTransit = $sql_server->fetchArray( $sql_tran ,SQLSRV_FETCH_ASSOC);
-
         $p = 0;
         
         foreach ($rTransit as $k => $v) {
             if (is_numeric($v['Articulo'])) {
                 $art[] = "'".$v['Articulo']."'";
             }
-           
             $Array[$p] = [
                 'ARTICULO'          => $v['Articulo'],
                 'DESCRIPCION'       => strtoupper($v['Descripcion']),
@@ -329,7 +327,6 @@ class inventario_model extends Model {
         }
 
         $art_string = implode(',', $art);
-       
         $sql_exec = "SELECT T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD, SUM(T0.TOTAL) TOTAL FROM GNET_INVENTARIO_UNIFICADO_TRANSITO T0 WHERE T0.TOTAL > 0 AND T0.ARTICULO NOT IN(".$art_string.") GROUP BY T0.ARTICULO, T0.DESCRIPCION,T0.UNIDAD";
         $result = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
         
@@ -342,6 +339,25 @@ class inventario_model extends Model {
                 'CANTIDAD'          => number_format($v['TOTAL'], 2),
             ];       
             $p++;     
+        }        
+
+        $sql_server->close();
+        return $Array;
+    }
+    public static function getTransitoSinCodigo() {
+        $sql_server = new \sql_server();        
+        $Array    = array();
+        $sql_exec = "SELECT * FROM PRODUCCION.dbo.tbl_articulos_transito T0 WHERE T0.Articulo LIKE '%-N%' ";
+        $result = $sql_server->fetchArray( $sql_exec ,SQLSRV_FETCH_ASSOC);
+        
+        foreach ($result as $k => $v) {
+            $Array[$k] = [
+                'ARTICULO'          => $v['Articulo'],
+                'DESCRIPCION'       => strtoupper($v['Descripcion']),
+                'FECHA_ESTIMADA'    => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
+                'FECHA_PEDIDO'      => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
+                'CANTIDAD'          => number_format($v['cantidad'], 2),
+            ];        
         }
 
         

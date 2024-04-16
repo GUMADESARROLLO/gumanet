@@ -8,9 +8,10 @@
 <div class="container-fluid">
   <div class="row mb-5">
     <div class="col-md-10">
-      <h4 class="h4">Inventario Transito</h4>
+      <h4 class="h4">Inventario {{ ($ID == 0)? 'Transito Sin Codigo' : 'Transito Completo' }} </h4>
     </div>
   </div>
+  <span id="id_frm_show" style="display:none">{{$ID}}</span>
   <div class="row mt-3">
     <div class="col-sm-11">
       <div class="input-group">
@@ -72,7 +73,7 @@
 
           <div class="col-sm-6">
             <div class="form-group">
-                <label for="date_estimada">FECHA ESTIMADA:</label>
+                <label for="date_estimada">FECHA ESTIMADA DE ARRIBO:</label>
                 <input type="text" class="input-fecha" id="date_estimada" >
                 <small id="alert_fecha_estimada" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
@@ -80,7 +81,8 @@
 
           <div class="col-sm-6">
             <div class="form-group">
-                <label for="date_pedido">FECHA PEDIDO:</label>
+                <!-- FECHA QUE ALVARO HACE LA SOLICITUD -->
+                <label for="date_pedido">FECHA CREACION PEDIDO:</label>
                 <input type="text" class="input-fecha" id="date_pedido" >
                 <small id="alert_fecha_pedido" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
@@ -88,7 +90,7 @@
         
           <div class="col-sm-3">
             <div class="form-group">
-                <label for="exampleInputEmail1">DOCUMENTO:</label>
+                <label for="exampleInputEmail1">DOC. (FACT. , BL/AWB ):</label>
                 <input type="text" class="form-control" id="txtDocuments" >
                 <small id="alert_documento" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
