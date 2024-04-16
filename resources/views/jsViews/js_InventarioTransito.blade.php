@@ -151,8 +151,9 @@ function InitTable(){
             {"title": "CANTIDAD", "data": "CANTIDAD" },
 		],
 		"columnDefs": [
-			{"className": "dt-center", "targets": [0, 1, 2,3 ]},
+			{"className": "dt-center", "targets": [0, 2,3 ]},
 			{"className": "dt-right", "targets": [4]},
+			{"className": "dt-left", "targets": [1]},
 			{"width":"20%","targets":[]},
 			{"width":"5%","targets":[]}
 		],

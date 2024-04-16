@@ -217,7 +217,12 @@ class inventario_controller extends Controller
 
 		$ArticulosConCodigos = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->get()->toArray();
 
-		$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', [$ArticulosConCodigos])->get();
+		if(count($ArticulosConCodigos)  > 0){
+			$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', [$ArticulosConCodigos])->get();
+		} else {
+			$Articulos = InventarioUnificadoTransito::all();
+		};
+
 
 		return view('pages.Transito.Table', compact('data', 'Articulos'));
 	}
