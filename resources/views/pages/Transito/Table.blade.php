@@ -158,12 +158,16 @@
         <div class="modal-body py-4 px-5 ">
           <div class="row">
             <div class="col-md-12">                    
-              <div class="input-group">
-                  <input class="form-control-file" id="frm-upload" type="file"  name="files[]"/>                    
-                  <!--<span class="input-group-text">
-                      <a href="{{ asset('doc/plantilla.xlsx') }}"> <span class="fas fa-file-excel fs--1 text-success"></span></a>
-                  </span>-->
-              </div>
+                <form method="POST" id="export_excel" name="export_excel" enctype="multipart/form-data">
+                  <div class="input-group">
+                    <div class="custom-file" id="contInputExlFileTransito">
+                      <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="upload" class="custom-file-input" name="addExlFileTransito" id="addExlFileTransito"/>
+                      <label class="custom-file-label" id="fileLabelTransito" for="addExlFileTransito" data-label="Buscar">Seleccione un archivo Excel
+                      </label>
+                    </div>
+                  </div>
+                  {{-- @csrf --}} 
+                </form>
             </div>
               <div class="col-md-12 mt-3">
                   <div class="input-group" > 
