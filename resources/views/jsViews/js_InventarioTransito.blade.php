@@ -395,10 +395,10 @@ var ExcelToJSON = function() {
 		dta_table_header = [
 			{"title": "Articulo","data": "ARTICULO"},
 			{"title": "Descripcion","data": "DESCRIPC"}, 
-			{"title": "CANTIDAD","data": "CANTIDAD"},                                     
+			{"title": "Cantidad","data": "CANTIDAD"},     
+			{"title": "Documento","data": "Documento"},                                     
 			{"title": "dtPedido","data": "dtPedido"},
 			{"title": "dtEstimada","data": "dtEstimada"},
-			{"title": "Documento","data": "Documento"},
 			{"title": "Mercado","data": "Mercado"},
 			{"title": "Mific","data": "Mific"},
 			{"title": "Precio MIFIC","data": "Pre_MIFIC"},
@@ -428,8 +428,8 @@ function table_render(Table,datos,Header,columnDefs,Filter){
 			[0, "DESC"]
 		],
 		"lengthMenu": [
-			[7, -1],
-			[7, "Todo"]
+			[5, -1],
+			[5, "Todo"]
 		],
 		"language": {
 			"zeroRecords": "NO HAY COINCIDENCIAS",

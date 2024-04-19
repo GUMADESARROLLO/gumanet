@@ -159,27 +159,29 @@
           <div class="row">
             <div class="col-md-12">                    
                 <form method="POST" id="export_excel" name="export_excel" enctype="multipart/form-data">
-                  <div class="input-group">
-                    <div class="custom-file" id="contInputExlFileTransito">
-                      <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="upload" class="custom-file-input" name="addExlFileTransito" id="frm-upload"/>
-                      <label class="custom-file-label" id="fileLabelTransito" for="addExlFileTransito" data-label="Buscar">Seleccione un archivo Excel
-                      </label>
+                {{-- @csrf --}} 
+                  <div class="row">
+                    <div class="col-md-9">
+                      <div class="input-group">
+                        <div class="custom-file" id="contInputExlFileTransito">
+                          <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="upload" class="custom-file-input" name="addExlFileTransito" id="frm-upload"/>
+                          <label class="custom-file-label" id="fileLabelTransito" for="addExlFileTransito" data-label="Buscar">Seleccione un archivo Excel
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="input-group" > 
+                        <input type="text" id="InputDtShowSearchFilterArt" class="form-control" placeholder="Buscar..." aria-describedby="search" id="id_txt_excel">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="search"><i data-feather="search"></i></span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  {{-- @csrf --}} 
                 </form>
             </div>
-              <div class="col-md-12 mt-3">
-                  <div class="input-group" > 
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="search"><i data-feather="search"></i></span>
-                  </div>
-                  <input type="text" id="InputDtShowSearchFilterArt" class="form-control" placeholder="Buscar..." aria-describedby="search" id="id_txt_excel">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="search"><i data-feather="search"></i></span>
-                  </div>
-              </div>
-              </div>
+             
             <div class="col-md-12 mt-3">
               <div class="border-table" >                        
                   <table class="table table-hover table-striped overflow-hidden" id="tbl_excel" >
@@ -187,15 +189,14 @@
                       <tr>
                           <th>Articulo</th>
                           <th>Descripcion</th>
+                          <th>Documento</th>
                           <th>Cantidad</th>                          
                           <th>Fecha Pedido</th>
                           <th>Fecha Estimada</th>
-                          <th>Documento</th>
                           <th>Mercado</th>
                           <th>Mific</th>
                           <th>Precio Mific</th>
                           <th>HOJA</th>
-                          
                       </tr>
                   </thead>
                   <tbody>
@@ -210,12 +211,13 @@
                       <td>-</td>
                       <td>-</td>
                       <td>-</td>
+                      
                   </tr>
                   </tbody>
                   </table>  
               </div>
             </div>
-            <button class="btn btn-bg-inn btn-primary d-block w-100 mt-3" id="id_send_data_excel" type="submit" name="submit">Cargar</button>
+            <button class="btn btn-bg-inn btn-primary d-block w-100 mt-3" id="id_send_data_excel" type="submit" name="submit">Procesar</button>
           </div>                                 
             
         </div>
