@@ -161,7 +161,7 @@
                 <form method="POST" id="export_excel" name="export_excel" enctype="multipart/form-data">
                   <div class="input-group">
                     <div class="custom-file" id="contInputExlFileTransito">
-                      <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="upload" class="custom-file-input" name="addExlFileTransito" id="addExlFileTransito"/>
+                      <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="upload" class="custom-file-input" name="addExlFileTransito" id="frm-upload"/>
                       <label class="custom-file-label" id="fileLabelTransito" for="addExlFileTransito" data-label="Buscar">Seleccione un archivo Excel
                       </label>
                     </div>
@@ -175,6 +175,9 @@
                     <span class="input-group-text" id="search"><i data-feather="search"></i></span>
                   </div>
                   <input type="text" id="InputDtShowSearchFilterArt" class="form-control" placeholder="Buscar..." aria-describedby="search" id="id_txt_excel">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="search"><i data-feather="search"></i></span>
+                  </div>
               </div>
               </div>
             <div class="col-md-12 mt-3">
@@ -183,21 +186,20 @@
                   <thead>
                       <tr>
                           <th>Articulo</th>
-                          <th>Fecha Estimada</th>
+                          <th>Descripcion</th>
+                          <th>Cantidad</th>                          
                           <th>Fecha Pedido</th>
+                          <th>Fecha Estimada</th>
                           <th>Documento</th>
-                          <th>Cantidad</th>
                           <th>Mercado</th>
                           <th>Mific</th>
                           <th>Precio Mific</th>
-                          <th>Observaciones</th>
-                          <th>Nuevo</th>
-                          <th>Descripcion</th>
+                          <th>HOJA</th>
+                          
                       </tr>
                   </thead>
                   <tbody>
                   <tr>
-                      <td>-</td>
                       <td>-</td>
                       <td>-</td>
                       <td>-</td>

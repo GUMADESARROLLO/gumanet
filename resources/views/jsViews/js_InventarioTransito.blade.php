@@ -355,17 +355,107 @@ var ExcelToJSON = function() {
 	reader.onload = function(e) {
 		var data = e.target.result;
 		var workbook = XLSX.read(data, {type: 'binary'});
-	
+		dta_table_excel = [];
+
 		workbook.SheetNames.forEach(function(sheetName) {
 
-		})
+			var worksheet = workbook.Sheets[sheetName];
+			var range = XLSX.utils.decode_range('A1:Q200');
+			var rows = XLSX.utils.sheet_to_json(worksheet, {range: range});
+		
+			rows.forEach(function(row) {
+				
+				var rowArray = Object.entries(row).map(function(x) {return x[1]});
+
+				var ARTICULO   = isValue(rowArray[0],'N/D',true)
+				var DESCRIPC   = isValue(rowArray[1],'N/D',true)
+				var CANTIDAD   = isValue(rowArray[5],'N/D',true)
+				var dtPedido   = isValue(rowArray[7],'N/D',true)
+				var dtEstimada = isValue(rowArray[10],'N/D',true)
+				var dtEstimada = isValue(rowArray[10],'N/D',true)
+				var Mercado    = isValue(rowArray[13],'N/D',true)
+				var Mific      = isValue(rowArray[16],'N/D',true)
+
+				dta_table_excel.push({ 
+					ARTICULO   : ARTICULO,
+					DESCRIPC   : DESCRIPC,
+					CANTIDAD   : CANTIDAD,
+					dtPedido   : dtPedido,
+					dtEstimada : dtEstimada,
+					Mercado    : Mercado,
+					Mific      : Mific,
+					Documento  : 'N/D',
+					Pre_MIFIC  : 'N/D',
+					Hoja       : sheetName                            
+				})
+			})
+
+		});
+
+		dta_table_header = [
+			{"title": "Articulo","data": "ARTICULO"},
+			{"title": "Descripcion","data": "DESCRIPC"}, 
+			{"title": "CANTIDAD","data": "CANTIDAD"},                                     
+			{"title": "dtPedido","data": "dtPedido"},
+			{"title": "dtEstimada","data": "dtEstimada"},
+			{"title": "Documento","data": "Documento"},
+			{"title": "Mercado","data": "Mercado"},
+			{"title": "Mific","data": "Mific"},
+			{"title": "Precio MIFIC","data": "Pre_MIFIC"},
+			{"title": "Hoja","data": "Hoja"}
+		]
+		dta_columnDefs = [{"className": "dt-center", "targets": [ ]},]
+		table_render('#tbl_excel',dta_table_excel,dta_table_header,dta_columnDefs,false)
 	};
 
 	reader.onerror = function(ex) {
+
 	};
 
 	reader.readAsBinaryString(file);
+
 	};
 };
+
+function table_render(Table,datos,Header,columnDefs,Filter){
+
+	$(Table).DataTable({
+		"data": datos,
+		"destroy": true,
+		"info": false,
+		"bPaginate": true,
+		"order": [
+			[0, "DESC"]
+		],
+		"lengthMenu": [
+			[7, -1],
+			[7, "Todo"]
+		],
+		"language": {
+			"zeroRecords": "NO HAY COINCIDENCIAS",
+			"paginate": {
+				"first": "Primera",
+				"last": "Última ",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			},
+			"lengthMenu": "MOSTRAR _MENU_",
+			"emptyTable": "-",
+			"search": "BUSCAR"
+		},
+		'columns': Header,
+		"columnDefs": columnDefs,
+		rowCallback: function( row, data, index ) {
+			if ( data.Index == 'N/D' ) {
+				$(row).addClass('table-danger');
+			} 
+		}
+	});
+	if(!Filter){
+		$(Table+"_length").hide();
+		$(Table+"_filter").hide();
+	}
+
+}
 
 </script>
