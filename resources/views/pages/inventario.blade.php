@@ -10,7 +10,7 @@
     <div class="col-md-6">
       <h4 class="h4">Inventario</h4>
     </div>
-    @if( Auth::User()->email=='asaenz@unimarksa.com' || Auth::User()->email=='admin@gmail.com'  )    
+    @if( Auth::User()->email=='asaenz@unimarksa.com' || Auth::User()->email=='admin@gmail.com' || Auth::User()->email=='asisp@unimarksa.com' )    
       <div class="col-md-2">
         <a id="" href="{{url('/invCompleto')}}" class="btn btn-primary btn-block">Inventario Completo</a>
       </div>
