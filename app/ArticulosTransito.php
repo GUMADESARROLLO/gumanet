@@ -11,6 +11,7 @@ class ArticulosTransito extends Model
     public $timestamps = false;
     protected $table = "PRODUCCION.dbo.tbl_articulos_transito";
     protected $primaryKey = 'Articulo';
+    protected $keyType    = 'string';
 
     protected $fillable = [
         'Articulo',
