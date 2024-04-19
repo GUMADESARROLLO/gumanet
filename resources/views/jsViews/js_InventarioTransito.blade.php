@@ -292,4 +292,46 @@ function isNumeric(value) {
 function validateInput(input) {
     input.value = input.value.replace(/[^0-9,.-]+/g, '');
 }
+
+var Selectors = {
+	TABLE_UPLOARD: '#modal_upload',
+};
+
+$("#btn_upload").click(function(){
+	var addMultiRow = document.querySelector("#modal_upload");
+	var modal = new window.bootstrap.Modal(addMultiRow);
+	modal.show();
+});
+
+$('#frm-upload').on("change", function(e){ 
+	handleFileSelect(e)
+});
+
+function handleFileSelect(evt) {    
+	var files = evt.target.files;
+	var xl2json = new ExcelToJSON();
+	xl2json.parseExcel(files[0]);
+}
+
+var ExcelToJSON = function() {
+
+	this.parseExcel = function(file) {
+	var reader = new FileReader();
+
+	reader.onload = function(e) {
+		var data = e.target.result;
+		var workbook = XLSX.read(data, {type: 'binary'});
+	
+		workbook.SheetNames.forEach(function(sheetName) {
+
+		})
+	};
+
+	reader.onerror = function(ex) {
+	};
+
+	reader.readAsBinaryString(file);
+	};
+};
+
 </script>
