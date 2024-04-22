@@ -1,14 +1,23 @@
 <script>
+	var TableExcel;
+	dta_table_excel = [];
 $(document).ready(function() {
     fullScreen();
     inicializaControlFecha();
     $("#item-nav-01").after(`<li class="breadcrumb-item active"><a href="{{url('../Inventario')}}">Inventario</a></li><li class="breadcrumb-item active">Inventario completo</li>`);
 
 	InitTable();
+	
 
 	$('#InputDtShowSearchFilterArt').on( 'keyup', function () {
         var table = $('#dtInvCompleto').DataTable();
         table.search(this.value).draw();
+	});
+
+	$('#id_txt_excel').on('keyup', function() {    
+		if(isValue(TableExcel,0,true)){
+			TableExcel.search(this.value).draw();
+		}
 	});
 
 	$( "#InputDtShowColumnsArtic").change(function() {
@@ -366,45 +375,43 @@ var ExcelToJSON = function() {
 			rows.forEach(function(row) {
 				
 				var rowArray = Object.entries(row).map(function(x) {return x[1]});
+				var isDate = isValue(rowArray[1],'N/D',true) 
 
-				var ARTICULO   = isValue(rowArray[0],'N/D',true)
-				var DESCRIPC   = isValue(rowArray[1],'N/D',true)
-				var CANTIDAD   = isValue(rowArray[5],'N/D',true)
-				var dtPedido   = isValue(rowArray[7],'N/D',true)
-				var dtEstimada = isValue(rowArray[10],'N/D',true)
-				var dtEstimada = isValue(rowArray[10],'N/D',true)
-				var Mercado    = isValue(rowArray[13],'N/D',true)
-				var Mific      = isValue(rowArray[16],'N/D',true)
-
-				dta_table_excel.push({ 
-					ARTICULO   : ARTICULO,
-					DESCRIPC   : DESCRIPC,
-					CANTIDAD   : CANTIDAD,
-					dtPedido   : dtPedido,
-					dtEstimada : dtEstimada,
-					Mercado    : Mercado,
-					Mific      : Mific,
-					Documento  : 'N/D',
-					Pre_MIFIC  : 'N/D',
-					Hoja       : sheetName                            
-				})
+				if(isDate!='N/D' && isDate.length > 10){
+						dta_table_excel.push({
+							ARTICULO	: rowArray[0] || 'N/D',
+							DESCRIPC	: rowArray[1] || 'N/D',
+							CANTIDAD	: numeral(rowArray[5]).format('0,0') || 'N/D',
+							dtPedido	: rowArray[7] || 'N/D',
+							dtEstimada	: rowArray[9] || 'N/D',
+							Mercado		: rowArray[13] ||'N/D',
+							Mific		: rowArray[16] ||'N/D',
+							Documento	: rowArray[11] ||'N/D',
+							Pre_MIFIC	: 0,
+							Comment		: rowArray[15] ||'N/D',
+						})
+				}
+				
 			})
 
 		});
 
 		dta_table_header = [
-			{"title": "Articulo","data": "ARTICULO"},
-			{"title": "Descripcion","data": "DESCRIPC"}, 
-			{"title": "Cantidad","data": "CANTIDAD"},     
-			{"title": "Documento","data": "Documento"},                                     
-			{"title": "dtPedido","data": "dtPedido"},
-			{"title": "dtEstimada","data": "dtEstimada"},
-			{"title": "Mercado","data": "Mercado"},
-			{"title": "Mific","data": "Mific"},
-			{"title": "Precio MIFIC","data": "Pre_MIFIC"},
-			{"title": "Hoja","data": "Hoja"}
+			{"title": "ARTICULO","data": "ARTICULO"},
+			{"title": "DESCRIPCION","data": "DESCRIPC"}, 
+			{"title": "CANTIDAD","data": "CANTIDAD"},     
+			{"title": "DOCUMENTO","data": "Documento"},                                     
+			{"title": "FECHA PEDIDO","data": "dtPedido"},
+			{"title": "FECHA ESTIMADA","data": "dtEstimada"},
+			{"title": "MERCADO","data": "Mercado"},
+			{"title": "MIFIC","data": "Mific"},
+			{"title": "PRECIO MIFIC","data": "Pre_MIFIC"},
+			{"title": "COMENTARIO","data": "Comment"},
 		]
-		dta_columnDefs = [{"className": "dt-center", "targets": [ ]},]
+		dta_columnDefs = [
+			{"className": "dt-center", "targets": [0,3,4,5,6,7,8]},
+			{"className": "dt-right", "targets": [2]},
+		]
 		table_render('#tbl_excel',dta_table_excel,dta_table_header,dta_columnDefs,false)
 	};
 
@@ -417,9 +424,10 @@ var ExcelToJSON = function() {
 	};
 };
 
-function table_render(Table,datos,Header,columnDefs,Filter){
+function table_render(Table,datos,Header,columnDefs,Filter)
+{
 
-	$(Table).DataTable({
+	TableExcel = $(Table).DataTable({
 		"data": datos,
 		"destroy": true,
 		"info": false,
@@ -446,7 +454,7 @@ function table_render(Table,datos,Header,columnDefs,Filter){
 		'columns': Header,
 		"columnDefs": columnDefs,
 		rowCallback: function( row, data, index ) {
-			if ( data.Index == 'N/D' ) {
+			if ( data.ARTICULO == 'N/D' ) {
 				$(row).addClass('table-danger');
 			} 
 		}
@@ -457,5 +465,57 @@ function table_render(Table,datos,Header,columnDefs,Filter){
 	}
 
 }
+
+$("#id_send_data_excel").click(function(){ 
+	
+	Swal.fire({
+		title: '¿Estas Seguro de cargar  ?',
+		text: "¡Se cargara la informacion previamente visualizada!",
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Si!',
+		target: document.getElementById('mdlMatPrima'),
+		showLoaderOnConfirm: true,
+		preConfirm: () => {
+			$.ajax({
+				url: "SaveTransitoExcel",
+				data: {
+					datos   : dta_table_excel,
+					_token  : "{{ csrf_token() }}" 
+				},
+				type: 'post',
+				async: true,
+				success: function(response) {
+				console.log(response)
+					if(response){
+						Swal.fire({
+							title: 'Articulos Ingresados Correctamente ' ,
+							icon: 'success',
+							showCancelButton: false,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'OK'
+							}).then((result) => {
+							if (result.isConfirmed) {
+								location.reload();
+								}
+							})
+						}
+					},
+				error: function(response) {
+					//Swal.fire("Oops", "No se ha podido guardar!", "error");
+				}
+				}).done(function(data) {
+					//CargarDatos(nMes,annio);
+				});
+			},
+		allowOutsideClick: () => !Swal.isLoading()
+	});
+
+
+	
+});
 
 </script>

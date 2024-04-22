@@ -207,6 +207,12 @@ class inventario_controller extends Controller
 		return response()->json($obj);
     }
 
+	public function SaveTransitoExcel(Request $request)
+    {
+        $response = ArticulosTransito::SaveTransitoExcel($request);
+        return response()->json($response);
+    }
+
 	public function InventarioTransito($ID){
 		$data = array(
 			'page'		=> 'Inventario Transito',

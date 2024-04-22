@@ -153,52 +153,50 @@
     <div class="modal-dialog modal-xl mt-6" role="document">
       <div class="modal-content">
         <div class="modal-header d-block">
-            <h4 class="modal-title text-center" id="id_titulo_modal"> Carga via excel.</h4>
+            <h4 class="modal-title text-center" id="id_titulo_modal"> Actualizar Informacion Transito.</h4>
         </div>
         <div class="modal-body py-4 px-5 ">
           <div class="row">
-            <div class="col-md-12">                    
-                <form method="POST" id="export_excel" name="export_excel" enctype="multipart/form-data">
-                {{-- @csrf --}} 
-                  <div class="row">
-                    <div class="col-md-9">
-                      <div class="input-group">
-                        <div class="custom-file" id="contInputExlFileTransito">
-                          <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="upload" class="custom-file-input" name="addExlFileTransito" id="frm-upload"/>
-                          <label class="custom-file-label" id="fileLabelTransito" for="addExlFileTransito" data-label="Buscar">Seleccione un archivo Excel
-                          </label>
-                        </div>
+            <div class="col-md-12">  
+                <div class="row">
+                <div class="col-md-3">
+                    <div class="input-group" > 
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="search"><i data-feather="search"></i></span>
                       </div>
+                      <input class="form-control form-control-sm shadow-none search" type="search" placeholder="Buscar..." aria-label="search" id="id_txt_excel" />
                     </div>
-                    <div class="col-md-3">
-                      <div class="input-group" > 
-                        <input type="text" id="InputDtShowSearchFilterArt" class="form-control" placeholder="Buscar..." aria-describedby="search" id="id_txt_excel">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text" id="search"><i data-feather="search"></i></span>
-                        </div>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="input-group">
+                      <div class="custom-file" id="contInputExlFileTransito">
+                        <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="upload" class="custom-file-input" name="addExlFileTransito" id="frm-upload"/>
+                        <label class="custom-file-label" id="fileLabelTransito" for="addExlFileTransito" data-label="Buscar">Seleccione un archivo Excel
+                        </label>
                       </div>
                     </div>
                   </div>
-                </form>
+                 
+                </div>
             </div>
              
             <div class="col-md-12 mt-3">
-              <div class="border-table" >                        
+              <div class="table-responsive" >                        
                   <table class="table table-hover table-striped overflow-hidden" id="tbl_excel" >
-                  <thead>
-                      <tr>
-                          <th>Articulo</th>
-                          <th>Descripcion</th>
-                          <th>Documento</th>
-                          <th>Cantidad</th>                          
-                          <th>Fecha Pedido</th>
-                          <th>Fecha Estimada</th>
-                          <th>Mercado</th>
-                          <th>Mific</th>
-                          <th>Precio Mific</th>
-                          <th>HOJA</th>
-                      </tr>
-                  </thead>
+                    <thead>
+                        <tr>
+                            <th>ARTICULO</th>
+                            <th>DESCRIPCION</th>
+                            <th>DOCUMENTO</th>
+                            <th>CANTIDAD</th>                          
+                            <th>FECHA PEDIDO</th>
+                            <th>FECHA ESTIMADA</th>
+                            <th>MERCADO</th>
+                            <th>MIFIC</th>
+                            <th>PRECIO MIFIC</th>
+                            <th>COMENTARIO</th>
+                        </tr>
+                    </thead>
                   <tbody>
                   <tr>
                       <td>-</td>
