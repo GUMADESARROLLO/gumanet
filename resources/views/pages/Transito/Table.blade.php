@@ -115,7 +115,7 @@
                 <select class="form-control" id="slcMercado">
                     <option value="N/D">N/D</option>
                     <option value="PRIVADOR">PRIVADO</option>
-                    <option value="INSTITUCION">INSTITUCION</option>
+                    <option value="INSTITUCION">MINSA</option>
                 </select>
                 <small id="alert_mercado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
@@ -195,21 +195,12 @@
                             <th>MIFIC</th>
                             <th>PRECIO MIFIC</th>
                             <th>COMENTARIO</th>
+                            <th></th>
                         </tr>
                     </thead>
                   <tbody>
-                  <tr>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      
+                  <tr colspan="11">
+                      <td class="text-center" colspan="11">-</td>
                   </tr>
                   </tbody>
                   </table>  

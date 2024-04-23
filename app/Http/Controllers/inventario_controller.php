@@ -234,7 +234,7 @@ class inventario_controller extends Controller
 	}
 
 	public function getTransito($Id) {
-		$obj = ($Id == 0) ? inventario_model::getTransitoSinCodigo() : inventario_model::getTransitoConCodigo() ;
+		$obj = ($Id == 0) ? ArticulosTransito::getTransitoSinCodigo() : ArticulosTransito::getTransitoConCodigo() ;
 		return response()->json($obj);
     }
 

@@ -45,9 +45,9 @@ class ArticulosTransito extends Model
                         'Descripcion'		=> strtoupper($v['DESCRIPC']),
                         'cantidad'		    => number_format((float)$v['CANTIDAD'], 2,'.',''),
                         'fecha_pedido'		=> $v['dtPedido'],
-                        'fecha_estimada'	=> $v['dtEstimada'],
-                        'mercado'		    => $v['Mercado'],
-                        'mific'			    => $v['Mific']	,
+                        'fecha_estimada'	=> (strpos($v['dtEstimada'], 'N/') === false) ? $v['dtEstimada'] : null ,
+                        'mercado'		    => strtoupper($v['Mercado']),
+                        'mific'			    => strtoupper($v['Mific']),
                         'documento'		    => $v['Documento'],
                         'observaciones'		=> $v['Comment'],
                         'Nuevo'		        => 'N',
@@ -63,4 +63,42 @@ class ArticulosTransito extends Model
             }
         }
     }
+    
+    public static function getTransitoConCodigo() 
+    {
+
+        $Array    = array();
+        $result = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->get();
+        
+        foreach ($result as $k => $v) {
+            $Array[$k] = [
+                'ARTICULO'          => $v['Articulo'],
+                'DESCRIPCION'       => strtoupper($v['Descripcion']),
+                'FECHA_ESTIMADA'    => ($v['fecha_estimada']== null) ? 'N/D' : \Date::parse($v['fecha_estimada'])->format('D, M d, Y') ,
+                'FECHA_PEDIDO'    => ($v['fecha_pedido']== null) ? 'N/D' : \Date::parse($v['fecha_pedido'])->format('D, M d, Y') ,
+                'CANTIDAD'          => number_format($v['cantidad'], 0),
+            ];        
+        }        
+
+        return $Array;
+    }
+    public static function getTransitoSinCodigo() 
+    {
+        $Array    = array();
+        $result = ArticulosTransito::where('ARTICULO', 'LIKE', '%-N%')->get();
+
+        foreach ($result as $k => $v) {
+            $Array[] = [
+                'ARTICULO'          => $v->Articulo,
+                'DESCRIPCION'       => strtoupper($v['Descripcion']),
+                'FECHA_ESTIMADA'    => ($v['fecha_estimada']== null) ? 'N/D' : \Date::parse($v['fecha_estimada'])->format('D, M d, Y') ,
+                'FECHA_PEDIDO'    => ($v['fecha_pedido']== null) ? 'N/D' : \Date::parse($v['fecha_pedido'])->format('D, M d, Y') ,
+                'CANTIDAD'          => number_format($v['cantidad'], 0),
+            ];        
+        }
+
+        
+        return $Array;
+    }
+
 }

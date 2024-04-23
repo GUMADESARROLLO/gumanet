@@ -304,43 +304,6 @@ class inventario_model extends Model {
         return $query;
     }
 
-    public static function getTransitoConCodigo() 
-    {
-
-        $Array    = array();
-        $result = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->get();
-        
-        foreach ($result as $k => $v) {
-            $Array[$k] = [
-                'ARTICULO'          => $v['Articulo'],
-                'DESCRIPCION'       => strtoupper($v['Descripcion']),
-                'FECHA_ESTIMADA'    => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
-                'FECHA_PEDIDO'      => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
-                'CANTIDAD'          => number_format($v['cantidad'], 0),
-            ];        
-        }        
-
-        return $Array;
-    }
-    public static function getTransitoSinCodigo() 
-    {
-        $Array    = array();
-        $result = ArticulosTransito::where('ARTICULO', 'LIKE', '%-N%')->get();
-
-        foreach ($result as $k => $v) {
-            $Array[] = [
-                'ARTICULO'          => $v->Articulo,
-                'DESCRIPCION'       => strtoupper($v['Descripcion']),
-                'FECHA_ESTIMADA'    => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
-                'FECHA_PEDIDO'      => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
-                'CANTIDAD'          => number_format($v['cantidad'], 0),
-            ];        
-        }
-
-        
-        return $Array;
-    }
-
     public static function DeleteArticuloTransito(Request $request){
         if ($request->ajax()) {
             try {

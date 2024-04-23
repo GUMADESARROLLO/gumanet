@@ -169,6 +169,8 @@ function InitTable(){
     });
     $("#dtInvCompleto_length").hide();
     $("#dtInvCompleto_filter").hide();
+
+	
 }
 function getDetalleArticulo(Articulo,Descripcion) {
 
@@ -378,17 +380,24 @@ var ExcelToJSON = function() {
 				var isDate = isValue(rowArray[1],'N/D',true) 
 
 				if(isDate!='N/D' && isDate.length > 10){
+
+						var fechaPedido 	= dtFormat(rowArray[7]);
+						var fechaEstimada 	= dtFormat(rowArray[10]);
+
+						var isOK = (rowArray.length < 17 )? 'N' : 'S';
+
 						dta_table_excel.push({
 							ARTICULO	: rowArray[0] || 'N/D',
 							DESCRIPC	: rowArray[1] || 'N/D',
 							CANTIDAD	: numeral(rowArray[5]).format('0,0') || 'N/D',
-							dtPedido	: rowArray[7] || 'N/D',
-							dtEstimada	: rowArray[9] || 'N/D',
+							dtPedido	: fechaPedido || 'N/D',
+							dtEstimada	: fechaEstimada || 'N/D',
 							Mercado		: rowArray[13] ||'N/D',
 							Mific		: rowArray[16] ||'N/D',
-							Documento	: rowArray[11] ||'N/D',
+							Documento	: rowArray[12] ||'N/D',
 							Pre_MIFIC	: 0,
 							Comment		: rowArray[15] ||'N/D',
+							isOK		: isOK
 						})
 				}
 				
@@ -407,10 +416,12 @@ var ExcelToJSON = function() {
 			{"title": "MIFIC","data": "Mific"},
 			{"title": "PRECIO MIFIC","data": "Pre_MIFIC"},
 			{"title": "COMENTARIO","data": "Comment"},
+			{"title": "","data": "isOK"}
 		]
 		dta_columnDefs = [
 			{"className": "dt-center", "targets": [0,3,4,5,6,7,8]},
 			{"className": "dt-right", "targets": [2]},
+			{"visible"  : false, "searchable": false,"targets": [10] }
 		]
 		table_render('#tbl_excel',dta_table_excel,dta_table_header,dta_columnDefs,false)
 	};
@@ -423,7 +434,9 @@ var ExcelToJSON = function() {
 
 	};
 };
-
+function dtFormat(fecha) {
+    return (fecha.indexOf('N/') !== -1) ? fecha : moment(fecha, 'M/D/YY').format('YYYY-MM-DD');
+}
 function table_render(Table,datos,Header,columnDefs,Filter)
 {
 
@@ -454,7 +467,8 @@ function table_render(Table,datos,Header,columnDefs,Filter)
 		'columns': Header,
 		"columnDefs": columnDefs,
 		rowCallback: function( row, data, index ) {
-			if ( data.ARTICULO == 'N/D' ) {
+			console.log(data)
+			if ( data.isOK == 'N' ) {
 				$(row).addClass('table-danger');
 			} 
 		}
