@@ -160,11 +160,12 @@ function InitTable(){
 			{"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION"},
             {"title": "FECHA ESTIMADA", "data": "FECHA_ESTIMADA" },
             {"title": "FECHA PEDIDO", "data": "FECHA_PEDIDO" },
+			{"title": "MERCADO", "data": "MERCADO" },
             {"title": "CANTIDAD", "data": "CANTIDAD" },
 		],
 		"columnDefs": [
-			{"className": "dt-center", "targets": [0, 2,3 ]},
-			{"className": "dt-right", "targets": [4]},
+			{"className": "dt-center", "targets": [0, 2,3,4 ]},
+			{"className": "dt-right", "targets": [5]},
 			{"className": "dt-left", "targets": [1]},
 			{"width":"20%","targets":[]},
 			{"width":"5%","targets":[]}
@@ -401,9 +402,7 @@ var ExcelToJSON = function() {
 
 						var isOK = (rowArray.length < 17 )? 'N' : 'S';
 
-						if(isOK == 'N'){
-							isError=true
-						}
+						isError = (isOK == 'N')? true : false;
 
 						dta_table_excel.push({
 							ARTICULO	: rowArray[0] || 'N/D',

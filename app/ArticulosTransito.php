@@ -78,6 +78,7 @@ class ArticulosTransito extends Model
                 'FECHA_ESTIMADA'    => ($v['fecha_estimada']== null) ? 'N/D' : \Date::parse($v['fecha_estimada'])->format('D, M d, Y') ,
                 'FECHA_PEDIDO'      => ($v['fecha_pedido']== null) ? 'N/D' : \Date::parse($v['fecha_pedido'])->format('D, M d, Y') ,
                 'CANTIDAD'          => number_format($v['cantidad'], 0),
+                'MERCADO'           => strtoupper($v['mercado']),
             ];        
         }        
 
@@ -94,8 +95,9 @@ class ArticulosTransito extends Model
                 'ARTICULO'          => $v->Articulo,
                 'DESCRIPCION'       => strtoupper($v['Descripcion']),
                 'FECHA_ESTIMADA'    => ($v['fecha_estimada']== null) ? 'N/D' : \Date::parse($v['fecha_estimada'])->format('D, M d, Y') ,
-                'FECHA_PEDIDO'    => ($v['fecha_pedido']== null) ? 'N/D' : \Date::parse($v['fecha_pedido'])->format('D, M d, Y') ,
+                'FECHA_PEDIDO'      => ($v['fecha_pedido']== null) ? 'N/D' : \Date::parse($v['fecha_pedido'])->format('D, M d, Y') ,
                 'CANTIDAD'          => number_format($v['cantidad'], 0),
+                'MERCADO'           => strtoupper($v['mercado']),
             ];        
         }
 
