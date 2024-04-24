@@ -56,10 +56,12 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content" id="id_form_save">
       <div class="modal-header d-block">
+        
+        <span id="txtNumRow" style="display:none">0000</span>   
         <h5 class="modal-title text-center" id="tArticulo"></h5>
       </div>
       <div class="modal-body">
-        <div class="row" >
+        <div class="row" >       
           <div class="col-sm-3">
             <div class="form-group">
                 <label for="txtArticulo">ARTICULO:</label>
@@ -109,19 +111,19 @@
             </div>
           </div>
         
-          <div class="col-sm-3">
+          <div class="col-sm-2">
             <div class="form-group">
                 <label for="slcMercado">MERCADO:</label>
                 <select class="form-control" id="slcMercado">
                     <option value="N/D">N/D</option>
-                    <option value="PRIVADOR">PRIVADO</option>
-                    <option value="INSTITUCION">MINSA</option>
+                    <option value="PRIVADO">PRIVADO</option>
+                    <option value="MINSA">MINSA</option>
                 </select>
                 <small id="alert_mercado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">MIFIC:</label>
                 <select class="form-control" id="slcMIFIC">
@@ -130,6 +132,14 @@
                     <option value="NO">NO</option>
                 </select>
                 <small id="alert_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+
+          <div class="col-sm-2">
+            <div class="form-group">
+                <label for="txtPrecioMific">PRECIO MIFIC:</label>
+                <input type="text" class="form-control" id="txtPrecioMific" oninput="validateInput(this)">
+                <small id="alert_precio_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
 

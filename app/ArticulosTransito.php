@@ -11,7 +11,7 @@ class ArticulosTransito extends Model
     protected $connection = 'sqlsrv';
     public $timestamps = false;
     protected $table = "PRODUCCION.dbo.tbl_articulos_transito_dev";
-    protected $primaryKey = 'Articulo';
+    protected $primaryKey = 'Id_transito';
     protected $keyType    = 'string';
 
     protected $fillable = [
@@ -72,10 +72,11 @@ class ArticulosTransito extends Model
         
         foreach ($result as $k => $v) {
             $Array[$k] = [
+                'ID'                => $v['Id_transito'],
                 'ARTICULO'          => $v['Articulo'],
                 'DESCRIPCION'       => strtoupper($v['Descripcion']),
                 'FECHA_ESTIMADA'    => ($v['fecha_estimada']== null) ? 'N/D' : \Date::parse($v['fecha_estimada'])->format('D, M d, Y') ,
-                'FECHA_PEDIDO'    => ($v['fecha_pedido']== null) ? 'N/D' : \Date::parse($v['fecha_pedido'])->format('D, M d, Y') ,
+                'FECHA_PEDIDO'      => ($v['fecha_pedido']== null) ? 'N/D' : \Date::parse($v['fecha_pedido'])->format('D, M d, Y') ,
                 'CANTIDAD'          => number_format($v['cantidad'], 0),
             ];        
         }        
@@ -89,6 +90,7 @@ class ArticulosTransito extends Model
 
         foreach ($result as $k => $v) {
             $Array[] = [
+                'ID'                => $v['Id_transito'],
                 'ARTICULO'          => $v->Articulo,
                 'DESCRIPCION'       => strtoupper($v['Descripcion']),
                 'FECHA_ESTIMADA'    => ($v['fecha_estimada']== null) ? 'N/D' : \Date::parse($v['fecha_estimada'])->format('D, M d, Y') ,
@@ -99,6 +101,22 @@ class ArticulosTransito extends Model
 
         
         return $Array;
+    }
+
+    public static function DeleteArticuloTransito(Request $request)
+    {
+        if ($request->ajax()) {
+            try {                
+                $NumRow     = $request->NumRow;
+
+                $response = ArticulosTransito::WHERE('Id_transito', $NumRow)->delete();
+                return response()->json($response);
+
+            } catch (Exception $e) {
+                $mensaje =  'Excepción capturada: ' . $e->getMessage() . "\n";
+                return response()->json($mensaje);
+            }
+        }
     }
 
 }

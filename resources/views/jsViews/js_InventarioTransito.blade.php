@@ -1,6 +1,7 @@
 <script>
 	var TableExcel;
 	dta_table_excel = [];
+	var isError = false
 $(document).ready(function() {
     fullScreen();
     inicializaControlFecha();
@@ -124,6 +125,7 @@ function isValue(value, def, is_return) {
 }
 function InitTable(){
 	$(".text-danger").hide();
+
 	var id = $("#id_frm_show").text();
 
 
@@ -151,7 +153,8 @@ function InitTable(){
 		},
 		'columns': [	
 			{"title": "ARTICULO","data": "ARTICULO", "render": function(data, type, row, meta) { 
-				return`<a href="#!" id="idArticulo" onclick="getDetalleArticulo(`+ "'" +row.ARTICULO + "'" +`  , ` + "'" +row.DESCRIPCION + "'" +`)" >`+ row.ARTICULO +`</a>`
+		
+				return`<a href="#!" id="idArticulo" onclick="getDetalleArticulo(`+ "'" +row.ARTICULO + "'" +` , ` + "'" +row.DESCRIPCION + "'" +`,`+ "'" +row.ID + "'" +`)" >`+ row.ARTICULO +`</a>`
 				
 			}},
 			{"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION"},
@@ -172,9 +175,10 @@ function InitTable(){
 
 	
 }
-function getDetalleArticulo(Articulo,Descripcion) {
+function getDetalleArticulo(Articulo,Descripcion,ID) 
+{
 
-	
+	$("#txtNumRow").html(ID)
 	$("#txtArticulo").val(Articulo)
 	$("#txtDescripcion").val(Descripcion)
 
@@ -185,16 +189,21 @@ function getDetalleArticulo(Articulo,Descripcion) {
 	$("#slcMercado").val('N/D').change();
     $("#slcMIFIC").val('N/D').change();
 	$("#txtObservacion").val("")
+	$("#txtPrecioMific").val("")
+	
+
 	try {					
 		$.ajax({
 			url: "../../getInfoArticulo",
 			data: {
-				Articulo  : Articulo,
+				ID_ROW 	: ID,
 				_token  : "{{ csrf_token() }}" 
 			},
 			type: 'post',
 			async: true,
-			success: function(a) {
+			success: function(object) {
+				
+				var a = object.data[0]
 				a = isValue(a,0,true)
 				if (a !=0 ) {
 
@@ -208,6 +217,7 @@ function getDetalleArticulo(Articulo,Descripcion) {
 					$("#slcMercado").val(a.mercado).change();
 					$("#slcMIFIC").val(a.mific).change();
 					$("#txtObservacion").val(a.observaciones)
+					$("#txtPrecioMific").val(a.Precio_mific)
 					
 					
 				}
@@ -228,7 +238,6 @@ function getDetalleArticulo(Articulo,Descripcion) {
 	$(".text-danger").hide();
 }
 
-
 new Vue({
 	el: '#id_form_save',
 	methods: {
@@ -239,6 +248,7 @@ new Vue({
 
 			formData.append('Articulo', document.getElementById('txtArticulo').value);
 			formData.append('Descripcion', document.getElementById('txtDescripcion').value);
+			formData.append('NumRow', document.getElementById('txtNumRow').innerHTML);
 
 			formData.append('fecha_estimada', document.getElementById('date_estimada').value);
 			formData.append('fecha_pedido', document.getElementById('date_pedido').value);
@@ -248,6 +258,7 @@ new Vue({
 			formData.append('cantidad', document.getElementById('txtCantidad').value);
 			formData.append('mercado', document.getElementById('slcMercado').value);
 			formData.append('mific', document.getElementById('slcMIFIC').value);
+			formData.append('precio_mific', document.getElementById('txtPrecioMific').value);
 			formData.append('observaciones', document.getElementById('txtObservacion').value);
 
 			axios.post('{{ route("SaveTransito") }}', formData)
@@ -261,9 +272,10 @@ new Vue({
 						cancelButtonColor: '#d33',
 						confirmButtonText: 'OK'
 						}).then((result) => {
-							if (result.isConfirmed) {
-								InitTable();
-							}   
+							InitTable();
+							// if (result.isConfirmed) {								
+							// 	mensaje('Informacion Guardada', 'success');
+							// }   
 						})
 				}).catch(e => {
 					if (e.response.status === 422) {
@@ -282,7 +294,7 @@ new Vue({
 				});
 		},
 		DeleteInformacion(){
-			let articulo = document.getElementById('txtArticulo').value;
+			let NumRow =document.getElementById('txtNumRow').innerHTML;
 
 			Swal.fire({
 				title: 'Eliminar Articulo',
@@ -299,7 +311,7 @@ new Vue({
 						url: "../../DeleteArticuloTransito",
 						type: 'post',
 						data: {
-							articulo      : articulo
+							NumRow      : NumRow
 						},
 						async: true,
 						success: function(response) {
@@ -370,9 +382,12 @@ var ExcelToJSON = function() {
 
 		workbook.SheetNames.forEach(function(sheetName) {
 
+			isError=false;
+
 			var worksheet = workbook.Sheets[sheetName];
 			var range = XLSX.utils.decode_range('A1:Q200');
 			var rows = XLSX.utils.sheet_to_json(worksheet, {range: range});
+			
 		
 			rows.forEach(function(row) {
 				
@@ -385,6 +400,10 @@ var ExcelToJSON = function() {
 						var fechaEstimada 	= dtFormat(rowArray[10]);
 
 						var isOK = (rowArray.length < 17 )? 'N' : 'S';
+
+						if(isOK == 'N'){
+							isError=true
+						}
 
 						dta_table_excel.push({
 							ARTICULO	: rowArray[0] || 'N/D',
@@ -481,52 +500,60 @@ function table_render(Table,datos,Header,columnDefs,Filter)
 }
 
 $("#id_send_data_excel").click(function(){ 
-	
-	Swal.fire({
-		title: '¿Estas Seguro de cargar  ?',
-		text: "¡Se cargara la informacion previamente visualizada!",
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonColor: '#3085d6',
-		cancelButtonColor: '#d33',
-		confirmButtonText: 'Si!',
-		target: document.getElementById('mdlMatPrima'),
-		showLoaderOnConfirm: true,
-		preConfirm: () => {
-			$.ajax({
-				url: "SaveTransitoExcel",
-				data: {
-					datos   : dta_table_excel,
-					_token  : "{{ csrf_token() }}" 
-				},
-				type: 'post',
-				async: true,
-				success: function(response) {
-				console.log(response)
-					if(response){
-						Swal.fire({
-							title: 'Articulos Ingresados Correctamente ' ,
-							icon: 'success',
-							showCancelButton: false,
-							confirmButtonColor: '#3085d6',
-							cancelButtonColor: '#d33',
-							confirmButtonText: 'OK'
-							}).then((result) => {
-							if (result.isConfirmed) {
-								location.reload();
-								}
-							})
-						}
+	if(!isError){
+		Swal.fire({
+			title: '¿Estas Seguro de cargar  ?',
+			text: "¡Se cargara la informacion previamente visualizada!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Si!',
+			target: document.getElementById('mdlMatPrima'),
+			showLoaderOnConfirm: true,
+			preConfirm: () => {
+				$.ajax({
+					url: "SaveTransitoExcel",
+					data: {
+						datos   : dta_table_excel,
+						_token  : "{{ csrf_token() }}" 
 					},
-				error: function(response) {
-					//Swal.fire("Oops", "No se ha podido guardar!", "error");
-				}
-				}).done(function(data) {
-					//CargarDatos(nMes,annio);
-				});
-			},
-		allowOutsideClick: () => !Swal.isLoading()
-	});
+					type: 'post',
+					async: true,
+					success: function(response) {
+					console.log(response)
+						if(response){
+							Swal.fire({
+								title: 'Articulos Ingresados Correctamente ' ,
+								icon: 'success',
+								showCancelButton: false,
+								confirmButtonColor: '#3085d6',
+								cancelButtonColor: '#d33',
+								confirmButtonText: 'OK'
+								}).then((result) => {
+								if (result.isConfirmed) {
+									location.reload();
+									}
+								})
+							}
+						},
+					error: function(response) {
+						//Swal.fire("Oops", "No se ha podido guardar!", "error");
+					}
+					}).done(function(data) {
+						//CargarDatos(nMes,annio);
+					});
+				},
+			allowOutsideClick: () => !Swal.isLoading()
+		});
+	}else{
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: "Existen Filas con espacios Vacios ",
+			
+		})
+	}
 
 
 	

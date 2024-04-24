@@ -86,20 +86,21 @@ class inventario_controller extends Controller
 
 	public function getInfoArticulo(Request $request)
     {  
-		$Articulo = $request->Articulo;
-		
-		$ArticuloTransito = ArticulosTransito::where('Articulo',$Articulo)->get();
+		$ID_ROW = $request->ID_ROW;
 		$datos_articulo =  [];
 
-		foreach ($ArticuloTransito as $k) {
-			$datos_articulo = [
-				'Articulo'          => strval($Articulo),
+		$ArticuloTransito =  (is_null($ID_ROW))? ArticulosTransito::where('Articulo',$request->Articulo)->get() : ArticulosTransito::where('Id_transito',$ID_ROW)->get();
+
+		foreach ($ArticuloTransito as $p => $k) {
+			$datos_articulo['data'][$p] = [
+				'Articulo'          => $k->Articulo,
 				'fecha_estimada'	=> $k->fecha_estimada,
 				'fecha_pedido'      => $k->fecha_pedido,
 				'documento'         => $k->documento,
 				'cantidad'          => number_format($k->cantidad,0,'.',''),
 				'mercado'         	=> $k->mercado,
 				'mific'             => $k->mific,
+				'Precio_mific'      => $k->Precio_mific,
 				'Nuevo'          	=> $k->Nuevo,
 				'Descripcion'       => strtoupper($k->Descripcion),
 				'observaciones'     => $k->observaciones
@@ -109,56 +110,57 @@ class inventario_controller extends Controller
 	}
 
 	public function DeleteArticuloTransito(Request $request){
-		$obj = inventario_model::DeleteArticuloTransito($request);
+		$obj = ArticulosTransito::DeleteArticuloTransito($request);
         return response()->json($obj);
 	}
 	public function SaveTransito(Request $request)
     {  
-		$Articulo = $request->Articulo;
+		$NumRow = $request->NumRow;
 
 		$request->validate([
-			'Articulo' => 'required',
-			'Descripcion' => 'required',
-            'fecha_estimada' => 'required',
-            'fecha_pedido' => 'required',
-            'documento' => 'required',
-            'cantidad' => 'required',
-            'mercado' => 'required',
-            'mific' => 'required',
-            'observaciones' => 'required',
+			'Articulo' 			=> 'required',
+			'Descripcion' 		=> 'required',
+            'fecha_estimada' 	=> 'required',
+            'fecha_pedido' 		=> 'required',
+            'documento' 		=> 'required',
+            'cantidad' 			=> 'required',
+            'mercado' 			=> 'required',
+            'mific' 			=> 'required',
+			'precio_mific' 		=> 'required',
+            'observaciones' 	=> 'required',
         ]);
 
-		// Busca el artículo por su ID
-		$articuloTransito = ArticulosTransito::find($Articulo);
+		$articuloTransito = ArticulosTransito::find($NumRow);
 
-		// Verifica si el artículo existe
 		if ($articuloTransito) {
-			// Actualiza los campos del artículo existente
+			
 			$articuloTransito->update([
-				'Descripcion' => $request->Descripcion,
-				'fecha_estimada' => $request->fecha_estimada,
-				'fecha_pedido' => $request->fecha_pedido,
-				'documento' => $request->documento,
-				'cantidad' => $request->cantidad,
-				'mercado' => $request->mercado,
-				'mific' => $request->mific,
-				'observaciones' => $request->observaciones,
+				'Descripcion' 		=> $request->Descripcion,
+				'fecha_estimada' 	=> $request->fecha_estimada,
+				'fecha_pedido' 		=> $request->fecha_pedido,
+				'documento' 		=> $request->documento,
+				'cantidad' 			=> $request->cantidad,
+				'mercado' 			=> $request->mercado,
+				'mific' 			=> $request->mific,
+				'observaciones' 	=> $request->observaciones,
+				'Precio_mific' 		=> $request->precio_mific,
 			]);
 	
 			$message = 'Información actualizada correctamente';
+
 		} else {
-			// Crea un nuevo artículo si no existe
 			ArticulosTransito::create([
-				'Articulo' => $Articulo,
-				'Descripcion' => $request->Descripcion,
-				'fecha_estimada' => $request->fecha_estimada,
-				'fecha_pedido' => $request->fecha_pedido,
-				'documento' => $request->documento,
-				'cantidad' => $request->cantidad,
-				'mercado' => $request->mercado,
-				'mific' => $request->mific,
-				'observaciones' => $request->observaciones,
-				'Nuevo' => 'N',
+				'Articulo' 			=> $Articulo,
+				'Descripcion' 		=> $request->Descripcion,
+				'fecha_estimada' 	=> $request->fecha_estimada,
+				'fecha_pedido' 		=> $request->fecha_pedido,
+				'documento' 		=> $request->documento,
+				'cantidad' 			=> $request->cantidad,
+				'mercado' 			=> $request->mercado,
+				'mific' 			=> $request->mific,
+				'observaciones' 	=> $request->observaciones,
+				'Precio_mific' 		=> $request->precio_mific,
+				'Nuevo' 			=> 'N',
 			]);
 	
 			$message = 'Información guardada correctamente';

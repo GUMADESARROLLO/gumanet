@@ -815,35 +815,82 @@ function FormatPretty(number) {
 
 function articuloTransito(Articulo){
 
-    $.ajax({
-			url: "getInfoArticulo",
-			data: {
-				Articulo  : Articulo,
-				_token  : "{{ csrf_token() }}" 
-			},
-			type: 'post',
-			async: true,
-			success: function(json) {
-                if (json !=0 ) {
-                    $('#lblEstimado').val(moment(json.fecha_pedido).format('YYYY-MM-DD'));
-                    $('#lblPedido').val(moment(json.fecha_estimada).format('YYYY-MM-DD'));
-                    $('#lblDocumento').val(json.documento);
-                    $('#lblCantidad').val(json.cantidad);
-                    $('#lblMercado').val(json.mercado);
-                    $('#lblMific').val(json.mific);
-                    $('#lblObservacion').val(json.observaciones);
-                }else {
-                    $('#lblEstimado').val(moment().format('YYYY-MM-DD'));
-                    $('#lblPedido').val(moment().format('YYYY-MM-DD'));
-                    $('#lblDocumento').val('');
-                    $('#lblCantidad').val('');
-                    $('#lblMercado').val('N/D');
-                    $('#lblMific').val('N/D');
-                    $('#lblObservacion').val('');
-                }
+
+    $('#tbl_transito_articulo').DataTable({
+            "paging": true,
+            "destroy": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "ajax":{
+                "url" : "getInfoArticulo",
+                "type" : "post",
+                "data": { Articulo  : Articulo, _token  : "{{ csrf_token() }}" }
+            },
+            "language": {
+                "zeroRecords": "NO HAY COINCIDENCIAS",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Última ",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "lengthMenu": "MOSTRAR _MENU_",
+                "emptyTable": "-",
+                "search": "BUSCAR"
+            },
+            "columnDefs": [
+                {"className": "dt-center", "targets": [0,1,2,3,4,5]},
+                {"className": "dt-left", "targets": [6]},
+                {"className": "dt-right", "targets": [5]},
+            ],
+            'columns': [
+                {"data": "fecha_pedido"},
+                {"data": "fecha_estimada"},
+                {"data": "documento"},
+                {"data": "mercado"},
+                {"data": "mific"},
+                {"data": function(data, type, row, meta) {
+                    return numeral(data.Precio_mific).format('0,0.00'); 
+                }, "className": "dt-right"},
+                {"data": "observaciones"},                
+            ],
+        });  
+        $("#tbl_transito_articulo_length").hide();
+        $("#tbl_transito_articulo_filter").hide();
+
+    // $.ajax({
+	// 		url: "getInfoArticulo",
+	// 		data: {
+	// 			Articulo  : Articulo,
+	// 			_token  : "{{ csrf_token() }}" 
+	// 		},
+	// 		type: 'post',
+	// 		async: true,
+	// 		success: function(json) {
+    //             console.log(json)
+    //             if (json !=0 ) {
+    //                 $('#lblEstimado').val(moment(json.fecha_pedido).format('YYYY-MM-DD'));
+    //                 $('#lblPedido').val(moment(json.fecha_estimada).format('YYYY-MM-DD'));
+    //                 $('#lblDocumento').val(json.documento);
+    //                 $('#lblCantidad').val(json.cantidad);
+    //                 $('#lblMercado').val(json.mercado);
+    //                 $('#lblMific').val(json.mific);
+    //                 $('#lblObservacion').val(json.observaciones);
+    //             }else {
+    //                 $('#lblEstimado').val(moment().format('YYYY-MM-DD'));
+    //                 $('#lblPedido').val(moment().format('YYYY-MM-DD'));
+    //                 $('#lblDocumento').val('');
+    //                 $('#lblCantidad').val('');
+    //                 $('#lblMercado').val('N/D');
+    //                 $('#lblMific').val('N/D');
+    //                 $('#lblObservacion').val('');
+    //             }
    
-        }
-    });
+    //     }
+    // });
 }
 
 </script>
