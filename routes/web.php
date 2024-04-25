@@ -26,6 +26,7 @@ Route::post('/SaveTransito', 'inventario_controller@SaveTransito')->name("SaveTr
 Route::post('/SaveTransitoNew', 'inventario_controller@SaveTransitoNew')->name("SaveTransitoNew");
 Route::post('/SaveTransitoConCodigo', 'inventario_controller@SaveTransitoConCodigo')->name("SaveTransitoConCodigo");
 Route::post('/DeleteArticuloTransito', 'inventario_controller@DeleteArticuloTransito')->name("/DeleteArticuloTransito");
+Route::post('/Inventario/Transito/SaveTransitoExcel', 'inventario_controller@SaveTransitoExcel')->name('SaveTransitoExcel');
 
 
 //RUTA DE PRODUCCION

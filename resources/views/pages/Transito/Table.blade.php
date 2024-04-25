@@ -56,10 +56,12 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content" id="id_form_save">
       <div class="modal-header d-block">
+        
+        <span id="txtNumRow" style="display:none">0000</span>   
         <h5 class="modal-title text-center" id="tArticulo"></h5>
       </div>
       <div class="modal-body">
-        <div class="row" >
+        <div class="row" >       
           <div class="col-sm-3">
             <div class="form-group">
                 <label for="txtArticulo">ARTICULO:</label>
@@ -109,19 +111,19 @@
             </div>
           </div>
         
-          <div class="col-sm-3">
+          <div class="col-sm-2">
             <div class="form-group">
                 <label for="slcMercado">MERCADO:</label>
                 <select class="form-control" id="slcMercado">
                     <option value="N/D">N/D</option>
-                    <option value="PRIVADOR">PRIVADO</option>
-                    <option value="INSTITUCION">INSTITUCION</option>
+                    <option value="PRIVADO">PRIVADO</option>
+                    <option value="MINSA">MINSA</option>
                 </select>
                 <small id="alert_mercado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">MIFIC:</label>
                 <select class="form-control" id="slcMIFIC">
@@ -130,6 +132,14 @@
                     <option value="NO">NO</option>
                 </select>
                 <small id="alert_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+
+          <div class="col-sm-2">
+            <div class="form-group">
+                <label for="txtPrecioMific">PRECIO MIFIC:</label>
+                <input type="text" class="form-control" id="txtPrecioMific" oninput="validateInput(this)">
+                <small id="alert_precio_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
 
@@ -153,69 +163,60 @@
     <div class="modal-dialog modal-xl mt-6" role="document">
       <div class="modal-content">
         <div class="modal-header d-block">
-            <h4 class="modal-title text-center" id="id_titulo_modal"> Carga via excel.</h4>
+            <h4 class="modal-title text-center" id="id_titulo_modal"> Actualizar Informacion Transito.</h4>
         </div>
         <div class="modal-body py-4 px-5 ">
           <div class="row">
-            <div class="col-md-12">                    
-                <form method="POST" id="export_excel" name="export_excel" enctype="multipart/form-data">
-                  <div class="input-group">
-                    <div class="custom-file" id="contInputExlFileTransito">
-                      <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="upload" class="custom-file-input" name="addExlFileTransito" id="frm-upload"/>
-                      <label class="custom-file-label" id="fileLabelTransito" for="addExlFileTransito" data-label="Buscar">Seleccione un archivo Excel
-                      </label>
+            <div class="col-md-12">  
+                <div class="row">
+                <div class="col-md-3">
+                    <div class="input-group" > 
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="search"><i data-feather="search"></i></span>
+                      </div>
+                      <input class="form-control form-control-sm shadow-none search" type="search" placeholder="Buscar..." aria-label="search" id="id_txt_excel" />
                     </div>
                   </div>
-                  {{-- @csrf --}} 
-                </form>
+                  <div class="col-md-9">
+                    <div class="input-group">
+                      <div class="custom-file" id="contInputExlFileTransito">
+                        <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="upload" class="custom-file-input" name="addExlFileTransito" id="frm-upload"/>
+                        <label class="custom-file-label" id="fileLabelTransito" for="addExlFileTransito" data-label="Buscar">Seleccione un archivo Excel
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                 
+                </div>
             </div>
-              <div class="col-md-12 mt-3">
-                  <div class="input-group" > 
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="search"><i data-feather="search"></i></span>
-                  </div>
-                  <input type="text" id="InputDtShowSearchFilterArt" class="form-control" placeholder="Buscar..." aria-describedby="search" id="id_txt_excel">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="search"><i data-feather="search"></i></span>
-                  </div>
-              </div>
-              </div>
+             
             <div class="col-md-12 mt-3">
-              <div class="border-table" >                        
+              <div class="table-responsive" >                        
                   <table class="table table-hover table-striped overflow-hidden" id="tbl_excel" >
-                  <thead>
-                      <tr>
-                          <th>Articulo</th>
-                          <th>Descripcion</th>
-                          <th>Cantidad</th>                          
-                          <th>Fecha Pedido</th>
-                          <th>Fecha Estimada</th>
-                          <th>Documento</th>
-                          <th>Mercado</th>
-                          <th>Mific</th>
-                          <th>Precio Mific</th>
-                          <th>HOJA</th>
-                          
-                      </tr>
-                  </thead>
+                    <thead>
+                        <tr>
+                            <th>ARTICULO</th>
+                            <th>DESCRIPCION</th>
+                            <th>DOCUMENTO</th>
+                            <th>CANTIDAD</th>                          
+                            <th>FECHA PEDIDO</th>
+                            <th>FECHA ESTIMADA</th>
+                            <th>MERCADO</th>
+                            <th>MIFIC</th>
+                            <th>PRECIO MIFIC</th>
+                            <th>COMENTARIO</th>
+                            <th></th>
+                        </tr>
+                    </thead>
                   <tbody>
-                  <tr>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
+                  <tr colspan="11">
+                      <td class="text-center" colspan="11">-</td>
                   </tr>
                   </tbody>
                   </table>  
               </div>
             </div>
-            <button class="btn btn-bg-inn btn-primary d-block w-100 mt-3" id="id_send_data_excel" type="submit" name="submit">Cargar</button>
+            <button class="btn btn-bg-inn btn-primary d-block w-100 mt-3" id="id_send_data_excel" type="submit" name="submit">Procesar</button>
           </div>                                 
             
         </div>

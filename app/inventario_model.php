@@ -304,62 +304,7 @@ class inventario_model extends Model {
         return $query;
     }
 
-    public static function getTransitoConCodigo() 
-    {
-
-        $Array    = array();
-        $result = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->get();
-        
-        foreach ($result as $k => $v) {
-            $Array[$k] = [
-                'ARTICULO'          => $v['Articulo'],
-                'DESCRIPCION'       => strtoupper($v['Descripcion']),
-                'FECHA_ESTIMADA'    => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
-                'FECHA_PEDIDO'      => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
-                'CANTIDAD'          => number_format($v['cantidad'], 0),
-            ];        
-        }        
-
-        return $Array;
-    }
-    public static function getTransitoSinCodigo() 
-    {
-        $Array    = array();
-        $result = ArticulosTransito::where('ARTICULO', 'LIKE', '%-N%')->get();
-
-        foreach ($result as $k => $v) {
-            $Array[] = [
-                'ARTICULO'          => $v->Articulo,
-                'DESCRIPCION'       => strtoupper($v['Descripcion']),
-                'FECHA_ESTIMADA'    => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
-                'FECHA_PEDIDO'      => \Date::parse(date('Y-m-d'))->format('D, M d, Y'),
-                'CANTIDAD'          => number_format($v['cantidad'], 0),
-            ];        
-        }
-
-        
-        return $Array;
-    }
-
-    public static function DeleteArticuloTransito(Request $request){
-        if ($request->ajax()) {
-            try {
-                $sql_server = new \sql_server(); 
-                
-                $articulo     = $request->input('articulo');
-
-                $sql_tran = "DELETE FROM PRODUCCION.dbo.tbl_articulos_transito WHERE Articulo = '".$articulo."'";
-                $response = $sql_server->fetchArray( $sql_tran ,SQLSRV_FETCH_ASSOC);
-
-                return response()->json($response);
-
-
-            } catch (Exception $e) {
-                $mensaje =  'Excepción capturada: ' . $e->getMessage() . "\n";
-                return response()->json($mensaje);
-            }
-        }
-    }
+   
 
     public static function getInventarioTotalizado() {
         $sql_server = new \sql_server();        
