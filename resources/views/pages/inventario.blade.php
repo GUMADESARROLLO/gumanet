@@ -496,6 +496,7 @@
                       <th>MERCADO</th>
                       <th>MIFIC</th>
                       <th>PRECIO MIFIC</th>
+                      <th>CANTIDAD</th>
                       <th>OBSERVACIONES</th>
                     </tr>
                   </thead>

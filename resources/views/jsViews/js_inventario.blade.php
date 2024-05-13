@@ -855,6 +855,9 @@ function articuloTransito(Articulo){
                 {"data": function(data, type, row, meta) {
                     return numeral(data.Precio_mific).format('0,0.00'); 
                 }, "className": "dt-right"},
+                {"data": function(data, type, row, meta) {
+                    return numeral(data.cantidad).format('0,0'); 
+                }, "className": "dt-right"},
                 {"data": "observaciones"},                
             ],
         });  
