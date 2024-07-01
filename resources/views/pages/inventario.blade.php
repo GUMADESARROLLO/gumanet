@@ -249,25 +249,22 @@
                     </div>
                   </div>
                 </div>
-                <table id="tblTrans" class="table table-bordered mt-2">
-                    <thead class="bg-blue text-light">
-                      <tr>
-                          <th>Fecha</th>
-                          <th>Lote</th>
-                          <th>Factura</th>
-                          <th>Tipo</th>
-                          <th>Cantidad</th>
-                          <th>Referencia</th>
-                          <th>Código</th>
-                          <th>Cliente</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tbody1">
-                      <tr>
-                        <td colspan="5"><center>No hay datos que mostrar</center></td>
-                      </tr>
-                    </tbody>
-                </table>
+                <table id="tblTrans_dev" class="table table-bordered mt-3">
+                        <thead class="bg-blue text-light">
+                          <tr>
+                            <th></th>
+                            <th>FECHA</th>
+                            <th>LOTE</th>
+                            <th>FACTURA</th>
+                            <th>TIPO</th>
+                            <th>CANTIDAD</th>
+                            <th>REFERENCIA</th>
+                            <th>CODIGO</th>
+                            <th>CLIENTE</th>
+                        </tr>
+                        </thead>
+                    </table>
+                
               </div>
             </div>
           </div>

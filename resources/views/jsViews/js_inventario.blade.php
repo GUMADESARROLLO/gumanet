@@ -530,9 +530,92 @@ function getBonificados(articulo) {
     });
 }
 
-$("#btnSearch").click(function() {    
-    var tbody = '';
-    var Total = 0 ;
+//MOSTRARA LOS DE TALLES FACTURAS 
+$(document).on('click', '#id_info_trans', function(ef) {
+    var table = $('#tblTrans_dev').DataTable();
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
+    var data = table.row($(this).parents('tr')).data();
+
+    if (row.child.isShown()) {
+        row.child.hide();
+        tr.removeClass('shown');
+        ef.target.innerHTML = "expand_more";
+        ef.target.style.background = '#e2e2e2';
+        ef.target.style.color = '#007bff';
+    } else {
+        //VALIDA SI EN LA TABLA HAY TABLAS SECUNDARIAS ABIERTAS
+        table.rows().eq(0).each( function ( idx ) {
+            var row = table.row( idx );
+            if ( row.child.isShown() ) {
+                row.child.hide();
+                ef.target.innerHTML = "expand_more";
+
+                var c_1 = $(".expan_more");
+                c_1.text('expand_more');
+                c_1.css({
+                    background: '#e2e2e2',
+                    color: '#007bff',
+                });
+            }
+        } );
+
+
+        detalles_transacciones(row.child,data.APLICACION);
+        tr.addClass('shown');
+        
+        ef.target.innerHTML = "expand_less";
+        ef.target.style.background = '#ff5252';
+        ef.target.style.color = '#e2e2e2';
+    }
+})
+
+function detalles_transacciones ( callback, Factura_ ) {
+    var thead = tbody = '';            
+    thead =`<table class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th class="center">ARTICULO</th>                        
+                        <th class="center">DESCRIPCION.</th>
+                        <th class="center">CANTIDAD</th>
+                        <th class="center">PRECIO UNITARIO</th>
+                        <th class="center">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+                $.ajax({
+        type: "POST",
+        url: "getDetFactVenta",
+        data:{
+            factura: Factura_,
+        },
+        success: function ( data ) {
+            if (data.length==0) {
+                tbody +=`<tr><td colspan='6'><center>....</center></td></tr>`;
+                callback(thead + tbody).show();
+            }
+            
+            $.each(data['objDt'], function (i, item) {
+                tbody +=`<tr>
+                            <td class="center">` + item['ARTICULO'] + `</td>
+                            <td class="text-left">` + item['DESCRIPCION'] + `</td>
+                            <td class="text-left">` +numeral(item['CANTIDAD']).format('0,0.00')  + `</td>
+                            <td class="text-center">` + numeral(item['PRECIO_UNITARIO']).format('0,0.00') + `</td>
+                            <td class="text-right">` + numeral(item['PRECIO_TOTAL']).format('0,0.00') + `</td>
+                        </tr>`;
+            });
+            tbody += `</tbody></table>`;
+            
+            temp = thead+tbody;
+
+            callback(temp).show();
+        }
+
+
+    });
+}
+
+$("#btnSearch").click(function() {  
     $.ajax({
         type: "POST",
         url: "transacciones",
@@ -543,39 +626,44 @@ $("#btnSearch").click(function() {
             tp: $( "#catArt option:selected" ).val()            
         },
         success: function (data) {
-            if (data.length==0) {
-                $("#tbody1").empty();
-                tbody +=`<tr>
-                            <td colspan='5'><center>No hay datos que mostrar</center></td>
-                        </tr>`;
-                mensaje('No se encontraron registros con los datos proporcionados', 'error');
-            }else {                
-                $("#tbody1").empty();
-                $.each(data, function(i, item) {
-                    tbody +=`<tr>
-                                <td>`+item['FECHA']+`</td>
-                                <td>`+item['LOTE']+`</td>
-                                <td>`+item['APLICACION']+`</td>
-                                <td>`+item['DESCRTIPO']+`</td>
-                                <td class="text-right">`+item['CANT']+`</td>
-                                <td>`+item['REFERENCIA']+`</td>
-                                <td>`+item['CODIGO_CLIENTE']+`</td>
-                                <td>`+item['NOMBRE']+`</td>
-                            </tr>`;
 
-                            Total += numeral(item['CANTIDAD']).value(); 
-                });
-                Total = numeral(Total).format('0,00');
-                tbody +=`<tr class="bg-blue text-light">
-                            <td class="text-light" colspan='4'> TOTAL UNIDADES DESPLAZADAS</td>
-                            
-                            <td class="text-light text-right" >`+Total+`</td>
-                            <td class="text-right" colspan='3'></td>
-                        </tr>`;
-            }
-            $("#tbody1").append(tbody);
+            $("#tblTrans_dev").dataTable({
+                "responsive": true,
+                "autoWidth":false,
+                "data": data,
+                "searching": false,
+                "destroy": true,
+                "paging":   true,
+                "columns":[
+                    { "data": "DETALLE" },
+                    { "data": "FECHA" },
+                    { "data": "LOTE" },
+                    { "data": "APLICACION" },
+                    { "data": "DESCRTIPO" },
+                    { "data": "CANT" },
+                    { "data": "REFERENCIA" },
+                    { "data": "CODIGO_CLIENTE" },
+                    { "data": "NOMBRE" }
+                ],
+                "columnDefs": [
+                    { "width": "5%", "targets": [ ] },
+                    {"className":"dt-center", "targets": [ 1,2,3,4,5,7,8] },
+                    {"className":"dt-right", "targets": [ 6, ] }
+                ],
+                "info": false,
+                "language": {            
+                    "zeroRecords": "No hay datos que mostrar",
+                    "emptyTable": "N/D",
+                    "loadingRecords": "Cargando...",
+                }
+            });
+            $("#tblTrans_dev_length").hide();
+            $("#tblTrans_dev_filter").hide();
+
+
         }
-    });
+    })
+    
 });
     
 $(document).on('click', '#exp_more', function(ef) {
