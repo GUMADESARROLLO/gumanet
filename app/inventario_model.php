@@ -1034,6 +1034,23 @@ class inventario_model extends Model {
         return $json;
     }
 
+    public static function getInfoMific($articulo) 
+    {
+
+        $Array    = array();
+        
+        $Precios_mific =  ArticulosTransito::where('Articulo',$articulo)->limit(1)->get();
+        
+        foreach ($Precios_mific as $k => $v) {
+            $Array = [
+                'Precio_mific_farmacia'     => $v->Precio_mific_farmacia,
+                'Precio_mific_public'       => $v->Precio_mific_public,
+            ];        
+        }    
+        return $Array;
+        
+    }
+
     public static function getOtrosArticulos($articulo) {
         
         $sql_server     = new \sql_server();

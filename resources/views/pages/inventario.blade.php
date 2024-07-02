@@ -166,10 +166,12 @@
             <a class="nav-item nav-link" id="navVinneta" data-toggle="tab" href="#nav-Vinneta" role="tab" aria-controls="nav-Vineta" aria-selected="false">Viñeta</a>
             <a class="nav-item nav-link" id="navComportamiento" data-toggle="tab" href="#nav-Comportamiento" role="tab" aria-controls="nav-Comportamiento" aria-selected="false">Comportamiento</a>
             <a class="nav-item nav-link" id="navTransito" data-toggle="tab" href="#nav-Transito" role="tab" aria-controls="nav-Transito" aria-selected="false">Transito</a>
+            <a class="nav-item nav-link" id="navMific" data-toggle="tab" href="#nav-Mific" role="tab" aria-controls="nav-Mific" aria-selected="false">Mific</a>
             
           </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
+
           <div class="tab-pane fade show active" id="nav-bod" role="tabpanel" aria-labelledby="navBodega">
             <div class="row">
                 <div class="col-sm-12">
@@ -187,6 +189,7 @@
                 </div>
             </div>
           </div>
+
           <div class="tab-pane fade" id="nav-prec" role="tabpanel" aria-labelledby="navPrecios">
             <div class="row">
               <div class="col-sm-12">
@@ -201,6 +204,7 @@
               </div>
             </div>
           </div>
+
           <div class="tab-pane fade" id="nav-boni" role="tabpanel" aria-labelledby="navBonificados">
             <table id="tblBonificados" class="table table-bordered mt-3">
               <thead class="bg-blue text-light">
@@ -210,6 +214,7 @@
               </thead>
             </table>
           </div>
+
           <div class="tab-pane fade" id="nav-trans" role="tabpanel" aria-labelledby="navTransaccion">
             <div class="row">
               <div class="col-sm-12">
@@ -478,9 +483,6 @@
           </div>
 
           <div class="tab-pane fade" id="nav-Transito" role="tabpanel" aria-labelledby="navTransito">
-
-          
-            
             <div class="row">
               <div class="col-sm-12 mt-3" >
                 <div class="table-responsive" >                        
@@ -500,6 +502,26 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="tab-pane fade" id="nav-Mific" role="tabpanel" aria-labelledby="navOtros">
+            <div class="row">
+              <div class="col-sm-12">                
+                <table id="tblCostos" class="table table-bordered mt-3">
+                  <tbody id="tbody1">
+                      <tr>
+                        <td class="bg-blue text-light"><b>PRECIO MIFIC FARMACIA.</b></td>
+                        <td id="id_precio_mific_farmacia" class ="dt-right">0</td>
+                      </tr>
+                      <tr >
+                        <td class="bg-blue text-light"><b>PRECIO MIFIC PUBLICO.</b></td>
+                        <td id="id_precio_mific_public" class="dt-right">0</td>
+                      </tr>
+                      
+                    </tbody>
+                </table>
+              </div>
+            </div>            
           </div>
 
         </div>

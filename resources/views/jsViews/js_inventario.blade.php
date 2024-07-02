@@ -312,19 +312,24 @@ $('nav .nav.nav-tabs a').click(function(){
         case 'navVinneta':  
             getVineta(articulo_g)
         break;
+
         case 'navComportamiento':  
             var fecha = new Date();
             var inicio = new Date(fecha.getFullYear(), (fecha.getMonth() + 1) - 3, 1);
 
             var fechaIni = inicio.getFullYear()+'-'+(inicio.getMonth()+1)+'-'+inicio.getDate();
             var fechaFin = fecha.getFullYear()+'-'+(fecha.getMonth()+1)+'-'+fecha.getDate();
-           
             comportamientoMensual(fechaIni, fechaFin, articulo_g, 1);
         break;
 
         case 'navTransito':  
             articuloTransito(articulo_g);
         break;
+
+        case 'navMific':  
+            getPrecioMiFic(articulo_g)
+        break;
+
         default:
             alert('Al parecer alguio salio mal :(')
     }    
@@ -450,6 +455,21 @@ function getOtros(articulo) {
             $("#id_existencia_minima").text(data[0]['MINIMO'])
             $("#id_punto_de_reoden").text(data[0]['REORDEN']);
             $("#id_plazo_rebast").text(data[0]['REABASTECIMIENTO'])
+        }
+    })
+}
+
+function getPrecioMiFic(articulo) {   
+    $.ajax({
+        url: "getInfoMific/"+articulo,
+        type: 'get',
+        data: {},
+        async: true,
+        success: function(precios) {
+            console.log(precios.Precio_mific_farmacia)
+            $("#id_precio_mific_farmacia").text(precios.Precio_mific_farmacia);
+            $("#id_precio_mific_public").text(precios.Precio_mific_public)
+           
         }
     })
 }
@@ -941,7 +961,7 @@ function articuloTransito(Articulo){
                 {"data": "mercado"},
                 {"data": "mific"},
                 {"data": function(data, type, row, meta) {
-                    return numeral(data.Precio_mific).format('0,0.00'); 
+                    return numeral(data.Precio_mific_farmacia).format('0,0.00'); 
                 }, "className": "dt-right"},
                 {"data": "observaciones"},                
             ],
