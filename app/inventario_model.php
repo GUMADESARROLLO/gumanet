@@ -1039,12 +1039,12 @@ class inventario_model extends Model {
 
         $Array    = array();
         
-        $Precios_mific =  ArticulosTransito::where('Articulo',$articulo)->limit(1)->get();
+        $Precios_mific =  PreciosMific::where('ARTICULO',$articulo)->limit(1)->get();
         
         foreach ($Precios_mific as $k => $v) {
             $Array = [
-                'Precio_mific_farmacia'     => $v->Precio_mific_farmacia,
-                'Precio_mific_public'       => $v->Precio_mific_public,
+                'Precio_mific_farmacia'     => "C$ " .number_format($v->MIFIC_FARMACIA,4),
+                'Precio_mific_public'       => "C$ " .number_format($v->MIFIC_PUBLICO,4),
             ];        
         }    
         return $Array;
