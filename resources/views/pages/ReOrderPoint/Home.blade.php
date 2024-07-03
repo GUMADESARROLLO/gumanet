@@ -50,21 +50,21 @@
         
         <div class="card">  
           <div class="card-header bg-primary text-white">  
-              <h4 class="card-title text-uppercase" id="id_titulo_modal_all_items" >Employee Form</h4>  
+              <h4 class="card-title text-uppercase" id="id_titulo_modal_all_items" > - </h4>  
           </div>
           <div class="card-body">  
-          <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link active" id="navBodega" data-toggle="tab" href="#nav-bod" role="tab" aria-controls="nav-bod" aria-selected="true">TAB 01</a>
-              <a class="nav-item nav-link" id="navPrecios" data-toggle="tab" href="#nav-prec" role="tab" aria-controls="nav-prec" aria-selected="false">TAB02</a>
-            </div>
-          </nav>
+            <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist" style="display:none">
+                <a class="nav-item nav-link active" id="navBodega" data-toggle="tab" href="#nav-bod" role="tab" aria-controls="nav-bod" aria-selected="true">TAB 01</a>
+                <a class="nav-item nav-link" id="navPrecios" data-toggle="tab" href="#nav-prec" role="tab" aria-controls="nav-prec" aria-selected="false">TAB02</a>
+              </div>
+            </nav>
           <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-bod" role="tabpanel" aria-labelledby="navBodega">
               <div class="row">
                   <div class="col-sm-12 mt-3">
                     
-                    <div class="col-12">
+                    <div class="col-12" >
                       <div class="row align-items-center g-4">
                         <div class="col-12 col-md-auto">
                           <div class="d-flex align-items-center">
@@ -115,12 +115,12 @@
                           </div>
                         </div>
                       </div>
-                      <hr class="bg-200 mb-6 mt-4">
+                      <hr class="bg-200 mb-6 mt-3">
                     </div>
 
                     <form id="needs-validation" novalidate>  
                       
-                      <div class="row">  
+                      <div class="row" >  
                           <div class="col-sm-2 col-md-2 col-xs-12">  
                               <label for="firstName">Pedido</label>  
                               <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
@@ -154,37 +154,38 @@
                       </div>  
                       
                     </form> 
-                    <hr class="bg-200 mb-6 mt-4">
-
-                    <p class="text-800 fs--1 mb-0">Rotacion</p>
-                    <div class="col-12">
-                      <div class="row align-items-center g-4">
-                        <div class="col-sm-4 col-md-4 col-xs-12">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">1,000,000</h4>
-                              <p class="text-800 fs--1 mb-0">CORTA (MESES ON HAND) Límite 6.5</p>
+                    <div style="display:none">
+                      <hr class="bg-200 mb-6 mt-4">
+                      <p class="text-800 fs--1 mb-0" >Rotacion</p>
+                      <div class="col-12" style="display:none">
+                        <div class="row align-items-center g-4">
+                          <div class="col-sm-4 col-md-4 col-xs-12">
+                            <div class="d-flex align-items-center">
+                              <div class="ms-3">
+                                <h4 class="mb-0">1,000,000</h4>
+                                <p class="text-800 fs--1 mb-0">CORTA (MESES ON HAND) Límite 6.5</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4 col-md-4 col-xs-12">
+                            <div class="d-flex align-items-center">
+                              <div class="ms-3">
+                                <h4 class="mb-0">1,000,000</h4>
+                                <p class="text-800 fs--1 mb-0">MEDIA (ON HAND+TRANSITO) Límite 10.5</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4 col-md-4 col-xs-12">
+                            <div class="d-flex align-items-center">
+                              <div class="ms-3">
+                                <h4 class="mb-0">1,000,000</h4>
+                                <p class="text-800 fs--1 mb-0">LARGA (ON HAND+TRANSITO+PEDIDOS) Límite 12</p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4 col-md-4 col-xs-12">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">1,000,000</h4>
-                              <p class="text-800 fs--1 mb-0">MEDIA (ON HAND+TRANSITO) Límite 10.5</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-sm-4 col-md-4 col-xs-12">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">1,000,000</h4>
-                              <p class="text-800 fs--1 mb-0">LARGA (ON HAND+TRANSITO+PEDIDOS) Límite 12</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div> 
+                      </div> 
+                    </div>
                   </div>
               </div>
             </div>

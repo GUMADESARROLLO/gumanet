@@ -86,18 +86,32 @@ $(document).ready(function() {
 
 			}},
             {"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION"},
-			{"title": "EXISTENCIAS PROX. A VENCER <=12 Meses", 		"data": "VENCE_MENOS_IGUAL_12"},
-            {"title": "ROTACION PREVISTA EXISTENCIAS POR VENCER", 		"data": "ROTACION_PREVISTA"},
+			{"title": "EXISTENCIAS PROX. A VENCER <=12 Meses", 		"data": "VENCE_MENOS_IGUAL_12"},            
             {"title": "EXISTENCIAS LOTE >=7 Meses", 		"data": "VENCE_MAS_IGUAL_7"},
             {"title": "LOTE MAS PROX. A VENCER", 		"data": "LOTE_MAS_PROX_VENCER"},
             {"title": "EXISTENCIA EN LORE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
+            {"title": "LEADTIME", 		"data": "LEADTIME"},
+            {"title": "EJECUTADO UND. YTD", 		"data": "EJECUTADO_UND_YTD"},
+            {"title": "DEMANDA ANUAL CA NETA", 		"data": "DEMANDA_ANUAL_CA_NETA"},
+            {"title": "DEMANDA ANUAL CA AJUSTADA", 		"data": "DEMANDA_ANUAL_CA_AJUSTADA"},
+            {"title": "FACTOR", 		"data": "FACTOR"},
+            {"title": "LIMITE LOGISTICO MEDIO", 		"data": "LIMITE_LOGISTICO_MEDIO"},
+            {"title": "CLASE", 		"data": "CLASE"},
+            {"title": "VALUACION", 		"data": "VALUACION"},
+            {"title": "CONTRIBUCION", 		"data": "CONTRIBUCION"},
+            {"title": "PEDIDO + TRANSITO", 		"data": "PEDIDO_TRANSITO"},
+            {"title": "MOQ", 		"data": "MOQ"},
+            {"title": "ESTIMACION SOBRANTES UND", 		"data": "ESTIMACION_SOBRANTES_UND"},
+            {"title": "REORDER1", 		"data": "REORDER1"},
+            {"title": "REORDER", 		"data": "REORDER"},
+            {"title": "CANTIDAD_ORDENAR", 		"data": "CANTIDAD_ORDENAR"},
             
 		],
 		"columnDefs": [
 			{"className": "dt-center", "targets": [0]},
-			{"className": "dt-right", "targets": [2,3,4,5,6]},
+			{"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]},
 			{"width":"20%","targets":[]},
-			{"width":"10%","targets":[2,3,4,5,6]}
+			{"width":"10%","targets":[]}
 		],
     });
 
@@ -127,7 +141,7 @@ function getDetalleArticulo(Articulos,Descripcion,Undiad) {
     //$("#tbody1").empty().append(`<tr><td colspan='5'><center>Aún no ha realizado ninguna busqueda</center></td></tr>`);
 	$("#mdDetalleArt").modal('show');
     grafVentasMensuales(Articulos)
-    dataVinneta(0,0,'','');
+    //dataVinneta(0,0,'','');
 
 }
 
