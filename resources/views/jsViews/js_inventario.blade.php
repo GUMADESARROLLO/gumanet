@@ -438,6 +438,7 @@ function getCostos(articulo) {
         data: {},
         async: true,
         success: function(data) {
+            console.log(data);
             $("#id_prec_prom").text(data[0]['COSTO_PROM_LOC']);
             $("#id_ult_prec").text(data[0]['COSTO_ULT_LOC'])
         }

@@ -278,7 +278,7 @@
             <div class="row">
               <div class="col-sm-12">                
                 <table id="tblCostos" class="table table-bordered mt-3">
-                  <tbody id="tbody1">
+                  <tbody>
                       <tr>
                         <td class="bg-blue text-light"><b>Costo Promedio.</b></td>
                         <td id="id_prec_prom" class ="dt-right">0</td>
