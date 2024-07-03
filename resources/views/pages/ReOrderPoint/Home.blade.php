@@ -65,52 +65,44 @@
                   <div class="col-sm-12 mt-3">
                     
                     <div class="col-12" >
-                      <div class="row align-items-center g-4">
-                        <div class="col-12 col-md-auto">
+                      <div class="row">
+                        <div class="col-12 col-sm-6 col-md-2">
                           <div class="d-flex align-items-center">
                             <div class="ms-3">
-                              <h4 class="mb-0">100,000</h4>
-                              <p class="text-800 fs--1 mb-0">REORDER</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-auto">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">100,000</h4>
-                              <p class="text-800 fs--1 mb-0">CANTIDAD A ORDENAR</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-auto">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">$ 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">COSTO PROMEDIO USD</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-auto">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">$ 0.00 </h4>
-                              <p class="text-800 fs--1 mb-0">ULTIMO COSTO USD</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-auto">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">$ 0.00</h4>
+                              <h4 class="mb-0" id="id_leadtime"> 0.00 </h4>
                               <p class="text-800 fs--1 mb-0">LEADTIME</p>
                             </div>
                           </div>
                         </div>
-                        <div class="col-12 col-md-auto">
+                        <div class="col-12 col-sm-6 col-md-2">
                           <div class="d-flex align-items-center">
                             <div class="ms-3">
-                              <h4 class="mb-0">$ 0.00 </h4>
-                              <p class="text-800 fs--1 mb-0">FACTOR STOCK SEGURIDAD</p>
+                              <h4 class="mb-0" id="id_demanda_neta"> 0.00 </h4>
+                              <p class="text-800 fs--1 mb-0">DEMANDA ANUAL CRUZ AZUL NETA</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_demanda_ajustada"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">DEMANDA ANUAL CRUZ AZUL AJUSTADA</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_limite_logistico_medio"> 0.00 </h4>
+                              <p class="text-800 fs--1 mb-0">LIMITE LOGISTICO MEDIO</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_contribucion"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">CONTRIBUCION</p>
                             </div>
                           </div>
                         </div>
@@ -121,30 +113,30 @@
                     <form id="needs-validation" novalidate>  
                       
                       <div class="row" >  
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="firstName">Pedido</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="firstName">CLASE</label>  
+                              <input type="text" class="form-control" id="id_clase" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="lastName">Fecha Pedido</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
-                              
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="lastName">PEDIDO + TRANSITO</label>  
+                              <input type="text" class="form-control" id="id_pedido_transito" placeholder="0.00" required>  
                           </div>
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="firstName">Meses Transcurridos</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="firstName">MOQ</label>  
+                              <input type="text" class="form-control" id="id_moq" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="lastName">Procedido</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
+
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="lastName">REORDER1</label>  
+                              <input type="text" class="form-control" id="id_reorder1" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="lastName">Transito</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="lastName">REORDENAR</label>  
+                              <input type="text" class="form-control" id="id_reordenar" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="lastName">MOQ</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="lastName">CANTIDAD ORDENAR</label>  
+                              <input type="text" class="form-control" id="id_cant_ordenar" placeholder="0.00" required>  
                           </div>                                
                       </div>
                       <div class="row mt-3">  
@@ -366,7 +358,7 @@
                     <hr class="bg-200 mb-6 mt-4">
 
                     <div class="row align-items-center g-4">
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">A</h4>
@@ -374,7 +366,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">12</h4>
@@ -382,7 +374,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">NO / SI</h4>
@@ -390,7 +382,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">A</h4>
@@ -398,7 +390,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">0.00</h4>
@@ -406,7 +398,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">0.00 </h4>

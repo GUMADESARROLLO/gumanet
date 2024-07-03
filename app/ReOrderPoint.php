@@ -46,12 +46,25 @@ class ReOrderPoint extends Model
 
         $array = array();
 
-        $Sales = ReOrderSales::WHERE('ARTICULO',$Articulos)->first();
+        $Sales = ReOrderPoint::WHERE('ARTICULO',$Articulos)->first();
+        
+        $array["LEADTIME"] = $Sales->LEADTIME;
+        $array["DEMANDA_ANUAL_CA_NETA"] = $Sales->DEMANDA_ANUAL_CA_NETA;
+        $array["DEMANDA_ANUAL_CA_AJUSTADA"] = $Sales->DEMANDA_ANUAL_CA_AJUSTADA;
+        $array["LIMITE_LOGISTICO_MEDIO"] = $Sales->LIMITE_LOGISTICO_MEDIO;
+        $array["CONTRIBUCION"] = $Sales->CONTRIBUCION;
+
+        $array["REORDER1"] = number_format($Sales->REORDER1,4,".","");
+        $array["REORDER"] = number_format($Sales->REORDER,4,".","");
+        $array["CANTIDAD_ORDENAR"] = number_format($Sales->CANTIDAD_ORDENAR,4,".","");
+        $array["MOQ"] = $Sales->MOQ;
+        $array["PEDIDO_TRANSITO"] = $Sales->PEDIDO_TRANSITO;
+        $array["CLASE"] = $Sales->CLASE;
+        
         for ($i=1; $i <= 12; $i++) { 
-            $array[$i] = [
+            $array["VENTAS"][$i] = [
                 "Mes"                 => "Mes".$i,
-               // "data" => (float) number_format(floatval($Sales->$i),2,".",""),
-               "data" =>  (isset($Sales) && !empty($Sales->$i)) ? (float) number_format($Sales->$i,2,".","") : 0 
+                "data" =>  (isset($Sales) && !empty($Sales->$i)) ? (float) number_format($Sales->$i,2,".","") : 0 
             ];
         }
 

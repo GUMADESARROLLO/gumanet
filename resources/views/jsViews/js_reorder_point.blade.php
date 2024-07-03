@@ -111,7 +111,7 @@ $(document).ready(function() {
 			{"className": "dt-center", "targets": [0]},
 			{"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]},
 			{"width":"20%","targets":[]},
-			{"width":"10%","targets":[]}
+			{"width":"10%","targets":[2,3,4,5,6]}
 		],
     });
 
@@ -216,9 +216,24 @@ $.getJSON("dtGraf/" +Articulos, function(json) {
         Day_Max = [];
 
         var vVtsDiarias;
+        
+        $("#id_leadtime").html(json['LEADTIME']);
+        $("#id_demanda_neta").html(json['DEMANDA_ANUAL_CA_NETA']);
+        $("#id_demanda_ajustada").html(json['DEMANDA_ANUAL_CA_AJUSTADA']);
+        $("#id_limite_logistico_medio").html(json['LIMITE_LOGISTICO_MEDIO']);
+        $("#id_contribucion").html(json['CONTRIBUCION']);
 
+        $("#id_reorder1").val(json['REORDER1']);
+        $("#id_reordenar").val(json['REORDER']);
+        $("#id_cant_ordenar").val(json['CANTIDAD_ORDENAR']);
 
-        $.each(json, function(i, x) {
+        $("#id_clase").val(json['CLASE']);
+        $("#id_pedido_transito").html(json['PEDIDO_TRANSITO']);
+        $("#id_moq").val(json['MOQ']);
+        
+        
+
+        $.each(json['VENTAS'], function(i, x) {
 
             tmp_total = tmp_total + parseFloat(x['data']);
 
@@ -235,18 +250,16 @@ $.getJSON("dtGraf/" +Articulos, function(json) {
         grafiacas_productos_Diarios.tooltip = {
             pointFormat : temporal
         }
+
         vVtsDiarias = numeral(tmp_total).format('0,0.00');
         grafiacas_productos_Diarios.xAxis.categories = title;
         grafiacas_productos_Diarios.subtitle.text = vVtsDiarias + " Total";
         grafiacas_productos_Diarios.series[0].data = dta;
 
-
-        
         chart = new Highcharts.Chart(grafiacas_productos_Diarios);
         
         chart.yAxis[0].update();
 
-    
 })
 }
 </script>
