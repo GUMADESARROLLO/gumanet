@@ -218,7 +218,8 @@ function getDetalleArticulo(Articulo,Descripcion,ID)
 					$("#slcMercado").val(a.mercado).change();
 					$("#slcMIFIC").val(a.mific).change();
 					$("#txtObservacion").val(a.observaciones)
-					$("#txtPrecioMific").val(a.Precio_mific)
+					$("#txtPrecioMific").val(a.Precio_mific_farmacia)
+					$("#txtPrecioMificPublic").val(a.Precio_mific_public)
 					
 					
 				}
@@ -259,7 +260,8 @@ new Vue({
 			formData.append('cantidad', document.getElementById('txtCantidad').value);
 			formData.append('mercado', document.getElementById('slcMercado').value);
 			formData.append('mific', document.getElementById('slcMIFIC').value);
-			formData.append('precio_mific', document.getElementById('txtPrecioMific').value);
+			formData.append('precio_mific_f', document.getElementById('txtPrecioMific').value);
+			formData.append('precio_mific_p', document.getElementById('txtPrecioMificPublic').value);
 			formData.append('observaciones', document.getElementById('txtObservacion').value);
 
 			axios.post('{{ route("SaveTransito") }}', formData)
@@ -413,7 +415,8 @@ var ExcelToJSON = function() {
 							Mercado		: rowArray[13] ||'N/D',
 							Mific		: rowArray[16] ||'N/D',
 							Documento	: rowArray[12] ||'N/D',
-							Pre_MIFIC	: 0,
+							Pre_MIFIC_F	: 0,
+							Pre_MIFIC_P	: 0,
 							Comment		: rowArray[15] ||'N/D',
 							isOK		: isOK
 						})

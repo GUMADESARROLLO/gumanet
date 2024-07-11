@@ -1,4 +1,5 @@
 <script>
+    fullScreen();
     var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
     grafiacas_productos_Diarios = {
         chart: {
@@ -58,13 +59,13 @@ $(document).ready(function() {
     //AGREGO LA RUTA AL NAVEGADOR
     $("#item-nav-01").after(`<li class="breadcrumb-item active"><a href="{{url('/Inventario')}}">Inventario</a></li><li class="breadcrumb-item active">Reorder Point</li>`);
 
-    $('#dtInvCompleto').DataTable({
+    $('#dt_articulos').DataTable({
 		"ajax":{
 			"url": "getData",
 			'dataSrc': '',
 		},
-		'info': false,
-		"lengthMenu": [[25,200,300,400,-1], [25,200,300,400,"Todo"]],
+        
+		"lengthMenu": [[5,30,50,100,-1], [5,30,50,100,"Todo"]],
 		"language": {
 			"infoFiltered": "(Filtrado de _MAX_ total entradas)",
 			"zeroRecords": "No hay coincidencias",
@@ -80,29 +81,41 @@ $(document).ready(function() {
 			"search":     "BUSCAR"
 		},
 		'columns': [	
-			{"title": "ARTICULO","data": "ARTICULO", "render": function(data, type, row, meta) { 
-
-				return`<a href="#!" onclick="getDetalleArticulo(`+ "'" +row.ARTICULO + "'" +` , ` + "'" +row.DESCRIPCION + "'" +` ,`+ "'" +row.UNIDAD + "'" +`)" >`+ row.ARTICULO +`</a>`
-
-			}},
+			{"title": "ARTICULO","data": "ARTICULO"},
             {"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION"},
-			{"title": "EXISTENCIAS PROX. A VENCER <=12 Meses", 		"data": "VENCE_MENOS_IGUAL_12"},
-            {"title": "ROTACION PREVISTA EXISTENCIAS POR VENCER", 		"data": "ROTACION_PREVISTA"},
-            {"title": "EXISTENCIAS LOTE >=7 Meses", 		"data": "VENCE_MAS_IGUAL_7"},
+			{"title": "EXIST. PROX. A VENCER <=12 Meses", 		"data": "VENCE_MENOS_IGUAL_12"},            
+            {"title": "EXIST. LOTE >=7 Meses", 		"data": "VENCE_MAS_IGUAL_7"},
             {"title": "LOTE MAS PROX. A VENCER", 		"data": "LOTE_MAS_PROX_VENCER"},
-            {"title": "EXISTENCIA EN LORE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
+            {"title": "EXIST. EN LORE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
+            {"title": "LEADTIME", 		"data": "LEADTIME"},
+            {"title": "EJEC. UND. YTD", 		"data": "EJECUTADO_UND_YTD"},
+            {"title": "DEM. ANUAL CA NETA", 		"data": "DEMANDA_ANUAL_CA_NETA"},
+            {"title": "DEM. ANUAL CA AJUSTADA", 		"data": "DEMANDA_ANUAL_CA_AJUSTADA"},
+            {"title": "FACTOR", 		"data": "FACTOR"}, 
+            {"title": "LIMITE LOGISTICO MEDIO", 		"data": "LIMITE_LOGISTICO_MEDIO"},
+            {"title": "CLASE", 		"data": "CLASE"},
+            {"title": "VALUACION", 		"data": "VALUACION"},
+            {"title": "CONTRIBUCION", 		"data": "CONTRIBUCION"},
+            {"title": "PEDIDO + TRANSITO", 		"data": "PEDIDO_TRANSITO"},
+            {"title": "MOQ", 		"data": "MOQ"},
+            {"title": "ESTIMACION SOBRANTES UND", 		"data": "ESTIMACION_SOBRANTES_UND"},
+            {"title": "REORDER1", 		"data": "REORDER1"},
+            {"title": "REORDER", 		"data": "REORDER"},
+            {"title": "CANTIDAD_ORDENAR", 		"data": "CANTIDAD_ORDENAR"},
+            
             
 		],
-		"columnDefs": [
+        "columnDefs": [
 			{"className": "dt-center", "targets": [0]},
-			{"className": "dt-right", "targets": [2,3,4,5,6]},
-			{"width":"20%","targets":[]},
-			{"width":"10%","targets":[2,3,4,5,6]}
+			{"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]},
+			{ "width": "50%", "targets": [ 1 ] },
 		],
+       
+		
     });
 
-    $("#dtInvCompleto_length").hide();
-    $("#dtInvCompleto_filter").hide();
+    $("#dt_articulos_length").hide();
+    $("#dt_articulos_filter").hide();
 
 	$('#InputDtShowSearchFilterArt').on( 'keyup', function () {
 	    var table = $('#dtInvCompleto').DataTable();
@@ -127,7 +140,7 @@ function getDetalleArticulo(Articulos,Descripcion,Undiad) {
     //$("#tbody1").empty().append(`<tr><td colspan='5'><center>Aún no ha realizado ninguna busqueda</center></td></tr>`);
 	$("#mdDetalleArt").modal('show');
     grafVentasMensuales(Articulos)
-    dataVinneta(0,0,'','');
+    //dataVinneta(0,0,'','');
 
 }
 
@@ -202,9 +215,24 @@ $.getJSON("dtGraf/" +Articulos, function(json) {
         Day_Max = [];
 
         var vVtsDiarias;
+        
+        $("#id_leadtime").html(json['LEADTIME']);
+        $("#id_demanda_neta").html(json['DEMANDA_ANUAL_CA_NETA']);
+        $("#id_demanda_ajustada").html(json['DEMANDA_ANUAL_CA_AJUSTADA']);
+        $("#id_limite_logistico_medio").html(json['LIMITE_LOGISTICO_MEDIO']);
+        $("#id_contribucion").html(json['CONTRIBUCION']);
 
+        $("#id_reorder1").val(json['REORDER1']);
+        $("#id_reordenar").val(json['REORDER']);
+        $("#id_cant_ordenar").val(json['CANTIDAD_ORDENAR']);
 
-        $.each(json, function(i, x) {
+        $("#id_clase").val(json['CLASE']);
+        $("#id_pedido_transito").html(json['PEDIDO_TRANSITO']);
+        $("#id_moq").val(json['MOQ']);
+        
+        
+
+        $.each(json['VENTAS'], function(i, x) {
 
             tmp_total = tmp_total + parseFloat(x['data']);
 
@@ -221,18 +249,16 @@ $.getJSON("dtGraf/" +Articulos, function(json) {
         grafiacas_productos_Diarios.tooltip = {
             pointFormat : temporal
         }
+
         vVtsDiarias = numeral(tmp_total).format('0,0.00');
         grafiacas_productos_Diarios.xAxis.categories = title;
         grafiacas_productos_Diarios.subtitle.text = vVtsDiarias + " Total";
         grafiacas_productos_Diarios.series[0].data = dta;
 
-
-        
         chart = new Highcharts.Chart(grafiacas_productos_Diarios);
         
         chart.yAxis[0].update();
 
-    
 })
 }
 </script>

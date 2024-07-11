@@ -43,6 +43,6 @@ class InnovaController extends Controller
 
     public function saveInnStat()
     {
-        InnovaEstadisticas::saveInnStat(7, 2023);
+        InnovaEstadisticas::saveInnStat(6, 2024);
     }
 }
