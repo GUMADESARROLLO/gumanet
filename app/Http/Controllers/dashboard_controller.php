@@ -8,6 +8,7 @@ use App\Models;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Company;
+use App\Contribucion_X_Canal;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
@@ -206,6 +207,15 @@ class dashboard_controller extends Controller {
 
 
 
+  public function canalXcontribucion(){
+    return view('pages.canalXcontribucion');
+   
+  }
+
+  public function canalData(){
+    $obj = Contribucion_X_Canal::all();
+    return response()->json($obj);
+  }
 
 
 

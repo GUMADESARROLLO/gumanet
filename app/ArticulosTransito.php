@@ -39,7 +39,7 @@ class ArticulosTransito extends Model
                 foreach ($request->input('datos') as $k => $v) 
                 {
                     $v['CANTIDAD'] = str_replace(',', '', $v['CANTIDAD']);
-                    $Articulo = ($v['ARTICULO'] == 'N/D') ? mt_rand(10000000, 99999999).'-N' : $v['ARTICULO'] ;
+                    $Articulo = ($v['ARTICULO'] == 'N/D' || $v['ARTICULO'] == 'N/A' || is_numeric(intval($v['ARTICULO']) == false)) ? mt_rand(10000000, 99999999).'-N' : $v['ARTICULO'] ;
 
                     $datos_a_insertar[$k] = [
                         'Articulo'		    => $Articulo,
