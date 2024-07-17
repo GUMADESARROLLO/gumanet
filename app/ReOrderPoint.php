@@ -16,7 +16,7 @@ class ReOrderPoint extends Model
         $Articulos = ReOrderPoint::WHERE('VALUACION','!=',"0")->get();
         foreach ($Articulos as $key => $a) {
             $array[$key] = [
-                "ARTICULO"                  => $a->ARTICULO,
+                "ARTICULO"                  => '<a href="#!" onclick="getDetalleArticulo('."'".$a->ARTICULO."'".', '."'".strtoupper($a->DESCRIPCION)."'".')" >'.$a->ARTICULO.'</a>',
                 "DESCRIPCION"               => strtoupper($a->DESCRIPCION),
                 "VENCE_MENOS_IGUAL_12"      => number_format($a->VENCE_MENOS_IGUAL_12,2),
                 "VENCE_MAS_IGUAL_7"         => number_format($a->VENCE_MAS_IGUAL_7,2),
