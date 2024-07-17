@@ -289,7 +289,7 @@ Route::get('ReOrder', 'ReOrderPointController@ReOrderPoint')->name('ReOrder');
 Route::get('getData', 'ReOrderPointController@getData')->name('getData');
 Route::get('dtGraf/{articulo}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}');
 
-Route::get('canalXcontribucion','dashboard_controller@canalXcontribucion')->name('canalXcontribucion');
+Route::get('canales','dashboard_controller@canalXcontribucion')->name('canales');
 Route::get('canalData','dashboard_controller@canalData')->name('canalData');
 
 // ROUTER DE PROYECTO 71 & 89
