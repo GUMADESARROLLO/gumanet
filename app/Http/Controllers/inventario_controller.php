@@ -100,7 +100,8 @@ class inventario_controller extends Controller
 				'cantidad'          => number_format($k->cantidad,0,'.',''),
 				'mercado'         	=> $k->mercado,
 				'mific'             => $k->mific,
-				'Precio_mific'      => $k->Precio_mific,
+				'Precio_mific_farmacia'      => $k->Precio_mific_farmacia,
+				'Precio_mific_public'      => $k->Precio_mific_public,
 				'Nuevo'          	=> $k->Nuevo,
 				'Descripcion'       => strtoupper($k->Descripcion),
 				'observaciones'     => $k->observaciones
@@ -126,7 +127,8 @@ class inventario_controller extends Controller
             'cantidad' 			=> 'required',
             'mercado' 			=> 'required',
             'mific' 			=> 'required',
-			'precio_mific' 		=> 'required',
+			'precio_mific_f' 		=> 'required',
+			'precio_mific_p' 		=> 'required',
             'observaciones' 	=> 'required',
         ]);
 
@@ -143,7 +145,8 @@ class inventario_controller extends Controller
 				'mercado' 			=> $request->mercado,
 				'mific' 			=> $request->mific,
 				'observaciones' 	=> $request->observaciones,
-				'Precio_mific' 		=> $request->precio_mific,
+				'Precio_mific_farmacia' 		=> $request->precio_mific_f,
+				'Precio_mific_public' 		=> $request->precio_mific_p,
 			]);
 	
 			$message = 'Información actualizada correctamente';
@@ -159,7 +162,8 @@ class inventario_controller extends Controller
 				'mercado' 			=> $request->mercado,
 				'mific' 			=> $request->mific,
 				'observaciones' 	=> $request->observaciones,
-				'Precio_mific' 		=> $request->precio_mific,
+				'Precio_mific_farmacia' 		=> $request->precio_mific_f,
+				'Precio_mific_public' 		=> $request->precio_mific_p,
 				'Nuevo' 			=> 'N',
 			]);
 	
@@ -560,6 +564,10 @@ class inventario_controller extends Controller
 	}
 	public function getOtrosArticulos($articulo) {
 		$obj = inventario_model::getOtrosArticulos($articulo);
+		return response()->json($obj);
+	}
+	public function getInfoMific($articulo) {
+		$obj = inventario_model::getInfoMific($articulo);
 		return response()->json($obj);
 	}
 

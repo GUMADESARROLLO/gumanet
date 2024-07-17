@@ -25,7 +25,8 @@ class ArticulosTransito extends Model
         'mific',
         'observaciones',
         'Nuevo',
-        'Precio_mific'
+        'Precio_mific_farmacia',
+        'Precio_mific_public'
     ];
 
 
@@ -51,7 +52,8 @@ class ArticulosTransito extends Model
                         'documento'		    => $v['Documento'],
                         'observaciones'		=> $v['Comment'],
                         'Nuevo'		        => 'N',
-                        'Precio_mific'      =>$v['Pre_MIFIC'],
+                        'Precio_mific_farmacia'      =>$v['Pre_MIFIC_F'],
+                        'Precio_mific_public'      =>$v['Pre_MIFIC_P'],
                     ];
                 }
                 $response = ArticulosTransito::insert($datos_a_insertar); 

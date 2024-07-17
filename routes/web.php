@@ -83,6 +83,7 @@ Route::get('/objOtros/{articulo}','inventario_controller@getOtrosArticulos');
 Route::get('/objVineta/{articulo}','inventario_controller@getVineta');
 Route::get('/objBonificado/{articulo}','inventario_controller@getArtBonificados');
 Route::get('/objIndicadores/{articulo}','inventario_controller@objIndicadores');
+Route::get('/getInfoMific/{articulo}','inventario_controller@getInfoMific');
 
 Route::post('/transacciones','inventario_controller@transaccionesDetalle');
 Route::post('/lotes','inventario_controller@getLotesArticulo');
@@ -284,7 +285,7 @@ Route::post('getSaleDetalleInsta', 'dashboard_controller@getSaleDetalleInsta')->
 
 
 // TODAS LAS RUTAS DEL REORDER POINT
-Route::get('ReporderPoint', 'ReOrderPointController@ReOrderPoint')->name('ReporderPoint');
+Route::get('ReOrder', 'ReOrderPointController@ReOrderPoint')->name('ReOrder');
 Route::get('getData', 'ReOrderPointController@getData')->name('getData');
 Route::get('dtGraf/{articulo}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}');
 

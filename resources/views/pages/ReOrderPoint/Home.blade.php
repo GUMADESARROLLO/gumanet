@@ -6,12 +6,8 @@
 @endsection
 @section('content')
 <div class="container-fluid">
-  <div class="row mb-5">
-    <div class="col-md-10">
-      <h4 class="h4">Reorder Point</h4>
-    </div>
-  </div>
-  <div class="row mt-3">
+  
+  <div class="row">
     <div class="col-sm-11">
       <div class="input-group">
         <div class="input-group-prepend">
@@ -38,7 +34,7 @@
   <div class="row">
       <div class="col-12">
         <div class="table-responsive mt-3 mb-2">
-              <table class="table table-bordered" width="100%" id="dtInvCompleto"></table>
+              <table class="table table-bordered table-sm" width="100%" id="dt_articulos"></table>
           </div>
       </div>
   </div>
@@ -50,101 +46,93 @@
         
         <div class="card">  
           <div class="card-header bg-primary text-white">  
-              <h4 class="card-title text-uppercase" id="id_titulo_modal_all_items" >Employee Form</h4>  
+              <h4 class="card-title text-uppercase" id="id_titulo_modal_all_items" > - </h4>  
           </div>
           <div class="card-body">  
-          <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link active" id="navBodega" data-toggle="tab" href="#nav-bod" role="tab" aria-controls="nav-bod" aria-selected="true">TAB 01</a>
-              <a class="nav-item nav-link" id="navPrecios" data-toggle="tab" href="#nav-prec" role="tab" aria-controls="nav-prec" aria-selected="false">TAB02</a>
-            </div>
-          </nav>
+            <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist" style="display:none">
+                <a class="nav-item nav-link active" id="navBodega" data-toggle="tab" href="#nav-bod" role="tab" aria-controls="nav-bod" aria-selected="true">TAB 01</a>
+                <a class="nav-item nav-link" id="navPrecios" data-toggle="tab" href="#nav-prec" role="tab" aria-controls="nav-prec" aria-selected="false">TAB02</a>
+              </div>
+            </nav>
           <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-bod" role="tabpanel" aria-labelledby="navBodega">
               <div class="row">
                   <div class="col-sm-12 mt-3">
                     
-                    <div class="col-12">
-                      <div class="row align-items-center g-4">
-                        <div class="col-12 col-md-auto">
+                    <div class="col-12" >
+                      <div class="row">
+                        <div class="col-12 col-sm-6 col-md-2">
                           <div class="d-flex align-items-center">
                             <div class="ms-3">
-                              <h4 class="mb-0">100,000</h4>
-                              <p class="text-800 fs--1 mb-0">REORDER</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-auto">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">100,000</h4>
-                              <p class="text-800 fs--1 mb-0">CANTIDAD A ORDENAR</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-auto">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">$ 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">COSTO PROMEDIO USD</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-auto">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">$ 0.00 </h4>
-                              <p class="text-800 fs--1 mb-0">ULTIMO COSTO USD</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-auto">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">$ 0.00</h4>
+                              <h4 class="mb-0" id="id_leadtime"> 0.00 </h4>
                               <p class="text-800 fs--1 mb-0">LEADTIME</p>
                             </div>
                           </div>
                         </div>
-                        <div class="col-12 col-md-auto">
+                        <div class="col-12 col-sm-6 col-md-2">
                           <div class="d-flex align-items-center">
                             <div class="ms-3">
-                              <h4 class="mb-0">$ 0.00 </h4>
-                              <p class="text-800 fs--1 mb-0">FACTOR STOCK SEGURIDAD</p>
+                              <h4 class="mb-0" id="id_demanda_neta"> 0.00 </h4>
+                              <p class="text-800 fs--1 mb-0">DEMANDA ANUAL CRUZ AZUL NETA</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_demanda_ajustada"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">DEMANDA ANUAL CRUZ AZUL AJUSTADA</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_limite_logistico_medio"> 0.00 </h4>
+                              <p class="text-800 fs--1 mb-0">LIMITE LOGISTICO MEDIO</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_contribucion"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">CONTRIBUCION</p>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <hr class="bg-200 mb-6 mt-4">
+                      <hr class="bg-200 mb-6 mt-3">
                     </div>
 
                     <form id="needs-validation" novalidate>  
                       
-                      <div class="row">  
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="firstName">Pedido</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
+                      <div class="row" >  
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="firstName">CLASE</label>  
+                              <input type="text" class="form-control" id="id_clase" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="lastName">Fecha Pedido</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
-                              
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="lastName">PEDIDO + TRANSITO</label>  
+                              <input type="text" class="form-control" id="id_pedido_transito" placeholder="0.00" required>  
                           </div>
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="firstName">Meses Transcurridos</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="firstName">MOQ</label>  
+                              <input type="text" class="form-control" id="id_moq" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="lastName">Procedido</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
+
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="lastName">REORDER1</label>  
+                              <input type="text" class="form-control" id="id_reorder1" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="lastName">Transito</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="lastName">REORDENAR</label>  
+                              <input type="text" class="form-control" id="id_reordenar" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-sm-2 col-md-2 col-xs-12">  
-                              <label for="lastName">MOQ</label>  
-                              <input type="text" class="form-control" id="XXXX" placeholder="0.00" required>  
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="lastName">CANTIDAD ORDENAR</label>  
+                              <input type="text" class="form-control" id="id_cant_ordenar" placeholder="0.00" required>  
                           </div>                                
                       </div>
                       <div class="row mt-3">  
@@ -154,37 +142,38 @@
                       </div>  
                       
                     </form> 
-                    <hr class="bg-200 mb-6 mt-4">
-
-                    <p class="text-800 fs--1 mb-0">Rotacion</p>
-                    <div class="col-12">
-                      <div class="row align-items-center g-4">
-                        <div class="col-sm-4 col-md-4 col-xs-12">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">1,000,000</h4>
-                              <p class="text-800 fs--1 mb-0">CORTA (MESES ON HAND) Límite 6.5</p>
+                    <div style="display:none">
+                      <hr class="bg-200 mb-6 mt-4">
+                      <p class="text-800 fs--1 mb-0" >Rotacion</p>
+                      <div class="col-12" style="display:none">
+                        <div class="row align-items-center g-4">
+                          <div class="col-sm-4 col-md-4 col-xs-12">
+                            <div class="d-flex align-items-center">
+                              <div class="ms-3">
+                                <h4 class="mb-0">1,000,000</h4>
+                                <p class="text-800 fs--1 mb-0">CORTA (MESES ON HAND) Límite 6.5</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4 col-md-4 col-xs-12">
+                            <div class="d-flex align-items-center">
+                              <div class="ms-3">
+                                <h4 class="mb-0">1,000,000</h4>
+                                <p class="text-800 fs--1 mb-0">MEDIA (ON HAND+TRANSITO) Límite 10.5</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4 col-md-4 col-xs-12">
+                            <div class="d-flex align-items-center">
+                              <div class="ms-3">
+                                <h4 class="mb-0">1,000,000</h4>
+                                <p class="text-800 fs--1 mb-0">LARGA (ON HAND+TRANSITO+PEDIDOS) Límite 12</p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4 col-md-4 col-xs-12">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">1,000,000</h4>
-                              <p class="text-800 fs--1 mb-0">MEDIA (ON HAND+TRANSITO) Límite 10.5</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-sm-4 col-md-4 col-xs-12">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0">1,000,000</h4>
-                              <p class="text-800 fs--1 mb-0">LARGA (ON HAND+TRANSITO+PEDIDOS) Límite 12</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div> 
+                      </div> 
+                    </div>
                   </div>
               </div>
             </div>
@@ -365,7 +354,7 @@
                     <hr class="bg-200 mb-6 mt-4">
 
                     <div class="row align-items-center g-4">
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">A</h4>
@@ -373,7 +362,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">12</h4>
@@ -381,7 +370,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">NO / SI</h4>
@@ -389,7 +378,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">A</h4>
@@ -397,7 +386,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">0.00</h4>
@@ -405,7 +394,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-2 col-md-2 col-xs-12">
+                      <div class="col-12 col-sm-6 col-md-2">
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
                             <h4 class="mb-0">0.00 </h4>

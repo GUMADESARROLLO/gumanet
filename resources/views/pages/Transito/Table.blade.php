@@ -78,7 +78,7 @@
             </div>
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-sm-3">
             <div class="form-group">
                 <label for="date_estimada">FECHA ESTIMADA DE ARRIBO:</label>
                 <input type="text" class="input-fecha" id="date_estimada" >
@@ -86,7 +86,7 @@
             </div>
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-sm-3">
             <div class="form-group">
                 <!-- FECHA QUE ALVARO HACE LA SOLICITUD -->
                 <label for="date_pedido">FECHA CREACION PEDIDO:</label>
@@ -111,7 +111,7 @@
             </div>
           </div>
         
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <div class="form-group">
                 <label for="slcMercado">MERCADO:</label>
                 <select class="form-control" id="slcMercado">
@@ -123,7 +123,7 @@
             </div>
           </div>
 
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">MIFIC:</label>
                 <select class="form-control" id="slcMIFIC">
@@ -135,10 +135,17 @@
             </div>
           </div>
 
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <div class="form-group">
-                <label for="txtPrecioMific">PRECIO MIFIC:</label>
+                <label for="txtPrecioMific">PREC. MIFIC FARMACIA:</label>
                 <input type="text" class="form-control" id="txtPrecioMific" oninput="validateInput(this)">
+                <small id="alert_precio_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+                <label for="txtPrecioMificPublic">PREC. MIFIC PUBLIC:</label>
+                <input type="text" class="form-control" id="txtPrecioMificPublic" oninput="validateInput(this)">
                 <small id="alert_precio_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>

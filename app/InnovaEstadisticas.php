@@ -24,7 +24,7 @@ class InnovaEstadisticas extends Model
         $data = array(); 
         $key = 0;
 
-        $Targets = ["VUENO", "CHOLIN 6000", "GENÉRICO", "ECO PLUS"];
+        $Targets = ["VUENO", "CHOLIN 6000", "GENÉRICO", "ECO PLUS",'CHELET NATURAL','VUENISIMO','LYMPION PROFESIONAL','TOALLA DE COCINA BLANCA'];
 
         foreach ($Targets as $item) {
 
