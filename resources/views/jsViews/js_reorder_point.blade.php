@@ -117,8 +117,8 @@ $(document).ready(function() {
     $("#dt_articulos_length").hide();
     $("#dt_articulos_filter").hide();
 
-	$('#InputDtShowSearchFilterArt').on( 'keyup', function () {
-	    var table = $('#dtInvCompleto').DataTable();
+	$('#txt_search').on( 'keyup', function () {
+	    var table = $('#dt_articulos').DataTable();
 	    table.search(this.value).draw();
 	});
 

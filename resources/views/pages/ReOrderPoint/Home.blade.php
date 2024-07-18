@@ -13,7 +13,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
         </div>
-        <input type="text" id="InputDtShowSearchFilterArt" class="form-control" aria-describedby="basic-addon1">
+        <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1">
       </div>
     </div>
     <div class="col-sm-1">
