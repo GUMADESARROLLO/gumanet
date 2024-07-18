@@ -35,42 +35,52 @@ $(document).ready(function () {
                         {"data": "ARTICULO"},
                         {"data": "DESCRIPCION"},
                         {"data": "FABRICANTE"},
-                        {"data": "FARMACIA_CANTIDAD"},
-                        {"data": "FARMACIA_PROMEDIO"},
-                        {"data": "FARMACIA_VENTA"},
-                        {"data": "FARMACIA_COSTO"},
-                        {"data": "FARMACIA_CONTRIBUCION"},
-                        {"data": "FARMACIA_MARGEN"},
-                        {"data": "CADENA_FARMACIA_CANTIDAD"},
-                        {"data": "CADENA_FARMACIA_PROMEDIO"},
-                        {"data": "CADENA_FARMACIA_VENTA"},
-                        {"data": "CADENA_FARMACIA_COSTO"},
-                        {"data": "CADENA_FARMACIA_CONTRIBUCION"},
-                        {"data": "CADENA_FARMACIA_MARGEN"},
-                        {"data": "MAYORISTA_CANTIDAD"},
-                        {"data": "MAYORISTA_PROMEDIO"},
-                        {"data": "MAYORISTA_VENTA"},
-                        {"data": "MAYORISTA_COSTO"},
-                        {"data": "MAYORISTA_CONTRIBUCION"},
-                        {"data": "MAYORISTA_MARGEN"},
-                        {"data": "INSTITUCION_PRIVADA_CANTIDAD"},
-                        {"data": "INSTITUCION_PRIVADA_PROMEDIO"},
-                        {"data": "INSTITUCION_PRIVADA_VENTA"},
-                        {"data": "INSTITUCION_PRIVADA_COSTO"},
-                        {"data": "INSTITUCION_PRIVADA_CONTRIBUCION"},
-                        {"data": "INSTITUCION_PRIVADA_MARGEN"},
-                        {"data": "CRUZ_AZUL_CANTIDAD"},
-                        {"data": "CRUZ_AZUL_PROMEDIO"},
-                        {"data": "CRUZ_AZUL_VENTA"},
-                        {"data": "CRUZ_AZUL_COSTO"},
-                        {"data": "CRUZ_AZUL_CONTRIBUCION"},
-                        {"data": "CRUZ_AZUL_MARGEN"},
-                        {"data": "INSTITUCION_PUBLICA_CANTIDAD"},
-                        {"data": "INSTITUCION_PUBLICA_PROMEDIO"},
-                        {"data": "INSTITUCION_PUBLICA_VENTA"},
-                        {"data": "INSTITUCION_PUBLICA_COSTO"},
-                        {"data": "INSTITUCION_PUBLICA_CONTRIBUCION"},
-                        {"data": "INSTITUCION_PUBLICA_MARGEN"},            
+                        {"data": "FARMACIA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+                        {"data": "FARMACIA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "FARMACIA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "FARMACIA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "FARMACIA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "FARMACIA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "CADENA_FARMACIA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+                        {"data": "CADENA_FARMACIA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "CADENA_FARMACIA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "CADENA_FARMACIA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "CADENA_FARMACIA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "CADENA_FARMACIA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "MAYORISTA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+                        {"data": "MAYORISTA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "MAYORISTA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "MAYORISTA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "MAYORISTA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "MAYORISTA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "INSTITUCION_PRIVADA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+                        {"data": "INSTITUCION_PRIVADA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "INSTITUCION_PRIVADA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "INSTITUCION_PRIVADA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "INSTITUCION_PRIVADA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "INSTITUCION_PRIVADA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "CRUZ_AZUL_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+                        {"data": "CRUZ_AZUL_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "CRUZ_AZUL_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "CRUZ_AZUL_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "CRUZ_AZUL_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "CRUZ_AZUL_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "INSTITUCION_PUBLICA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+                        {"data": "INSTITUCION_PUBLICA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "INSTITUCION_PUBLICA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "INSTITUCION_PUBLICA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "INSTITUCION_PUBLICA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "INSTITUCION_PUBLICA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "TOTAL_VENTAS_PACK",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+                        {"data": "TOTAL_PRECIO_PROM",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "TOTAL_VENTAS_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "TOTAL_COSTOS_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "TOTAL_CONTRIBUCION_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+                        {"data": "TOTAL_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},         
+                    ],
+                    "columnDefs": [                       
+                        {"className": "dt-right", "targets": [ 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44 ]},
+                        { "width": "150px", "targets": [ 1 ] }
                     ],
                     "scrollY":        "900px",
                     "scrollX":        true,
@@ -79,7 +89,7 @@ $(document).ready(function () {
                     "fixedColumns":   {
                         "leftColumns": 3,
                     },
-                    createdRow: function (row, data, index) {
+                    /*createdRow: function (row, data, index) {
                         // Obtener la referencia a la tabla DataTable
                         var table = $('#table_contribucion').DataTable();
 
@@ -100,74 +110,13 @@ $(document).ready(function () {
 
                         // Agregar la clase CSS personalizada a esa cabecera
                         lastHeader.addClass('bg-soft-success');
-                    }
+                    }*/
             });
             $("#table_contribucion_length").hide();
             $("#table_contribucion_filter").hide();
         }
 
     })
-   
-    /*$('#table_contribucion').DataTable({
-        "ajax": {
-            "url": "canalData",
-            "type": 'get',
-            "dataSrc": function(json) {
-                console.log(json);
-                return json || [];
-            }
-        },
-        "destroy": true,
-        "info": true,
-        "lengthMenu": [[10, -1], [10, "Todo"]],
-        "language": {
-            "zeroRecords": "-",
-            "paginate": {
-                "first": "Primera",
-                "last": "Última",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            },
-            "info": "-",
-            "infoEmpty": "",
-            "infoPostFix": "",
-            "infoFiltered": "",
-            "lengthMenu": "MOSTRAR _MENU_",
-            "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
-            "search": "BUSCAR"
-        },
-        "scrollY": "900px",
-        "scrollX": true,
-        "scrollCollapse": true,
-        "paging": false,
-        "fixedColumns": {
-            "leftColumns": 3,
-        },
-        "columns": [
-            {"data": "ARTICULO"},
-            {"data": "DESCRIPCION"},
-            {"data": "FABRICANTE"},
-            {"data": "FARMACIA_CANTIDAD"},
-            {"data": "FARMACIA_PROMEDIO"},
-            {"data": "FARMACIA_VENTA"},
-            {"data": "FARMACIA_COSTO"},
-            {"data": "FARMACIA_CONTRIBUCION"},
-            {"data": "FARMACIA_MARGEN"},
-            {"data": "CADENA_FARMACIA_CANTIDAD"},
-            {"data": "CADENA_FARMACIA_PROMEDIO"},
-            {"data": "CADENA_FARMACIA_VENTA"},
-            {"data": "CADENA_FARMACIA_COSTO"},
-            {"data": "CADENA_FARMACIA_CONTRIBUCION"},
-            {"data": "CADENA_FARMACIA_MARGEN"},    
-        ]
-    });
-        
-    $("#table_contribucion_length").hide();
-    $("#table_contribucion_filter").hide();*/
-    
-    
-
-    
     
 });
 
