@@ -111,28 +111,28 @@
                     <form id="needs-validation" novalidate>  
                       
                       <div class="row" >  
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="firstName">CLASE</label>  
                               <input type="text" class="form-control" id="id_clase" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="lastName">PEDIDO + TRANSITO</label>  
                               <input type="text" class="form-control" id="id_pedido_transito" placeholder="0.00" required>  
                           </div>
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="firstName">MOQ</label>  
                               <input type="text" class="form-control" id="id_moq" placeholder="0.00" required>  
                           </div>  
 
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="lastName">REORDER1</label>  
                               <input type="text" class="form-control" id="id_reorder1" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="lastName">REORDENAR</label>  
                               <input type="text" class="form-control" id="id_reordenar" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="lastName">CANTIDAD ORDENAR</label>  
                               <input type="text" class="form-control" id="id_cant_ordenar" placeholder="0.00" required>  
                           </div>                                
