@@ -30,13 +30,13 @@ class ReOrderPoint extends Model
                 "LIMITE_LOGISTICO_MEDIO"    => $a->LIMITE_LOGISTICO_MEDIO,
                 "CLASE"                     => $a->CLASE,
                 "VALUACION"                 => $a->VALUACION,
-                "CONTRIBUCION"              => number_format($a->CONTRIBUCION,4,".",""),
-                "PEDIDO_TRANSITO"           => number_format($a->PEDIDO_TRANSITO,4,".",""),
-                "MOQ"                       => number_format($a->MOQ,4,".",""),
-                "ESTIMACION_SOBRANTES_UND"  => number_format($a->ESTIMACION_SOBRANTES_UND,4,".",""),
-                "REORDER1"                  => number_format($a->REORDER1,4,".",""),
-                "REORDER"                   => number_format($a->REORDER,4,".",""),
-                "CANTIDAD_ORDENAR"          => number_format($a->CANTIDAD_ORDENAR,4,".","")
+                "CONTRIBUCION"              => number_format($a->CONTRIBUCION,2),
+                "PEDIDO_TRANSITO"           => number_format($a->PEDIDO_TRANSITO,2),
+                "MOQ"                       => number_format($a->MOQ,2),
+                "ESTIMACION_SOBRANTES_UND"  => number_format($a->ESTIMACION_SOBRANTES_UND,2),
+                "REORDER1"                  => number_format($a->REORDER1,2),
+                "REORDER"                   => number_format($a->REORDER,2),
+                "CANTIDAD_ORDENAR"          => number_format($a->CANTIDAD_ORDENAR,2)
             ];
         }
 

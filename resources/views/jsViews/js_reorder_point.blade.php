@@ -65,7 +65,7 @@ $(document).ready(function() {
 			'dataSrc': '',
 		},
         
-		"lengthMenu": [[5,30,50,100,-1], [5,30,50,100,"Todo"]],
+		"lengthMenu": [[15,30,50,100,-1], [15,30,50,100,"Todo"]],
 		"language": {
 			"infoFiltered": "(Filtrado de _MAX_ total entradas)",
 			"zeroRecords": "No hay coincidencias",
