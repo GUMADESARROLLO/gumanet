@@ -1,4 +1,5 @@
 <script type="text/javascript">
+    fullScreen();
 $(document).ready(function () {
     $('#id_txt_buscar').on('keyup', function() {   
         var vTableKardex = $('#table_contribucion').DataTable();     
@@ -16,17 +17,14 @@ $(document).ready(function () {
                     "info": true,
                     "lengthMenu": [[15,-1], [15,"Todo"]],
                     "language": {
-                        "zeroRecords": "-",
+                        "zeroRecords": "No hay coincidencias",
+	                    "loadingRecords": "Cargando datos...",
                         "paginate": {
                             "first": "Primera",
                             "last": "Última ",
                             "next": "Siguiente",
                             "previous": "Anterior"
                         },
-                        "info":       "-",
-                        "infoEmpty":  "",
-                        "infoPostFix":    "",
-                        "infoFiltered":   "",
                         "lengthMenu": "MOSTRAR _MENU_",
                         "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
                         "search": "BUSCAR"
