@@ -110,7 +110,14 @@ $(document).ready(function() {
 			{"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]},
 			{ "width": "50%", "targets": [ 1 ] },
 		],
-       
+        "createdRow": function( row, data, dataIndex){
+        
+            if( data["IS_CA"] ==  `S`){
+                $(row).addClass('dt-is-ca-background');
+            } 
+
+        }
+    
 		
     });
 

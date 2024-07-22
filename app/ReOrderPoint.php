@@ -36,7 +36,8 @@ class ReOrderPoint extends Model
                 "ESTIMACION_SOBRANTES_UND"  => number_format($a->ESTIMACION_SOBRANTES_UND,2),
                 "REORDER1"                  => number_format($a->REORDER1,2),
                 "REORDER"                   => number_format($a->REORDER,2),
-                "CANTIDAD_ORDENAR"          => number_format($a->CANTIDAD_ORDENAR,2)
+                "CANTIDAD_ORDENAR"          => number_format($a->CANTIDAD_ORDENAR,2),
+                "IS_CA"                     => $a->IS_CA
             ];
         }
 
