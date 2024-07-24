@@ -91,6 +91,13 @@ $(document).ready(function() {
             {"title": "EJEC. UND. YTD", 		"data": "EJECUTADO_UND_YTD"},
             {"title": "DEM. ANUAL CA NETA", 		"data": "DEMANDA_ANUAL_CA_NETA"},
             {"title": "DEM. ANUAL CA AJUSTADA", 		"data": "DEMANDA_ANUAL_CA_AJUSTADA"},
+            
+            {"title": "ROTACION CORTA", 		"data": "ROTACION_CORTA"},
+            {"title": "ROTACION MEDIA", 		"data": "ROTACION_MEDIA"},
+            {"title": "ROTACION LARGA", 		"data": "ROTACION_LARGA"},
+            {"title": "COST PROM. USD", 		"data": "COSTO_PROMEDIO_USD"},
+            {"title": "ULT. COST. USD", 		"data": "ULTIMO_COSTO_USD"},
+
             {"title": "FACTOR", 		"data": "FACTOR"}, 
             {"title": "LIMITE LOGISTICO MEDIO", 		"data": "LIMITE_LOGISTICO_MEDIO"},
             {"title": "CLASE", 		"data": "CLASE"},
@@ -106,9 +113,9 @@ $(document).ready(function() {
             
 		],
         "columnDefs": [
-			{"className": "dt-center", "targets": [0]},
+			{"className": "dt-center", "targets": []},
 			{"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]},
-			{ "width": "50%", "targets": [ 1 ] },
+			{ "width": "50%", "targets": [  ] },
 		],
         "createdRow": function( row, data, dataIndex){
         

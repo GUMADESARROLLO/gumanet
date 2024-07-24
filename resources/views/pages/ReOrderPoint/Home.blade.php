@@ -34,9 +34,7 @@
   <div class="row">
       <div class="col-12">
         <div class="table-responsive mt-3 mb-2">
-        <table class="table nowrap table-bordered table-sm" id="dt_articulos" width="100%" >
-</table>
-
+            <table class="table nowrap table-bordered table-sm" id="dt_articulos" width="100%" ></table>
           </div>
       </div>
   </div>

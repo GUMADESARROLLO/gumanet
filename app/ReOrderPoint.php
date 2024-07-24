@@ -37,7 +37,12 @@ class ReOrderPoint extends Model
                 "REORDER1"                  => number_format($a->REORDER1,2),
                 "REORDER"                   => number_format($a->REORDER,2),
                 "CANTIDAD_ORDENAR"          => number_format($a->CANTIDAD_ORDENAR,2),
-                "IS_CA"                     => $a->IS_CA
+                "IS_CA"                     => $a->IS_CA,
+                "ROTACION_CORTA"            => number_format($a->ROTACION_CORTA, 2),
+                "ROTACION_MEDIA"            => number_format($a->ROTACION_MEDIA, 2),
+                "ROTACION_LARGA"            => number_format($a->ROTACION_LARGA, 2),
+                "ULTIMO_COSTO_USD"          => number_format($a->ULTIMO_COSTO_USD, 2),
+                "COSTO_PROMEDIO_USD"        => number_format($a->COSTO_PROMEDIO_USD, 2)
             ];
         }
 
@@ -61,6 +66,13 @@ class ReOrderPoint extends Model
         $array["MOQ"] = number_format($Sales->MOQ, 2);
         $array["PEDIDO_TRANSITO"] = number_format($Sales->PEDIDO_TRANSITO, 2);
         $array["CLASE"] = $Sales->CLASE;
+
+        $array["ROTACION_CORTA"] = number_format($Sales->ROTACION_CORTA, 2);
+        $array["ROTACION_MEDIA"] = number_format($Sales->ROTACION_MEDIA, 2);
+        $array["ROTACION_LARGA"] = number_format($Sales->ROTACION_LARGA, 2);
+        
+        $array["COSTO_PROMEDIO_USD"] = number_format($Sales->COSTO_PROMEDIO_USD, 2);
+        $array["ULTIMO_COSTO_USD"] = number_format($Sales->ULTIMO_COSTO_USD, 2);
         
         for ($i=1; $i <= 12; $i++) { 
             $array["VENTAS"][$i] = [
