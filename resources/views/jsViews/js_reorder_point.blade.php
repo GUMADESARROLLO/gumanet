@@ -81,43 +81,42 @@ $(document).ready(function() {
 			"search":     "BUSCAR"
 		},
 		'columns': [	
-			{"title": "ARTICULO","data": "ARTICULO"},
-            {"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION"},
-			{"title": "EXIST. PROX. A VENCER <=12 Meses", 		"data": "VENCE_MENOS_IGUAL_12"},            
-            {"title": "EXIST. LOTE >=7 Meses", 		"data": "VENCE_MAS_IGUAL_7"},
-            {"title": "LOTE MAS PROX. A VENCER", 		"data": "LOTE_MAS_PROX_VENCER"},
+			{"title": "ARTICULO",                                   "data": "ARTICULO"},
+            {"title": "DESCRIPCIÓN", 		                        "data": "DESCRIPCION"},
+            {"title": "REORDER1", 		                            "data": "REORDER1"},
+            {"title": "REORDER", 		                            "data": "REORDER"},
+            {"title": "CANTIDAD_ORDENAR", 		                    "data": "CANTIDAD_ORDENAR"},
+			{"title": "EXIST. PROX. A VENCER <=12 Meses", 		    "data": "VENCE_MENOS_IGUAL_12"},            
+            {"title": "EXIST. LOTE >=7 Meses", 		                "data": "VENCE_MAS_IGUAL_7"},
+            {"title": "LOTE MAS PROX. A VENCER", 		            "data": "LOTE_MAS_PROX_VENCER"},
             {"title": "EXIST. EN LORE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
-            {"title": "LEADTIME", 		"data": "LEADTIME"},
-            {"title": "EJEC. UND. YTD", 		"data": "EJECUTADO_UND_YTD"},
-            {"title": "DEM. ANUAL CA NETA", 		"data": "DEMANDA_ANUAL_CA_NETA"},
-            {"title": "DEM. ANUAL CA AJUSTADA", 		"data": "DEMANDA_ANUAL_CA_AJUSTADA"},
-            
-            {"title": "ROTACION CORTA", 		"data": "ROTACION_CORTA"},
-            {"title": "ROTACION MEDIA", 		"data": "ROTACION_MEDIA"},
-            {"title": "ROTACION LARGA", 		"data": "ROTACION_LARGA"},
-            {"title": "COST PROM. USD", 		"data": "COSTO_PROMEDIO_USD"},
-            {"title": "ULT. COST. USD", 		"data": "ULTIMO_COSTO_USD"},
-
-            {"title": "FACTOR", 		"data": "FACTOR"}, 
-            {"title": "LIMITE LOGISTICO MEDIO", 		"data": "LIMITE_LOGISTICO_MEDIO"},
-            {"title": "CLASE", 		"data": "CLASE"},
-            {"title": "VALUACION", 		"data": "VALUACION"},
-            {"title": "CONTRIBUCION", 		"data": "CONTRIBUCION"},
-            {"title": "PEDIDO + TRANSITO", 		"data": "PEDIDO_TRANSITO"},
-            {"title": "MOQ", 		"data": "MOQ"},
-            {"title": "ESTIMACION SOBRANTES UND", 		"data": "ESTIMACION_SOBRANTES_UND"},
-            {"title": "REORDER1", 		"data": "REORDER1"},
-            {"title": "REORDER", 		"data": "REORDER"},
-            {"title": "CANTIDAD_ORDENAR", 		"data": "CANTIDAD_ORDENAR"},
-            
+            {"title": "LEADTIME", 		                            "data": "LEADTIME"},
+            {"title": "EJEC. UND. YTD", 		                    "data": "EJECUTADO_UND_YTD"},
+            {"title": "DEM. ANUAL CA NETA", 		                "data": "DEMANDA_ANUAL_CA_NETA"},
+            {"title": "DEM. ANUAL CA AJUSTADA", 		            "data": "DEMANDA_ANUAL_CA_AJUSTADA"},            
+            {"title": "ROTACION CORTA", 		                    "data": "ROTACION_CORTA"},
+            {"title": "ROTACION MEDIA", 		                    "data": "ROTACION_MEDIA"},
+            {"title": "ROTACION LARGA", 		                    "data": "ROTACION_LARGA"},
+            {"title": "COST PROM. USD", 		                    "data": "COSTO_PROMEDIO_USD"},
+            {"title": "ULT. COST. USD", 		                    "data": "ULTIMO_COSTO_USD"},
+            {"title": "FACTOR", 		                            "data": "FACTOR"}, 
+            {"title": "LIMITE LOGISTICO MEDIO", 		            "data": "LIMITE_LOGISTICO_MEDIO"},
+            {"title": "CLASE", 		                                "data": "CLASE"},
+            {"title": "VALUACION", 		                            "data": "VALUACION"},
+            {"title": "CONTRIBUCION", 		                        "data": "CONTRIBUCION"},
+            {"title": "PEDIDO + TRANSITO", 		                    "data": "PEDIDO_TRANSITO"},
+            {"title": "MOQ", 		                                "data": "MOQ"},
+            {"title": "ESTIMACION SOBRANTES UND", 		            "data": "ESTIMACION_SOBRANTES_UND"},
             
 		],
         "columnDefs": [
 			{"className": "dt-center", "targets": []},
-			{"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]},
+			{"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]},
 			{ "width": "50%", "targets": [  ] },
 		],
         "createdRow": function( row, data, dataIndex){
+
+            $("#id_UpdateAt").html(data.UPDATED_AT);
         
             if( data["IS_CA"] ==  `S`){
                 $(row).addClass('dt-is-ca-background');
@@ -132,17 +131,65 @@ $(document).ready(function() {
     $("#dt_articulos_filter").hide();
 
 	$('#txt_search').on( 'keyup', function () {
-	    var table = $('#dt_articulos').DataTable();
-	    table.search(this.value).draw();
+        var table = $('#dt_articulos').DataTable();
+        table.search(this.value).draw();
 	});
 
 	$( "#InputDtShowColumnsArtic").change(function() {
-	    var table = $('#dtInvCompleto').DataTable();
-	    table.page.len(this.value).draw();
+        var table = $('#dtInvCompleto').DataTable();
+        table.page.len(this.value).draw();
 	});
 
 
 });
+
+
+$("#exp-to-excel").click(function() {
+    Swal.fire({
+        title: "Building Pending",
+    })
+})
+$("#BtnClick").click(function() {
+
+    
+    Swal.fire({
+        title: "Recalcular Reorder Point",
+        inputAttributes: {
+            autocapitalize: "off"
+        },
+        showCancelButton: true,
+        confirmButtonText: "Calcular",
+        showLoaderOnConfirm: true,
+        preConfirm: async (login) => {
+            try {
+            const githubUrl = `CalcReorder`;
+            const response = await fetch(githubUrl);
+            if (!response.ok) {
+                return Swal.showValidationMessage(`${JSON.stringify(await response.json())}`);
+            }
+            return response.json();
+            } catch (error) {
+            Swal.showValidationMessage(`
+                Request failed: ${error}
+            `);
+            }
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: "Calculos completados",
+                confirmButtonText: "Ok",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    } 
+                });
+        }
+    });
+
+})
+
 
 function getDetalleArticulo(Articulos,Descripcion,Undiad) {
     articulo_g = Articulos;

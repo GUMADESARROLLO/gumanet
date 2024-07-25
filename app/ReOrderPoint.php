@@ -3,12 +3,38 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ReOrderPoint extends Model
 {
     protected $connection = 'sqlsrv';
     public $timestamps = false;
     protected $table = "PRODUCCION.dbo.view_gnet_reorder_lvl3";
+
+    /**
+     * Executes three stored procedures to calculate reorder points for articles.
+     *
+     * @return void
+     */
+    public static function CalcReorder()
+    {
+        $currentDate = date('Y-m-d');
+        $startOfMonth = date('Y-m-01', strtotime($currentDate));
+
+        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-12 months', strtotime($startOfMonth)));
+        $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
+        $DiaActual  = (int) date('d', strtotime($FechaEnd));
+
+        // Ejecutar el primer procedimiento almacenado
+        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calc_reorder_factura_linea ?, ?", [$FechaIni, $FechaEnd]);
+
+        // Ejecutar el segundo procedimiento almacenado
+        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calc_reorder_factura_linea_ca ?", [$FechaEnd]);
+
+        // Ejecutar el tercer procedimiento almacenado
+        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_Calc_12_month_reorder_point ?, ?, ?", [$FechaIni, $FechaEnd, $DiaActual]);
+
+    }
 
     public static function getArticulo() 
     {
@@ -42,7 +68,8 @@ class ReOrderPoint extends Model
                 "ROTACION_MEDIA"            => number_format($a->ROTACION_MEDIA, 2),
                 "ROTACION_LARGA"            => number_format($a->ROTACION_LARGA, 2),
                 "ULTIMO_COSTO_USD"          => number_format($a->ULTIMO_COSTO_USD, 2),
-                "COSTO_PROMEDIO_USD"        => number_format($a->COSTO_PROMEDIO_USD, 2)
+                "COSTO_PROMEDIO_USD"        => number_format($a->COSTO_PROMEDIO_USD, 2),
+                "UPDATED_AT"                => substr($a->FechaFinal, 0, 10)
             ];
         }
 
