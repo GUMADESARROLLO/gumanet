@@ -496,6 +496,8 @@
                       <th>MIFIC</th>
                       <th>PRECIO MIFIC</th>
                       <th>CANTIDAD</th>
+                      <th>CANT PEDIDO</th>
+                      <th>CANT TRANSITO</th>
                       <th>OBSERVACIONES</th>
                     </tr>
                   </thead>

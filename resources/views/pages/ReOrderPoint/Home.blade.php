@@ -6,14 +6,15 @@
 @endsection
 @section('content')
 <div class="container-fluid">
-  
+<p class="font-italic text-muted pt-0 mt-0">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	
+   
   <div class="row">
-    <div class="col-sm-11">
-      <div class="input-group">
+    <div class="col-sm-10">		
+      <div class="input-group"> 
+        <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+          <span class="input-group-text" id="BtnClick"><i data-feather="refresh-cw"></i></span>
         </div>
-        <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1">
       </div>
     </div>
     <div class="col-sm-1">
@@ -27,16 +28,15 @@
         </select>
       </div>
     </div>
-    <div class="col-sm-2 p-0 m-0" style="display:none">
-      <a id="exp-to-excel" href="#!" onclick="descargarArchivo('inventario')" class="btn btn-light btn-block text-success float-right"><i class="fas fa-file-excel"></i> Exportar</a>
+
+    <div class="col-sm-1 p-0 m-0" >
+      <a id="exp-to-excel" href="#!" class="btn btn-light btn-block text-success float-right"><i class="fas fa-file-excel"></i> Exportar</a>
     </div>      
   </div>
   <div class="row">
       <div class="col-12">
         <div class="table-responsive mt-3 mb-2">
-        <table class="table nowrap table-bordered table-sm" id="dt_articulos" width="100%" >
-</table>
-
+            <table class="table nowrap table-bordered table-sm" id="dt_articulos" width="100%" ></table>
           </div>
       </div>
   </div>
@@ -111,28 +111,28 @@
                     <form id="needs-validation" novalidate>  
                       
                       <div class="row" >  
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="firstName">CLASE</label>  
                               <input type="text" class="form-control" id="id_clase" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="lastName">PEDIDO + TRANSITO</label>  
                               <input type="text" class="form-control" id="id_pedido_transito" placeholder="0.00" required>  
                           </div>
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="firstName">MOQ</label>  
                               <input type="text" class="form-control" id="id_moq" placeholder="0.00" required>  
                           </div>  
 
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="lastName">REORDER1</label>  
                               <input type="text" class="form-control" id="id_reorder1" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="lastName">REORDENAR</label>  
                               <input type="text" class="form-control" id="id_reordenar" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-12 col-sm-6 col-md-2">  
+                          <div class="col-12 col-sm-6 col-md-4">  
                               <label for="lastName">CANTIDAD ORDENAR</label>  
                               <input type="text" class="form-control" id="id_cant_ordenar" placeholder="0.00" required>  
                           </div>                                

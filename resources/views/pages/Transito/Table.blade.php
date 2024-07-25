@@ -95,7 +95,7 @@
             </div>
           </div>
         
-          <div class="col-sm-3">
+          <div class="col-sm-2">
             <div class="form-group">
                 <label for="exampleInputEmail1">DOC. (FACT. , BL/AWB ):</label>
                 <input type="text" class="form-control" id="txtDocuments" >
@@ -103,10 +103,17 @@
             </div>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-2">
             <div class="form-group">
-                <label for="txtCantidad">CANTIDAD:</label>
+                <label for="txtCantidad">CANTIDAD PEDIDO:</label>
                 <input type="text" class="form-control" id="txtCantidad" oninput="validateInput(this)">
+                <small id="alert_cantidad" class="form-text text-danger">0.00</small>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+                <label for="txtCantidad">CANTIDAD TRANSITO:</label>
+                <input type="text" class="form-control" id="txtCantidadTransito" oninput="validateInput(this)">
                 <small id="alert_cantidad" class="form-text text-danger">0.00</small>
             </div>
           </div>

@@ -967,42 +967,18 @@ function articuloTransito(Articulo){
                 {"data": function(data, type, row, meta) {
                     return numeral(data.cantidad).format('0,0'); 
                 }, "className": "dt-right"},
+                {"data": function(data, type, row, meta) {
+                    return numeral(data.pedido).format('0,0'); 
+                }, "className": "dt-right"},
+                {"data": function(data, type, row, meta) {
+                    return numeral(data.transito).format('0,0'); 
+                }, "className": "dt-right"},
                 {"data": "observaciones"},                
             ],
         });  
         $("#tbl_transito_articulo_length").hide();
         $("#tbl_transito_articulo_filter").hide();
 
-    // $.ajax({
-	// 		url: "getInfoArticulo",
-	// 		data: {
-	// 			Articulo  : Articulo,
-	// 			_token  : "{{ csrf_token() }}" 
-	// 		},
-	// 		type: 'post',
-	// 		async: true,
-	// 		success: function(json) {
-    //             console.log(json)
-    //             if (json !=0 ) {
-    //                 $('#lblEstimado').val(moment(json.fecha_pedido).format('YYYY-MM-DD'));
-    //                 $('#lblPedido').val(moment(json.fecha_estimada).format('YYYY-MM-DD'));
-    //                 $('#lblDocumento').val(json.documento);
-    //                 $('#lblCantidad').val(json.cantidad);
-    //                 $('#lblMercado').val(json.mercado);
-    //                 $('#lblMific').val(json.mific);
-    //                 $('#lblObservacion').val(json.observaciones);
-    //             }else {
-    //                 $('#lblEstimado').val(moment().format('YYYY-MM-DD'));
-    //                 $('#lblPedido').val(moment().format('YYYY-MM-DD'));
-    //                 $('#lblDocumento').val('');
-    //                 $('#lblCantidad').val('');
-    //                 $('#lblMercado').val('N/D');
-    //                 $('#lblMific').val('N/D');
-    //                 $('#lblObservacion').val('');
-    //             }
-   
-    //     }
-    // });
 }
 
 </script>

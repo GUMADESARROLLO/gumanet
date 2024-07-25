@@ -21,7 +21,11 @@ class ReOrderPointController extends Controller
 		return response()->json($obj);
     }
     public function getDataGrafica($Articulos) {
-    $obj = ReOrderPoint::getDataGrafica($Articulos);
-    return response()->json($obj);
+        $obj = ReOrderPoint::getDataGrafica($Articulos);
+        return response()->json($obj);
+    }
+    public function CalcReorder() {
+        $obj = ReOrderPoint::CalcReorder();
+        return response()->json($obj);
     }
 }
