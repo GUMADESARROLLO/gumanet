@@ -65,7 +65,7 @@ $(document).ready(function() {
 			'dataSrc': '',
 		},
         
-		"lengthMenu": [[5,30,50,100,-1], [5,30,50,100,"Todo"]],
+		"lengthMenu": [[15,30,50,100,-1], [15,30,50,100,"Todo"]],
 		"language": {
 			"infoFiltered": "(Filtrado de _MAX_ total entradas)",
 			"zeroRecords": "No hay coincidencias",
@@ -117,8 +117,8 @@ $(document).ready(function() {
     $("#dt_articulos_length").hide();
     $("#dt_articulos_filter").hide();
 
-	$('#InputDtShowSearchFilterArt').on( 'keyup', function () {
-	    var table = $('#dtInvCompleto').DataTable();
+	$('#txt_search').on( 'keyup', function () {
+	    var table = $('#dt_articulos').DataTable();
 	    table.search(this.value).draw();
 	});
 
