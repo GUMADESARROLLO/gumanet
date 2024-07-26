@@ -93,7 +93,8 @@ class ReOrderPoint extends Model
         $array["REORDER"] = number_format($Sales->REORDER,2);
         $array["CANTIDAD_ORDENAR"] = number_format($Sales->CANTIDAD_ORDENAR,2);
         $array["MOQ"] = number_format($Sales->MOQ, 2);
-        $array["PEDIDO_TRANSITO"] = number_format($Sales->PEDIDO_TRANSITO, 2);
+        $array["PEDIDO"] = number_format($Sales->PEDIDO, 2);
+        $array["TRANSITO"] = number_format($Sales->TRANSITO, 2);
         $array["CLASE"] = $Sales->CLASE;
 
         $array["ROTACION_CORTA"] = number_format($Sales->ROTACION_CORTA, 2);

@@ -160,13 +160,17 @@
                     <form id="needs-validation" novalidate>  
                       
                       <div class="row" >  
-                          <div class="col-12 col-sm-6 col-md-4">  
+                          <div class="col-12 col-sm-6 col-md-2">  
                               <label for="firstName">CLASE</label>  
                               <input type="text" class="form-control" id="id_clase" placeholder="0.00" required>  
-                          </div>  
+                          </div> 
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="lastName">TRANSITO</label>  
+                              <input type="text" class="form-control" id="id_transito" placeholder="0.00" required>  
+                          </div>
                           <div class="col-12 col-sm-6 col-md-4">  
-                              <label for="lastName">PEDIDO + TRANSITO</label>  
-                              <input type="text" class="form-control" id="id_pedido_transito" placeholder="0.00" required>  
+                              <label for="lastName">PEDIDO</label>  
+                              <input type="text" class="form-control" id="id_pedido" placeholder="0.00" required>  
                           </div>
                           <div class="col-12 col-sm-6 col-md-4">  
                               <label for="firstName">MOQ</label>  

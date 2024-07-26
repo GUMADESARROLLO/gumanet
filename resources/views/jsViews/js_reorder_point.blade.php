@@ -298,6 +298,9 @@ $.getJSON("dtGraf/" +Articulos, function(json) {
         $("#id_ventas").html(json['VENTAS_YTD']);
         $("#id_costo").html(json['COSTO_PROMEDIO_USD']);
         $("#id_ultimo_costo").html(json['ULTIMO_COSTO_USD']);
+
+        $("#id_transito").val(json['TRANSITO']);
+        $("#id_pedido").val(json['PEDIDO']);
         
         
         $.each(json['VENTAS'], function(i, x) {
