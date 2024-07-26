@@ -50,8 +50,10 @@ class ReOrderPoint extends Model
                 "EXIT_LOTE_PROX_VENCER"     => number_format($a->EXIT_LOTE_PROX_VENCER,2),
                 "LEADTIME"                  => $a->LEADTIME,
                 "EJECUTADO_UND_YTD"         => number_format($a->EJECUTADO_UND_YTD,2),
-                "DEMANDA_ANUAL_CA_NETA"      => number_format($a->DEMANDA_ANUAL_CA_NETA,2),
-                "DEMANDA_ANUAL_CA_AJUSTADA"  => number_format($a->DEMANDA_ANUAL_CA_AJUSTADA,2),
+                "VENTAS_YTD"                => number_format($a->VENTAS_YTD,2),
+                "CONTRIBUCION_YTD"          => number_format($a->CONTRIBUCION_YTD,2),
+                "DEMANDA_ANUAL_CA_NETA"     => number_format($a->DEMANDA_ANUAL_CA_NETA,2),
+                "DEMANDA_ANUAL_CA_AJUSTADA" => number_format($a->DEMANDA_ANUAL_CA_AJUSTADA,2),
                 "FACTOR"                    => number_format($a->FACTOR,2),
                 "LIMITE_LOGISTICO_MEDIO"    => number_format($a->LIMITE_LOGISTICO_MEDIO,2),
                 "CLASE"                     => $a->CLASE,
@@ -92,7 +94,8 @@ class ReOrderPoint extends Model
         $array["REORDER"] = number_format($Sales->REORDER,2);
         $array["CANTIDAD_ORDENAR"] = number_format($Sales->CANTIDAD_ORDENAR,2);
         $array["MOQ"] = number_format($Sales->MOQ, 2);
-        $array["PEDIDO_TRANSITO"] = number_format($Sales->PEDIDO_TRANSITO, 2);
+        $array["PEDIDO"] = number_format($Sales->PEDIDO, 2);
+        $array["TRANSITO"] = number_format($Sales->TRANSITO, 2);
         $array["CLASE"] = $Sales->CLASE;
 
         $array["ROTACION_CORTA"] = number_format($Sales->ROTACION_CORTA, 2);
@@ -101,6 +104,8 @@ class ReOrderPoint extends Model
         
         $array["COSTO_PROMEDIO_USD"] = number_format($Sales->COSTO_PROMEDIO_USD, 2);
         $array["ULTIMO_COSTO_USD"] = number_format($Sales->ULTIMO_COSTO_USD, 2);
+        $array["VENTAS_YTD"] = number_format($Sales->VENTAS_YTD, 2);
+        $array["CONTRIBUCION_YTD"] = number_format($Sales->CONTRIBUCION_YTD,2);
         
         for ($i=1; $i <= 12; $i++) { 
             $array["VENTAS"][$i] = [

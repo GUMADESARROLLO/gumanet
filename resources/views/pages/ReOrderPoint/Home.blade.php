@@ -96,14 +96,63 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-4">
+                        <div class="col-12 col-sm-6 col-md-2">
                           <div class="d-flex align-items-center">
                             <div class="ms-3">
                               <h4 class="mb-0" id="id_contribucion"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">CONTRIBUCION</p>
+                              <p class="text-800 fs--1 mb-0">CONTRIBUCION EJECUTADA YTD</p>
                             </div>
                           </div>
                         </div>
+                        <div class="col-12 col-sm-6 col-md-2">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_ventas"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">VENTAS EJECUTADAS YTD</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2 mt-3">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_R_corta"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">ROTACION CORTA</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2 mt-3">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_R_media"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">ROTACION MEDIA</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2 mt-3">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_R_larga"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">ROTACION LARGA</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2 mt-3">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_costo"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">COSTO PROMEDIO USD</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2 mt-3">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_ultimo_costo"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">ULTIMO COSTO USD</p>
+                            </div>
+                          </div>
+                        </div>
+                        
                       </div>
                       <hr class="bg-200 mb-6 mt-3">
                     </div>
@@ -111,13 +160,17 @@
                     <form id="needs-validation" novalidate>  
                       
                       <div class="row" >  
-                          <div class="col-12 col-sm-6 col-md-4">  
+                          <div class="col-12 col-sm-6 col-md-2">  
                               <label for="firstName">CLASE</label>  
                               <input type="text" class="form-control" id="id_clase" placeholder="0.00" required>  
-                          </div>  
+                          </div> 
+                          <div class="col-12 col-sm-6 col-md-2">  
+                              <label for="lastName">TRANSITO</label>  
+                              <input type="text" class="form-control" id="id_transito" placeholder="0.00" required>  
+                          </div>
                           <div class="col-12 col-sm-6 col-md-4">  
-                              <label for="lastName">PEDIDO + TRANSITO</label>  
-                              <input type="text" class="form-control" id="id_pedido_transito" placeholder="0.00" required>  
+                              <label for="lastName">PEDIDO</label>  
+                              <input type="text" class="form-control" id="id_pedido" placeholder="0.00" required>  
                           </div>
                           <div class="col-12 col-sm-6 col-md-4">  
                               <label for="firstName">MOQ</label>  
