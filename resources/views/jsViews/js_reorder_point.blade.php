@@ -104,14 +104,15 @@ $(document).ready(function() {
             {"title": "CLASE", 		                                "data": "CLASE"},
             {"title": "VALUACION", 		                            "data": "VALUACION"},
             {"title": "CONTRIBUCION", 		                        "data": "CONTRIBUCION"},
-            {"title": "PEDIDO + TRANSITO", 		                    "data": "PEDIDO_TRANSITO"},
+            {"title": "PEDIDO", 		                            "data": "PEDIDO"},
+            {"title": "TRANSITO", 		                            "data": "TRANSITO"},
             {"title": "MOQ", 		                                "data": "MOQ"},
             {"title": "ESTIMACION SOBRANTES UND", 		            "data": "ESTIMACION_SOBRANTES_UND"},
             
 		],
         "columnDefs": [
 			{"className": "dt-center", "targets": []},
-			{"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]},
+			{"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]},
 			{ "width": "50%", "targets": [  ] },
 		],
         "createdRow": function( row, data, dataIndex){
