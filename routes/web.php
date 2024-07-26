@@ -287,6 +287,7 @@ Route::post('getSaleDetalleInsta', 'dashboard_controller@getSaleDetalleInsta')->
 // TODAS LAS RUTAS DEL REORDER POINT
 Route::get('ReOrder', 'ReOrderPointController@ReOrderPoint')->name('ReOrder');
 Route::get('getData', 'ReOrderPointController@getData')->name('getData');
+Route::get('CalcReorder', 'ReOrderPointController@CalcReorder')->name('CalcReorder');
 Route::get('dtGraf/{articulo}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}');
 
 Route::get('canales','dashboard_controller@canalXcontribucion')->name('canales');

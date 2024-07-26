@@ -187,6 +187,7 @@ function getDetalleArticulo(Articulo,Descripcion,ID)
 	$("#date_pedido").val("")
 	$("#txtDocuments").val("")
 	$("#txtCantidad").val("")
+	$("#txtCantidadTransito").val("")
 	$("#slcMercado").val('N/D').change();
     $("#slcMIFIC").val('N/D').change();
 	$("#txtObservacion").val("")
@@ -214,7 +215,8 @@ function getDetalleArticulo(Articulo,Descripcion,ID)
 					$("#date_estimada").val(FechaEstimada.format('YYYY-MM-DD'))
 					$("#date_pedido").val(FechaPedido.format('YYYY-MM-DD'))
 					$("#txtDocuments").val(a.documento)
-					$("#txtCantidad").val(a.cantidad)
+					$("#txtCantidad").val(a.pedido)
+					$("#txtCantidadTransito").val(a.transito)
 					$("#slcMercado").val(a.mercado).change();
 					$("#slcMIFIC").val(a.mific).change();
 					$("#txtObservacion").val(a.observaciones)
@@ -258,6 +260,7 @@ new Vue({
 
 			formData.append('documento', document.getElementById('txtDocuments').value);
 			formData.append('cantidad', document.getElementById('txtCantidad').value);
+			formData.append('CantidadTransito', document.getElementById('txtCantidadTransito').value);
 			formData.append('mercado', document.getElementById('slcMercado').value);
 			formData.append('mific', document.getElementById('slcMIFIC').value);
 			formData.append('precio_mific_f', document.getElementById('txtPrecioMific').value);
