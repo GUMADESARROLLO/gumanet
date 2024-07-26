@@ -92,6 +92,8 @@ $(document).ready(function() {
             {"title": "EXIST. EN LORE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
             {"title": "LEADTIME", 		                            "data": "LEADTIME"},
             {"title": "EJEC. UND. YTD", 		                    "data": "EJECUTADO_UND_YTD"},
+            {"title": "VENTAS EJEC. YTD", 		                    "data": "VENTAS_YTD"},
+            {"title": "CONTRIBUCION EJEC. YTD", 		            "data": "CONTRIBUCION_YTD"},
             {"title": "DEM. ANUAL CA NETA", 		                "data": "DEMANDA_ANUAL_CA_NETA"},
             {"title": "DEM. ANUAL CA AJUSTADA", 		            "data": "DEMANDA_ANUAL_CA_AJUSTADA"},            
             {"title": "ROTACION CORTA", 		                    "data": "ROTACION_CORTA"},
@@ -103,7 +105,6 @@ $(document).ready(function() {
             {"title": "LIMITE LOGISTICO MEDIO", 		            "data": "LIMITE_LOGISTICO_MEDIO"},
             {"title": "CLASE", 		                                "data": "CLASE"},
             {"title": "VALUACION", 		                            "data": "VALUACION"},
-            {"title": "CONTRIBUCION", 		                        "data": "CONTRIBUCION"},
             {"title": "PEDIDO + TRANSITO", 		                    "data": "PEDIDO_TRANSITO"},
             {"title": "MOQ", 		                                "data": "MOQ"},
             {"title": "ESTIMACION SOBRANTES UND", 		            "data": "ESTIMACION_SOBRANTES_UND"},
@@ -281,7 +282,7 @@ $.getJSON("dtGraf/" +Articulos, function(json) {
         $("#id_demanda_neta").html(json['DEMANDA_ANUAL_CA_NETA']);
         $("#id_demanda_ajustada").html(json['DEMANDA_ANUAL_CA_AJUSTADA']);
         $("#id_limite_logistico_medio").html(json['LIMITE_LOGISTICO_MEDIO']);
-        $("#id_contribucion").html(json['CONTRIBUCION']);
+        $("#id_contribucion").html(json['CONTRIBUCION_YTD']);
 
         $("#id_reorder1").val(json['REORDER1']);
         $("#id_reordenar").val(json['REORDER']);
@@ -290,9 +291,15 @@ $.getJSON("dtGraf/" +Articulos, function(json) {
         $("#id_clase").val(json['CLASE']);
         $("#id_pedido_transito").html(json['PEDIDO_TRANSITO']);
         $("#id_moq").val(json['MOQ']);
-        
-        
 
+        $("#id_R_corta").html(json['ROTACION_CORTA']);
+        $("#id_R_media").html(json['ROTACION_MEDIA']);
+        $("#id_R_larga").html(json['ROTACION_LARGA']);
+        $("#id_ventas").html(json['VENTAS_YTD']);
+        $("#id_costo").html(json['COSTO_PROMEDIO_USD']);
+        $("#id_ultimo_costo").html(json['ULTIMO_COSTO_USD']);
+        
+        
         $.each(json['VENTAS'], function(i, x) {
 
             tmp_total = tmp_total + parseFloat(x['data']);
