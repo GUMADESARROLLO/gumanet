@@ -205,9 +205,14 @@ class dashboard_model extends Model {
                             if ($Segmento==3) {
                                //TODAS LAS RUTAS DEL SEGMENTO INSTITUCION
                                 $Meta_Mes = Gn_couta_x_producto::where(['IdPeriodo'=> $dias_habiles[1]])->whereIn('CodVendedor', ['F02'])->sum('val');
+                            }else{
+                                if ($Segmento==4) {
+                                    //TODAS LOS SEGMENTOS
+                                    $Meta_Mes = Gn_couta_x_producto::where(['IdPeriodo'=> $dias_habiles[1]])->whereNotIn('CodVendedor', ['F04','F02','F01','F12'])->sum('val');
+                                }
                             }
                             
-                        }
+                        } 
                         
                     }
                 }
