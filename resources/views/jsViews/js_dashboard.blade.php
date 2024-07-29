@@ -1519,7 +1519,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     dta                 =   [];
                     title               =   [];
                     Segmento            =   '';
-                    SegFarmacia         =   []; 
+                    SegFarmacia         =   [];
                     SegMayoristas       =   [];
                     SegInstituciones    =   [];
                     Segmentos           =   [];
@@ -1562,6 +1562,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                     Segmento += '<option value="0">Todos</option>'+
                             '<option value="1">Farmacias</option>'+
+                            '<option value="4">Cadenas de Farmacias</option>'+
                             '<option value="2">Mayoristas</option>'+
                             '<option value="3">Instituciones</option>';
 
@@ -3173,7 +3174,7 @@ $("#opc_seg_graf01,#opc_seg_graf02").change( function() {
     Segmento    = this.value;
     xbolsones   = 1;
     var id = $(this).attr('id');
-
+    
 
     if (id=='opc_seg_graf01') {
         $("#grafVtsDiario")
