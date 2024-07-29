@@ -1562,9 +1562,9 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                     Segmento += '<option value="0">Todos</option>'+
                             '<option value="1">Farmacias</option>'+
-                            '<option value="4">Cadenas de Farmacias</option>'+
                             '<option value="2">Mayoristas</option>'+
-                            '<option value="3">Instituciones</option>';
+                            '<option value="3">Instituciones</option>'+
+                            '<option value="4">Cadenas de Farmacias</option>';
 
                     Segmentos.push({
                             name :"InfoExtra",
