@@ -288,29 +288,7 @@ class dashboard_model extends Model {
                 
                 foreach ($segmentos as $key) {
                     
-                    /*$rutas = proyectosDetalle_model::select('rutas.vendedor as ruta')
-                            ->where('proyectos_rutas.proyecto_id', $key['id'])
-                            ->where('rutas.estado', 1)
-                            ->join('rutas', 'proyectos_rutas.ruta_id', '=', 'rutas.id')
-                            ->get()
-                            ->toArray();
-
-                    foreach ($rutas as $r) {
-                        ($r === end($rutas))?$line .= ''."'".$r['ruta']."'".'':$line .= ''."'".$r['ruta']."'".',';
-                    }*/
-
-                    /*$sql_exec = "SELECT
-                                SUM(venta) as total
-                                FROM
-                                    Softland.dbo.VtasTotal_UMK (nolock)
-                                WHERE
-                                    [Año] = ".$anio." AND nmes = ".$mes." AND Ruta IN(".$key['line'].")
-                                AND [P. Unitario] > 0
-                                GROUP BY
-                                    [P. Unitario],
-                                    Cantidad";*/
-
-                    $retVal = ($key['name'] === 'Farmacias') ? "" : 'AND T0.CLIENTE NOT IN (SELECT CLIENTE FROM view_cadena_de_farmacia)' ;
+                    $retVal = ($key['name'] === 'Farmacias') ? 'AND T0.CLIENTE NOT IN (SELECT CLIENTE FROM view_cadena_de_farmacia)' : '' ;
 
                     $sql_exec = "SELECT
                                     SUM(TOTAL_LINEA) as total
@@ -320,7 +298,6 @@ class dashboard_model extends Model {
                                             T0.FECHA_PEDIDO BETWEEN '".$fechaInicio."' AND '".$fechaFin."'  AND T0.VENDEDOR  IN (".$key['line']." )
                                             ".$retVal."
                                     GROUP BY T0.VENDEDOR";
-                    
                                             
                     $rutas =     $key['ruta'];
                     
