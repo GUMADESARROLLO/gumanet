@@ -177,15 +177,15 @@
                               <input type="text" class="form-control" id="id_moq" placeholder="0.00" required>  
                           </div>  
 
-                          <div class="col-12 col-sm-6 col-md-4">  
+                          <div class="col-12 col-sm-6 col-md-4 mt-3">  
                               <label for="lastName">REORDER1</label>  
                               <input type="text" class="form-control" id="id_reorder1" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-12 col-sm-6 col-md-4">  
+                          <div class="col-12 col-sm-6 col-md-4 mt-3">  
                               <label for="lastName">REORDENAR</label>  
                               <input type="text" class="form-control" id="id_reordenar" placeholder="0.00" required>  
                           </div>  
-                          <div class="col-12 col-sm-6 col-md-4">  
+                          <div class="col-12 col-sm-6 col-md-4 mt-3">  
                               <label for="lastName">CANTIDAD ORDENAR</label>  
                               <input type="text" class="form-control" id="id_cant_ordenar" placeholder="0.00" required>  
                           </div>                                
