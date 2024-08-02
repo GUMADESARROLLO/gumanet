@@ -28,4 +28,8 @@ class ReOrderPointController extends Controller
         $obj = ReOrderPoint::CalcReorder();
         return response()->json($obj);
     }
+    public function ExportToExcel() {
+        $obj = ReOrderPoint::ExportToExcel();
+        return $obj;
+    }
 }
