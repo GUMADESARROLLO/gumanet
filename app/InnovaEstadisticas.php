@@ -98,7 +98,7 @@ class InnovaEstadisticas extends Model
 
     public static function saveInnStat($mes, $anio)
     {
-        InnovaEstadisticas::where('MES', $mes)->where('ANNIO', $anio)->delete();
+        //InnovaEstadisticas::where('MES', $mes)->where('ANNIO', $anio)->delete();
 
         $query_stat_ruta = "EXEC PRODUCCION.dbo.getInnStatRuta @Mes = ?, @Anio = ?";
         $resul_stat_ruta = DB::connection('sqlsrv')->select($query_stat_ruta, [$mes, $anio]);
