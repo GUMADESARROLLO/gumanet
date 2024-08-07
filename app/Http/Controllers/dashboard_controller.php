@@ -171,13 +171,13 @@ class dashboard_controller extends Controller {
     return response()->json(json_decode($obj));
   }
   
-  public function getVentasMensuales($xbolsones) {
-    $Key = 'getVentasMensuales'.$xbolsones;
+  public function getVentasMensuales($xbolsones,$segmento) {
+    $Key = 'getVentasMensuales'.$xbolsones.''.$segmento;
     $cached = Redis::get($Key);
     if ($cached) {
         $obj = $cached;
     } else {
-        $obj = json_encode(dashboard_model::getVentasMensuales($xbolsones));
+        $obj = json_encode(dashboard_model::getVentasMensuales($xbolsones,$segmento));
         Redis::setex($Key, 300, $obj); 
     }
     return response()->json(json_decode($obj));
@@ -210,8 +210,10 @@ class dashboard_controller extends Controller {
     return response()->json($obj);
   }
 
-
-
+  public function calcularCanales(){
+    $obj = Contribucion_X_Canal::calcularCanales();
+    return response()->json($obj);
+  }
 
  
 

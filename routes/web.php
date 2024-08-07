@@ -141,7 +141,7 @@ Route::get('/Grafselect/{mes}/{anio}/{xbolsones}/{segmento}','dashboard_controll
 Route::get('/detailsAllCls/{mes}/{anio}/{categoria}/{bolson}','dashboard_controller@getAllClientsByCategory');
 
 
-Route::get('/dataVentasMens/{xbolsones}','dashboard_controller@getVentasMensuales');
+Route::get('/dataVentasMens/{xbolsones}/{segmento}','dashboard_controller@getVentasMensuales');
 
 
 Route::get('/dtaComportamientoAnuales/{xbolsones}','dashboard_controller@getComportamiento');
@@ -292,6 +292,7 @@ Route::get('dtGraf/{articulo}','ReOrderPointController@getDataGrafica')->name('d
 
 Route::get('canales','dashboard_controller@canalXcontribucion')->name('canales');
 Route::get('canalData','dashboard_controller@canalData')->name('canalData');
+Route::get('calcularCanales','dashboard_controller@calcularCanales')->name('calcularCanales');
 
 // ROUTER DE PROYECTO 71 & 89
 Route::get('Presupuesto89', 'BudgetController@Budget89')->name('Presupuesto89');

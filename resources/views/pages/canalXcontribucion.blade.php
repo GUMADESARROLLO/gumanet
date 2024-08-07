@@ -13,15 +13,25 @@
   <div class="card border-0 shadow-sm mt-3 ">
         <div class="card-body col-md-12 p-0 mb-2">
             <div class="row col-md-12 mb-3 mt-3" >
-                <div class="input-group col-md-12">
+                <div class="input-group col-md-11">
+                    <input type="text" id="id_txt_buscar" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
-                    </div>								
-                    <input type="text" id="id_txt_buscar" class="form-control" placeholder="Buscar...">
+                      <span class="input-group-text" id="BtnClick" ><i data-feather="refresh-cw"></i></span>
+                    </div>
                 </div>
                 <!--<div class="col-md-1">
                 <button id="loadCanales" style='font-size:24px'><i class='fas fa-upload'></i></button>
                 </div>-->
+                <div class="col-sm-1">
+                  <div class="input-group mb-3">
+                    <select class="custom-select" id="InputCanales" name="InputCanales">
+                      <option value="10" selected>10</option>
+                      <option value="20">20</option>
+                      <option value="100">100</option>
+                      <option value="-1">Todo</option>
+                    </select>
+                  </div>
+                </div>
             </div>	
         </div>
     </div>

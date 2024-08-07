@@ -2,8 +2,13 @@
     fullScreen();
 $(document).ready(function () {
     $('#id_txt_buscar').on('keyup', function() {   
-        var vTableKardex = $('#table_contribucion').DataTable();     
-        vTableKardex.search(this.value).draw();
+        var vTable = $('#table_contribucion').DataTable();     
+        vTable.search(this.value).draw();
+    });
+
+    $( "#InputCanales").change(function() {
+        var table = $('#table_contribucion').DataTable();
+        table.page.len(this.value).draw();
     });
 
     $.ajax({
@@ -15,7 +20,7 @@ $(document).ready(function () {
                     "data":response,
                     "destroy": true,
                     "info": true,
-                    "lengthMenu": [[15,-1], [15,"Todo"]],
+                    "lengthMenu": [[10,20,100,-1], [10,20,100,"Todo"]],
                     "language": {
                         "zeroRecords": "No hay coincidencias",
 	                    "loadingRecords": "Cargando datos...",
@@ -80,13 +85,7 @@ $(document).ready(function () {
                         {"className": "dt-right", "targets": [ 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44 ]},
                         { "width": "150px", "targets": [ 1 ] }
                     ],
-                    "scrollY":        "900px",
-                    "scrollX":        true,
-                    "scrollCollapse": true,
-                    "paging":         true,
-                    "fixedColumns":   {
-                        "leftColumns": 3,
-                    },
+                                     
                     /*createdRow: function (row, data, index) {
                         // Obtener la referencia a la tabla DataTable
                         var table = $('#table_contribucion').DataTable();
@@ -115,7 +114,46 @@ $(document).ready(function () {
         }
 
     })
+    $("#BtnClick").click(function() {
+
     
+Swal.fire({
+    title: "Recalcular contribución de canales",
+    inputAttributes: {
+        autocapitalize: "off"
+    },
+    showCancelButton: true,
+    confirmButtonText: "Calcular",
+    showLoaderOnConfirm: true,
+    preConfirm: async (login) => {
+        try {
+        const githubUrl = `calcularCanales`;
+        const response = await fetch(githubUrl);
+        if (!response.ok) {
+            return Swal.showValidationMessage(`${JSON.stringify(await response.json())}`);
+        }
+        return response.json();
+        } catch (error) {
+        Swal.showValidationMessage(`
+            Request failed: ${error}
+        `);
+        }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+}).then((result) => {
+    if (result.isConfirmed) {
+        Swal.fire({
+            title: "Calculos completados",
+            confirmButtonText: "Ok",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                } 
+            });
+    }
+});
+
+})
 });
 
 </script>
