@@ -10,17 +10,17 @@ $(document).ready(function () {
         var table = $('#table_contribucion').DataTable();
         table.page.len(this.value).draw();
     });
+    
 
-    $.ajax({
-        url: 'canalData',
-        type: 'get',
-        async: true,
-        success: function(response) {
-            $('#table_contribucion').DataTable({
-                    "data":response,
+    $('#table_contribucion').DataTable({
+        
                     "destroy": true,
                     "info": true,
-                    "lengthMenu": [[10,20,100,-1], [10,20,100,"Todo"]],
+                    "ajax":{
+                        "url": "canalData",
+                        'dataSrc': '',
+                    },
+                    "lengthMenu": [[15,-1], [15,"Todo"]],
                     "language": {
                         "zeroRecords": "No hay coincidencias",
 	                    "loadingRecords": "Cargando datos...",
@@ -86,35 +86,13 @@ $(document).ready(function () {
                         { "width": "150px", "targets": [ 1 ] }
                     ],
                                      
-                    /*createdRow: function (row, data, index) {
-                        // Obtener la referencia a la tabla DataTable
-                        var table = $('#table_contribucion').DataTable();
-
-                        // Obtener las últimas tres celdas de la fila actual
-                        var lastCells = $('td', row).slice(-3);
-
-                        // Agregar la clase CSS personalizada a esas celdas
-                        lastCells.addClass('bg-soft-success');
-
-                        // Obtener las cabeceras de las últimas tres celdas de la tabla
-                        var lastHeaders = $('th', table.table().header()).slice(-3);
-
-                        // Agregar la clase CSS personalizada a esas cabeceras
-                        lastHeaders.addClass('bg-soft-success');
-
-                        // Obtener la última cabecera de la tabla (corresponde a las tres ultimas columnas)
-                        var lastHeader = $('th:last-child', '#table_contribucion');
-
-                        // Agregar la clase CSS personalizada a esa cabecera
-                        lastHeader.addClass('bg-soft-success');
-                    }*/
+                    
             });
             $("#table_contribucion_length").hide();
             $("#table_contribucion_filter").hide();
-        }
 
     })
-    $("#BtnClick").click(function() {
+$("#BtnClick").click(function() {
 
     
 Swal.fire({
@@ -154,6 +132,6 @@ Swal.fire({
 });
 
 })
-});
+
 
 </script>

@@ -6,7 +6,7 @@ use App\user;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Contribucion_X_Canal extends Model
+class ContribucionPorCanales extends Model
 {
     protected $connection = 'sqlsrv';
     public $timestamps = false;
