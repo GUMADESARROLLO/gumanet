@@ -5,16 +5,22 @@
   @include('jsViews.js_reorder_point');
 @endsection
 @section('content')
+<style>
+  span.btn-change-color {
+    background-color: #28a745;
+  }
+</style>
 <div class="container-fluid">
 <p class="font-italic text-muted pt-0 mt-0">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	
    
   <div class="row">
     <div class="col-sm-10">		
+      
       <div class="input-group"> 
         <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="BtnClick"><i data-feather="refresh-cw"></i></span>
-        </div>
+          <div class="input-group-prepend">
+            <span class="btn-change-color text-white input-group-text" id="BtnClick"><i data-feather="refresh-cw"></i></span>
+          </div>
       </div>
     </div>
     <div class="col-sm-1">
@@ -30,13 +36,15 @@
     </div>
 
     <div class="col-sm-1 p-0 m-0" >
-      <a id="exp-to-excel" href="#!" class="btn btn-light btn-block text-success float-right"><i class="fas fa-file-excel"></i> Exportar</a>
+      <a id="exp-to-excel" href="#!" class="btn btn-light btn-block text-success"><i class="fas fa-file-excel"></i> Exportar</a>
     </div>      
   </div>
   <div class="row">
       <div class="col-12">
         <div class="table-responsive mt-3 mb-2">
-            <table class="table nowrap table-bordered table-sm" id="dt_articulos" width="100%" ></table>
+            <table class="table nowrap table-bordered table-sm" id="dt_articulos" width="100%" >
+            <thead class="bg-blue text-light"></thead>
+            </table>
           </div>
       </div>
   </div>

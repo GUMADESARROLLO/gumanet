@@ -147,10 +147,8 @@ $(document).ready(function() {
 });
 
 
-$("#exp-to-excel").click(function() {
-    Swal.fire({
-        title: "Building Pending",
-    })
+$("#exp-to-excel").click(function() {    
+    location.href = "ExportToExcel";
 })
 $("#BtnClick").click(function() {
 

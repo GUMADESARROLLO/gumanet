@@ -5,16 +5,16 @@ $(document).ready(function () {
         var vTableKardex = $('#table_contribucion').DataTable();     
         vTableKardex.search(this.value).draw();
     });
+    
 
-    $.ajax({
-        url: 'canalData',
-        type: 'get',
-        async: true,
-        success: function(response) {
-            $('#table_contribucion').DataTable({
-                    "data":response,
+    $('#table_contribucion').DataTable({
+        
                     "destroy": true,
                     "info": true,
+                    "ajax":{
+                        "url": "canalData",
+                        'dataSrc': '',
+                    },
                     "lengthMenu": [[15,-1], [15,"Todo"]],
                     "language": {
                         "zeroRecords": "No hay coincidencias",
@@ -112,9 +112,8 @@ $(document).ready(function () {
             });
             $("#table_contribucion_length").hide();
             $("#table_contribucion_filter").hide();
-        }
 
-    })
+    
     
 });
 
