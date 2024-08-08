@@ -87,10 +87,10 @@ class dashboard_controller extends Controller {
   }
 
 
-  public function getValBodegas() {
+  /*public function getValBodegas() {
     $obj = dashboard_model::getValBodegas();
     return response()->json($obj);
-  }
+  }*/
 
   public function getSaleCadena(Request $request) {
     if($request->isMethod('post')) {
@@ -207,9 +207,16 @@ class dashboard_controller extends Controller {
 
   public function canalData(){
     $obj = ContribucionPorCanales::all();
-    return response()->json($obj);
+    $obj2 = ContribucionPorCanales::periodoFechas();
+    return response()->json([
+      'Registros' => $obj,
+      'Periodo' => $obj2]);
   }
 
+  public function calcularCanales($fechaIni, $fechaEnd){
+    $obj = ContribucionPorCanales::calcularCanales($fechaIni, $fechaEnd);
+    return response()->json($obj);
+  }
 
   public function getVentasExportacion($xbolsones,$segmentos) {
     $obj = dashboard_model::getVentasExportacion($xbolsones,$segmentos);

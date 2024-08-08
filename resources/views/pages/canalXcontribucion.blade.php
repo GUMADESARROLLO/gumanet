@@ -9,21 +9,37 @@
         <div id="id_Status" class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
       </div>
   </div>-->
-  
+  <div>
+    <h5 id="tl_periodo"></h5>
+  </div>
   <div class="card border-0 shadow-sm mt-3 ">
         <div class="card-body col-md-12 p-0 mb-2">
             <div class="row col-md-12 mb-3 mt-3" >
-                <div class="input-group col-md-11">
+                <div class="input-group col-md-6 mt-4">
                     <input type="text" id="id_txt_buscar" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
+                </div>
+                <!--<div class="col-md-5 border-left">
+                  <div class="row ">
+                    <div class="col-sm-5">
+                      <div class="form-group">                
+                        <label for="f1">Desde:</label>
+                        <input type="text" class="input-fecha" id="f1">
+                      </div>
+                    </div>
+                    <div class="col-sm-5">
+                      <div class="form-group">                
+                        <label for="f2">Hasta:</label>
+                        <input type="date" class="input-fecha" id="f2">
+                      </div>
+                    </div>
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="BtnClick" ><i data-feather="refresh-cw"></i></span>
-                    </div>
-                </div>
-                <!--<div class="col-md-1">
-                <button id="loadCanales" style='font-size:24px'><i class='fas fa-upload'></i></button>
+                    </div>                    
+                  </div>
                 </div>-->
-                <div class="col-sm-1">
-                  <div class="input-group mb-3">
+                
+                <div class="col-md-1 mt-4">
+                  <div class="input-group">
                     <select class="custom-select" id="InputCanales" name="InputCanales">
                       <option value="10" selected>10</option>
                       <option value="20">20</option>
@@ -32,6 +48,25 @@
                     </select>
                   </div>
                 </div>
+                <div class="col-md-5 border-left">
+                  <div class="row ">
+                    <div class="col-sm-5 ">
+                      <div class="form-group">                
+                        <label for="f1">Desde:</label>
+                        <input type="date" class="input-fecha" id="f1">
+                      </div>
+                    </div>
+                    <div class="col-sm-5 ">
+                      <div class="form-group">                
+                        <label for="f2">Hasta:</label>
+                        <input type="date" class="input-fecha" id="f2">
+                      </div>
+                    </div>
+                    <div class="col-sm-2 input-group-prepend mt-4 mb-3">
+                    <span class="input-group-text" id="BtnClick" ><i data-feather="refresh-cw"></i></span>
+                  </div>
+							</div>
+						</div> 
             </div>	
         </div>
     </div>
