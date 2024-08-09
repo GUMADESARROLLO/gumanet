@@ -141,7 +141,7 @@ Route::get('/Grafselect/{mes}/{anio}/{xbolsones}/{segmento}','dashboard_controll
 Route::get('/detailsAllCls/{mes}/{anio}/{categoria}/{bolson}','dashboard_controller@getAllClientsByCategory');
 
 
-Route::get('/dataVentasMens/{xbolsones}','dashboard_controller@getVentasMensuales');
+Route::get('/dataVentasMens/{xbolsones}/{segmento}','dashboard_controller@getVentasMensuales');
 
 
 Route::get('/dtaComportamientoAnuales/{xbolsones}','dashboard_controller@getComportamiento');
@@ -289,9 +289,12 @@ Route::get('ReOrder', 'ReOrderPointController@ReOrderPoint')->name('ReOrder');
 Route::get('getData', 'ReOrderPointController@getData')->name('getData');
 Route::get('CalcReorder', 'ReOrderPointController@CalcReorder')->name('CalcReorder');
 Route::get('dtGraf/{articulo}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}');
+Route::get('ExportToExcel', 'ReOrderPointController@ExportToExcel')->name('ExportToExcel');
 
 Route::get('canales','dashboard_controller@canalXcontribucion')->name('canales');
 Route::get('canalData','dashboard_controller@canalData')->name('canalData');
+Route::get('calcularCanales/{fechaIni}/{fechaEnd}','dashboard_controller@calcularCanales')->name('calcularCanales/{fechaIni}/{fechaEnd}');
+Route::get('periodoCanales','dashboard_controller@periodoCanales')->name('periodoCanales');
 
 // ROUTER DE PROYECTO 71 & 89
 Route::get('Presupuesto89', 'BudgetController@Budget89')->name('Presupuesto89');

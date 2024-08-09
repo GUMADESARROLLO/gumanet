@@ -1783,7 +1783,7 @@ class dashboard_model extends Model {
         if ( $company_user==4 ) {
             $tem_ = ($xbolsones)?array_sum(array_column($query, 'Cantidad')):array_sum(array_column($query, 'Monto'));
         }else {
-            $tem_ = array_sum(array_column($query, 'Monto'));
+            $tem_ = array_sum(array_column($query, 'total'));
         }
 
         $json[0]['data'] = $tem_;
@@ -2619,18 +2619,18 @@ class dashboard_model extends Model {
         return  $json;        
     }
 
-    public static function getVentasMensuales($xbolsones) {
+    public static function getVentasMensuales($xbolsones,$segmento) {
         $sql_server = new \sql_server();
         $sql_exec = '';
         $request = Request();
         $company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
         $i = 0;
-
+        
         $meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
         
         switch ($company_user) {
             case '1':
-            $sql = 'EXECUTE UMK_GN_VENTAS_MENSUALES';
+            $sql = "EXECUTE UMK_GN_VENTAS_MENSUALES2 '".$segmento."'";
             break;
 
             case '2':

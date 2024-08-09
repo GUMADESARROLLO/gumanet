@@ -8,7 +8,7 @@ use App\Models;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Company;
-use App\Contribucion_X_Canal;
+use App\ContribucionPorCanales;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
@@ -87,10 +87,10 @@ class dashboard_controller extends Controller {
   }
 
 
-  public function getValBodegas() {
+  /*public function getValBodegas() {
     $obj = dashboard_model::getValBodegas();
     return response()->json($obj);
-  }
+  }*/
 
   public function getSaleCadena(Request $request) {
     if($request->isMethod('post')) {
@@ -171,13 +171,13 @@ class dashboard_controller extends Controller {
     return response()->json(json_decode($obj));
   }
   
-  public function getVentasMensuales($xbolsones) {
-    $Key = 'getVentasMensuales'.$xbolsones;
+  public function getVentasMensuales($xbolsones,$segmento) {
+    $Key = 'getVentasMensuales'.$xbolsones.''.$segmento;
     $cached = Redis::get($Key);
     if ($cached) {
         $obj = $cached;
     } else {
-        $obj = json_encode(dashboard_model::getVentasMensuales($xbolsones));
+        $obj = json_encode(dashboard_model::getVentasMensuales($xbolsones,$segmento));
         Redis::setex($Key, 300, $obj); 
     }
     return response()->json(json_decode($obj));
@@ -200,20 +200,23 @@ class dashboard_controller extends Controller {
 
 
 
-  public function canalXcontribucion(){
+  public function canalXcontribucion()
+  {
     return view('pages.canalXcontribucion');
-   
   }
 
   public function canalData(){
-    $obj = Contribucion_X_Canal::all();
-    return response()->json($obj);
+    $obj = ContribucionPorCanales::all();
+    $obj2 = ContribucionPorCanales::periodoFechas();
+    return response()->json([
+      'Registros' => $obj,
+      'Periodo' => $obj2]);
   }
 
-
-
-
- 
+  public function calcularCanales($fechaIni, $fechaEnd){
+    $obj = ContribucionPorCanales::calcularCanales($fechaIni, $fechaEnd);
+    return response()->json($obj);
+  }
 
   public function getVentasExportacion($xbolsones,$segmentos) {
     $obj = dashboard_model::getVentasExportacion($xbolsones,$segmentos);
