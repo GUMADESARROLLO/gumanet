@@ -102,7 +102,7 @@ $(document).ready(function () {
     $("#table_contribucion_filter").hide();
 
     $("#exp-to-excel-canales").click(function(){
-        Swal.fire("Pendiente!", "En desarrollo", "info");
+        location.href = "ExportToExcelCanales";
     })
 
     $("#BtnClick").click(function() {
@@ -125,9 +125,7 @@ $(document).ready(function () {
                 }
                 return response.json();
                 } catch (error) {
-                Swal.showValidationMessage(`
-                    Request failed: ${error}
-                `);
+                    Swal.showValidationMessage(`Request failed: ${error}`);
                 }
             },
             allowOutsideClick: () => !Swal.isLoading()

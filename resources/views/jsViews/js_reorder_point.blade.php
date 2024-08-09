@@ -1,5 +1,5 @@
-<script>
-    fullScreen();
+<script type="text/javascript">
+    
     var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
     grafiacas_productos_Diarios = {
         chart: {
@@ -53,6 +53,7 @@
             },
         }]
     }; 
+    fullScreen();
 $(document).ready(function() {
 
     var articulo_g = 0;

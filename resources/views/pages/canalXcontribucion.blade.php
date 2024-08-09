@@ -9,12 +9,6 @@
   }
 </style>
 <div class="container-fluid"> 
-  <!--<div style="padding:20px">
-      <div class="d-flex align-items-center">
-        <div id="id_Status" class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
-      </div>
-  </div>-->
-
   <p class="font-italic text-muted pt-0 mt-0">Actualizado del <span id="tl_periodo"> - </span></p>	
   <div class="row">
     <div class="col">		      

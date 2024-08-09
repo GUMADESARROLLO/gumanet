@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\ReOrderPoint;
+use App\ContribucionPorCanales;
 
 class ReOrderPointController extends Controller
 {
@@ -30,6 +31,10 @@ class ReOrderPointController extends Controller
     }
     public function ExportToExcel() {
         $obj = ReOrderPoint::ExportToExcel();
+        return $obj;
+    }
+    public function ExportToExcelCanales() {
+        $obj = ContribucionPorCanales::ExportToExcel();
         return $obj;
     }
 }
