@@ -1,6 +1,7 @@
 <script type="text/javascript">
     fullScreen();
 $(document).ready(function () {
+    inicializaControlFecha();
     $('#id_txt_buscar').on('keyup', function() {   
         var vTable = $('#table_contribucion').DataTable();     
         vTable.search(this.value).draw();
@@ -10,6 +11,8 @@ $(document).ready(function () {
         var table = $('#table_contribucion').DataTable();
         table.page.len(this.value).draw();
     });
+
+    
     
 
     $('#table_contribucion').DataTable({ 
@@ -22,7 +25,7 @@ $(document).ready(function () {
                 
                 var fechaIni = moment(periodo.primera_fecha).format('DD/MM/YYYY');
                 var fechaEnd = moment(periodo.ultima_fecha).format('DD/MM/YYYY');
-                $('#tl_periodo').html("Actualizado del " + fechaIni + " hasta el "+ fechaEnd);
+                $('#tl_periodo').html(fechaIni + " hasta el "+ fechaEnd);
                 $("#f1").val( moment(periodo.fechaIni).format('YYYY-MM-DD'));
                 $("#f2").val( moment(periodo.fechaEnd).format('YYYY-MM-DD'));
 
@@ -98,6 +101,10 @@ $(document).ready(function () {
     $("#table_contribucion_length").hide();
     $("#table_contribucion_filter").hide();
 
+    $("#exp-to-excel-canales").click(function(){
+        location.href = "ExportToExcelCanales";
+    })
+
     $("#BtnClick").click(function() {
         fechaIni = $("#f1").val();
         fechaEnd = $("#f2").val();
@@ -118,9 +125,7 @@ $(document).ready(function () {
                 }
                 return response.json();
                 } catch (error) {
-                Swal.showValidationMessage(`
-                    Request failed: ${error}
-                `);
+                    Swal.showValidationMessage(`Request failed: ${error}`);
                 }
             },
             allowOutsideClick: () => !Swal.isLoading()
