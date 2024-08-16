@@ -71,43 +71,43 @@
                 <tr>
                   <th class="bg-blue" colspan="3"></th>
                   <th id="Farmacia_Cantidad"></th>
-                  <th></th>
+                  <th id="Farmacia_Promedio"></th>
                   <th id="Farmacia_Venta"></th>
                   <th id="Farmacia_Costo"></th>
                   <th id="Farmacia_Contribucion"></th>
                   <th></th>
                   <th id="Cadena_Farmacia_Cantidad"></th>
-                  <th></th>
+                  <th id="Cadena_Farmacia_Promedio"></th>
                   <th id="Cadena_Farmacia_Venta"></th>
                   <th id="Cadena_Farmacia_Costo"></th>
                   <th id="Cadena_Farmacia_Contribucion"></th>
                   <th></th>
                   <th id="Mayorista_Cantidad"></th>
-                  <th></th>
+                  <th id="Mayorista_Promedio"></th>
                   <th id="Mayorista_Venta"></th>
                   <th id="Mayorista_Costo"></th>
                   <th id="Mayorista_Contribucion"></th>
                   <th></th>
                   <th id="Institucion_Privada_Cantidad"></th>
-                  <th></th>
+                  <th id="Institucion_Privada_Promedio"></th>
                   <th id="Institucion_Privada_Venta"></th>
                   <th id="Institucion_Privada_Costo"></th>
                   <th id="Institucion_Privada_Contribucion"></th>
                   <th></th>
                   <th id="Cruz_Azul_Cantidad"></th>
-                  <th></th>
+                  <th id="Cruz_Azul_Promedio"></th>
                   <th id="Cruz_Azul_Venta"></th>
                   <th id="Cruz_Azul_Costo"></th>
                   <th id="Cruz_Azul_Contribucion"></th>
                   <th></th>
                   <th id="Institucion_Publica_Cantidad"></th>
-                  <th></th>
+                  <th id="Institucion_Publica_Promedio"></th>
                   <th id="Institucion_Publica_Venta"></th>
                   <th id="Institucion_Publica_Costo"></th>
                   <th id="Institucion_Publica_Contribucion"></th>
                   <th></th>
                   <th id="Total_Cantidad"></th>
-                  <th></th>
+                  <th id="Total_Promedio"></th>
                   <th id="Total_Venta"></th>
                   <th id="Total_Costo"></th>
                   <th id="Total_Contribucion"></th>
