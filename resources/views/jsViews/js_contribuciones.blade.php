@@ -206,6 +206,7 @@ $(document).ready(function () {
         $('#Farmacia_Venta').html('C$ '+numeral(Farmacia_Venta).format('0,0.00'));
         $('#Farmacia_Costo').html('C$ '+numeral(Farmacia_Costo).format('0,0.00'));
         $('#Farmacia_Contribucion').html('C$ '+numeral(Farmacia_Contribucion).format('0,0.00'));
+        $('#Farmacia_Margen').html(numeral((Farmacia_Contribucion/Farmacia_Venta)*100).format('0,0.00'));
 
         // TOTAL DE CADENA DE FARMACIAS
         $('#Cadena_Farmacia_Cantidad').html(numeral(Cadena_Farmacia_Cantidad).format('0,0'));
@@ -213,6 +214,7 @@ $(document).ready(function () {
         $('#Cadena_Farmacia_Venta').html('C$ '+numeral(Cadena_Farmacia_Venta).format('0,0.00'));
         $('#Cadena_Farmacia_Costo').html('C$ '+numeral(Cadena_Farmacia_Costo).format('0,0.00'));
         $('#Cadena_Farmacia_Contribucion').html('C$ '+numeral(Cadena_Farmacia_Contribucion).format('0,0.00'));
+        $('#Cadena_Farmacia_Margen').html(numeral((Cadena_Farmacia_Contribucion/Cadena_Farmacia_Venta)*100).format('0,0.00'));
 
         // TOTAL DE MAYORISTAS
         $('#Mayorista_Cantidad').html(numeral(Mayorista_Cantidad).format('0,0'));
@@ -220,6 +222,7 @@ $(document).ready(function () {
         $('#Mayorista_Venta').html('C$ '+numeral(Mayorista_Venta).format('0,0.00'));
         $('#Mayorista_Costo').html('C$ '+numeral(Mayorista_Costo).format('0,0.00'));
         $('#Mayorista_Contribucion').html('C$ '+numeral(Mayorista_Contribucion).format('0,0.00'));
+        $('#Mayorista_Margen').html(numeral((Mayorista_Contribucion/Mayorista_Venta)*100).format('0,0.00'));
 
         // TOTAL INTITUCION PRIVADA
         $('#Institucion_Privada_Cantidad').html(numeral(Institucion_Privada_Cantidad).format('0,0'));
@@ -227,6 +230,7 @@ $(document).ready(function () {
         $('#Institucion_Privada_Venta').html('C$ '+numeral(Institucion_Privada_Venta).format('0,0.00'));
         $('#Institucion_Privada_Costo').html('C$ '+numeral(Institucion_Privada_Costo).format('0,0.00'));
         $('#Institucion_Privada_Contribucion').html('C$ '+numeral(Institucion_Privada_Contribucion).format('0,0.00'));
+        $('#Institucion_Privada_Margen').html(numeral((Institucion_Privada_Contribucion/Institucion_Privada_Venta)*100).format('0,0.00'));
         
         // TOTAL DE CRUZ AZUL
         $('#Cruz_Azul_Cantidad').html(numeral(Cruz_Azul_Cantidad).format('0,0'));
@@ -234,6 +238,7 @@ $(document).ready(function () {
         $('#Cruz_Azul_Venta').html('C$ '+numeral(Cruz_Azul_Venta).format('0,0.00'));
         $('#Cruz_Azul_Costo').html('C$ '+numeral(Cruz_Azul_Costo).format('0,0.00'));
         $('#Cruz_Azul_Contribucion').html('C$ '+numeral(Cruz_Azul_Contribucion).format('0,0.00'));
+        $('#Cruz_Azul_Margen').html(numeral((Cruz_Azul_Contribucion/Cruz_Azul_Venta)*100).format('0,0.00'));
 
         // TOTAL INTITUCION PUBLICA
         $('#Institucion_Publica_Cantidad').html(numeral(Institucion_Publica_Cantidad).format('0,0'));
@@ -241,6 +246,7 @@ $(document).ready(function () {
         $('#Institucion_Publica_Venta').html('C$ '+numeral(Institucion_Publica_Venta).format('0,0.00'));
         $('#Institucion_Publica_Costo').html('C$ '+numeral(Institucion_Publica_Costo).format('0,0.00'));
         $('#Institucion_Publica_Contribucion').html('C$ '+numeral(Institucion_Publica_Contribucion).format('0,0.00'));
+        $('#Institucion_Publica_Margen').html(numeral((Institucion_Publica_Contribucion/Institucion_Publica_Venta)*100).format('0,0.00'));
 
         // TOTAL DE TOTALES
         $('#Total_Cantidad').html(numeral(Total_Cantidad).format('0,0'));
@@ -248,6 +254,7 @@ $(document).ready(function () {
         $('#Total_Venta').html('C$ '+numeral(Total_Venta).format('0,0.00'));
         $('#Total_Costo').html('C$ '+numeral(Total_Costo).format('0,0.00'));
         $('#Total_Contribucion').html('C$ '+numeral(Total_Contribucion).format('0,0.00'));
+        $('#Total_Margen').html(numeral((Total_Contribucion/Total_Venta)*100).format('0,0.00'));
     }
 
     $('#table_contribucion').DataTable().on('draw', function() {
