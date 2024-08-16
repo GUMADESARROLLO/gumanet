@@ -56,6 +56,7 @@
     fullScreen();
 $(document).ready(function() {
 
+    
     var articulo_g = 0;
     //AGREGO LA RUTA AL NAVEGADOR
     $("#item-nav-01").after(`<li class="breadcrumb-item active"><a href="{{url('/Inventario')}}">Inventario</a></li><li class="breadcrumb-item active">Reorder Point</li>`);
@@ -66,7 +67,7 @@ $(document).ready(function() {
 			'dataSrc': '',
 		},
         
-		"lengthMenu": [[15,30,50,100,-1], [15,30,50,100,"Todo"]],
+		"lengthMenu": [[5,30,50,100,-1], [5,30,50,100,"Todo"]],
 		"language": {
 			"infoFiltered": "(Filtrado de _MAX_ total entradas)",
 			"zeroRecords": "No hay coincidencias",
@@ -83,11 +84,7 @@ $(document).ready(function() {
 		},
 		'columns': [	
 			{"title": "ARTICULO",                                   "data": "ARTICULO"},
-            {"title": "DESCRIPCIÓN", 		                        "data": "DESCRIPCION"},
-            {"title": "REORDER1", 		                            "data": "REORDER1"},
-            {"title": "REORDER", 		                            "data": "REORDER"},
-            {"title": "CANTIDAD_ORDENAR", 		                    "data": "CANTIDAD_ORDENAR"},
-			{"title": "EXIST. PROX. A VENCER <=12 Meses", 		    "data": "VENCE_MENOS_IGUAL_12"},            
+            {"title": "DESCRIPCIÓN", 		                        "data": "DESCRIPCION"},       
             {"title": "EXIST. LOTE >=7 Meses", 		                "data": "VENCE_MAS_IGUAL_7"},
             {"title": "LOTE MAS PROX. A VENCER", 		            "data": "LOTE_MAS_PROX_VENCER"},
             {"title": "EXIST. EN LORE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
@@ -108,6 +105,10 @@ $(document).ready(function() {
             {"title": "CLASE", 		                                "data": "CLASE"},
             {"title": "VALUACION", 		                            "data": "VALUACION"},
             // {"title": "CONTRIBUCION", 		                        "data": "CONTRIBUCION"},
+            {"title": "REORDER1", 		                            "data": "REORDER1"},
+            {"title": "REORDER", 		                            "data": "REORDER"},
+            {"title": "CANTIDAD_ORDENAR", 		                    "data": "CANTIDAD_ORDENAR"},
+			{"title": "EXIST. PROX. A VENCER <=12 Meses", 		    "data": "VENCE_MENOS_IGUAL_12"},   
             {"title": "PEDIDO", 		                            "data": "PEDIDO"},
             {"title": "TRANSITO", 		                            "data": "TRANSITO"},
             {"title": "MOQ", 		                                "data": "MOQ"},
@@ -140,10 +141,12 @@ $(document).ready(function() {
         table.search(this.value).draw();
 	});
 
-	$( "#InputDtShowColumnsArtic").change(function() {
-        var table = $('#dtInvCompleto').DataTable();
+	
+    $( "#select_rows").change(function() {
+        var table = $('#dt_articulos').DataTable();
         table.page.len(this.value).draw();
-	});
+    });
+
 
 
 });

@@ -25,7 +25,7 @@
     </div>
     <div class="col-sm-1">
       <div class="input-group mb-3">
-        <select class="custom-select" id="InputDtShowColumnsArtic" name="InputDtShowColumnsArtic">
+        <select class="custom-select" id="select_rows" name="InputDtShowColumnsArtic">
           <option value="5" selected>5</option>
           <option value="10">10</option>
           <option value="20">20</option>
