@@ -92,21 +92,22 @@ $(document).ready(function() {
             {"title": "LOTE MAS PROX. A VENCER", 		            "data": "LOTE_MAS_PROX_VENCER"},
             {"title": "EXIST. EN LORE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
             {"title": "LEADTIME", 		                            "data": "LEADTIME"},
-            {"title": "EJEC. UND. YTD", 		                    "data": "EJECUTADO_UND_YTD"},
-            {"title": "VENTAS EJEC. YTD", 		                    "data": "VENTAS_YTD"},
-            {"title": "CONTRIBUCION EJEC. YTD", 		            "data": "CONTRIBUCION_YTD"},
+            {"title": "PROM. UND. YTD", 		                    "data": "EJECUTADO_UND_YTD"},
+            {"title": "VENTAS EJEC. YTD C$.", 		                    "data": "VENTAS_YTD"},
+            {"title": "CONTRIBUCION BRUTA. YTD C$.", 		            "data": "CONTRIBUCION_YTD"},
             {"title": "DEM. ANUAL CA NETA", 		                "data": "DEMANDA_ANUAL_CA_NETA"},
             {"title": "DEM. ANUAL CA AJUSTADA", 		            "data": "DEMANDA_ANUAL_CA_AJUSTADA"},            
             {"title": "ROTACION CORTA", 		                    "data": "ROTACION_CORTA"},
             {"title": "ROTACION MEDIA", 		                    "data": "ROTACION_MEDIA"},
             {"title": "ROTACION LARGA", 		                    "data": "ROTACION_LARGA"},
+            {"title": "COST PROM. C$", 		                        "data": "COSTO_PROMEDIO_LOC"},
             {"title": "COST PROM. USD", 		                    "data": "COSTO_PROMEDIO_USD"},
             {"title": "ULT. COST. USD", 		                    "data": "ULTIMO_COSTO_USD"},
             {"title": "FACTOR", 		                            "data": "FACTOR"}, 
             {"title": "LIMITE LOGISTICO MEDIO", 		            "data": "LIMITE_LOGISTICO_MEDIO"},
             {"title": "CLASE", 		                                "data": "CLASE"},
             {"title": "VALUACION", 		                            "data": "VALUACION"},
-            {"title": "CONTRIBUCION", 		                        "data": "CONTRIBUCION"},
+            // {"title": "CONTRIBUCION", 		                        "data": "CONTRIBUCION"},
             {"title": "PEDIDO", 		                            "data": "PEDIDO"},
             {"title": "TRANSITO", 		                            "data": "TRANSITO"},
             {"title": "MOQ", 		                                "data": "MOQ"},
@@ -302,6 +303,7 @@ $.getJSON("dtGraf/" +Articulos, function(json) {
 
         $("#id_transito").val(json['TRANSITO']);
         $("#id_pedido").val(json['PEDIDO']);
+        $("#id_promedio_mensual").html("C$. " + json['EJECUTADO_UND_YTD']);
         
         
         $.each(json['VENTAS'], function(i, x) {

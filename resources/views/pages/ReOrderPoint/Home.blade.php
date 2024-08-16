@@ -161,6 +161,15 @@
                             </div>
                           </div>
                         </div>
+
+                        <div class="col-12 col-sm-6 col-md-2 mt-3">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_promedio_mensual"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">PROMEDIO MENSUAL</p>
+                            </div>
+                          </div>
+                        </div>
                         
                       </div>
                       <hr class="bg-200 mb-6 mt-3">
