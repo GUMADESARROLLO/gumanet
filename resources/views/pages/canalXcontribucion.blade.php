@@ -3,73 +3,54 @@
 @include('jsViews.js_contribuciones')
 @endsection
 @section('content')
+<style>
+  span.btn-change-color {
+    background-color: #28a745;
+  }
+</style>
 <div class="container-fluid"> 
-  <!--<div style="padding:20px">
-      <div class="d-flex align-items-center">
-        <div id="id_Status" class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
+  <p class="font-italic text-muted pt-0 mt-0">Actualizado del <span id="tl_periodo"> - </span></p>	
+  <div class="row">
+    <div class="col">		      
+      <div class="input-group"> 
+        <input type="text" id="id_txt_buscar" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
+          <div class="input-group-prepend">
+            <span class="btn-change-color text-white input-group-text" id="BtnClick"><i data-feather="refresh-cw"></i></span>
+          </div>
       </div>
-  </div>-->
-  <div>
-    <h5 id="tl_periodo"></h5>
-  </div>
-  <div class="card border-0 shadow-sm mt-3 ">
-        <div class="card-body col-md-12 p-0 mb-2">
-            <div class="row col-md-12 mb-3 mt-3" >
-                <div class="input-group col-md-6 mt-4">
-                    <input type="text" id="id_txt_buscar" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
-                </div>
-                <!--<div class="col-md-5 border-left">
-                  <div class="row ">
-                    <div class="col-sm-5">
-                      <div class="form-group">                
-                        <label for="f1">Desde:</label>
-                        <input type="text" class="input-fecha" id="f1">
-                      </div>
-                    </div>
-                    <div class="col-sm-5">
-                      <div class="form-group">                
-                        <label for="f2">Hasta:</label>
-                        <input type="date" class="input-fecha" id="f2">
-                      </div>
-                    </div>
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="BtnClick" ><i data-feather="refresh-cw"></i></span>
-                    </div>                    
-                  </div>
-                </div>-->
-                
-                <div class="col-md-1 mt-4">
-                  <div class="input-group">
-                    <select class="custom-select" id="InputCanales" name="InputCanales">
-                      <option value="10" selected>10</option>
-                      <option value="20">20</option>
-                      <option value="100">100</option>
-                      <option value="-1">Todo</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-5 border-left">
-                  <div class="row ">
-                    <div class="col-sm-5 ">
-                      <div class="form-group">                
-                        <label for="f1">Desde:</label>
-                        <input type="date" class="input-fecha" id="f1">
-                      </div>
-                    </div>
-                    <div class="col-sm-5 ">
-                      <div class="form-group">                
-                        <label for="f2">Hasta:</label>
-                        <input type="date" class="input-fecha" id="f2">
-                      </div>
-                    </div>
-                    <div class="col-sm-2 input-group-prepend mt-4 mb-3">
-                    <span class="input-group-text" id="BtnClick" ><i data-feather="refresh-cw"></i></span>
-                  </div>
-							</div>
-						</div> 
-            </div>	
-        </div>
     </div>
+    <div class="col-sm-1">
+      <div class="input-group">
+        <select class="custom-select" id="InputCanales" name="InputCanales">
+          <option value="5" selected>5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="100">100</option>
+          <option value="-1">Todo</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="row ">
+        <div class="col mt-1">
+          <div class="form-group">  
+            <input type="text" class="input-fecha" id="f1">
+          </div>
+        </div>
+        <div class="col mt-1 ">
+          <div class="form-group">  
+            <input type="text" class="input-fecha" id="f2">
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="col-sm-1" >
+      <a id="exp-to-excel-canales" href="#!" class="btn btn-light btn-block text-success"><i class="fas fa-file-excel"></i> Exportar</a>
+    </div>   
+      
+  </div>
+
     <div class="card border-0 shadow-sm ">
       <div class="card-body col-sm-12 p-0 mb-2">	
         <div class="p-0 px-car">
@@ -86,6 +67,51 @@
                   <th colspan="6">CRUZ AZUL</th>
                   <th colspan="6">INSTITUCION PUBLICA</th>
                   <th colspan="6">TOTAL</th>
+                </tr>
+                <tr>
+                  <th class="bg-blue" colspan="3"></th>
+                  <th id="Farmacia_Cantidad"></th>
+                  <th></th>
+                  <th id="Farmacia_Venta"></th>
+                  <th id="Farmacia_Costo"></th>
+                  <th id="Farmacia_Contribucion"></th>
+                  <th></th>
+                  <th id="Cadena_Farmacia_Cantidad"></th>
+                  <th></th>
+                  <th id="Cadena_Farmacia_Venta"></th>
+                  <th id="Cadena_Farmacia_Costo"></th>
+                  <th id="Cadena_Farmacia_Contribucion"></th>
+                  <th></th>
+                  <th id="Mayorista_Cantidad"></th>
+                  <th></th>
+                  <th id="Mayorista_Venta"></th>
+                  <th id="Mayorista_Costo"></th>
+                  <th id="Mayorista_Contribucion"></th>
+                  <th></th>
+                  <th id="Institucion_Privada_Cantidad"></th>
+                  <th></th>
+                  <th id="Institucion_Privada_Venta"></th>
+                  <th id="Institucion_Privada_Costo"></th>
+                  <th id="Institucion_Privada_Contribucion"></th>
+                  <th></th>
+                  <th id="Cruz_Azul_Cantidad"></th>
+                  <th></th>
+                  <th id="Cruz_Azul_Venta"></th>
+                  <th id="Cruz_Azul_Costo"></th>
+                  <th id="Cruz_Azul_Contribucion"></th>
+                  <th></th>
+                  <th id="Institucion_Publica_Cantidad"></th>
+                  <th></th>
+                  <th id="Institucion_Publica_Venta"></th>
+                  <th id="Institucion_Publica_Costo"></th>
+                  <th id="Institucion_Publica_Contribucion"></th>
+                  <th></th>
+                  <th id="Total_Cantidad"></th>
+                  <th></th>
+                  <th id="Total_Venta"></th>
+                  <th id="Total_Costo"></th>
+                  <th id="Total_Contribucion"></th>
+                  <th></th>
                 </tr>
                 <tr>
                     <th class="bg-blue text-light">ARTICULO</th>
@@ -127,12 +153,12 @@
                     <th style="background-color:limegreen">COSTO C$</th>
                     <th style="background-color:limegreen">CONTRIBUCION C$</th>
                     <th style="background-color:limegreen">MARGEN %</th>
-                    <th style="background-color:burlywood">CANTIDAD</th>
-                    <th style="background-color:burlywood">PROMEDIO C$</th>
-                    <th style="background-color:burlywood">VENTA C$</th>
-                    <th style="background-color:burlywood">COSTO C$</th>
-                    <th style="background-color:burlywood">CONTRIBUCION C$</th>
-                    <th style="background-color:burlywood">MARGEN %</th>
+                    <th style="background-color:gold">CANTIDAD</th>
+                    <th style="background-color:gold">PROMEDIO C$</th>
+                    <th style="background-color:gold">VENTA C$</th>
+                    <th style="background-color:gold">COSTO C$</th>
+                    <th style="background-color:gold">CONTRIBUCION C$</th>
+                    <th style="background-color:gold">MARGEN %</th>
                 </tr>
               </thead>
             </table>

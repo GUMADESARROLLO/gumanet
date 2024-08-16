@@ -11,7 +11,7 @@
   }
 </style>
 <div class="container-fluid">
-<p class="font-italic text-muted pt-0 mt-0">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	
+  <p class="font-italic text-muted pt-0 mt-0">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	
    
   <div class="row">
     <div class="col-sm-10">		
@@ -39,6 +39,7 @@
       <a id="exp-to-excel" href="#!" class="btn btn-light btn-block text-success"><i class="fas fa-file-excel"></i> Exportar</a>
     </div>      
   </div>
+
   <div class="row">
       <div class="col-12">
         <div class="table-responsive mt-3 mb-2">

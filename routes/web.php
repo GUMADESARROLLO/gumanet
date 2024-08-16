@@ -289,7 +289,9 @@ Route::get('ReOrder', 'ReOrderPointController@ReOrderPoint')->name('ReOrder');
 Route::get('getData', 'ReOrderPointController@getData')->name('getData');
 Route::get('CalcReorder', 'ReOrderPointController@CalcReorder')->name('CalcReorder');
 Route::get('dtGraf/{articulo}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}');
+
 Route::get('ExportToExcel', 'ReOrderPointController@ExportToExcel')->name('ExportToExcel');
+Route::get('ExportToExcelCanales', 'ReOrderPointController@ExportToExcelCanales')->name('ExportToExcelCanales');
 
 Route::get('canales','dashboard_controller@canalXcontribucion')->name('canales');
 Route::get('canalData','dashboard_controller@canalData')->name('canalData');
