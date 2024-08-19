@@ -84,7 +84,10 @@ class ReOrderPoint extends Model
                 "COSTO_PROMEDIO_USD"        => number_format($a->COSTO_PROMEDIO_USD, 2),
                 "COSTO_PROMEDIO_LOC"        => number_format($a->COSTO_PROMEDIO_LOC, 2),
                 "COSTO_PROMEDIO_LOC"        => number_format($a->COSTO_PROMEDIO_LOC, 2),
-                "UPDATED_AT"                => substr($a->FechaFinal, 0, 10)
+                "UPDATED_AT"                => substr($a->FechaFinal, 0, 10),
+                "FACTOR_STOCK_SEGURIDAD"    => number_format($a->FACTOR_STOCK_SEGURIDAD, 2),
+                
+                "ROTACION_PREVISTA_EXISTENCIAS_VENCER" => number_format($a->ROTACION_PREVISTA_EXISTENCIAS_VENCER, 2),
             ];
         }
 
