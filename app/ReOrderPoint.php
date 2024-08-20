@@ -33,14 +33,19 @@ class ReOrderPoint extends Model
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
         $DiaActual  = (int) date('d', strtotime($FechaEnd));
 
+
+        
+        
+        // Ejecutar el tercer procedimiento almacenado
+        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_Calc_12_month_reorder_point ?, ?, ?", [$FechaIni, $FechaEnd, $DiaActual]);
+
         // Ejecutar el primer procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calc_reorder_factura_linea ?, ?", [$FechaIni, $FechaEnd]);
 
         // Ejecutar el segundo procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calc_reorder_factura_linea_ca ?", [$FechaEnd]);
 
-        // Ejecutar el tercer procedimiento almacenado
-        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_Calc_12_month_reorder_point ?, ?, ?", [$FechaIni, $FechaEnd, $DiaActual]);
+        
 
     }
 
@@ -56,6 +61,8 @@ class ReOrderPoint extends Model
                 "VENCE_MAS_IGUAL_7"         => number_format($a->VENCE_MAS_IGUAL_7,2),
                 "LOTE_MAS_PROX_VENCER"      => date("d-m-Y", strtotime($a->LOTE_MAS_PROX_VENCER)),
                 "EXIT_LOTE_PROX_VENCER"     => number_format($a->EXIT_LOTE_PROX_VENCER,2),
+                "FECHA_ENTRADA_LOTE"        => date("d-m-Y", strtotime($a->FECHA_ENTRADA_LOTE)),
+                "CANTIDAD_INGRESADA"        => number_format($a->CANTIDAD_INGRESADA,2),
                 "LEADTIME"                  => $a->LEADTIME,
                 "EJECUTADO_UND_YTD"         => number_format($a->EJECUTADO_UND_YTD,2),
                 "VENTAS_YTD"                => number_format($a->VENTAS_YTD,2),
@@ -80,7 +87,12 @@ class ReOrderPoint extends Model
                 "ROTACION_LARGA"            => number_format($a->ROTACION_LARGA, 2),
                 "ULTIMO_COSTO_USD"          => number_format($a->ULTIMO_COSTO_USD, 2),
                 "COSTO_PROMEDIO_USD"        => number_format($a->COSTO_PROMEDIO_USD, 2),
-                "UPDATED_AT"                => substr($a->FechaFinal, 0, 10)
+                "COSTO_PROMEDIO_LOC"        => number_format($a->COSTO_PROMEDIO_LOC, 2),
+                "COSTO_PROMEDIO_LOC"        => number_format($a->COSTO_PROMEDIO_LOC, 2),
+                "UPDATED_AT"                => substr($a->FechaFinal, 0, 10),
+                "FACTOR_STOCK_SEGURIDAD"    => number_format($a->FACTOR_STOCK_SEGURIDAD, 2),
+                
+                "ROTACION_PREVISTA_EXISTENCIAS_VENCER" => number_format($a->ROTACION_PREVISTA_EXISTENCIAS_VENCER, 2),
             ];
         }
 
@@ -114,6 +126,7 @@ class ReOrderPoint extends Model
         $array["ULTIMO_COSTO_USD"] = number_format($Sales->ULTIMO_COSTO_USD, 2);
         $array["VENTAS_YTD"] = number_format($Sales->VENTAS_YTD, 2);
         $array["CONTRIBUCION_YTD"] = number_format($Sales->CONTRIBUCION_YTD,2);
+        $array["EJECUTADO_UND_YTD"] = number_format($Sales->EJECUTADO_UND_YTD,2);
         
         for ($i=1; $i <= 12; $i++) { 
             $array["VENTAS"][$i] = [
@@ -196,7 +209,7 @@ class ReOrderPoint extends Model
             //VALIDACION SI EL CAMPO ES ENTERO Y INCREMENTA A 1 PARA EL NUMERO DE MESES
             $titulo = (!is_string($titulo)) ? strval( $titulo + 1) : $titulo ;
 
-            if (!in_array($titulo, array('FechaFinal', 'IS_CA','CALC_AVG'))) {
+            if (!in_array($titulo, array('FechaFinal', 'IS_CA','CALC_AVG','CONTRIBUCION'))) {
                 $i = 4;
 
                 $NameColumna = (strlen($titulo) <= 2) ? "Mes".$titulo : $titulo ;

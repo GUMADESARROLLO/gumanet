@@ -156,7 +156,7 @@ $(document).ready(function () {
 
         table.rows({ search: 'applied' }).every(function() {
             var data = this.data();
-           
+            
             // TOTAL DE FARMACIAS
             Farmacia_Cantidad       += parseFloat(data.FARMACIA_CANTIDAD) || 0;
             Farmacia_Venta          += parseFloat(data.FARMACIA_VENTA) || 0;

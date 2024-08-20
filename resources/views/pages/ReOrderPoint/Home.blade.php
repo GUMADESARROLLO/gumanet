@@ -5,11 +5,7 @@
   @include('jsViews.js_reorder_point');
 @endsection
 @section('content')
-<style>
-  span.btn-change-color {
-    background-color: #28a745;
-  }
-</style>
+<link rel="stylesheet" type="text/css" href="{{ url('css/colors-reorder-point.css') }}">
 <div class="container-fluid">
   <p class="font-italic text-muted pt-0 mt-0">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	
    
@@ -25,7 +21,7 @@
     </div>
     <div class="col-sm-1">
       <div class="input-group mb-3">
-        <select class="custom-select" id="InputDtShowColumnsArtic" name="InputDtShowColumnsArtic">
+        <select class="custom-select" id="select_rows" name="InputDtShowColumnsArtic">
           <option value="5" selected>5</option>
           <option value="10">10</option>
           <option value="20">20</option>
@@ -44,7 +40,44 @@
       <div class="col-12">
         <div class="table-responsive mt-3 mb-2">
             <table class="table nowrap table-bordered table-sm" id="dt_articulos" width="100%" >
-            <thead class="bg-blue text-light"></thead>
+              <thead class="bg-blue text-light">
+                <tr>
+                  <th class="col-yellow">ARTICULO</th>
+                  <th class="col-blue-ca-1">DESCRIPCIÓN</th>
+                  <th class="col-green">LEADTIME</th>
+                  <th class="col-green">FACTOR STOCK SEGURIDAD</th>
+                  <th class="col-red-strong">ROTACION PREVISTA EXISTENCIAS POR VENCER</th>
+                  <th class="col-red-strong">EXIST. PROX. A VENCER <=12 Meses</th>
+                  <th class="col-red-light">EXIST. LOTE >=7 Meses</th>
+                  <th class="col-red-light">LOTE MAS PROX. A VENCER</th>
+                  <th class="col-red-light">EXIST. EN LORE MAS PROX. POR VENCERSE</th>
+                  <th class="col-blue-ca-1">FECHA DE ENTRADA LOTE</th>
+                  <th class="col-blue-ca-1">CANTIDAD INGRESADA</th>
+                  <th class="col-blue-ca-1">PROM. UND. YTD</th>
+                  <th class="col-blue-light">PEDIDO</th>
+                  <th class="col-red-light">TRANSITO</th>
+                  <th class="col-blue-ca-1">VENTAS EJEC. YTD C$.</th>
+                  <th class="col-green-strong">CONTRIBUCION BRUTA. YTD C$.</th>
+                  <th class="col-yellow">ROTACION CORTA</th>
+                  <th class="col-blue-light">ROTACION MEDIA</th>
+                  <th class="col-green-strong">ROTACION LARGA</th>
+                  <th class="col-yellow-strong">MOQ</th>
+                  <th class="col-green">REORDER</th>
+                  <th class="col-green">CANTIDAD_ORDENAR</th>
+                  <th class="col-red-light">-</th>
+                  <th class="col-red-light">COST PROM. C$</th>
+                  <th class="col-red-light">COST PROM. USD</th>
+                  <th class="col-red-light">ULT. COST. USD</th>
+                  <th class="col-blue-ca-1">DEM. ANUAL CA NETA</th>
+                  <th class="col-blue-ca-2">DEM. ANUAL CA AJUSTADA</th>
+                  <th class="col-green-strong">FACTOR</th>
+                  <th class="col-yellow-mostasa">LIMITE LOGISTICO MEDIO</th>
+                  <th class="col-green-strong">CLASE</th>
+                  <th class="col-blue-ca-1">VALUACION</th>
+                  <th class="col-green-strong">REORDER1</th>
+                  <th class="col-green-strong">ESTIMACION SOBRANTES UND</th>
+                </tr>
+              </thead>
             </table>
           </div>
       </div>
@@ -158,6 +191,15 @@
                             <div class="ms-3">
                               <h4 class="mb-0" id="id_ultimo_costo"> 0.00</h4>
                               <p class="text-800 fs--1 mb-0">ULTIMO COSTO USD</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-2 mt-3">
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <h4 class="mb-0" id="id_promedio_mensual"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">PROMEDIO MENSUAL</p>
                             </div>
                           </div>
                         </div>
