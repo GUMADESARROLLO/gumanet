@@ -664,26 +664,51 @@ $("#btnSearch").click(function() {
                     { "data": "CANT" },
                     { "data": "REFERENCIA" },
                     { "data": "CODIGO_CLIENTE" },
-                    { "data": "NOMBRE" }
+                    { "data": "NOMBRE" },
+                    { "data": "CANTIDAD" }
                 ],
                 "columnDefs": [
                     { "width": "5%", "targets": [ ] },
                     {"className":"dt-center", "targets": [ 1,2,3,4,5,7,8] },
-                    {"className":"dt-right", "targets": [ 6, ] }
+                    {"className":"dt-right", "targets": [ 6 ] },
+                    { "visible": false, "targets": [ 9 ] }
                 ],
                 "info": false,
                 "language": {            
                     "zeroRecords": "No hay datos que mostrar",
                     "emptyTable": "N/D",
                     "loadingRecords": "Cargando...",
+                },
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    var data = this.data();
+                    
+
+                    var count_venta = 0;
+                    var count_bonif = 0;
+
+                    $.each(api.column(4, { page: 'all' }).data(), function (_, group) {
+                        var cant = api.column(9, { page: 'all' }).data()[_];
+                        cant = parseFloat(cant);
+                        
+                        switch (group) {
+                            case 'VENTA':  count_venta += cant; break;
+                            case 'BONIFICADO': count_bonif += cant; break;
+                        }
+                    });
+
+                    $("#id_count_venta").text(count_venta);
+                    $("#id_count_bonif").text(count_bonif);
+                    $("#id_units_desp").text(count_bonif+count_venta);
+
                 }
             });
             $("#tblTrans_dev_length").hide();
             $("#tblTrans_dev_filter").hide();
 
-
         }
     })
+    
     
 });
     
@@ -798,18 +823,25 @@ function comportamientoMensual(fechaIni, fechaFin, articulo, op) {
         category = [];
         units = "";
         contr = "";
+        
         if(op == 1){
             units = 'UNITS';
         }
         if(op == 2){
             contr = 'C$';
         }
+
+        var temporal = (op==1)? 'UNITS ': temporal = 'C$ ';
+
+        
         $.each(json, function (i, item) { 
             
             $('#lbl1').text(item['precioPromedio']);
             $("#lbl2").text(item['costoUnitario']);
             $("#lbl3").text(item['contribucion']);
             $("#lbl4").text(item['porcentajeContribucion']);
+
+            $("#lbl_promedio").html("Prom " + temporal + item['average'])
             
             newseries.data = item['data'];
             newseries.name = item['title'];

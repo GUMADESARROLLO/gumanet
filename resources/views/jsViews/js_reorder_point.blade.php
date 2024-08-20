@@ -54,6 +54,19 @@
         }]
     }; 
     fullScreen();
+    function isValue(value, def, is_return) {
+        if ( $.type(value) == 'null'
+            || $.type(value) == 'undefined'
+            || $.trim(value) == '(en blanco)'
+            || $.trim(value) == ''
+            || ($.type(value) == 'number' && !$.isNumeric(value))
+            || ($.type(value) == 'array' && value.length == 0)
+            || ($.type(value) == 'object' && $.isEmptyObject(value)) ) {
+            return ($.type(def) != 'undefined') ? def : false;
+        } else {
+            return ($.type(is_return) == 'boolean' && is_return === true ? value : true);
+        }
+    }
 $(document).ready(function() {
 
     
@@ -92,6 +105,8 @@ $(document).ready(function() {
             {"title": "EXIST. LOTE >=7 Meses", 		                "data": "VENCE_MAS_IGUAL_7"},
             {"title": "LOTE MAS PROX. A VENCER", 		            "data": "LOTE_MAS_PROX_VENCER"},
             {"title": "EXIST. EN LORE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
+            {"title": "ULT. FECHA ENTRADA LOTE", 		                "data": "FECHA_ENTRADA_LOTE"},
+            {"title": "ULT. CANT. INGRESADA",                         "data": "CANTIDAD_INGRESADA"},
             {"title": "PROM. UND. YTD", 		                    "data": "EJECUTADO_UND_YTD"},
             {"title": "PEDIDO", 		                            "data": "PEDIDO"},
             {"title": "TRANSITO", 		                            "data": "TRANSITO"},
@@ -102,7 +117,20 @@ $(document).ready(function() {
             {"title": "ROTACION LARGA", 		                    "data": "ROTACION_LARGA"},
             {"title": "MOQ", 		                                "data": "MOQ"},
             {"title": "REORDER", 		                            "data": "REORDER"},
-            {"title": "CANTIDAD_ORDENAR", 		                    "data": "CANTIDAD_ORDENAR"},
+            {"title": "CANTIDAD A ORDENAR", 		                "data": "CANTIDAD_ORDENAR"},
+            {"title": "RAZON REORDER/MOQ", "data":"CANTIDAD_ORDENAR", "render": function(data, type, row, meta) {
+
+                var _ReOrder = numeral(row.REORDER).format('00.00');
+                var _MOQ     = numeral(row.MOQ).format('00.00')
+                
+                let color_cant_order = _ReOrder / _MOQ;
+
+                color_cant_order = isValue(color_cant_order,0,true);
+
+                return numeral(color_cant_order).format('0.00');
+
+
+            }},
             {"title": "COST PROM. C$", 		                        "data": "COSTO_PROMEDIO_LOC"},
             {"title": "COST PROM. USD", 		                    "data": "COSTO_PROMEDIO_USD"},
             {"title": "ULT. COST. USD", 		                    "data": "ULTIMO_COSTO_USD"},
@@ -118,21 +146,32 @@ $(document).ready(function() {
             
 		],
         "columnDefs": [
-			{"className": "dt-center", "targets": []},
-			{"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]},
-			{ "width": "50%", "targets": [  ] },
-		],
+            {"className": "dt-center", "targets": []},
+            {"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27]},
+            {"className": "dt-right-color", "targets": [21]},
+            { "width": "50%", "targets": [  ] },
+        ],
+       
         "createdRow": function( row, data, dataIndex){
 
             $("#id_UpdateAt").html(data.UPDATED_AT);
+
+            var _ReOrder = numeral(data.REORDER).format('00.00');
+            var _MOQ     = numeral(data.MOQ).format('00.00')
+            
+            let color_cant_order = _ReOrder / _MOQ;
+
+            color_cant_order = isValue(color_cant_order,0,true);
+
+            $(row).find('td:eq(21)').addClass( (color_cant_order <= 0.5 ) ? 'dt-cant-ordenar-red' : 'dt-cant-ordenar-green');
+            
         
             if( data["IS_CA"] ==  `S`){
                 $(row).addClass('dt-is-ca-background');
             } 
 
-        }
-    
-		
+        },
+        
     });
 
     $("#dt_articulos_length").hide();

@@ -33,6 +33,9 @@ class ReOrderPoint extends Model
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
         $DiaActual  = (int) date('d', strtotime($FechaEnd));
 
+
+        
+        
         // Ejecutar el tercer procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_Calc_12_month_reorder_point ?, ?, ?", [$FechaIni, $FechaEnd, $DiaActual]);
 
@@ -58,6 +61,8 @@ class ReOrderPoint extends Model
                 "VENCE_MAS_IGUAL_7"         => number_format($a->VENCE_MAS_IGUAL_7,2),
                 "LOTE_MAS_PROX_VENCER"      => date("d-m-Y", strtotime($a->LOTE_MAS_PROX_VENCER)),
                 "EXIT_LOTE_PROX_VENCER"     => number_format($a->EXIT_LOTE_PROX_VENCER,2),
+                "FECHA_ENTRADA_LOTE"        => date("d-m-Y", strtotime($a->FECHA_ENTRADA_LOTE)),
+                "CANTIDAD_INGRESADA"        => number_format($a->CANTIDAD_INGRESADA,2),
                 "LEADTIME"                  => $a->LEADTIME,
                 "EJECUTADO_UND_YTD"         => number_format($a->EJECUTADO_UND_YTD,2),
                 "VENTAS_YTD"                => number_format($a->VENTAS_YTD,2),
@@ -204,7 +209,7 @@ class ReOrderPoint extends Model
             //VALIDACION SI EL CAMPO ES ENTERO Y INCREMENTA A 1 PARA EL NUMERO DE MESES
             $titulo = (!is_string($titulo)) ? strval( $titulo + 1) : $titulo ;
 
-            if (!in_array($titulo, array('FechaFinal', 'IS_CA','CALC_AVG'))) {
+            if (!in_array($titulo, array('FechaFinal', 'IS_CA','CALC_AVG','CONTRIBUCION'))) {
                 $i = 4;
 
                 $NameColumna = (strlen($titulo) <= 2) ? "Mes".$titulo : $titulo ;

@@ -3000,6 +3000,7 @@ class dashboard_model extends Model {
         $comportamiento = array();
         $categorias = array();
         $cantidadItem = $cantidadVentas = $costoUnitario = $precioProm = $porcentaje = 0;
+        $array_item = array();
         
 
         foreach ($resultados as $resultado) {
@@ -3011,10 +3012,13 @@ class dashboard_model extends Model {
                     array_push($comportamiento, floatval($valor));
                     array_push($categorias, $columna);
                     $cantidadItem += $valor;
+                    $array_item[] = floatval($valor);
                 }
             }
-       
         }
+        
+        $average = array_sum($array_item) / count($array_item);
+
         if($cantidadItem > 0){
             $precioProm = floatval($cantidadVentas) / floatval($cantidadItem);
         }
@@ -3030,8 +3034,10 @@ class dashboard_model extends Model {
         $json[0]['costoUnitario'] =  number_format($costoUnitario,2,'.',',');
         $json[0]['contribucion'] = number_format($contribucion,2,'.',',');
         $json[0]['porcentajeContribucion'] = $porcentaje;
+        $json[0]['average'] = number_format($average,2,'.',',');
         $json[0]['data'] = $comportamiento;
         $json[0]['categories'] = $categorias;
+        
         return $json;
     }
 
@@ -3041,22 +3047,29 @@ class dashboard_model extends Model {
         
         $comportamiento = array();
         $categorias = array();
+        $array_item = array();
         $cantidadItem = $cantidadVentas = $costoUnitario = $precioProm = $porcentaje = 0;
         
 
         foreach ($resultados as $resultado) {
+
             $cantidadItem = $resultado->CANTIDAD;
             $costoUnitario = $resultado->costoUnitario;
+
             foreach ($resultado as $columna => $valor) {
                 if ($columna !== 'ARTICULO' && $columna !== 'costoUnitario' && $columna !== 'CANTIDAD' ) {
                     
                     array_push($comportamiento, floatval($valor));
                     array_push($categorias, $columna);
                     $cantidadVentas += floatval($valor);
+                    $array_item[] = floatval($valor);
                 }
             }
        
         }
+
+        $average = array_sum($array_item) / count($array_item);
+
         if($cantidadItem > 0){
             $precioProm = floatval($cantidadVentas) / floatval($cantidadItem);
         }
@@ -3072,6 +3085,7 @@ class dashboard_model extends Model {
         $json[0]['costoUnitario'] =  number_format($costoUnitario,2,'.',',');
         $json[0]['contribucion'] = number_format($contribucion,2,'.',',');
         $json[0]['porcentajeContribucion'] = $porcentaje;
+        $json[0]['average'] = number_format($average,2,'.',',');
         $json[0]['data'] = $comportamiento;
         $json[0]['categories'] = $categorias;
         return $json;

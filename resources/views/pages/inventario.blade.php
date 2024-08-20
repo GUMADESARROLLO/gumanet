@@ -218,6 +218,7 @@
           <div class="tab-pane fade" id="nav-trans" role="tabpanel" aria-labelledby="navTransaccion">
             <div class="row">
               <div class="col-sm-12">
+             
                 <div class="card" style="border-top: none">
                   <div class="card-body">
                     <div class="row">
@@ -252,9 +253,23 @@
                         <a href="#!" id="btnSearch" class="btn btn-primary btn-sm mt-4">Buscar</a>
                       </div>
                     </div>
+                    <div class="row" >
+                      <div class="col-sm-4 text-center border-top">
+                        <label for="lbl1" class="mt-1"><B>UNITS FACTURADAS</B></label></br>
+                        <label for="lbl1" id="id_count_venta">0</label>
+                      </div>
+                      <div class="col-sm-4 text-center border-top">
+                        <label for="lbl2" class="mt-1"><B>UNITS BONIFICADAS</B></label></br>
+                        <label for="lbl2" id="id_count_bonif">0</label>
+                      </div>
+                      <div class="col-sm-4 text-center border-top">
+                        <label for="lbl3" class="mt-1"><B>UNITS DESPLAZADAS</B></label></br>
+                        <label for="lbl3" id="id_units_desp">0</label>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <table id="tblTrans_dev" class="table table-bordered mt-3">
+                <table id="tblTrans_dev" class="table table-bordered">
                         <thead class="bg-blue text-light">
                           <tr>
                             <th></th>
@@ -266,6 +281,7 @@
                             <th>REFERENCIA</th>
                             <th>CODIGO</th>
                             <th>CLIENTE</th>
+                            <th>-</th>
                         </tr>
                         </thead>
                     </table>
@@ -429,19 +445,19 @@
                   <div class="card-body">
                     <div class="row">
                     
-                      <div class="col-sm-4">
+                      <div class="col-sm-3">
                         <div class="form-group">
                           <label for="fci">Desde</label>
                           <input type="text" class="input-fecha" id="fci">
                         </div>
                       </div>
-                      <div class="col-sm-4">
+                      <div class="col-sm-3">
                         <div class="form-group">
                           <label for="fcf">Hasta</label>
                           <input type="text" class="input-fecha" id="fcf">
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <label for="orderComportamiento" class="text-muted">Filtrar por</label>
                           <select class="form-control" id="orderComportamiento">
@@ -449,11 +465,13 @@
                             <option value="2">MONTO FACTURADO</option>
                           </select>
                         </div>
+                        
                       </div>
-                      <div class="col-sm-1">
-                        <a href="#!" id="btnSearchComport" class="btn btn-primary btn-sm mt-4">Buscar</a>
-                      </div>
+                        <div class="col-sm-1">
+                          <a href="#!" id="btnSearchComport" class="btn btn-primary btn-sm mt-4">Buscar</a>
+                        </div>                      
                     </div>
+                    
                     <div class="row" style="display:none">
                       <div class="col-sm-3 text-center border-top">
                         <label for="lbl1" class="mt-4"><B>PRECIO PROMEDIO</B></label></br>
@@ -474,7 +492,11 @@
                     </div>
                   </div>
                 </div>
+                
                     <div class="graf col-sm-12 mt-3">
+                    <div class="col-sm-12 text-right ">
+                        <label id="lbl_promedio" class="text-muted">0.00</label>
+                      </div>
                         <input type="text" id="idArti" style="display: none;">
                         <div id="comportamientoMen" style="width: 100%; margin: 0 auto;"></div>
                     </div>

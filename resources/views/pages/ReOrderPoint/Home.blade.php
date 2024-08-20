@@ -51,6 +51,8 @@
                   <th class="col-red-light">EXIST. LOTE >=7 Meses</th>
                   <th class="col-red-light">LOTE MAS PROX. A VENCER</th>
                   <th class="col-red-light">EXIST. EN LORE MAS PROX. POR VENCERSE</th>
+                  <th class="col-blue-ca-1">FECHA DE ENTRADA LOTE</th>
+                  <th class="col-blue-ca-1">CANTIDAD INGRESADA</th>
                   <th class="col-blue-ca-1">PROM. UND. YTD</th>
                   <th class="col-blue-light">PEDIDO</th>
                   <th class="col-red-light">TRANSITO</th>
@@ -62,6 +64,7 @@
                   <th class="col-yellow-strong">MOQ</th>
                   <th class="col-green">REORDER</th>
                   <th class="col-green">CANTIDAD_ORDENAR</th>
+                  <th class="col-red-light">-</th>
                   <th class="col-red-light">COST PROM. C$</th>
                   <th class="col-red-light">COST PROM. USD</th>
                   <th class="col-red-light">ULT. COST. USD</th>
