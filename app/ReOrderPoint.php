@@ -118,10 +118,11 @@ class ReOrderPoint extends Model
         $array["TRANSITO"] = number_format(bcdiv($Sales->TRANSITO, '1', 0), 0);
         $array["CLASE"] = $Sales->CLASE;
 
-        $array["ROTACION_CORTA"] = number_format(bcdiv($Sales->ROTACION_CORTA, '1', 0), 0);
-        $array["ROTACION_MEDIA"] = number_format(bcdiv($Sales->ROTACION_MEDIA, '1', 0), 0);
-        $array["ROTACION_LARGA"] = number_format(bcdiv($Sales->ROTACION_LARGA, '1', 0), 0);
+        $array["ROTACION_CORTA"] = bcadd(number_format($Sales->ROTACION_CORTA, 0), 5, 0);
+        $array["ROTACION_MEDIA"] = bcadd(number_format($Sales->ROTACION_MEDIA, 0), 5, 0); 
+        $array["ROTACION_LARGA"] = bcadd(number_format($Sales->ROTACION_LARGA, 0), 5, 0);
         
+
         $array["COSTO_PROMEDIO_USD"] = number_format(bcdiv($Sales->COSTO_PROMEDIO_USD, '1', 0), 0);
         $array["ULTIMO_COSTO_USD"] = number_format(bcdiv($Sales->ULTIMO_COSTO_USD, '1', 0), 0);
         $array["VENTAS_YTD"] = number_format(bcdiv($Sales->VENTAS_YTD, '1', 0), 0);
