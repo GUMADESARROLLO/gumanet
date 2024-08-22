@@ -61,20 +61,21 @@
         <h5 class="modal-title text-center" id="tArticulo"></h5>
       </div>
       <div class="modal-body">
-        <div class="row" >       
+        <div class="row" >   
+
+          <div class="col-sm-12">
+            <div class="form-group">
+                <label for="txtDescripcion">DESCRIPCION:</label>
+                <input type="text" class="form-control" id="txtDescripcion">
+                <small id="alert_Descripcion" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+              
           <div class="col-sm-3">
             <div class="form-group">
                 <label for="txtArticulo">ARTICULO:</label>
                 <input type="text" class="form-control" id="txtArticulo" >
                 <small id="alert_Articulo" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-            </div>
-          </div>
-
-          <div class="col-sm-9">
-            <div class="form-group">
-                <label for="txtDescripcion">DESCRIPCION:</label>
-                <input type="text" class="form-control" id="txtDescripcion">
-                <small id="alert_Descripcion" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
 
@@ -88,14 +89,27 @@
 
           <div class="col-sm-3">
             <div class="form-group">
-                <!-- FECHA QUE ALVARO HACE LA SOLICITUD -->
                 <label for="date_pedido">FECHA CREACION PEDIDO:</label>
                 <input type="text" class="input-fecha" id="date_pedido" >
                 <small id="alert_fecha_pedido" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
+
+          <div class="col-sm-3">
+            <div class="form-group">
+                <label for="select_estado">ESTADO:</label>
+                <select class="form-control" id="select_estado">
+                    <option value="N/D">N/D</option>
+                    <option value="PEDIDO">PEDIDO</option>
+                    <option value="TRANSITO">TRANSITO</option>
+                    <option value="ONHAND">ONHAND</option>
+                </select>
+                <small id="alert_Estado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+
         
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <div class="form-group">
                 <label for="exampleInputEmail1">DOC. (FACT. , BL/AWB ):</label>
                 <input type="text" class="form-control" id="txtDocuments" >
@@ -103,14 +117,14 @@
             </div>
           </div>
 
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <div class="form-group">
                 <label for="txtCantidad">CANTIDAD PEDIDO:</label>
                 <input type="text" class="form-control" id="txtCantidad" oninput="validateInput(this)">
                 <small id="alert_cantidad" class="form-text text-danger">0.00</small>
             </div>
           </div>
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <div class="form-group">
                 <label for="txtCantidad">CANTIDAD TRANSITO:</label>
                 <input type="text" class="form-control" id="txtCantidadTransito" oninput="validateInput(this)">
@@ -129,6 +143,7 @@
                 <small id="alert_mercado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
+
 
           <div class="col-sm-3">
             <div class="form-group">
@@ -156,7 +171,7 @@
                 <small id="alert_precio_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
-
+          
           <div class="col-sm-12 mb-3">
               <label for="validationTextarea">OBSERVACIONES: </label>
               <textarea class="form-control" id="txtObservacion" placeholder="Comentarios maximo de 255 caracteres" required></textarea>

@@ -104,29 +104,29 @@ class ReOrderPoint extends Model
 
         $Sales = ReOrderPoint::WHERE('ARTICULO',$Articulos)->first();
         
-        $array["LEADTIME"] = number_format($Sales->LEADTIME,2);
-        $array["DEMANDA_ANUAL_CA_NETA"] = number_format($Sales->DEMANDA_ANUAL_CA_NETA,2);
-        $array["DEMANDA_ANUAL_CA_AJUSTADA"] = number_format($Sales->DEMANDA_ANUAL_CA_AJUSTADA,2);
-        $array["LIMITE_LOGISTICO_MEDIO"] = number_format($Sales->LIMITE_LOGISTICO_MEDIO,2);
-        $array["CONTRIBUCION"] = number_format($Sales->CONTRIBUCION,2);
+        $array["LEADTIME"] = number_format(bcdiv($Sales->LEADTIME, '1', 0), 0);
+        $array["DEMANDA_ANUAL_CA_NETA"] = number_format(bcdiv($Sales->DEMANDA_ANUAL_CA_NETA, '1', 0), 0);
+        $array["DEMANDA_ANUAL_CA_AJUSTADA"] = number_format(bcdiv($Sales->DEMANDA_ANUAL_CA_AJUSTADA, '1', 0), 0);
+        $array["LIMITE_LOGISTICO_MEDIO"] = number_format(bcdiv($Sales->LIMITE_LOGISTICO_MEDIO, '1', 0), 0);
+        $array["CONTRIBUCION"] = number_format(bcdiv($Sales->CONTRIBUCION, '1', 0), 0);
 
-        $array["REORDER1"] = number_format($Sales->REORDER1,2);
-        $array["REORDER"] = number_format($Sales->REORDER,2);
-        $array["CANTIDAD_ORDENAR"] = number_format($Sales->CANTIDAD_ORDENAR,2);
-        $array["MOQ"] = number_format($Sales->MOQ, 2);
-        $array["PEDIDO"] = number_format($Sales->PEDIDO, 2);
-        $array["TRANSITO"] = number_format($Sales->TRANSITO, 2);
+        $array["REORDER1"] = number_format(bcdiv($Sales->REORDER1, '1', 0), 0);
+        $array["REORDER"] = number_format(bcdiv($Sales->REORDER, '1', 0), 0);
+        $array["CANTIDAD_ORDENAR"] = number_format(bcdiv($Sales->CANTIDAD_ORDENAR, '1', 0), 0);
+        $array["MOQ"] = number_format(bcdiv($Sales->MOQ, '1', 0), 0);
+        $array["PEDIDO"] = number_format(bcdiv($Sales->PEDIDO, '1', 0), 0);
+        $array["TRANSITO"] = number_format(bcdiv($Sales->TRANSITO, '1', 0), 0);
         $array["CLASE"] = $Sales->CLASE;
 
-        $array["ROTACION_CORTA"] = number_format($Sales->ROTACION_CORTA, 2);
-        $array["ROTACION_MEDIA"] = number_format($Sales->ROTACION_MEDIA, 2);
-        $array["ROTACION_LARGA"] = number_format($Sales->ROTACION_LARGA, 2);
+        $array["ROTACION_CORTA"] = number_format(bcdiv($Sales->ROTACION_CORTA, '1', 0), 0);
+        $array["ROTACION_MEDIA"] = number_format(bcdiv($Sales->ROTACION_MEDIA, '1', 0), 0);
+        $array["ROTACION_LARGA"] = number_format(bcdiv($Sales->ROTACION_LARGA, '1', 0), 0);
         
-        $array["COSTO_PROMEDIO_USD"] = number_format($Sales->COSTO_PROMEDIO_USD, 2);
-        $array["ULTIMO_COSTO_USD"] = number_format($Sales->ULTIMO_COSTO_USD, 2);
-        $array["VENTAS_YTD"] = number_format($Sales->VENTAS_YTD, 2);
-        $array["CONTRIBUCION_YTD"] = number_format($Sales->CONTRIBUCION_YTD,2);
-        $array["EJECUTADO_UND_YTD"] = number_format($Sales->EJECUTADO_UND_YTD,2);
+        $array["COSTO_PROMEDIO_USD"] = number_format(bcdiv($Sales->COSTO_PROMEDIO_USD, '1', 0), 0);
+        $array["ULTIMO_COSTO_USD"] = number_format(bcdiv($Sales->ULTIMO_COSTO_USD, '1', 0), 0);
+        $array["VENTAS_YTD"] = number_format(bcdiv($Sales->VENTAS_YTD, '1', 0), 0);
+        $array["CONTRIBUCION_YTD"] = number_format(bcdiv($Sales->CONTRIBUCION_YTD, '1', 0),0);
+        $array["EJECUTADO_UND_YTD"] = number_format(bcdiv($Sales->EJECUTADO_UND_YTD, '1', 0),0);
         
         for ($i=1; $i <= 12; $i++) { 
             $array["VENTAS"][$i] = [
