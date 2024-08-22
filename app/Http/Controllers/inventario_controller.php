@@ -131,7 +131,7 @@ class inventario_controller extends Controller
 			'CantidadTransito' 			=> 'required',
             'mercado' 			=> 'required',
             'mific' 			=> 'required',
-			'Estado' 			=> 'required',
+			'select_estado' 			=> 'required',
 			'precio_mific_f' 		=> 'required',
 			'precio_mific_p' 		=> 'required',
             'observaciones' 	=> 'required',
@@ -139,26 +139,29 @@ class inventario_controller extends Controller
 
 		$articuloTransito = ArticulosTransito::find($NumRow);
 
+	
+
 		if ($articuloTransito) {
 			
 			$articuloTransito->update([
-				'Descripcion' 		=> $request->Descripcion,
-				'fecha_estimada' 	=> $request->fecha_estimada,
-				'fecha_pedido' 		=> $request->fecha_pedido,
-				'documento' 		=> $request->documento,
-				'pedido' 			=> $request->cantidad,
-				'transito' 			=> $request->CantidadTransito,
-				'mercado' 			=> $request->mercado,
-				'mific' 			=> $request->mific,
-				'estado_compra' 			=> $request->Estado,
-				'observaciones' 	=> $request->observaciones,
-				'Precio_mific_farmacia' 		=> $request->precio_mific_f,
+				'Descripcion' 				=> $request->Descripcion,
+				'fecha_estimada' 			=> $request->fecha_estimada,
+				'fecha_pedido' 				=> $request->fecha_pedido,
+				'documento' 				=> $request->documento,
+				'pedido' 					=> $request->cantidad,
+				'transito' 					=> $request->CantidadTransito,
+				'mercado' 					=> $request->mercado,
+				'mific' 					=> $request->mific,
+				'estado_compra' 			=> $request->select_estado,
+				'observaciones' 			=> $request->observaciones,
+				'Precio_mific_farmacia' 	=> $request->precio_mific_f,
 				'Precio_mific_public' 		=> $request->precio_mific_p,
 			]);
 	
 			$message = 'Información actualizada correctamente';
 
 		} else {
+			
 			ArticulosTransito::create([
 				'Articulo' 			=> $Articulo,
 				'Descripcion' 		=> $request->Descripcion,
@@ -169,7 +172,7 @@ class inventario_controller extends Controller
 				'transito' 			=> $request->CantidadTransito,
 				'mercado' 			=> $request->mercado,
 				'mific' 			=> $request->mific,
-				'estado_compra' 			=> $request->Estado,
+				'estado_compra' 			=> $request->select_estado,
 				'observaciones' 	=> $request->observaciones,
 				'Precio_mific_farmacia' 		=> $request->precio_mific_f,
 				'Precio_mific_public' 		=> $request->precio_mific_p,
