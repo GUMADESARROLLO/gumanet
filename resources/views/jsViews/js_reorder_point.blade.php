@@ -103,7 +103,7 @@ $(document).ready(function() {
             {"title": "ROTACION PREVISTA EXISTENCIAS POR VENCER"    ,"data": "ROTACION_PREVISTA_EXISTENCIAS_VENCER"},
 			{"title": "EXIST. PROX. A VENCER <=12 Meses", 		    "data": "VENCE_MENOS_IGUAL_12"},   
             {"title": "EXIST. LOTE >=7 Meses", 		                "data": "VENCE_MAS_IGUAL_7"},
-            {"title": "LOTE MAS PROX. A VENCER", 		            "data": "LOTE_MAS_PROX_VENCER"},
+            {"title": "LOTE. MAS PROX. A VENCER", 		            "data": "LOTE_MAS_PROX_VENCER"},
             {"title": "EXIST. EN LORE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
             {"title": "ULT. FECHA ENTRADA LOTE", 		                "data": "FECHA_ENTRADA_LOTE"},
             {"title": "ULT. CANT. INGRESADA",                         "data": "CANTIDAD_INGRESADA"},
