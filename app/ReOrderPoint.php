@@ -33,6 +33,8 @@ class ReOrderPoint extends Model
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
         $DiaActual  = (int) date('d', strtotime($FechaEnd));
 
+        dd($FechaIni, $FechaEnd, $DiaActual);
+
 
         
         
@@ -144,7 +146,7 @@ class ReOrderPoint extends Model
         $tituloReporte = "";
         $titulosColumnas = array();
         $columnIndex = 0;
-        $rowIndex = 3;
+        $rowIndex = 1;
 
         $estiloTituloReporte = array(
             'font' => array(
@@ -202,7 +204,7 @@ class ReOrderPoint extends Model
         $titulosColumnas = array_keys(ReOrderPoint::first()->toArray());
 
     
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B2', "Actualizado al : ". $RowReOrderPoint[0][ 'FechaFinal']);
+        //$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B2', "Actualizado al : ". $RowReOrderPoint[0][ 'FechaFinal']);
         
 
         
@@ -211,7 +213,7 @@ class ReOrderPoint extends Model
             $titulo = (!is_string($titulo)) ? strval( $titulo + 1) : $titulo ;
 
             if (!in_array($titulo, array('FechaFinal', 'IS_CA','CALC_AVG','CONTRIBUCION'))) {
-                $i = 4;
+                $i = 2;
 
                 $NameColumna = (strlen($titulo) <= 2) ? "Mes".$titulo : $titulo ;
 
@@ -237,13 +239,13 @@ class ReOrderPoint extends Model
 
         //ANCHO DE CADA COLUMNAS
         $objPHPExcel->getActiveSheet()->getColumnDimension("B")->setWidth(110);
-        $objPHPExcel->getActiveSheet()->getStyle('A3:' . $ultimaColumnaLetra . '3')->applyFromArray($estiloTituloColumnas);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:' . $ultimaColumnaLetra . '1')->applyFromArray($estiloTituloColumnas);
 
-        $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:". $ultimaColumnaLetra .($i-1));
+        $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A2:". $ultimaColumnaLetra .($i-1));
 
         //FORMATOS NUMERICOS
         $formatCode = '_-" "* #,##0.00_-;_-" "* #,##0.00_-;_-" "* "-"??_-;_-@_-';
-        $objPHPExcel->getActiveSheet()->getStyle("D4:". $ultimaColumnaLetra .($i-1))->getNumberFormat()->setFormatCode($formatCode);
+        $objPHPExcel->getActiveSheet()->getStyle("D2:". $ultimaColumnaLetra .($i-1))->getNumberFormat()->setFormatCode($formatCode);
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="ReOrderPoint.xlsx"');
