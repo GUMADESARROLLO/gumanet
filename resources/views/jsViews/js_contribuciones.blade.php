@@ -32,7 +32,7 @@ $(document).ready(function () {
                 return json.Registros;
             }
         },
-        "lengthMenu": [[15,-1], [15,"Todo"]],
+        "lengthMenu": [[5,-1], [5,"Todo"]],
         "language": {
             "zeroRecords": "No hay coincidencias",
             "loadingRecords": "Cargando datos...",

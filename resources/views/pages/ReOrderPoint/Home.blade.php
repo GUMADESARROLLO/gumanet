@@ -47,10 +47,11 @@
                   <th class="col-green">LEADTIME</th>
                   <th class="col-green">FACTOR STOCK SEGURIDAD</th>
                   <th class="col-red-strong">ROTACION PREVISTA EXISTENCIAS POR VENCER</th>
-                  <th class="col-red-strong">EXIST. PROX. A VENCER <=12 Meses</th>
-                  <th class="col-red-light">EXIST. LOTE >=7 Meses</th>
+                  <th class="col-red-strong">EXIST. < 7 Meses</th>
+                  <th class="col-red-light">EXIST. >=7 Meses</th>
                   <th class="col-red-light">LOTE MAS PROX. A VENCER</th>
                   <th class="col-red-light">EXIST. EN LORE MAS PROX. POR VENCERSE</th>
+                  <th class="col-blue-light">-</th>
                   <th class="col-blue-ca-1">FECHA DE ENTRADA LOTE</th>
                   <th class="col-blue-ca-1">CANTIDAD INGRESADA</th>
                   <th class="col-blue-ca-1">PROM. UND. YTD</th>
@@ -141,19 +142,20 @@
                         <div class="col-12 col-sm-6 col-md-2">
                           <div class="d-flex align-items-center">
                             <div class="ms-3">
-                              <h4 class="mb-0" id="id_contribucion"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">CONTRIBUCION EJECUTADA YTD</p>
+                              <h4 class="mb-0" id="id_ventas"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">VENTAS EJECUTADAS 12m</p>
                             </div>
                           </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-2">
                           <div class="d-flex align-items-center">
                             <div class="ms-3">
-                              <h4 class="mb-0" id="id_ventas"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">VENTAS EJECUTADAS YTD</p>
+                              <h4 class="mb-0" id="id_contribucion"> 0.00</h4>
+                              <p class="text-800 fs--1 mb-0">CONTRIBUCION EJECUTADA 12m</p>
                             </div>
                           </div>
                         </div>
+                        
                         <div class="col-12 col-sm-6 col-md-2 mt-3">
                           <div class="d-flex align-items-center">
                             <div class="ms-3">
@@ -248,270 +250,7 @@
                       </div>  
                       
                     </form> 
-                    <div style="display:none">
-                      <hr class="bg-200 mb-6 mt-4">
-                      <p class="text-800 fs--1 mb-0" >Rotacion</p>
-                      <div class="col-12" style="display:none">
-                        <div class="row align-items-center g-4">
-                          <div class="col-sm-4 col-md-4 col-xs-12">
-                            <div class="d-flex align-items-center">
-                              <div class="ms-3">
-                                <h4 class="mb-0">1,000,000</h4>
-                                <p class="text-800 fs--1 mb-0">CORTA (MESES ON HAND) Límite 6.5</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-sm-4 col-md-4 col-xs-12">
-                            <div class="d-flex align-items-center">
-                              <div class="ms-3">
-                                <h4 class="mb-0">1,000,000</h4>
-                                <p class="text-800 fs--1 mb-0">MEDIA (ON HAND+TRANSITO) Límite 10.5</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-sm-4 col-md-4 col-xs-12">
-                            <div class="d-flex align-items-center">
-                              <div class="ms-3">
-                                <h4 class="mb-0">1,000,000</h4>
-                                <p class="text-800 fs--1 mb-0">LARGA (ON HAND+TRANSITO+PEDIDOS) Límite 12</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div> 
-                    </div>
                   </div>
-              </div>
-            </div>
-            <div class="tab-pane fade" id="nav-prec" role="tabpanel" aria-labelledby="navPrecios">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="col-12">
-                    <div class="row align-items-center g-4 mt-3">
-                      <div class="col-sm-6 col-md-6 col-xs-12">
-                        <div class="d-flex align-items-center">
-                          <div class="ms-3">
-                            <h4 class="mb-0">100,000</h4>
-                            <p class="text-800 fs--1 mb-0">PRESUPUESTOUNIDADES 2022 - MENSUAL</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="ccol-sm-6 col-md-6 col-xs-12">
-                        <div class="d-flex align-items-center">
-                          <div class="ms-3">
-                            <h4 class="mb-0">100,000</h4>
-                            <p class="text-800 fs--1 mb-0">EJECUTADOUNIDADES YTD (Promedio mensual a la fecha)</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <hr class="bg-200 mb-6 mt-4">
-                  </div>
-                  <form id="needs-validation" novalidate>  
-                      <div class="row mt-3">  
-                          <div class="col-sm-6 col-md-6 col-xs-12">  
-                              <div class="form-group">  
-                                  <label for="firstname">DemandaAnual CRUZ AZUL (NETA)</label>  
-                                  <input type="text" id="XXXXXX" placeholder="0.00" class="form-control" aria-describedby="inputGroupPrepend" required />  
-                              </div>  
-                          </div>  
-                          <div class="col-sm-6 col-md-6 col-xs-12">  
-                              <div class="form-group">  
-                                  <label for="lastname">DemandaAnual CRUZ AZUL (AJUSTADA)</label>  
-                                  <input type="text" id="XXXXXX" placeholder="0.00" class="form-control" aria-describedby="inputGroupPrepend" required />  
-                                  
-                              </div>  
-                          </div>  
-                      </div>  
-                      <div class="row mt-3">  
-                          <div class="col-sm-4 col-md-4 col-xs-12">  
-                              <div class="form-group">  
-                                  <label for="firstname">PORCENTAJE FARMACIAS % (Volumen)</label>  
-                                  <input type="text" id="XXXXXX" placeholder="0.00" class="form-control" aria-describedby="inputGroupPrepend" required />  
-                              </div>  
-                          </div>  
-                          <div class="col-sm-4 col-md-4 col-xs-12">  
-                              <div class="form-group">  
-                                  <label for="lastname">PORCENTAJE MAYORISTAS % (Volumen)</label>  
-                                  <input type="text" id="XXXXXX" placeholder="0.00" class="form-control" aria-describedby="inputGroupPrepend" required />  
-                                  
-                              </div>  
-                          </div>
-                          <div class="col-sm-4 col-md-4 col-xs-12">  
-                              <div class="form-group">  
-                                  <label for="lastname">PORCENTAJE INSTITUCIONES PRIVADAS  % (Volumen)</label>  
-                                  <input type="text" id="XXXXXX" placeholder="0.00" class="form-control" aria-describedby="inputGroupPrepend" required />  
-                                  
-                              </div>  
-                          </div>  
-                        </div>  
-                        <div class="row mt-3">  
-                          <div class="col-sm-4 col-md-4 col-xs-12">  
-                              <div class="form-group">  
-                                  <label for="firstname">PRECIO FARMACIAS C$</label>  
-                                  <input type="text" id="XXXXXX" placeholder="0.00" class="form-control" aria-describedby="inputGroupPrepend" required />  
-                              </div>  
-                          </div>  
-                          <div class="col-sm-4 col-md-4 col-xs-12">  
-                              <div class="form-group">  
-                                  <label for="lastname">PRECIO MAYORISTAS C$</label>  
-                                  <input type="text" id="XXXXXX" placeholder="0.00" class="form-control" aria-describedby="inputGroupPrepend" required />  
-                                  
-                              </div>  
-                          </div>
-                          <div class="col-sm-4 col-md-4 col-xs-12">  
-                              <div class="form-group">  
-                                  <label for="lastname">PRECIO INSTITUCIONES PRIVADAS C$</label>  
-                                  <input type="text" id="XXXXXX" placeholder="0.00" class="form-control" aria-describedby="inputGroupPrepend" required />  
-                                  
-                              </div>  
-                          </div>  
-                        </div>
-                      
-                  </form>  
-                  
-                  <div class="col-12">
-                    <div class="row align-items-center g-4 mt-3">
-                      <div class="col-sm-4 col-md-4 col-xs-12">
-                        <div class="d-flex align-items-center">
-                          <div class="ms-3">
-                            <h4 class="mb-0">0.00 % </h4>
-                            <p class="text-800 fs--1 mb-0">TENDENCIA CANTIDAD VENDIDA</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="ccol-sm-4 col-md-4 col-xs-12">
-                        <div class="d-flex align-items-center">
-                          <div class="ms-3">
-                            <h4 class="mb-0">0.00 %</h4>
-                            <p class="text-800 fs--1 mb-0">TENDENCIA PRECIO DE VENTA C$</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="ccol-sm-4 col-md-4 col-xs-12">
-                        <div class="d-flex align-items-center">
-                          <div class="ms-3">
-                            <h4 class="mb-0">0.00 %</h4>
-                            <p class="text-800 fs--1 mb-0">TENDENCIA COSTO DE VENTA C$</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <hr class="bg-200 mb-6 mt-4">
-                  </div>
-                  <div class="col-sm-12 table-responsive" >                    
-                    <table id="dtInfo" class="display nowrap" width="100%">
-                        <thead>
-                            <tr>
-                                <th>VALUACION</th>
-                                <th>MARGEN EJECUTADO</th>
-                                <th>RATING EN EJECUCION</th>
-                                <th>% ACUMULADOCONTRIBUCION YTD</th>
-                                <th>CONTRIBUCION INDIVIDUAL % YTD</th>
-                                <th>CONTRIBUCION EJECUTADA YTD C$</th>
-                                <th>LIMITE LOGISTICO MEDIO</th>
-                                
-                              
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                              <td>VALUACION</td>
-                              <td>MARGEN EJECUTADO</td>
-                              <td>RATING EN EJECUCION</td>
-                              <td>% ACUMULADOCONTRIBUCION YTD</td>
-                              <td>CONTRIBUCION INDIVIDUAL % YTD</td>
-                              <td>CONTRIBUCION EJECUTADA YTD C$</td>
-                              <td>LIMITE LOGISTICO MEDIO</td>
-                              
-                              
-                            </tr>
-                            
-                        </tbody>
-                    </table>
-                                      
-                    <table id="dtEstimacion" class="display nowrap" width="100%">
-                        <thead>
-                            <tr>
-                                <th>ESTIMACION</th>
-                                <th>ESTIMACION SOBRANTES (Unidades)</th>
-                                <th>ESTIMACION FALTANTES (Unidades)</th>
-                                <th>VALUACION SOBRANTES (USD)</th>
-                                <th>VALUACION FALTANTES (USD)</th>
-                                <th>RAZON REORDER/MOQ</th>
-                              
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                              <td>ESTIMACION</td>
-                              <td>ESTIMACION SOBRANTES (Unidades)</td>
-                              <td>ESTIMACION FALTANTES (Unidades)</td>
-                              <td>VALUACION SOBRANTES (USD)</td>
-                              <td>VALUACION FALTANTES (USD)</td>
-                              <td>RAZON REORDER/MOQ</td>
-                              
-                            </tr>
-                            
-                        </tbody>
-                    </table>
-                  </div>
-                  <div class="col-12">
-                    <hr class="bg-200 mb-6 mt-4">
-
-                    <div class="row align-items-center g-4">
-                      <div class="col-12 col-sm-6 col-md-2">
-                        <div class="d-flex align-items-center">
-                          <div class="ms-3">
-                            <h4 class="mb-0">A</h4>
-                            <p class="text-800 fs--1 mb-0">CLASE ORIGINAL</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-6 col-md-2">
-                        <div class="d-flex align-items-center">
-                          <div class="ms-3">
-                            <h4 class="mb-0">12</h4>
-                            <p class="text-800 fs--1 mb-0">NUEVACLASE</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-6 col-md-2">
-                        <div class="d-flex align-items-center">
-                          <div class="ms-3">
-                            <h4 class="mb-0">NO / SI</h4>
-                            <p class="text-800 fs--1 mb-0">CAMBIO</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-6 col-md-2">
-                        <div class="d-flex align-items-center">
-                          <div class="ms-3">
-                            <h4 class="mb-0">A</h4>
-                            <p class="text-800 fs--1 mb-0">CLASE</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-6 col-md-2">
-                        <div class="d-flex align-items-center">
-                          <div class="ms-3">
-                            <h4 class="mb-0">0.00</h4>
-                            <p class="text-800 fs--1 mb-0">FACTOR</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-6 col-md-2">
-                        <div class="d-flex align-items-center">
-                          <div class="ms-3">
-                            <h4 class="mb-0">0.00 </h4>
-                            <p class="text-800 fs--1 mb-0">REORDER1</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
               </div>
             </div>
           </div>
@@ -521,7 +260,6 @@
           </div> 
           <div class="modal-footer">		
             <button class="btn btn-danger rounded-0" data-dismiss="modal" type="submit">Cerrar</button>  
-            <button class="btn btn-primary rounded-0" type="submit">Guardar</button>  	
 		      </div> 
         </div>  
       </div>

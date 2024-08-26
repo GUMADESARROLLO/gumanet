@@ -102,6 +102,7 @@ class inventario_controller extends Controller
 				'transito'          => number_format($k->cantidad_transito,0,'.',''),
 				'mercado'         	=> $k->mercado,
 				'mific'             => $k->mific,
+				'Estado'             => $k->Estado,
 				'Precio_mific_farmacia'      => $k->Precio_mific_farmacia,
 				'Precio_mific_public'      => $k->Precio_mific_public,
 				'Nuevo'          	=> $k->Nuevo,
@@ -130,6 +131,7 @@ class inventario_controller extends Controller
 			'CantidadTransito' 			=> 'required',
             'mercado' 			=> 'required',
             'mific' 			=> 'required',
+			'select_estado' 			=> 'required',
 			'precio_mific_f' 		=> 'required',
 			'precio_mific_p' 		=> 'required',
             'observaciones' 	=> 'required',
@@ -137,25 +139,29 @@ class inventario_controller extends Controller
 
 		$articuloTransito = ArticulosTransito::find($NumRow);
 
+	
+
 		if ($articuloTransito) {
 			
 			$articuloTransito->update([
-				'Descripcion' 		=> $request->Descripcion,
-				'fecha_estimada' 	=> $request->fecha_estimada,
-				'fecha_pedido' 		=> $request->fecha_pedido,
-				'documento' 		=> $request->documento,
-				'pedido' 			=> $request->cantidad,
-				'transito' 			=> $request->CantidadTransito,
-				'mercado' 			=> $request->mercado,
-				'mific' 			=> $request->mific,
-				'observaciones' 	=> $request->observaciones,
-				'Precio_mific_farmacia' 		=> $request->precio_mific_f,
+				'Descripcion' 				=> $request->Descripcion,
+				'fecha_estimada' 			=> $request->fecha_estimada,
+				'fecha_pedido' 				=> $request->fecha_pedido,
+				'documento' 				=> $request->documento,
+				'pedido' 					=> $request->cantidad,
+				'transito' 					=> $request->CantidadTransito,
+				'mercado' 					=> $request->mercado,
+				'mific' 					=> $request->mific,
+				'estado_compra' 			=> $request->select_estado,
+				'observaciones' 			=> $request->observaciones,
+				'Precio_mific_farmacia' 	=> $request->precio_mific_f,
 				'Precio_mific_public' 		=> $request->precio_mific_p,
 			]);
 	
 			$message = 'Información actualizada correctamente';
 
 		} else {
+			
 			ArticulosTransito::create([
 				'Articulo' 			=> $Articulo,
 				'Descripcion' 		=> $request->Descripcion,
@@ -166,6 +172,7 @@ class inventario_controller extends Controller
 				'transito' 			=> $request->CantidadTransito,
 				'mercado' 			=> $request->mercado,
 				'mific' 			=> $request->mific,
+				'estado_compra' 			=> $request->select_estado,
 				'observaciones' 	=> $request->observaciones,
 				'Precio_mific_farmacia' 		=> $request->precio_mific_f,
 				'Precio_mific_public' 		=> $request->precio_mific_p,
