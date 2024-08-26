@@ -53,7 +53,8 @@
             },
         }]
     }; 
-    fullScreen();
+    $('[data-toggle="tooltip"]').tooltip();
+    //fullScreen();
     function isValue(value, def, is_return) {
         if ( $.type(value) == 'null'
             || $.type(value) == 'undefined'
@@ -95,61 +96,63 @@ $(document).ready(function() {
 			"emptyTable": "NO HAY DATOS DISPONIBLES",
 			"search":     "BUSCAR"
 		},
+        
 		'columns': [	
-			{"title": "ARTICULO",                                   "data": "ARTICULO"},
-            {"title": "DESCRIPCIÓN", 		                        "data": "DESCRIPCION"},
-            {"title": "LEADTIME", 		                            "data": "LEADTIME"},
-            {"title": "FACTOR STOCK SEGURIDAD",                     "data": "FACTOR_STOCK_SEGURIDAD"},
-            {"title": "ROTACION PREVISTA EXISTENCIAS POR VENCER"    ,"data": "ROTACION_PREVISTA_EXISTENCIAS_VENCER"},
-            {"title": "TOTAL DISPONIBLE"                            ,"data": "LEADTIME"},
-			{"title": "EXIST. < 7 Meses", 		    "data": "VENCE_MENOS_IGUAL_12"},   
-            {"title": "EXIST. >= 7 Meses", 		                "data": "VENCE_MAS_IGUAL_7"},
-            {"title": "LOTE MAS PROX. A VENCER", 		            "data": "LOTE_MAS_PROX_VENCER"},
-            {"title": "EXIST. EN LOTE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
-            {"title": "ULT. FECHA ENTRADA LOTE", 		                "data": "FECHA_ENTRADA_LOTE"},
-            {"title": "ULT. CANT. INGRESADA",                         "data": "CANTIDAD_INGRESADA"},
-            {"title": "PROM. UND. 12m", 		                    "data": "EJECUTADO_UND_YTD"},
-            {"title": "PEDIDO", 		                            "data": "PEDIDO"},
-            {"title": "TRANSITO", 		                            "data": "TRANSITO"},
-            {"title": "VENTAS EJEC. YTD C$.", 		                "data": "VENTAS_YTD"},
-            {"title": "CONTRIBUCION BRUTA. 12m C$.", 		        "data": "CONTRIBUCION_YTD"},           
-            {"title": "ROTACION CORTA", 		                    "data": "ROTACION_CORTA"},
-            {"title": "ROTACION MEDIA", 		                    "data": "ROTACION_MEDIA"},
-            {"title": "ROTACION LARGA", 		                    "data": "ROTACION_LARGA"},
-            {"title": "MOQ", 		                                "data": "MOQ"},
-            {"title": "REORDER", 		                            "data": "REORDER"},
-            {"title": "CANTIDAD A ORDENAR", 		                "data": "CANTIDAD_ORDENAR"},
-            {"title": "RAZON REORDER/MOQ", "data":"CANTIDAD_ORDENAR", "render": function(data, type, row, meta) {
+			{"data": "ARTICULO"},
+			{"data": "DESCRIPCION"},
+			{"data": "LEADTIME"},
+			{"data": "FACTOR_STOCK_SEGURIDAD"},
+			{"data": "ROTACION_PREVISTA_EXISTENCIAS_VENCER"},
+			{"data": "TOTAL_UMK"},
+			{"data": "TOTAL_GP"},
+			{"data": "TOTAL_DISP"},
+			{"data": "VENCE_MENOS_IGUAL_12"},
+			{"data": "VENCE_MAS_IGUAL_7"},
+			{"data": "LOTE_MAS_PROX_VENCER"},
+			{"data": "EXIT_LOTE_PROX_VENCER"},
+			{"data": "FECHA_ENTRADA_LOTE"},
+			{"data": "CANTIDAD_INGRESADA"},
+			{"data": "EJECUTADO_UND_YTD"},
+			{"data": "PEDIDO"},
+			{"data": "TRANSITO"},
+			{"data": "VENTAS_YTD"},
+			{"data": "CONTRIBUCION_YTD"},
+			{"data": "ROTACION_CORTA"},
+			{"data": "ROTACION_MEDIA"},
+			{"data": "ROTACION_LARGA"},
+			{"data": "MOQ"},
+			{"data": "REORDER"},
+			{"data": "CANTIDAD_ORDENAR"},
+			{"data": "CANTIDAD_ORDENAR", "render": function(data, type, row, meta) {
 
-                var _ReOrder = numeral(row.REORDER).format('00.00');
-                var _MOQ     = numeral(row.MOQ).format('00.00')
-                
-                let color_cant_order = _ReOrder / _MOQ;
+				var _ReOrder = numeral(row.REORDER).format('00.00');
+				var _MOQ     = numeral(row.MOQ).format('00.00')
+				
+				let color_cant_order = _ReOrder / _MOQ;
 
-                color_cant_order = isValue(color_cant_order,0,true);
+				color_cant_order = isValue(color_cant_order,0,true);
 
-                return numeral(color_cant_order).format('0.00');
+				return numeral(color_cant_order).format('0.00');
 
 
-            }},
-            {"title": "COST PROM. C$", 		                        "data": "COSTO_PROMEDIO_LOC"},
-            {"title": "COST PROM. USD", 		                    "data": "COSTO_PROMEDIO_USD"},
-            {"title": "ULT. COST. USD", 		                    "data": "ULTIMO_COSTO_USD"},
-            {"title": "DEM. ANUAL CA NETA", 		                "data": "DEMANDA_ANUAL_CA_NETA"},
-            {"title": "DEM. ANUAL CA AJUSTADA", 		            "data": "DEMANDA_ANUAL_CA_AJUSTADA"}, 
-            {"title": "FACTOR", 		                            "data": "FACTOR"}, 
-            {"title": "LIMITE LOGISTICO MEDIO", 		            "data": "LIMITE_LOGISTICO_MEDIO"},
-            {"title": "CLASE", 		                                "data": "CLASE"},
-            {"title": "VALUACION", 		                            "data": "VALUACION"},
-            // {"title": "CONTRIBUCION", 		                        "data": "CONTRIBUCION"},
-            {"title": "REORDER1", 		                            "data": "REORDER1"},
-            {"title": "ESTIMACION SOBRANTES UND", 		            "data": "ESTIMACION_SOBRANTES_UND"},
-            
+			}},
+			{"data": "COSTO_PROMEDIO_LOC"},
+			{"data": "COSTO_PROMEDIO_USD"},
+			{"data": "ULTIMO_COSTO_USD"},
+			{"data": "DEMANDA_ANUAL_CA_NETA"},
+			{"data": "DEMANDA_ANUAL_CA_AJUSTADA"},
+			{"data": "FACTOR"},
+			{"data": "LIMITE_LOGISTICO_MEDIO"},
+			{"data": "CLASE"},
+			{"data": "VALUACION"},
+			{"data": "REORDER1"},
+			{"data": "ESTIMACION_SOBRANTES_UND"},
+			
 		],
         "columnDefs": [
             {"className": "dt-center", "targets": []},
-            {"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27,28]},
-            {"className": "dt-right-color", "targets": [22]},
+            {"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27,28,29,30]},
+            {"className": "dt-right-color", "targets": [24]},
             { "width": "50%", "targets": [  ] },
         ],
        
@@ -164,7 +167,7 @@ $(document).ready(function() {
 
             color_cant_order = isValue(color_cant_order,0,true);
 
-            $(row).find('td:eq(22)').addClass( (color_cant_order <= 0.5 ) ? 'dt-cant-ordenar-red' : 'dt-cant-ordenar-green');
+            $(row).find('td:eq(24)').addClass( (color_cant_order <= 0.5 ) ? 'dt-cant-ordenar-red' : 'dt-cant-ordenar-green');
             
         
             if( data["IS_CA"] ==  `S`){
