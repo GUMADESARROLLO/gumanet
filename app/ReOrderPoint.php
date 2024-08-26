@@ -29,13 +29,9 @@ class ReOrderPoint extends Model
         $currentDate = date('Y-m-d');
         $startOfMonth = date('Y-m-01', strtotime($currentDate));
 
-        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-12 months', strtotime($startOfMonth)));
+        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
         $DiaActual  = (int) date('d', strtotime($FechaEnd));
-
-        dd($FechaIni, $FechaEnd, $DiaActual);
-
-
         
         
         // Ejecutar el tercer procedimiento almacenado
@@ -95,17 +91,56 @@ class ReOrderPoint extends Model
                 "FACTOR_STOCK_SEGURIDAD"    => number_format($a->FACTOR_STOCK_SEGURIDAD, 2),
                 
                 "ROTACION_PREVISTA_EXISTENCIAS_VENCER" => number_format($a->ROTACION_PREVISTA_EXISTENCIAS_VENCER, 2),
+                "TOTAL_UMK"                 => number_format($a->TOTAL_UMK, 2),
+                "TOTAL_GP"                  => number_format($a->TOTAL_GP, 2),
+                "TOTAL_DISP"                => number_format($a->TOTAL_DISP, 2),
             ];
         }
 
         return $array;
+    }
+    public static function NameMonth($currentDate) {
+
+        $startOfMonth = date('Y-m-01', strtotime($currentDate));
+
+        $FechaIni = date('Y-m-d', strtotime('-11 months', strtotime($startOfMonth)));
+        $FechaEnd = date('Y-m-d', strtotime($currentDate));
+
+        // Array para almacenar los nombres de los meses
+        $months = [];
+
+        $start = new \DateTime($FechaIni);
+        $end = new \DateTime($FechaEnd);
+
+        // Iterar desde la fecha inicial hasta la fecha final
+        while ($start <= $end) {
+            $months[] = $start->format('My'); // 'M' para el nombre abreviado del mes, 'y' para el año en dos dígitos
+            $start->modify('+1 month');
+        }
+
+        // Convertir el formato "M y" a "Ene23", "Feb23", etc.
+        $months = array_map(function($month) {
+            return str_replace(
+                ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], 
+                ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'], 
+                $month
+            );
+        }, $months);
+
+        return $months;
+        
     }
     public static function getDataGrafica($Articulos) {
 
         $array = array();
 
         $Sales = ReOrderPoint::WHERE('ARTICULO',$Articulos)->first();
-        
+
+    
+
+        $NameMonths = ReOrderPoint::NameMonth($Sales->FechaFinal);
+
+
         $array["LEADTIME"] = number_format(bcdiv($Sales->LEADTIME, '1', 0), 0);
         $array["DEMANDA_ANUAL_CA_NETA"] = number_format(bcdiv($Sales->DEMANDA_ANUAL_CA_NETA, '1', 0), 0);
         $array["DEMANDA_ANUAL_CA_AJUSTADA"] = number_format(bcdiv($Sales->DEMANDA_ANUAL_CA_AJUSTADA, '1', 0), 0);
@@ -130,10 +165,12 @@ class ReOrderPoint extends Model
         $array["VENTAS_YTD"] = number_format(bcdiv($Sales->VENTAS_YTD, '1', 0), 0);
         $array["CONTRIBUCION_YTD"] = number_format(bcdiv($Sales->CONTRIBUCION_YTD, '1', 0),0);
         $array["EJECUTADO_UND_YTD"] = number_format(bcdiv($Sales->EJECUTADO_UND_YTD, '1', 0),0);
+
+        
         
         for ($i=1; $i <= 12; $i++) { 
             $array["VENTAS"][$i] = [
-                "Mes"                 => "Mes".$i,
+                "Mes"                 => $NameMonths[$i - 1],
                 "data" =>  (isset($Sales) && !empty($Sales->$i)) ? (float) number_format($Sales->$i,2,".","") : 0 
             ];
         }
