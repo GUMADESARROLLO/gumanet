@@ -102,7 +102,7 @@
                     <option value="N/D">N/D</option>
                     <option value="PEDIDO">PEDIDO</option>
                     <option value="TRANSITO">TRANSITO</option>
-                    <option value="ONHAND">ONHAND</option>
+                    <option value="ON-HAND">ON-HAND</option>
                 </select>
                 <small id="alert_Estado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>

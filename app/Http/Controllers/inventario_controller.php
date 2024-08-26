@@ -107,7 +107,8 @@ class inventario_controller extends Controller
 				'Precio_mific_public'      => $k->Precio_mific_public,
 				'Nuevo'          	=> $k->Nuevo,
 				'Descripcion'       => strtoupper($k->Descripcion),
-				'observaciones'     => $k->observaciones
+				'observaciones'     => $k->observaciones,
+				'estado_compra'		=> $k->estado_compra
 			];
 		}
 		return response()->json($datos_articulo);

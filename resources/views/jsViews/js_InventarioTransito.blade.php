@@ -219,8 +219,7 @@ function getDetalleArticulo(Articulo,Descripcion,ID)
 					$("#txtCantidadTransito").val(a.transito)
 					$("#slcMercado").val(a.mercado).change();
 					$("#slcMIFIC").val(a.mific).change();
-					$("#select_estado").val(a.select_estado).change();
-					
+					$("#select_estado").val(a.estado_compra).change();					
 					$("#txtObservacion").val(a.observaciones)
 					$("#txtPrecioMific").val(a.Precio_mific_farmacia)
 					$("#txtPrecioMificPublic").val(a.Precio_mific_public)
