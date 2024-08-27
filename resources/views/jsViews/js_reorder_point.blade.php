@@ -96,7 +96,13 @@ $(document).ready(function() {
 			"emptyTable": "NO HAY DATOS DISPONIBLES",
 			"search":     "BUSCAR"
 		},
-        
+       "scrollY":        "900px",
+        "scrollX":        true,
+        "scrollCollapse": true,
+        "paging":         true,
+        "fixedColumns":   {
+            "leftColumns": 2,
+        },
 		'columns': [	
 			{"data": "ARTICULO"},
 			{"data": "DESCRIPCION"},

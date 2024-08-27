@@ -33,6 +33,13 @@ $(document).ready(function () {
             }
         },
         "lengthMenu": [[5,-1], [5,"Todo"]],
+        "scrollY":        "900px",
+        "scrollX":        true,
+        "scrollCollapse": true,
+        "paging":         true,
+        "fixedColumns":   {
+            "leftColumns": 2,
+        },
         "language": {
             "zeroRecords": "No hay coincidencias",
             "loadingRecords": "Cargando datos...",
