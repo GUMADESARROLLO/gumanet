@@ -44,20 +44,8 @@
             <table class="table nowrap table-bordered table-sm" id="dt_articulos" width="100%" >
               <thead class="bg-blue text-light">
                 <tr>
-                  <th class="col-yellow">
-                    <span 
-                      data-toggle="tooltip"  
-                      data-placement="top" 
-                      title="Codigo de Articulos en el sistema">ARTICULO
-                    </span>
-                  </th>
-                  <th class="col-blue-ca-1">
-                    <span 
-                      data-toggle="tooltip"  
-                      data-placement="top" 
-                      title="Descripcion del Articulos , dentro del sistema">DESCRIPCIÓN
-                    </span>
-                  </th>
+                  <th class="col-yellow">ARTICULO</th>
+                  <th class="col-blue-ca-1">DESCRIPCIÓN</th>
                   <th class="col-green">
                     <span 
                       data-toggle="tooltip"  
@@ -102,7 +90,7 @@
                   <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title="Promedio de unidad desplazadas en 12 meses">PROM. UND. 12m</span></th>
                   <th class="col-yellow"><span data-toggle="tooltip"  data-placement="top" title="Cantidad Pedida del Articulo">PEDIDO</span></th>
                   <th class="col-blue-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad en estado de Transito">TRANSITO</span></th>
-                  <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title="Ventas realizadas en el periodo de 12m">VENTAS EJEC. 12m</span></th>
+                  <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title="Ventas realizadas en el periodo de 12m">VENTAS EJEC. 12m C$.</span></th>
                   <th class="col-yellow-strong"><span data-toggle="tooltip"  data-placement="top" title="Contribucion Bruta aportada en 12 meses">CONTRIBUCION BRUTA. 12m C$.</span></th>
                   <th class="col-green"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote >= 7 meses + ON-HAND">ROTACION CORTA</span></th>
                   <th class="col-green"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote >= 7 meses + ON-HAND + TRANSITO ">ROTACION MEDIA</span></th>
