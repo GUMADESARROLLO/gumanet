@@ -46,11 +46,12 @@
 
       <div class="col-12">
         <div class="table-responsive mt-3 mb-2">
-            <table class="table nowrap table-bordered table-sm" id="dt_articulos" width="100%" >
+            <table class="table table-bordered table-sm" id="dt_articulos" width="100%" >
               <thead class="bg-blue text-light">
                 <tr>
                   <th class="col-yellow">ARTICULO</th>
-                  <th class="col-blue-ca-1">DESCRIPCIÓN</th>
+                  <th class="col-blue-ca-1" >DESCRIPCIÓN</th>
+                  <th class="col-blue-ca-1">FABRICANTE</th>
                   <th class="col-green">
                     <span 
                       data-toggle="tooltip"  
@@ -133,11 +134,9 @@
                                     <div class="d-flex align-items-center position-relative mt-0">
                                       <div class="flex-1 ">
                                         <h6 class="mb-0 fw-semi-bold">
-                                          <a class="stretched-link text-900 fw-semi-bold" href="#!">
-                                            <div class="stretched-link text-light text-uppercase" id="id_titulo_modal_all_items">
+                                        <div class="text-light text-uppercase" id="id_titulo_modal_all_items">
                                               - 
                                             </div>
-                                          </a>
                                         </h6>
                                         <p class="text-white-50 fs--2 mb-0" id="nombre_ruta_zona_modal">
                                           CLASE : <span id="id_clase"> - </span> |  LEADTIME : <span id="id_leadtime"> - </span> | LIMITE LOGICO MEDIO : <span id="id_limite_logistico_medio"> - </span>

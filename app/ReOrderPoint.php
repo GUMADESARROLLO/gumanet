@@ -55,6 +55,7 @@ class ReOrderPoint extends Model
             $array[$key] = [
                 "ARTICULO"                  => '<a href="#!" onclick="getDetalleArticulo('."'".$a->ARTICULO."'".', '."'".strtoupper($a->DESCRIPCION)."'".')" >'.$a->ARTICULO.'</a>',
                 "DESCRIPCION"               => strtoupper($a->DESCRIPCION),
+                "FABRICANTE"               => strtoupper($a->LABORATORIO),
                 "VENCE_MENOS_IGUAL_12"      => number_format($a->VENCE_MENOS_IGUAL_12,2),
                 "VENCE_MAS_IGUAL_7"         => number_format($a->VENCE_MAS_IGUAL_7,2),
                 "LOTE_MAS_PROX_VENCER"      => date("d-m-Y", strtotime($a->LOTE_MAS_PROX_VENCER)),

@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    
+    fullScreen();
     var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
     grafiacas_productos_Diarios = {
         chart: {
@@ -87,16 +87,17 @@ $(document).ready(function() {
 			"search":     "BUSCAR"
 		},
         
-       "scrollY":        "900px",
+       "scrollY":        "500px",
         "scrollX":        true,
         "scrollCollapse": true,
         "paging":         true,
         "fixedColumns":   {
-            "leftColumns": 2,
+            "leftColumns": 3,
         },
 		'columns': [	
 			{"data": "ARTICULO"},
 			{"data": "DESCRIPCION"},
+            {"data": "FABRICANTE"},
 			{"data": "LEADTIME"},
 			{"data": "FACTOR_STOCK_SEGURIDAD"},
 			{"data": "ROTACION_PREVISTA_EXISTENCIAS_VENCER"},
