@@ -205,6 +205,8 @@ $(document).ready(function () {
             Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
             Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
             Total_Contribucion  += parseFloat(data.TOTAL_CONTRIBUCION_C$) || 0;
+
+            console.log(data.TOTAL_VENTAS_C$);
         });
 
         // TOTAL DE FARMACIAS

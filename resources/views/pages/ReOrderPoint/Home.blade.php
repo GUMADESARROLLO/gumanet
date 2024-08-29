@@ -7,6 +7,11 @@
 @section('content')
 <link rel="stylesheet" type="text/css" href="{{ url('css/colors-reorder-point.css') }}">
 <div class="container-fluid">
+  <div class="row" id="ct04">
+      <div class="graf col-sm-12 mt-3">
+          <div class="container-vms" id="LoadingID" style="width: 100%; margin: 0 auto"></div>
+      </div>
+  </div>
   <p class="font-italic text-muted pt-0 mt-0">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	
    
   <div class="row">
@@ -116,187 +121,266 @@
           </div>
       </div>
   </div>
-  <!--MODAL: DETALLE DE ARTICULO-->
-  <div class="modal fade " data-backdrop="static" data-keyboard="false" id="mdDetalleArt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-      <div class="modal-content">
-        
-        
-        <div class="card">  
-          <div class="card-header bg-primary text-white">  
-              <h4 class="card-title text-uppercase" id="id_titulo_modal_all_items" > - </h4>  
-          </div>
-          <div class="card-body">  
-            <nav>
-              <div class="nav nav-tabs" id="nav-tab" role="tablist" style="display:none">
-                <a class="nav-item nav-link active" id="navBodega" data-toggle="tab" href="#nav-bod" role="tab" aria-controls="nav-bod" aria-selected="true">TAB 01</a>
-                <a class="nav-item nav-link" id="navPrecios" data-toggle="tab" href="#nav-prec" role="tab" aria-controls="nav-prec" aria-selected="false">TAB02</a>
-              </div>
-            </nav>
-          <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-bod" role="tabpanel" aria-labelledby="navBodega">
-              <div class="row">
-                  <div class="col-sm-12 mt-3">
-                    
-                    <div class="col-12" >
-                      <div class="row">
-                        <div class="col-12 col-sm-6 col-md-2">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_leadtime"> 0.00 </h4>
-                              <p class="text-800 fs--1 mb-0">LEADTIME</p>
+  <div class="modal fade bd-example-modal-xl" data-backdrop="static" data-keyboard="false" id="mdDetalleArt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-block ">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-center align-items-center pt-1 pb-0 bg-blue">
+                                  <div class="row col-md-8 ">
+                                    <div class="d-flex align-items-center position-relative mt-0">
+                                      <div class="flex-1 ">
+                                        <h6 class="mb-0 fw-semi-bold">
+                                          <a class="stretched-link text-900 fw-semi-bold" href="#!">
+                                            <div class="stretched-link text-light text-uppercase" id="id_titulo_modal_all_items">
+                                              - 
+                                            </div>
+                                          </a>
+                                        </h6>
+                                        <p class="text-white-50 fs--2 mb-0" id="nombre_ruta_zona_modal">
+                                          CLASE : <span id="id_clase"> - </span> |  LEADTIME : <span id="id_leadtime"> - </span> | LIMITE LOGICO MEDIO : <span id="id_limite_logistico_medio"> - </span>
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4 border-left">
+                                    <div class="row ">
+                                      <div class="col-sm-4 ">
+                                        <div class="form-group">                
+                                          <b><label for="f2" class="text-white">PEDIDO</label></b></br>
+                                          <label for="f1"> </label><span class="badge rounded-pill badge-light text-primary ml-2"  id="id_pedido"> - </span>
+                                        </div>
+                                      </div>	
+                                      <div class="col-sm-4 border-left">
+                                        <div class="form-group">                
+                                          <b><label for="f2" class="text-white">TRANSITO</label></b></br>
+                                          <label for="f1" > </label><span class="badge rounded-pill badge-light text-primary ml-2"  id="id_transito" > - </span>
+                                        </div>
+                                      </div>	
+                                      <div class="col-sm-4 border-left">
+                                        <div class="form-group">                
+                                          <b><label for="f1" class="text-white">MOQ</label></b></br>
+                                          <label for="f1" id="lbl_20"> </label><span class="badge rounded-pill badge-light text-primary ml-2"  id="id_moq"  > - </span>
+                                        </div>
+                                      </div>
+                                      
+                                                  
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row" >
+
+                                    <div class="col-sm-4">
+                                        <div class="card card-social" style="height: 100px">
+                                            <div class="card-header text-center bg-blue">
+                                                <h6 class="text-white m-0">ORDENAR 1</h6>
+                                            </div>
+                                            <div class="card-body ">
+                                              <h6 class="text-center  font-weight-bold" style="font-size: 1.3rem!important"  id="id_reorder1"> 0.00</h6>
+                                              
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <!-- Consumo de electricidad -->
+                                    <div class="col-sm-4">
+                                        <div class="card card-social" style="height: 100px">
+                                            <div class="card-header text-center bg-blue" style="height: 40px;">
+                                                <h6 class="text-white m-0">ORDENAR</h6>
+                                            </div>
+                                            <div class="card-body ">
+                                              <h6 class="text-center  font-weight-bold" style="font-size: 1.3rem!important"  id="id_reordenar"> 0.00</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div class="card card-social" style="height: 100px">
+                                            <div class="card-header text-center bg-blue" style="height: 40px;">
+                                                <h6 class="text-white m-0">CANTIDAD A ORDENAR</h6>
+                                            </div>
+                                            <div class="card-body ">
+                                              <h6 class="text-center font-weight-bold" style="font-size: 1.3rem!important"  id="id_cant_ordenar">  0.00</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        
+                                       
+                                        
+                                    </div>
+                                    
+                                </div>
+
                             </div>
-                          </div>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-2">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_demanda_neta"> 0.00 </h4>
-                              <p class="text-800 fs--1 mb-0">DEMANDA ANUAL CRUZ AZUL NETA</p>
+                        <!-- [ Header orden produccion ] end -->
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-4">
+                            <div class="card card-social" style="height: 100px">
+                                <div class="card-header text-center bg-blue" style="height: 40px;">
+                                    <h6 class="text-white m-0">DEMANDA CRUZ AZUL</h6>
+                                </div>
+                                
+                                <div class="card-block">
+                                    <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
+                                        <div class="col-6 m-0 p-0">
+                                            <p class="text-left m-0 p-0"><span class="text-muted m-r-5" >DEMANDA ANUAL NETA</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-6 m-0 p-0">
+                                            <p class="text-right m-0 p-0"><span class="text-muted m-r-5">DEMANDA AJUSTADA</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
+                                        <div class="col-6 m-0 p-0">
+                                            <h6 class="font-weight-bold" style="font-size: 1.1rem!important" id="id_demanda_neta" > - </h6>
+                                            
+                                        </div>
+
+                                        <div class="col-6 m-0 p-0">
+                                            <h6 class="font-weight-bold text-right  m-0 p-0" style="font-size: 1.1rem!important" id="id_demanda_ajustada"  > - </h6>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-2">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_demanda_ajustada"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">DEMANDA ANUAL CRUZ AZUL AJUSTADA</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-2">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_limite_logistico_medio"> 0.00 </h4>
-                              <p class="text-800 fs--1 mb-0">LIMITE LOGISTICO MEDIO</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-2">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_ventas"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">VENTAS EJECUTADAS 12m</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-2">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_contribucion"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">CONTRIBUCION EJECUTADA 12m</p>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div class="col-12 col-sm-6 col-md-2 mt-3">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_R_corta"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">ROTACION CORTA</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-2 mt-3">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_R_media"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">ROTACION MEDIA</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-2 mt-3">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_R_larga"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">ROTACION LARGA</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-2 mt-3">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_costo"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">COSTO PROMEDIO USD</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-2 mt-3">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_ultimo_costo"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">ULTIMO COSTO USD</p>
-                            </div>
-                          </div>
                         </div>
 
-                        <div class="col-12 col-sm-6 col-md-2 mt-3">
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <h4 class="mb-0" id="id_promedio_mensual"> 0.00</h4>
-                              <p class="text-800 fs--1 mb-0">PROMEDIO MENSUAL</p>
-                            </div>
-                          </div>
-                        </div>
                         
-                      </div>
-                      <hr class="bg-200 mb-6 mt-3">
+
+                        <div class="col-4">
+                            <div class="card card-social" style="height: 100px">
+                                <div class="card-header text-center bg-blue" style="height: 40px;">
+                                    <h6 class="text-white m-0">COSTOS</h6>
+                                </div>
+                               
+                                <div class="card-block">
+                                    <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
+                                        <div class="col-6 m-0 p-0">
+                                            <p class="text-left m-0 p-0"><span class="text-muted m-r-5">COSTO ULTIMO </span>
+                                            </p>
+                                        </div>
+                                        <div class="col-6 m-0 p-0">
+                                            <p class="text-right m-0 p-0"><span class="text-muted m-r-5">COSTO PROMEDIO.</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
+                                        <div class="col-6 m-0 p-0">
+                                            <h6 class="font-weight-bold text-left m-0 p-0" style="font-size: 1.1rem!important">USD <span class="m-r-5" id="id_ultimo_costo"  > - </span></h6>
+                                        </div>
+
+                                        <div class="col-6 m-0 p-0">
+                                            <h6 class="font-weight-bold text-right  m-0 p-0" style="font-size: 1.1rem!important">USD <span class=" m-r-5" id="id_costo"> - </span> </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-4">
+                            <div class="card card-social" style="height: 100px">
+                                <div class="card-header text-center p-2 bg-blue">
+                                    <h6 class="m-0 text-white">ROTACIONES</h6>
+                                </div>
+                                <div class="card-block">
+                                    <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
+                                        <div class="col-4 m-0 p-0">
+                                            <p class="text-left m-0 p-0"><span class="text-muted m-r-5">CORTA</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-4 m-0 p-0">
+                                            <p class="text-center m-0 p-0"><span class="text-muted m-r-5">MEDIA</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-4 m-0 p-0">
+                                            <p class="text-right m-0 p-0"><span class="text-muted m-r-5">LARGA</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
+                                        <div class="col-4 m-0 p-0">
+                                            <h6 class="font-weight-bold text-left m-0 p-0" style="font-size: 1.1rem!important"><span class="m-r-5" id="id_R_corta"> - </span></h6>
+                                        </div>
+                                        <div class="col-4 m-0 p-0">
+                                            <h6 class="font-weight-bold text-center m-0 p-0" style="font-size: 1.1rem!important"><span class="m-r-5" id="id_R_media"> - </span></h6>
+                                        </div>
+
+                                        <div class="col-4 m-0 p-0">
+                                            <h6 class="font-weight-bold text-right  m-0 p-0" ><span class="m-r-5" id="id_R_larga"> - </span></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                       
+                        
+
+
+                      
+
                     </div>
 
-                    <form id="needs-validation" novalidate>  
-                      
-                      <div class="row" >  
-                          <div class="col-12 col-sm-6 col-md-2">  
-                              <label for="firstName">CLASE</label>  
-                              <input type="text" class="form-control" id="id_clase" placeholder="0.00" required>  
-                          </div> 
-                          <div class="col-12 col-sm-6 col-md-2">  
-                              <label for="lastName">TRANSITO</label>  
-                              <input type="text" class="form-control" id="id_transito" placeholder="0.00" required>  
-                          </div>
-                          <div class="col-12 col-sm-6 col-md-4">  
-                              <label for="lastName">PEDIDO</label>  
-                              <input type="text" class="form-control" id="id_pedido" placeholder="0.00" required>  
-                          </div>
-                          <div class="col-12 col-sm-6 col-md-4">  
-                              <label for="firstName">MOQ</label>  
-                              <input type="text" class="form-control" id="id_moq" placeholder="0.00" required>  
-                          </div>  
 
-                          <div class="col-12 col-sm-6 col-md-4 mt-3">  
-                              <label for="lastName">REORDER1</label>  
-                              <input type="text" class="form-control" id="id_reorder1" placeholder="0.00" required>  
-                          </div>  
-                          <div class="col-12 col-sm-6 col-md-4 mt-3">  
-                              <label for="lastName">REORDENAR</label>  
-                              <input type="text" class="form-control" id="id_reordenar" placeholder="0.00" required>  
-                          </div>  
-                          <div class="col-12 col-sm-6 col-md-4 mt-3">  
-                              <label for="lastName">CANTIDAD ORDENAR</label>  
-                              <input type="text" class="form-control" id="id_cant_ordenar" placeholder="0.00" required>  
-                          </div>                                
-                      </div>
-                      <div class="row mt-3">  
+
+                </div>
+                <div class=" modal-body">
+                  <div class="row">
+                  <div class="col-sm-4">
+                        <p for="lav-tetrapack" class="text-muted m-0">PROMEDIO MENSUAL</p>
+                        <div class="input-group">
+                          <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_promedio_mensual">0.00</p>  
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="text-muted m-0">VENTAS EJECUTADAS 12 MESES</p>
+                        <div class="input-group">
+                            <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_ventas">C$ 0.00</p>
+                        </div>
+                    </div>
+                                        
+                    <div class="col-sm-4">
+                        <p for="lav-tetrapack" class="text-muted m-0">CONTRIBUCION EJECUTADAS 12 MESES</p>
+                        <div class="input-group">
+                          <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="id_contribucion" >C$ 0.00</p>
+                        </div>
+                    </div>
+                  </div>
+                <div class="row mt-3">  
+                  
                           <div class="col-sm-12 col-md-12 col-xs-12">
+                              <div class="form-group">
+                                <select class="custom-select" id="selectGrafVtsDiario" name="selectGrafVtsDiario">
+                                  <option value="0">TODOS - Menos Licitaciones</option>
+                                  <option value="1">FARMACIA</option>
+                                  <option value="2">MAYORISTAS</option>
+                                  <option value="3">INSTITUCIONES</option>
+                                  <option value="4">FARMACIAS</option>
+                                  <option value="5">CRUZ AZUL</option>
+                                  <option value="6">LICITACIONES</option>
+                                </select>
+                              </div>
+                              
                               <div class="container-vms" id="grafVtsDiario" style="width: 100%; margin: 0 auto"></div>
                           </div>  
                       </div>  
-                      
-                    </form> 
-                  </div>
-              </div>
+                </div>
+                <div class="modal-footer">
+                  
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
-          </div>
-            
-
-
-          </div> 
-          <div class="modal-footer">		
-            <button class="btn btn-danger rounded-0" data-dismiss="modal" type="submit">Cerrar</button>  
-		      </div> 
-        </div>  
-      </div>
+        </div>
     </div>
-  </div>
+
 </div>
 @endsection

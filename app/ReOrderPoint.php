@@ -141,39 +141,41 @@ class ReOrderPoint extends Model
         $NameMonths = ReOrderPoint::NameMonth($Sales->FechaFinal);
 
 
-        $array["LEADTIME"] = number_format(bcdiv($Sales->LEADTIME, '1', 0), 0);
-        $array["DEMANDA_ANUAL_CA_NETA"] = number_format(bcdiv($Sales->DEMANDA_ANUAL_CA_NETA, '1', 0), 0);
-        $array["DEMANDA_ANUAL_CA_AJUSTADA"] = number_format(bcdiv($Sales->DEMANDA_ANUAL_CA_AJUSTADA, '1', 0), 0);
-        $array["LIMITE_LOGISTICO_MEDIO"] = number_format(bcdiv($Sales->LIMITE_LOGISTICO_MEDIO, '1', 0), 0);
-        $array["CONTRIBUCION"] = number_format(bcdiv($Sales->CONTRIBUCION, '1', 0), 0);
+        $array = [
+            'LEADTIME'                      => number_format($Sales->LEADTIME, 0, '.', ''),
+            'DEMANDA_ANUAL_CA_NETA'         => number_format($Sales->DEMANDA_ANUAL_CA_NETA, 0, '.', ''),
+            'DEMANDA_ANUAL_CA_AJUSTADA'     => number_format($Sales->DEMANDA_ANUAL_CA_AJUSTADA, 0, '.', ''),
+            'LIMITE_LOGISTICO_MEDIO'        => number_format($Sales->LIMITE_LOGISTICO_MEDIO, 0, '.', ''),
+            'CONTRIBUCION'                  => number_format($Sales->CONTRIBUCION, 0, '.', ''),
 
-        $array["REORDER1"] = number_format(bcdiv($Sales->REORDER1, '1', 0), 0);
-        $array["REORDER"] = number_format(bcdiv($Sales->REORDER, '1', 0), 0);
-        $array["CANTIDAD_ORDENAR"] = number_format(bcdiv($Sales->CANTIDAD_ORDENAR, '1', 0), 0);
-        $array["MOQ"] = number_format(bcdiv($Sales->MOQ, '1', 0), 0);
-        $array["PEDIDO"] = number_format(bcdiv($Sales->PEDIDO, '1', 0), 0);
-        $array["TRANSITO"] = number_format(bcdiv($Sales->TRANSITO, '1', 0), 0);
-        $array["CLASE"] = $Sales->CLASE;
+            'REORDER1'                      => number_format($Sales->REORDER1, 0, '.', ''),
+            'REORDER'                       => number_format($Sales->REORDER, 0, '.', ''),
+            'CANTIDAD_ORDENAR'              => number_format($Sales->CANTIDAD_ORDENAR, 0, '.', ''),
+            'MOQ'                           => number_format($Sales->MOQ, 0, '.', ''),
+            'PEDIDO'                        => number_format($Sales->PEDIDO, 0, '.', ''),
+            'TRANSITO'                      => number_format($Sales->TRANSITO, 0, '.', ''),
+            'CLASE'                         => $Sales->CLASE,
 
-        $array["ROTACION_CORTA"] = bcadd(number_format($Sales->ROTACION_CORTA, 0), 5, 0);
-        $array["ROTACION_MEDIA"] = bcadd(number_format($Sales->ROTACION_MEDIA, 0), 5, 0); 
-        $array["ROTACION_LARGA"] = bcadd(number_format($Sales->ROTACION_LARGA, 0), 5, 0);
+            'ROTACION_CORTA'                => bcadd(number_format($Sales->ROTACION_CORTA, 0), 5, 0),
+            'ROTACION_MEDIA'                => bcadd(number_format($Sales->ROTACION_MEDIA, 0), 5, 0), 
+            'ROTACION_LARGA'                => bcadd(number_format($Sales->ROTACION_LARGA, 0), 5, 0),
+
+            'COSTO_PROMEDIO_USD'            => number_format($Sales->COSTO_PROMEDIO_USD, 0, '.', ''),
+            'ULTIMO_COSTO_USD'              => number_format($Sales->ULTIMO_COSTO_USD, 0, '.', ''),
+            'VENTAS_YTD'                    => number_format($Sales->VENTAS_YTD, 0, '.', ''),
+            'CONTRIBUCION_YTD'              => number_format($Sales->CONTRIBUCION_YTD, 0, '.', ''),
+            'EJECUTADO_UND_YTD'             => number_format($Sales->EJECUTADO_UND_YTD, 0, '.', ''),
+            "VENTAS"                        => array_map(function($month, $value) use ($Sales) { 
+                                                return [
+                                                        "Mes"   => $month,
+                                                        "data"  => isset($Sales->$value) && !empty($Sales->$value) ? (float) number_format($Sales->$value,2,".",""): 0
+                                                        ];
+                                                }, $NameMonths, range(1, 12))
+        ];
         
-
-        $array["COSTO_PROMEDIO_USD"] = number_format(bcdiv($Sales->COSTO_PROMEDIO_USD, '1', 0), 0);
-        $array["ULTIMO_COSTO_USD"] = number_format(bcdiv($Sales->ULTIMO_COSTO_USD, '1', 0), 0);
-        $array["VENTAS_YTD"] = number_format(bcdiv($Sales->VENTAS_YTD, '1', 0), 0);
-        $array["CONTRIBUCION_YTD"] = number_format(bcdiv($Sales->CONTRIBUCION_YTD, '1', 0),0);
-        $array["EJECUTADO_UND_YTD"] = number_format(bcdiv($Sales->EJECUTADO_UND_YTD, '1', 0),0);
-
         
         
-        for ($i=1; $i <= 12; $i++) { 
-            $array["VENTAS"][$i] = [
-                "Mes"                 => $NameMonths[$i - 1],
-                "data" =>  (isset($Sales) && !empty($Sales->$i)) ? (float) number_format($Sales->$i,2,".","") : 0 
-            ];
-        }
+        
 
         return $array;
     }

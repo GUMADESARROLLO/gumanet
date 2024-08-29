@@ -8,7 +8,7 @@
         },      
 
         title: {
-            text: 'Comportamiento'
+            text: ''
         },
         subtitle: {
             text: 'C$ 0.00',
@@ -43,14 +43,7 @@
             pointFormat: '<span style="color:black">0.0<b>C$ {point.y}</b></span>'
         },
         series: [{
-            data: [],
-            point: {
-                events: {
-                    click: function(e) {
-                        //detalles_ventas_diarias(this.name,this.mAVG);
-                    }
-                }
-            },
+            data: [],            
         }]
     }; 
     $('[data-toggle="tooltip"]').tooltip();
@@ -69,12 +62,9 @@
         }
     }
 $(document).ready(function() {
-
+    Loading();
     
-    var articulo_g = 0;
-    //AGREGO LA RUTA AL NAVEGADOR
-    $("#item-nav-01").after(`<li class="breadcrumb-item active"><a href="{{url('/Inventario')}}">Inventario</a></li><li class="breadcrumb-item active">Reorder Point</li>`);
-
+   
     $('#dt_articulos').DataTable({
 		"ajax":{
 			"url": "getData",
@@ -96,6 +86,7 @@ $(document).ready(function() {
 			"emptyTable": "NO HAY DATOS DISPONIBLES",
 			"search":     "BUSCAR"
 		},
+        
        "scrollY":        "900px",
         "scrollX":        true,
         "scrollCollapse": true,
@@ -181,6 +172,9 @@ $(document).ready(function() {
             } 
 
         },
+        "initComplete": function(settings, json) {
+            $("#LoadingID").empty();
+        }
         
     });
 
@@ -206,6 +200,7 @@ $(document).ready(function() {
 $("#exp-to-excel").click(function() {    
     location.href = "ExportToExcel";
 })
+
 $("#BtnClick").click(function() {
 
     
@@ -226,9 +221,7 @@ $("#BtnClick").click(function() {
             }
             return response.json();
             } catch (error) {
-            Swal.showValidationMessage(`
-                Request failed: ${error}
-            `);
+                Swal.showValidationMessage(`Request failed: ${error}`);
             }
         },
         allowOutsideClick: () => !Swal.isLoading()
@@ -249,16 +242,14 @@ $("#BtnClick").click(function() {
 
 
 function getDetalleArticulo(Articulos,Descripcion,Undiad) {
-    articulo_g = Articulos;
 	$("#id_titulo_modal_all_items").html(Descripcion+` | `+Articulos);
 	
 	var target = '#nav-bod';
     $('a[data-toggle=tab][href=' + target + ']').tab('show');
 
-    //$("#tbody1").empty().append(`<tr><td colspan='5'><center>Aún no ha realizado ninguna busqueda</center></td></tr>`);
 	$("#mdDetalleArt").modal('show');
-    grafVentasMensuales(Articulos)
-    //dataVinneta(0,0,'','');
+    grafVentasMensuales(Articulos);
+    
 
 }
 
@@ -275,55 +266,35 @@ function dataVinneta(f1, f2,Ruta,Cliente,Stat) {
 }
 
 function FormatPretty(number) {
-    var numberString;
-    var scale = '';
     if( isNaN( number ) || !isFinite( number ) ) {
-        numberString = 'N/A';
-    } else {
-        var negative = number < 0;
-        number = negative? -number : number;
-
-        if( number < 1000 ) {
-            scale = '';
-        } else if( number < 1000000 ) {
-            scale = 'K';
-            number = number/1000;
-        } else if( number < 1000000000 ) {
-            scale = 'M';
-            number = number/1000000;
-        } else if( number < 1000000000000 ) {
-            scale = 'B';
-            number = number/1000000000;
-        } else if( number < 1000000000000000 ) {
-            scale = 'T';
-            number = number/1000000000000;
-        }
-        var maxDecimals = 0;
-        if( number < 10 && scale != '' ) {
-            maxDecimals = 1;
-        }
-        number = negative ? -number : number;
-        numberString = number.toFixed( maxDecimals );
-        numberString += scale
+        return 'N/A';
     }
-    return numberString;
-}  
+
+    const scales = ['', 'K', 'M', 'B', 'T'];
+    const negative = number < 0;
+    let scaledNumber = Math.abs(number);
+    let scale = 0;
+
+    while(scaledNumber >= 1000 && scale < scales.length - 1) {
+        scaledNumber /= 1000;
+        scale++;
+    }
+
+    const maxDecimals = scaledNumber < 10 ? 1 : 0;
+
+    return (negative ? '-' : '') + scaledNumber.toFixed(maxDecimals) + scales[scale];
+}
+
+function Loading() {
+    
+    $("#LoadingID").empty().append(`<div style=" padding:5px">
+        <div class="d-flex align-items-center mt-1">
+            <strong class="text-info">Cargando...</strong>
+            <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
+        </div>
+    </div>`);
+}
 function grafVentasMensuales(Articulos) {
-
-var temporal = "";
-$("#grafVtsDiario").empty().append(`<div style="height:400px; background:#ffff; padding:20px">
-            <div class="d-flex align-items-center">
-                <strong class="text-info">Cargando...</strong>
-                <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
-            </div>
-        </div>`);
-
-$(".divSpinner")
-.before(`<div class="spinner-border text-white float-right spinner-acum spinner-border-sm" role="status"></div>`);
-
-$("#anioAcumulado").empty();
-$("#porcentaje").empty();
-
 $.getJSON("dtGraf/" +Articulos, function(json) {
         dta = [];
         title = [];
@@ -336,26 +307,29 @@ $.getJSON("dtGraf/" +Articulos, function(json) {
         $("#id_demanda_neta").html(json['DEMANDA_ANUAL_CA_NETA']);
         $("#id_demanda_ajustada").html(json['DEMANDA_ANUAL_CA_AJUSTADA']);
         $("#id_limite_logistico_medio").html(json['LIMITE_LOGISTICO_MEDIO']);
-        $("#id_contribucion").html(json['CONTRIBUCION_YTD']);
+       
 
-        $("#id_reorder1").val(json['REORDER1']);
-        $("#id_reordenar").val(json['REORDER']);
-        $("#id_cant_ordenar").val(json['CANTIDAD_ORDENAR']);
+        $("#id_reorder1").html(numeral(json['REORDER1']).format('0,0'));
+        $("#id_reordenar").html(numeral(json['REORDER']).format('0,0'));
+        $("#id_cant_ordenar").html(numeral(json['CANTIDAD_ORDENAR']).format('0,0'));
 
-        $("#id_clase").val(json['CLASE']);
+        $("#id_clase").html(json['CLASE']);
         $("#id_pedido_transito").html(json['PEDIDO_TRANSITO']);
-        $("#id_moq").val(json['MOQ']);
+        $("#id_moq").html(json['MOQ']);
 
         $("#id_R_corta").html(json['ROTACION_CORTA']);
         $("#id_R_media").html(json['ROTACION_MEDIA']);
         $("#id_R_larga").html(json['ROTACION_LARGA']);
-        $("#id_ventas").html(json['VENTAS_YTD']);
+        
+        $("#id_ventas").html('C$ ' + numeral(json['VENTAS_YTD']).format('0,0'));
+        $("#id_contribucion").html('C$ ' + numeral(json['CONTRIBUCION_YTD']).format('0,0'));
+
         $("#id_costo").html(json['COSTO_PROMEDIO_USD']);
         $("#id_ultimo_costo").html(json['ULTIMO_COSTO_USD']);
 
-        $("#id_transito").val(json['TRANSITO']);
-        $("#id_pedido").val(json['PEDIDO']);
-        $("#id_promedio_mensual").html(json['EJECUTADO_UND_YTD']);
+        $("#id_transito").html(json['TRANSITO']);
+        $("#id_pedido").html(json['PEDIDO']);
+        $("#id_promedio_mensual").html(json['EJECUTADO_UND_YTD'] + " UNITS");
         
         
         $.each(json['VENTAS'], function(i, x) {
