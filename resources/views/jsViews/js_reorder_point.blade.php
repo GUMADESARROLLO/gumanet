@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    fullScreen();
+    
     var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
     grafiacas_productos_Diarios = {
         chart: {
@@ -63,9 +63,8 @@
     }
 $(document).ready(function() {
     Loading();
-    
-   
-    $('#dt_articulos').DataTable({
+    //fullScreen();
+    let Table = new DataTable('#dt_articulos',{
 		"ajax":{
 			"url": "getData",
 			'dataSrc': '',
@@ -86,14 +85,30 @@ $(document).ready(function() {
 			"emptyTable": "NO HAY DATOS DISPONIBLES",
 			"search":     "BUSCAR"
 		},
-        
-       "scrollY":        "500px",
-        "scrollX":        true,
-        "scrollCollapse": true,
-        "paging":         true,
-        "fixedColumns":   {
-            "leftColumns": 3,
+        layout: {
+            topStart: {
+                buttons: [ {
+                        extend: 'colvis',
+                        text: 'Columnas',
+                    } ]
+            },
+            topEnd: {
+                buttons: [ {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }]
+            }
         },
+        stateSave: true,
+        fixedColumns: {
+            start: 3
+        },
+        paging: true,
+        scrollCollapse: true,
+        scrollY: '1200px',
+        scrollX: true,
 		'columns': [	
 			{"data": "ARTICULO"},
 			{"data": "DESCRIPCION"},
@@ -151,7 +166,7 @@ $(document).ready(function() {
             {"className": "dt-center", "targets": []},
             {"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27,28,29,30]},
             {"className": "dt-right-color", "targets": [24]},
-            { "width": "50%", "targets": [  ] },
+            { "width": "300", "targets": [ 1 ] },
         ],
        
         "createdRow": function( row, data, dataIndex){
@@ -176,11 +191,11 @@ $(document).ready(function() {
         "initComplete": function(settings, json) {
             $("#LoadingID").empty();
         }
+
         
     });
 
-    $("#dt_articulos_length").hide();
-    $("#dt_articulos_filter").hide();
+
 
 	$('#txt_search').on( 'keyup', function () {
         var table = $('#dt_articulos').DataTable();
@@ -245,8 +260,7 @@ $("#BtnClick").click(function() {
 function getDetalleArticulo(Articulos,Descripcion,Undiad) {
 	$("#id_titulo_modal_all_items").html(Descripcion+` | `+Articulos);
 	
-	var target = '#nav-bod';
-    $('a[data-toggle=tab][href=' + target + ']').tab('show');
+
 
 	$("#mdDetalleArt").modal('show');
     grafVentasMensuales(Articulos);

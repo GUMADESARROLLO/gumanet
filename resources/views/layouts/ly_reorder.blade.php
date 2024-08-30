@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="{{ url('css/bootstrap.min.css') }}">
 <!-- Mi CSS -->
 <link rel="stylesheet" href="{{ url('css/style.css') }}">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.dataTables.css">
 
 <style>
     .bd-placeholder-img {
@@ -44,13 +45,11 @@
 <!-- Custom styles for this template -->
 <link rel="stylesheet" href="{{ url('css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ url('css/fuente.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url('css/daterangepicker.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url('css/jquery.dataTables.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url('css/bootstrap-select.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css">
 
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedcolumns/3.3.2/css/fixedColumns.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.dataTables.css">
 
 <!--Import Google Icon Font-->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -123,54 +122,38 @@
     </div>
   </div>
 </div>
+
 <script src="{{ url('js/ext/feather.min.js') }}"></script>
 <script src="{{ url('js/ext/Chart.min.js') }}"></script>
-<script src="{{ url('js/jquery-2.1.1.min.js') }}"></script>
-<script src="{{ url('js/jquery.maskMoney.js') }}"></script>
-<script src="{{ url('js/jquery.mask.js') }}"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
 <script src="{{ url('js/highcharts.js') }}"></script>
-<script src="{{ url('js/highcharts-3d.js') }}"></script>
-<script src="{{ url('js/all.min.js') }}"></script>
-<script src="{{ url('js/popper.min.js') }}"></script>
-<script src="{{ url('js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ url('js/bootstrap.bundle.js') }}"></script>
-<script src="{{ url('js/bootstrap.min.js') }}"></script>
-<script src="{{ url('js/bootstrap-select.js') }}"></script>
 <script src="{{ url('js/bootstrap.js') }}"></script>
 <script src="{{ url('js/ext/moment.js') }}"></script>
-<script src="{{ url('js/ext/daterangepicker.js') }}"></script>
-<script src="{{ url('js/jquery.dataTables.min.js') }}"></script>
+
 <script src="{{ url('js/js_general.js') }}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script src="{{ url('js/jquery.cookie.js') }}"></script>
 <script src="{{ url('js/Numeral.js') }}"></script>
-<script src="{{ url('js/xlsx.full.min.js') }}"></script>
-<script src="{{ url('js/jszip.js') }}"></script>
-<script src="{{ url('js/no-data-to-display.js') }}"></script>
-<script src="{{ url('js/jquery.daterangepicker.min.js') }}"></script>
-<script src="{{ url('js/dataTables.rowGroup.min.js') }}"></script>
-<script src="{{ url('js/ckeditor/ckeditor.js') }}"></script>
-<script src="{{ url('js/ckeditor/adapters/jquery.js') }}"></script>
-<script src="{{ url('js/grouped-categories.js') }}"></script>
-
-<script src="{{ url('js/exporting.js') }}"></script>
-<script src="{{ url('js/export-data.js') }}"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap4.min.js"></script>
-
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/dataTables.fixedColumns.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/fixedColumns.dataTables.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.html5.min.js"></script>
+
 
 
 @yield('metodosjs')

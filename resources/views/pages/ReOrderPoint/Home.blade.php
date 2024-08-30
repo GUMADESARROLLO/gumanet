@@ -15,7 +15,7 @@
   <p class="font-italic text-muted pt-0 mt-0">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	
    
   <div class="row">
-    <div class="col-sm-10">		
+    <div class="col-sm-11">		
       
       <div class="input-group"> 
         <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
@@ -35,10 +35,7 @@
         </select>
       </div>
     </div>
-
-    <div class="col-sm-1 p-0 m-0" >
-      <a id="exp-to-excel" href="#!" class="btn btn-light btn-block text-success"><i class="fas fa-file-excel"></i> Exportar</a>
-    </div>      
+   
   </div>
 
   <div class="row">
