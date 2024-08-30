@@ -220,18 +220,24 @@ $(document).ready(function() {
 
 });
 
+$('#selectGrafVtsDiario').change(function() {
+    var Canal = this.value;         
+    var Articulo = $("#id_articulo").text();
+    grafVentasMensuales(Articulo,Canal);     
+});
 
-$("#BtnClickColumns").click(function() {
-    var table = new DataTable('#dt_articulos');
+
+// $("#BtnClickColumns").click(function() {
+//     var table = new DataTable('#dt_articulos');
     
-    table.button('0').trigger();
-    //table.buttons('.buttons-colvis').trigger();
-})
+//     table.button('0').trigger();
+//     //table.buttons('.buttons-colvis').trigger();
+// })
 
-$("#BtnClickExport").click(function() {
-    var table = new DataTable('#dt_articulos');
-    table.buttons('.buttons-excel').trigger();
-})
+// $("#BtnClickExport").click(function() {
+//     var table = new DataTable('#dt_articulos');
+//     table.buttons('.buttons-excel').trigger();
+// })
 
 
 $("#exp-to-excel").click(function() {    
@@ -279,12 +285,13 @@ $("#BtnClick").click(function() {
 
 
 function getDetalleArticulo(Articulos,Descripcion,Undiad) {
-	$("#id_titulo_modal_all_items").html(Descripcion+` | `+Articulos);
-	
+
+	$("#id_descripcion").html(Descripcion+` | `+ Articulos);
+    $("#id_articulo").html(Articulos);
 
 
 	$("#mdDetalleArt").modal('show');
-    grafVentasMensuales(Articulos);
+    grafVentasMensuales(Articulos,'Todos');
     
 
 }
@@ -330,72 +337,72 @@ function Loading() {
         </div>
     </div>`);
 }
-function grafVentasMensuales(Articulos) {
-$.getJSON("dtGraf/" +Articulos, function(json) {
-        dta = [];
-        title = [];
-        tmp_total = 0;
-        Day_Max = [];
+function grafVentasMensuales(Articulos, Canal) {
+    $.getJSON("dtGraf/" + Articulos + "/" + Canal, function(json) {
+            dta = [];
+            title = [];
+            tmp_total = 0;
+            Day_Max = [];
 
-        var vVtsDiarias;
+            var vVtsDiarias;
+            
+            $("#id_leadtime").html(json['LEADTIME']);
+            $("#id_demanda_neta").html(json['DEMANDA_ANUAL_CA_NETA']);
+            $("#id_demanda_ajustada").html(json['DEMANDA_ANUAL_CA_AJUSTADA']);
+            $("#id_limite_logistico_medio").html(json['LIMITE_LOGISTICO_MEDIO']);
         
-        $("#id_leadtime").html(json['LEADTIME']);
-        $("#id_demanda_neta").html(json['DEMANDA_ANUAL_CA_NETA']);
-        $("#id_demanda_ajustada").html(json['DEMANDA_ANUAL_CA_AJUSTADA']);
-        $("#id_limite_logistico_medio").html(json['LIMITE_LOGISTICO_MEDIO']);
-       
 
-        $("#id_reorder1").html(numeral(json['REORDER1']).format('0,0'));
-        $("#id_reordenar").html(numeral(json['REORDER']).format('0,0'));
-        $("#id_cant_ordenar").html(numeral(json['CANTIDAD_ORDENAR']).format('0,0'));
+            $("#id_reorder1").html(numeral(json['REORDER1']).format('0,0'));
+            $("#id_reordenar").html(numeral(json['REORDER']).format('0,0'));
+            $("#id_cant_ordenar").html(numeral(json['CANTIDAD_ORDENAR']).format('0,0'));
 
-        $("#id_clase").html(json['CLASE']);
-        $("#id_pedido_transito").html(json['PEDIDO_TRANSITO']);
-        $("#id_moq").html(json['MOQ']);
+            $("#id_clase").html(json['CLASE']);
+            $("#id_pedido_transito").html(json['PEDIDO_TRANSITO']);
+            $("#id_moq").html(json['MOQ']);
 
-        $("#id_R_corta").html(json['ROTACION_CORTA']);
-        $("#id_R_media").html(json['ROTACION_MEDIA']);
-        $("#id_R_larga").html(json['ROTACION_LARGA']);
-        
-        $("#id_ventas").html('C$ ' + numeral(json['VENTAS_YTD']).format('0,0'));
-        $("#id_contribucion").html('C$ ' + numeral(json['CONTRIBUCION_YTD']).format('0,0'));
+            $("#id_R_corta").html(json['ROTACION_CORTA']);
+            $("#id_R_media").html(json['ROTACION_MEDIA']);
+            $("#id_R_larga").html(json['ROTACION_LARGA']);
+            
+            $("#id_ventas").html('C$ ' + numeral(json['VENTAS_YTD']).format('0,0'));
+            $("#id_contribucion").html('C$ ' + numeral(json['CONTRIBUCION_YTD']).format('0,0'));
 
-        $("#id_costo").html(json['COSTO_PROMEDIO_USD']);
-        $("#id_ultimo_costo").html(json['ULTIMO_COSTO_USD']);
+            $("#id_costo").html(json['COSTO_PROMEDIO_USD']);
+            $("#id_ultimo_costo").html(json['ULTIMO_COSTO_USD']);
 
-        $("#id_transito").html(json['TRANSITO']);
-        $("#id_pedido").html(json['PEDIDO']);
-        $("#id_promedio_mensual").html(json['EJECUTADO_UND_YTD'] + " UNITS");
-        
-        
-        $.each(json['VENTAS'], function(i, x) {
+            $("#id_transito").html(json['TRANSITO']);
+            $("#id_pedido").html(json['PEDIDO']);
+            $("#id_promedio_mensual").html(json['EJECUTADO_UND_YTD'] + " UNITS");
+            
+            
+            $.each(json['VENTAS'], function(i, x) {
 
-            tmp_total = tmp_total + parseFloat(x['data']);
+                tmp_total = tmp_total + parseFloat(x['data']);
 
-            dta.push({
-                name  : x['Mes'],
-                y     : x['data'], 
-            });
+                dta.push({
+                    name  : x['Mes'],
+                    y     : x['data'], 
+                });
 
-            title.push(x['name']); 
-            Day_Max.push(x['data']); 
-        }); 
+                title.push(x['name']); 
+                Day_Max.push(x['data']); 
+            }); 
 
-        temporal = '<span style="color:black">\u25CF</span><b>{point.y} </b> UNITS<br/>';                
-        grafiacas_productos_Diarios.tooltip = {
-            pointFormat : temporal
-        }
+            temporal = '<span style="color:black">\u25CF</span><b>{point.y} </b> UNITS<br/>';                
+            grafiacas_productos_Diarios.tooltip = {
+                pointFormat : temporal
+            }
 
-        vVtsDiarias = numeral(tmp_total).format('0,0.00');
-        
-        grafiacas_productos_Diarios.xAxis.categories = title;
-        grafiacas_productos_Diarios.subtitle.text = vVtsDiarias + " UNITS";
-        grafiacas_productos_Diarios.series[0].data = dta;
+            vVtsDiarias = numeral(tmp_total).format('0,0.00');
+            
+            grafiacas_productos_Diarios.xAxis.categories = title;
+            grafiacas_productos_Diarios.subtitle.text = vVtsDiarias + " UNITS";
+            grafiacas_productos_Diarios.series[0].data = dta;
 
-        chart = new Highcharts.Chart(grafiacas_productos_Diarios);
-        
-        chart.yAxis[0].update();
+            chart = new Highcharts.Chart(grafiacas_productos_Diarios);
+            
+            chart.yAxis[0].update();
 
-})
+    })
 }
 </script>

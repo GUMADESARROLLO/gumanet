@@ -50,7 +50,7 @@ class ReOrderPoint extends Model
     public static function getArticulo() 
     {
         $array = [];
-        $Articulos = ReOrderPoint::WHERE('VALUACION','!=',"0")->get();
+        $Articulos = ReOrderPoint::WHERE('VALUACION','!=',"0")->WHERE('CANAL','!=',"LICITACIONES")->get();
         foreach ($Articulos as $key => $a) {
             $array[$key] = [
                 "ARTICULO"                  => '<a href="#!" onclick="getDetalleArticulo('."'".$a->ARTICULO."'".', '."'".strtoupper($a->DESCRIPCION)."'".')" >'.$a->ARTICULO.'</a>',
@@ -131,7 +131,7 @@ class ReOrderPoint extends Model
         return $months;
         
     }
-    public static function getDataGrafica($Articulos) {
+    public static function getDataGrafica($Articulos,$Canal) {
 
         $array = array();
 

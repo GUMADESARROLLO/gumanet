@@ -147,9 +147,8 @@
                                     <div class="d-flex align-items-center position-relative mt-0">
                                       <div class="flex-1 ">
                                         <h6 class="mb-0 fw-semi-bold">
-                                        <div class="text-light text-uppercase" id="id_titulo_modal_all_items">
-                                              - 
-                                            </div>
+                                          <div class="text-light text-uppercase" id="id_descripcion"></div>
+                                          <span id="id_articulo" style="display: none"></span>
                                         </h6>
                                         <p class="text-white-50 fs--2 mb-0" id="nombre_ruta_zona_modal">
                                           CLASE : <span id="id_clase"> - </span> |  LEADTIME : <span id="id_leadtime"> - </span> | LIMITE LOGICO MEDIO : <span id="id_limite_logistico_medio"> - </span>
@@ -333,16 +332,7 @@
                             </div>
                         </div>
 
-                        
-                       
-                        
-
-
-                      
-
                     </div>
-
-
 
                 </div>
                 <div class=" modal-body">
@@ -372,13 +362,13 @@
                           <div class="col-sm-12 col-md-12 col-xs-12">
                               <div class="form-group">
                                 <select class="custom-select" id="selectGrafVtsDiario" name="selectGrafVtsDiario">
-                                  <option value="0">TODOS - Menos Licitaciones</option>
-                                  <option value="1">FARMACIA</option>
-                                  <option value="2">MAYORISTAS</option>
-                                  <option value="3">INSTITUCIONES</option>
-                                  <option value="4">FARMACIAS</option>
-                                  <option value="5">CRUZ AZUL</option>
-                                  <option value="6">LICITACIONES</option>
+                                  <option value="TODOS">TODOS - Menos Licitaciones</option>
+                                  <option value="FARMACIAS">FARMACIAS</option>
+                                  <option value="MAYORISTAS">MAYORISTAS</option>
+                                  <option value="INSTITUCIONES">INSTITUCIONES</option>
+                                  <option value="FARMACIAS">FARMACIAS</option>
+                                  <option value="CRUZ_AZUL">CRUZ AZUL</option>
+                                  <option value="LICITACIONES">LICITACIONES</option>
                                 </select>
                               </div>
                               
