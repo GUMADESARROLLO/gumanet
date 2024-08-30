@@ -690,10 +690,13 @@ $("#btnSearch").click(function() {
                     $.each(api.column(4, { page: 'all' }).data(), function (_, group) {
                         var cant = api.column(9, { page: 'all' }).data()[_];
                         cant = parseFloat(cant);
-                        
-                        switch (group) {
-                            case 'VENTA':  count_venta += cant; break;
-                            case 'BONIFICADO': count_bonif += cant; break;
+                        console.log(cant)
+                        if(cant >= 0){
+
+                            switch (group) {
+                                case 'VENTA':  count_venta += cant; break;
+                                case 'BONIFICADO': count_bonif += cant; break;
+                            }
                         }
                     });
 

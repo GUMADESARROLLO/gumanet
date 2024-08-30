@@ -29,11 +29,9 @@ class ReOrderPoint extends Model
         $currentDate = date('Y-m-d');
         $startOfMonth = date('Y-m-01', strtotime($currentDate));
 
-        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-12 months', strtotime($startOfMonth)));
+        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
         $DiaActual  = (int) date('d', strtotime($FechaEnd));
-
-
         
         
         // Ejecutar el tercer procedimiento almacenado
@@ -76,11 +74,11 @@ class ReOrderPoint extends Model
                 "CONTRIBUCION"              => number_format($a->CONTRIBUCION,2),
                 "PEDIDO"                    => number_format($a->PEDIDO,2),
                 "TRANSITO"                  => number_format($a->TRANSITO,2),
-                "MOQ"                       => number_format($a->MOQ,2),
+                "MOQ"                       => number_format($a->MOQ,0),
                 "ESTIMACION_SOBRANTES_UND"  => number_format($a->ESTIMACION_SOBRANTES_UND,2),
-                "REORDER1"                  => number_format($a->REORDER1,2),
+                "REORDER1"                  => number_format($a->REORDER1,0),
                 "REORDER"                   => number_format($a->REORDER,2),
-                "CANTIDAD_ORDENAR"          => number_format($a->CANTIDAD_ORDENAR,2),
+                "CANTIDAD_ORDENAR"          => number_format($a->CANTIDAD_ORDENAR,0),
                 "IS_CA"                     => $a->IS_CA,
                 "ROTACION_CORTA"            => number_format($a->ROTACION_CORTA, 2),
                 "ROTACION_MEDIA"            => number_format($a->ROTACION_MEDIA, 2),
@@ -93,47 +91,91 @@ class ReOrderPoint extends Model
                 "FACTOR_STOCK_SEGURIDAD"    => number_format($a->FACTOR_STOCK_SEGURIDAD, 2),
                 
                 "ROTACION_PREVISTA_EXISTENCIAS_VENCER" => number_format($a->ROTACION_PREVISTA_EXISTENCIAS_VENCER, 2),
+                "TOTAL_UMK"                 => number_format($a->TOTAL_UMK, 2),
+                "TOTAL_GP"                  => number_format($a->TOTAL_GP, 2),
+                "TOTAL_DISP"                => number_format($a->TOTAL_DISP, 2),
             ];
         }
 
         return $array;
+    }
+    public static function NameMonth($currentDate) {
+
+        $startOfMonth = date('Y-m-01', strtotime($currentDate));
+
+        $FechaIni = date('Y-m-d', strtotime('-11 months', strtotime($startOfMonth)));
+        $FechaEnd = date('Y-m-d', strtotime($currentDate));
+
+        // Array para almacenar los nombres de los meses
+        $months = [];
+
+        $start = new \DateTime($FechaIni);
+        $end = new \DateTime($FechaEnd);
+
+        // Iterar desde la fecha inicial hasta la fecha final
+        while ($start <= $end) {
+            $months[] = $start->format('My'); // 'M' para el nombre abreviado del mes, 'y' para el año en dos dígitos
+            $start->modify('+1 month');
+        }
+
+        // Convertir el formato "M y" a "Ene23", "Feb23", etc.
+        $months = array_map(function($month) {
+            return str_replace(
+                ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], 
+                ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'], 
+                $month
+            );
+        }, $months);
+
+        return $months;
+        
     }
     public static function getDataGrafica($Articulos) {
 
         $array = array();
 
         $Sales = ReOrderPoint::WHERE('ARTICULO',$Articulos)->first();
-        
-        $array["LEADTIME"] = number_format($Sales->LEADTIME,2);
-        $array["DEMANDA_ANUAL_CA_NETA"] = number_format($Sales->DEMANDA_ANUAL_CA_NETA,2);
-        $array["DEMANDA_ANUAL_CA_AJUSTADA"] = number_format($Sales->DEMANDA_ANUAL_CA_AJUSTADA,2);
-        $array["LIMITE_LOGISTICO_MEDIO"] = number_format($Sales->LIMITE_LOGISTICO_MEDIO,2);
-        $array["CONTRIBUCION"] = number_format($Sales->CONTRIBUCION,2);
 
-        $array["REORDER1"] = number_format($Sales->REORDER1,2);
-        $array["REORDER"] = number_format($Sales->REORDER,2);
-        $array["CANTIDAD_ORDENAR"] = number_format($Sales->CANTIDAD_ORDENAR,2);
-        $array["MOQ"] = number_format($Sales->MOQ, 2);
-        $array["PEDIDO"] = number_format($Sales->PEDIDO, 2);
-        $array["TRANSITO"] = number_format($Sales->TRANSITO, 2);
-        $array["CLASE"] = $Sales->CLASE;
+    
 
-        $array["ROTACION_CORTA"] = number_format($Sales->ROTACION_CORTA, 2);
-        $array["ROTACION_MEDIA"] = number_format($Sales->ROTACION_MEDIA, 2);
-        $array["ROTACION_LARGA"] = number_format($Sales->ROTACION_LARGA, 2);
+        $NameMonths = ReOrderPoint::NameMonth($Sales->FechaFinal);
+
+
+        $array = [
+            'LEADTIME'                      => number_format($Sales->LEADTIME, 0, '.', ''),
+            'DEMANDA_ANUAL_CA_NETA'         => number_format($Sales->DEMANDA_ANUAL_CA_NETA, 0, '.', ''),
+            'DEMANDA_ANUAL_CA_AJUSTADA'     => number_format($Sales->DEMANDA_ANUAL_CA_AJUSTADA, 0, '.', ''),
+            'LIMITE_LOGISTICO_MEDIO'        => number_format($Sales->LIMITE_LOGISTICO_MEDIO, 0, '.', ''),
+            'CONTRIBUCION'                  => number_format($Sales->CONTRIBUCION, 0, '.', ''),
+
+            'REORDER1'                      => number_format($Sales->REORDER1, 0, '.', ''),
+            'REORDER'                       => number_format($Sales->REORDER, 0, '.', ''),
+            'CANTIDAD_ORDENAR'              => number_format($Sales->CANTIDAD_ORDENAR, 0, '.', ''),
+            'MOQ'                           => number_format($Sales->MOQ, 0, '.', ''),
+            'PEDIDO'                        => number_format($Sales->PEDIDO, 0, '.', ''),
+            'TRANSITO'                      => number_format($Sales->TRANSITO, 0, '.', ''),
+            'CLASE'                         => $Sales->CLASE,
+
+            'ROTACION_CORTA'                => bcadd(number_format($Sales->ROTACION_CORTA, 0), 5, 0),
+            'ROTACION_MEDIA'                => bcadd(number_format($Sales->ROTACION_MEDIA, 0), 5, 0), 
+            'ROTACION_LARGA'                => bcadd(number_format($Sales->ROTACION_LARGA, 0), 5, 0),
+
+            'COSTO_PROMEDIO_USD'            => number_format($Sales->COSTO_PROMEDIO_USD, 0, '.', ''),
+            'ULTIMO_COSTO_USD'              => number_format($Sales->ULTIMO_COSTO_USD, 0, '.', ''),
+            'VENTAS_YTD'                    => number_format($Sales->VENTAS_YTD, 0, '.', ''),
+            'CONTRIBUCION_YTD'              => number_format($Sales->CONTRIBUCION_YTD, 0, '.', ''),
+            'EJECUTADO_UND_YTD'             => number_format($Sales->EJECUTADO_UND_YTD, 0, '.', ''),
+            "VENTAS"                        => array_map(function($month, $value) use ($Sales) { 
+                                                return [
+                                                        "Mes"   => $month,
+                                                        "data"  => isset($Sales->$value) && !empty($Sales->$value) ? (float) number_format($Sales->$value,2,".",""): 0
+                                                        ];
+                                                }, $NameMonths, range(1, 12))
+        ];
         
-        $array["COSTO_PROMEDIO_USD"] = number_format($Sales->COSTO_PROMEDIO_USD, 2);
-        $array["ULTIMO_COSTO_USD"] = number_format($Sales->ULTIMO_COSTO_USD, 2);
-        $array["VENTAS_YTD"] = number_format($Sales->VENTAS_YTD, 2);
-        $array["CONTRIBUCION_YTD"] = number_format($Sales->CONTRIBUCION_YTD,2);
-        $array["EJECUTADO_UND_YTD"] = number_format($Sales->EJECUTADO_UND_YTD,2);
         
-        for ($i=1; $i <= 12; $i++) { 
-            $array["VENTAS"][$i] = [
-                "Mes"                 => "Mes".$i,
-                "data" =>  (isset($Sales) && !empty($Sales->$i)) ? (float) number_format($Sales->$i,2,".","") : 0 
-            ];
-        }
+        
+        
 
         return $array;
     }
@@ -143,7 +185,7 @@ class ReOrderPoint extends Model
         $tituloReporte = "";
         $titulosColumnas = array();
         $columnIndex = 0;
-        $rowIndex = 3;
+        $rowIndex = 1;
 
         $estiloTituloReporte = array(
             'font' => array(
@@ -201,7 +243,7 @@ class ReOrderPoint extends Model
         $titulosColumnas = array_keys(ReOrderPoint::first()->toArray());
 
     
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B2', "Actualizado al : ". $RowReOrderPoint[0][ 'FechaFinal']);
+        //$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B2', "Actualizado al : ". $RowReOrderPoint[0][ 'FechaFinal']);
         
 
         
@@ -210,7 +252,7 @@ class ReOrderPoint extends Model
             $titulo = (!is_string($titulo)) ? strval( $titulo + 1) : $titulo ;
 
             if (!in_array($titulo, array('FechaFinal', 'IS_CA','CALC_AVG','CONTRIBUCION'))) {
-                $i = 4;
+                $i = 2;
 
                 $NameColumna = (strlen($titulo) <= 2) ? "Mes".$titulo : $titulo ;
 
@@ -236,13 +278,13 @@ class ReOrderPoint extends Model
 
         //ANCHO DE CADA COLUMNAS
         $objPHPExcel->getActiveSheet()->getColumnDimension("B")->setWidth(110);
-        $objPHPExcel->getActiveSheet()->getStyle('A3:' . $ultimaColumnaLetra . '3')->applyFromArray($estiloTituloColumnas);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:' . $ultimaColumnaLetra . '1')->applyFromArray($estiloTituloColumnas);
 
-        $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:". $ultimaColumnaLetra .($i-1));
+        $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A2:". $ultimaColumnaLetra .($i-1));
 
         //FORMATOS NUMERICOS
         $formatCode = '_-" "* #,##0.00_-;_-" "* #,##0.00_-;_-" "* "-"??_-;_-@_-';
-        $objPHPExcel->getActiveSheet()->getStyle("D4:". $ultimaColumnaLetra .($i-1))->getNumberFormat()->setFormatCode($formatCode);
+        $objPHPExcel->getActiveSheet()->getStyle("D2:". $ultimaColumnaLetra .($i-1))->getNumberFormat()->setFormatCode($formatCode);
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="ReOrderPoint.xlsx"');

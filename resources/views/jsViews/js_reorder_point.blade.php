@@ -8,7 +8,7 @@
         },      
 
         title: {
-            text: 'Comportamiento'
+            text: ''
         },
         subtitle: {
             text: 'C$ 0.00',
@@ -43,17 +43,11 @@
             pointFormat: '<span style="color:black">0.0<b>C$ {point.y}</b></span>'
         },
         series: [{
-            data: [],
-            point: {
-                events: {
-                    click: function(e) {
-                        //detalles_ventas_diarias(this.name,this.mAVG);
-                    }
-                }
-            },
+            data: [],            
         }]
     }; 
-    fullScreen();
+    $('[data-toggle="tooltip"]').tooltip();
+    //fullScreen();
     function isValue(value, def, is_return) {
         if ( $.type(value) == 'null'
             || $.type(value) == 'undefined'
@@ -68,12 +62,9 @@
         }
     }
 $(document).ready(function() {
-
+    Loading();
     
-    var articulo_g = 0;
-    //AGREGO LA RUTA AL NAVEGADOR
-    $("#item-nav-01").after(`<li class="breadcrumb-item active"><a href="{{url('/Inventario')}}">Inventario</a></li><li class="breadcrumb-item active">Reorder Point</li>`);
-
+   
     $('#dt_articulos').DataTable({
 		"ajax":{
 			"url": "getData",
@@ -95,60 +86,70 @@ $(document).ready(function() {
 			"emptyTable": "NO HAY DATOS DISPONIBLES",
 			"search":     "BUSCAR"
 		},
+        
+       "scrollY":        "900px",
+        "scrollX":        true,
+        "scrollCollapse": true,
+        "paging":         true,
+        "fixedColumns":   {
+            "leftColumns": 2,
+        },
 		'columns': [	
-			{"title": "ARTICULO",                                   "data": "ARTICULO"},
-            {"title": "DESCRIPCIÓN", 		                        "data": "DESCRIPCION"},
-            {"title": "LEADTIME", 		                            "data": "LEADTIME"},
-            {"title": "FACTOR STOCK SEGURIDAD",                     "data": "FACTOR_STOCK_SEGURIDAD"},
-            {"title": "ROTACION PREVISTA EXISTENCIAS POR VENCER"    ,"data": "ROTACION_PREVISTA_EXISTENCIAS_VENCER"},
-			{"title": "EXIST. PROX. A VENCER <=12 Meses", 		    "data": "VENCE_MENOS_IGUAL_12"},   
-            {"title": "EXIST. LOTE >=7 Meses", 		                "data": "VENCE_MAS_IGUAL_7"},
-            {"title": "LOTE MAS PROX. A VENCER", 		            "data": "LOTE_MAS_PROX_VENCER"},
-            {"title": "EXIST. EN LORE MAS PROX. POR VENCERSE", 		"data": "EXIT_LOTE_PROX_VENCER"},
-            {"title": "ULT. FECHA ENTRADA LOTE", 		                "data": "FECHA_ENTRADA_LOTE"},
-            {"title": "ULT. CANT. INGRESADA",                         "data": "CANTIDAD_INGRESADA"},
-            {"title": "PROM. UND. YTD", 		                    "data": "EJECUTADO_UND_YTD"},
-            {"title": "PEDIDO", 		                            "data": "PEDIDO"},
-            {"title": "TRANSITO", 		                            "data": "TRANSITO"},
-            {"title": "VENTAS EJEC. YTD C$.", 		                "data": "VENTAS_YTD"},
-            {"title": "CONTRIBUCION BRUTA. YTD C$.", 		        "data": "CONTRIBUCION_YTD"},           
-            {"title": "ROTACION CORTA", 		                    "data": "ROTACION_CORTA"},
-            {"title": "ROTACION MEDIA", 		                    "data": "ROTACION_MEDIA"},
-            {"title": "ROTACION LARGA", 		                    "data": "ROTACION_LARGA"},
-            {"title": "MOQ", 		                                "data": "MOQ"},
-            {"title": "REORDER", 		                            "data": "REORDER"},
-            {"title": "CANTIDAD A ORDENAR", 		                "data": "CANTIDAD_ORDENAR"},
-            {"title": "RAZON REORDER/MOQ", "data":"CANTIDAD_ORDENAR", "render": function(data, type, row, meta) {
+			{"data": "ARTICULO"},
+			{"data": "DESCRIPCION"},
+			{"data": "LEADTIME"},
+			{"data": "FACTOR_STOCK_SEGURIDAD"},
+			{"data": "ROTACION_PREVISTA_EXISTENCIAS_VENCER"},
+			{"data": "TOTAL_UMK"},
+			{"data": "TOTAL_GP"},
+			{"data": "TOTAL_DISP"},
+			{"data": "VENCE_MENOS_IGUAL_12"},
+			{"data": "VENCE_MAS_IGUAL_7"},
+			{"data": "LOTE_MAS_PROX_VENCER"},
+			{"data": "EXIT_LOTE_PROX_VENCER"},
+			{"data": "FECHA_ENTRADA_LOTE"},
+			{"data": "CANTIDAD_INGRESADA"},
+			{"data": "EJECUTADO_UND_YTD"},
+			{"data": "PEDIDO"},
+			{"data": "TRANSITO"},
+			{"data": "VENTAS_YTD"},
+			{"data": "CONTRIBUCION_YTD"},
+			{"data": "ROTACION_CORTA"},
+			{"data": "ROTACION_MEDIA"},
+			{"data": "ROTACION_LARGA"},
+			{"data": "MOQ"},
+			{"data": "REORDER"},
+			{"data": "CANTIDAD_ORDENAR"},
+			{"data": "CANTIDAD_ORDENAR", "render": function(data, type, row, meta) {
 
-                var _ReOrder = numeral(row.REORDER).format('00.00');
-                var _MOQ     = numeral(row.MOQ).format('00.00')
-                
-                let color_cant_order = _ReOrder / _MOQ;
+				var _ReOrder = numeral(row.REORDER).format('00.00');
+				var _MOQ     = numeral(row.MOQ).format('00.00')
+				
+				let color_cant_order = _ReOrder / _MOQ;
 
-                color_cant_order = isValue(color_cant_order,0,true);
+				color_cant_order = isValue(color_cant_order,0,true);
 
-                return numeral(color_cant_order).format('0.00');
+				return numeral(color_cant_order).format('0.00');
 
 
-            }},
-            {"title": "COST PROM. C$", 		                        "data": "COSTO_PROMEDIO_LOC"},
-            {"title": "COST PROM. USD", 		                    "data": "COSTO_PROMEDIO_USD"},
-            {"title": "ULT. COST. USD", 		                    "data": "ULTIMO_COSTO_USD"},
-            {"title": "DEM. ANUAL CA NETA", 		                "data": "DEMANDA_ANUAL_CA_NETA"},
-            {"title": "DEM. ANUAL CA AJUSTADA", 		            "data": "DEMANDA_ANUAL_CA_AJUSTADA"}, 
-            {"title": "FACTOR", 		                            "data": "FACTOR"}, 
-            {"title": "LIMITE LOGISTICO MEDIO", 		            "data": "LIMITE_LOGISTICO_MEDIO"},
-            {"title": "CLASE", 		                                "data": "CLASE"},
-            {"title": "VALUACION", 		                            "data": "VALUACION"},
-            // {"title": "CONTRIBUCION", 		                        "data": "CONTRIBUCION"},
-            {"title": "REORDER1", 		                            "data": "REORDER1"},
-            {"title": "ESTIMACION SOBRANTES UND", 		            "data": "ESTIMACION_SOBRANTES_UND"},
-            
+			}},
+			{"data": "COSTO_PROMEDIO_LOC"},
+			{"data": "COSTO_PROMEDIO_USD"},
+			{"data": "ULTIMO_COSTO_USD"},
+			{"data": "DEMANDA_ANUAL_CA_NETA"},
+			{"data": "DEMANDA_ANUAL_CA_AJUSTADA"},
+			{"data": "FACTOR"},
+			{"data": "LIMITE_LOGISTICO_MEDIO"},
+			{"data": "CLASE"},
+			{"data": "VALUACION"},
+			{"data": "REORDER1"},
+			{"data": "ESTIMACION_SOBRANTES_UND"},
+			
 		],
         "columnDefs": [
             {"className": "dt-center", "targets": []},
-            {"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27]},
-            {"className": "dt-right-color", "targets": [21]},
+            {"className": "dt-right", "targets": [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27,28,29,30]},
+            {"className": "dt-right-color", "targets": [24]},
             { "width": "50%", "targets": [  ] },
         ],
        
@@ -163,7 +164,7 @@ $(document).ready(function() {
 
             color_cant_order = isValue(color_cant_order,0,true);
 
-            $(row).find('td:eq(21)').addClass( (color_cant_order <= 0.5 ) ? 'dt-cant-ordenar-red' : 'dt-cant-ordenar-green');
+            $(row).find('td:eq(24)').addClass( (color_cant_order <= 0.5 ) ? 'dt-cant-ordenar-red' : 'dt-cant-ordenar-green');
             
         
             if( data["IS_CA"] ==  `S`){
@@ -171,6 +172,9 @@ $(document).ready(function() {
             } 
 
         },
+        "initComplete": function(settings, json) {
+            $("#LoadingID").empty();
+        }
         
     });
 
@@ -196,6 +200,7 @@ $(document).ready(function() {
 $("#exp-to-excel").click(function() {    
     location.href = "ExportToExcel";
 })
+
 $("#BtnClick").click(function() {
 
     
@@ -216,9 +221,7 @@ $("#BtnClick").click(function() {
             }
             return response.json();
             } catch (error) {
-            Swal.showValidationMessage(`
-                Request failed: ${error}
-            `);
+                Swal.showValidationMessage(`Request failed: ${error}`);
             }
         },
         allowOutsideClick: () => !Swal.isLoading()
@@ -239,16 +242,14 @@ $("#BtnClick").click(function() {
 
 
 function getDetalleArticulo(Articulos,Descripcion,Undiad) {
-    articulo_g = Articulos;
 	$("#id_titulo_modal_all_items").html(Descripcion+` | `+Articulos);
 	
 	var target = '#nav-bod';
     $('a[data-toggle=tab][href=' + target + ']').tab('show');
 
-    //$("#tbody1").empty().append(`<tr><td colspan='5'><center>Aún no ha realizado ninguna busqueda</center></td></tr>`);
 	$("#mdDetalleArt").modal('show');
-    grafVentasMensuales(Articulos)
-    //dataVinneta(0,0,'','');
+    grafVentasMensuales(Articulos);
+    
 
 }
 
@@ -265,57 +266,35 @@ function dataVinneta(f1, f2,Ruta,Cliente,Stat) {
 }
 
 function FormatPretty(number) {
-    var numberString;
-    var scale = '';
     if( isNaN( number ) || !isFinite( number ) ) {
-        numberString = 'N/A';
-    } else {
-        var negative = number < 0;
-        number = negative? -number : number;
-
-        if( number < 1000 ) {
-            scale = '';
-        } else if( number < 1000000 ) {
-            scale = 'K';
-            number = number/1000;
-        } else if( number < 1000000000 ) {
-            scale = 'M';
-            number = number/1000000;
-        } else if( number < 1000000000000 ) {
-            scale = 'B';
-            number = number/1000000000;
-        } else if( number < 1000000000000000 ) {
-            scale = 'T';
-            number = number/1000000000000;
-        }
-        var maxDecimals = 0;
-        if( number < 10 && scale != '' ) {
-            maxDecimals = 1;
-        }
-        number = negative ? -number : number;
-        numberString = number.toFixed( maxDecimals );
-        numberString += scale
+        return 'N/A';
     }
-    return numberString;
-}  
+
+    const scales = ['', 'K', 'M', 'B', 'T'];
+    const negative = number < 0;
+    let scaledNumber = Math.abs(number);
+    let scale = 0;
+
+    while(scaledNumber >= 1000 && scale < scales.length - 1) {
+        scaledNumber /= 1000;
+        scale++;
+    }
+
+    const maxDecimals = scaledNumber < 10 ? 1 : 0;
+
+    return (negative ? '-' : '') + scaledNumber.toFixed(maxDecimals) + scales[scale];
+}
+
+function Loading() {
+    
+    $("#LoadingID").empty().append(`<div style=" padding:5px">
+        <div class="d-flex align-items-center mt-1">
+            <strong class="text-info">Cargando...</strong>
+            <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
+        </div>
+    </div>`);
+}
 function grafVentasMensuales(Articulos) {
-
-var temporal = "";
-$("#grafVtsDiario")
-.empty()
-.append(`<div style="height:400px; background:#ffff; padding:20px">
-            <div class="d-flex align-items-center">
-                <strong class="text-info">Cargando...</strong>
-                <div class="spinner-border ml-auto text-primary" role="status" aria-hidden="true"></div>
-            </div>
-        </div>`);
-
-$(".divSpinner")
-.before(`<div class="spinner-border text-white float-right spinner-acum spinner-border-sm" role="status"></div>`);
-
-$("#anioAcumulado").empty();
-$("#porcentaje").empty();
-
 $.getJSON("dtGraf/" +Articulos, function(json) {
         dta = [];
         title = [];
@@ -328,26 +307,29 @@ $.getJSON("dtGraf/" +Articulos, function(json) {
         $("#id_demanda_neta").html(json['DEMANDA_ANUAL_CA_NETA']);
         $("#id_demanda_ajustada").html(json['DEMANDA_ANUAL_CA_AJUSTADA']);
         $("#id_limite_logistico_medio").html(json['LIMITE_LOGISTICO_MEDIO']);
-        $("#id_contribucion").html(json['CONTRIBUCION_YTD']);
+       
 
-        $("#id_reorder1").val(json['REORDER1']);
-        $("#id_reordenar").val(json['REORDER']);
-        $("#id_cant_ordenar").val(json['CANTIDAD_ORDENAR']);
+        $("#id_reorder1").html(numeral(json['REORDER1']).format('0,0'));
+        $("#id_reordenar").html(numeral(json['REORDER']).format('0,0'));
+        $("#id_cant_ordenar").html(numeral(json['CANTIDAD_ORDENAR']).format('0,0'));
 
-        $("#id_clase").val(json['CLASE']);
+        $("#id_clase").html(json['CLASE']);
         $("#id_pedido_transito").html(json['PEDIDO_TRANSITO']);
-        $("#id_moq").val(json['MOQ']);
+        $("#id_moq").html(json['MOQ']);
 
         $("#id_R_corta").html(json['ROTACION_CORTA']);
         $("#id_R_media").html(json['ROTACION_MEDIA']);
         $("#id_R_larga").html(json['ROTACION_LARGA']);
-        $("#id_ventas").html(json['VENTAS_YTD']);
+        
+        $("#id_ventas").html('C$ ' + numeral(json['VENTAS_YTD']).format('0,0'));
+        $("#id_contribucion").html('C$ ' + numeral(json['CONTRIBUCION_YTD']).format('0,0'));
+
         $("#id_costo").html(json['COSTO_PROMEDIO_USD']);
         $("#id_ultimo_costo").html(json['ULTIMO_COSTO_USD']);
 
-        $("#id_transito").val(json['TRANSITO']);
-        $("#id_pedido").val(json['PEDIDO']);
-        $("#id_promedio_mensual").html("C$. " + json['EJECUTADO_UND_YTD']);
+        $("#id_transito").html(json['TRANSITO']);
+        $("#id_pedido").html(json['PEDIDO']);
+        $("#id_promedio_mensual").html(json['EJECUTADO_UND_YTD'] + " UNITS");
         
         
         $.each(json['VENTAS'], function(i, x) {
@@ -363,14 +345,15 @@ $.getJSON("dtGraf/" +Articulos, function(json) {
             Day_Max.push(x['data']); 
         }); 
 
-        temporal = '<span style="color:black">\u25CF</span> CANTIDAD :<b>{point.y} </b><br/>';                
+        temporal = '<span style="color:black">\u25CF</span><b>{point.y} </b> UNITS<br/>';                
         grafiacas_productos_Diarios.tooltip = {
             pointFormat : temporal
         }
 
         vVtsDiarias = numeral(tmp_total).format('0,0.00');
+        
         grafiacas_productos_Diarios.xAxis.categories = title;
-        grafiacas_productos_Diarios.subtitle.text = vVtsDiarias + " Total";
+        grafiacas_productos_Diarios.subtitle.text = vVtsDiarias + " UNITS";
         grafiacas_productos_Diarios.series[0].data = dta;
 
         chart = new Highcharts.Chart(grafiacas_productos_Diarios);

@@ -24,6 +24,7 @@ class ArticulosTransito extends Model
         'mercado',
         'mific',
         'observaciones',
+        'estado_compra',
         'Nuevo',
         'Precio_mific_farmacia',
         'Precio_mific_public'
