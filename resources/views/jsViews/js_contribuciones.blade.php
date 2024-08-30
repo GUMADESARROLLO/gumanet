@@ -26,9 +26,13 @@ $(document).ready(function () {
                 var fechaIni = moment(periodo.primera_fecha).format('DD/MM/YYYY');
                 var fechaEnd = moment(periodo.ultima_fecha).format('DD/MM/YYYY');
                 $('#tl_periodo').html(fechaIni + " hasta el "+ fechaEnd);
-                $("#f1").val( moment(periodo.fechaIni).format('YYYY-MM-DD'));
-                $("#f2").val( moment(periodo.fechaEnd).format('YYYY-MM-DD'));
-
+                if(fechaIni === "" || fechaIni === null){
+                    $("#f1").val( moment(periodo.fechaIni).format('YYYY-MM-DD'));
+                    $("#f2").val( moment(periodo.fechaEnd).format('YYYY-MM-DD'));
+                }else{
+                    $("#f1").val( moment(periodo.primera_fecha).format('YYYY-MM-DD'));
+                    $("#f2").val( moment(periodo.ultima_fecha).format('YYYY-MM-DD'));
+                }
                 return json.Registros;
             }
         },
@@ -206,7 +210,6 @@ $(document).ready(function () {
             Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
             Total_Contribucion  += parseFloat(data.TOTAL_CONTRIBUCION_C$) || 0;
 
-            console.log(data.TOTAL_VENTAS_C$);
         });
 
         // TOTAL DE FARMACIAS
