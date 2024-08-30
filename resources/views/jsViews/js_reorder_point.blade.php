@@ -86,14 +86,20 @@ $(document).ready(function() {
 			"search":     "BUSCAR"
 		},
         layout: {
+            topStart: null,
+            bottom: 'paging',
+            bottomStart: null,
+            bottomEnd: null,
+            
             topStart: {
                 buttons: [ {
                         extend: 'colvis',
-                        text: 'Columnas',
+                        text: 'Columnas visibles',
                     } ]
             },
             topEnd: {
                 buttons: [ {
+                    text: 'Exportar a excel',
                     extend: 'excelHtml5',
                     exportOptions: {
                         columns: ':visible'
@@ -195,6 +201,8 @@ $(document).ready(function() {
         
     });
 
+    //$(".dt-layout-start, .dt-layout-end").hide();
+
 
 
 	$('#txt_search').on( 'keyup', function () {
@@ -211,6 +219,19 @@ $(document).ready(function() {
 
 
 });
+
+
+$("#BtnClickColumns").click(function() {
+    var table = new DataTable('#dt_articulos');
+    
+    table.button('0').trigger();
+    //table.buttons('.buttons-colvis').trigger();
+})
+
+$("#BtnClickExport").click(function() {
+    var table = new DataTable('#dt_articulos');
+    table.buttons('.buttons-excel').trigger();
+})
 
 
 $("#exp-to-excel").click(function() {    

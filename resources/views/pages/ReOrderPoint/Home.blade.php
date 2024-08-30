@@ -13,15 +13,29 @@
       </div>
   </div>
   <p class="font-italic text-muted pt-0 mt-0">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	
-   
+  <div class="row mb-3">
+  <span type="button" class="btn btn-outline-primary ml-auto"  id="BtnClick"> 
+    <i data-feather="refresh-cw"></i> Actualizar
+  </span>
+  <button type="button" class="btn btn-outline-secondary" id="BtnClickColumns" style="display: none;">
+    <i data-feather="list"></i> Columnas
+  </button>
+  <button type="button" class="btn btn-outline-success" id="BtnClickExport" style="display: none;">
+    <i data-feather="external-link"></i> Exportar
+  </button>
+</div>
+
+    
   <div class="row">
+    
     <div class="col-sm-11">		
-      
+    
       <div class="input-group"> 
-        <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
-          <div class="input-group-prepend">
-            <span class="btn-change-color text-white input-group-text" id="BtnClick"><i data-feather="refresh-cw"></i></span>
+      <div class="input-group-prepend">
+            <span class="input-group-text"><i data-feather="search"></i></span>
           </div>
+        <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
+          
       </div>
     </div>
     <div class="col-sm-1">
@@ -95,9 +109,11 @@
                   <th class="col-blue-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad en estado de Transito">TRANSITO</span></th>
                   <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title="Ventas realizadas en el periodo de 12m">VENTAS EJEC. 12m C$.</span></th>
                   <th class="col-yellow-strong"><span data-toggle="tooltip"  data-placement="top" title="Contribucion Bruta aportada en 12 meses">CONTRIBUCION BRUTA. 12m C$.</span></th>
-                  <th class="col-green"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote >= 7 meses + ON-HAND">ROTACION CORTA</span></th>
-                  <th class="col-green"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote >= 7 meses + ON-HAND + TRANSITO ">ROTACION MEDIA</span></th>
-                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote >= 7 meses + ON-HAND + PEDIDO + TRANSITO">ROTACION LARGA</span></th>
+                  
+                  <th class="col-green"> <span data-toggle="tooltip"  data-placement="top" title=" Cantidad de Lote Mayor o igual a 7 meses + ON-HAND ">ROTACION CORTA</span> </th>
+                  <th class="col-green"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote mayor o igual a 7 meses + ONHAND + TRANSITO ">ROTACION MEDIA</span></th>
+                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote mayor o igual a 7 meses + ONHAND + PEDIDO + TRANSITO">ROTACION LARGA</span></th>
+
                   <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad minima solicitada en los ultimos 2 años">MOQ</span></th>
                   <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">REORDER</span></th>
                   <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">CANTIDAD A ORDENAR</span></th>

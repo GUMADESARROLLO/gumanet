@@ -37,7 +37,49 @@
   .tbl_rows_done{
       color: #c7c7c7
   }
-  
+
+  .btn-outline-primary {
+
+color: #007bff;
+
+background-color: transparent;
+
+
+border-color: #007bff;
+
+border-radius: 35px;
+
+border: 1px solid rgba(0, 123, 255, 0.75); 
+
+}
+
+.btn-outline-success {
+
+color: #28a745;
+
+background-color: transparent;
+
+background-image: none;
+
+border-radius: 35px;
+
+border: 1px solid rgba(40, 167, 69, 0.75);   
+
+}
+
+.btn-outline-secondary {
+
+color: #868e96;
+
+background-color: transparent;
+
+background-image: none;
+
+border-radius: 35px;
+
+border: 1px solid rgba(134, 142, 150, 0.75);     
+
+}
 
   
 
@@ -138,7 +180,7 @@
 
 <script src="{{ url('js/Numeral.js') }}"></script>
 
-
+<script src="{{ url('js/jquery.cookie.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
