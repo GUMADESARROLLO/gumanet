@@ -30,7 +30,7 @@ class ContribucionPorCanales extends Model
         $currentDate = date('Y-m-d');
         $startOfMonth = date('Y-m-01', strtotime($currentDate));
 
-        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-12 months', strtotime($startOfMonth)));
+        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
 
         $result = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_canales_contribuciones");
