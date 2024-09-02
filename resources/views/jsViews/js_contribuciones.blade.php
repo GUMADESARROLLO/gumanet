@@ -42,7 +42,7 @@ $(document).ready(function () {
         "scrollCollapse": true,
         "paging":         true,
         "fixedColumns":   {
-            "leftColumns": 2,
+            "leftColumns": 3,
         },
         "language": {
             "zeroRecords": "No hay coincidencias",

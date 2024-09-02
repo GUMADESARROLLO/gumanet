@@ -288,7 +288,7 @@ Route::post('getSaleDetalleInsta', 'dashboard_controller@getSaleDetalleInsta')->
 Route::get('ReOrder', 'ReOrderPointController@ReOrderPoint')->name('ReOrder');
 Route::get('getData', 'ReOrderPointController@getData')->name('getData');
 Route::get('CalcReorder', 'ReOrderPointController@CalcReorder')->name('CalcReorder');
-Route::get('dtGraf/{articulo}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}');
+Route::get('dtGraf/{articulo}/{canal}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}/{canal}');
 
 Route::get('ExportToExcel', 'ReOrderPointController@ExportToExcel')->name('ExportToExcel');
 Route::get('ExportToExcelCanales', 'ReOrderPointController@ExportToExcelCanales')->name('ExportToExcelCanales');
