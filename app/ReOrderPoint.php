@@ -50,7 +50,7 @@ class ReOrderPoint extends Model
     public static function getArticulo() 
     {
         $array = [];
-        $Articulos = ReOrderPoint::WHERE('VALUACION','!=',"0")->WHERE('CANAL','!=',"LICITACIONES")->get();
+        $Articulos = ReOrderPoint::all();
         foreach ($Articulos as $key => $a) {
             $array[$key] = [
                 "ARTICULO"                  => '<a href="#!" onclick="getDetalleArticulo('."'".$a->ARTICULO."'".', '."'".strtoupper($a->DESCRIPCION)."'".')" >'.$a->ARTICULO.'</a>',
@@ -89,8 +89,7 @@ class ReOrderPoint extends Model
                 "COSTO_PROMEDIO_LOC"        => number_format($a->COSTO_PROMEDIO_LOC, 2),
                 "COSTO_PROMEDIO_LOC"        => number_format($a->COSTO_PROMEDIO_LOC, 2),
                 "UPDATED_AT"                => substr($a->FechaFinal, 0, 10),
-                "FACTOR_STOCK_SEGURIDAD"    => number_format($a->FACTOR_STOCK_SEGURIDAD, 2),
-                
+                "FACTOR_STOCK_SEGURIDAD"    => number_format($a->FACTOR_STOCK_SEGURIDAD, 2),                
                 "ROTACION_PREVISTA_EXISTENCIAS_VENCER" => number_format($a->ROTACION_PREVISTA_EXISTENCIAS_VENCER, 2),
                 "TOTAL_UMK"                 => number_format($a->TOTAL_UMK, 2),
                 "TOTAL_GP"                  => number_format($a->TOTAL_GP, 2),

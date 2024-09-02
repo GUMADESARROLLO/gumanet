@@ -69,7 +69,7 @@ $(document).ready(function() {
 			"url": "getData",
 			'dataSrc': '',
 		},
-        
+	
 		"lengthMenu": [[5,30,50,100,-1], [5,30,50,100,"Todo"]],
 		"language": {
 			"infoFiltered": "(Filtrado de _MAX_ total entradas)",
@@ -196,6 +196,7 @@ $(document).ready(function() {
         },
         "initComplete": function(settings, json) {
             $("#LoadingID").empty();
+             console.log('Data loaded', json);
         }
 
         
