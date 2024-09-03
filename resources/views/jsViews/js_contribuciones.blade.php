@@ -1,7 +1,7 @@
 <script type="text/javascript">
     fullScreen();
 $(document).ready(function () {
-    inicializaControlFecha();
+    //inicializaControlFecha();
     $('#id_txt_buscar').on('keyup', function() {   
         var vTable = $('#table_contribucion').DataTable();     
         vTable.search(this.value).draw();        
@@ -12,10 +12,7 @@ $(document).ready(function () {
         table.page.len(this.value).draw();
     });
 
-    
-    
-
-    $('#table_contribucion').DataTable({ 
+    let Table = new DataTable('#table_contribucion',{ 
         "destroy": true,
         "info": true,
         "ajax":{
@@ -26,23 +23,15 @@ $(document).ready(function () {
                 var fechaIni = moment(periodo.primera_fecha).format('DD/MM/YYYY');
                 var fechaEnd = moment(periodo.ultima_fecha).format('DD/MM/YYYY');
                 $('#tl_periodo').html(fechaIni + " hasta el "+ fechaEnd);
-                if(fechaIni === "" || fechaIni === null){
+                if(periodo.primera_fecha === null){ 
                     $("#f1").val( moment(periodo.fechaIni).format('YYYY-MM-DD'));
                     $("#f2").val( moment(periodo.fechaEnd).format('YYYY-MM-DD'));
                 }else{
                     $("#f1").val( moment(periodo.primera_fecha).format('YYYY-MM-DD'));
                     $("#f2").val( moment(periodo.ultima_fecha).format('YYYY-MM-DD'));
-                }
+                } 
                 return json.Registros;
             }
-        },
-        "lengthMenu": [[5,-1], [5,"Todo"]],
-        "scrollY":        "900px",
-        "scrollX":        true,
-        "scrollCollapse": true,
-        "paging":         true,
-        "fixedColumns":   {
-            "leftColumns": 3,
         },
         "language": {
             "zeroRecords": "No hay coincidencias",
@@ -57,6 +46,37 @@ $(document).ready(function () {
             "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
             "search": "BUSCAR"
         },
+        "lengthMenu": [[5,-1], [5,"Todo"]],
+        layout: {
+            topStart: null,
+            bottom: 'paging',
+            bottomStart: null,
+            bottomEnd: null,
+            
+            topStart: {
+                buttons: [ {
+                        extend: 'colvis',
+                        text: 'Columnas visibles',
+                    } ]
+            },
+            topEnd: {
+                buttons: [ {
+                    text: 'Exportar a excel',
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }]
+            }
+        },
+        stateSave: true,
+        fixedColumns: {
+            start: 3
+        },
+        paging: true,
+        scrollCollapse: true,
+        scrollY: '1200px',
+        scrollX: true,
         'columns': [
             {"data": "ARTICULO"},
             {"data": "DESCRIPCION"},
@@ -106,19 +126,20 @@ $(document).ready(function () {
         ],
         "columnDefs": [                       
             {"className": "dt-right", "targets": [ 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44 ]},
-            { "width": "150px", "targets": [ 1 ] }
+            { "width": "100px", "targets": [ 1 ] }
         ],           
     });
     $("#table_contribucion_length").hide();
     $("#table_contribucion_filter").hide();
 
-    $("#exp-to-excel-canales").click(function(){
+    /*$("#exp-to-excel-canales").click(function(){
         location.href = "ExportToExcelCanales";
-    })
+    })*/
 
     $("#BtnClick").click(function() {
         fechaIni = $("#f1").val();
         fechaEnd = $("#f2").val();
+        
         Swal.fire({
             title: "Recalcular contribución de canales",
             inputAttributes: {

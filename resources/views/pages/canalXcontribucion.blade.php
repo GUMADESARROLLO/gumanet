@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.ly_reorder')
 @section('metodosjs')
 @include('jsViews.js_contribuciones')
 @endsection
@@ -45,9 +45,9 @@
         
       </div>
     </div>
-    <div class="col-sm-1" >
+    <!--<div class="col-sm-1" >
       <a id="exp-to-excel-canales" href="#!" class="btn btn-light btn-block text-success"><i class="fas fa-file-excel"></i> Exportar</a>
-    </div>   
+    </div>-->   
       
   </div>
 
@@ -59,7 +59,7 @@
             <table id="table_contribucion" class="table nowrap table-bordered" width="100%">
               <thead>
                 <tr class="bg-blue text-light">
-                  <th style="width: 400px;" colspan="3">SKU</th>
+                  <th class="bg-blue text-light" colspan="3">SKU</th>
                   <th colspan="6">FARMACIA</th>
                   <th colspan="6">CADENA FARMACIA</th>
                   <th colspan="6">MAYORISTA</th>
