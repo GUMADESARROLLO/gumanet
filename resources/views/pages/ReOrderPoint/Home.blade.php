@@ -272,22 +272,29 @@
                                
                                 <div class="card-block">
                                     <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
-                                        <div class="col-6 m-0 p-0">
-                                            <p class="text-left m-0 p-0"><span class="text-muted m-r-5">COSTO ULTIMO </span>
+                                        <div class="col-4 m-0 p-0">
+                                            <p class="text-left m-0 p-0"><span class="text-muted m-r-5">ULTIMO USD</span>
                                             </p>
                                         </div>
-                                        <div class="col-6 m-0 p-0">
-                                            <p class="text-right m-0 p-0"><span class="text-muted m-r-5">COSTO PROMEDIO.</span>
+                                        <div class="col-4 m-0 p-0">
+                                            <p class="text-left m-0 p-0"><span class="text-muted m-r-5">PROM. USD</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-4 m-0 p-0">
+                                            <p class="text-right m-0 p-0"><span class="text-muted m-r-5">LOCAL. C$</span>
                                             </p>
                                         </div>
                                     </div>
                                     <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
-                                        <div class="col-6 m-0 p-0">
-                                            <h6 class="font-weight-bold text-left m-0 p-0" style="font-size: 1.1rem!important">USD <span class="m-r-5" id="id_ultimo_costo"  > - </span></h6>
+                                        <div class="col-4 m-0 p-0">
+                                            <h6 class="font-weight-bold text-left m-0 p-0" style="font-size: 1.1rem!important"><span class="m-r-5" id="id_ultimo_costo"  > - </span></h6>
+                                        </div>
+                                        <div class="col-4 m-0 p-0">
+                                            <h6 class="font-weight-bold text-left m-0 p-0" style="font-size: 1.1rem!important"><span class="m-r-5" id="id_costo"  > - </span></h6>
                                         </div>
 
-                                        <div class="col-6 m-0 p-0">
-                                            <h6 class="font-weight-bold text-right  m-0 p-0" style="font-size: 1.1rem!important">USD <span class=" m-r-5" id="id_costo"> - </span> </h6>
+                                        <div class="col-4 m-0 p-0">
+                                            <h6 class="font-weight-bold text-right  m-0 p-0" style="font-size: 1.1rem!important"> <span class=" m-r-5" id="id_ultimo_loc"> - </span> </h6>
                                         </div>
                                     </div>
                                 </div>

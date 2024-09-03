@@ -196,7 +196,6 @@ $(document).ready(function() {
         },
         "initComplete": function(settings, json) {
             $("#LoadingID").empty();
-             console.log('Data loaded', json);
         }
 
         
@@ -358,7 +357,7 @@ function grafVentasMensuales(Articulos, Canal) {
             $("#id_cant_ordenar").html(numeral(json['CANTIDAD_ORDENAR']).format('0,0'));
 
             $("#id_clase").html(json['CLASE']);
-            $("#id_pedido_transito").html(json['PEDIDO_TRANSITO']);
+            $("#id_pedido_transito").html(numeral(json['PEDIDO_TRANSITO']).format('0,0'));
             $("#id_moq").html(json['MOQ']);
 
             $("#id_R_corta").html(json['ROTACION_CORTA']);
@@ -366,14 +365,16 @@ function grafVentasMensuales(Articulos, Canal) {
             $("#id_R_larga").html(json['ROTACION_LARGA']);
             
             $("#id_ventas").html('C$ ' + numeral(json['VENTAS_YTD']).format('0,0'));
-            $("#id_contribucion").html('C$ ' + numeral(json['CONTRIBUCION_YTD']).format('0,0'));
+            $("#id_contribucion").html('C$ ' + numeral(json['CONTRIBUCION']).format('0,0'));
 
-            $("#id_costo").html(json['COSTO_PROMEDIO_USD']);
-            $("#id_ultimo_costo").html(json['ULTIMO_COSTO_USD']);
+            $("#id_costo").html(numeral(json['COSTO_PROMEDIO_USD']).format('0,0.00'));
+            $("#id_ultimo_costo").html(numeral(json['ULTIMO_COSTO_USD']).format('0,0.00'));
 
-            $("#id_transito").html(json['TRANSITO']);
-            $("#id_pedido").html(json['PEDIDO']);
-            $("#id_promedio_mensual").html(json['EJECUTADO_UND_YTD'] + " UNITS");
+            $("#id_ultimo_loc").html(numeral(json['COSTO_PROMEDIO_LOC']).format('0,0.00'));
+
+            $("#id_transito").html(numeral(json['TRANSITO']).format('0,0'));
+            $("#id_pedido").html(numeral(json['PEDIDO']).format('0,0'));
+            $("#id_promedio_mensual").html(numeral(json['EJECUTADO_UND_YTD']).format('0,0') + " UNITS");
             
             
             $.each(json['VENTAS'], function(i, x) {

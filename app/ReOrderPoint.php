@@ -31,8 +31,7 @@ class ReOrderPoint extends Model
 
         $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
-        $DiaActual  = (int) date('d', strtotime($FechaEnd));
-        
+        $DiaActual  = (int) date('d', strtotime($FechaEnd));        
         
         // Ejecutar el tercer procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_Calc_12_month_reorder_point ?, ?, ?", [$FechaIni, $FechaEnd, $DiaActual]);
@@ -65,7 +64,7 @@ class ReOrderPoint extends Model
                 "LEADTIME"                  => $a->LEADTIME,
                 "EJECUTADO_UND_YTD"         => number_format($a->EJECUTADO_UND_YTD,2),
                 "VENTAS_YTD"                => number_format($a->VENTAS_YTD,2),
-                "CONTRIBUCION_YTD"          => number_format($a->CONTRIBUCION_YTD,2),
+                "CONTRIBUCION_YTD"          => number_format($a->CONTRIBUCION,2),
                 "DEMANDA_ANUAL_CA_NETA"     => number_format($a->DEMANDA_ANUAL_CA_NETA,2),
                 "DEMANDA_ANUAL_CA_AJUSTADA" => number_format($a->DEMANDA_ANUAL_CA_AJUSTADA,2),
                 "FACTOR"                    => number_format($a->FACTOR,2),
@@ -86,7 +85,6 @@ class ReOrderPoint extends Model
                 "ROTACION_LARGA"            => number_format($a->ROTACION_LARGA, 2),
                 "ULTIMO_COSTO_USD"          => number_format($a->ULTIMO_COSTO_USD, 2),
                 "COSTO_PROMEDIO_USD"        => number_format($a->COSTO_PROMEDIO_USD, 2),
-                "COSTO_PROMEDIO_LOC"        => number_format($a->COSTO_PROMEDIO_LOC, 2),
                 "COSTO_PROMEDIO_LOC"        => number_format($a->COSTO_PROMEDIO_LOC, 2),
                 "UPDATED_AT"                => substr($a->FechaFinal, 0, 10),
                 "FACTOR_STOCK_SEGURIDAD"    => number_format($a->FACTOR_STOCK_SEGURIDAD, 2),                
@@ -162,6 +160,7 @@ class ReOrderPoint extends Model
 
             'COSTO_PROMEDIO_USD'            => number_format($Sales->COSTO_PROMEDIO_USD, 0, '.', ''),
             'ULTIMO_COSTO_USD'              => number_format($Sales->ULTIMO_COSTO_USD, 0, '.', ''),
+            "COSTO_PROMEDIO_LOC"            => number_format($Sales->COSTO_PROMEDIO_LOC, 2),
             'VENTAS_YTD'                    => number_format($Sales->VENTAS_YTD, 0, '.', ''),
             'CONTRIBUCION_YTD'              => number_format($Sales->CONTRIBUCION_YTD, 0, '.', ''),
             'EJECUTADO_UND_YTD'             => number_format($Sales->EJECUTADO_UND_YTD, 0, '.', ''),
