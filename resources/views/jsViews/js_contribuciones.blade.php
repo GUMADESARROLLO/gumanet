@@ -23,13 +23,13 @@ $(document).ready(function () {
                 var fechaIni = moment(periodo.primera_fecha).format('DD/MM/YYYY');
                 var fechaEnd = moment(periodo.ultima_fecha).format('DD/MM/YYYY');
                 $('#tl_periodo').html(fechaIni + " hasta el "+ fechaEnd);
-                if(fechaIni === "" || fechaIni === null){
+                if(periodo.primera_fecha === null){ 
                     $("#f1").val( moment(periodo.fechaIni).format('YYYY-MM-DD'));
                     $("#f2").val( moment(periodo.fechaEnd).format('YYYY-MM-DD'));
                 }else{
                     $("#f1").val( moment(periodo.primera_fecha).format('YYYY-MM-DD'));
                     $("#f2").val( moment(periodo.ultima_fecha).format('YYYY-MM-DD'));
-                }
+                } 
                 return json.Registros;
             }
         },
@@ -126,7 +126,7 @@ $(document).ready(function () {
         ],
         "columnDefs": [                       
             {"className": "dt-right", "targets": [ 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44 ]},
-            { "width": "150px", "targets": [ 1 ] }
+            { "width": "100px", "targets": [ 1 ] }
         ],           
     });
     $("#table_contribucion_length").hide();
@@ -139,6 +139,7 @@ $(document).ready(function () {
     $("#BtnClick").click(function() {
         fechaIni = $("#f1").val();
         fechaEnd = $("#f2").val();
+        
         Swal.fire({
             title: "Recalcular contribución de canales",
             inputAttributes: {

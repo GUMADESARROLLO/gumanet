@@ -23,7 +23,7 @@ class ContribucionPorCanales extends Model
 
     public static function calcularCanales($fechaIni, $fechaEnd)
     {
-        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion ?, ?", [$fechaIni, $fechaEnd]);
+        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion_dev ?, ?", [$fechaIni, $fechaEnd]);
     }
 
     public static function periodoFechas(){
