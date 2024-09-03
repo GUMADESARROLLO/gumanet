@@ -13,15 +13,29 @@
       </div>
   </div>
   <p class="font-italic text-muted pt-0 mt-0">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	
-   
+  <div class="row mb-3">
+  <span type="button" class="btn btn-outline-primary ml-auto"  id="BtnClick"> 
+    <i data-feather="refresh-cw"></i> Actualizar
+  </span>
+  <button type="button" class="btn btn-outline-secondary" id="BtnClickColumns" style="display: none;">
+    <i data-feather="list"></i> Columnas
+  </button>
+  <button type="button" class="btn btn-outline-success" id="BtnClickExport" style="display: none;">
+    <i data-feather="external-link"></i> Exportar
+  </button>
+</div>
+
+    
   <div class="row">
-    <div class="col-sm-10">		
-      
+    
+    <div class="col-sm-11">		
+    
       <div class="input-group"> 
-        <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
-          <div class="input-group-prepend">
-            <span class="btn-change-color text-white input-group-text" id="BtnClick"><i data-feather="refresh-cw"></i></span>
+      <div class="input-group-prepend">
+            <span class="input-group-text"><i data-feather="search"></i></span>
           </div>
+        <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
+          
       </div>
     </div>
     <div class="col-sm-1">
@@ -35,10 +49,7 @@
         </select>
       </div>
     </div>
-
-    <div class="col-sm-1 p-0 m-0" >
-      <a id="exp-to-excel" href="#!" class="btn btn-light btn-block text-success"><i class="fas fa-file-excel"></i> Exportar</a>
-    </div>      
+   
   </div>
 
   <div class="row">
@@ -46,11 +57,12 @@
 
       <div class="col-12">
         <div class="table-responsive mt-3 mb-2">
-            <table class="table nowrap table-bordered table-sm" id="dt_articulos" width="100%" >
+            <table class="table table-bordered table-sm" id="dt_articulos" width="100%" >
               <thead class="bg-blue text-light">
                 <tr>
                   <th class="col-yellow">ARTICULO</th>
-                  <th class="col-blue-ca-1">DESCRIPCIÓN</th>
+                  <th class="col-blue-ca-1" >DESCRIPCIÓN</th>
+                  <th class="col-blue-ca-1">FABRICANTE</th>
                   <th class="col-green">
                     <span 
                       data-toggle="tooltip"  
@@ -97,9 +109,11 @@
                   <th class="col-blue-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad en estado de Transito">TRANSITO</span></th>
                   <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title="Ventas realizadas en el periodo de 12m">VENTAS EJEC. 12m C$.</span></th>
                   <th class="col-yellow-strong"><span data-toggle="tooltip"  data-placement="top" title="Contribucion Bruta aportada en 12 meses">CONTRIBUCION BRUTA. 12m C$.</span></th>
-                  <th class="col-green"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote >= 7 meses + ON-HAND">ROTACION CORTA</span></th>
-                  <th class="col-green"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote >= 7 meses + ON-HAND + TRANSITO ">ROTACION MEDIA</span></th>
-                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote >= 7 meses + ON-HAND + PEDIDO + TRANSITO">ROTACION LARGA</span></th>
+                  
+                  <th class="col-green"> <span data-toggle="tooltip"  data-placement="top" title=" Cantidad de Lote Mayor o igual a 7 meses + ON-HAND ">ROTACION CORTA</span> </th>
+                  <th class="col-green"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote mayor o igual a 7 meses + ONHAND + TRANSITO ">ROTACION MEDIA</span></th>
+                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote mayor o igual a 7 meses + ONHAND + PEDIDO + TRANSITO">ROTACION LARGA</span></th>
+
                   <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad minima solicitada en los ultimos 2 años">MOQ</span></th>
                   <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">REORDER</span></th>
                   <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">CANTIDAD A ORDENAR</span></th>
@@ -133,11 +147,8 @@
                                     <div class="d-flex align-items-center position-relative mt-0">
                                       <div class="flex-1 ">
                                         <h6 class="mb-0 fw-semi-bold">
-                                          <a class="stretched-link text-900 fw-semi-bold" href="#!">
-                                            <div class="stretched-link text-light text-uppercase" id="id_titulo_modal_all_items">
-                                              - 
-                                            </div>
-                                          </a>
+                                          <div class="text-light text-uppercase" id="id_descripcion"></div>
+                                          <span id="id_articulo" style="display: none"></span>
                                         </h6>
                                         <p class="text-white-50 fs--2 mb-0" id="nombre_ruta_zona_modal">
                                           CLASE : <span id="id_clase"> - </span> |  LEADTIME : <span id="id_leadtime"> - </span> | LIMITE LOGICO MEDIO : <span id="id_limite_logistico_medio"> - </span>
@@ -321,16 +332,7 @@
                             </div>
                         </div>
 
-                        
-                       
-                        
-
-
-                      
-
                     </div>
-
-
 
                 </div>
                 <div class=" modal-body">
@@ -360,13 +362,13 @@
                           <div class="col-sm-12 col-md-12 col-xs-12">
                               <div class="form-group">
                                 <select class="custom-select" id="selectGrafVtsDiario" name="selectGrafVtsDiario">
-                                  <option value="0">TODOS - Menos Licitaciones</option>
-                                  <option value="1">FARMACIA</option>
-                                  <option value="2">MAYORISTAS</option>
-                                  <option value="3">INSTITUCIONES</option>
-                                  <option value="4">FARMACIAS</option>
-                                  <option value="5">CRUZ AZUL</option>
-                                  <option value="6">LICITACIONES</option>
+                                  <option value="TODOS">TODOS - Menos Licitaciones</option>
+                                  <option value="FARMACIAS">FARMACIAS</option>
+                                  <option value="MAYORISTAS">MAYORISTAS</option>
+                                  <option value="INSTITUCIONES">INSTITUCIONES</option>
+                                  <option value="FARMACIAS">FARMACIAS</option>
+                                  <option value="CRUZ_AZUL">CRUZ AZUL</option>
+                                  <option value="LICITACIONES">LICITACIONES</option>
                                 </select>
                               </div>
                               
