@@ -1,7 +1,7 @@
 <script type="text/javascript">
     fullScreen();
 $(document).ready(function () {
-    inicializaControlFecha();
+    //inicializaControlFecha();
     $('#id_txt_buscar').on('keyup', function() {   
         var vTable = $('#table_contribucion').DataTable();     
         vTable.search(this.value).draw();        
@@ -12,10 +12,7 @@ $(document).ready(function () {
         table.page.len(this.value).draw();
     });
 
-    
-    
-
-    $('#table_contribucion').DataTable({ 
+    let Table = new DataTable('#table_contribucion',{ 
         "destroy": true,
         "info": true,
         "ajax":{
@@ -36,14 +33,6 @@ $(document).ready(function () {
                 return json.Registros;
             }
         },
-        "lengthMenu": [[5,-1], [5,"Todo"]],
-        "scrollY":        "900px",
-        "scrollX":        true,
-        "scrollCollapse": true,
-        "paging":         true,
-        "fixedColumns":   {
-            "leftColumns": 3,
-        },
         "language": {
             "zeroRecords": "No hay coincidencias",
             "loadingRecords": "Cargando datos...",
@@ -57,6 +46,37 @@ $(document).ready(function () {
             "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
             "search": "BUSCAR"
         },
+        "lengthMenu": [[5,-1], [5,"Todo"]],
+        layout: {
+            topStart: null,
+            bottom: 'paging',
+            bottomStart: null,
+            bottomEnd: null,
+            
+            topStart: {
+                buttons: [ {
+                        extend: 'colvis',
+                        text: 'Columnas visibles',
+                    } ]
+            },
+            topEnd: {
+                buttons: [ {
+                    text: 'Exportar a excel',
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }]
+            }
+        },
+        stateSave: true,
+        fixedColumns: {
+            start: 3
+        },
+        paging: true,
+        scrollCollapse: true,
+        scrollY: '1200px',
+        scrollX: true,
         'columns': [
             {"data": "ARTICULO"},
             {"data": "DESCRIPCION"},
@@ -112,9 +132,9 @@ $(document).ready(function () {
     $("#table_contribucion_length").hide();
     $("#table_contribucion_filter").hide();
 
-    $("#exp-to-excel-canales").click(function(){
+    /*$("#exp-to-excel-canales").click(function(){
         location.href = "ExportToExcelCanales";
-    })
+    })*/
 
     $("#BtnClick").click(function() {
         fechaIni = $("#f1").val();
