@@ -369,12 +369,13 @@
                           <div class="col-sm-12 col-md-12 col-xs-12">
                               <div class="form-group">
                                 <select class="custom-select" id="selectGrafVtsDiario" name="selectGrafVtsDiario">
-                                  <option value="TODOS">TODOS - Menos Licitaciones</option>
+                                  <option value="Todos">TODOS - Menos Licitaciones</option>
                                   <option value="FARMACIAS">FARMACIAS</option>
+                                  <option value="CADENAS">CADENAS</option>
                                   <option value="MAYORISTAS">MAYORISTAS</option>
-                                  <option value="INSTITUCIONES">INSTITUCIONES</option>
+                                  <option value="INSTITUCIONES_PRIVADAS">INSTITUCIONES</option>
                                   <option value="CRUZ_AZUL">CRUZ AZUL</option>
-                                  <option value="LICITACIONES">LICITACIONES</option>
+                                  
                                 </select>
                               </div>
                               

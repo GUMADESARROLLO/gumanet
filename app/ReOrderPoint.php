@@ -144,6 +144,8 @@ class ReOrderPoint extends Model
             DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_calc_12_month_reorder_articulo ?, ?, ?", [$Canal, $Articulos, $DiaActual]);
             $Sales = ReOrderPointByArticulo::WHERE('ARTICULO',$Articulos)->first();
         }
+
+        
         $NameMonths = ($Canal === 'TODOS') ? ReOrderPoint::NameMonth($Sales->FechaFinal) : ReOrderPoint::NameMonth($FechaEnd) ;
 
 

@@ -375,11 +375,6 @@ function grafVentasMensuales(Articulos, Canal) {
             $("#id_pedido").html(numeral(json['PEDIDO']).format('0,0'));
 
 
-            if (Canal !='Todos' ) {
-                
-            }
-
-
             $("#id_promedio_mensual").html(numeral(json['EJECUTADO_UND_YTD']).format('0,0') + " UNITS");                
             $("#id_ventas").html('C$ ' + numeral(json['VENTAS_YTD']).format('0,0'));        
             $("#id_contribucion").html('C$ ' + numeral(json['CONTRIBUCION']).format('0,0'));
