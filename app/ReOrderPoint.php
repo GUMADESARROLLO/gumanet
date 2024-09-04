@@ -31,8 +31,7 @@ class ReOrderPoint extends Model
 
         $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
-        $DiaActual  = (int) date('d', strtotime($FechaEnd));
-        
+        $DiaActual  = (int) date('d', strtotime($FechaEnd));        
         
         // Ejecutar el tercer procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_Calc_12_month_reorder_point ?, ?, ?", [$FechaIni, $FechaEnd, $DiaActual]);
@@ -50,7 +49,7 @@ class ReOrderPoint extends Model
     public static function getArticulo() 
     {
         $array = [];
-        $Articulos = ReOrderPoint::WHERE('VALUACION','!=',"0")->WHERE('CANAL','!=',"LICITACIONES")->get();
+        $Articulos = ReOrderPoint::all();
         foreach ($Articulos as $key => $a) {
             $array[$key] = [
                 "ARTICULO"                  => '<a href="#!" onclick="getDetalleArticulo('."'".$a->ARTICULO."'".', '."'".strtoupper($a->DESCRIPCION)."'".')" >'.$a->ARTICULO.'</a>',
@@ -65,7 +64,7 @@ class ReOrderPoint extends Model
                 "LEADTIME"                  => $a->LEADTIME,
                 "EJECUTADO_UND_YTD"         => number_format($a->EJECUTADO_UND_YTD,2),
                 "VENTAS_YTD"                => number_format($a->VENTAS_YTD,2),
-                "CONTRIBUCION_YTD"          => number_format($a->CONTRIBUCION_YTD,2),
+                "CONTRIBUCION_YTD"          => number_format($a->CONTRIBUCION,2),
                 "DEMANDA_ANUAL_CA_NETA"     => number_format($a->DEMANDA_ANUAL_CA_NETA,2),
                 "DEMANDA_ANUAL_CA_AJUSTADA" => number_format($a->DEMANDA_ANUAL_CA_AJUSTADA,2),
                 "FACTOR"                    => number_format($a->FACTOR,2),
@@ -87,10 +86,8 @@ class ReOrderPoint extends Model
                 "ULTIMO_COSTO_USD"          => number_format($a->ULTIMO_COSTO_USD, 2),
                 "COSTO_PROMEDIO_USD"        => number_format($a->COSTO_PROMEDIO_USD, 2),
                 "COSTO_PROMEDIO_LOC"        => number_format($a->COSTO_PROMEDIO_LOC, 2),
-                "COSTO_PROMEDIO_LOC"        => number_format($a->COSTO_PROMEDIO_LOC, 2),
                 "UPDATED_AT"                => substr($a->FechaFinal, 0, 10),
-                "FACTOR_STOCK_SEGURIDAD"    => number_format($a->FACTOR_STOCK_SEGURIDAD, 2),
-                
+                "FACTOR_STOCK_SEGURIDAD"    => number_format($a->FACTOR_STOCK_SEGURIDAD, 2),                
                 "ROTACION_PREVISTA_EXISTENCIAS_VENCER" => number_format($a->ROTACION_PREVISTA_EXISTENCIAS_VENCER, 2),
                 "TOTAL_UMK"                 => number_format($a->TOTAL_UMK, 2),
                 "TOTAL_GP"                  => number_format($a->TOTAL_GP, 2),
@@ -135,37 +132,48 @@ class ReOrderPoint extends Model
 
         $array = array();
 
-        $Sales = ReOrderPoint::WHERE('ARTICULO',$Articulos)->first();
+        $currentDate = date('Y-m-d');
+        $startOfMonth = date('Y-m-01', strtotime($currentDate));
 
-    
+        $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
+        $DiaActual  = (int) date('d', strtotime($FechaEnd)); 
 
-        $NameMonths = ReOrderPoint::NameMonth($Sales->FechaFinal);
+        if ($Canal === 'Todos') {
+            $Sales = ReOrderPoint::WHERE('ARTICULO',$Articulos)->first();
+        } else {            
+            DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_calc_12_month_reorder_articulo ?, ?, ?", [$Canal, $Articulos, $DiaActual]);
+            $Sales = ReOrderPointByArticulo::WHERE('ARTICULO',$Articulos)->first();
+        }
+
+        
+        $NameMonths = ($Canal === 'TODOS') ? ReOrderPoint::NameMonth($Sales->FechaFinal) : ReOrderPoint::NameMonth($FechaEnd) ;
 
 
         $array = [
-            'LEADTIME'                      => number_format($Sales->LEADTIME, 0, '.', ''),
-            'DEMANDA_ANUAL_CA_NETA'         => number_format($Sales->DEMANDA_ANUAL_CA_NETA, 0, '.', ''),
-            'DEMANDA_ANUAL_CA_AJUSTADA'     => number_format($Sales->DEMANDA_ANUAL_CA_AJUSTADA, 0, '.', ''),
-            'LIMITE_LOGISTICO_MEDIO'        => number_format($Sales->LIMITE_LOGISTICO_MEDIO, 0, '.', ''),
-            'CONTRIBUCION'                  => number_format($Sales->CONTRIBUCION, 0, '.', ''),
+            'LEADTIME'                      => isset($Sales->LEADTIME) ? number_format($Sales->LEADTIME, 0, '.', '') : 0,
+            'DEMANDA_ANUAL_CA_NETA'         => isset($Sales->DEMANDA_ANUAL_CA_NETA) ? number_format($Sales->DEMANDA_ANUAL_CA_NETA, 0, '.', '') : 0,
+            'DEMANDA_ANUAL_CA_AJUSTADA'     => isset($Sales->DEMANDA_ANUAL_CA_AJUSTADA) ? number_format($Sales->DEMANDA_ANUAL_CA_AJUSTADA, 0, '.', '') : 0,
+            'LIMITE_LOGISTICO_MEDIO'        => isset($Sales->LIMITE_LOGISTICO_MEDIO) ? number_format($Sales->LIMITE_LOGISTICO_MEDIO, 0, '.', '') : 0,
+            'CONTRIBUCION'                  => isset($Sales->CONTRIBUCION) ? number_format($Sales->CONTRIBUCION, 0, '.', '') : 0,
 
-            'REORDER1'                      => number_format($Sales->REORDER1, 0, '.', ''),
-            'REORDER'                       => number_format($Sales->REORDER, 0, '.', ''),
-            'CANTIDAD_ORDENAR'              => number_format($Sales->CANTIDAD_ORDENAR, 0, '.', ''),
-            'MOQ'                           => number_format($Sales->MOQ, 0, '.', ''),
-            'PEDIDO'                        => number_format($Sales->PEDIDO, 0, '.', ''),
-            'TRANSITO'                      => number_format($Sales->TRANSITO, 0, '.', ''),
-            'CLASE'                         => $Sales->CLASE,
+            'REORDER1'                      => isset($Sales->REORDER1) ? number_format($Sales->REORDER1, 0, '.', '') : 0,
+            'REORDER'                       => isset($Sales->REORDER) ? number_format($Sales->REORDER, 0, '.', '') : 0,
+            'CANTIDAD_ORDENAR'              => isset($Sales->CANTIDAD_ORDENAR) ? number_format($Sales->CANTIDAD_ORDENAR, 0, '.', '') : 0,
+            'MOQ'                           => isset($Sales->MOQ) ? number_format($Sales->MOQ, 0, '.', '') : 0,
+            'PEDIDO'                        => isset($Sales->PEDIDO) ? number_format($Sales->PEDIDO, 0, '.', '') : 0,
+            'TRANSITO'                      => isset($Sales->TRANSITO) ? number_format($Sales->TRANSITO, 0, '.', '') : 0,
+            'CLASE'                         => isset($Sales->CLASE) ? $Sales->CLASE : '',
 
-            'ROTACION_CORTA'                => bcadd(number_format($Sales->ROTACION_CORTA, 0), 5, 0),
-            'ROTACION_MEDIA'                => bcadd(number_format($Sales->ROTACION_MEDIA, 0), 5, 0), 
-            'ROTACION_LARGA'                => bcadd(number_format($Sales->ROTACION_LARGA, 0), 5, 0),
+            'ROTACION_CORTA'                => isset($Sales->ROTACION_CORTA) ? bcadd(number_format($Sales->ROTACION_CORTA, 0), 5, 0) : 0,
+            'ROTACION_MEDIA'                => isset($Sales->ROTACION_MEDIA) ? bcadd(number_format($Sales->ROTACION_MEDIA, 0), 5, 0) : 0, 
+            'ROTACION_LARGA'                => isset($Sales->ROTACION_LARGA) ? bcadd(number_format($Sales->ROTACION_LARGA, 0), 5, 0) : 0,
 
-            'COSTO_PROMEDIO_USD'            => number_format($Sales->COSTO_PROMEDIO_USD, 0, '.', ''),
-            'ULTIMO_COSTO_USD'              => number_format($Sales->ULTIMO_COSTO_USD, 0, '.', ''),
-            'VENTAS_YTD'                    => number_format($Sales->VENTAS_YTD, 0, '.', ''),
-            'CONTRIBUCION_YTD'              => number_format($Sales->CONTRIBUCION_YTD, 0, '.', ''),
-            'EJECUTADO_UND_YTD'             => number_format($Sales->EJECUTADO_UND_YTD, 0, '.', ''),
+            'COSTO_PROMEDIO_USD'            => isset($Sales->COSTO_PROMEDIO_USD) ? number_format($Sales->COSTO_PROMEDIO_USD, 0, '.', '') : 0,
+            'ULTIMO_COSTO_USD'              => isset($Sales->ULTIMO_COSTO_USD) ? number_format($Sales->ULTIMO_COSTO_USD, 0, '.', '') : 0,
+            "COSTO_PROMEDIO_LOC"            => isset($Sales->COSTO_PROMEDIO_LOC) ? number_format($Sales->COSTO_PROMEDIO_LOC, 2) : 0,
+            'VENTAS_YTD'                    => isset($Sales->VENTAS_YTD) ? number_format($Sales->VENTAS_YTD, 0, '.', '') : 0,
+            'CONTRIBUCION_YTD'              => isset($Sales->CONTRIBUCION_YTD) ? number_format($Sales->CONTRIBUCION_YTD, 0, '.', '') : 0,
+            'EJECUTADO_UND_YTD'             => isset($Sales->EJECUTADO_UND_YTD) ? number_format($Sales->EJECUTADO_UND_YTD, 0, '.', '') : 0,
             "VENTAS"                        => array_map(function($month, $value) use ($Sales) { 
                                                 return [
                                                         "Mes"   => $month,
@@ -174,9 +182,7 @@ class ReOrderPoint extends Model
                                                 }, $NameMonths, range(1, 12))
         ];
         
-        
-        
-        
+
 
         return $array;
     }

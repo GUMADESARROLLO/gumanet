@@ -36,8 +36,10 @@ class InnovaEstadisticas extends Model
             $Venta_ConIVA   = ($index_key !== false) ? $resul_stat_sale[$index_key]->VENTA_CON_IVA : 0 ;
             $AVG_SinIVA     = ($index_key !== false) ? $resul_stat_sale[$index_key]->AVG_SIN_IVA : 0 ;
             $AVG_ConIVA     = ($index_key !== false) ? $resul_stat_sale[$index_key]->AVG_CON_IVA : 0 ;
+            $DESCRIP_LONG   = ($index_key !== false) ? $resul_stat_sale[$index_key]->DESCRIPCION_LONG : 'N/D';
 
             $data[$key]['DESCRIPCION']      = $Target;
+            $data[$key]['DESCRIPCION_LONG'] = $DESCRIP_LONG;
             $data[$key]['CANTIDAD']         = number_format($Cantidad, 2,".","");
             $data[$key]['VENTA_SIN_IVA']    = number_format($Venta_SinIVA, 2,".","");
             $data[$key]['VENTA_CON_IVA']    = number_format($Venta_ConIVA, 2,".","");
