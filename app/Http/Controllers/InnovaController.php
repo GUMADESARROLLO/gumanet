@@ -44,8 +44,8 @@ class InnovaController extends Controller
     public function saveInnStat()
     {
 
-        $mes = (int) date('m');
-        $anio = date('Y');
+        $mes = 8;
+        $anio = 2024;
 
         InnovaEstadisticas::saveInnStat($mes, $anio);
     }
