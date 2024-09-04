@@ -223,7 +223,8 @@ $(document).ready(function() {
 $('#selectGrafVtsDiario').change(function() {
     var Canal = this.value;         
     var Articulo = $("#id_articulo").text();
-    grafVentasMensuales(Articulo,Canal);     
+    
+    FiltrarPorCanal(Articulo,Canal);     
 });
 
 
@@ -364,8 +365,6 @@ function grafVentasMensuales(Articulos, Canal) {
             $("#id_R_media").html(json['ROTACION_MEDIA']);
             $("#id_R_larga").html(json['ROTACION_LARGA']);
             
-            $("#id_ventas").html('C$ ' + numeral(json['VENTAS_YTD']).format('0,0'));
-            $("#id_contribucion").html('C$ ' + numeral(json['CONTRIBUCION']).format('0,0'));
 
             $("#id_costo").html(numeral(json['COSTO_PROMEDIO_USD']).format('0,0.00'));
             $("#id_ultimo_costo").html(numeral(json['ULTIMO_COSTO_USD']).format('0,0.00'));
@@ -374,13 +373,19 @@ function grafVentasMensuales(Articulos, Canal) {
 
             $("#id_transito").html(numeral(json['TRANSITO']).format('0,0'));
             $("#id_pedido").html(numeral(json['PEDIDO']).format('0,0'));
-            $("#id_promedio_mensual").html(numeral(json['EJECUTADO_UND_YTD']).format('0,0') + " UNITS");
-            
+
+
+            if (Canal !='Todos' ) {
+                
+            }
+
+
+            $("#id_promedio_mensual").html(numeral(json['EJECUTADO_UND_YTD']).format('0,0') + " UNITS");                
+            $("#id_ventas").html('C$ ' + numeral(json['VENTAS_YTD']).format('0,0'));        
+            $("#id_contribucion").html('C$ ' + numeral(json['CONTRIBUCION']).format('0,0'));
             
             $.each(json['VENTAS'], function(i, x) {
-
                 tmp_total = tmp_total + parseFloat(x['data']);
-
                 dta.push({
                     name  : x['Mes'],
                     y     : x['data'], 
@@ -389,6 +394,8 @@ function grafVentasMensuales(Articulos, Canal) {
                 title.push(x['name']); 
                 Day_Max.push(x['data']); 
             }); 
+
+
 
             temporal = '<span style="color:black">\u25CF</span><b>{point.y} </b> UNITS<br/>';                
             grafiacas_productos_Diarios.tooltip = {
@@ -407,4 +414,48 @@ function grafVentasMensuales(Articulos, Canal) {
 
     })
 }
+function FiltrarPorCanal(Articulos, Canal) {
+    $.getJSON("dtGraf/" + Articulos + "/" + Canal, function(json) {
+            dta = [];
+            title = [];
+            tmp_total = 0;
+            Day_Max = [];
+
+            var vVtsDiarias;
+
+            $("#id_promedio_mensual").html(numeral(json['EJECUTADO_UND_YTD']).format('0,0') + " UNITS");                
+            $("#id_ventas").html('C$ ' + numeral(json['VENTAS_YTD']).format('0,0'));        
+            $("#id_contribucion").html('C$ ' + numeral(json['CONTRIBUCION_YTD']).format('0,0'));
+            
+            $.each(json['VENTAS'], function(i, x) {
+                tmp_total = tmp_total + parseFloat(x['data']);
+                dta.push({
+                    name  : x['Mes'],                                        
+                    y     : x['data'], 
+                });
+
+                title.push(x['name']); 
+                Day_Max.push(x['data']); 
+            }); 
+
+
+
+            temporal = '<span style="color:black">\u25CF</span><b>{point.y} </b> UNITS<br/>';                
+            grafiacas_productos_Diarios.tooltip = {
+                pointFormat : temporal
+            }
+
+            vVtsDiarias = numeral(tmp_total).format('0,0.00');
+            
+            grafiacas_productos_Diarios.xAxis.categories = title;
+            grafiacas_productos_Diarios.subtitle.text = vVtsDiarias + " UNITS";
+            grafiacas_productos_Diarios.series[0].data = dta;
+
+            chart = new Highcharts.Chart(grafiacas_productos_Diarios);
+            
+            chart.yAxis[0].update();
+
+    })
+}
+
 </script>

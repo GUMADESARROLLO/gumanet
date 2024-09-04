@@ -373,7 +373,6 @@
                                   <option value="FARMACIAS">FARMACIAS</option>
                                   <option value="MAYORISTAS">MAYORISTAS</option>
                                   <option value="INSTITUCIONES">INSTITUCIONES</option>
-                                  <option value="FARMACIAS">FARMACIAS</option>
                                   <option value="CRUZ_AZUL">CRUZ AZUL</option>
                                   <option value="LICITACIONES">LICITACIONES</option>
                                 </select>
