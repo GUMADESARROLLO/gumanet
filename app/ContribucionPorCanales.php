@@ -19,11 +19,16 @@ class ContribucionPorCanales extends Model
 {
     protected $connection = 'sqlsrv';
     public $timestamps = false;
-    protected $table = "PRODUCCION.dbo.view_canal_contribuciones";
+    protected $table = "PRODUCCION.dbo.view_contribucion_canales";
 
     public static function calcularCanales($fechaIni, $fechaEnd)
     {
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion_dev ?, ?", [$fechaIni, $fechaEnd]);
+
+        ContribucionPorCanalesTable::where(function ($query) use ($fechaIni, $fechaEnd) {
+            $query->where('FECHA', '<', $fechaIni)
+                ->orWhere('FECHA', '>', $fechaEnd);
+        })->delete();
     }
 
     public static function periodoFechas(){
@@ -33,7 +38,7 @@ class ContribucionPorCanales extends Model
         $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
 
-        $result = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_canales_contribuciones");
+        $result = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
         return [
             'primera_fecha' => $result[0]->primera_fecha,
             'ultima_fecha' => $result[0]->ultima_fecha,
