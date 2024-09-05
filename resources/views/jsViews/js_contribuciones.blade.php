@@ -81,9 +81,6 @@ $(document).ready(function () {
             {"data": "ARTICULO"},
             {"data": "DESCRIPCION"},
             {"data": "FABRICANTE"},
-            {"data": "COSTO_PROM_PRIV_PACK",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "COSTO_PROM_MINSA_PACK",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "Valor_USD_Inventario_ONHAND_PRIVADO"},
             {"data": "FARMACIA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
             {"data": "FARMACIA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "FARMACIA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
@@ -135,6 +132,7 @@ $(document).ready(function () {
     $("#table_contribucion_length").hide();
     $("#table_contribucion_filter").hide();
 
+    
     /*$("#exp-to-excel-canales").click(function(){
         location.href = "ExportToExcelCanales";
     })*/
@@ -298,4 +296,8 @@ $(document).ready(function () {
     });
 
 });
+
+function getDetalleArticulo(articulo, descripcion){
+    console.log(articulo)
+}
 </script>

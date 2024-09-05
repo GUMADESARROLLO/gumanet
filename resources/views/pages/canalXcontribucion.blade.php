@@ -60,7 +60,6 @@
               <thead>
                 <tr class="bg-blue text-light">
                   <th class="bg-blue text-light" colspan="3">SKU</th>
-                  <th colspan="3">INFO</th>
                   <th colspan="6">FARMACIA</th>
                   <th colspan="6">CADENA FARMACIA</th>
                   <th colspan="6">MAYORISTA</th>
@@ -71,13 +70,10 @@
                 </tr>
                 <tr>
                   <th class="bg-blue" colspan="3"></th>
-                  <th id="Costo_Prom_Priv"></th>
-                  <th id="Costo_Prom_Minsa"></th>
-                  <th id="Valor_USD_Inventario_ONHAND_PRIVADO"></th>
                   <th id="Farmacia_Cantidad"></th>
                   <th id="Farmacia_Promedio"></th>
                   <th id="Farmacia_Venta"></th>
-                  <th id="Farmacia_Costo"></th>
+                  <th id="Farmacia_Costo"></th> 
                   <th id="Farmacia_Contribucion"></th>
                   <th id="Farmacia_Margen"></th>
                   <th id="Cadena_Farmacia_Cantidad"></th>
@@ -121,9 +117,6 @@
                     <th class="bg-blue text-light">ARTICULO</th>
                     <th class="bg-blue text-light">DESCRIPCION</th>
                     <th class="bg-blue text-light">FABRICANTE</th>
-                    <th style="background-color:lightsalmon">COSTO PROM. PRIV. (PACK)</th>
-                    <th style="background-color:lightsalmon">COSTO PROM. MINSA (PACK)</th>
-                    <th style="background-color:bisque">Valor (USD) Inventario ONHAND-PRIVADO</th>
                     <th class="bg-warning text-black">CANTIDAD</th>
                     <th class="bg-warning text-black">PROMEDIO C$</th>
                     <th class="bg-warning text-black">VENTA C$</th>

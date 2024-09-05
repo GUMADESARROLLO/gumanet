@@ -20,7 +20,7 @@ class ContribucionPorCanales extends Model
 {
     protected $connection = 'sqlsrv';
     public $timestamps = false;
-    protected $table = "PRODUCCION.dbo.view_canal_contribuciones";
+    protected $table = "PRODUCCION.dbo.view_contribucion_canales";
 
     public static function getData(){
         $json = array(); $i = 0;
@@ -45,9 +45,9 @@ class ContribucionPorCanales extends Model
             $json[$i]['COSTO_PROM_MINSA_PACK']                      = ($row['INSTITUCION_PUBLICA_CANTIDAD'] > 0) ? $row['INSTITUCION_PUBLICA_COSTO']/$row['INSTITUCION_PUBLICA_CANTIDAD']:0;
             $json[$i]['Valor_USD_Inventario_ONHAND_PRIVADO']        = ($CantOnHand != null) ? $CantOnHand[0]->cantidad_transito:0;
             $json[$i]['Valor_USD_Total_OnHand+Tránsito_PRIVADO']    = ($CantOnHandTransito != null) ? $CantOnHandTransito[0]->cantidad_transito:0;
-            $json[$i]['ARTICULO']                                   = $row['ARTICULO'];
-            $json[$i]['DESCRIPCION']                                = $row['DESCRIPCION'];
-            $json[$i]['FABRICANTE']                                 = $row['FABRICANTE'];
+            $json[$i]['ARTICULO']                                   = '<a href="#!" onclick="getDetalleArticulo('."'".$row['ARTICULO']."'".', '."'".strtoupper($row['DESCRIPCION'])."'".')" >'.$row['ARTICULO'].'</a>';
+            $json[$i]['DESCRIPCION']                                = strtoupper($row['DESCRIPCION']);
+            $json[$i]['FABRICANTE']                                 = strtoupper($row['FABRICANTE']);
             $json[$i]['FARMACIA_CANTIDAD']                          = $row['FARMACIA_CANTIDAD'];
             $json[$i]['FARMACIA_PROMEDIO']                          = $row['FARMACIA_PROMEDIO'];
             $json[$i]['FARMACIA_VENTA']                             = $row['FARMACIA_VENTA'];
