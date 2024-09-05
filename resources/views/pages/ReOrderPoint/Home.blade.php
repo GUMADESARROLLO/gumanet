@@ -373,7 +373,8 @@
                                   <option value="FARMACIAS">FARMACIAS</option>
                                   <option value="CADENAS">CADENAS</option>
                                   <option value="MAYORISTAS">MAYORISTAS</option>
-                                  <option value="INSTITUCIONES_PRIVADAS">INSTITUCIONES</option>
+                                  <option value="INSTITUCIONES_PRIVADAS">INST. PRIVADAS</option>
+                                  <option value="INSTITUCIONES_PUBLICAS"> INST. PUBLICAS</option>
                                   <option value="CRUZ_AZUL">CRUZ AZUL</option>
                                   
                                 </select>
