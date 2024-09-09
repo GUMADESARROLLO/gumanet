@@ -129,6 +129,18 @@
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">VALUACION</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">REORDER1</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">ESTIMACION SOBRANTES UND</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">1.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">2.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">3.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">4.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">5.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">6.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">7.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">8.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">9.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">10.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">11.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">12.</span></th>
                 </tr>
               </thead>
             </table>
@@ -184,7 +196,7 @@
                                 <div class="card-body">
                                     <div class="row" >
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <div class="card card-social" style="height: 100px">
                                             <div class="card-header text-center bg-blue">
                                                 <h6 class="text-white m-0">ORDENAR 1</h6>
@@ -197,8 +209,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- Consumo de electricidad -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <div class="card card-social" style="height: 100px">
                                             <div class="card-header text-center bg-blue" style="height: 40px;">
                                                 <h6 class="text-white m-0">ORDENAR</h6>
@@ -209,7 +220,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <div class="card card-social" style="height: 100px">
                                             <div class="card-header text-center bg-blue" style="height: 40px;">
                                                 <h6 class="text-white m-0">CANTIDAD A ORDENAR</h6>
@@ -218,6 +229,54 @@
                                               <h6 class="text-center font-weight-bold" style="font-size: 1.3rem!important"  id="id_cant_ordenar">  0.00</h6>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+
+                                      <div class="card card-social" style="height: 100px">
+                                          <div class="card-header text-center bg-blue" style="height: 40px;">
+                                              <h6 class="text-white m-0">3 MESES MAS ALTO</h6>
+                                          </div>
+                                        
+                                          <div class="card-block">
+                                              <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
+                                                  <div class="col-3 m-0 p-0">
+                                                      <p class="text-left m-0 p-0"><span class="text-muted m-r-5" id="name_mes_1" >">M1</span>
+                                                      </p>
+                                                  </div>
+                                                  <div class="col-3 m-0 p-0">
+                                                      <p class="text-center m-0 p-0"><span class="text-muted m-r-5" id="name_mes_2">M2</span>
+                                                      </p>
+                                                  </div>
+                                                  <div class="col-3 m-0 p-0">
+                                                      <p class="text-right m-0 p-0"><span class="text-muted m-r-5" id="name_mes_3">M3<span>
+                                                      </p>
+                                                  </div>
+                                                  <div class="col-3 m-0 p-0">
+                                                      <p class="text-right m-0 p-0"><span class="text-muted m-r-5" id="name_mes_3">PROM.<span>
+                                                      </p>
+                                                  </div>
+                                              </div>
+                                              <div class="row mx-2 my-1 align-items-center justify-content-center card-active">
+                                                  <div class="col-3 m-0 p-0">
+                                                      <h6 class="font-weight-bold text-left m-0 p-0" style="font-size: 1.1rem!important"><span class="m-r-5" id="valor_mes_1"  > 0.00 </span></h6>
+                                                  </div>
+                                                  <div class="col-3 m-0 p-0">
+                                                      <h6 class="font-weight-bold text-center m-0 p-0" style="font-size: 1.1rem!important"><span class="m-r-5" id="valor_mes_2"  > 0.00 </span></h6>
+                                                  </div>
+
+                                                  <div class="col-3 m-0 p-0">
+                                                      <h6 class="font-weight-bold text-right  m-0 p-0" style="font-size: 1.1rem!important"> <span class=" m-r-5" id="valor_mes_3"> 0.00 </span> </h6>
+                                                  </div>
+                                                  <div class="col-3 m-0 p-0">
+                                                      <h6 class="font-weight-bold text-right  m-0 p-0" style="font-size: 1.1rem!important"> <span class=" m-r-5" id="valor_mes_promedio"> 0.00 </span> </h6>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                    
+
                                     </div>
                                         
                                        
@@ -277,7 +336,7 @@
                                             </p>
                                         </div>
                                         <div class="col-4 m-0 p-0">
-                                            <p class="text-left m-0 p-0"><span class="text-muted m-r-5">PROM. USD</span>
+                                            <p class="text-center m-0 p-0"><span class="text-muted m-r-5">PROM. USD</span>
                                             </p>
                                         </div>
                                         <div class="col-4 m-0 p-0">
@@ -290,7 +349,7 @@
                                             <h6 class="font-weight-bold text-left m-0 p-0" style="font-size: 1.1rem!important"><span class="m-r-5" id="id_ultimo_costo"  > - </span></h6>
                                         </div>
                                         <div class="col-4 m-0 p-0">
-                                            <h6 class="font-weight-bold text-left m-0 p-0" style="font-size: 1.1rem!important"><span class="m-r-5" id="id_costo"  > - </span></h6>
+                                            <h6 class="font-weight-bold text-center m-0 p-0" style="font-size: 1.1rem!important"><span class="m-r-5" id="id_costo"  > - </span></h6>
                                         </div>
 
                                         <div class="col-4 m-0 p-0">
