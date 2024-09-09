@@ -87,6 +87,7 @@ border: 1px solid rgba(134, 142, 150, 0.75);
 <!-- Custom styles for this template -->
 <link rel="stylesheet" href="{{ url('css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ url('css/fuente.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url('css/daterangepicker.css') }}">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css">
 
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
@@ -168,11 +169,12 @@ border: 1px solid rgba(134, 142, 150, 0.75);
 <script src="{{ url('js/ext/feather.min.js') }}"></script>
 <script src="{{ url('js/ext/Chart.min.js') }}"></script>
 
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>>
 
 <script src="{{ url('js/highcharts.js') }}"></script>
 <script src="{{ url('js/bootstrap.js') }}"></script>
 <script src="{{ url('js/ext/moment.js') }}"></script>
+<script src="{{ url('js/ext/daterangepicker.js') }}"></script>
 
 <script src="{{ url('js/js_general.js') }}"></script>
 
