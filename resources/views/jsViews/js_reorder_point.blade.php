@@ -204,13 +204,12 @@ $(document).ready(function() {
             if( data["IS_CA"] ==  `S`){
                 $(row).addClass('dt-is-ca-background');
             } 
-            
+
             // CAMBIA EL NOMBRE DELA COLUMNA DE LOS MESES
             $.each(data.VENTAS, function(i, item) {
                 var index = i + 38;
                 Table.column(index).title(item.Mes);
             });
-
         },
         "initComplete": function(settings, json) {
             $("#LoadingID").empty();
@@ -244,6 +243,46 @@ $('#selectGrafVtsDiario').change(function() {
     
     FiltrarPorCanal(Articulo,Canal);     
 });
+
+function Highest3Months(Months) {
+
+    var sum = 0;
+
+    $("#name_mes_1").text('M1');
+    $("#name_mes_2").text("M2");
+    $("#name_mes_3").text("M3");
+
+    $("#valor_mes_1").text(" - ");
+    $("#valor_mes_2").text(" - ");
+    $("#valor_mes_3").text(" - ");
+
+    // ORDENA LOS MESES DE MAYOR A MENOR
+    Months.sort(function(a, b) {
+        return b.data - a.data;
+    });
+    
+    // SELECCIONA LOS 3 MESES MAS ALGO
+    Months = Months.slice(0, 3);
+    
+    // SUMA LOS VALORES DE LOS 3 MESES MAS ALGO
+    Months.forEach(function(item) {
+        sum += item.data;
+    });
+    
+    var promedio = sum / Months.length;
+
+    $("#valor_mes_promedio").text(promedio.toFixed(0));
+
+    $("#name_mes_1").text(Months[0].Mes);
+    $("#name_mes_2").text(Months[1].Mes);
+    $("#name_mes_3").text(Months[2].Mes);
+
+    $("#valor_mes_1").text(Months[0].data);
+    $("#valor_mes_2").text(Months[1].data);
+    $("#valor_mes_3").text(Months[2].data);
+    
+
+}
 
 
 // $("#BtnClickColumns").click(function() {
@@ -408,6 +447,8 @@ function grafVentasMensuales(Articulos, Canal) {
                 Day_Max.push(x['data']); 
             }); 
 
+            
+
 
 
             temporal = '<span style="color:black">\u25CF</span><b>{point.y} </b> UNITS<br/>';                
@@ -424,6 +465,9 @@ function grafVentasMensuales(Articulos, Canal) {
             chart = new Highcharts.Chart(grafiacas_productos_Diarios);
             
             chart.yAxis[0].update();
+
+
+            Highest3Months(json['VENTAS']);
 
     })
 }
@@ -467,6 +511,8 @@ function FiltrarPorCanal(Articulos, Canal) {
             chart = new Highcharts.Chart(grafiacas_productos_Diarios);
             
             chart.yAxis[0].update();
+
+            Highest3Months(json['VENTAS']);
 
     })
 }
