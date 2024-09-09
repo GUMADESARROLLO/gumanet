@@ -1,7 +1,7 @@
 <script type="text/javascript">
     fullScreen();
 $(document).ready(function () {
-    //inicializaControlFecha();
+    
     $('#id_txt_buscar').on('keyup', function() {   
         var vTable = $('#table_contribucion').DataTable();     
         vTable.search(this.value).draw();        
@@ -294,10 +294,13 @@ $(document).ready(function () {
     $('#table_contribucion').DataTable().on('draw', function() {
         calcularTotales();
     });
+    inicializaControlFecha();
 
+    
 });
 
 function getDetalleArticulo(articulo, descripcion){
     console.log(articulo)
 }
+
 </script>
