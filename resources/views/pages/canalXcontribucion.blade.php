@@ -73,7 +73,7 @@
                   <th id="Farmacia_Cantidad"></th>
                   <th id="Farmacia_Promedio"></th>
                   <th id="Farmacia_Venta"></th>
-                  <th id="Farmacia_Costo"></th>
+                  <th id="Farmacia_Costo"></th> 
                   <th id="Farmacia_Contribucion"></th>
                   <th id="Farmacia_Margen"></th>
                   <th id="Cadena_Farmacia_Cantidad"></th>
