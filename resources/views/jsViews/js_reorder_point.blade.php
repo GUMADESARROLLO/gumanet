@@ -271,15 +271,15 @@ function Highest3Months(Months) {
     
     var promedio = sum / Months.length;
 
-    $("#valor_mes_promedio").text(promedio.toFixed(0));
+    $("#valor_mes_promedio").text(numeral(promedio.toFixed(0)).format('0,0'));
 
     $("#name_mes_1").text(Months[0].Mes);
     $("#name_mes_2").text(Months[1].Mes);
     $("#name_mes_3").text(Months[2].Mes);
 
-    $("#valor_mes_1").text(Months[0].data);
-    $("#valor_mes_2").text(Months[1].data);
-    $("#valor_mes_3").text(Months[2].data);
+    $("#valor_mes_1").text(numeral(Months[0].data).format('0,0'));
+    $("#valor_mes_2").text(numeral(Months[1].data).format('0,0'));
+    $("#valor_mes_3").text(numeral(Months[2].data).format('0,0'));
     
 
 }
