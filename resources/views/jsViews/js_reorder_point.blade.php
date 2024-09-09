@@ -166,18 +166,19 @@ $(document).ready(function() {
 			{"data": "VALUACION"},
 			{"data": "REORDER1"},
 			{"data": "ESTIMACION_SOBRANTES_UND"},
-			{"data": "1"},
-			{"data": "2"},
-			{"data": "3"},
-			{"data": "4"},
-			{"data": "5"},
-			{"data": "6"},
-			{"data": "7"},
-			{"data": "8"},
-			{"data": "9"},
-			{"data": "10"},
-			{"data": "11"},
-			{"data": "12"},
+
+            {"title" : "M1", "data": "VENTAS.0.Valor"},
+            {"title" : "M2", "data": "VENTAS.1.Valor"},
+            {"title" : "M3", "data": "VENTAS.2.Valor"},
+            {"title" : "M4", "data": "VENTAS.3.Valor"},
+            {"title" : "M5", "data": "VENTAS.4.Valor"},
+            {"title" : "M6", "data": "VENTAS.5.Valor"},
+            {"title" : "M7", "data": "VENTAS.6.Valor"},
+            {"title" : "M8", "data": "VENTAS.7.Valor"},
+            {"title" : "M9", "data": "VENTAS.8.Valor"},
+            {"title" : "M10", "data": "VENTAS.9.Valor"},
+            {"title" : "M11", "data": "VENTAS.10.Valor"},
+            {"title" : "M12", "data": "VENTAS.11.Valor"},
 		],
         "columnDefs": [
             {"className": "dt-center", "targets": []},
@@ -203,6 +204,12 @@ $(document).ready(function() {
             if( data["IS_CA"] ==  `S`){
                 $(row).addClass('dt-is-ca-background');
             } 
+            
+            // CAMBIA EL NOMBRE DELA COLUMNA DE LOS MESES
+            $.each(data.VENTAS, function(i, item) {
+                var index = i + 38;
+                Table.column(index).title(item.Mes);
+            });
 
         },
         "initComplete": function(settings, json) {

@@ -50,6 +50,7 @@ class ReOrderPoint extends Model
     {
         $array = [];
         $Articulos = ReOrderPoint::all();
+        $NameMonths = ReOrderPoint::NameMonth($Articulos[0]->FechaFinal)  ;
         foreach ($Articulos as $key => $a) {
             $array[$key] = [
                 "ARTICULO"                  => '<a href="#!" onclick="getDetalleArticulo('."'".$a->ARTICULO."'".', '."'".strtoupper($a->DESCRIPCION)."'".')" >'.$a->ARTICULO.'</a>',
@@ -92,18 +93,12 @@ class ReOrderPoint extends Model
                 "TOTAL_UMK"                 => number_format($a->TOTAL_UMK, 2),
                 "TOTAL_GP"                  => number_format($a->TOTAL_GP, 2),
                 "TOTAL_DISP"                => number_format($a->TOTAL_DISP, 2),
-                "1" => number_format($a->{1}, 0),
-                "2" => number_format($a->{2}, 0),
-                "3" => number_format($a->{3}, 0),
-                "4" => number_format($a->{4}, 0),
-                "5" => number_format($a->{5}, 0),
-                "6" => number_format($a->{6}, 0),
-                "7" => number_format($a->{7}, 0),
-                "8" => number_format($a->{8}, 0),
-                "9" => number_format($a->{9}, 0),
-                "10" => number_format($a->{10}, 0),
-                "11" => number_format($a->{11}, 0),
-                "12" => number_format($a->{12}, 0),
+                "VENTAS"                    => array_map(function($month, $value) use ($a) { 
+                                            return [
+                                                    "Mes"   => $month,
+                                                    "Valor"  => isset($a->$value) && !empty($a->$value) ? (float) number_format($a->$value,2,".",""): 0
+                                                    ];
+                                            }, $NameMonths, range(1, 12))
             ];
         }
 
