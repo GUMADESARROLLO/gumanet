@@ -94,7 +94,8 @@ $(document).ready(function() {
             topStart: {
                 buttons: [ {
                         extend: 'colvis',
-                        text: 'Columnas visibles',
+                        collectionLayout: 'fixed columns',
+                        popoverTitle: 'Columnas visibles'
                     } ]
             },
             topEnd: {
@@ -167,18 +168,18 @@ $(document).ready(function() {
 			{"data": "REORDER1"},
 			{"data": "ESTIMACION_SOBRANTES_UND"},
 
-            {"title" : "M1", "data": "VENTAS.0.Valor"},
-            {"title" : "M2", "data": "VENTAS.1.Valor"},
-            {"title" : "M3", "data": "VENTAS.2.Valor"},
-            {"title" : "M4", "data": "VENTAS.3.Valor"},
-            {"title" : "M5", "data": "VENTAS.4.Valor"},
-            {"title" : "M6", "data": "VENTAS.5.Valor"},
-            {"title" : "M7", "data": "VENTAS.6.Valor"},
-            {"title" : "M8", "data": "VENTAS.7.Valor"},
-            {"title" : "M9", "data": "VENTAS.8.Valor"},
-            {"title" : "M10", "data": "VENTAS.9.Valor"},
-            {"title" : "M11", "data": "VENTAS.10.Valor"},
-            {"title" : "M12", "data": "VENTAS.11.Valor"},
+            {"title" : "Mes1", "data": "VENTAS.0.Valor"},
+            {"title" : "Mes2", "data": "VENTAS.1.Valor"},
+            {"title" : "Mes3", "data": "VENTAS.2.Valor"},
+            {"title" : "Mes4", "data": "VENTAS.3.Valor"},
+            {"title" : "Mes5", "data": "VENTAS.4.Valor"},
+            {"title" : "Mes6", "data": "VENTAS.5.Valor"},
+            {"title" : "Mes7", "data": "VENTAS.6.Valor"},
+            {"title" : "Mes8", "data": "VENTAS.7.Valor"},
+            {"title" : "Mes9", "data": "VENTAS.8.Valor"},
+            {"title" : "Mes10", "data": "VENTAS.9.Valor"},
+            {"title" : "Mes11", "data": "VENTAS.10.Valor"},
+            {"title" : "Mes12", "data": "VENTAS.11.Valor"},
 		],
         "columnDefs": [
             {"className": "dt-center", "targets": []},
