@@ -100,8 +100,9 @@ $(document).ready(function() {
             },
             topEnd: {
                 buttons: [ {
-                    text: 'Exportar a excel',
+                    text:   'Exportar a excel',
                     extend: 'excelHtml5',
+                    title:  'Reporder Point: ' + moment().format('YYYY-MM-DD HH:mm'),
                     exportOptions: {
                         columns: ':visible'
                     }
