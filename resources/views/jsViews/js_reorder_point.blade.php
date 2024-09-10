@@ -166,7 +166,19 @@ $(document).ready(function() {
 			{"data": "VALUACION"},
 			{"data": "REORDER1"},
 			{"data": "ESTIMACION_SOBRANTES_UND"},
-			
+
+            {"title" : "M1", "data": "VENTAS.0.Valor"},
+            {"title" : "M2", "data": "VENTAS.1.Valor"},
+            {"title" : "M3", "data": "VENTAS.2.Valor"},
+            {"title" : "M4", "data": "VENTAS.3.Valor"},
+            {"title" : "M5", "data": "VENTAS.4.Valor"},
+            {"title" : "M6", "data": "VENTAS.5.Valor"},
+            {"title" : "M7", "data": "VENTAS.6.Valor"},
+            {"title" : "M8", "data": "VENTAS.7.Valor"},
+            {"title" : "M9", "data": "VENTAS.8.Valor"},
+            {"title" : "M10", "data": "VENTAS.9.Valor"},
+            {"title" : "M11", "data": "VENTAS.10.Valor"},
+            {"title" : "M12", "data": "VENTAS.11.Valor"},
 		],
         "columnDefs": [
             {"className": "dt-center", "targets": []},
@@ -193,6 +205,11 @@ $(document).ready(function() {
                 $(row).addClass('dt-is-ca-background');
             } 
 
+            // CAMBIA EL NOMBRE DELA COLUMNA DE LOS MESES
+            $.each(data.VENTAS, function(i, item) {
+                var index = i + 38;
+                Table.column(index).title(item.Mes);
+            });
         },
         "initComplete": function(settings, json) {
             $("#LoadingID").empty();
@@ -226,6 +243,46 @@ $('#selectGrafVtsDiario').change(function() {
     
     FiltrarPorCanal(Articulo,Canal);     
 });
+
+function Highest3Months(Months) {
+
+    var sum = 0;
+
+    $("#name_mes_1").text('M1');
+    $("#name_mes_2").text("M2");
+    $("#name_mes_3").text("M3");
+
+    $("#valor_mes_1").text(" - ");
+    $("#valor_mes_2").text(" - ");
+    $("#valor_mes_3").text(" - ");
+
+    // ORDENA LOS MESES DE MAYOR A MENOR
+    Months.sort(function(a, b) {
+        return b.data - a.data;
+    });
+    
+    // SELECCIONA LOS 3 MESES MAS ALGO
+    Months = Months.slice(0, 3);
+    
+    // SUMA LOS VALORES DE LOS 3 MESES MAS ALGO
+    Months.forEach(function(item) {
+        sum += item.data;
+    });
+    
+    var promedio = sum / Months.length;
+
+    $("#valor_mes_promedio").text(numeral(promedio.toFixed(0)).format('0,0'));
+
+    $("#name_mes_1").text(Months[0].Mes);
+    $("#name_mes_2").text(Months[1].Mes);
+    $("#name_mes_3").text(Months[2].Mes);
+
+    $("#valor_mes_1").text(numeral(Months[0].data).format('0,0'));
+    $("#valor_mes_2").text(numeral(Months[1].data).format('0,0'));
+    $("#valor_mes_3").text(numeral(Months[2].data).format('0,0'));
+    
+
+}
 
 
 // $("#BtnClickColumns").click(function() {
@@ -390,6 +447,8 @@ function grafVentasMensuales(Articulos, Canal) {
                 Day_Max.push(x['data']); 
             }); 
 
+            
+
 
 
             temporal = '<span style="color:black">\u25CF</span><b>{point.y} </b> UNITS<br/>';                
@@ -406,6 +465,9 @@ function grafVentasMensuales(Articulos, Canal) {
             chart = new Highcharts.Chart(grafiacas_productos_Diarios);
             
             chart.yAxis[0].update();
+
+
+            Highest3Months(json['VENTAS']);
 
     })
 }
@@ -449,6 +511,8 @@ function FiltrarPorCanal(Articulos, Canal) {
             chart = new Highcharts.Chart(grafiacas_productos_Diarios);
             
             chart.yAxis[0].update();
+
+            Highest3Months(json['VENTAS']);
 
     })
 }

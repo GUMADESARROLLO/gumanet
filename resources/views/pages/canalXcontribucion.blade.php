@@ -56,7 +56,7 @@
         <div class="p-0 px-car">
           <div class="table-responsive flex-between-center scrollbar border border-1 border-300 rounded-2">
           
-            <table id="table_contribucion" class="table nowrap table-bordered" width="100%">
+            <table id="table_contribucion" class="table table-bordered table-sm" width="100%">
               <thead>
                 <tr class="bg-blue text-light">
                   <th class="bg-blue text-light" colspan="3">SKU</th>
@@ -118,47 +118,47 @@
                     <th class="bg-blue text-light">DESCRIPCION</th>
                     <th class="bg-blue text-light">FABRICANTE</th>
                     <th class="bg-warning text-black">CANTIDAD</th>
-                    <th class="bg-warning text-black">PROMEDIO C$</th>
+                    <th class="bg-warning text-black">PROM. C$</th>
                     <th class="bg-warning text-black">VENTA C$</th>
                     <th class="bg-warning text-black">COSTO C$</th>
-                    <th class="bg-warning text-black">CONTRIBUCION C$</th>
-                    <th class="bg-warning text-black">MARGEN %</th>
+                    <th class="bg-warning text-black">CONTRIB. C$</th>
+                    <th class="bg-warning text-black">%</th>
                     <th style="background-color:peru">CANTIDAD</th>
-                    <th style="background-color:peru">PROMEDIO C$</th>
+                    <th style="background-color:peru">PROM. C$</th>
                     <th style="background-color:peru">VENTA C$</th>
                     <th style="background-color:peru">COSTO C$</th>
-                    <th style="background-color:peru">CONTRIBUCION C$</th>
-                    <th style="background-color:peru">MARGEN %</th>
+                    <th style="background-color:peru">CONTRIB. C$</th>
+                    <th style="background-color:peru">%</th>
                     <th style="background-color:burlywood">CANTIDAD</th>
-                    <th style="background-color:burlywood">PROMEDIO C$</th>
+                    <th style="background-color:burlywood">PROM. C$</th>
                     <th style="background-color:burlywood">VENTA C$</th>
                     <th style="background-color:burlywood">COSTO C$</th>
-                    <th style="background-color:burlywood">CONTRIBUCION C$</th>
-                    <th style="background-color:burlywood">MARGEN %</th>
+                    <th style="background-color:burlywood">CONTRIB. C$</th>
+                    <th style="background-color:burlywood">%</th>
                     <th style="background-color:limegreen">CANTIDAD</th>
-                    <th style="background-color:limegreen">PROMEDIO C$</th>
+                    <th style="background-color:limegreen">PROM. C$</th>
                     <th style="background-color:limegreen">VENTA C$</th>
                     <th style="background-color:limegreen">COSTO C$</th>
-                    <th style="background-color:limegreen">CONTRIBUCION C$</th>
-                    <th style="background-color:limegreen">MARGEN %</th>
+                    <th style="background-color:limegreen">CONTRIB. C$</th>
+                    <th style="background-color:limegreen">%</th>
                     <th style="background-color:cornflowerblue">CANTIDAD</th>
-                    <th style="background-color:cornflowerblue">PROMEDIO C$</th>
+                    <th style="background-color:cornflowerblue">PROM. C$</th>
                     <th style="background-color:cornflowerblue">VENTA C$</th>
                     <th style="background-color:cornflowerblue">COSTO C$</th>
-                    <th style="background-color:cornflowerblue">CONTRIBUCION C$</th>
-                    <th style="background-color:cornflowerblue">MARGEN %</th>
+                    <th style="background-color:cornflowerblue">CONTRIB. C$</th>
+                    <th style="background-color:cornflowerblue">%</th>
                     <th style="background-color:limegreen">CANTIDAD</th>
-                    <th style="background-color:limegreen">PROMEDIO C$</th>
+                    <th style="background-color:limegreen">PROM. C$</th>
                     <th style="background-color:limegreen">VENTA C$</th>
                     <th style="background-color:limegreen">COSTO C$</th>
-                    <th style="background-color:limegreen">CONTRIBUCION C$</th>
-                    <th style="background-color:limegreen">MARGEN %</th>
+                    <th style="background-color:limegreen">CONTRIB. C$</th>
+                    <th style="background-color:limegreen">%</th>
                     <th style="background-color:gold">CANTIDAD</th>
-                    <th style="background-color:gold">PROMEDIO C$</th>
+                    <th style="background-color:gold">PROM. C$</th>
                     <th style="background-color:gold">VENTA C$</th>
                     <th style="background-color:gold">COSTO C$</th>
-                    <th style="background-color:gold">CONTRIBUCION C$</th>
-                    <th style="background-color:gold">MARGEN %</th>
+                    <th style="background-color:gold">CONTRIB. C$</th>
+                    <th style="background-color:gold">%</th>
                 </tr>
               </thead>
             </table>
