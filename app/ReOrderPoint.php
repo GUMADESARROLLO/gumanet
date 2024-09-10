@@ -98,7 +98,9 @@ class ReOrderPoint extends Model
                                                     "Mes"   => $month,
                                                     "Valor"  => isset($a->$value) && !empty($a->$value) ? (float) number_format($a->$value,2,".",""): 0
                                                     ];
-                                            }, $NameMonths, range(1, 12))
+                                            }, $NameMonths, range(1, 12)),
+                "PROM_MESES_TOP"            => number_format($a->PROM_MESES_TOP, 0),
+                
             ];
         }
 

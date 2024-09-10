@@ -141,6 +141,7 @@
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">10.</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">11.</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">12.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">PROM. 3 MESES MAS ALTO</span></th>
                 </tr>
               </thead>
             </table>
