@@ -182,6 +182,8 @@ $(document).ready(function() {
             {"title" : "Mes11", "data": "VENTAS.10.Valor"},
             {"title" : "Mes12", "data": "VENTAS.11.Valor"},
             {"data"  : "PROM_MESES_TOP"},
+            {"data"  : "CANTIDAD_V2"},
+            {"data"  : "CLASE_V2"},
 		],
         "columnDefs": [
             {"className": "dt-center", "targets": []},

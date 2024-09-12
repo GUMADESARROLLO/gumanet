@@ -116,7 +116,7 @@
 
                   <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad minima solicitada en los ultimos 2 años">MOQ</span></th>
                   <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">REORDER</span></th>
-                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">CANTIDAD A ORDENAR</span></th>
+                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">CANTIDAD A ORDENAR V1</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">RAZON REORDER/MOQ</span></th>
                   <th class="col-blue-ca-2"><span data-toggle="tooltip"  data-placement="top" title=" - ">COST PROM. C$</span></th>
                   <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">COST PROM. USD</span></th>
@@ -142,6 +142,8 @@
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">11.</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">12.</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">PROM. 3 MESES MAS ALTO</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - "> CANTIDAD A ORDENAR V2 </span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - "> CATEGORIA </span></th>
                 </tr>
               </thead>
             </table>
