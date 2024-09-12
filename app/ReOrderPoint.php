@@ -31,7 +31,7 @@ class ReOrderPoint extends Model
 
         $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
-        $DiaActual  = (int) date('d', strtotime($FechaEnd));        
+        $DiaActual  = (int) date('d', strtotime($FechaEnd)); 
         
         // Ejecutar el tercer procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_Calc_12_month_reorder_point ?, ?, ?", [$FechaIni, $FechaEnd, $DiaActual]);
@@ -42,6 +42,8 @@ class ReOrderPoint extends Model
         // Ejecutar el segundo procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calc_reorder_factura_linea_ca ?", [$FechaEnd]);
 
+        // Ejecutar el cuarto procedimiento almacenado        
+        DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales");
         
 
     }
@@ -70,7 +72,7 @@ class ReOrderPoint extends Model
                 "DEMANDA_ANUAL_CA_AJUSTADA" => number_format($a->DEMANDA_ANUAL_CA_AJUSTADA,2),
                 "FACTOR"                    => number_format($a->FACTOR,2),
                 "LIMITE_LOGISTICO_MEDIO"    => number_format($a->LIMITE_LOGISTICO_MEDIO,2),
-                "CLASE"                     => $a->CLASE,
+                "CLASE"                     => $a->CLASE_AJUSTADAS,
                 "VALUACION"                 => $a->VALUACION,
                 "CONTRIBUCION"              => number_format($a->CONTRIBUCION,2),
                 "PEDIDO"                    => number_format($a->PEDIDO,2),
@@ -79,7 +81,7 @@ class ReOrderPoint extends Model
                 "ESTIMACION_SOBRANTES_UND"  => number_format($a->ESTIMACION_SOBRANTES_UND,2),
                 "REORDER1"                  => number_format($a->REORDER1,0),
                 "REORDER"                   => number_format($a->REORDER,2),
-                "CANTIDAD_ORDENAR"          => number_format($a->CANTIDAD_ORDENAR,0),
+                "CANTIDAD_ORDENAR"          => number_format($a->CANTIDAD_ORDENAR_AJUSTADA,0),
                 "IS_CA"                     => $a->IS_CA,
                 "ROTACION_CORTA"            => number_format($a->ROTACION_CORTA, 2),
                 "ROTACION_MEDIA"            => number_format($a->ROTACION_MEDIA, 2),
@@ -167,11 +169,11 @@ class ReOrderPoint extends Model
 
             'REORDER1'                      => isset($Sales->REORDER1) ? number_format($Sales->REORDER1, 0, '.', '') : 0,
             'REORDER'                       => isset($Sales->REORDER) ? number_format($Sales->REORDER, 0, '.', '') : 0,
-            'CANTIDAD_ORDENAR'              => isset($Sales->CANTIDAD_ORDENAR) ? number_format($Sales->CANTIDAD_ORDENAR, 0, '.', '') : 0,
+            'CANTIDAD_ORDENAR'              => isset($Sales->CANTIDAD_ORDENAR_AJUSTADA) ? number_format($Sales->CANTIDAD_ORDENAR_AJUSTADA, 0, '.', '') : 0,
             'MOQ'                           => isset($Sales->MOQ) ? number_format($Sales->MOQ, 0, '.', '') : 0,
             'PEDIDO'                        => isset($Sales->PEDIDO) ? number_format($Sales->PEDIDO, 0, '.', '') : 0,
             'TRANSITO'                      => isset($Sales->TRANSITO) ? number_format($Sales->TRANSITO, 0, '.', '') : 0,
-            'CLASE'                         => isset($Sales->CLASE) ? $Sales->CLASE : '',
+            'CLASE'                         => isset($Sales->CLASE_AJUSTADAS) ? $Sales->CLASE_AJUSTADAS : '',
 
             'ROTACION_CORTA'                => isset($Sales->ROTACION_CORTA) ? bcadd(number_format($Sales->ROTACION_CORTA, 0), 5, 0) : 0,
             'ROTACION_MEDIA'                => isset($Sales->ROTACION_MEDIA) ? bcadd(number_format($Sales->ROTACION_MEDIA, 0), 5, 0) : 0, 

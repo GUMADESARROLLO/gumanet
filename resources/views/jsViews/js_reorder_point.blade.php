@@ -201,7 +201,7 @@ $(document).ready(function() {
 
             color_cant_order = isValue(color_cant_order,0,true);
 
-            $(row).find('td:eq(24)').addClass( (color_cant_order <= 0.5 ) ? 'dt-cant-ordenar-red' : 'dt-cant-ordenar-green');
+            $(row).find('td:eq(25)').addClass( (color_cant_order <= 0.5 ) ? 'dt-cant-ordenar-red' : 'dt-cant-ordenar-green');
             
         
             if( data["IS_CA"] ==  `S`){
