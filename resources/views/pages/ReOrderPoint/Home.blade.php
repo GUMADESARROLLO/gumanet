@@ -142,8 +142,8 @@
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">11.</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">12.</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">PROM. 3 MESES MAS ALTO</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - "> CANTIDAD A ORDENAR V2 </span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - "> CATEGORIA </span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" Nuevo Calculo de Cantidad a Reordenar "> CANTIDAD A ORDENAR V2 </span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" Categorizacion de Articulos por aporte en base al 80/20"> CATEGORIA </span></th>
                 </tr>
               </thead>
             </table>
@@ -199,7 +199,7 @@
                                 <div class="card-body">
                                     <div class="row" >
 
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-4">
                                         <div class="card card-social" style="height: 100px">
                                             <div class="card-header text-center bg-blue">
                                                 <h6 class="text-white m-0">ORDENAR 1</h6>
@@ -212,7 +212,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="card card-social" style="height: 100px">
                                             <div class="card-header text-center bg-blue" style="height: 40px;">
                                                 <h6 class="text-white m-0">ORDENAR</h6>
@@ -223,7 +223,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="card card-social" style="height: 100px">
                                             <div class="card-header text-center bg-blue" style="height: 40px;">
                                                 <h6 class="text-white m-0">CANTIDAD A ORDENAR</h6>
@@ -236,7 +236,7 @@
 
                                     <div class="col-sm-4">
 
-                                      <div class="card card-social" style="height: 100px">
+                                      <div class="card card-social" style="height: 100px; display:none">
                                           <div class="card-header text-center bg-blue" style="height: 40px;">
                                               <h6 class="text-white m-0">3 MESES MAS ALTO</h6>
                                           </div>

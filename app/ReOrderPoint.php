@@ -43,7 +43,7 @@ class ReOrderPoint extends Model
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calc_reorder_factura_linea_ca ?", [$FechaEnd]);
 
         // Ejecutar el cuarto procedimiento almacenado        
-        //DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales");
+        DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales");
         
 
     }

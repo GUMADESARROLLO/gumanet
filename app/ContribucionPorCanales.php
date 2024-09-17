@@ -106,7 +106,7 @@ class ContribucionPorCanales extends Model
                 ->orWhere('FECHA', '>', $fechaEnd);
         })->delete();
 
-        DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales");
+        DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales_dev");
         
     }
 
