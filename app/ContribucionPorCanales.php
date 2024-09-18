@@ -25,6 +25,7 @@ class ContribucionPorCanales extends Model
     public static function getData(){
         $json = array(); $i = 0;
         $sql = ContribucionPorCanales::all();
+
         $result = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.tbl_articulos_transito");
 
         foreach($sql as $row){
@@ -99,12 +100,14 @@ class ContribucionPorCanales extends Model
 
     public static function calcularCanales($fechaIni, $fechaEnd)
     {
-        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion");
-
+        DB::connection('sqlsrv')->statement("SET NOCOUNT ON ; EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion");        
         ContribucionPorCanalesTable::where(function ($query) use ($fechaIni, $fechaEnd) {
             $query->where('FECHA', '<', $fechaIni)
                 ->orWhere('FECHA', '>', $fechaEnd);
         })->delete();
+
+        DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales_dev");
+        
     }
 
     public static function periodoFechas(){

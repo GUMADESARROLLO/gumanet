@@ -63,6 +63,7 @@ $(document).ready(function () {
                 buttons: [ {
                     text: 'Exportar a excel',
                     extend: 'excelHtml5',
+                    title:  'Contribucion por canal: ' + moment().format('YYYY-MM-DD HH:mm'),
                     exportOptions: {
                         columns: ':visible'
                     }
@@ -82,47 +83,47 @@ $(document).ready(function () {
             {"data": "DESCRIPCION"},
             {"data": "FABRICANTE"},
             {"data": "FARMACIA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
-            {"data": "FARMACIA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "FARMACIA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "FARMACIA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "FARMACIA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "FARMACIA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "FARMACIA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "FARMACIA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "FARMACIA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "FARMACIA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "FARMACIA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
             {"data": "CADENA_FARMACIA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
-            {"data": "CADENA_FARMACIA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "CADENA_FARMACIA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "CADENA_FARMACIA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "CADENA_FARMACIA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "CADENA_FARMACIA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "CADENA_FARMACIA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "CADENA_FARMACIA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "CADENA_FARMACIA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "CADENA_FARMACIA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "CADENA_FARMACIA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
             {"data": "MAYORISTA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
-            {"data": "MAYORISTA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "MAYORISTA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "MAYORISTA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "MAYORISTA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "MAYORISTA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "MAYORISTA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "MAYORISTA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "MAYORISTA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "MAYORISTA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "MAYORISTA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
             {"data": "INSTITUCION_PRIVADA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
-            {"data": "INSTITUCION_PRIVADA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "INSTITUCION_PRIVADA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "INSTITUCION_PRIVADA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "INSTITUCION_PRIVADA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "INSTITUCION_PRIVADA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "INSTITUCION_PRIVADA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "INSTITUCION_PRIVADA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "INSTITUCION_PRIVADA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "INSTITUCION_PRIVADA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "INSTITUCION_PRIVADA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
             {"data": "CRUZ_AZUL_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
-            {"data": "CRUZ_AZUL_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "CRUZ_AZUL_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "CRUZ_AZUL_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "CRUZ_AZUL_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "CRUZ_AZUL_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "CRUZ_AZUL_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "CRUZ_AZUL_VENTA",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "CRUZ_AZUL_COSTO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "CRUZ_AZUL_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "CRUZ_AZUL_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
             {"data": "INSTITUCION_PUBLICA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
-            {"data": "INSTITUCION_PUBLICA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "INSTITUCION_PUBLICA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "INSTITUCION_PUBLICA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "INSTITUCION_PUBLICA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "INSTITUCION_PUBLICA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "INSTITUCION_PUBLICA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "INSTITUCION_PUBLICA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "INSTITUCION_PUBLICA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "INSTITUCION_PUBLICA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "INSTITUCION_PUBLICA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
             {"data": "TOTAL_VENTAS_PACK",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
-            {"data": "TOTAL_PRECIO_PROM",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "TOTAL_VENTAS_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "TOTAL_COSTOS_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "TOTAL_CONTRIBUCION_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "TOTAL_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},         
+            {"data": "TOTAL_PRECIO_PROM",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "TOTAL_VENTAS_C$",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "TOTAL_COSTOS_C$",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "TOTAL_CONTRIBUCION_C$",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "TOTAL_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},         
         ],
         "columnDefs": [                       
             {"className": "dt-right", "targets": [ 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44 ]},
@@ -238,58 +239,58 @@ $(document).ready(function () {
 
         // TOTAL DE FARMACIAS
         $('#Farmacia_Cantidad').html(numeral(Farmacia_Cantidad).format('0,0'));
-        $('#Farmacia_Promedio').html('C$ '+numeral(Farmacia_Venta/Farmacia_Cantidad).format('0,0.00'));
-        $('#Farmacia_Venta').html('C$ '+numeral(Farmacia_Venta).format('0,0.00'));
-        $('#Farmacia_Costo').html('C$ '+numeral(Farmacia_Costo).format('0,0.00'));
-        $('#Farmacia_Contribucion').html('C$ '+numeral(Farmacia_Contribucion).format('0,0.00'));
+        $('#Farmacia_Promedio').html('C$ '+numeral(Farmacia_Venta/Farmacia_Cantidad).format('0,0'));
+        $('#Farmacia_Venta').html('C$ '+numeral(Farmacia_Venta).format('0,0'));
+        $('#Farmacia_Costo').html('C$ '+numeral(Farmacia_Costo).format('0,0'));
+        $('#Farmacia_Contribucion').html('C$ '+numeral(Farmacia_Contribucion).format('0,0'));
         $('#Farmacia_Margen').html(numeral((Farmacia_Contribucion/Farmacia_Venta)*100).format('0,0.00'));
 
         // TOTAL DE CADENA DE FARMACIAS
         $('#Cadena_Farmacia_Cantidad').html(numeral(Cadena_Farmacia_Cantidad).format('0,0'));
-        $('#Cadena_Farmacia_Promedio').html('C$ '+numeral(Cadena_Farmacia_Venta/Cadena_Farmacia_Cantidad).format('0,0.00'));
-        $('#Cadena_Farmacia_Venta').html('C$ '+numeral(Cadena_Farmacia_Venta).format('0,0.00'));
-        $('#Cadena_Farmacia_Costo').html('C$ '+numeral(Cadena_Farmacia_Costo).format('0,0.00'));
-        $('#Cadena_Farmacia_Contribucion').html('C$ '+numeral(Cadena_Farmacia_Contribucion).format('0,0.00'));
+        $('#Cadena_Farmacia_Promedio').html('C$ '+numeral(Cadena_Farmacia_Venta/Cadena_Farmacia_Cantidad).format('0,0'));
+        $('#Cadena_Farmacia_Venta').html('C$ '+numeral(Cadena_Farmacia_Venta).format('0,0'));
+        $('#Cadena_Farmacia_Costo').html('C$ '+numeral(Cadena_Farmacia_Costo).format('0,0'));
+        $('#Cadena_Farmacia_Contribucion').html('C$ '+numeral(Cadena_Farmacia_Contribucion).format('0,0'));
         $('#Cadena_Farmacia_Margen').html(numeral((Cadena_Farmacia_Contribucion/Cadena_Farmacia_Venta)*100).format('0,0.00'));
 
         // TOTAL DE MAYORISTAS
         $('#Mayorista_Cantidad').html(numeral(Mayorista_Cantidad).format('0,0'));
-        $('#Mayorista_Promedio').html('C$ '+numeral(Mayorista_Venta/Mayorista_Cantidad).format('0,0.00'));
-        $('#Mayorista_Venta').html('C$ '+numeral(Mayorista_Venta).format('0,0.00'));
-        $('#Mayorista_Costo').html('C$ '+numeral(Mayorista_Costo).format('0,0.00'));
-        $('#Mayorista_Contribucion').html('C$ '+numeral(Mayorista_Contribucion).format('0,0.00'));
+        $('#Mayorista_Promedio').html('C$ '+numeral(Mayorista_Venta/Mayorista_Cantidad).format('0,0'));
+        $('#Mayorista_Venta').html('C$ '+numeral(Mayorista_Venta).format('0,0'));
+        $('#Mayorista_Costo').html('C$ '+numeral(Mayorista_Costo).format('0,0'));
+        $('#Mayorista_Contribucion').html('C$ '+numeral(Mayorista_Contribucion).format('0,0'));
         $('#Mayorista_Margen').html(numeral((Mayorista_Contribucion/Mayorista_Venta)*100).format('0,0.00'));
 
         // TOTAL INTITUCION PRIVADA
         $('#Institucion_Privada_Cantidad').html(numeral(Institucion_Privada_Cantidad).format('0,0'));
-        $('#Institucion_Privada_Promedio').html('C$ '+numeral(Institucion_Privada_Venta/Institucion_Privada_Cantidad).format('0,0.00'));
-        $('#Institucion_Privada_Venta').html('C$ '+numeral(Institucion_Privada_Venta).format('0,0.00'));
-        $('#Institucion_Privada_Costo').html('C$ '+numeral(Institucion_Privada_Costo).format('0,0.00'));
-        $('#Institucion_Privada_Contribucion').html('C$ '+numeral(Institucion_Privada_Contribucion).format('0,0.00'));
+        $('#Institucion_Privada_Promedio').html('C$ '+numeral(Institucion_Privada_Venta/Institucion_Privada_Cantidad).format('0,0'));
+        $('#Institucion_Privada_Venta').html('C$ '+numeral(Institucion_Privada_Venta).format('0,0'));
+        $('#Institucion_Privada_Costo').html('C$ '+numeral(Institucion_Privada_Costo).format('0,0'));
+        $('#Institucion_Privada_Contribucion').html('C$ '+numeral(Institucion_Privada_Contribucion).format('0,0'));
         $('#Institucion_Privada_Margen').html(numeral((Institucion_Privada_Contribucion/Institucion_Privada_Venta)*100).format('0,0.00'));
         
         // TOTAL DE CRUZ AZUL
         $('#Cruz_Azul_Cantidad').html(numeral(Cruz_Azul_Cantidad).format('0,0'));
-        $('#Cruz_Azul_Promedio').html('C$ '+numeral(Cruz_Azul_Venta/Cruz_Azul_Cantidad).format('0,0.00'));
-        $('#Cruz_Azul_Venta').html('C$ '+numeral(Cruz_Azul_Venta).format('0,0.00'));
-        $('#Cruz_Azul_Costo').html('C$ '+numeral(Cruz_Azul_Costo).format('0,0.00'));
-        $('#Cruz_Azul_Contribucion').html('C$ '+numeral(Cruz_Azul_Contribucion).format('0,0.00'));
+        $('#Cruz_Azul_Promedio').html('C$ '+numeral(Cruz_Azul_Venta/Cruz_Azul_Cantidad).format('0,0'));
+        $('#Cruz_Azul_Venta').html('C$ '+numeral(Cruz_Azul_Venta).format('0,0'));
+        $('#Cruz_Azul_Costo').html('C$ '+numeral(Cruz_Azul_Costo).format('0,0'));
+        $('#Cruz_Azul_Contribucion').html('C$ '+numeral(Cruz_Azul_Contribucion).format('0,0'));
         $('#Cruz_Azul_Margen').html(numeral((Cruz_Azul_Contribucion/Cruz_Azul_Venta)*100).format('0,0.00'));
 
         // TOTAL INTITUCION PUBLICA
         $('#Institucion_Publica_Cantidad').html(numeral(Institucion_Publica_Cantidad).format('0,0'));
-        $('#Institucion_Publica_Promedio').html('C$ '+numeral(Institucion_Publica_Venta/Institucion_Publica_Cantidad).format('0,0.00'));
-        $('#Institucion_Publica_Venta').html('C$ '+numeral(Institucion_Publica_Venta).format('0,0.00'));
-        $('#Institucion_Publica_Costo').html('C$ '+numeral(Institucion_Publica_Costo).format('0,0.00'));
-        $('#Institucion_Publica_Contribucion').html('C$ '+numeral(Institucion_Publica_Contribucion).format('0,0.00'));
+        $('#Institucion_Publica_Promedio').html('C$ '+numeral(Institucion_Publica_Venta/Institucion_Publica_Cantidad).format('0,0'));
+        $('#Institucion_Publica_Venta').html('C$ '+numeral(Institucion_Publica_Venta).format('0,0'));
+        $('#Institucion_Publica_Costo').html('C$ '+numeral(Institucion_Publica_Costo).format('0,0'));
+        $('#Institucion_Publica_Contribucion').html('C$ '+numeral(Institucion_Publica_Contribucion).format('0,0'));
         $('#Institucion_Publica_Margen').html(numeral((Institucion_Publica_Contribucion/Institucion_Publica_Venta)*100).format('0,0.00'));
 
         // TOTAL DE TOTALES
         $('#Total_Cantidad').html(numeral(Total_Cantidad).format('0,0'));
-        $('#Total_Promedio').html('C$ '+numeral(Total_Venta/Total_Cantidad).format('0,0.00'));
-        $('#Total_Venta').html('C$ '+numeral(Total_Venta).format('0,0.00'));
-        $('#Total_Costo').html('C$ '+numeral(Total_Costo).format('0,0.00'));
-        $('#Total_Contribucion').html('C$ '+numeral(Total_Contribucion).format('0,0.00'));
+        $('#Total_Promedio').html('C$ '+numeral(Total_Venta/Total_Cantidad).format('0,0'));
+        $('#Total_Venta').html('C$ '+numeral(Total_Venta).format('0,0'));
+        $('#Total_Costo').html('C$ '+numeral(Total_Costo).format('0,0'));
+        $('#Total_Contribucion').html('C$ '+numeral(Total_Contribucion).format('0,0'));
         $('#Total_Margen').html(numeral((Total_Contribucion/Total_Venta)*100).format('0,0.00'));
     }
 
