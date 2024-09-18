@@ -1,5 +1,53 @@
 <script type="text/javascript">
     fullScreen();
+    var JsonCanal = new Array();
+
+    var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
+    grafica_articulos = {
+        chart: {
+            type: 'spline',
+            renderTo: 'grafMeses',
+        },      
+
+        title: {
+            text: ''
+        },
+        subtitle: {
+            text: 'C$ 0.00',
+            align: 'right',
+            x: -10
+        },
+        exporting: {enabled: false},
+        xAxis: [{type: 'category' }],
+        legend: {enabled: false},
+        yAxis:{
+            title: {
+                text: ''
+            },
+        },
+        plotOptions: {
+            series: {
+                allowPointSelect: false,
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    formatter: function() {
+                        if (this.y > 1000) {
+                            return Highcharts.numberFormat(this.y / 1000, 1) + " K";
+                        } else {
+                            return this.y
+                        }
+                    }
+                }
+            }
+        }, 
+        tooltip: {
+            pointFormat: '<span style="color:black">0.0<b>C$ {point.y}</b></span>'
+        },
+        series: [{
+            data: [],            
+        }]
+    };
 $(document).ready(function () {
     
     $('#id_txt_buscar').on('keyup', function() {   
@@ -29,7 +77,8 @@ $(document).ready(function () {
                 }else{
                     $("#f1").val( moment(periodo.primera_fecha).format('YYYY-MM-DD'));
                     $("#f2").val( moment(periodo.ultima_fecha).format('YYYY-MM-DD'));
-                } 
+                }
+                JsonCanal = json.Registros;
                 return json.Registros;
             }
         },
@@ -71,7 +120,7 @@ $(document).ready(function () {
         },
         stateSave: true,
         fixedColumns: {
-            start: 3
+            start: 4
         },
         paging: true,
         scrollCollapse: true,
@@ -81,54 +130,71 @@ $(document).ready(function () {
             {"data": "ARTICULO"},
             {"data": "DESCRIPCION"},
             {"data": "FABRICANTE"},
-            {"data": "FARMACIA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "CATEGORIA"},
+            {"data": "FARMACIA_CANTIDAD", "render": function(data, type, row, meta) {                
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'FARMACIAS\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+            }},
             {"data": "FARMACIA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "FARMACIA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "FARMACIA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "FARMACIA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "FARMACIA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "CADENA_FARMACIA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "CADENA_FARMACIA_CANTIDAD","render": function(data, type, row, meta) {                
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'CADENAS\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+            }},
             {"data": "CADENA_FARMACIA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CADENA_FARMACIA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CADENA_FARMACIA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CADENA_FARMACIA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CADENA_FARMACIA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "MAYORISTA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "MAYORISTA_CANTIDAD","render": function(data, type, row, meta) {                
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'MAYORISTAS\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+            }},
             {"data": "MAYORISTA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "MAYORISTA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "MAYORISTA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "MAYORISTA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "MAYORISTA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "INSTITUCION_PRIVADA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "INSTITUCION_PRIVADA_CANTIDAD","render": function(data, type, row, meta) {                
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'INSTITUCIONES_PRIVADAS\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+            }},
             {"data": "INSTITUCION_PRIVADA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PRIVADA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PRIVADA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PRIVADA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PRIVADA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "CRUZ_AZUL_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "CRUZ_AZUL_CANTIDAD","render": function(data, type, row, meta) {                
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'CRUZ_AZUL\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+            }},
             {"data": "CRUZ_AZUL_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CRUZ_AZUL_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CRUZ_AZUL_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CRUZ_AZUL_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CRUZ_AZUL_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "INSTITUCION_PUBLICA_CANTIDAD",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "INSTITUCION_PUBLICA_CANTIDAD","render": function(data, type, row, meta) {                
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'INSTITUCIONES_PUBLICAS\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+            }},
             {"data": "INSTITUCION_PUBLICA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PUBLICA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PUBLICA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PUBLICA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PUBLICA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "TOTAL_VENTAS_PACK",render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "TOTAL_VENTAS_PACK","render": function(data, type, row, meta) {                
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'Todos\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+            }},
             {"data": "TOTAL_PRECIO_PROM",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "TOTAL_VENTAS_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "TOTAL_COSTOS_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "TOTAL_CONTRIBUCION_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "TOTAL_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},         
         ],
-        "columnDefs": [                       
-            {"className": "dt-right", "targets": [ 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44 ]},
+        "columnDefs": [        
+            {"className": "dt-center", "targets":[ 3 ]},               
+            {"className": "dt-right", "targets": [ 4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45 ]},
             { "width": "200px", "targets": [ 1 ] },
-            { "width": "80px", "targets": [ 4, 10, 16, 22, 28, 34, 40 ] },
-            { "width": "100px", "targets": [ 7, 13, 19, 25, 31, 37, 43 ] }
+            { "width": "110px", "targets": [ 4, 5, 7, 9, 10, 11, 12, 13, 16, 17, 18, 19, 22, 23, 24, 25, 28, 29, 30, 31, 34, 35, 36, 37, 40, 41, 42, 43 ] },
+            { "width": "130px", "targets": [ 8, 14, 20, 26, 32, 38, 44 ] },
+            { "width": "50px", "targets": [ 9, 15, 21, 27, 33, 39, 45 ] }
         ],           
     });
     $("#table_contribucion_length").hide();
@@ -191,7 +257,7 @@ $(document).ready(function () {
 
         table.rows({ search: 'applied' }).every(function() {
             var data = this.data();
-            
+           
             // TOTAL DE FARMACIAS
             Farmacia_Cantidad       += parseFloat(data.FARMACIA_CANTIDAD) || 0;
             Farmacia_Venta          += parseFloat(data.FARMACIA_VENTA) || 0;
@@ -235,7 +301,7 @@ $(document).ready(function () {
             Total_Contribucion  += parseFloat(data.TOTAL_CONTRIBUCION_C$) || 0;
 
         });
-
+        
         // TOTAL DE FARMACIAS
         $('#Farmacia_Cantidad').html(numeral(Farmacia_Cantidad).format('0,0'));
         $('#Farmacia_Promedio').html('C$ '+numeral(Farmacia_Venta/Farmacia_Cantidad).format('0,0.00'));
@@ -301,8 +367,107 @@ $(document).ready(function () {
     
 });
 
-function getDetalleArticulo(articulo, descripcion){
-    console.log(articulo)
+function getDetalleArticulo(Articulos, Descripcion){
+    $("#id_descripcion").html(Descripcion+` | `+ Articulos);
+    $("#info1").show();
+    $("#info2").show();
+
+	$("#mdDetalleArt").modal('show');
+    grafMensual(Articulos);
 }
+
+function getDetalleCanal(Articulos, Canal, Descripcion){
+    $("#id_descripcion").html(Descripcion+` | `+ Articulos + ` | ` + Canal);
+    $("#info1").hide();
+    $("#info2").hide();
+    
+	$("#mdDetalleArt").modal('show');
+    grafCanales(Articulos, Canal);
+}
+
+function grafCanales(Articulos, Canal){
+    $.getJSON("get12Canales/" + Articulos + "/" + Canal, function(json) {
+            dta = [];
+            title = [];
+            tmp_total = 0;
+            Day_Max = [];
+       
+            var vVtsDiarias;
+
+            $.each(json[0]['CANTIDAD_MES'], function(i, x) {
+                tmp_total = tmp_total + parseFloat(x['data']);
+                dta.push({
+                    name  : x['Mes'],                                        
+                    y     : x['data'], 
+                });
+
+                title.push(x['name']); 
+                Day_Max.push(x['data']); 
+            }); 
+
+            temporal = '<span style="color:black">\u25CF</span><b>{point.y} </b> UNITS<br/>';                
+            grafica_articulos.tooltip = {
+                pointFormat : temporal
+            }
+
+            vVtsDiarias = numeral(tmp_total).format('0,0.00');
+            
+            grafica_articulos.xAxis.categories = title;
+            grafica_articulos.subtitle.text = vVtsDiarias + " UNITS";
+            grafica_articulos.series[0].data = dta;
+
+            chart = new Highcharts.Chart(grafica_articulos);
+            
+            chart.yAxis[0].update();
+
+    })
+}
+
+function grafMensual(Articulo){
+    $.each(JsonCanal, function (i, item) {
+        dta = [];
+        title = [];
+        tmp_total = 0;
+        Day_Max = [];
+        if(item.ARTICULODESC === Articulo){
+            $("#idCostoPriv").html(numeral(item.COSTO_PROM_PRIV_PACK).format('0,0.00'));
+            $("#idCostoMinsa").html(numeral(item.COSTO_PROM_MINSA_PACK).format('0,0.00'));
+            $("#idValorInventario").html(numeral(item.Valor_USD_Inventario_ONHAND_PRIVADO).format('0,0.00'));
+            $("#idValorDisponible").html(numeral(item.Valor_USD_Total_OnHand_Tránsito_PRIVADO).format('0,0.00'));
+            $('#idCantDisponible').html(numeral(item.Disponibilidad_Packs_PRIVADO_6_MESES).format('0,0'));
+            $('#idLoteVencer').html(item.Lote_Mas_a_Vencer_PRIVADO_6_MESES);
+            $('#idCantProxima').html(numeral(item.Existencia_En_Lote_proximo_Vencer_6_MESES).format('0,0'));
+            $.each(item.CANTIDAD_MES, function(i, x) {
+                tmp_total = tmp_total + parseFloat(x['data']);
+                dta.push({
+                    name  : x['Mes'],                                        
+                    y     : x['data'], 
+                });
+
+                title.push(x['name']); 
+                Day_Max.push(x['data']); 
+            }); 
+
+            temporal = '<span style="color:black">\u25CF</span><b>{point.y} </b> UNITS<br/>';  
+            grafica_articulos.tooltip = {
+                pointFormat : temporal
+            }
+
+            vVtsDiarias = numeral(tmp_total).format('0,0.00');
+
+            grafica_articulos.xAxis.categories = title;
+            grafica_articulos.subtitle.text = vVtsDiarias + " UNITS";
+            grafica_articulos.series[0].data = dta;
+
+            chart = new Highcharts.Chart(grafica_articulos);
+            
+            chart.yAxis[0].update();
+            return false;
+        }
+
+    })
+
+}
+
 
 </script>
