@@ -116,7 +116,7 @@
 
                   <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad minima solicitada en los ultimos 2 años">MOQ</span></th>
                   <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">REORDER</span></th>
-                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">CANTIDAD A ORDENAR</span></th>
+                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">CANTIDAD A ORDENAR V1</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">RAZON REORDER/MOQ</span></th>
                   <th class="col-blue-ca-2"><span data-toggle="tooltip"  data-placement="top" title=" - ">COST PROM. C$</span></th>
                   <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">COST PROM. USD</span></th>
@@ -125,7 +125,7 @@
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">DEM. ANUAL CA AJUSTADA</span></th>
                   <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">FACTOR</span></th>
                   <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">LIMITE LOGISTICO MEDIO</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">CLASE</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">CATEGORIA</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">VALUACION</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">REORDER1</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">ESTIMACION SOBRANTES UND</span></th>
@@ -141,6 +141,9 @@
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">10.</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">11.</span></th>
                   <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">12.</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">PROM. 3 MESES MAS ALTO</span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" Nuevo Calculo de Cantidad a Reordenar "> CANTIDAD A ORDENAR V2 </span></th>
+                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" Categorizacion de Articulos por aporte en base al 80/20"> CATEGORIA </span></th>
                 </tr>
               </thead>
             </table>
@@ -196,7 +199,7 @@
                                 <div class="card-body">
                                     <div class="row" >
 
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-4">
                                         <div class="card card-social" style="height: 100px">
                                             <div class="card-header text-center bg-blue">
                                                 <h6 class="text-white m-0">ORDENAR 1</h6>
@@ -209,7 +212,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="card card-social" style="height: 100px">
                                             <div class="card-header text-center bg-blue" style="height: 40px;">
                                                 <h6 class="text-white m-0">ORDENAR</h6>
@@ -220,7 +223,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="card card-social" style="height: 100px">
                                             <div class="card-header text-center bg-blue" style="height: 40px;">
                                                 <h6 class="text-white m-0">CANTIDAD A ORDENAR</h6>
@@ -233,7 +236,7 @@
 
                                     <div class="col-sm-4">
 
-                                      <div class="card card-social" style="height: 100px">
+                                      <div class="card card-social" style="height: 100px; display:none">
                                           <div class="card-header text-center bg-blue" style="height: 40px;">
                                               <h6 class="text-white m-0">3 MESES MAS ALTO</h6>
                                           </div>

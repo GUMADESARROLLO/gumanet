@@ -31,7 +31,7 @@ class ReOrderPoint extends Model
 
         $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
-        $DiaActual  = (int) date('d', strtotime($FechaEnd));        
+        $DiaActual  = (int) date('d', strtotime($FechaEnd)); 
         
         // Ejecutar el tercer procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_Calc_12_month_reorder_point ?, ?, ?", [$FechaIni, $FechaEnd, $DiaActual]);
@@ -42,6 +42,8 @@ class ReOrderPoint extends Model
         // Ejecutar el segundo procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calc_reorder_factura_linea_ca ?", [$FechaEnd]);
 
+        // Ejecutar el cuarto procedimiento almacenado        
+        //DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales");
         
 
     }
@@ -98,7 +100,12 @@ class ReOrderPoint extends Model
                                                     "Mes"   => $month,
                                                     "Valor"  => isset($a->$value) && !empty($a->$value) ? (float) number_format($a->$value,2,".",""): 0
                                                     ];
-                                            }, $NameMonths, range(1, 12))
+                                            }, $NameMonths, range(1, 12)),
+                "PROM_MESES_TOP"            => number_format($a->PROM_MESES_TOP, 0),
+
+                'CANTIDAD_V2'               => isset($a->CANTIDAD_ORDENAR_AJUSTADA) ? number_format($a->CANTIDAD_ORDENAR_AJUSTADA,0) : '',
+                'CLASE_V2'                  => isset($a->CLASE_AJUSTADAS) ? $a->CLASE_AJUSTADAS : '',     
+                
             ];
         }
 
@@ -186,7 +193,9 @@ class ReOrderPoint extends Model
                                                         "Mes"   => $month,
                                                         "data"  => isset($Sales->$value) && !empty($Sales->$value) ? (float) number_format($Sales->$value,2,".",""): 0
                                                         ];
-                                                }, $NameMonths, range(1, 12))
+                                                }, $NameMonths, range(1, 12)),
+            'CANTIDAD_V2'                   => isset($Sales->CANTIDAD_ORDENAR_AJUSTADA) ? $Sales->CANTIDAD_ORDENAR_AJUSTADA : '',
+            'CLASE_V2'                      => isset($Sales->CLASE) ? $Sales->CLASE : '',                                    
         ];
         
 
