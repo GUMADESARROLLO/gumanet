@@ -59,7 +59,7 @@
             <table id="table_contribucion" class="table table-bordered table-sm" width="100%">
               <thead>
                 <tr class="bg-blue text-light">
-                  <th class="bg-blue text-light" colspan="3">SKU</th>
+                  <th class="bg-blue text-light" colspan="4">SKU</th>
                   <th colspan="6">FARMACIA</th>
                   <th colspan="6">CADENA FARMACIA</th>
                   <th colspan="6">MAYORISTA</th>
@@ -69,7 +69,7 @@
                   <th colspan="6">TOTAL</th>
                 </tr>
                 <tr>
-                  <th class="bg-blue" colspan="3"></th>
+                  <th class="bg-blue" colspan="4"></th>
                   <th id="Farmacia_Cantidad"></th>
                   <th id="Farmacia_Promedio"></th>
                   <th id="Farmacia_Venta"></th>
@@ -117,48 +117,49 @@
                     <th class="bg-blue text-light">ARTICULO</th>
                     <th class="bg-blue text-light">DESCRIPCION</th>
                     <th class="bg-blue text-light">FABRICANTE</th>
-                    <th class="bg-warning text-black">CANTIDAD</th>
-                    <th class="bg-warning text-black">PROM. C$</th>
-                    <th class="bg-warning text-black">VENTA C$</th>
-                    <th class="bg-warning text-black">COSTO C$</th>
-                    <th class="bg-warning text-black">CONTRIB. C$</th>
-                    <th class="bg-warning text-black">%</th>
-                    <th style="background-color:peru">CANTIDAD</th>
-                    <th style="background-color:peru">PROM. C$</th>
-                    <th style="background-color:peru">VENTA C$</th>
-                    <th style="background-color:peru">COSTO C$</th>
-                    <th style="background-color:peru">CONTRIB. C$</th>
-                    <th style="background-color:peru">%</th>
-                    <th style="background-color:burlywood">CANTIDAD</th>
-                    <th style="background-color:burlywood">PROM. C$</th>
-                    <th style="background-color:burlywood">VENTA C$</th>
-                    <th style="background-color:burlywood">COSTO C$</th>
-                    <th style="background-color:burlywood">CONTRIB. C$</th>
-                    <th style="background-color:burlywood">%</th>
-                    <th style="background-color:limegreen">CANTIDAD</th>
-                    <th style="background-color:limegreen">PROM. C$</th>
-                    <th style="background-color:limegreen">VENTA C$</th>
-                    <th style="background-color:limegreen">COSTO C$</th>
-                    <th style="background-color:limegreen">CONTRIB. C$</th>
-                    <th style="background-color:limegreen">%</th>
-                    <th style="background-color:cornflowerblue">CANTIDAD</th>
-                    <th style="background-color:cornflowerblue">PROM. C$</th>
-                    <th style="background-color:cornflowerblue">VENTA C$</th>
-                    <th style="background-color:cornflowerblue">COSTO C$</th>
-                    <th style="background-color:cornflowerblue">CONTRIB. C$</th>
-                    <th style="background-color:cornflowerblue">%</th>
-                    <th style="background-color:limegreen">CANTIDAD</th>
-                    <th style="background-color:limegreen">PROM. C$</th>
-                    <th style="background-color:limegreen">VENTA C$</th>
-                    <th style="background-color:limegreen">COSTO C$</th>
-                    <th style="background-color:limegreen">CONTRIB. C$</th>
-                    <th style="background-color:limegreen">%</th>
-                    <th style="background-color:gold">CANTIDAD</th>
-                    <th style="background-color:gold">PROM. C$</th>
-                    <th style="background-color:gold">VENTA C$</th>
-                    <th style="background-color:gold">COSTO C$</th>
-                    <th style="background-color:gold">CONTRIB. C$</th>
-                    <th style="background-color:gold">%</th>
+                    <th class="bg-blue text-light">CATEGORIA</th>
+                    <th class="bg-warning text-black">F. CANTIDAD</th>
+                    <th class="bg-warning text-black">F. PROM. C$</th>
+                    <th class="bg-warning text-black">F. VENTA C$</th>
+                    <th class="bg-warning text-black">F. COSTO C$</th>
+                    <th class="bg-warning text-black">F. CONTRIB. C$</th>
+                    <th class="bg-warning text-black">F. %</th>
+                    <th style="background-color:peru">C. CANTIDAD</th>
+                    <th style="background-color:peru">C. PROM. C$</th>
+                    <th style="background-color:peru">C. VENTA C$</th>
+                    <th style="background-color:peru">C. COSTO C$</th>
+                    <th style="background-color:peru">C. CONTRIB. C$</th>
+                    <th style="background-color:peru">C. %</th>
+                    <th style="background-color:burlywood">M. CANTIDAD</th>
+                    <th style="background-color:burlywood">M. PROM. C$</th>
+                    <th style="background-color:burlywood">M. VENTA C$</th>
+                    <th style="background-color:burlywood">M. COSTO C$</th>
+                    <th style="background-color:burlywood">M. CONTRIB. C$</th>
+                    <th style="background-color:burlywood">M. %</th>
+                    <th style="background-color:limegreen">PRI. CANTIDAD</th>
+                    <th style="background-color:limegreen">PRI. PROM. C$</th>
+                    <th style="background-color:limegreen">PRI. VENTA C$</th>
+                    <th style="background-color:limegreen">PRI. COSTO C$</th>
+                    <th style="background-color:limegreen">PRI. CONTRIB. C$</th>
+                    <th style="background-color:limegreen">PRI. %</th>
+                    <th style="background-color:cornflowerblue">CA. CANTIDAD</th>
+                    <th style="background-color:cornflowerblue">CA. PROM. C$</th>
+                    <th style="background-color:cornflowerblue">CA. VENTA C$</th>
+                    <th style="background-color:cornflowerblue">CA. COSTO C$</th>
+                    <th style="background-color:cornflowerblue">CA. CONTRIB. C$</th>
+                    <th style="background-color:cornflowerblue">CA. %</th>
+                    <th style="background-color:limegreen">PUB. CANTIDAD</th>
+                    <th style="background-color:limegreen">PUB. PROM. C$</th>
+                    <th style="background-color:limegreen">PUB. VENTA C$</th>
+                    <th style="background-color:limegreen">PUB. COSTO C$</th>
+                    <th style="background-color:limegreen">PUB. CONTRIB. C$</th>
+                    <th style="background-color:limegreen">PUB. %</th>
+                    <th style="background-color:gold">T. CANTIDAD</th>
+                    <th style="background-color:gold">T. PROM. C$</th>
+                    <th style="background-color:gold">T. VENTA C$</th>
+                    <th style="background-color:gold">T. COSTO C$</th>
+                    <th style="background-color:gold">T. CONTRIB. C$</th>
+                    <th style="background-color:gold">T. %</th>
                 </tr>
               </thead>
             </table>
@@ -168,7 +169,127 @@
     </div>
 
   
+    <div class="modal fade bd-example-modal-xl" data-backdrop="static" data-keyboard="false" id="mdDetalleArt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-block ">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-right align-items-right pt-1 pb-0 bg-blue">
+                                  <div class="flex-1"><p></p>
+                                    <h6 class="fw-semi-bold">
+                                      <div class="text-light text-uppercase" id="id_descripcion"></div>
+                                      <span id="id_articulo" style="display: none"></span>
+                                    </h6><p></p>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <div class="row" id="info1">
 
+                                    <div class="col-sm-2">
+                                        <div class="card card-social" style="height: 120px">
+                                            <div class="card-header text-center bg-blue">
+                                                <h6 class="text-white m-0">COSTO PROM. PRIV. PACK C$</h6>
+                                            </div>
+                                            <div class="card-body ">
+                                              <h6 class="text-center  font-weight-bold" style="font-size: 1.3rem!important"  id="idCostoPriv"> 0.00</h6>
+                                              
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <div class="card card-social" style="height: 120px">
+                                            <div class="card-header text-center bg-blue">
+                                                <h6 class="text-white m-0">COSTO PROM. MINSA C$</h6>
+                                            </div>
+                                            <div class="card-body ">
+                                              <h6 class="text-center  font-weight-bold" style="font-size: 1.3rem!important"  id="idCostoMinsa"> 0.00</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div class="card card-social" style="height: 120px">
+                                            <div class="card-header text-center bg-blue">
+                                                <h6 class="text-white m-0">VALOR USD IVENTARIO ONHAND-PRIVADO</h6>
+                                            </div>
+                                            <div class="card-body ">
+                                              <h6 class="text-center font-weight-bold" style="font-size: 1.3rem!important"  id="idValorInventario">  0.00</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+
+                                      <div class="card card-social" style="height: 120px">
+                                          <div class="card-header text-center bg-blue">
+                                              <h6 class="text-white m-0">VALOR USD TOTAL DISPONIBILIDAD ONHAND+TRANSITO - PRIVADO</h6>
+                                          </div>
+                                          <div class="card-body ">
+                                              <h6 class="text-center font-weight-bold" style="font-size: 1.3rem!important"  id="idValorDisponible">  0.00</h6>
+                                            </div>
+                                      </div>
+                                    </div>
+                                        
+                                       
+                                        
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- [ Header orden produccion ] end -->
+                    </div>
+                    <div class="row mt-3" id="info2">
+                      <div class="col-4">
+                            <div class="card card-social" style="height: 120px">
+                                <div class="card-header text-center bg-blue">
+                                    <h6 class="text-white m-0">DISPONIBILIDAD PACKS-PRIVADO >= 6 MESES</h6>
+                                </div>
+                                <div class="card-body ">
+                                  <h6 class="text-center font-weight-bold" style="font-size: 1.3rem!important"  id="idCantDisponible">  0.00</h6>
+                                </div>                     
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card card-social" style="height: 120px">
+                                <div class="card-header text-center bg-blue">
+                                    <h6 class="text-white m-0">LOTE MAS PROXIMO A VENCER PRIVADO >= 6 MESES</h6>
+                                </div>
+                                <div class="card-body ">
+                                  <h6 class="text-center font-weight-bold" style="font-size: 1.3rem!important"  id="idLoteVencer">  --/--/----</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card card-social" style="height: 120px">
+                                <div class="card-header text-center p-2 bg-blue">
+                                    <h6 class="m-0 text-white">EXISTENCIA EN LOTE MAS PROXIMO A VENCER PRIVADO >= 6 MESES</h6>
+                                </div>
+                                <div class="card-body ">
+                                  <h6 class="text-center font-weight-bold" style="font-size: 1.3rem!important"  id="idCantProxima">  0.00</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" modal-body">
+                  <div class="row">
+                      <div class="col-sm-12 col-md-12 col-xs-12">
+                          <div class="container-vms" id="grafMeses" style="width: 100%; margin: 0 auto"></div>
+                      </div>  
+                  </div>
+                <div class="modal-footer">
+                  
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 

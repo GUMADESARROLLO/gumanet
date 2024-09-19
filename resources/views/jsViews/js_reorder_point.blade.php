@@ -94,13 +94,15 @@ $(document).ready(function() {
             topStart: {
                 buttons: [ {
                         extend: 'colvis',
-                        text: 'Columnas visibles',
+                        collectionLayout: 'fixed columns',
+                        popoverTitle: 'Columnas visibles'
                     } ]
             },
             topEnd: {
                 buttons: [ {
-                    text: 'Exportar a excel',
+                    text:   'Exportar a excel',
                     extend: 'excelHtml5',
+                    title:  'Reporder Point: ' + moment().format('YYYY-MM-DD HH:mm'),
                     exportOptions: {
                         columns: ':visible'
                     }
@@ -167,18 +169,21 @@ $(document).ready(function() {
 			{"data": "REORDER1"},
 			{"data": "ESTIMACION_SOBRANTES_UND"},
 
-            {"title" : "M1", "data": "VENTAS.0.Valor"},
-            {"title" : "M2", "data": "VENTAS.1.Valor"},
-            {"title" : "M3", "data": "VENTAS.2.Valor"},
-            {"title" : "M4", "data": "VENTAS.3.Valor"},
-            {"title" : "M5", "data": "VENTAS.4.Valor"},
-            {"title" : "M6", "data": "VENTAS.5.Valor"},
-            {"title" : "M7", "data": "VENTAS.6.Valor"},
-            {"title" : "M8", "data": "VENTAS.7.Valor"},
-            {"title" : "M9", "data": "VENTAS.8.Valor"},
-            {"title" : "M10", "data": "VENTAS.9.Valor"},
-            {"title" : "M11", "data": "VENTAS.10.Valor"},
-            {"title" : "M12", "data": "VENTAS.11.Valor"},
+            {"title" : "Mes1", "data": "VENTAS.0.Valor"},
+            {"title" : "Mes2", "data": "VENTAS.1.Valor"},
+            {"title" : "Mes3", "data": "VENTAS.2.Valor"},
+            {"title" : "Mes4", "data": "VENTAS.3.Valor"},
+            {"title" : "Mes5", "data": "VENTAS.4.Valor"},
+            {"title" : "Mes6", "data": "VENTAS.5.Valor"},
+            {"title" : "Mes7", "data": "VENTAS.6.Valor"},
+            {"title" : "Mes8", "data": "VENTAS.7.Valor"},
+            {"title" : "Mes9", "data": "VENTAS.8.Valor"},
+            {"title" : "Mes10", "data": "VENTAS.9.Valor"},
+            {"title" : "Mes11", "data": "VENTAS.10.Valor"},
+            {"title" : "Mes12", "data": "VENTAS.11.Valor"},
+            {"data"  : "PROM_MESES_TOP"},
+            {"data"  : "CANTIDAD_V2"},
+            {"data"  : "CLASE_V2"},
 		],
         "columnDefs": [
             {"className": "dt-center", "targets": []},
@@ -198,7 +203,7 @@ $(document).ready(function() {
 
             color_cant_order = isValue(color_cant_order,0,true);
 
-            $(row).find('td:eq(24)').addClass( (color_cant_order <= 0.5 ) ? 'dt-cant-ordenar-red' : 'dt-cant-ordenar-green');
+            $(row).find('td:eq(25)').addClass( (color_cant_order <= 0.5 ) ? 'dt-cant-ordenar-red' : 'dt-cant-ordenar-green');
             
         
             if( data["IS_CA"] ==  `S`){
@@ -257,12 +262,21 @@ function Highest3Months(Months) {
     $("#valor_mes_3").text(" - ");
 
     // ORDENA LOS MESES DE MAYOR A MENOR
-    Months.sort(function(a, b) {
-        return b.data - a.data;
-    });
+    // Months.sort(function(a, b) {
+    //     return b.data - a.data;
+    // });
+
+    Months = [
+            {Mes: "Ene", data: 1000},
+            {Mes: "Feb", data: 500}
+        ];
     
     // SELECCIONA LOS 3 MESES MAS ALGO
     Months = Months.slice(0, 3);
+   
+
+    
+    
     
     // SUMA LOS VALORES DE LOS 3 MESES MAS ALGO
     Months.forEach(function(item) {
@@ -271,11 +285,15 @@ function Highest3Months(Months) {
     
     var promedio = sum / Months.length;
 
+    console.log(Months, sum, promedio);
+
     $("#valor_mes_promedio").text(numeral(promedio.toFixed(0)).format('0,0'));
 
+    
     $("#name_mes_1").text(Months[0].Mes);
     $("#name_mes_2").text(Months[1].Mes);
     $("#name_mes_3").text(Months[2].Mes);
+
 
     $("#valor_mes_1").text(numeral(Months[0].data).format('0,0'));
     $("#valor_mes_2").text(numeral(Months[1].data).format('0,0'));
