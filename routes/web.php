@@ -297,6 +297,7 @@ Route::get('canales','dashboard_controller@canalXcontribucion')->name('canales')
 Route::get('canalData','dashboard_controller@canalData')->name('canalData');
 Route::get('calcularCanales/{fechaIni}/{fechaEnd}','dashboard_controller@calcularCanales')->name('calcularCanales/{fechaIni}/{fechaEnd}');
 Route::get('periodoCanales','dashboard_controller@periodoCanales')->name('periodoCanales');
+Route::get('get12Canales/{articulo}/{canal}','dashboard_controller@getDataCanal')->name('get12Canales/{articulo}/{canal}');
 
 // ROUTER DE PROYECTO 71 & 89
 Route::get('Presupuesto89', 'BudgetController@Budget89')->name('Presupuesto89');
