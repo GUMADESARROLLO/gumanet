@@ -214,7 +214,7 @@
                                     <div class="col-sm-4">
                                         <div class="card card-social" style="height: 120px">
                                             <div class="card-header text-center bg-blue">
-                                                <h6 class="text-white m-0">VALOR USD IVENTARIO ONHAND-PRIVADO</h6>
+                                                <h6 class="text-white m-0">VALOR USD INVENTARIO ONHAND-PRIVADO</h6>
                                             </div>
                                             <div class="card-body ">
                                               <h6 class="text-center font-weight-bold" style="font-size: 1.3rem!important"  id="idValorInventario">  0.00</h6>
