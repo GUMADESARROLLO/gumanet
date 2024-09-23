@@ -25,7 +25,6 @@ class ContribucionPorCanales extends Model
     public static function getData(){
         $json = array(); $i = 0;
         $sql = ContribucionPorCanales::all();
-        $onHand = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.tbl_articulos_transito");
         $Meses = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo ?', ['Todos']);
         $fecha = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
         $NameMonths = ContribucionPorCanales::NameMonth($fecha[0]->ultima_fecha);
@@ -37,12 +36,16 @@ class ContribucionPorCanales extends Model
                                                                     CONVERT (CHAR,T1.FECHA_ENTRADA,120) AS FECHA_ENTRADA,
                                                                     T1.CANTIDAD_INGRESADA,
                                                                     T0.CANT_DISPONIBLE,
+                                                                    T2.FACTOR_CONVER_6,
+                                                            		T2.COSTO_PROM_LOC,
                                                                     CONVERT (CHAR,T1.FECHA_VENCIMIENTO,120) AS FECHA_VENCIMIENTO	
                                                                 FROM
                                                                     Softland.umk.EXISTENCIA_LOTE T0
                                                                 LEFT OUTER JOIN Softland.umk.LOTE T1 ON T0.LOTE = T1.LOTE
+                                                                JOIN Softland.umk.ARTICULO T2 ON T0.ARTICULO = T2.ARTICULO
                                                                 WHERE
-                                                                    T0.CANT_DISPONIBLE <> 0;");
+                                                                    T0.CANT_DISPONIBLE <> 0
+                                                                    AND T0.BODEGA != '004';");
 
         foreach($sql as $row){
             $TotalCantidad = $row['FARMACIA_CANTIDAD']+$row['CADENA_FARMACIA_CANTIDAD']+$row['MAYORISTA_CANTIDAD']+$row['INSTITUCION_PRIVADA_CANTIDAD']+$row['CRUZ_AZUL_CANTIDAD']+$row['INSTITUCION_PUBLICA_CANTIDAD'];
@@ -55,22 +58,20 @@ class ContribucionPorCanales extends Model
             $articulo = $row['ARTICULO'];
             $cantDisponible = 0;
             $cantProxima = 0;
+            $costoTotal = 0;
+            $costoPromedio = 0;
             $mess12 = null;
             $categ = "";
             
-            // VERIFICAR QUE ARTICULOS ESTAN ON-HAND Y EN TRANSITO
-            foreach($onHand as $item){
-                if($item->estado_compra === 'ON-HAND' && $item->Articulo == $articulo){
-                    $CantOnHand += $item->cantidad_transito;
-                }
-
-                if($item->cantidad_transito > 0 && $item->Articulo == $articulo){
-                    $CantOnHandTransito += $item->cantidad_transito;
-                }
-            }
-
             // FECHA DE VENCIMIENTO Y CANTIDAD DISPONIBLE
             foreach($lote as $item) {
+                if($item->ARTICULO == $articulo){
+                    $convertida = $item->CANT_DISPONIBLE * $item->FACTOR_CONVER_6;
+                    $costoTotal += $convertida * $item->COSTO_PROM_LOC;
+                    $costoPromedio += $item->COSTO_PROM_LOC;
+                }
+
+                
                 if($item->ARTICULO == $articulo &&  $item->FECHA_VENCIMIENTO >= $fechaActual) {
                     $cantDisponible += $item->CANT_DISPONIBLE;
             
@@ -80,6 +81,8 @@ class ContribucionPorCanales extends Model
                     }
                 }
             }
+            $CantOnHand = $costoTotal/36.62;
+            $CantOnHandTransito = ($costoPromedio*($cantDisponible+$cantProxima))/36.62;
 
             // CANTIDAD POR MESES Juvenile Law
             foreach($Meses as $item){
