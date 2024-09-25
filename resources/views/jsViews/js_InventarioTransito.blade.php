@@ -215,8 +215,8 @@ function getDetalleArticulo(Articulo,Descripcion,ID)
 					$("#date_estimada").val(FechaEstimada.format('YYYY-MM-DD'))
 					$("#date_pedido").val(FechaPedido.format('YYYY-MM-DD'))
 					$("#txtDocuments").val(a.documento)
-					$("#txtCantidad").val(a.pedido)
-					$("#txtCantidadTransito").val(a.transito)
+					$("#txtCantidad").val(a.cantidad_pedido)
+					$("#txtCantidadTransito").val(a.cantidad_transito)
 					$("#slcMercado").val(a.mercado).change();
 					$("#slcMIFIC").val(a.mific).change();
 					$("#select_estado").val(a.estado_compra).change();					
