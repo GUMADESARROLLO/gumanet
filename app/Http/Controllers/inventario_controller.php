@@ -98,8 +98,8 @@ class inventario_controller extends Controller
 				'fecha_pedido'      => $k->fecha_pedido,
 				'documento'         => $k->documento,
 				'cantidad'          => number_format($k->cantidad,0,'.',''),
-				'pedido'          	=> number_format($k->cantida_pedido,0,'.',''),
-				'transito'          => number_format($k->cantidad_transito,0,'.',''),
+				'cantidad_pedido'          	=> number_format($k->cantida_pedido,0,'.',''),
+				'cantidad_transito'          => number_format($k->cantidad_transito,0,'.',''),
 				'mercado'         	=> $k->mercado,
 				'mific'             => $k->mific,
 				'Estado'             => $k->Estado,
@@ -123,34 +123,34 @@ class inventario_controller extends Controller
 		$NumRow = $request->NumRow;
 
 		$request->validate([
-			'Articulo' 			=> 'required',
-			'Descripcion' 		=> 'required',
-            'fecha_estimada' 	=> 'required',
-            'fecha_pedido' 		=> 'required',
-            'documento' 		=> 'required',
-            'cantidad' 			=> 'required',
-			'CantidadTransito' 			=> 'required',
-            'mercado' 			=> 'required',
-            'mific' 			=> 'required',
-			'select_estado' 			=> 'required',
+			'Articulo' 				=> 'required',
+			'Descripcion' 			=> 'required',
+            'fecha_estimada' 		=> 'required',
+            'fecha_pedido' 			=> 'required',
+            'documento' 			=> 'required',
+            'cantidad' 				=> 'required',
+			'CantidadTransito' 		=> 'required',
+            'mercado' 				=> 'required',
+            'mific' 				=> 'required',
+			'select_estado' 		=> 'required',
 			'precio_mific_f' 		=> 'required',
 			'precio_mific_p' 		=> 'required',
-            'observaciones' 	=> 'required',
+            'observaciones' 		=> 'required',
         ]);
 
+		
 		$articuloTransito = ArticulosTransito::find($NumRow);
-
+		
 	
 
 		if ($articuloTransito) {
-			
 			$articuloTransito->update([
 				'Descripcion' 				=> $request->Descripcion,
 				'fecha_estimada' 			=> $request->fecha_estimada,
 				'fecha_pedido' 				=> $request->fecha_pedido,
 				'documento' 				=> $request->documento,
-				'pedido' 					=> $request->cantidad,
-				'transito' 					=> $request->CantidadTransito,
+				'cantidad_pedido' 			=> $request->cantidad,
+				'cantidad_transito' 		=> $request->CantidadTransito,
 				'mercado' 					=> $request->mercado,
 				'mific' 					=> $request->mific,
 				'estado_compra' 			=> $request->select_estado,
@@ -164,20 +164,20 @@ class inventario_controller extends Controller
 		} else {
 			
 			ArticulosTransito::create([
-				'Articulo' 			=> $Articulo,
-				'Descripcion' 		=> $request->Descripcion,
-				'fecha_estimada' 	=> $request->fecha_estimada,
-				'fecha_pedido' 		=> $request->fecha_pedido,
-				'documento' 		=> $request->documento,
-				'pedido' 			=> $request->cantidad,
-				'transito' 			=> $request->CantidadTransito,
-				'mercado' 			=> $request->mercado,
-				'mific' 			=> $request->mific,
-				'estado_compra' 			=> $request->select_estado,
-				'observaciones' 	=> $request->observaciones,
-				'Precio_mific_farmacia' 		=> $request->precio_mific_f,
-				'Precio_mific_public' 		=> $request->precio_mific_p,
-				'Nuevo' 			=> 'N',
+				'Articulo' 				=> $Articulo,
+				'Descripcion' 			=> $request->Descripcion,
+				'fecha_estimada' 		=> $request->fecha_estimada,
+				'fecha_pedido' 			=> $request->fecha_pedido,
+				'documento' 			=> $request->documento,
+				'cantidad_pedido' 		=> $request->cantidad,
+				'cantidad_transito' 	=> $request->CantidadTransito,
+				'mercado' 				=> $request->mercado,
+				'mific' 				=> $request->mific,
+				'estado_compra' 		=> $request->select_estado,
+				'observaciones' 		=> $request->observaciones,
+				'Precio_mific_farmacia' => $request->precio_mific_f,
+				'Precio_mific_public' 	=> $request->precio_mific_p,
+				'Nuevo' 				=> 'N',
 			]);
 	
 			$message = 'Información guardada correctamente';
