@@ -1857,10 +1857,10 @@ class dashboard_model extends Model {
 
             if (count($metas)>0) {
                 $array[0]['title'] = 'real';
-                $array[0]['data'] = $metas[0]['data'] + $CadenaFarmacia[0]->Venta;
+                $array[0]['data'] = $metas[0]['data'];// + $CadenaFarmacia[0]->Venta;
 
                 $array[1]['title'] = 'meta';
-                $array[1]['data'] = $metas[1]['data'] +  $CadenaFarmacia[0]->Meta;
+                $array[1]['data'] = $metas[1]['data'];// +  $CadenaFarmacia[0]->Meta;
 
                 $array[2]['title'] = 'clientesMeta';
                 $array[2]['data'] = $clientesMeta;
