@@ -82,6 +82,8 @@ class ArticulosTransito extends Model
                 'DESCRIPCION'       => strtoupper($v['Descripcion']),
                 'FECHA_ESTIMADA'    => ($v['fecha_estimada']== null) ? 'N/D' : \Date::parse($v['fecha_estimada'])->format('D, M d, Y') ,
                 'FECHA_PEDIDO'      => ($v['fecha_pedido']== null) ? 'N/D' : \Date::parse($v['fecha_pedido'])->format('D, M d, Y') ,
+                'PEDIDO'            => number_format($v['cantidad_pedido'], 0),
+                'TRANSITO'          => number_format($v['cantidad_transito'], 0),
                 'CANTIDAD'          => number_format($v['cantidad'], 0),
                 'MERCADO'           => strtoupper($v['mercado']),
             ];        

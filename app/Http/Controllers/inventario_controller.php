@@ -98,7 +98,7 @@ class inventario_controller extends Controller
 				'fecha_pedido'      => $k->fecha_pedido,
 				'documento'         => $k->documento,
 				'cantidad'          => number_format($k->cantidad,0,'.',''),
-				'cantidad_pedido'          	=> number_format($k->cantida_pedido,0,'.',''),
+				'cantidad_pedido'          	=> number_format($k->cantidad_pedido,0,'.',''),
 				'cantidad_transito'          => number_format($k->cantidad_transito,0,'.',''),
 				'mercado'         	=> $k->mercado,
 				'mific'             => $k->mific,
