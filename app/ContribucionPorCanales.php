@@ -29,23 +29,7 @@ class ContribucionPorCanales extends Model
         $fecha = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
         $NameMonths = ContribucionPorCanales::NameMonth($fecha[0]->ultima_fecha);
         $categoria = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.tbl_categoria_articulo_canales");
-        $lote = DB::connection('sqlsrv')->select("SELECT DISTINCT
-                                                                    T0.ARTICULO,
-                                                                    T0.LOTE,
-                                                                    T0.BODEGA,	
-                                                                    CONVERT (CHAR,T1.FECHA_ENTRADA,120) AS FECHA_ENTRADA,
-                                                                    T1.CANTIDAD_INGRESADA,
-                                                                    T0.CANT_DISPONIBLE,
-                                                                    T2.FACTOR_CONVER_6,
-                                                            		T2.COSTO_PROM_LOC,
-                                                                    CONVERT (CHAR,T1.FECHA_VENCIMIENTO,120) AS FECHA_VENCIMIENTO	
-                                                                FROM
-                                                                    Softland.umk.EXISTENCIA_LOTE T0
-                                                                LEFT OUTER JOIN Softland.umk.LOTE T1 ON T0.LOTE = T1.LOTE
-                                                                JOIN Softland.umk.ARTICULO T2 ON T0.ARTICULO = T2.ARTICULO
-                                                                WHERE
-                                                                    T0.CANT_DISPONIBLE <> 0
-                                                                    AND T0.BODEGA != '004';");
+        $lote = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.iweb_lotes");
 
         foreach($sql as $row){
             $TotalCantidad = $row['FARMACIA_CANTIDAD']+$row['CADENA_FARMACIA_CANTIDAD']+$row['MAYORISTA_CANTIDAD']+$row['INSTITUCION_PRIVADA_CANTIDAD']+$row['CRUZ_AZUL_CANTIDAD']+$row['INSTITUCION_PUBLICA_CANTIDAD'];
@@ -61,19 +45,19 @@ class ContribucionPorCanales extends Model
             $costoTotal = 0;
             $costoPromedio = 0;
             $mess12 = null;
-            $categ = "";
+            $categ = ""; $factor = 0;
             
             // FECHA DE VENCIMIENTO Y CANTIDAD DISPONIBLE
             foreach($lote as $item) {
                 if($item->ARTICULO == $articulo){
                     $convertida = $item->CANT_DISPONIBLE * $item->FACTOR_CONVER_6;
                     $costoTotal += $convertida * $item->COSTO_PROM_LOC;
-                    $costoPromedio += $item->COSTO_PROM_LOC;
+                    $costoPromedio = $item->COSTO_PROM_LOC;
                 }
-
                 
+                $factor = $item->FECHA_VENCIMIENTO;
                 if($item->ARTICULO == $articulo &&  $item->FECHA_VENCIMIENTO >= $fechaActual) {
-                    $cantDisponible += $item->CANT_DISPONIBLE;
+                    $cantDisponible += $item->CANT_DISPONIBLE; 
             
                     if (is_null($fechaVencimiento) || $item->FECHA_VENCIMIENTO < $fechaVencimiento) {
                         $fechaVencimiento = $item->FECHA_VENCIMIENTO;
