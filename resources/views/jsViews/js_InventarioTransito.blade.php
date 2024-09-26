@@ -161,11 +161,12 @@ function InitTable(){
             {"title": "FECHA ESTIMADA", "data": "FECHA_ESTIMADA" },
             {"title": "FECHA PEDIDO", "data": "FECHA_PEDIDO" },
 			{"title": "MERCADO", "data": "MERCADO" },
-            {"title": "CANTIDAD", "data": "CANTIDAD" },
+            {"title": "PEDIDO", "data": "PEDIDO" },
+			{"title": "TRANSITO", "data": "TRANSITO" },
 		],
 		"columnDefs": [
 			{"className": "dt-center", "targets": [0, 2,3,4 ]},
-			{"className": "dt-right", "targets": [5]},
+			{"className": "dt-right", "targets": [5,6]},
 			{"className": "dt-left", "targets": [1]},
 			{"width":"20%","targets":[]},
 			{"width":"5%","targets":[]}
@@ -221,8 +222,8 @@ function getDetalleArticulo(Articulo,Descripcion,ID)
 					$("#slcMIFIC").val(a.mific).change();
 					$("#select_estado").val(a.estado_compra).change();					
 					$("#txtObservacion").val(a.observaciones)
-					$("#txtPrecioMific").val(a.Precio_mific_farmacia)
-					$("#txtPrecioMificPublic").val(a.Precio_mific_public)
+					$("#txtPrecioMific").val(numeral(a.Precio_mific_farmacia).format('0,0.0000'))
+					$("#txtPrecioMificPublic").val(numeral(a.Precio_mific_public).format('0,0.0000'))
 					
 					
 				}
