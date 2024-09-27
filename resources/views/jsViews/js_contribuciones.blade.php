@@ -181,6 +181,14 @@ $(document).ready(function () {
             {"data": "INSTITUCION_PUBLICA_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PUBLICA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PUBLICA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "LICITACION_CANTIDAD","render": function(data, type, row, meta) {                
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'LICITACIONES\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+            }},
+            {"data": "LICITACION_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "LICITACION_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "LICITACION_COSTO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "LICITACION_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "LICITACION_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "TOTAL_VENTAS_PACK","render": function(data, type, row, meta) {                
                 return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'Todos\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
             }},
@@ -258,6 +266,7 @@ $(document).ready(function () {
         var Cruz_Azul_Cantidad = Cruz_Azul_Costo = Cruz_Azul_Venta = Cruz_Azul_Contribucion = 0;
         var Institucion_Privada_Cantidad = Institucion_Privada_Costo = Institucion_Privada_Venta = Institucion_Privada_Contribucion = 0;
         var Institucion_Publica_Cantidad = Institucion_Publica_Costo = Institucion_Publica_Venta = Institucion_Publica_Contribucion = 0;
+        var Licitacion_Cantidad = Licitacion_Costo = Licitacion_Venta = Licitacion_Contribucion = 0;
         var Total_Cantidad = Total_Costo = Total_Venta = Total_Contribucion = 0;
 
         table.rows({ search: 'applied' }).every(function() {
@@ -298,6 +307,12 @@ $(document).ready(function () {
             Institucion_Publica_Venta       += parseFloat(data.INSTITUCION_PUBLICA_VENTA) || 0;
             Institucion_Publica_Costo       += parseFloat(data.INSTITUCION_PUBLICA_COSTO) || 0;
             Institucion_Publica_Contribucion+= parseFloat(data.INSTITUCION_PUBLICA_CONTRIBUCION) || 0;
+
+            // TOTAL DE LICITACIONES
+            Licitacion_Cantidad    += parseFloat(data.LICITACION_CANTIDAD) || 0;
+            Licitacion_Venta       += parseFloat(data.LICITACION_VENTA) || 0;
+            Licitacion_Costo       += parseFloat(data.LICITACION_COSTO) || 0;
+            Licitacion_Contribucion+= parseFloat(data.LICITACION_CONTRIBUCION) || 0;
 
             // TOTAL DE TOTALES
             Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
@@ -354,6 +369,14 @@ $(document).ready(function () {
         $('#Institucion_Publica_Costo').html('C$ '+numeral(Institucion_Publica_Costo).format('0,0'));
         $('#Institucion_Publica_Contribucion').html('C$ '+numeral(Institucion_Publica_Contribucion).format('0,0'));
         $('#Institucion_Publica_Margen').html(numeral((Institucion_Publica_Contribucion/Institucion_Publica_Venta)*100).format('0,0.00'));
+
+        // TOTAL DE LICITACIONES
+        $('#Licitacion_Cantidad').html(numeral(Licitacion_Cantidad).format('0,0'));
+        $('#Licitacion_Promedio').html('C$ '+numeral(Licitacion_Venta/Licitacion_Cantidad).format('0,0'));
+        $('#Licitacion_Venta').html('C$ '+numeral(Licitacion_Venta).format('0,0'));
+        $('#Licitacion_Costo').html('C$ '+numeral(Licitacion_Costo).format('0,0'));
+        $('#Licitacion_Contribucion').html('C$ '+numeral(Licitacion_Contribucion).format('0,0'));
+        $('#Licitacion_Margen').html(numeral((Licitacion_Contribucion/Licitacion_Venta)*100).format('0,0.00'));
 
         // TOTAL DE TOTALES
         $('#Total_Cantidad').html(numeral(Total_Cantidad).format('0,0'));

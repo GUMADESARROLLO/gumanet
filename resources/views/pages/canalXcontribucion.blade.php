@@ -73,6 +73,7 @@
                   <th colspan="6">INSTITUCION PRIVADA</th>
                   <th colspan="6">CRUZ AZUL</th>
                   <th colspan="6">INSTITUCION PUBLICA</th>
+                  <th colspan="6">LICITACIONES</th>
                   <th colspan="6">TOTAL</th>
                 </tr>
                 <tr>
@@ -113,6 +114,12 @@
                   <th id="Institucion_Publica_Costo"></th>
                   <th id="Institucion_Publica_Contribucion"></th>
                   <th id="Institucion_Publica_Margen"></th>
+                  <th id="Licitacion_Cantidad"></th>
+                  <th id="Licitacion_Promedio"></th>
+                  <th id="Licitacion_Venta"></th>
+                  <th id="Licitacion_Costo"></th>
+                  <th id="Licitacion_Contribucion"></th>
+                  <th id="Licitacion_Margen"></th>
                   <th id="Total_Cantidad"></th>
                   <th id="Total_Promedio"></th>
                   <th id="Total_Venta"></th>
@@ -161,6 +168,12 @@
                     <th style="background-color:limegreen">PUB. CTO</th>
                     <th style="background-color:limegreen">PUB. CTB</th>
                     <th style="background-color:limegreen">PUB. %</th>
+                    <th style="background-color:lightskyblue">ML. UNDS</th>
+                    <th style="background-color:lightskyblue">ML. PREC. P</th>
+                    <th style="background-color:lightskyblue">ML. VTA</th>
+                    <th style="background-color:lightskyblue">ML. CTO</th>
+                    <th style="background-color:lightskyblue">ML. CTB</th>
+                    <th style="background-color:lightskyblue">ML. %</th>
                     <th style="background-color:gold">T. UNDS</th>
                     <th style="background-color:gold">T. PREC. P</th>
                     <th style="background-color:gold">T. VTA</th>

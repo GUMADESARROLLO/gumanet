@@ -32,9 +32,9 @@ class ContribucionPorCanales extends Model
         $lote = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.iweb_lotes");
 
         foreach($sql as $row){
-            $TotalCantidad = $row['FARMACIA_CANTIDAD']+$row['CADENA_FARMACIA_CANTIDAD']+$row['MAYORISTA_CANTIDAD']+$row['INSTITUCION_PRIVADA_CANTIDAD']+$row['CRUZ_AZUL_CANTIDAD']+$row['INSTITUCION_PUBLICA_CANTIDAD'];
-            $TotalCosto = $row['FARMACIA_COSTO']+$row['CADENA_FARMACIA_COSTO']+$row['MAYORISTA_COSTO']+$row['INSTITUCION_PRIVADA_COSTO']+$row['CRUZ_AZUL_COSTO']+$row['INSTITUCION_PUBLICA_COSTO'];
-            $TotalVenta = $row['FARMACIA_VENTA']+$row['CADENA_FARMACIA_VENTA']+$row['MAYORISTA_VENTA']+$row['INSTITUCION_PRIVADA_VENTA']+$row['CRUZ_AZUL_VENTA']+$row['INSTITUCION_PUBLICA_VENTA'];
+            $TotalCantidad = $row['FARMACIA_CANTIDAD']+$row['CADENA_FARMACIA_CANTIDAD']+$row['MAYORISTA_CANTIDAD']+$row['INSTITUCION_PRIVADA_CANTIDAD']+$row['CRUZ_AZUL_CANTIDAD']+$row['INSTITUCION_PUBLICA_CANTIDAD']+$row['LICITACION_CANTIDAD'];
+            $TotalCosto = $row['FARMACIA_COSTO']+$row['CADENA_FARMACIA_COSTO']+$row['MAYORISTA_COSTO']+$row['INSTITUCION_PRIVADA_COSTO']+$row['CRUZ_AZUL_COSTO']+$row['INSTITUCION_PUBLICA_COSTO']+$row['LICITACION_COSTO'];
+            $TotalVenta = $row['FARMACIA_VENTA']+$row['CADENA_FARMACIA_VENTA']+$row['MAYORISTA_VENTA']+$row['INSTITUCION_PRIVADA_VENTA']+$row['CRUZ_AZUL_VENTA']+$row['INSTITUCION_PUBLICA_VENTA']+$row['LICITACION_VENTA'];
             $CantOnHand = 0;
             $CantOnHandTransito = 0;
             $fechaActual = date('Y-m-d'); 
@@ -136,6 +136,12 @@ class ContribucionPorCanales extends Model
             $json[$i]['INSTITUCION_PUBLICA_COSTO']                  = $row['INSTITUCION_PUBLICA_COSTO'];
             $json[$i]['INSTITUCION_PUBLICA_CONTRIBUCION']           = $row['INSTITUCION_PUBLICA_CONTRIBUCION'];
             $json[$i]['INSTITUCION_PUBLICA_MARGEN']                 = $row['INSTITUCION_PUBLICA_MARGEN'];
+            $json[$i]['LICITACION_CANTIDAD']                        = number_format($row['LICITACION_CANTIDAD'],0,'.',',');
+            $json[$i]['LICITACION_PROMEDIO']                        = $row['LICITACION_PROMEDIO'];
+            $json[$i]['LICITACION_VENTA']                           = $row['LICITACION_VENTA'];
+            $json[$i]['LICITACION_COSTO']                           = $row['LICITACION_COSTO'];
+            $json[$i]['LICITACION_CONTRIBUCION']                    = $row['LICITACION_CONTRIBUCION'];
+            $json[$i]['LICITACION_MARGEN']                          = $row['LICITACION_MARGEN'];
             $json[$i]['TOTAL_VENTAS_PACK']                          = number_format($TotalCantidad,0,'.',',');
             $json[$i]['TOTAL_PRECIO_PROM']                          = ($TotalCantidad > 0) ? $TotalVenta/$TotalCantidad:0;
             $json[$i]['TOTAL_VENTAS_C$']                            = $TotalVenta;
