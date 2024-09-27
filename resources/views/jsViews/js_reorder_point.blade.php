@@ -262,21 +262,13 @@ function Highest3Months(Months) {
     $("#valor_mes_3").text(" - ");
 
     // ORDENA LOS MESES DE MAYOR A MENOR
-    // Months.sort(function(a, b) {
-    //     return b.data - a.data;
-    // });
+    Months.sort(function(a, b) {
+        return b.data - a.data;
+    });
 
-    Months = [
-            {Mes: "Ene", data: 1000},
-            {Mes: "Feb", data: 500}
-        ];
-    
+
     // SELECCIONA LOS 3 MESES MAS ALGO
     Months = Months.slice(0, 3);
-   
-
-    
-    
     
     // SUMA LOS VALORES DE LOS 3 MESES MAS ALGO
     Months.forEach(function(item) {
@@ -284,20 +276,17 @@ function Highest3Months(Months) {
     });
     
     var promedio = sum / Months.length;
+    
+    
+    $("#name_mes_1").text(isValue(Months[0],"N/D",true).mes);
+    $("#name_mes_2").text(isValue(Months[1],"N/D",true).mes);
+    $("#name_mes_3").text(isValue(Months[2]," - ",true).mes);
 
-    console.log(Months, sum, promedio);
+    $("#valor_mes_1").text(numeral(isValue(Months[0],0,true).data).format('0,0'));
+    $("#valor_mes_2").text(numeral(isValue(Months[1],0,true).data).format('0,0'));
+    $("#valor_mes_3").text(numeral(isValue(Months[2],0,true).data).format('0,0'));
 
     $("#valor_mes_promedio").text(numeral(promedio.toFixed(0)).format('0,0'));
-
-    
-    $("#name_mes_1").text(Months[0].Mes);
-    $("#name_mes_2").text(Months[1].Mes);
-    $("#name_mes_3").text(Months[2].Mes);
-
-
-    $("#valor_mes_1").text(numeral(Months[0].data).format('0,0'));
-    $("#valor_mes_2").text(numeral(Months[1].data).format('0,0'));
-    $("#valor_mes_3").text(numeral(Months[2].data).format('0,0'));
     
 
 }
@@ -324,7 +313,7 @@ $("#BtnClick").click(function() {
 
     
     Swal.fire({
-        title: "Recalcular Reorder Point",
+        title: "Calcular Reorder Point",
         inputAttributes: {
             autocapitalize: "off"
         },
