@@ -95,7 +95,8 @@ $(document).ready(function() {
                 buttons: [ {
                         extend: 'colvis',
                         collectionLayout: 'fixed columns',
-                        popoverTitle: 'Columnas visibles'
+                        text: 'Columnas Visibles'
+                        //popoverTitle: 'Columnas Visibles'
                     } ]
             },
             topEnd: {

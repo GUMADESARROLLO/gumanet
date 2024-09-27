@@ -9,7 +9,14 @@
   }
 </style>
 <div class="container-fluid"> 
-  <p class="font-italic text-muted pt-0 mt-0">Actualizado del <span id="tl_periodo"> - </span></p>	
+  <div class="row">
+    <div class="col-sm-6">
+      <p class="font-italic text-muted pt-0 mt-0">Actualizado del <span id="tl_periodo"> - </span></p>	
+    </div>
+    <div class="col-sm-6 text-right">
+      <p class="font-italic text-muted pt-0 mt-0 mr-3"><b>Todos los valores estan en C$</b></p>	
+    </div>
+  </div>
   <div class="row">
     <div class="col">		      
       <div class="input-group"> 
@@ -118,47 +125,47 @@
                     <th class="bg-blue text-light">DESCRIPCION</th>
                     <th class="bg-blue text-light">FABRICANTE</th>
                     <th class="bg-blue text-light">CATEGORIA</th>
-                    <th class="bg-warning text-black">F. CANTIDAD</th>
-                    <th class="bg-warning text-black">F. PROM. C$</th>
-                    <th class="bg-warning text-black">F. VENTA C$</th>
-                    <th class="bg-warning text-black">F. COSTO C$</th>
-                    <th class="bg-warning text-black">F. CONTRIB. C$</th>
+                    <th class="bg-warning text-black">F. UNDS</th>
+                    <th class="bg-warning text-black">F. PREC. P</th>
+                    <th class="bg-warning text-black">F. VTA</th>
+                    <th class="bg-warning text-black">F. CTO</th>
+                    <th class="bg-warning text-black">F. CTB</th>
                     <th class="bg-warning text-black">F. %</th>
-                    <th style="background-color:peru">C. CANTIDAD</th>
-                    <th style="background-color:peru">C. PROM. C$</th>
-                    <th style="background-color:peru">C. VENTA C$</th>
-                    <th style="background-color:peru">C. COSTO C$</th>
-                    <th style="background-color:peru">C. CONTRIB. C$</th>
+                    <th style="background-color:peru">C. UNDS</th>
+                    <th style="background-color:peru">C. PREC. P</th>
+                    <th style="background-color:peru">C. VTA</th>
+                    <th style="background-color:peru">C. CTO</th>
+                    <th style="background-color:peru">C. CTB</th>
                     <th style="background-color:peru">C. %</th>
-                    <th style="background-color:burlywood">M. CANTIDAD</th>
-                    <th style="background-color:burlywood">M. PROM. C$</th>
-                    <th style="background-color:burlywood">M. VENTA C$</th>
-                    <th style="background-color:burlywood">M. COSTO C$</th>
-                    <th style="background-color:burlywood">M. CONTRIB. C$</th>
+                    <th style="background-color:burlywood">M. UNDS</th>
+                    <th style="background-color:burlywood">M. PREC. P</th>
+                    <th style="background-color:burlywood">M. VTA</th>
+                    <th style="background-color:burlywood">M. CTO</th>
+                    <th style="background-color:burlywood">M. CTB</th>
                     <th style="background-color:burlywood">M. %</th>
-                    <th style="background-color:limegreen">PRI. CANTIDAD</th>
-                    <th style="background-color:limegreen">PRI. PROM. C$</th>
-                    <th style="background-color:limegreen">PRI. VENTA C$</th>
-                    <th style="background-color:limegreen">PRI. COSTO C$</th>
-                    <th style="background-color:limegreen">PRI. CONTRIB. C$</th>
+                    <th style="background-color:limegreen">PRI. UNDS</th>
+                    <th style="background-color:limegreen">PRI. PREC. P</th>
+                    <th style="background-color:limegreen">PRI. VTA</th>
+                    <th style="background-color:limegreen">PRI. CTO</th>
+                    <th style="background-color:limegreen">PRI. CTB</th>
                     <th style="background-color:limegreen">PRI. %</th>
-                    <th style="background-color:cornflowerblue">CA. CANTIDAD</th>
-                    <th style="background-color:cornflowerblue">CA. PROM. C$</th>
-                    <th style="background-color:cornflowerblue">CA. VENTA C$</th>
-                    <th style="background-color:cornflowerblue">CA. COSTO C$</th>
-                    <th style="background-color:cornflowerblue">CA. CONTRIB. C$</th>
+                    <th style="background-color:cornflowerblue">CA. UNDS</th>
+                    <th style="background-color:cornflowerblue">CA. PREC. P</th>
+                    <th style="background-color:cornflowerblue">CA. VTA</th>
+                    <th style="background-color:cornflowerblue">CA. CTO</th>
+                    <th style="background-color:cornflowerblue">CA. CTB</th>
                     <th style="background-color:cornflowerblue">CA. %</th>
-                    <th style="background-color:limegreen">PUB. CANTIDAD</th>
-                    <th style="background-color:limegreen">PUB. PROM. C$</th>
-                    <th style="background-color:limegreen">PUB. VENTA C$</th>
-                    <th style="background-color:limegreen">PUB. COSTO C$</th>
-                    <th style="background-color:limegreen">PUB. CONTRIB. C$</th>
+                    <th style="background-color:limegreen">PUB. UNDS</th>
+                    <th style="background-color:limegreen">PUB. PREC. P</th>
+                    <th style="background-color:limegreen">PUB. VTA</th>
+                    <th style="background-color:limegreen">PUB. CTO</th>
+                    <th style="background-color:limegreen">PUB. CTB</th>
                     <th style="background-color:limegreen">PUB. %</th>
-                    <th style="background-color:gold">T. CANTIDAD</th>
-                    <th style="background-color:gold">T. PROM. C$</th>
-                    <th style="background-color:gold">T. VENTA C$</th>
-                    <th style="background-color:gold">T. COSTO C$</th>
-                    <th style="background-color:gold">T. CONTRIB. C$</th>
+                    <th style="background-color:gold">T. UNDS</th>
+                    <th style="background-color:gold">T. PREC. P</th>
+                    <th style="background-color:gold">T. VTA</th>
+                    <th style="background-color:gold">T. CTO</th>
+                    <th style="background-color:gold">T. CTB</th>
                     <th style="background-color:gold">T. %</th>
                 </tr>
               </thead>

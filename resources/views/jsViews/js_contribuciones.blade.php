@@ -105,7 +105,8 @@ $(document).ready(function () {
             topStart: {
                 buttons: [ {
                         extend: 'colvis',
-                        text: 'Columnas visibles',
+                        collectionLayout: 'fixed columns',
+                        text: 'Columnas Visibles',
                     } ]
             },
             topEnd: {
