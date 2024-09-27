@@ -14,7 +14,7 @@
       <p class="font-italic text-muted pt-0 mt-0">Actualizado del <span id="tl_periodo"> - </span></p>	
     </div>
     <div class="col-sm-6 text-right">
-      <p class="font-italic text-muted pt-0 mt-0 mr-3"><b>Todos los valores estan en C$</b></p>	
+      <p class="font-italic text-muted pt-0 mt-0 mr-3"><b>Todos los valores estan en C$.</b></p>	
     </div>
   </div>
   <div class="row">
