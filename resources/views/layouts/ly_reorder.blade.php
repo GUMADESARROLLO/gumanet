@@ -66,14 +66,13 @@
 }
 
 
-
-  .Invisible {
-    display: none !important;
-  }
-
-
   .dt-layout-cell.dt-layout-start {    
     width: 900px !important;
+  }
+  
+  .table.dataTable  {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
   }
 
 </style>

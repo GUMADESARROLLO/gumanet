@@ -15,6 +15,8 @@
       </div>
   </div>
 
+  
+
     
   <strong class="text-info">
     <p class="font-italic text-muted">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	

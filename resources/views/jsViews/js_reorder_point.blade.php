@@ -1,7 +1,39 @@
 <script type="text/javascript">
-    
-    var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
     let btn_table;
+    var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
+    var icons = [
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>', 
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>', 
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg>',
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>'
+    ];
+
+    let topStart_custom = document.createElement('div');
+    topStart_custom.setAttribute('class', 'col-12 dBorder');
+    topStart_custom.innerHTML = `
+    <div class="row">
+        <div class="col-sm-10">	
+            <div class="input-group"> 
+                <div class="input-group-prepend">
+                    <span class="input-group-text">`+icons[0]+`</span>
+                </div>
+                <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <select class="custom-select" id="select_rows">
+                <option value="5" selected>5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="100">100</option>
+                <option value="-1">Todo</option>
+            </select>
+        </div>
+    </div>`;
+    
+    $('[data-toggle="tooltip"]').tooltip();
+
+    
     grafiacas_productos_Diarios = {
         chart: {
             type: 'spline',
@@ -47,7 +79,7 @@
             data: [],            
         }]
     }; 
-    $('[data-toggle="tooltip"]').tooltip();
+    
     //fullScreen();
     function isValue(value, def, is_return) {
         if ( $.type(value) == 'null'
@@ -64,24 +96,8 @@
     }
 $(document).ready(function() {
     Loading();
-    //fullScreen();
-    let toolbar = document.createElement('div');
-    toolbar.setAttribute('class', 'col-12');
-    toolbar.innerHTML = `<div class="row">
-        <div class="col-sm-9">	
-            <input type="text" id="txt_search" class="form-control"  placeholder="Buscar...">
-        </div>
-        <div class="col-sm-3">
-            <div class="input-group">
-                <select class="custom-select" id="select_rows">
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="100">100</option>
-                    <option value="-1">Todo</option>
-                </select>
-            </div>
-        </div></div>`;
+    fullScreen();
+    
 
     btn_table = new DataTable('#dt_articulos',{
 		"ajax":{
@@ -109,33 +125,24 @@ $(document).ready(function() {
             bottom: 'paging',
             bottomStart: null,
             bottomEnd: null,     
-            topStart : toolbar,
-            // topStart: {
-            //     search: {
-            //         placeholder: 'Buscar...'
-            //     },
-            //     pageLength: {
-            //         menu: [ 5, 10, 20, 100, 1000]
-            //     }
-                
-            // },
+            topStart : topStart_custom,           
             topEnd: {
                 buttons: [ 
                 {
-                    text:   'Actualizar Info.',                    
+                    text: `${icons[1]} Actualizar Info.`,                    
                     className: 'btn-outline-primary',
                     action: function ( e, dt, node, config ) {
                         UpdateDataTable();
                     }
                 },
                 {
-                    text: 'Columnas visibles',
+                    text: `${icons[2]}Columnas visibles`,
                     extend: 'colvis',
                     className: 'btn-outline-secondary ',
                     collectionLayout: 'fixed columns',
                 },
                 {
-                    text:   'Exportar a excel',
+                    text:   `${icons[3]}Exportar a excel`,
                     extend: 'excelHtml5',
                     className: 'btn-outline-success ',
                     title:  'Reporder Point: ' + moment().format('YYYY-MM-DD HH:mm'),
