@@ -240,7 +240,6 @@ $(document).ready(function() {
         "createdRow": function( row, data, dataIndex){
 
 
-            
 
             $("#id_UpdateAt").html(data.UPDATED_AT);
 

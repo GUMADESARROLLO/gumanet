@@ -110,7 +110,7 @@
           <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">12.</span></th>
           <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">PROM. 3 MESES MAS ALTO</span></th>
           <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" Nuevo Calculo de Cantidad a Reordenar "> CANTIDAD A ORDENAR V2 </span></th>
-          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" Categorizacion de Articulos por aporte en base al 80/20"> CATEGORIA </span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" Categorizacion de Articulos por aporte en base al 80/20"> CAT. </span></th>
         </tr>
       </thead>
     </table>
