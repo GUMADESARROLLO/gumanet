@@ -73,7 +73,7 @@
                   <th colspan="6">INSTITUCION PRIVADA</th>
                   <th colspan="6">CRUZ AZUL</th>
                   <th colspan="6">INSTITUCION PUBLICA</th>
-                  <th colspan="6">LICITACIONES</th>
+                  <th colspan="6">MINSA - LIC.</th>
                   <th colspan="6">TOTAL</th>
                 </tr>
                 <tr>
