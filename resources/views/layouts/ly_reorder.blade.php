@@ -38,46 +38,43 @@
       color: #c7c7c7
   }
 
-  .btn-outline-primary 
-  {
-
-    color: #007bff!important;
-    background-color: transparent!important;
-    border-color: #007bff!important;
-    border-radius: 35px!important;
-    border: 1px solid rgba(0, 123, 255, 0.75)!important;
-
+.btn-outline-primary 
+{
+  color: #007bff !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-radius: 35px !important;
+  border: 1px solid rgba(0, 123, 255, 0.75) !important;   
 }
 
 .btn-outline-success 
 {
-
   color: #28a745 !important;
   background-color: transparent !important;
   background-image: none !important;
   border-radius: 35px !important;
   border: 1px solid rgba(40, 167, 69, 0.75) !important;   
-
 }
 
 .btn-outline-secondary 
 {
-
   color: #868e96 !important;
   background-color: transparent !important;
   background-image: none !important;
   border-radius: 35px !important;
-  border: 1px solid rgba(134, 142, 150, 0.75) !important;    
-
+  border: 1px solid rgba(134, 142, 150, 0.75) !important;   
 }
 
 
 
-  /* .dt-layout-cell.dt-layout-start {
+  .Invisible {
     display: none !important;
-  } */
+  }
 
 
+  .dt-layout-cell.dt-layout-start {    
+    width: 900px !important;
+  }
 
 </style>
 <!-- Custom styles for this template -->

@@ -65,6 +65,24 @@
 $(document).ready(function() {
     Loading();
     //fullScreen();
+    let toolbar = document.createElement('div');
+    toolbar.setAttribute('class', 'col-12');
+    toolbar.innerHTML = `<div class="row">
+        <div class="col-sm-9">	
+            <input type="text" id="txt_search" class="form-control"  placeholder="Buscar...">
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group">
+                <select class="custom-select" id="select_rows">
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="100">100</option>
+                    <option value="-1">Todo</option>
+                </select>
+            </div>
+        </div></div>`;
+
     btn_table = new DataTable('#dt_articulos',{
 		"ajax":{
 			"url": "getData",
@@ -82,27 +100,39 @@ $(document).ready(function() {
 				"next":       "Siguiente",
 				"previous":   "Anterior"
 			},
-			"lengthMenu": "MOSTRAR _MENU_",
+			"lengthMenu": "_MENU_",
 			"emptyTable": "NO HAY DATOS DISPONIBLES",
-			"search":     "BUSCAR"
+			"search":     ""
 		},
         layout: {
             topStart: null,
             bottom: 'paging',
             bottomStart: null,
-            bottomEnd: null,            
-           
+            bottomEnd: null,     
+            topStart : toolbar,
+            // topStart: {
+            //     search: {
+            //         placeholder: 'Buscar...'
+            //     },
+            //     pageLength: {
+            //         menu: [ 5, 10, 20, 100, 1000]
+            //     }
+                
+            // },
             topEnd: {
                 buttons: [ 
                 {
-                    text:   'Actualizar',
+                    text:   'Actualizar Info.',                    
                     className: 'btn-outline-primary',
+                    action: function ( e, dt, node, config ) {
+                        UpdateDataTable();
+                    }
                 },
                 {
+                    text: 'Columnas visibles',
                     extend: 'colvis',
-                    collectionLayout: 'fixed columns',
                     className: 'btn-outline-secondary ',
-                    text: 'Columnas Visibles'
+                    collectionLayout: 'fixed columns',
                 },
                 {
                     text:   'Exportar a excel',
@@ -200,6 +230,9 @@ $(document).ready(function() {
        
         "createdRow": function( row, data, dataIndex){
 
+
+            
+
             $("#id_UpdateAt").html(data.UPDATED_AT);
 
             var _ReOrder = numeral(data.REORDER).format('00.00');
@@ -221,6 +254,12 @@ $(document).ready(function() {
                 var index = i + 38;
                 btn_table.column(index).title(item.Mes);
             });
+
+            
+
+           
+
+            //$(".dt-layout-row").empty();
         },
         "initComplete": function(settings, json) {
             $("#LoadingID").empty();
@@ -298,22 +337,15 @@ function Highest3Months(Months) {
 }
 
 
-$("#BtnClickColumns").click(function() {
-    btn_table.button('0').trigger();
-})
 
-$("#BtnClickExport").click(function() {
-    btn_table.button('0').trigger();
-})
 
 
 $("#exp-to-excel").click(function() {    
     location.href = "ExportToExcel";
 })
 
-$("#BtnClick").click(function() {
 
-    
+function UpdateDataTable() {
     Swal.fire({
         title: "Calcular Reorder Point",
         inputAttributes: {
@@ -347,8 +379,7 @@ $("#BtnClick").click(function() {
                 });
         }
     });
-
-})
+}
 
 
 function getDetalleArticulo(Articulos,Descripcion,Undiad) {
