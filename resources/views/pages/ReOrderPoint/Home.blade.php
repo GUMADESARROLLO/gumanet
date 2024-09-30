@@ -6,149 +6,114 @@
 @endsection
 @section('content')
 <link rel="stylesheet" type="text/css" href="{{ url('css/colors-reorder-point.css') }}">
+
 <div class="container-fluid">
+
   <div class="row" id="ct04">
-      <div class="graf col-sm-12 mt-3">
+      <div class="graf col-sm-12 ">
           <div class="container-vms" id="LoadingID" style="width: 100%; margin: 0 auto"></div>
       </div>
   </div>
-  <p class="font-italic text-muted pt-0 mt-0">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	
-  <div class="row mb-3">
-  <span type="button" class="btn btn-outline-primary ml-auto"  id="BtnClick"> 
-    <i data-feather="refresh-cw"></i> Actualizar
-  </span>
-  <button type="button" class="btn btn-outline-secondary" id="BtnClickColumns" style="display: none;">
-    <i data-feather="list"></i> Columnas
-  </button>
-  <button type="button" class="btn btn-outline-success" id="BtnClickExport" style="display: none;">
-    <i data-feather="external-link"></i> Exportar
-  </button>
-</div>
 
-    
-  <div class="row">
-    
-    <div class="col-sm-11">		
-    
-      <div class="input-group"> 
-      <div class="input-group-prepend">
-            <span class="input-group-text"><i data-feather="search"></i></span>
-          </div>
-        <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
-          
-      </div>
-    </div>
-    <div class="col-sm-1">
-      <div class="input-group mb-3">
-        <select class="custom-select" id="select_rows" name="InputDtShowColumnsArtic">
-          <option value="5" selected>5</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="100">100</option>
-          <option value="-1">Todo</option>
-        </select>
-      </div>
-    </div>
-   
-  </div>
-
-  <div class="row">
   
 
-      <div class="col-12">
-        <div class="table-responsive mt-3 mb-2">
-            <table class="table table-bordered table-sm" id="dt_articulos" width="100%" >
-              <thead class="bg-blue text-light">
-                <tr>
-                  <th class="col-yellow">ARTICULO</th>
-                  <th class="col-blue-ca-1" >DESCRIPCIÓN</th>
-                  <th class="col-blue-ca-1">FABRICANTE</th>
-                  <th class="col-green">
-                    <span 
-                      data-toggle="tooltip"  
-                      data-placement="top" 
-                      title="Tiempo desde que sale el pedido">LEADTIME
-                    </span>
-                  </th>
-                  <th class="col-green">
-                    <span 
-                      data-toggle="tooltip"  
-                      data-placement="top" 
-                      title=" - ">FACTOR STOCK SEGURIDAD
-                    </span>
-                  </th>
-                  <th class="col-red-strong">
-                    <span 
-                      data-toggle="tooltip"  
-                      data-placement="top" 
-                      title=" - ">ROTACION PREVISTA EXISTENCIAS POR VENCER
-                    </span>
-                  </th>
-                  <th class="col-red-strong">
-                    <span 
-                      data-toggle="tooltip"  
-                      data-placement="top" 
-                      title="Total de Existencia en Bodega 002">TOTAL UMK
-                    </span>
-                  </th>
-                  <th class="col-red-light">
-                    <span data-toggle="tooltip"  
-                      data-placement="top" 
-                      title="Total de Existencia en Bodega 001">TOTAL GP
-                    </span>
-                  </th>
-                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Disponibilidad total de Inventario para facturar">TOTAL DISPONIBLE</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title="Existencia de Articulos menor a 7 meses">EXIST. < 7 Meses</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title="Existencia Igual o mayor a 7 meses + ON-HAND">EXIST. >= 7 Meses</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title="Fecha de Lote que esta mas proximo a vencer">LOTE MAS PROX. A VENCER</span></th>
-                  <th class="col-blue-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote mas proximo a vencer">EXIST. EN LOTE MAS PROX. POR VENCERSE</span></th>
-                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Fecha de ult. entrada de lote">ULT. FECHA ENTRADA LOTE</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Ult. entrada de lote">ULT. CANT. INGRESADA</span></th>
-                  <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title="Promedio de unidad desplazadas en 12 meses">PROM. UND. 12m</span></th>
-                  <th class="col-yellow"><span data-toggle="tooltip"  data-placement="top" title="Cantidad Pedida del Articulo">PEDIDO</span></th>
-                  <th class="col-blue-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad en estado de Transito">TRANSITO</span></th>
-                  <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title="Ventas realizadas en el periodo de 12m">VENTAS EJEC. 12m C$.</span></th>
-                  <th class="col-yellow-strong"><span data-toggle="tooltip"  data-placement="top" title="Contribucion Bruta aportada en 12 meses">CONTRIBUCION BRUTA. 12m C$.</span></th>
-                  
-                  <th class="col-green"> <span data-toggle="tooltip"  data-placement="top" title=" Cantidad de Lote Mayor o igual a 7 meses + ON-HAND ">ROTACION CORTA</span> </th>
-                  <th class="col-green"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote mayor o igual a 7 meses + ONHAND + TRANSITO ">ROTACION MEDIA</span></th>
-                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote mayor o igual a 7 meses + ONHAND + PEDIDO + TRANSITO">ROTACION LARGA</span></th>
+    
 
-                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad minima solicitada en los ultimos 2 años">MOQ</span></th>
-                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">REORDER</span></th>
-                  <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">CANTIDAD A ORDENAR V1</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">RAZON REORDER/MOQ</span></th>
-                  <th class="col-blue-ca-2"><span data-toggle="tooltip"  data-placement="top" title=" - ">COST PROM. C$</span></th>
-                  <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">COST PROM. USD</span></th>
-                  <th class="col-yellow-mostasa"><span data-toggle="tooltip"  data-placement="top" title=" - ">ULT. COST. USD</span></th>
-                  <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">DEM. ANUAL CA NETA</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">DEM. ANUAL CA AJUSTADA</span></th>
-                  <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">FACTOR</span></th>
-                  <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">LIMITE LOGISTICO MEDIO</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">CATEGORIA</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">VALUACION</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">REORDER1</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">ESTIMACION SOBRANTES UND</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">1.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">2.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">3.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">4.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">5.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">6.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">7.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">8.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">9.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">10.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">11.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">12.</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">PROM. 3 MESES MAS ALTO</span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" Nuevo Calculo de Cantidad a Reordenar "> CANTIDAD A ORDENAR V2 </span></th>
-                  <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" Categorizacion de Articulos por aporte en base al 80/20"> CATEGORIA </span></th>
-                </tr>
-              </thead>
-            </table>
-          </div>
-      </div>
+    
+  <strong class="text-info">
+    <p class="font-italic text-muted">Actualizado hasta <span id="id_UpdateAt"> - </span></p>	
+  </strong>
+  <div class="table-responsive">
+    <table class="table table-bordered table-sm" id="dt_articulos" width="100%" >
+      <thead class="bg-blue text-light">
+        <tr>
+          <th class="col-yellow">ARTICULO</th>
+          <th class="col-blue-ca-1" >DESCRIPCIÓN</th>
+          <th class="col-blue-ca-1">FABRICANTE</th>
+          <th class="col-green">
+            <span 
+              data-toggle="tooltip"  
+              data-placement="top" 
+              title="Tiempo desde que sale el pedido">LEADTIME
+            </span>
+          </th>
+          <th class="col-green">
+            <span 
+              data-toggle="tooltip"  
+              data-placement="top" 
+              title=" - ">FACTOR STOCK SEGURIDAD
+            </span>
+          </th>
+          <th class="col-red-strong">
+            <span 
+              data-toggle="tooltip"  
+              data-placement="top" 
+              title=" - ">ROTACION PREVISTA EXISTENCIAS POR VENCER
+            </span>
+          </th>
+          <th class="col-red-strong">
+            <span 
+              data-toggle="tooltip"  
+              data-placement="top" 
+              title="Total de Existencia en Bodega 002">TOTAL UMK
+            </span>
+          </th>
+          <th class="col-red-light">
+            <span data-toggle="tooltip"  
+              data-placement="top" 
+              title="Total de Existencia en Bodega 001">TOTAL GP
+            </span>
+          </th>
+          <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Disponibilidad total de Inventario para facturar">TOTAL DISPONIBLE</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title="Existencia de Articulos menor a 7 meses">EXIST. < 7 Meses</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title="Existencia Igual o mayor a 7 meses + ON-HAND">EXIST. >= 7 Meses</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title="Fecha de Lote que esta mas proximo a vencer">LOTE MAS PROX. A VENCER</span></th>
+          <th class="col-blue-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote mas proximo a vencer">EXIST. EN LOTE MAS PROX. POR VENCERSE</span></th>
+          <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Fecha de ult. entrada de lote">ULT. FECHA ENTRADA LOTE</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Ult. entrada de lote">ULT. CANT. INGRESADA</span></th>
+          <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title="Promedio de unidad desplazadas en 12 meses">PROM. UND. 12m</span></th>
+          <th class="col-yellow"><span data-toggle="tooltip"  data-placement="top" title="Cantidad Pedida del Articulo">PEDIDO</span></th>
+          <th class="col-blue-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad en estado de Transito">TRANSITO</span></th>
+          <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title="Ventas realizadas en el periodo de 12m">VENTAS EJEC. 12m C$.</span></th>
+          <th class="col-yellow-strong"><span data-toggle="tooltip"  data-placement="top" title="Contribucion Bruta aportada en 12 meses">CONTRIBUCION BRUTA. 12m C$.</span></th>
+          
+          <th class="col-green"> <span data-toggle="tooltip"  data-placement="top" title=" Cantidad de Lote Mayor o igual a 7 meses + ON-HAND ">ROTACION CORTA</span> </th>
+          <th class="col-green"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote mayor o igual a 7 meses + ONHAND + TRANSITO ">ROTACION MEDIA</span></th>
+          <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad de Lote mayor o igual a 7 meses + ONHAND + PEDIDO + TRANSITO">ROTACION LARGA</span></th>
+
+          <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title="Cantidad minima solicitada en los ultimos 2 años">MOQ</span></th>
+          <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">REORDER</span></th>
+          <th class="col-red-light"><span data-toggle="tooltip"  data-placement="top" title=" - ">CANTIDAD A ORDENAR V1</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">RAZON REORDER/MOQ</span></th>
+          <th class="col-blue-ca-2"><span data-toggle="tooltip"  data-placement="top" title=" - ">COST PROM. C$</span></th>
+          <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">COST PROM. USD</span></th>
+          <th class="col-yellow-mostasa"><span data-toggle="tooltip"  data-placement="top" title=" - ">ULT. COST. USD</span></th>
+          <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">DEM. ANUAL CA NETA</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">DEM. ANUAL CA AJUSTADA</span></th>
+          <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">FACTOR</span></th>
+          <th class="col-green-strong"><span data-toggle="tooltip"  data-placement="top" title=" - ">LIMITE LOGISTICO MEDIO</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">CATEGORIA</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">VALUACION</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">REORDER1</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">ESTIMACION SOBRANTES UND</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">1.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">2.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">3.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">4.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">5.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">6.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">7.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">8.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">9.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">10.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">11.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">12.</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" - ">PROM. 3 MESES MAS ALTO</span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" Nuevo Calculo de Cantidad a Reordenar "> CANTIDAD A ORDENAR V2 </span></th>
+          <th class="col-blue-ca-1"><span data-toggle="tooltip"  data-placement="top" title=" Categorizacion de Articulos por aporte en base al 80/20"> CAT. </span></th>
+        </tr>
+      </thead>
+    </table>
   </div>
   <div class="modal fade bd-example-modal-xl" data-backdrop="static" data-keyboard="false" id="mdDetalleArt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
