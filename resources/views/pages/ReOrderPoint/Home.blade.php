@@ -17,15 +17,20 @@
   <span type="button" class="btn btn-outline-primary ml-auto"  id="BtnClick"> 
     <i data-feather="refresh-cw"></i> Actualizar
   </span>
-  <button type="button" class="btn btn-outline-secondary" id="BtnClickColumns" style="display: none;">
+  <button type="button" class="btn btn-outline-secondary" id="BtnClickColumns">
     <i data-feather="list"></i> Columnas
   </button>
-  <button type="button" class="btn btn-outline-success" id="BtnClickExport" style="display: none;">
+  <button type="button" class="btn btn-outline-success" id="BtnClickExport" >
     <i data-feather="external-link"></i> Exportar
   </button>
+
+  
 </div>
 
-    
+  <div class="row">
+
+  </div>
+  
   <div class="row">
     
     <div class="col-sm-11">		

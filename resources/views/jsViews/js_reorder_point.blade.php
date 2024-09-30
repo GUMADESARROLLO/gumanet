@@ -1,6 +1,7 @@
 <script type="text/javascript">
     
     var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
+    let btn_table;
     grafiacas_productos_Diarios = {
         chart: {
             type: 'spline',
@@ -64,7 +65,7 @@
 $(document).ready(function() {
     Loading();
     //fullScreen();
-    let Table = new DataTable('#dt_articulos',{
+    btn_table = new DataTable('#dt_articulos',{
 		"ajax":{
 			"url": "getData",
 			'dataSrc': '',
@@ -89,20 +90,24 @@ $(document).ready(function() {
             topStart: null,
             bottom: 'paging',
             bottomStart: null,
-            bottomEnd: null,
-            
-            topStart: {
-                buttons: [ {
-                        extend: 'colvis',
-                        collectionLayout: 'fixed columns',
-                        text: 'Columnas Visibles'
-                        //popoverTitle: 'Columnas Visibles'
-                    } ]
-            },
+            bottomEnd: null,            
+           
             topEnd: {
-                buttons: [ {
+                buttons: [ 
+                {
+                    text:   'Actualizar',
+                    className: 'btn-outline-primary',
+                },
+                {
+                    extend: 'colvis',
+                    collectionLayout: 'fixed columns',
+                    className: 'btn-outline-secondary ',
+                    text: 'Columnas Visibles'
+                },
+                {
                     text:   'Exportar a excel',
                     extend: 'excelHtml5',
+                    className: 'btn-outline-success ',
                     title:  'Reporder Point: ' + moment().format('YYYY-MM-DD HH:mm'),
                     exportOptions: {
                         columns: ':visible'
@@ -214,7 +219,7 @@ $(document).ready(function() {
             // CAMBIA EL NOMBRE DELA COLUMNA DE LOS MESES
             $.each(data.VENTAS, function(i, item) {
                 var index = i + 38;
-                Table.column(index).title(item.Mes);
+                btn_table.column(index).title(item.Mes);
             });
         },
         "initComplete": function(settings, json) {
@@ -293,17 +298,13 @@ function Highest3Months(Months) {
 }
 
 
-// $("#BtnClickColumns").click(function() {
-//     var table = new DataTable('#dt_articulos');
-    
-//     table.button('0').trigger();
-//     //table.buttons('.buttons-colvis').trigger();
-// })
+$("#BtnClickColumns").click(function() {
+    btn_table.button('0').trigger();
+})
 
-// $("#BtnClickExport").click(function() {
-//     var table = new DataTable('#dt_articulos');
-//     table.buttons('.buttons-excel').trigger();
-// })
+$("#BtnClickExport").click(function() {
+    btn_table.button('0').trigger();
+})
 
 
 $("#exp-to-excel").click(function() {    
