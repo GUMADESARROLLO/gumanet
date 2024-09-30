@@ -75,6 +75,8 @@
     font-size: 12px;
   }
 
+  
+
 </style>
 <!-- Custom styles for this template -->
 <link rel="stylesheet" href="{{ url('css/dashboard.css') }}">

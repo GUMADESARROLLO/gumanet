@@ -9,18 +9,20 @@
     ];
 
     let topStart_custom = document.createElement('div');
-    topStart_custom.setAttribute('class', 'col-12 dBorder');
+    topStart_custom.setAttribute('class', 'col-12 ');
     topStart_custom.innerHTML = `
+   
+    
     <div class="row">
-        <div class="col-sm-10">	
+        <div class="col-sm-10 col-md-10">	
             <div class="input-group"> 
                 <div class="input-group-prepend">
                     <span class="input-group-text">`+icons[0]+`</span>
                 </div>
-                <input type="text" id="txt_search" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
+                <input type="text" id="txt_search" class="form-control" placeholder="Buscar...">
             </div>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-2 col-md-2">
             <select class="custom-select" id="select_rows">
                 <option value="5" selected>5</option>
                 <option value="10">10</option>
