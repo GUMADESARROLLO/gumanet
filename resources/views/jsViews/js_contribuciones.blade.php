@@ -134,7 +134,7 @@ $(document).ready(function () {
             {"data": "FABRICANTE"},
             {"data": "CATEGORIA"},
             {"data": "FARMACIA_CANTIDAD", "render": function(data, type, row, meta) {                
-                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'FARMACIAS\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'FARMACIAS\', \'' + row.DESCRIPCION + '\', 0)">' + data + '</a>';
             }},
             {"data": "FARMACIA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "FARMACIA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
@@ -142,7 +142,7 @@ $(document).ready(function () {
             {"data": "FARMACIA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "FARMACIA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CADENA_FARMACIA_CANTIDAD","render": function(data, type, row, meta) {                
-                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'CADENAS\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'CADENAS\', \'' + row.DESCRIPCION + '\', 0)">' + data + '</a>';
             }},
             {"data": "CADENA_FARMACIA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CADENA_FARMACIA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
@@ -150,7 +150,7 @@ $(document).ready(function () {
             {"data": "CADENA_FARMACIA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CADENA_FARMACIA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "MAYORISTA_CANTIDAD","render": function(data, type, row, meta) {                
-                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'MAYORISTAS\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'MAYORISTAS\', \'' + row.DESCRIPCION + '\', 0)">' + data + '</a>';
             }},
             {"data": "MAYORISTA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "MAYORISTA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
@@ -158,7 +158,7 @@ $(document).ready(function () {
             {"data": "MAYORISTA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "MAYORISTA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PRIVADA_CANTIDAD","render": function(data, type, row, meta) {                
-                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'INSTITUCIONES_PRIVADAS\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'INSTITUCIONES_PRIVADAS\', \'' + row.DESCRIPCION + '\', 0)">' + data + '</a>';
             }},
             {"data": "INSTITUCION_PRIVADA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PRIVADA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
@@ -166,7 +166,7 @@ $(document).ready(function () {
             {"data": "INSTITUCION_PRIVADA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PRIVADA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CRUZ_AZUL_CANTIDAD","render": function(data, type, row, meta) {                
-                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'CRUZ_AZUL\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'CRUZ_AZUL\', \'' + row.DESCRIPCION + '\', 0)">' + data + '</a>';
             }},
             {"data": "CRUZ_AZUL_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CRUZ_AZUL_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
@@ -174,7 +174,7 @@ $(document).ready(function () {
             {"data": "CRUZ_AZUL_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "CRUZ_AZUL_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PUBLICA_CANTIDAD","render": function(data, type, row, meta) {                
-                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'INSTITUCIONES_PUBLICAS\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'INSTITUCIONES_PUBLICAS\', \'' + row.DESCRIPCION + '\', 0)">' + data + '</a>';
             }},
             {"data": "INSTITUCION_PUBLICA_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PUBLICA_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
@@ -182,7 +182,7 @@ $(document).ready(function () {
             {"data": "INSTITUCION_PUBLICA_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "INSTITUCION_PUBLICA_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "LICITACION_CANTIDAD","render": function(data, type, row, meta) {                
-                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'LICITACIONES\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'LICITACIONES\', \'' + row.DESCRIPCION + '\', 0)">' + data + '</a>';
             }},
             {"data": "LICITACION_PROMEDIO",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "LICITACION_VENTA",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
@@ -190,7 +190,43 @@ $(document).ready(function () {
             {"data": "LICITACION_CONTRIBUCION",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "LICITACION_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "TOTAL_VENTAS_PACK","render": function(data, type, row, meta) {                
-                return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'Todos\', \'' + row.DESCRIPCION + '\')">' + data + '</a>';
+                var ctable = $('#table_contribucion').DataTable();
+                var cantidad = 0;
+                var viArray = [];
+
+                if (ctable.column(4).visible()) {
+                    cantidad += parseFloat(row.FARMACIA_CANTIDAD.replace(/,/g, ''));
+                }else {viArray.push('FARMACIAS');}
+                
+                if (ctable.column(10).visible()) {
+                    cantidad += parseFloat(row.CADENA_FARMACIA_CANTIDAD.replace(/,/g, ''));
+                }else{viArray.push('CADENAS');}
+
+                if (ctable.column(16).visible()) {
+                    cantidad += parseFloat(row.MAYORISTA_CANTIDAD.replace(/,/g, ''));
+                }else{viArray.push('MAYORISTAS');}
+
+                if (ctable.column(22).visible()) {
+                    cantidad += parseFloat(row.INSTITUCION_PRIVADA_CANTIDAD.replace(/,/g, ''));
+                }else{viArray.push('INSTITUCIONES_PRIVADAS');}
+
+                if (ctable.column(28).visible()) {
+                cantidad += parseFloat(row.CRUZ_AZUL_CANTIDAD.replace(/,/g, ''));
+                }else{viArray.push('CRUZ_AZUL');}
+
+                if (ctable.column(34).visible()) {
+                    cantidad += parseFloat(row.INSTITUCION_PUBLICA_CANTIDAD.replace(/,/g, ''));
+                }else{viArray.push('INSTITUCIONES_PUBLICAS');}
+
+                if (ctable.column(40).visible()) {
+                    cantidad += parseFloat(row.LICITACION_CANTIDAD.replace(/,/g, ''));
+                }else{viArray.push('LICITACIONES');}
+
+                if(viArray == ''){
+                    viArray.push('Todos');
+                }                
+
+                return '<a href="#" onclick=\'getDetalleCanal("' + row.ARTICULODESC + '", ' + JSON.stringify(viArray) + ', "' + row.DESCRIPCION + '", "' + 1 + '")\'>' + numeral(cantidad).format('0,0.00') + '</a>';
             }},
             {"data": "TOTAL_PRECIO_PROM",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
             {"data": "TOTAL_VENTAS_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
@@ -209,6 +245,10 @@ $(document).ready(function () {
             { "width": "10px", "targets": [ 9, 15, 21, 27, 33, 45 ] },
             { "width": "50px", "targets": [ 39 ] }
         ],           
+    });
+    Table.on('column-visibility', function(e, settings, column, state) {
+        Table.rows().invalidate().draw();
+        calcularTotales();
     });
     $("#table_contribucion_length").hide();
     $("#table_contribucion_filter").hide();
@@ -315,11 +355,70 @@ $(document).ready(function () {
             Licitacion_Contribucion+= parseFloat(data.LICITACION_CONTRIBUCION) || 0;
 
             // TOTAL DE TOTALES
-            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
-            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
-            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
-            Total_Contribucion  += parseFloat(data.TOTAL_CONTRIBUCION_C$) || 0;
-
+            if (table.column(4).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(10).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(16).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(22).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(28).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(34).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(40).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(6).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(12).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(18).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(24).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(30).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(36).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(42).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(7).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(13).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(19).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(25).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(31).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(37).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(43).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            
         });
         
         // TOTAL DE FARMACIAS
@@ -383,8 +482,8 @@ $(document).ready(function () {
         $('#Total_Promedio').html('C$ '+numeral(Total_Venta/Total_Cantidad).format('0,0'));
         $('#Total_Venta').html('C$ '+numeral(Total_Venta).format('0,0'));
         $('#Total_Costo').html('C$ '+numeral(Total_Costo).format('0,0'));
-        $('#Total_Contribucion').html('C$ '+numeral(Total_Contribucion).format('0,0'));
-        $('#Total_Margen').html(numeral((Total_Contribucion/Total_Venta)*100).format('0,0.00'));
+        $('#Total_Contribucion').html('C$ '+numeral(Total_Venta-Total_Costo).format('0,0'));
+        $('#Total_Margen').html(numeral(((Total_Venta-Total_Costo)/Total_Venta)*100).format('0,0.00'));
     }
 
     $('#table_contribucion').DataTable().on('draw', function() {
@@ -404,17 +503,18 @@ function getDetalleArticulo(Articulos, Descripcion){
     grafMensual(Articulos);
 }
 
-function getDetalleCanal(Articulos, Canal, Descripcion){
+function getDetalleCanal(Articulos, Canal, Descripcion, opcion){
     $("#id_descripcion").html(Descripcion+` | `+ Articulos + ` | ` + Canal);
     $("#info1").hide();
     $("#info2").hide();
     
+    
 	$("#mdDetalleArt").modal('show');
-    grafCanales(Articulos, Canal);
+    grafCanales(Articulos, Canal, opcion);
 }
 
-function grafCanales(Articulos, Canal){
-    $.getJSON("get12Canales/" + Articulos + "/" + Canal, function(json) {
+function grafCanales(Articulos, Canal, opcion){
+    $.getJSON("get12Canales/" + Articulos + "/" + Canal + "/" + opcion, function(json) {
             dta = [];
             title = [];
             tmp_total = 0;

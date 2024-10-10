@@ -25,7 +25,7 @@ class ContribucionPorCanales extends Model
     public static function getData(){
         $json = array(); $i = 0;
         $sql = ContribucionPorCanales::all();
-        $Meses = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo ?', ['Todos']);
+        $Meses = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo_dev ?, ?', ['Todos',0]);
         $fecha = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
         $NameMonths = ContribucionPorCanales::NameMonth($fecha[0]->ultima_fecha);
         $categoria = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.tbl_categoria_articulo_canales");
@@ -155,11 +155,12 @@ class ContribucionPorCanales extends Model
         return $json;
     }
 
-    public static function getDataCanal($articulo, $canal){
-        $Meses = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo ?', [$canal]);
+    public static function getDataCanal($articulo, $canal, $opcion){
+        $Meses = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo_dev ?, ?', [$canal,$opcion]);
         $result = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
         $NameMonths = ContribucionPorCanales::NameMonth($result[0]->ultima_fecha);
         $json = array(); $mess12 = 0;
+        
         foreach($Meses as $item){
             if($item->ARTICULO == $articulo){
                 $mess12 = array_map(function($month, $value) use ($item) { 
