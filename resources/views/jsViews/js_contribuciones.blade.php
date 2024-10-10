@@ -248,6 +248,7 @@ $(document).ready(function () {
     });
     Table.on('column-visibility', function(e, settings, column, state) {
         Table.rows().invalidate().draw();
+        calcularTotales();
     });
     $("#table_contribucion_length").hide();
     $("#table_contribucion_filter").hide();
@@ -354,11 +355,70 @@ $(document).ready(function () {
             Licitacion_Contribucion+= parseFloat(data.LICITACION_CONTRIBUCION) || 0;
 
             // TOTAL DE TOTALES
-            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
-            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
-            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
-            Total_Contribucion  += parseFloat(data.TOTAL_CONTRIBUCION_C$) || 0;
-
+            if (table.column(4).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(10).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(16).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(22).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(28).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(34).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(40).visible()) {
+                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            }
+            if (table.column(6).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(12).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(18).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(24).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(30).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(36).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(42).visible()) {
+                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            }
+            if (table.column(7).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(13).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(19).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(25).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(31).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(37).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            if (table.column(43).visible()) {
+                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            }
+            
         });
         
         // TOTAL DE FARMACIAS
@@ -422,8 +482,8 @@ $(document).ready(function () {
         $('#Total_Promedio').html('C$ '+numeral(Total_Venta/Total_Cantidad).format('0,0'));
         $('#Total_Venta').html('C$ '+numeral(Total_Venta).format('0,0'));
         $('#Total_Costo').html('C$ '+numeral(Total_Costo).format('0,0'));
-        $('#Total_Contribucion').html('C$ '+numeral(Total_Contribucion).format('0,0'));
-        $('#Total_Margen').html(numeral((Total_Contribucion/Total_Venta)*100).format('0,0.00'));
+        $('#Total_Contribucion').html('C$ '+numeral(Total_Venta-Total_Costo).format('0,0'));
+        $('#Total_Margen').html(numeral(((Total_Venta-Total_Costo)/Total_Venta)*100).format('0,0.00'));
     }
 
     $('#table_contribucion').DataTable().on('draw', function() {
