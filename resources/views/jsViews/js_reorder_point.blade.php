@@ -229,6 +229,9 @@ $(document).ready(function() {
             {"data"  : "PROM_MESES_TOP"},
             {"data"  : "CANTIDAD_V2"},
             {"data"  : "CLASE_V2"},
+            {"data"  : "ALTURA"},
+            {"data"  : "LARGO"},
+            {"data"  : "ANCHO"},
 		],
         "columnDefs": [
             {"className": "dt-center", "targets": []},
