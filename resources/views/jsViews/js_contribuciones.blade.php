@@ -108,7 +108,10 @@ $(document).ready(function () {
                     //     text: 'Columnas Visibles',
                     // } 
                     { 
+                        
                         //TODO: AGREGA LOS DEMAS CAMBIOS Y QUE GUARDE QUE COLUMNAS ESTAN OCULTAS
+                        //URL: https://datatables.net/forums/discussion/60429/colvis-with-groups-of-columns
+
                         text: 'Columnas Visibles',
                         extend: 'collection',
                         className: 'btn-outline-success ',
