@@ -100,17 +100,48 @@ $(document).ready(function () {
             topStart: null,
             bottom: 'paging',
             bottomStart: null,
-            bottomEnd: null,
-            
+            bottomEnd: null,            
             topStart: {
-                buttons: [ {
-                        extend: 'colvis',
-                        collectionLayout: 'fixed columns',
+                buttons: [ 
+                    // {
+                    //     extend: 'colvis',
+                    //     text: 'Columnas Visibles',
+                    // } 
+                    { 
+                        //TODO: AGREGA LOS DEMAS CAMBIOS Y QUE GUARDE QUE COLUMNAS ESTAN OCULTAS
                         text: 'Columnas Visibles',
-                    } ]
+                        extend: 'collection',
+                        className: 'btn-outline-success ',
+                        //collectionLayout: 'fixed columns',
+                        buttons: [
+                            { 
+                                text: 'FARMACIA',
+                                className: 'btn-outline-success ',
+                                action: function ( e, dt, node, config ) {
+                                    for (let i = 5; i <= 10; i++) {
+                                        dt.column(i).visible(!dt.column(i).visible());
+                                    }
+                                    this.active(!this.active());
+                                }
+                            },
+                            { 
+                                text: 'CADENAS DE FARMACIAS',
+                                action: function ( e, dt, node, config ) {
+                                    for (let i = 11; i <= 16; i++) {
+                                        dt.column(i).visible(!dt.column(i).visible());
+                                    }
+                                    this.active(!this.active());
+                                }
+                            },
+                        ]
+                    },
+                
+                ]
+                
             },
             topEnd: {
                 buttons: [ {
+                    className: 'btn-outline-success ',
                     text: 'Exportar a excel',
                     extend: 'excelHtml5',
                     title:  'Contribucion por canal: ' + moment().format('YYYY-MM-DD HH:mm'),
@@ -120,6 +151,7 @@ $(document).ready(function () {
                 }]
             }
         },
+    
         stateSave: true,
         fixedColumns: {
             start: 4
@@ -246,10 +278,12 @@ $(document).ready(function () {
             { "width": "50px", "targets": [ 39 ] }
         ],           
     });
+    
     Table.on('column-visibility', function(e, settings, column, state) {
         Table.rows().invalidate().draw();
         calcularTotales();
     });
+
     $("#table_contribucion_length").hide();
     $("#table_contribucion_filter").hide();
 
