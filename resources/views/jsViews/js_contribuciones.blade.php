@@ -3,6 +3,9 @@
     inicializaControlFecha();
     var JsonCanal = new Array();
 
+    var selectedButton = localStorage.getItem('selectedButton');
+  
+
     var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
     grafica_articulos = {
         chart: {
@@ -104,32 +107,31 @@ $(document).ready(function () {
             bottomEnd: null,            
             topStart: {
                 buttons: [ 
-                    // {
-                    //     extend: 'colvis',
-                    //     text: 'Columnas Visibles',
-                    // } 
+                
                     { 
-                        
-                        //TODO: AGREGA LOS DEMAS CAMBIOS Y QUE GUARDE QUE COLUMNAS ESTAN OCULTAS
-                        //URL: https://datatables.net/forums/discussion/60429/colvis-with-groups-of-columns
-
                         text: 'Columnas Visibles',
                         extend: 'collection',
                         className: 'btn-outline-success ',
-                        //collectionLayout: 'fixed columns',
                         buttons: [
+                            {
+                                extend: 'colvisGroup',
+                                text: 'TODAS',
+                                show: ':hidden'
+                            },
                             { 
-                                text: 'FARMACIA',
-                                className: 'btn-outline-success ',
+                                
+                                text: '1 : FARMACIA',
+                                className: 'btn-farmacia',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 4; i <= 9; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
                                     this.active(!this.active());
+                                    localStorage.setItem('selectedButton', 'farmacia');
                                 }
                             },
                             { 
-                                text: 'CADENAS DE FARMACIAS',
+                                text: '2 : CAD. FARMACIA',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 10; i <= 15; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
@@ -138,7 +140,7 @@ $(document).ready(function () {
                                 }
                             },
                             { 
-                                text: 'MAYORISTAS',
+                                text: '3 : MAYORISTAS',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 16; i <= 21; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
@@ -147,7 +149,7 @@ $(document).ready(function () {
                                 }
                             },
                             { 
-                                text: 'INSTITUCIONES PRIVADAS',
+                                text: '4 : INSTI. PRIVADAS',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 22; i <= 27; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
@@ -156,7 +158,7 @@ $(document).ready(function () {
                                 }
                             },
                             { 
-                                text: 'CRUZ AZUL',
+                                text: '5 : CRUZ AZUL',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 28; i <= 33; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
@@ -165,7 +167,7 @@ $(document).ready(function () {
                                 }
                             },
                             { 
-                                text: 'INSTITUCIONES PUBLICAS',
+                                text: '6 : INSTI. PUBLICAS',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 34; i <= 39; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
@@ -174,7 +176,7 @@ $(document).ready(function () {
                                 }
                             },
                             { 
-                                text: 'MINSA LICITACIONES',
+                                text: '7 : MINSA LICITACIONES',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 40; i <= 45; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
@@ -199,8 +201,7 @@ $(document).ready(function () {
                     }
                 }]
             }
-        },
-    
+        },    
         stateSave: true,
         fixedColumns: {
             start: 4
@@ -327,11 +328,15 @@ $(document).ready(function () {
             { "width": "50px", "targets": [ 39 ] }
         ],           
     });
+
+    if (selectedButton) {
+        Table.button('.btn-' + selectedButton).trigger();
+    }
     
     Table.on('column-visibility', function(e, settings, column, state) {
-        if(column == 4 || column == 10 || column == 16 || column == 22 || column == 28 || column == 34 || column == 40){
+        const colsHide = [4, 10, 16, 22, 28, 34, 40];
+        if (colsHide.includes(column)) {
             Table.rows().invalidate().draw();
-            console.log(column);
         }
     });
 
