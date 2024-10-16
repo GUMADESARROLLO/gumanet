@@ -1,5 +1,6 @@
 <script type="text/javascript">
     fullScreen();
+    inicializaControlFecha();
     var JsonCanal = new Array();
 
     var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
@@ -121,7 +122,7 @@ $(document).ready(function () {
                                 text: 'FARMACIA',
                                 className: 'btn-outline-success ',
                                 action: function ( e, dt, node, config ) {
-                                    for (let i = 5; i <= 10; i++) {
+                                    for (let i = 4; i <= 9; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
                                     this.active(!this.active());
@@ -130,7 +131,52 @@ $(document).ready(function () {
                             { 
                                 text: 'CADENAS DE FARMACIAS',
                                 action: function ( e, dt, node, config ) {
-                                    for (let i = 11; i <= 16; i++) {
+                                    for (let i = 10; i <= 15; i++) {
+                                        dt.column(i).visible(!dt.column(i).visible());
+                                    }
+                                    this.active(!this.active());
+                                }
+                            },
+                            { 
+                                text: 'MAYORISTAS',
+                                action: function ( e, dt, node, config ) {
+                                    for (let i = 16; i <= 21; i++) {
+                                        dt.column(i).visible(!dt.column(i).visible());
+                                    }
+                                    this.active(!this.active());
+                                }
+                            },
+                            { 
+                                text: 'INSTITUCIONES PRIVADAS',
+                                action: function ( e, dt, node, config ) {
+                                    for (let i = 22; i <= 27; i++) {
+                                        dt.column(i).visible(!dt.column(i).visible());
+                                    }
+                                    this.active(!this.active());
+                                }
+                            },
+                            { 
+                                text: 'CRUZ AZUL',
+                                action: function ( e, dt, node, config ) {
+                                    for (let i = 28; i <= 33; i++) {
+                                        dt.column(i).visible(!dt.column(i).visible());
+                                    }
+                                    this.active(!this.active());
+                                }
+                            },
+                            { 
+                                text: 'INSTITUCIONES PUBLICAS',
+                                action: function ( e, dt, node, config ) {
+                                    for (let i = 34; i <= 39; i++) {
+                                        dt.column(i).visible(!dt.column(i).visible());
+                                    }
+                                    this.active(!this.active());
+                                }
+                            },
+                            { 
+                                text: 'MINSA LICITACIONES',
+                                action: function ( e, dt, node, config ) {
+                                    for (let i = 40; i <= 45; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
                                     this.active(!this.active());
@@ -283,8 +329,10 @@ $(document).ready(function () {
     });
     
     Table.on('column-visibility', function(e, settings, column, state) {
-        Table.rows().invalidate().draw();
-        calcularTotales();
+        if(column == 4 || column == 10 || column == 16 || column == 22 || column == 28 || column == 34 || column == 40){
+            Table.rows().invalidate().draw();
+            console.log(column);
+        }
     });
 
     $("#table_contribucion_length").hide();
@@ -522,12 +570,6 @@ $(document).ready(function () {
         $('#Total_Contribucion').html('C$ '+numeral(Total_Venta-Total_Costo).format('0,0'));
         $('#Total_Margen').html(numeral(((Total_Venta-Total_Costo)/Total_Venta)*100).format('0,0.00'));
     }
-
-    $('#table_contribucion').DataTable().on('draw', function() {
-        calcularTotales();
-    });
-    inicializaControlFecha();
-
     
 });
 
