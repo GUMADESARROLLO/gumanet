@@ -4,7 +4,12 @@
     var JsonCanal = new Array();
 
     var selectedButton = localStorage.getItem('selectedButton');
-  
+    var buttonCadena    = localStorage.getItem('buttonCadena');
+    var buttonMayorista = localStorage.getItem('buttonMayorista');
+    var buttonPrivada   = localStorage.getItem('buttonPrivada');
+    var buttonCruzAzul  = localStorage.getItem('buttonCruzAzul');
+    var buttonPublica   = localStorage.getItem('buttonPublica');
+    var buttonLicitacion= localStorage.getItem('buttonLicitacion');
 
     var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
     grafica_articulos = {
@@ -127,61 +132,73 @@ $(document).ready(function () {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
                                     this.active(!this.active());
-                                    localStorage.setItem('selectedButton', 'farmacia');
+                                    verificarLocalStorage('selectedButton', 'farmacia',this.active());
                                 }
                             },
                             { 
                                 text: '2 : CAD. FARMACIA',
+                                className: 'btn-cadena',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 10; i <= 15; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
                                     this.active(!this.active());
+                                    verificarLocalStorage('buttonCadena', 'cadena',this.active());
                                 }
                             },
                             { 
                                 text: '3 : MAYORISTAS',
+                                className: 'btn-mayorista',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 16; i <= 21; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
                                     this.active(!this.active());
+                                    verificarLocalStorage('buttonMayorista', 'mayorista',this.active());
                                 }
                             },
                             { 
                                 text: '4 : INSTI. PRIVADAS',
+                                className: 'btn-privada',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 22; i <= 27; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
                                     this.active(!this.active());
+                                    verificarLocalStorage('buttonPrivada', 'privada',this.active());
                                 }
                             },
                             { 
                                 text: '5 : CRUZ AZUL',
+                                className: 'btn-cruzAzul',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 28; i <= 33; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
                                     this.active(!this.active());
+                                    verificarLocalStorage('buttonCruzAzul', 'cruzAzul',this.active());
                                 }
                             },
                             { 
                                 text: '6 : INSTI. PUBLICAS',
+                                className: 'btn-publica',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 34; i <= 39; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
                                     this.active(!this.active());
+                                    verificarLocalStorage('buttonPublica', 'publica',this.active());
                                 }
                             },
                             { 
                                 text: '7 : MINSA LICITACIONES',
+                                className: 'btn-licitacion',
                                 action: function ( e, dt, node, config ) {
                                     for (let i = 40; i <= 45; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
                                     this.active(!this.active());
+                                    verificarLocalStorage('buttonLicitacion', 'licitacion',this.active());
                                 }
                             },
                         ]
@@ -333,6 +350,7 @@ $(document).ready(function () {
         Table.button('.btn-' + selectedButton).trigger();
     }
     
+    
     Table.on('column-visibility', function(e, settings, column, state) {
         const colsHide = [4, 10, 16, 22, 28, 34, 40];
         if (colsHide.includes(column)) {
@@ -388,196 +406,201 @@ $(document).ready(function () {
 
     })
 
-    function calcularTotales() {
-        var table = $('#table_contribucion').DataTable();
-        var Farmacia_Cantidad = Farmacia_Costo = Farmacia_Venta = Farmacia_Contribucion = 0;
-        var Cadena_Farmacia_Cantidad = Cadena_Farmacia_Costo = Cadena_Farmacia_Venta = Cadena_Farmacia_Contribucion = 0;
-        var Mayorista_Cantidad = Mayorista_Costo = Mayorista_Venta = Mayorista_Contribucion = 0;
-        var Cruz_Azul_Cantidad = Cruz_Azul_Costo = Cruz_Azul_Venta = Cruz_Azul_Contribucion = 0;
-        var Institucion_Privada_Cantidad = Institucion_Privada_Costo = Institucion_Privada_Venta = Institucion_Privada_Contribucion = 0;
-        var Institucion_Publica_Cantidad = Institucion_Publica_Costo = Institucion_Publica_Venta = Institucion_Publica_Contribucion = 0;
-        var Licitacion_Cantidad = Licitacion_Costo = Licitacion_Venta = Licitacion_Contribucion = 0;
-        var Total_Cantidad = Total_Costo = Total_Venta = Total_Contribucion = 0;
+    $('#table_contribucion').on('draw.dt', function () {
+        calcularTotales();        
+    });
 
-        table.rows({ search: 'applied' }).every(function() {
-            var data = this.data();
-           
-            // TOTAL DE FARMACIAS
-            Farmacia_Cantidad       += parseFloat(data.FARMACIA_CANTIDAD) || 0;
-            Farmacia_Venta          += parseFloat(data.FARMACIA_VENTA) || 0;
-            Farmacia_Costo          += parseFloat(data.FARMACIA_COSTO) || 0;
-            Farmacia_Contribucion   += parseFloat(data.FARMACIA_CONTRIBUCION) || 0;
-
-            // TOTAL DE CADENA DE FARMACIAS
-            Cadena_Farmacia_Cantidad    += parseFloat(data.CADENA_FARMACIA_CANTIDAD) || 0;
-            Cadena_Farmacia_Venta       += parseFloat(data.CADENA_FARMACIA_VENTA) || 0;
-            Cadena_Farmacia_Costo       += parseFloat(data.CADENA_FARMACIA_COSTO) || 0;
-            Cadena_Farmacia_Contribucion+= parseFloat(data.CADENA_FARMACIA_CONTRIBUCION) || 0;
-
-            // TOTAL DE MAYORISTAS
-            Mayorista_Cantidad      += parseFloat(data.MAYORISTA_CANTIDAD) || 0;
-            Mayorista_Venta         += parseFloat(data.MAYORISTA_VENTA) || 0;
-            Mayorista_Costo         += parseFloat(data.MAYORISTA_COSTO) || 0;
-            Mayorista_Contribucion  += parseFloat(data.MAYORISTA_CONTRIBUCION) || 0;
-
-            // TOTAL DE CRUZ AZUL
-            Cruz_Azul_Cantidad      += parseFloat(data.CRUZ_AZUL_CANTIDAD) || 0;
-            Cruz_Azul_Venta         += parseFloat(data.CRUZ_AZUL_VENTA) || 0;
-            Cruz_Azul_Costo         += parseFloat(data.CRUZ_AZUL_COSTO) || 0;
-            Cruz_Azul_Contribucion  += parseFloat(data.CRUZ_AZUL_CONTRIBUCION) || 0;
-
-            // TOTAL INTITUCION PRIVADA
-            Institucion_Privada_Cantidad    += parseFloat(data.INSTITUCION_PRIVADA_CANTIDAD) || 0;
-            Institucion_Privada_Venta       += parseFloat(data.INSTITUCION_PRIVADA_VENTA) || 0;
-            Institucion_Privada_Costo       += parseFloat(data.INSTITUCION_PRIVADA_COSTO) || 0;
-            Institucion_Privada_Contribucion+= parseFloat(data.INSTITUCION_PRIVADA_CONTRIBUCION) || 0;
-
-            // TOTAL INTITUCION PUBLICA
-            Institucion_Publica_Cantidad    += parseFloat(data.INSTITUCION_PUBLICA_CANTIDAD) || 0;
-            Institucion_Publica_Venta       += parseFloat(data.INSTITUCION_PUBLICA_VENTA) || 0;
-            Institucion_Publica_Costo       += parseFloat(data.INSTITUCION_PUBLICA_COSTO) || 0;
-            Institucion_Publica_Contribucion+= parseFloat(data.INSTITUCION_PUBLICA_CONTRIBUCION) || 0;
-
-            // TOTAL DE LICITACIONES
-            Licitacion_Cantidad    += parseFloat(data.LICITACION_CANTIDAD) || 0;
-            Licitacion_Venta       += parseFloat(data.LICITACION_VENTA) || 0;
-            Licitacion_Costo       += parseFloat(data.LICITACION_COSTO) || 0;
-            Licitacion_Contribucion+= parseFloat(data.LICITACION_CONTRIBUCION) || 0;
-
-            // TOTAL DE TOTALES
-            if (table.column(4).visible()) {
-                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
-            }
-            if (table.column(10).visible()) {
-                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
-            }
-            if (table.column(16).visible()) {
-                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
-            }
-            if (table.column(22).visible()) {
-                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
-            }
-            if (table.column(28).visible()) {
-                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
-            }
-            if (table.column(34).visible()) {
-                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
-            }
-            if (table.column(40).visible()) {
-                Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
-            }
-            if (table.column(6).visible()) {
-                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
-            }
-            if (table.column(12).visible()) {
-                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
-            }
-            if (table.column(18).visible()) {
-                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
-            }
-            if (table.column(24).visible()) {
-                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
-            }
-            if (table.column(30).visible()) {
-                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
-            }
-            if (table.column(36).visible()) {
-                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
-            }
-            if (table.column(42).visible()) {
-                Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
-            }
-            if (table.column(7).visible()) {
-                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
-            }
-            if (table.column(13).visible()) {
-                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
-            }
-            if (table.column(19).visible()) {
-                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
-            }
-            if (table.column(25).visible()) {
-                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
-            }
-            if (table.column(31).visible()) {
-                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
-            }
-            if (table.column(37).visible()) {
-                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
-            }
-            if (table.column(43).visible()) {
-                Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
-            }
-            
-        });
-        
-        // TOTAL DE FARMACIAS
-        $('#Farmacia_Cantidad').html(numeral(Farmacia_Cantidad).format('0,0'));
-        $('#Farmacia_Promedio').html('C$ '+numeral(Farmacia_Venta/Farmacia_Cantidad).format('0,0'));
-        $('#Farmacia_Venta').html('C$ '+numeral(Farmacia_Venta).format('0,0'));
-        $('#Farmacia_Costo').html('C$ '+numeral(Farmacia_Costo).format('0,0'));
-        $('#Farmacia_Contribucion').html('C$ '+numeral(Farmacia_Contribucion).format('0,0'));
-        $('#Farmacia_Margen').html(numeral((Farmacia_Contribucion/Farmacia_Venta)*100).format('0,0.00'));
-
-        // TOTAL DE CADENA DE FARMACIAS
-        $('#Cadena_Farmacia_Cantidad').html(numeral(Cadena_Farmacia_Cantidad).format('0,0'));
-        $('#Cadena_Farmacia_Promedio').html('C$ '+numeral(Cadena_Farmacia_Venta/Cadena_Farmacia_Cantidad).format('0,0'));
-        $('#Cadena_Farmacia_Venta').html('C$ '+numeral(Cadena_Farmacia_Venta).format('0,0'));
-        $('#Cadena_Farmacia_Costo').html('C$ '+numeral(Cadena_Farmacia_Costo).format('0,0'));
-        $('#Cadena_Farmacia_Contribucion').html('C$ '+numeral(Cadena_Farmacia_Contribucion).format('0,0'));
-        $('#Cadena_Farmacia_Margen').html(numeral((Cadena_Farmacia_Contribucion/Cadena_Farmacia_Venta)*100).format('0,0.00'));
-
-        // TOTAL DE MAYORISTAS
-        $('#Mayorista_Cantidad').html(numeral(Mayorista_Cantidad).format('0,0'));
-        $('#Mayorista_Promedio').html('C$ '+numeral(Mayorista_Venta/Mayorista_Cantidad).format('0,0'));
-        $('#Mayorista_Venta').html('C$ '+numeral(Mayorista_Venta).format('0,0'));
-        $('#Mayorista_Costo').html('C$ '+numeral(Mayorista_Costo).format('0,0'));
-        $('#Mayorista_Contribucion').html('C$ '+numeral(Mayorista_Contribucion).format('0,0'));
-        $('#Mayorista_Margen').html(numeral((Mayorista_Contribucion/Mayorista_Venta)*100).format('0,0.00'));
-
-        // TOTAL INTITUCION PRIVADA
-        $('#Institucion_Privada_Cantidad').html(numeral(Institucion_Privada_Cantidad).format('0,0'));
-        $('#Institucion_Privada_Promedio').html('C$ '+numeral(Institucion_Privada_Venta/Institucion_Privada_Cantidad).format('0,0'));
-        $('#Institucion_Privada_Venta').html('C$ '+numeral(Institucion_Privada_Venta).format('0,0'));
-        $('#Institucion_Privada_Costo').html('C$ '+numeral(Institucion_Privada_Costo).format('0,0'));
-        $('#Institucion_Privada_Contribucion').html('C$ '+numeral(Institucion_Privada_Contribucion).format('0,0'));
-        $('#Institucion_Privada_Margen').html(numeral((Institucion_Privada_Contribucion/Institucion_Privada_Venta)*100).format('0,0.00'));
-        
-        // TOTAL DE CRUZ AZUL
-        $('#Cruz_Azul_Cantidad').html(numeral(Cruz_Azul_Cantidad).format('0,0'));
-        $('#Cruz_Azul_Promedio').html('C$ '+numeral(Cruz_Azul_Venta/Cruz_Azul_Cantidad).format('0,0'));
-        $('#Cruz_Azul_Venta').html('C$ '+numeral(Cruz_Azul_Venta).format('0,0'));
-        $('#Cruz_Azul_Costo').html('C$ '+numeral(Cruz_Azul_Costo).format('0,0'));
-        $('#Cruz_Azul_Contribucion').html('C$ '+numeral(Cruz_Azul_Contribucion).format('0,0'));
-        $('#Cruz_Azul_Margen').html(numeral((Cruz_Azul_Contribucion/Cruz_Azul_Venta)*100).format('0,0.00'));
-
-        // TOTAL INTITUCION PUBLICA
-        $('#Institucion_Publica_Cantidad').html(numeral(Institucion_Publica_Cantidad).format('0,0'));
-        $('#Institucion_Publica_Promedio').html('C$ '+numeral(Institucion_Publica_Venta/Institucion_Publica_Cantidad).format('0,0'));
-        $('#Institucion_Publica_Venta').html('C$ '+numeral(Institucion_Publica_Venta).format('0,0'));
-        $('#Institucion_Publica_Costo').html('C$ '+numeral(Institucion_Publica_Costo).format('0,0'));
-        $('#Institucion_Publica_Contribucion').html('C$ '+numeral(Institucion_Publica_Contribucion).format('0,0'));
-        $('#Institucion_Publica_Margen').html(numeral((Institucion_Publica_Contribucion/Institucion_Publica_Venta)*100).format('0,0.00'));
-
-        // TOTAL DE LICITACIONES
-        $('#Licitacion_Cantidad').html(numeral(Licitacion_Cantidad).format('0,0'));
-        $('#Licitacion_Promedio').html('C$ '+numeral(Licitacion_Venta/Licitacion_Cantidad).format('0,0'));
-        $('#Licitacion_Venta').html('C$ '+numeral(Licitacion_Venta).format('0,0'));
-        $('#Licitacion_Costo').html('C$ '+numeral(Licitacion_Costo).format('0,0'));
-        $('#Licitacion_Contribucion').html('C$ '+numeral(Licitacion_Contribucion).format('0,0'));
-        $('#Licitacion_Margen').html(numeral((Licitacion_Contribucion/Licitacion_Venta)*100).format('0,0.00'));
-
-        // TOTAL DE TOTALES
-        $('#Total_Cantidad').html(numeral(Total_Cantidad).format('0,0'));
-        $('#Total_Promedio').html('C$ '+numeral(Total_Venta/Total_Cantidad).format('0,0'));
-        $('#Total_Venta').html('C$ '+numeral(Total_Venta).format('0,0'));
-        $('#Total_Costo').html('C$ '+numeral(Total_Costo).format('0,0'));
-        $('#Total_Contribucion').html('C$ '+numeral(Total_Venta-Total_Costo).format('0,0'));
-        $('#Total_Margen').html(numeral(((Total_Venta-Total_Costo)/Total_Venta)*100).format('0,0.00'));
-    }
+    
     
 });
 
+function calcularTotales() {    
+    var table = $('#table_contribucion').DataTable();
+    var Farmacia_Cantidad = Farmacia_Costo = Farmacia_Venta = Farmacia_Contribucion = 0;
+    var Cadena_Farmacia_Cantidad = Cadena_Farmacia_Costo = Cadena_Farmacia_Venta = Cadena_Farmacia_Contribucion = 0;
+    var Mayorista_Cantidad = Mayorista_Costo = Mayorista_Venta = Mayorista_Contribucion = 0;
+    var Cruz_Azul_Cantidad = Cruz_Azul_Costo = Cruz_Azul_Venta = Cruz_Azul_Contribucion = 0;
+    var Institucion_Privada_Cantidad = Institucion_Privada_Costo = Institucion_Privada_Venta = Institucion_Privada_Contribucion = 0;
+    var Institucion_Publica_Cantidad = Institucion_Publica_Costo = Institucion_Publica_Venta = Institucion_Publica_Contribucion = 0;
+    var Licitacion_Cantidad = Licitacion_Costo = Licitacion_Venta = Licitacion_Contribucion = 0;
+    var Total_Cantidad = Total_Costo = Total_Venta = Total_Contribucion = 0;
+
+    table.rows({ search: 'applied' }).every(function() {
+        var data = this.data();
+        
+        // TOTAL DE FARMACIAS
+        Farmacia_Cantidad       += parseFloat(data.FARMACIA_CANTIDAD) || 0;
+        Farmacia_Venta          += parseFloat(data.FARMACIA_VENTA) || 0;
+        Farmacia_Costo          += parseFloat(data.FARMACIA_COSTO) || 0;
+        Farmacia_Contribucion   += parseFloat(data.FARMACIA_CONTRIBUCION) || 0;
+
+        // TOTAL DE CADENA DE FARMACIAS
+        Cadena_Farmacia_Cantidad    += parseFloat(data.CADENA_FARMACIA_CANTIDAD) || 0;
+        Cadena_Farmacia_Venta       += parseFloat(data.CADENA_FARMACIA_VENTA) || 0;
+        Cadena_Farmacia_Costo       += parseFloat(data.CADENA_FARMACIA_COSTO) || 0;
+        Cadena_Farmacia_Contribucion+= parseFloat(data.CADENA_FARMACIA_CONTRIBUCION) || 0;
+
+        // TOTAL DE MAYORISTAS
+        Mayorista_Cantidad      += parseFloat(data.MAYORISTA_CANTIDAD) || 0;
+        Mayorista_Venta         += parseFloat(data.MAYORISTA_VENTA) || 0;
+        Mayorista_Costo         += parseFloat(data.MAYORISTA_COSTO) || 0;
+        Mayorista_Contribucion  += parseFloat(data.MAYORISTA_CONTRIBUCION) || 0;
+
+        // TOTAL DE CRUZ AZUL
+        Cruz_Azul_Cantidad      += parseFloat(data.CRUZ_AZUL_CANTIDAD) || 0;
+        Cruz_Azul_Venta         += parseFloat(data.CRUZ_AZUL_VENTA) || 0;
+        Cruz_Azul_Costo         += parseFloat(data.CRUZ_AZUL_COSTO) || 0;
+        Cruz_Azul_Contribucion  += parseFloat(data.CRUZ_AZUL_CONTRIBUCION) || 0;
+
+        // TOTAL INTITUCION PRIVADA
+        Institucion_Privada_Cantidad    += parseFloat(data.INSTITUCION_PRIVADA_CANTIDAD) || 0;
+        Institucion_Privada_Venta       += parseFloat(data.INSTITUCION_PRIVADA_VENTA) || 0;
+        Institucion_Privada_Costo       += parseFloat(data.INSTITUCION_PRIVADA_COSTO) || 0;
+        Institucion_Privada_Contribucion+= parseFloat(data.INSTITUCION_PRIVADA_CONTRIBUCION) || 0;
+
+        // TOTAL INTITUCION PUBLICA
+        Institucion_Publica_Cantidad    += parseFloat(data.INSTITUCION_PUBLICA_CANTIDAD) || 0;
+        Institucion_Publica_Venta       += parseFloat(data.INSTITUCION_PUBLICA_VENTA) || 0;
+        Institucion_Publica_Costo       += parseFloat(data.INSTITUCION_PUBLICA_COSTO) || 0;
+        Institucion_Publica_Contribucion+= parseFloat(data.INSTITUCION_PUBLICA_CONTRIBUCION) || 0;
+
+        // TOTAL DE LICITACIONES
+        Licitacion_Cantidad    += parseFloat(data.LICITACION_CANTIDAD) || 0;
+        Licitacion_Venta       += parseFloat(data.LICITACION_VENTA) || 0;
+        Licitacion_Costo       += parseFloat(data.LICITACION_COSTO) || 0;
+        Licitacion_Contribucion+= parseFloat(data.LICITACION_CONTRIBUCION) || 0;
+
+        // TOTAL DE TOTALES
+        if (table.column(4).visible()) {
+            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+        }
+        if (table.column(10).visible()) {
+            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+        }
+        if (table.column(16).visible()) {
+            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+        }
+        if (table.column(22).visible()) {
+            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+        }
+        if (table.column(28).visible()) {
+            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+        }
+        if (table.column(34).visible()) {
+            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+        }
+        if (table.column(40).visible()) {
+            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+        }
+        if (table.column(6).visible()) {
+            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+        }
+        if (table.column(12).visible()) {
+            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+        }
+        if (table.column(18).visible()) {
+            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+        }
+        if (table.column(24).visible()) {
+            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+        }
+        if (table.column(30).visible()) {
+            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+        }
+        if (table.column(36).visible()) {
+            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+        }
+        if (table.column(42).visible()) {
+            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+        }
+        if (table.column(7).visible()) {
+            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+        }
+        if (table.column(13).visible()) {
+            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+        }
+        if (table.column(19).visible()) {
+            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+        }
+        if (table.column(25).visible()) {
+            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+        }
+        if (table.column(31).visible()) {
+            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+        }
+        if (table.column(37).visible()) {
+            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+        }
+        if (table.column(43).visible()) {
+            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+        }
+        
+    });
+    
+    // TOTAL DE FARMACIAS
+    $('#Farmacia_Cantidad').html(numeral(Farmacia_Cantidad).format('0,0'));
+    $('#Farmacia_Promedio').html('C$ '+numeral(Farmacia_Venta/Farmacia_Cantidad).format('0,0'));
+    $('#Farmacia_Venta').html('C$ '+numeral(Farmacia_Venta).format('0,0'));
+    $('#Farmacia_Costo').html('C$ '+numeral(Farmacia_Costo).format('0,0'));
+    $('#Farmacia_Contribucion').html('C$ '+numeral(Farmacia_Contribucion).format('0,0'));
+    $('#Farmacia_Margen').html(numeral((Farmacia_Contribucion/Farmacia_Venta)*100).format('0,0.00'));
+
+    // TOTAL DE CADENA DE FARMACIAS
+    $('#Cadena_Farmacia_Cantidad').html(numeral(Cadena_Farmacia_Cantidad).format('0,0'));
+    $('#Cadena_Farmacia_Promedio').html('C$ '+numeral(Cadena_Farmacia_Venta/Cadena_Farmacia_Cantidad).format('0,0'));
+    $('#Cadena_Farmacia_Venta').html('C$ '+numeral(Cadena_Farmacia_Venta).format('0,0'));
+    $('#Cadena_Farmacia_Costo').html('C$ '+numeral(Cadena_Farmacia_Costo).format('0,0'));
+    $('#Cadena_Farmacia_Contribucion').html('C$ '+numeral(Cadena_Farmacia_Contribucion).format('0,0'));
+    $('#Cadena_Farmacia_Margen').html(numeral((Cadena_Farmacia_Contribucion/Cadena_Farmacia_Venta)*100).format('0,0.00'));
+
+    // TOTAL DE MAYORISTAS
+    $('#Mayorista_Cantidad').html(numeral(Mayorista_Cantidad).format('0,0'));
+    $('#Mayorista_Promedio').html('C$ '+numeral(Mayorista_Venta/Mayorista_Cantidad).format('0,0'));
+    $('#Mayorista_Venta').html('C$ '+numeral(Mayorista_Venta).format('0,0'));
+    $('#Mayorista_Costo').html('C$ '+numeral(Mayorista_Costo).format('0,0'));
+    $('#Mayorista_Contribucion').html('C$ '+numeral(Mayorista_Contribucion).format('0,0'));
+    $('#Mayorista_Margen').html(numeral((Mayorista_Contribucion/Mayorista_Venta)*100).format('0,0.00'));
+
+    // TOTAL INTITUCION PRIVADA
+    $('#Institucion_Privada_Cantidad').html(numeral(Institucion_Privada_Cantidad).format('0,0'));
+    $('#Institucion_Privada_Promedio').html('C$ '+numeral(Institucion_Privada_Venta/Institucion_Privada_Cantidad).format('0,0'));
+    $('#Institucion_Privada_Venta').html('C$ '+numeral(Institucion_Privada_Venta).format('0,0'));
+    $('#Institucion_Privada_Costo').html('C$ '+numeral(Institucion_Privada_Costo).format('0,0'));
+    $('#Institucion_Privada_Contribucion').html('C$ '+numeral(Institucion_Privada_Contribucion).format('0,0'));
+    $('#Institucion_Privada_Margen').html(numeral((Institucion_Privada_Contribucion/Institucion_Privada_Venta)*100).format('0,0.00'));
+    
+    // TOTAL DE CRUZ AZUL
+    $('#Cruz_Azul_Cantidad').html(numeral(Cruz_Azul_Cantidad).format('0,0'));
+    $('#Cruz_Azul_Promedio').html('C$ '+numeral(Cruz_Azul_Venta/Cruz_Azul_Cantidad).format('0,0'));
+    $('#Cruz_Azul_Venta').html('C$ '+numeral(Cruz_Azul_Venta).format('0,0'));
+    $('#Cruz_Azul_Costo').html('C$ '+numeral(Cruz_Azul_Costo).format('0,0'));
+    $('#Cruz_Azul_Contribucion').html('C$ '+numeral(Cruz_Azul_Contribucion).format('0,0'));
+    $('#Cruz_Azul_Margen').html(numeral((Cruz_Azul_Contribucion/Cruz_Azul_Venta)*100).format('0,0.00'));
+
+    // TOTAL INTITUCION PUBLICA
+    $('#Institucion_Publica_Cantidad').html(numeral(Institucion_Publica_Cantidad).format('0,0'));
+    $('#Institucion_Publica_Promedio').html('C$ '+numeral(Institucion_Publica_Venta/Institucion_Publica_Cantidad).format('0,0'));
+    $('#Institucion_Publica_Venta').html('C$ '+numeral(Institucion_Publica_Venta).format('0,0'));
+    $('#Institucion_Publica_Costo').html('C$ '+numeral(Institucion_Publica_Costo).format('0,0'));
+    $('#Institucion_Publica_Contribucion').html('C$ '+numeral(Institucion_Publica_Contribucion).format('0,0'));
+    $('#Institucion_Publica_Margen').html(numeral((Institucion_Publica_Contribucion/Institucion_Publica_Venta)*100).format('0,0.00'));
+
+    // TOTAL DE LICITACIONES
+    $('#Licitacion_Cantidad').html(numeral(Licitacion_Cantidad).format('0,0'));
+    $('#Licitacion_Promedio').html('C$ '+numeral(Licitacion_Venta/Licitacion_Cantidad).format('0,0'));
+    $('#Licitacion_Venta').html('C$ '+numeral(Licitacion_Venta).format('0,0'));
+    $('#Licitacion_Costo').html('C$ '+numeral(Licitacion_Costo).format('0,0'));
+    $('#Licitacion_Contribucion').html('C$ '+numeral(Licitacion_Contribucion).format('0,0'));
+    $('#Licitacion_Margen').html(numeral((Licitacion_Contribucion/Licitacion_Venta)*100).format('0,0.00'));
+
+    // TOTAL DE TOTALES
+    $('#Total_Cantidad').html(numeral(Total_Cantidad).format('0,0'));
+    $('#Total_Promedio').html('C$ '+numeral(Total_Venta/Total_Cantidad).format('0,0'));
+    $('#Total_Venta').html('C$ '+numeral(Total_Venta).format('0,0'));
+    $('#Total_Costo').html('C$ '+numeral(Total_Costo).format('0,0'));
+    $('#Total_Contribucion').html('C$ '+numeral(Total_Venta-Total_Costo).format('0,0'));
+    $('#Total_Margen').html(numeral(((Total_Venta-Total_Costo)/Total_Venta)*100).format('0,0.00'));
+}
 function getDetalleArticulo(Articulos, Descripcion){
     $("#id_descripcion").html(Descripcion+` | `+ Articulos);
     $("#info1").show();
@@ -681,5 +704,12 @@ function grafMensual(Articulo){
 
 }
 
+function verificarLocalStorage(boton, canal, isActive) {
+    if (isActive) {
+        localStorage.setItem(boton, canal);
+    } else {
+        localStorage.removeItem(boton);
+    }
+}
 
 </script>
