@@ -3,7 +3,7 @@
     inicializaControlFecha();
     var JsonCanal = new Array();
 
-    var selectedButton = localStorage.getItem('selectedButton');
+    var selectedButton  = localStorage.getItem('buttonselected');
     var buttonCadena    = localStorage.getItem('buttonCadena');
     var buttonMayorista = localStorage.getItem('buttonMayorista');
     var buttonPrivada   = localStorage.getItem('buttonPrivada');
@@ -122,7 +122,30 @@ $(document).ready(function () {
                             {
                                 extend: 'colvisGroup',
                                 text: 'TODAS',
-                                show: ':hidden'
+                                show: ':hidden',
+                                action: function ( e, dt, node, config ) {
+
+                                    dt.columns(':hidden').visible(true);
+
+                                    for (let i = 0; i < localStorage.length; i++) {
+                                        const key = localStorage.key(i);
+                                        if (key.startsWith('button')) {
+                                            localStorage.removeItem(key);
+                                            i--; 
+                                        }
+                                    }
+
+                                    // Recorrer y cambiar el estilo de todos los botones
+                                    $('.dt-button').each(function() {
+                                        $(this).css({
+                                            'color': '#000000', // Cambia el color del texto a negro
+                                            'background-color': 'transparent' // Mantén el fondo transparente
+                                        }).removeClass('dt-button-active');;
+                                    });
+
+                                    dt.draw(false);
+                                
+                                }
                             },
                             { 
                                 
@@ -133,7 +156,7 @@ $(document).ready(function () {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
                                     //this.active(!this.active());                                    
-                                    this.active(verificarLocalStorage('selectedButton', 'farmacia'));
+                                    this.active(verificarLocalStorage('buttonselected', 'farmacia'));
                                     if (this.active()) {
                                         $(node).css({
                                             'color': '#dc3545',
@@ -437,114 +460,21 @@ $(document).ready(function () {
             { "width": "50px", "targets": [ 39 ] }
         ],
         "initComplete": function(settings, json) {
-            if (selectedButton !== null) {
-                var buttonNode = this.api().button('.btn-' + selectedButton).node();
-                var $button = $(buttonNode); 
-            
-                $button.css({
-                    'color': '#dc3545'
-                });
-            }else{
-                var buttonNode = this.api().button('.btn-' + selectedButton).node();
-                var $button = $(buttonNode); 
-                
-                $button.css({
-                    'color': '#000000'
-                });
-                
-            }
-            if (buttonCadena !== null) {
-                var buttonNode = this.api().button('.btn-' + buttonCadena).node();
-                var $button = $(buttonNode); 
-            
-                $button.css({
-                    'color': '#dc3545'
-                });
-            }else{
-                var buttonNode = this.api().button('.btn-' + buttonCadena).node();
-                var $button = $(buttonNode);
-                
-                $button.css({
-                    'color': '#000000'
-                });
-            }
-            if (buttonMayorista !== null) {
-                var buttonNode = this.api().button('.btn-' + buttonMayorista).node();
-                var $button = $(buttonNode); 
-            
-                $button.css({
-                    'color': '#dc3545'
-                });
-            }else{
-                var buttonNode = this.api().button('.btn-' + buttonMayorista).node();
-                var $button = $(buttonNode);
-                
-                $button.css({
-                    'color': '#000000'
-                });
-            }
-            if (buttonPrivada !== null) {
-                var buttonNode = this.api().button('.btn-' + buttonPrivada).node();
-                var $button = $(buttonNode); 
-            
-                $button.css({
-                    'color': '#dc3545'
-                });
-            }else{
-                var buttonNode = this.api().button('.btn-' + buttonPrivada).node();
-                var $button = $(buttonNode);
-                
-                $button.css({
-                    'color': '#000000'
-                });
-            }
-            if (buttonCruzAzul !== null) {
-                var buttonNode = this.api().button('.btn-' + buttonCruzAzul).node();
-                var $button = $(buttonNode); 
-            
-                $button.css({
-                    'color': '#dc3545'
-                });
-            }else{
-                var buttonNode = this.api().button('.btn-' + buttonCruzAzul).node();
-                var $button = $(buttonNode);
-                
-                $button.css({
-                    'color': '#000000'
-                });
-            }
-            if (buttonPublica !== null) {
-                var buttonNode = this.api().button('.btn-' + buttonPublica).node();
-                var $button = $(buttonNode); 
-            
-                $button.css({
-                    'color': '#dc3545'
-                });
-            }else{
-                var buttonNode = this.api().button('.btn-' + buttonPublica).node();
-                var $button = $(buttonNode);
-                
-                $button.css({
-                    'color': '#000000'
-                });
-            }
-            if (buttonLicitacion !== null) {
-                var buttonNode = this.api().button('.btn-' + buttonLicitacion).node();
-                var $button = $(buttonNode); 
-            
-                $button.css({
-                    'color': '#dc3545'
-                });
-            }else{
-                var buttonNode = this.api().button('.btn-' + buttonLicitacion).node();
-                var $button = $(buttonNode);
-                
-                $button.css({
-                    'color': '#000000'
-                });
-            }
+            const buttons = [selectedButton, buttonCadena, buttonMayorista, buttonPrivada, buttonCruzAzul, buttonPublica, buttonLicitacion];
 
-        }          
+            buttons.forEach(button => {
+                var buttonNode = this.api().button('.btn-' + button).node();
+                var $button = $(buttonNode);
+
+                if (button !== null) {
+                    $button.css({ 'color': '#dc3545' }).addClass('dt-button-active');
+                } else {
+                    $button.css({ 'color': '#000000' }).removeClass('dt-button-active');
+                }
+            });
+        }
+
+    
     });
 
     /*if (selectedButton !== null) {
