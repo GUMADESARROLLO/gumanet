@@ -144,7 +144,9 @@ $(document).ready(function () {
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
+                                        dt.draw(false);
                                     }
+                                    
                                 }
                             },
                             { 
@@ -166,7 +168,9 @@ $(document).ready(function () {
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
+                                        dt.draw(false);
                                     }
+                                    
                                 }
                             },
                             { 
@@ -188,7 +192,9 @@ $(document).ready(function () {
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
+                                        dt.draw(false);
                                     }
+                                    
                                 }
                             },
                             { 
@@ -210,7 +216,9 @@ $(document).ready(function () {
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
+                                        dt.draw(false);
                                     }
+                                    
                                 }
                             },
                             { 
@@ -232,7 +240,9 @@ $(document).ready(function () {
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
+                                        dt.draw(false);
                                     }
+                                   
                                 }
                             },
                             { 
@@ -254,7 +264,9 @@ $(document).ready(function () {
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
+                                        dt.draw(false);
                                     }
+                                    
                                 }
                             },
                             { 
@@ -276,7 +288,9 @@ $(document).ready(function () {
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
+                                        dt.draw(false);
                                     }
+                                    
                                 }
                             },
                         ]
@@ -602,6 +616,7 @@ $(document).ready(function () {
 });
 
 function calcularTotales() {    
+    console.log('hoy')
     var table = $('#table_contribucion').DataTable();
     var Farmacia_Cantidad = Farmacia_Costo = Farmacia_Venta = Farmacia_Contribucion = 0;
     var Cadena_Farmacia_Cantidad = Cadena_Farmacia_Costo = Cadena_Farmacia_Venta = Cadena_Farmacia_Contribucion = 0;
