@@ -10,7 +10,8 @@
     var buttonCruzAzul  = localStorage.getItem('buttonCruzAzul');
     var buttonPublica   = localStorage.getItem('buttonPublica');
     var buttonLicitacion= localStorage.getItem('buttonLicitacion');
-
+    
+    
     var colors_ = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
     grafica_articulos = {
         chart: {
@@ -131,8 +132,21 @@ $(document).ready(function () {
                                     for (let i = 4; i <= 9; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
-                                    this.active(!this.active());
-                                    verificarLocalStorage('selectedButton', 'farmacia',this.active());
+                                    //this.active(!this.active());                                    
+                                    this.active(verificarLocalStorage('selectedButton', 'farmacia'));
+                                    if (this.active()) {
+                                        $(node).css({
+                                            'color': '#dc3545',
+                                            'background-color': 'transparent'
+                                        });
+                                    } else {
+                                        $(node).css({
+                                            'color': '#000000',
+                                            'background-color': 'transparent'
+                                        });
+                                        dt.draw(false);
+                                    }
+                                    
                                 }
                             },
                             { 
@@ -142,8 +156,21 @@ $(document).ready(function () {
                                     for (let i = 10; i <= 15; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
-                                    this.active(!this.active());
-                                    verificarLocalStorage('buttonCadena', 'cadena',this.active());
+                                    //this.active(!this.active());
+                                    this.active(verificarLocalStorage('buttonCadena', 'cadena'));
+                                    if (this.active()) {
+                                        $(node).css({
+                                            'color': '#dc3545',
+                                            'background-color': 'transparent'
+                                        });
+                                    } else {
+                                        $(node).css({
+                                            'color': '#000000',
+                                            'background-color': 'transparent'
+                                        });
+                                        dt.draw(false);
+                                    }
+                                    
                                 }
                             },
                             { 
@@ -153,8 +180,21 @@ $(document).ready(function () {
                                     for (let i = 16; i <= 21; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
-                                    this.active(!this.active());
-                                    verificarLocalStorage('buttonMayorista', 'mayorista',this.active());
+                                    //this.active(!this.active());
+                                    this.active(verificarLocalStorage('buttonMayorista', 'mayorista'));
+                                    if (this.active()) {
+                                        $(node).css({
+                                            'color': '#dc3545',
+                                            'background-color': 'transparent'
+                                        });
+                                    } else {
+                                        $(node).css({
+                                            'color': '#000000',
+                                            'background-color': 'transparent'
+                                        });
+                                        dt.draw(false);
+                                    }
+                                    
                                 }
                             },
                             { 
@@ -164,8 +204,21 @@ $(document).ready(function () {
                                     for (let i = 22; i <= 27; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
-                                    this.active(!this.active());
-                                    verificarLocalStorage('buttonPrivada', 'privada',this.active());
+                                    //this.active(!this.active());
+                                    this.active(verificarLocalStorage('buttonPrivada', 'privada'));
+                                    if (this.active()) {
+                                        $(node).css({
+                                            'color': '#dc3545',
+                                            'background-color': 'transparent'
+                                        });
+                                    } else {
+                                        $(node).css({
+                                            'color': '#000000',
+                                            'background-color': 'transparent'
+                                        });
+                                        dt.draw(false);
+                                    }
+                                    
                                 }
                             },
                             { 
@@ -175,8 +228,21 @@ $(document).ready(function () {
                                     for (let i = 28; i <= 33; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
-                                    this.active(!this.active());
-                                    verificarLocalStorage('buttonCruzAzul', 'cruzAzul',this.active());
+                                    //this.active(!this.active());
+                                    this.active(verificarLocalStorage('buttonCruzAzul', 'cruzAzul'));
+                                    if (this.active()) {
+                                        $(node).css({
+                                            'color': '#dc3545',
+                                            'background-color': 'transparent'
+                                        });
+                                    } else {
+                                        $(node).css({
+                                            'color': '#000000',
+                                            'background-color': 'transparent'
+                                        });
+                                        dt.draw(false);
+                                    }
+                                   
                                 }
                             },
                             { 
@@ -186,8 +252,21 @@ $(document).ready(function () {
                                     for (let i = 34; i <= 39; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
-                                    this.active(!this.active());
-                                    verificarLocalStorage('buttonPublica', 'publica',this.active());
+                                    //this.active(!this.active());
+                                    this.active(verificarLocalStorage('buttonPublica', 'publica'));
+                                    if (this.active()) {
+                                        $(node).css({
+                                            'color': '#dc3545',
+                                            'background-color': 'transparent'
+                                        });
+                                    } else {
+                                        $(node).css({
+                                            'color': '#000000',
+                                            'background-color': 'transparent'
+                                        });
+                                        dt.draw(false);
+                                    }
+                                    
                                 }
                             },
                             { 
@@ -197,8 +276,21 @@ $(document).ready(function () {
                                     for (let i = 40; i <= 45; i++) {
                                         dt.column(i).visible(!dt.column(i).visible());
                                     }
-                                    this.active(!this.active());
-                                    verificarLocalStorage('buttonLicitacion', 'licitacion',this.active());
+                                    //this.active(!this.active());
+                                    this.active(verificarLocalStorage('buttonLicitacion', 'licitacion'));
+                                    if (this.active()) {
+                                        $(node).css({
+                                            'color': '#dc3545',
+                                            'background-color': 'transparent'
+                                        });
+                                    } else {
+                                        $(node).css({
+                                            'color': '#000000',
+                                            'background-color': 'transparent'
+                                        });
+                                        dt.draw(false);
+                                    }
+                                    
                                 }
                             },
                         ]
@@ -343,13 +435,122 @@ $(document).ready(function () {
             { "width": "10px", "targets": [ 17, 23, 29, 34 ] },
             { "width": "10px", "targets": [ 9, 15, 21, 27, 33, 45 ] },
             { "width": "50px", "targets": [ 39 ] }
-        ],           
+        ],
+        "initComplete": function(settings, json) {
+            if (selectedButton !== null) {
+                var buttonNode = this.api().button('.btn-' + selectedButton).node();
+                var $button = $(buttonNode); 
+            
+                $button.css({
+                    'color': '#dc3545'
+                });
+            }else{
+                var buttonNode = this.api().button('.btn-' + selectedButton).node();
+                var $button = $(buttonNode); 
+                
+                $button.css({
+                    'color': '#000000'
+                });
+                
+            }
+            if (buttonCadena !== null) {
+                var buttonNode = this.api().button('.btn-' + buttonCadena).node();
+                var $button = $(buttonNode); 
+            
+                $button.css({
+                    'color': '#dc3545'
+                });
+            }else{
+                var buttonNode = this.api().button('.btn-' + buttonCadena).node();
+                var $button = $(buttonNode);
+                
+                $button.css({
+                    'color': '#000000'
+                });
+            }
+            if (buttonMayorista !== null) {
+                var buttonNode = this.api().button('.btn-' + buttonMayorista).node();
+                var $button = $(buttonNode); 
+            
+                $button.css({
+                    'color': '#dc3545'
+                });
+            }else{
+                var buttonNode = this.api().button('.btn-' + buttonMayorista).node();
+                var $button = $(buttonNode);
+                
+                $button.css({
+                    'color': '#000000'
+                });
+            }
+            if (buttonPrivada !== null) {
+                var buttonNode = this.api().button('.btn-' + buttonPrivada).node();
+                var $button = $(buttonNode); 
+            
+                $button.css({
+                    'color': '#dc3545'
+                });
+            }else{
+                var buttonNode = this.api().button('.btn-' + buttonPrivada).node();
+                var $button = $(buttonNode);
+                
+                $button.css({
+                    'color': '#000000'
+                });
+            }
+            if (buttonCruzAzul !== null) {
+                var buttonNode = this.api().button('.btn-' + buttonCruzAzul).node();
+                var $button = $(buttonNode); 
+            
+                $button.css({
+                    'color': '#dc3545'
+                });
+            }else{
+                var buttonNode = this.api().button('.btn-' + buttonCruzAzul).node();
+                var $button = $(buttonNode);
+                
+                $button.css({
+                    'color': '#000000'
+                });
+            }
+            if (buttonPublica !== null) {
+                var buttonNode = this.api().button('.btn-' + buttonPublica).node();
+                var $button = $(buttonNode); 
+            
+                $button.css({
+                    'color': '#dc3545'
+                });
+            }else{
+                var buttonNode = this.api().button('.btn-' + buttonPublica).node();
+                var $button = $(buttonNode);
+                
+                $button.css({
+                    'color': '#000000'
+                });
+            }
+            if (buttonLicitacion !== null) {
+                var buttonNode = this.api().button('.btn-' + buttonLicitacion).node();
+                var $button = $(buttonNode); 
+            
+                $button.css({
+                    'color': '#dc3545'
+                });
+            }else{
+                var buttonNode = this.api().button('.btn-' + buttonLicitacion).node();
+                var $button = $(buttonNode);
+                
+                $button.css({
+                    'color': '#000000'
+                });
+            }
+
+        }          
     });
 
-    if (selectedButton) {
+    /*if (selectedButton !== null) {
+        console.log(selectedButton);
         Table.button('.btn-' + selectedButton).trigger();
-    }
-    
+    }*/
     
     Table.on('column-visibility', function(e, settings, column, state) {
         const colsHide = [4, 10, 16, 22, 28, 34, 40];
@@ -362,9 +563,9 @@ $(document).ready(function () {
     $("#table_contribucion_filter").hide();
 
     
-    /*$("#exp-to-excel-canales").click(function(){
+    $("#exp-to-excel-canales").click(function(){
         location.href = "ExportToExcelCanales";
-    })*/
+    })
 
     $("#BtnClick").click(function() {
         fechaIni = $("#f1").val();
@@ -406,7 +607,7 @@ $(document).ready(function () {
 
     })
 
-    $('#table_contribucion').on('draw.dt', function () {
+    Table.on('draw.dt', function () {
         calcularTotales();        
     });
 
@@ -415,6 +616,7 @@ $(document).ready(function () {
 });
 
 function calcularTotales() {    
+    console.log('hoy')
     var table = $('#table_contribucion').DataTable();
     var Farmacia_Cantidad = Farmacia_Costo = Farmacia_Venta = Farmacia_Contribucion = 0;
     var Cadena_Farmacia_Cantidad = Cadena_Farmacia_Costo = Cadena_Farmacia_Venta = Cadena_Farmacia_Contribucion = 0;
@@ -704,11 +906,14 @@ function grafMensual(Articulo){
 
 }
 
-function verificarLocalStorage(boton, canal, isActive) {
-    if (isActive) {
-        localStorage.setItem(boton, canal);
-    } else {
+function verificarLocalStorage(boton, canal) {
+    var currentState = localStorage.getItem(boton);
+    if (currentState === canal) {
         localStorage.removeItem(boton);
+        return false;
+    } else {
+        localStorage.setItem(boton, canal);
+       return true;
     }
 }
 
