@@ -104,8 +104,11 @@ class ReOrderPoint extends Model
                 "PROM_MESES_TOP"            => number_format($a->PROM_MESES_TOP, 0),
 
                 'CANTIDAD_V2'               => isset($a->CANTIDAD_ORDENAR_AJUSTADA) ? number_format($a->CANTIDAD_ORDENAR_AJUSTADA,0) : '',
-                'CLASE_V2'                  => isset($a->CLASE_AJUSTADAS) ? $a->CLASE_AJUSTADAS : '',     
-                
+                'CLASE_V2'                  => isset($a->CLASE_AJUSTADAS) ? $a->CLASE_AJUSTADAS : '',
+
+                'ALTURA'                    => isset($a->ALTURA) ? $a->ALTURA : '', 
+                'LARGO'                     => isset($a->LARGO) ? $a->LARGO : '',  
+                'ANCHO'                     => isset($a->ANCHO) ? $a->ANCHO : '', 
             ];
         }
 
