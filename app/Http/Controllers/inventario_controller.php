@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\inventario_model;
+use App\PreciosMific;
 use Illuminate\Http\Request;
 use App\Models;
 use PHPExcel;
@@ -89,9 +90,21 @@ class inventario_controller extends Controller
 		$ID_ROW = $request->ID_ROW;
 		$datos_articulo =  [];
 
-		$ArticuloTransito =  (is_null($ID_ROW))? ArticulosTransito::where('Articulo',$request->Articulo)->get() : ArticulosTransito::where('Id_transito',$ID_ROW)->get();
+		$ArticuloTransito 	=  (is_null($ID_ROW))? ArticulosTransito::where('Articulo',$request->Articulo)->get() : ArticulosTransito::where('Id_transito',$ID_ROW)->get();
+		$PreciosMific		=  PreciosMific::where('ARTICULO',$request->Articulo)->limit(1)->first();
+
+		
 
 		foreach ($ArticuloTransito as $p => $k) {
+
+			$PrecioPublico 	= number_format($k->Precio_mific_public,4);
+			$PrecioFarmacia = number_format($k->Precio_mific_farmacia,4);
+
+			if ($PrecioFarmacia == 0.0000) {				
+				$PrecioPublico 	= number_format(($PreciosMific->MIFIC_FARMACIA ?? 0 ),4);
+				$PrecioFarmacia = number_format(($PreciosMific->MIFIC_PUBLICO ?? 0),4);
+			}
+
 			$datos_articulo['data'][$p] = [
 				'Articulo'          => $k->Articulo,
 				'fecha_estimada'	=> $k->fecha_estimada,
@@ -103,8 +116,8 @@ class inventario_controller extends Controller
 				'mercado'         	=> $k->mercado,
 				'mific'             => $k->mific,
 				'Estado'             => $k->Estado,
-				'Precio_mific_farmacia'      => $k->Precio_mific_farmacia,
-				'Precio_mific_public'      => $k->Precio_mific_public,
+				'Precio_mific_farmacia'    => $PrecioFarmacia,
+				'Precio_mific_public'      => $PrecioPublico,
 				'Nuevo'          	=> $k->Nuevo,
 				'Descripcion'       => strtoupper($k->Descripcion),
 				'observaciones'     => $k->observaciones,
