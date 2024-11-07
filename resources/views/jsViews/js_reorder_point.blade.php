@@ -464,6 +464,7 @@ function grafVentasMensuales(Articulos, Canal) {
             $("#id_reorder1").html(numeral(json['REORDER1']).format('0,0'));
             $("#id_reordenar").html(numeral(json['REORDER']).format('0,0'));
             $("#id_cant_ordenar").html(numeral(json['CANTIDAD_ORDENAR']).format('0,0'));
+            $("#id_cant_ordenar_v2").html(numeral(json['CANTIDAD_V2']).format('0,0'));
 
             $("#id_clase").html(json['CLASE']);
             $("#id_pedido_transito").html(numeral(json['PEDIDO_TRANSITO']).format('0,0'));
