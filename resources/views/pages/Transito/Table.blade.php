@@ -171,12 +171,24 @@
                 <small id="alert_precio_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
-          
+          <div class="col-sm-3">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">VIA TRANSITO:</label>
+                <select class="form-control" id="id_via_transito">
+                    <option value="N/D">N/D</option>
+                    <option value="AERIO">AERIO</option>
+                    <option value="MARITIMO">MARITIMO</option>
+                    <option value="TERRESTRE">TERRESTRE</option>
+                </select>
+                <small id="alert_via_transito" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
           <div class="col-sm-12 mb-3">
               <label for="validationTextarea">OBSERVACIONES: </label>
               <textarea class="form-control" id="txtObservacion" placeholder="Comentarios maximo de 255 caracteres" required></textarea>
               <small id="alert_observaciones" class="form-text text-danger"></small>
           </div>
+          
       </div>      
       </div>
       <div class="modal-footer">

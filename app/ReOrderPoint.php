@@ -147,6 +147,14 @@ class ReOrderPoint extends Model
     }
     public static function getDataGrafica($Articulos,$Canal) {
 
+
+        //Busca Directamente sobre la base de datos de images, si existe una imagen para el articulo        
+        $ImagesArticulos = ArticulosPicture::getPictures($Articulos);
+
+        $InfoTransito = ArticulosTransito::where('ARTICULO', $Articulos)->first();
+
+
+
         $array = array();
 
         $currentDate = date('Y-m-d');
@@ -179,6 +187,7 @@ class ReOrderPoint extends Model
             'MOQ'                           => isset($Sales->MOQ) ? number_format($Sales->MOQ, 0, '.', '') : 0,
             'PEDIDO'                        => isset($Sales->PEDIDO) ? number_format($Sales->PEDIDO, 0, '.', '') : 0,
             'TRANSITO'                      => isset($Sales->TRANSITO) ? number_format($Sales->TRANSITO, 0, '.', '') : 0,
+            'VIA_TRANSITO'                  => isset($Sales->VIA_TRANSITO) ? $Sales->VIA_TRANSITO : ' - ',
             'CLASE'                         => isset($Sales->CLASE) ? $Sales->CLASE : '',
 
             'ROTACION_CORTA'                => isset($Sales->ROTACION_CORTA) ? bcadd(number_format($Sales->ROTACION_CORTA, 0), 5, 0) : 0,
@@ -191,14 +200,15 @@ class ReOrderPoint extends Model
             'VENTAS_YTD'                    => isset($Sales->VENTAS_YTD) ? number_format($Sales->VENTAS_YTD, 0, '.', '') : 0,
             'CONTRIBUCION_YTD'              => isset($Sales->CONTRIBUCION_YTD) ? number_format($Sales->CONTRIBUCION_YTD, 0, '.', '') : 0,
             'EJECUTADO_UND_YTD'             => isset($Sales->EJECUTADO_UND_YTD) ? number_format($Sales->EJECUTADO_UND_YTD, 0, '.', '') : 0,
-            "VENTAS"                        => array_map(function($month, $value) use ($Sales) { 
-                                                return [
-                                                        "Mes"   => $month,
-                                                        "data"  => isset($Sales->$value) && !empty($Sales->$value) ? (float) number_format($Sales->$value,2,".",""): 0
-                                                        ];
-                                                }, $NameMonths, range(1, 12)),
             'CANTIDAD_V2'                   => isset($Sales->CANTIDAD_ORDENAR_AJUSTADA) ? $Sales->CANTIDAD_ORDENAR_AJUSTADA : '',
-            'CLASE_V2'                      => isset($Sales->CLASE) ? $Sales->CLASE : '',                                    
+            'CLASE_V2'                      => isset($Sales->CLASE) ? $Sales->CLASE : '',   
+            'IMAGE'                         =>  isset($ImagesArticulos) ? $ImagesArticulos : '',
+            "VENTAS"                        => array_map(function($month, $value) use ($Sales) { 
+                return [
+                        "Mes"   => $month,
+                        "data"  => isset($Sales->$value) && !empty($Sales->$value) ? (float) number_format($Sales->$value,2,".",""): 0
+                        ];
+                }, $NameMonths, range(1, 12)),                                
         ];
         
 

@@ -121,7 +121,8 @@ class inventario_controller extends Controller
 				'Nuevo'          	=> $k->Nuevo,
 				'Descripcion'       => strtoupper($k->Descripcion),
 				'observaciones'     => $k->observaciones,
-				'estado_compra'		=> $k->estado_compra
+				'estado_compra'		=> $k->estado_compra,
+				'via_transito'		=> $k->via_transporte
 			];
 		}
 		return response()->json($datos_articulo);
@@ -170,6 +171,7 @@ class inventario_controller extends Controller
 				'observaciones' 			=> $request->observaciones,
 				'Precio_mific_farmacia' 	=> $request->precio_mific_f,
 				'Precio_mific_public' 		=> $request->precio_mific_p,
+				'via_transporte'    		=> $request->via_transito,
 			]);
 	
 			$message = 'Información actualizada correctamente';
@@ -191,6 +193,7 @@ class inventario_controller extends Controller
 				'Precio_mific_farmacia' => $request->precio_mific_f,
 				'Precio_mific_public' 	=> $request->precio_mific_p,
 				'Nuevo' 				=> 'N',
+				'via_transporte'    	=> $request->via_transito,
 			]);
 	
 			$message = 'Información guardada correctamente';
@@ -246,6 +249,7 @@ class inventario_controller extends Controller
     }
 
 	public function InventarioTransito($ID){
+
 		$data = array(
 			'page'		=> 'Inventario Transito',
 			'name'		=> 'GUMA@NET',
@@ -253,13 +257,16 @@ class inventario_controller extends Controller
 			'hideTransaccion' => ''
 		);
 
-		$ArticulosConCodigos = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->get()->toArray();
-
+		$ArticulosConCodigos = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->pluck('Articulo')->toArray();
+		
 		if(count($ArticulosConCodigos)  > 0){
-			$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', [$ArticulosConCodigos])->get();
+			$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', $ArticulosConCodigos)->get();
+			
 		} else {
 			$Articulos = InventarioUnificadoTransito::all();
 		};
+
+	
 
 
 		return view('pages.Transito.Table', compact('data', 'Articulos'));

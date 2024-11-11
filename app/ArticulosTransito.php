@@ -29,7 +29,8 @@ class ArticulosTransito extends Model
         'Precio_mific_farmacia',
         'Precio_mific_public',
         'cantidad_pedido',
-        'cantidad_transito'
+        'cantidad_transito',
+        'via_transporte'
     ];
 
 
