@@ -96,6 +96,17 @@
             return ($.type(is_return) == 'boolean' && is_return === true ? value : true);
         }
     }
+    $(document).on('click', '.img-fluid', function (e) {
+        url_image = $(this).attr('src');
+        Swal.fire({
+            showCloseButton: true,
+            showConfirmButton: false,
+            imageUrl: url_image,
+            imageAlt: 'Custom image'
+        })
+
+        $(".swal2-popup").css('width', '50%');
+    })
 $(document).ready(function() {
     Loading();
     fullScreen();
@@ -482,6 +493,9 @@ function grafVentasMensuales(Articulos, Canal) {
 
             $("#id_transito").html(numeral(json['TRANSITO']).format('0,0'));
             $("#id_pedido").html(numeral(json['PEDIDO']).format('0,0'));
+            $("#id_via_transito_lbl").html(json['VIA_TRANSITO']);
+
+            $("#id_product_img").attr("src",json['IMAGE']);
 
 
             $("#id_promedio_mensual").html(numeral(json['EJECUTADO_UND_YTD']).format('0,0') + " UNITS");                
