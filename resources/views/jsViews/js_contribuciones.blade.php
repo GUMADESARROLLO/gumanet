@@ -127,19 +127,24 @@ $(document).ready(function () {
 
                                     dt.columns(':hidden').visible(true);
 
-                                    for (let i = 0; i < localStorage.length; i++) {
-                                        const key = localStorage.key(i);
-                                        if (key.startsWith('button')) {
-                                            localStorage.removeItem(key);
-                                            i--; 
-                                        }
-                                    }
+                                    const keysToRemove = [
+                                        'buttonselected',
+                                        'buttonCadena',
+                                        'buttonMayorista',
+                                        'buttonPrivada',
+                                        'buttonCruzAzul',
+                                        'buttonPublica',
+                                        'buttonLicitacion'
+                                    ];
+
+                                    keysToRemove.forEach(key => localStorage.removeItem(key));
+
 
                                     // Recorrer y cambiar el estilo de todos los botones
                                     $('.dt-button').each(function() {
                                         $(this).css({
-                                            'color': '#000000', // Cambia el color del texto a negro
-                                            'background-color': 'transparent' // Mantén el fondo transparente
+                                            'color': '#000000', 
+                                            'background-color': 'transparent' 
                                         }).removeClass('dt-button-active');;
                                     });
 

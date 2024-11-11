@@ -224,6 +224,7 @@ function getDetalleArticulo(Articulo,Descripcion,ID)
 					$("#txtObservacion").val(a.observaciones)
 					$("#txtPrecioMific").val(numeral(a.Precio_mific_farmacia).format('0,0.0000'))
 					$("#txtPrecioMificPublic").val(numeral(a.Precio_mific_public).format('0,0.0000'))
+					$("#id_via_transito").val(a.via_transito).change();			
 					
 					
 				}
@@ -269,6 +270,7 @@ new Vue({
 			formData.append('precio_mific_f', document.getElementById('txtPrecioMific').value);
 			formData.append('precio_mific_p', document.getElementById('txtPrecioMificPublic').value);
 			formData.append('observaciones', document.getElementById('txtObservacion').value);
+			formData.append('via_transito', document.getElementById('id_via_transito').value);
 
 			axios.post('{{ route("SaveTransito") }}', formData)
 				.then(response => {						

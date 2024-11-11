@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\inventario_model;
+use App\PreciosMific;
 use Illuminate\Http\Request;
 use App\Models;
 use PHPExcel;
@@ -89,9 +90,21 @@ class inventario_controller extends Controller
 		$ID_ROW = $request->ID_ROW;
 		$datos_articulo =  [];
 
-		$ArticuloTransito =  (is_null($ID_ROW))? ArticulosTransito::where('Articulo',$request->Articulo)->get() : ArticulosTransito::where('Id_transito',$ID_ROW)->get();
+		$ArticuloTransito 	=  (is_null($ID_ROW))? ArticulosTransito::where('Articulo',$request->Articulo)->get() : ArticulosTransito::where('Id_transito',$ID_ROW)->get();
+		$PreciosMific		=  PreciosMific::where('ARTICULO',$request->Articulo)->limit(1)->first();
+
+		
 
 		foreach ($ArticuloTransito as $p => $k) {
+
+			$PrecioPublico 	= number_format($k->Precio_mific_public,4);
+			$PrecioFarmacia = number_format($k->Precio_mific_farmacia,4);
+
+			if ($PrecioFarmacia == 0.0000) {				
+				$PrecioPublico 	= number_format(($PreciosMific->MIFIC_FARMACIA ?? 0 ),4);
+				$PrecioFarmacia = number_format(($PreciosMific->MIFIC_PUBLICO ?? 0),4);
+			}
+
 			$datos_articulo['data'][$p] = [
 				'Articulo'          => $k->Articulo,
 				'fecha_estimada'	=> $k->fecha_estimada,
@@ -103,12 +116,13 @@ class inventario_controller extends Controller
 				'mercado'         	=> $k->mercado,
 				'mific'             => $k->mific,
 				'Estado'             => $k->Estado,
-				'Precio_mific_farmacia'      => $k->Precio_mific_farmacia,
-				'Precio_mific_public'      => $k->Precio_mific_public,
+				'Precio_mific_farmacia'    => $PrecioFarmacia,
+				'Precio_mific_public'      => $PrecioPublico,
 				'Nuevo'          	=> $k->Nuevo,
 				'Descripcion'       => strtoupper($k->Descripcion),
 				'observaciones'     => $k->observaciones,
-				'estado_compra'		=> $k->estado_compra
+				'estado_compra'		=> $k->estado_compra,
+				'via_transito'		=> $k->via_transporte
 			];
 		}
 		return response()->json($datos_articulo);
@@ -157,6 +171,7 @@ class inventario_controller extends Controller
 				'observaciones' 			=> $request->observaciones,
 				'Precio_mific_farmacia' 	=> $request->precio_mific_f,
 				'Precio_mific_public' 		=> $request->precio_mific_p,
+				'via_transporte'    		=> $request->via_transito,
 			]);
 	
 			$message = 'Información actualizada correctamente';
@@ -178,6 +193,7 @@ class inventario_controller extends Controller
 				'Precio_mific_farmacia' => $request->precio_mific_f,
 				'Precio_mific_public' 	=> $request->precio_mific_p,
 				'Nuevo' 				=> 'N',
+				'via_transporte'    	=> $request->via_transito,
 			]);
 	
 			$message = 'Información guardada correctamente';
@@ -233,6 +249,7 @@ class inventario_controller extends Controller
     }
 
 	public function InventarioTransito($ID){
+
 		$data = array(
 			'page'		=> 'Inventario Transito',
 			'name'		=> 'GUMA@NET',
@@ -240,13 +257,16 @@ class inventario_controller extends Controller
 			'hideTransaccion' => ''
 		);
 
-		$ArticulosConCodigos = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->get()->toArray();
-
+		$ArticulosConCodigos = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->pluck('Articulo')->toArray();
+		
 		if(count($ArticulosConCodigos)  > 0){
-			$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', [$ArticulosConCodigos])->get();
+			$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', $ArticulosConCodigos)->get();
+			
 		} else {
 			$Articulos = InventarioUnificadoTransito::all();
 		};
+
+	
 
 
 		return view('pages.Transito.Table', compact('data', 'Articulos'));
