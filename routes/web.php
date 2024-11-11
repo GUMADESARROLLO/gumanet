@@ -306,4 +306,5 @@ Route::get('Presupuesto71', 'BudgetController@Budget71')->name('Presupuesto71');
 Route::get('dtProyect', 'BudgetController@dtProyect')->name('dtProyect');
 Route::get('dtArticulo', 'BudgetController@dtArticulo')->name('dtArticulo');
 
-
+// PRESUPUESTO UMK
+Route::get('presupuestoumk', 'dashboard_controller@presupuestoUMK')->name('presupuestoumk');
