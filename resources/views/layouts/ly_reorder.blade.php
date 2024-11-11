@@ -193,7 +193,6 @@
 <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.html5.min.js"></script>
 
 
-
 @yield('metodosjs')
 </body>
 </html>
