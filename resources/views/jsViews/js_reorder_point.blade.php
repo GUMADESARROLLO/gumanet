@@ -102,7 +102,6 @@
             showCloseButton: true,
             showConfirmButton: false,
             imageUrl: url_image,
-            imageAlt: 'Custom image'
         })
 
         $(".swal2-popup").css('width', '50%');

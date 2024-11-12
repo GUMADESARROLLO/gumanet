@@ -129,13 +129,13 @@
                                   <div class="row col-md-10 ">
                                     <div class="d-flex align-items-center position-relative mt-0">
                                       <div class="flex-1 ">
-                                        <h6 class="mb-0 fw-semi-bold">
-                                          <div class="text-light text-uppercase" id="id_descripcion"></div>
-                                          <span id="id_articulo" style="display: none"></span>
-                                        </h6>
-                                        <p class="text-white-50 fs--2 mb-0" id="nombre_ruta_zona_modal">
-                                        LIMITE LOGICO MEDIO : <span id="id_limite_logistico_medio"> - </span>
-                                        </p>
+                                          <h6 class="mb-0 fw-semi-bold">
+                                            <div class="text-light text-uppercase" id="id_descripcion"></div>
+                                            <span id="id_articulo" style="display: none"></span>
+                                          </h6>
+                                          <p class="text-white-50 fs--2 mb-0" id="nombre_ruta_zona_modal">
+                                          LIMITE LOGICO MEDIO : <span id="id_limite_logistico_medio"> - </span>
+                                          </p>
                                       </div>
                                     </div>
                                   </div>
