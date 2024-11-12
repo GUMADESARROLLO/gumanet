@@ -1,4 +1,14 @@
 <script>
+$(document).on('click', '.img-fluid', function (e) {
+    url_image = $(this).attr('src');
+    Swal.fire({
+        showCloseButton: true,
+        showConfirmButton: false,
+        imageUrl: url_image,
+    })
+
+    $(".swal2-popup").css('width', '50%');
+})
 $(document).ready(function() {
     fullScreen();
     //AGREGO LA RUTA AL NAVEGADOR
@@ -339,7 +349,17 @@ var articulo_g = 0;
 function getDetalleArticulo(articulo, descripcion) {
     $("#idArti").val(articulo);
     articulo_g = articulo;
-    $("#tArticulo").html(descripcion+`<p class="text-muted">`+articulo+`</p>`);
+
+    $("#tArticulo").html(descripcion);
+    $("#id_cod_articulo").html(articulo);
+
+    $.get("dtGraf/"+articulo+"/Todos", function( data ) {
+        console.log(data.IMAGE)
+        $("#id_product_img").attr("src",data.IMAGE);
+    });
+
+
+    
     getDataBodega(articulo);
 
     var target = '#nav-bod';

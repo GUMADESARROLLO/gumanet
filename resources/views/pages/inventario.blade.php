@@ -148,7 +148,37 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header d-block">
-        <h5 class="modal-title text-center" id="tArticulo"></h5>
+        <div class="row justify-content-left mb-3">
+          <div class="col-md-12 col-xl-12">
+            <div class="card shadow-0 border rounded-3">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12 col-lg-2 col-xl-2 mb-4 mb-lg-0">
+                    <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                      <img src="{{ asset('img/placeholder.jpg') }}"  class="img-fluid img-thumbnail"  style="height: 100%; width: 150px" id="id_product_img"/>
+                      <a href="#!">
+                        <div class="hover-overlay">
+                          <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-9 col-lg-9 col-xl-9">
+                    <h5 id="tArticulo">Quant trident shirts</h5>
+                    
+                    
+                    <div class="mb-2 text-muted small">
+                      <span ></span>   
+                      <h5 id="id_cod_articulo" class="mb-1 me-1">$13.99</h5>               
+                    </div>
+                    
+                  </div>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-body">
         <nav>
