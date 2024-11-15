@@ -165,14 +165,24 @@ class ReOrderPoint extends Model
 
         if ($Canal === 'Todos') {
             $Sales = ReOrderPoint::WHERE('ARTICULO',$Articulos)->first();
-        } else {            
-            DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_calc_12_month_reorder_articulo ?, ?, ?", [$Canal, $Articulos, $DiaActual]);
-            $Sales = ReOrderPointByArticulo::WHERE('ARTICULO',$Articulos)->first();
+        } else {     
+            if ($Canal === 'LICITACIONES') {
+                $Sales = ContribucionPorCanales::getDataCanal($Articulos, $Canal, 0)[0];
+                $Info  = ContribucionPorCanalesTable::Where('ARTICULO', $Articulos)->where('CANAL', $Canal)
+                                ->selectRaw('SUM(VENTA) AS VENTAS_YTD, SUM(VENTA - COSTO) AS CONTRIBUCION_YTD')
+                                ->get()->toArray()[0]; 
+
+                            
+            }else{
+                DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_calc_12_month_reorder_articulo ?, ?, ?", [$Canal, $Articulos, $DiaActual]);
+                $Sales = ReOrderPointByArticulo::WHERE('ARTICULO',$Articulos)->first(); 
+            }
         }
 
         
         $NameMonths = ($Canal === 'TODOS') ? ReOrderPoint::NameMonth($Sales->FechaFinal) : ReOrderPoint::NameMonth($FechaEnd) ;
 
+        $InfoArticulo = Articulos::WHERE('ARTICULO',$Articulos)->first();
 
         $array = [
             'LEADTIME'                      => isset($Sales->LEADTIME) ? number_format($Sales->LEADTIME, 0, '.', '') : 0,
@@ -197,19 +207,39 @@ class ReOrderPoint extends Model
             'COSTO_PROMEDIO_USD'            => isset($Sales->COSTO_PROMEDIO_USD) ? number_format($Sales->COSTO_PROMEDIO_USD, 0, '.', '') : 0,
             'ULTIMO_COSTO_USD'              => isset($Sales->ULTIMO_COSTO_USD) ? number_format($Sales->ULTIMO_COSTO_USD, 0, '.', '') : 0,
             "COSTO_PROMEDIO_LOC"            => isset($Sales->COSTO_PROMEDIO_LOC) ? number_format($Sales->COSTO_PROMEDIO_LOC, 2) : 0,
+            
             'VENTAS_YTD'                    => isset($Sales->VENTAS_YTD) ? number_format($Sales->VENTAS_YTD, 0, '.', '') : 0,
             'CONTRIBUCION_YTD'              => isset($Sales->CONTRIBUCION_YTD) ? number_format($Sales->CONTRIBUCION_YTD, 0, '.', '') : 0,
             'EJECUTADO_UND_YTD'             => isset($Sales->EJECUTADO_UND_YTD) ? number_format($Sales->EJECUTADO_UND_YTD, 0, '.', '') : 0,
+
             'CANTIDAD_V2'                   => isset($Sales->CANTIDAD_ORDENAR_AJUSTADA) ? $Sales->CANTIDAD_ORDENAR_AJUSTADA : '',
             'CLASE_V2'                      => isset($Sales->CLASE) ? $Sales->CLASE : '',   
-            'IMAGE'                         =>  isset($ImagesArticulos) ? $ImagesArticulos : '',
-            "VENTAS"                        => array_map(function($month, $value) use ($Sales) { 
+            'IMAGE'                         => isset($ImagesArticulos) ? $ImagesArticulos : '',
+
+            'CLASE_TERAPEUTICA'             => isset($InfoArticulo->CLASE_TERAPEUTICA) ? $InfoArticulo->CLASE_TERAPEUTICA : ' - ',
+            'LABORATORIO'                   => isset($InfoArticulo->LABORATORIO) ? $InfoArticulo->LABORATORIO : ' - ',
+            'UNIDAD_ALMACEN'                => isset($InfoArticulo->UNIDAD_ALMACEN) ? $InfoArticulo->UNIDAD_ALMACEN : ' - ',
+            'DESCRIPCION'                   => isset($InfoArticulo->DESCRIPCION) ? strtoupper($InfoArticulo->DESCRIPCION) : ' - '
+
+
+        ];
+
+        if ($Canal === 'LICITACIONES') {
+            $array['VENTAS']            = $Sales['CANTIDAD_MES'];
+            $array['VENTAS_YTD']        = $Info['VENTAS_YTD'];
+            $array['EJECUTADO_UND_YTD'] = $Sales['EJECUTADO_UND_YTD'];
+            $array['CONTRIBUCION_YTD']  = $Info['CONTRIBUCION_YTD'];
+            
+        } else {
+            $array['VENTAS'] = array_map(function($month, $value) use ($Sales) { 
                 return [
                         "Mes"   => $month,
                         "data"  => isset($Sales->$value) && !empty($Sales->$value) ? (float) number_format($Sales->$value,2,".",""): 0
                         ];
-                }, $NameMonths, range(1, 12)),                                
-        ];
+                }, $NameMonths, range(1, 12));
+        }
+        
+        
         
 
 

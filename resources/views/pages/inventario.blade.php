@@ -148,11 +148,68 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header d-block">
-        <h5 class="modal-title text-center" id="tArticulo"></h5>
+        
       </div>
       <div class="modal-body">
+
+        <section style="background-color: #eee;">
+          <div class="container py-1">
+            <div class="row justify-content-center mb-1">
+              <div class="col-md-12 col-xl-12">
+                <div class="card shadow-0 border rounded-3">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                        <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                          <img src="{{ asset('img/placeholder.jpg') }}" id="id_product_img"
+                            class=" img-fluid img-thumbnail w-100" />
+                          <a href="#!">
+                            <div class="hover-overlay">
+                              <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-xl-6">
+                        <h5 id="tArticulo" >Quant trident shirts</h5>
+                        <div class="d-flex flex-row">
+                          
+                          <span id="id_cod_articulo" >310</span>
+                        </div>
+                        <div class="mt-1 mb-0 text-muted small">
+                          <span id="IdClaseTerapeutica">CLASE TERAPEUTICA</span>
+                          <span class="text-primary"> • </span>
+                          <span id="IdLaboratorio">LABORATORIO</span>
+                          <span class="text-primary"> • </span>
+                          <span id="IdUnidadMedida">UNIDAD MEDIDA<br /></span>
+                        </div>
+                        
+                       
+                      </div>
+                      <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
+                        <div class="d-flex flex-row align-items-center mb-1">
+                          <h4 class="mb-1 me-1" id="id_disponibles"> 0.00 </h4>
+                          <span class="text-info"> ( <span id="IdUnidadMedidaSpan"></span> )</span>
+                        </div>
+                        <h6 class="text-success">Total Dispoble para Facturar.</h6>
+                        <div class="d-flex flex-column mt-4">
+                          <a class="btn btn-primary btn-sm mt-2" id="navIndicadores" data-toggle="tab" href="#nav-Indicadores" role="tab" aria-controls="nav-Indicadores" aria-selected="false">Indicadores</a>
+                          <button data-mdb-button-init data-mdb-ripple-init class="btn btn-secondary btn-sm mt-2" type="button" data-dismiss="modal">
+                            Cerrar
+                          </button>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      
         <nav>
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <div class="nav nav-tabs mt-3" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="navBodega" data-toggle="tab" href="#nav-bod" role="tab" aria-controls="nav-bod" aria-selected="true">Bodega</a>
             <a class="nav-item nav-link" id="navPrecios" data-toggle="tab" href="#nav-prec" role="tab" aria-controls="nav-prec" aria-selected="false">Precios</a>
             <a class="nav-item nav-link" id="navBonificados" data-toggle="tab" href="#nav-boni" role="tab" aria-controls="nav-boni" aria-selected="false">Bonificados</a>
@@ -520,6 +577,7 @@
                       <th>CANTIDAD</th>
                       <th>CANT PEDIDO</th>
                       <th>CANT TRANSITO</th>
+                      <th>VIA TRANSITO</th>
                       <th>OBSERVACIONES</th>
                     </tr>
                   </thead>
@@ -550,9 +608,6 @@
           </div>
 
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>

@@ -155,21 +155,25 @@ class ContribucionPorCanales extends Model
         return $json;
     }
 
+
     public static function getDataCanal($articulo, $canal, $opcion){
         $Meses = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo_dev ?, ?', [$canal,$opcion]);
         $result = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
         $NameMonths = ContribucionPorCanales::NameMonth($result[0]->ultima_fecha);
         $json = array(); $mess12 = 0;
-        
+
         foreach($Meses as $item){
             if($item->ARTICULO == $articulo){
                 $mess12 = array_map(function($month, $value) use ($item) { 
                             return [
                                     "Mes"   => $month,
                                     "data"  => (float) number_format($item->$value,2,".","")
+                                    
                                     ];
                             }, $NameMonths, range(1, 12));
+                $json[0]["EJECUTADO_UND_YTD"] = $item->EJECUTADO_UND_YTD;
             }
+            
         }
         $json[0]['CANTIDAD_MES'] = $mess12;
         return $json;
