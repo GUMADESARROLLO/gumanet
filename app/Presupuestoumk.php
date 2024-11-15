@@ -7,61 +7,49 @@ use Illuminate\Support\Facades\DB;
 
 class Presupuestoumk extends Model
 {
+    protected $connection = 'sqlsrv';
+    public $timestamps = false;
+    protected $table = "PRODUCCION.dbo.tbl_presupuesto_umk";
 
-    public static function getEjecucionPresupuesto($mes, $ano){
+    public static function getEjecucionPresupuesto(){
         $ventas = "";
-        $i = 0;
-        $primario = $secundario = $onco = $gpharma = $nuevo = 0;
+        $total = 0;
         $json = array();
         
-        if($mes == 'ACUMULADA'){
-            $ventas = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.pr_presupuesto_umk ?, ?', [$mes,$ano]);
-        }else{
-            $ventas = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.pr_presupuesto_umk ?, ?', [$mes,$ano]);
-        }
+        $ventas = Presupuestoumk::selectRaw('CLASE_PRODUCTO, CANAL2, SUM(PRECIO_TOTAL) as total_precio')
+            ->groupBy('CLASE_PRODUCTO', 'CANAL2')
+            ->get();
 
         foreach($ventas as $v){
-            if($v->CLASE_PRODUCTO == 'PRIMARIOS UMK'){
-                $primario += $v->PRECIO_TOTAL;
-            }
-            if($v->CLASE_PRODUCTO == 'SECUNDARIOS'){
-                $secundario += $v->PRECIO_TOTAL;
-            }
-            if($v->CLASE_PRODUCTO == 'GPHARMA'){
-                $gpharma += $v->PRECIO_TOTAL;
-            }
-            if($v->CLASE_PRODUCTO == 'ONCO'){
-                $onco += $v->PRECIO_TOTAL;
-            }
-            if($v->CLASE_PRODUCTO == 'NUEVOS'){
-                $nuevo += $v->PRECIO_TOTAL;
-            }
-        }
+            $total += $v->total_precio;
+            $json[$v->CLASE_PRODUCTO]['EJECUTADO'] = floatval($v->total_precio); 
+        }        
+        $json['PRIMARIOS UMK']['PRESUPUESTO'] = 12887968; 
+        $json['SECUNDARIOS']['PRESUPUESTO'] = 2785449; 
+        $json['NUEVOS']['PRESUPUESTO'] = 0;
+        $json['ONCO']['PRESUPUESTO'] = 101900; 
+        $json['GPHARMA']['PRESUPUESTO'] = 1229265;
+        $json['CRUZ AZUL']['PRESUPUESTO'] = 3020491; 
+        $json['LICITACIONES']['PRESUPUESTO'] = 9333333;
 
-        $totalPrivado = $primario + $secundario + $nuevo;
-        $totalPrivadoPresup = intval('12887968') + intval('2785449');
-
-        $json['VentaBruta']['Ejecutado'] = number_format($totalPrivado,2,'.',',');
-        $json['VentaBruta']['Presupuesto'] = number_format($totalPrivadoPresup,2,'.',',');
-        $json['VentaBruta']['DifAbsoluta'] = $totalPrivado - $totalPrivadoPresup;
-        $json['VentaBruta']['DifRelativa'] = number_format((($totalPrivado - $totalPrivadoPresup)/$totalPrivado) * 100,2);
+        $json['VENTAS_PRIVADO']['EJECUTADO'] = $json['PRIMARIOS UMK']['EJECUTADO'] + $json['SECUNDARIOS']['EJECUTADO'] + $json['NUEVOS']['EJECUTADO'];
+        $json['VENTAS_PRIVADO']['PRESUPUESTO'] = $json['PRIMARIOS UMK']['PRESUPUESTO'] + $json['SECUNDARIOS']['PRESUPUESTO'] + $json['NUEVOS']['PRESUPUESTO'];
         
-        $json['TotalPrivado']['Ejecutado'] = number_format($totalPrivado,2,'.',',');
-        $json['TotalPrivado']['Presupuesto'] = number_format($totalPrivadoPresup,2,'.',',');
-        $json['TotalPrivado']['DifAbsoluta'] = $totalPrivado - $totalPrivadoPresup;
-        $json['TotalPrivado']['DifRelativa']  = number_format((($totalPrivado - $totalPrivadoPresup)/$totalPrivado) * 100,2);
-
-        $json['Primario']['Ejecutado'] = number_format($primario,2,'.',',');
-        $json['Primario']['PorcientoEje'] = number_format($primario/$totalPrivado,2,'.',',');
-        $json['Primario']['Presupuesto'] = number_format('12887968',2,'.',',');
-
-        $json['TotalPrivado']['Secundario'] = number_format($secundario,2,'.',',');
-        $json['TotalPrivado']['Nuevo'] = number_format($nuevo,2,'.',',');
-        $json['TotalPrivado']['Total']  = number_format($totalPrivado,2,'.',',');
-
+        $json['VENTAS_PROYECTOS']['EJECUTADO'] = $json['ONCO']['EJECUTADO'] + $json['GPHARMA']['EJECUTADO'];
+        $json['VENTAS_PROYECTOS']['PRESUPUESTO'] = $json['ONCO']['PRESUPUESTO'] + $json['GPHARMA']['PRESUPUESTO'];
         
-        //dd($json['VentaBruta']['Ejecutado']);
+        $json['VENTAS_INSTITUCIONES']['EJECUTADO'] = $json['CRUZ AZUL']['EJECUTADO'] + $json['LICITACIONES']['EJECUTADO'];
+        $json['VENTAS_INSTITUCIONES']['PRESUPUESTO'] = $json['CRUZ AZUL']['PRESUPUESTO'] + $json['LICITACIONES']['PRESUPUESTO'];
+
+        $json['VENTAS_BRUTAS']['EJECUTADO'] = $total;
+        
+        //dd($json);
         return $json;
 
+    }
+
+    public static function actualizarEjecucionPresupuesto($mes, $ano){
+        $update = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion ? ?', [$mes, $ano]);
+        return $update;
     }
 }

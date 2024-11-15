@@ -245,7 +245,7 @@ class dashboard_controller extends Controller {
 
   public function presupuestoUMK()
   {
-    $presupuesto = Presupuestoumk::getEjecucionPresupuesto('Diciembre',2023);
+    $presupuesto = Presupuestoumk::getEjecucionPresupuesto();
     return view('pages.presupuestoUMK',compact('presupuesto'));
   }
 
