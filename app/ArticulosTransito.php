@@ -39,28 +39,34 @@ class ArticulosTransito extends Model
         if ($request->ajax()) {
             try {
                 $datos_a_insertar = array();    
+            
                 ArticulosTransito::truncate();
                 foreach ($request->input('datos') as $k => $v) 
                 {
-                    $v['CANTIDAD'] = str_replace(',', '', $v['CANTIDAD']);
+                    $Cantidad = number_format(str_replace(',', '', $v['CANTIDAD']), 4,'.','');
                     $Articulo = ($v['ARTICULO'] == 'N/D' || $v['ARTICULO'] == 'N/A' || is_numeric(intval($v['ARTICULO']) == false)) ? mt_rand(10000000, 99999999).'-N' : $v['ARTICULO'] ;
 
                     $datos_a_insertar[$k] = [
-                        'Articulo'		    => $Articulo,
-                        'Descripcion'		=> strtoupper($v['DESCRIPC']),
-                        'cantidad'		    => number_format((float)$v['CANTIDAD'], 2,'.',''),
-                        'fecha_pedido'		=> $v['dtPedido'],
-                        'fecha_estimada'	=> (strpos($v['dtEstimada'], 'N/') === false) ? $v['dtEstimada'] : null ,
-                        'mercado'		    => strtoupper($v['Mercado']),
-                        'mific'			    => strtoupper($v['Mific']),
-                        'documento'		    => $v['Documento'],
-                        'observaciones'		=> $v['Comment'],
-                        'Nuevo'		        => 'N',
-                        'Precio_mific_farmacia'      =>$v['Pre_MIFIC_F'],
-                        'Precio_mific_public'      =>$v['Pre_MIFIC_P'],
+                        'Articulo'		        => $Articulo,
+                        'Descripcion'		    => strtoupper($v['DESCRIPC']),
+                        'cantidad'		        => $Cantidad,
+                        'cantidad_pedido'	    => ($v['isPedido']==='PEDIDO') ? $Cantidad : '0' ,
+                        'cantidad_transito'	    => ($v['isPedido']==='TRANSITO' || $v['isPedido']==='ON-HAND') ? $Cantidad : '0',
+                        'estado_compra'		    => $v['isPedido'],
+                        'fecha_pedido'		    => $v['dtPedido'],
+                        'fecha_estimada'	    => (strpos($v['dtEstimada'], 'N/') === false) ? $v['dtEstimada'] : null ,
+                        'mercado'		        => strtoupper($v['Mercado']),
+                        'mific'			        => strtoupper($v['Mific']),
+                        'documento'		        => $v['Documento'],
+                        'observaciones'		    => $v['Comment'],
+                        'Nuevo'		            => 'N',                        
+                        'via_transporte'        => $v['Via_transi'],
+                        'Precio_mific_farmacia' => 0,
+                        'Precio_mific_public'   => 0,
                     ];
                 }
-                $response = ArticulosTransito::insert($datos_a_insertar); 
+                $response = ArticulosTransito::insert($datos_a_insertar);
+                
                 return $response;
                 
             } catch (Exception $e) {
