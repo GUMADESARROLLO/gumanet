@@ -350,12 +350,18 @@ function getDetalleArticulo(articulo, descripcion) {
     $("#idArti").val(articulo);
     articulo_g = articulo;
 
-    $("#tArticulo").html(descripcion);
-    $("#id_cod_articulo").html(articulo);
-
     $.get("dtGraf/"+articulo+"/Todos", function( data ) {
-        console.log(data.IMAGE)
+        
         $("#id_product_img").attr("src",data.IMAGE);
+
+        $("#id_cod_articulo").html(articulo);
+        $("#tArticulo").html(data.DESCRIPCION);
+
+        $("#IdClaseTerapeutica").html(data.CLASE_TERAPEUTICA);
+        $("#IdLaboratorio").html(data.LABORATORIO);
+        $("#IdUnidadMedida").html(data.UNIDAD_ALMACEN);
+        $("#IdUnidadMedidaSpan").html(data.UNIDAD_ALMACEN);
+
     });
 
 
@@ -387,7 +393,13 @@ function getDataBodega(articulo) {
         "paging":   false,
         "columns":[
             { "data": "DETALLE"},
-            { "data": "BODEGA" },
+            { "data": "BODEGA" , render: function ( data, type, row ) { 
+                if(data === '002'){
+                    console.log();
+                    $("#id_disponibles").html(row.CANT_DISPONIBLE)
+                }
+                return data; 
+            } },
             { "data": "UNIDAD" },
             { "data": "NOMBRE" },
             { "data": "CANT_DISPONIBLE" }
@@ -1023,11 +1035,12 @@ function articuloTransito(Articulo){
                     return numeral(data.cantidad).format('0,0'); 
                 }, "className": "dt-right"},
                 {"data": function(data, type, row, meta) {
-                    return numeral(data.pedido).format('0,0'); 
+                    return numeral(data.cantidad_pedido).format('0,0'); 
                 }, "className": "dt-right"},
                 {"data": function(data, type, row, meta) {
-                    return numeral(data.transito).format('0,0'); 
+                    return numeral(data.cantidad_transito).format('0,0'); 
                 }, "className": "dt-right"},
+                {"data": "via_transito"},
                 {"data": "observaciones"},                
             ],
         });  
