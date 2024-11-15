@@ -136,7 +136,7 @@ function InitTable(){
 		},
 		'destroy' : true,
 		'info': false,
-		"lengthMenu": [[10,20,30,40,-1], [10,20,30,40,"Todo"]],
+		"lengthMenu": [[5,10,20,100,-1], [5,10,20,100,"Todo"]],
 		"language": {
 			"infoFiltered": "(Filtrado de _MAX_ total entradas)",
 			"zeroRecords": "No hay coincidencias",
@@ -423,9 +423,9 @@ var ExcelToJSON = function() {
 							Mercado		: rowArray[13] ||'N/D',
 							Mific		: rowArray[16] ||'N/D',
 							Documento	: rowArray[12] ||'N/D',
-							Pre_MIFIC_F	: 0,
-							Pre_MIFIC_P	: 0,
+							Via_transi	: rowArray[11],
 							Comment		: rowArray[15] ||'N/D',
+							isPedido	: rowArray[6] ||'N/D',
 							isOK		: isOK
 						})
 				}
@@ -443,14 +443,15 @@ var ExcelToJSON = function() {
 			{"title": "FECHA ESTIMADA","data": "dtEstimada"},
 			{"title": "MERCADO","data": "Mercado"},
 			{"title": "MIFIC","data": "Mific"},
-			{"title": "PRECIO MIFIC","data": "Pre_MIFIC"},
+			{"title": "VIA DE TRANSITO","data": "Via_transi"},
 			{"title": "COMENTARIO","data": "Comment"},
+			{"title": "PEDIDO","data": "isPedido"},
 			{"title": "","data": "isOK"}
 		]
 		dta_columnDefs = [
-			{"className": "dt-center", "targets": [0,3,4,5,6,7,8]},
+			{"className": "dt-center", "targets": [0,3,4,5,6,7,8,10]},
 			{"className": "dt-right", "targets": [2]},
-			{"visible"  : false, "searchable": false,"targets": [10] }
+			{"visible"  : false, "searchable": false,"targets": [11] }
 		]
 		table_render('#tbl_excel',dta_table_excel,dta_table_header,dta_columnDefs,false)
 	};
@@ -496,7 +497,6 @@ function table_render(Table,datos,Header,columnDefs,Filter)
 		'columns': Header,
 		"columnDefs": columnDefs,
 		rowCallback: function( row, data, index ) {
-			console.log(data)
 			if ( data.isOK == 'N' ) {
 				$(row).addClass('table-danger');
 			} 

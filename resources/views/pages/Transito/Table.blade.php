@@ -8,7 +8,7 @@
 @endsection
 @section('content')
 <div class="container-fluid">
-  <div class="row mb-5">
+  <div class="row">
     <div class="col-md-10">
       <h4 class="h4">Inventario {{ ($data['ID'] == 0)? 'Transito Sin Codigo' : 'Transito Con Codigo' }} </h4>
     </div>
@@ -244,14 +244,15 @@
                             <th>FECHA ESTIMADA</th>
                             <th>MERCADO</th>
                             <th>MIFIC</th>
-                            <th>PRECIO MIFIC</th>
+                            <th>VIA DE TRANSITO</th>
                             <th>COMENTARIO</th>
+                            <th>PEDIDO</th>
                             <th></th>
                         </tr>
                     </thead>
                   <tbody>
-                  <tr colspan="11">
-                      <td class="text-center" colspan="11">-</td>
+                  <tr colspan="12">
+                      <td class="text-center" colspan="12">-</td>
                   </tr>
                   </tbody>
                   </table>  
