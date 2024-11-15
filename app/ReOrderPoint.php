@@ -182,6 +182,7 @@ class ReOrderPoint extends Model
         
         $NameMonths = ($Canal === 'TODOS') ? ReOrderPoint::NameMonth($Sales->FechaFinal) : ReOrderPoint::NameMonth($FechaEnd) ;
 
+        $InfoArticulo = Articulos::WHERE('ARTICULO',$Articulos)->first();
 
         $array = [
             'LEADTIME'                      => isset($Sales->LEADTIME) ? number_format($Sales->LEADTIME, 0, '.', '') : 0,
@@ -214,8 +215,13 @@ class ReOrderPoint extends Model
             'CANTIDAD_V2'                   => isset($Sales->CANTIDAD_ORDENAR_AJUSTADA) ? $Sales->CANTIDAD_ORDENAR_AJUSTADA : '',
             'CLASE_V2'                      => isset($Sales->CLASE) ? $Sales->CLASE : '',   
             'IMAGE'                         => isset($ImagesArticulos) ? $ImagesArticulos : '',
-            
-                                    
+
+            'CLASE_TERAPEUTICA'             => isset($InfoArticulo->CLASE_TERAPEUTICA) ? $InfoArticulo->CLASE_TERAPEUTICA : ' - ',
+            'LABORATORIO'                   => isset($InfoArticulo->LABORATORIO) ? $InfoArticulo->LABORATORIO : ' - ',
+            'UNIDAD_ALMACEN'                => isset($InfoArticulo->UNIDAD_ALMACEN) ? $InfoArticulo->UNIDAD_ALMACEN : ' - ',
+            'DESCRIPCION'                   => isset($InfoArticulo->DESCRIPCION) ? strtoupper($InfoArticulo->DESCRIPCION) : ' - '
+
+
         ];
 
         if ($Canal === 'LICITACIONES') {
