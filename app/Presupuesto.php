@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Presupuestoumk extends Model
+class Presupuesto extends Model
 {
     protected $connection = 'sqlsrv';
     public $timestamps = false;
@@ -16,7 +16,7 @@ class Presupuestoumk extends Model
         $total = 0;
         $json = array();
         
-        $ventas = Presupuestoumk::selectRaw('CLASE_PRODUCTO, CANAL2, SUM(PRECIO_TOTAL) as total_precio')
+        $ventas = Presupuesto::selectRaw('CLASE_PRODUCTO, CANAL2, SUM(PRECIO_TOTAL) as total_precio')
             ->groupBy('CLASE_PRODUCTO', 'CANAL2')
             ->get();
 

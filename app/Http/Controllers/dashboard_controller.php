@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Company;
 use App\ContribucionPorCanales;
-use App\Presupuestoumk;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
@@ -241,12 +240,6 @@ class dashboard_controller extends Controller {
   {
       $obj = dashboard_model::getAllClientsByCategory($mes, $anio, $categoria,$Bolson);
       return response()->json($obj);
-  }
-
-  public function presupuestoUMK()
-  {
-    $presupuesto = Presupuestoumk::getEjecucionPresupuesto();
-    return view('pages.presupuestoUMK',compact('presupuesto'));
   }
 
 }
