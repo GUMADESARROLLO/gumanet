@@ -183,8 +183,6 @@
                           <span class="text-primary"> • </span>
                           <span id="IdUnidadMedida">UNIDAD MEDIDA<br /></span>
                         </div>
-                        
-                       
                       </div>
                       <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                         <div class="d-flex flex-row align-items-center mb-1">
@@ -193,7 +191,6 @@
                         </div>
                         <h6 class="text-success">Total Dispoble para Facturar.</h6>
                         <div class="d-flex flex-column mt-4">
-                          <a class="btn btn-primary btn-sm mt-2" id="navIndicadores" data-toggle="tab" href="#nav-Indicadores" role="tab" aria-controls="nav-Indicadores" aria-selected="false">Indicadores</a>
                           <button data-mdb-button-init data-mdb-ripple-init class="btn btn-secondary btn-sm mt-2" type="button" data-dismiss="modal">
                             Cerrar
                           </button>
