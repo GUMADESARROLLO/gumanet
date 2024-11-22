@@ -425,8 +425,8 @@ var ExcelToJSON = function() {
 							Documento	: rowArray[12] ||'N/D',
 							Via_transi	: rowArray[11],
 							Comment		: rowArray[15] ||'N/D',
-							isPedido	: isValue(rowArray[6],'PEDIDO',true) ,
-							isOK		: isOK
+							isOK		: isOK,
+							estado_pedido	: isValue(rowArray[6],'PEDIDO',true) 
 						})
 						console.log( rowArray[6]  ||'N/D');
 				}
