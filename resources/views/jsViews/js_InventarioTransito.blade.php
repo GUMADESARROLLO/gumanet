@@ -412,7 +412,12 @@ var ExcelToJSON = function() {
 
 						var isOK = (rowArray.length < 17 )? 'N' : 'S';
 
-						isError = (isOK == 'N')? true : false;						
+						
+
+						isError = (isOK == 'N')? true : false;		
+						
+					
+						console.log(isOK,rowArray.length);
 
 						dta_table_excel.push({
 							ARTICULO	: rowArray[0] || 'N/D',

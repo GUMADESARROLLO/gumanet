@@ -46,13 +46,15 @@ class ArticulosTransito extends Model
                     $Cantidad = number_format(str_replace(',', '', $v['CANTIDAD']), 4,'.','');
                     $Articulo = ($v['ARTICULO'] == 'N/D' || $v['ARTICULO'] == 'N/A' || is_numeric(intval($v['ARTICULO']) == false)) ? mt_rand(10000000, 99999999).'-N' : $v['ARTICULO'] ;
 
+                    $Estado = (isset($v['estado_pedido'])) ? $v['estado_pedido'] : 'N/D';
+
                     $datos_a_insertar[$k] = [
                         'Articulo'		        => $Articulo,
                         'Descripcion'		    => strtoupper($v['DESCRIPC']),
                         'cantidad'		        => $Cantidad,
-                        'cantidad_pedido'	    => ($v['estado_pedido']==='PEDIDO') ? $Cantidad : '0' ,
-                        'cantidad_transito'	    => ($v['estado_pedido']==='TRANSITO' || $v['estado_pedido']==='ON-HAND') ? $Cantidad : '0',
-                        'estado_compra'		    => $v['estado_pedido'],
+                        'cantidad_pedido'	    => ($Estado === 'PEDIDO') ? $Cantidad : '0' ,
+                        'cantidad_transito'	    => ($Estado === 'TRANSITO' || $Estado ==='ON-HAND') ? $Cantidad : '0',
+                        'estado_compra'		    => $Estado,
                         'fecha_pedido'		    => $v['dtPedido'],
                         'fecha_estimada'	    => (strpos($v['dtEstimada'], 'N/') === false) ? $v['dtEstimada'] : null ,
                         'mercado'		        => strtoupper($v['Mercado']),
