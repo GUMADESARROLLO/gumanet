@@ -47,6 +47,11 @@ class ArticulosTransito extends Model
                     $Articulo = ($v['ARTICULO'] == 'N/D' || $v['ARTICULO'] == 'N/A' || is_numeric(intval($v['ARTICULO']) == false)) ? mt_rand(10000000, 99999999).'-N' : $v['ARTICULO'] ;
 
                     $Estado = (isset($v['estado_pedido'])) ? $v['estado_pedido'] : 'N/D';
+                    $Mercado = (isset($v['Mercado'])) ? $v['Mercado'] : 'N/D';
+                    $Mific = (isset($v['Mific'])) ? $v['Mific'] : 'N/D';
+                    $Documento = (isset($v['Documento'])) ? $v['Documento'] : 'N/D';
+                    $Comment = (isset($v['Comment'])) ? $v['Comment'] : 'N/D';
+                    $Via_transi = (isset($v['Via_transi'])) ? $v['Via_transi'] : 'N/D';
 
                     $datos_a_insertar[$k] = [
                         'Articulo'		        => $Articulo,
@@ -57,12 +62,12 @@ class ArticulosTransito extends Model
                         'estado_compra'		    => $Estado,
                         'fecha_pedido'		    => $v['dtPedido'],
                         'fecha_estimada'	    => (strpos($v['dtEstimada'], 'N/') === false) ? $v['dtEstimada'] : null ,
-                        'mercado'		        => strtoupper($v['Mercado']),
-                        'mific'			        => strtoupper($v['Mific']),
-                        'documento'		        => $v['Documento'],
-                        'observaciones'		    => $v['Comment'],
+                        'mercado'		        => strtoupper($Mercado),
+                        'mific'			        => strtoupper($Mific),
+                        'documento'		        => $Documento,
+                        'observaciones'		    => $Comment,
                         'Nuevo'		            => 'N',                        
-                        'via_transporte'        => $v['Via_transi'],
+                        'via_transporte'        => $Via_transi,
                         'Precio_mific_farmacia' => 0,
                         'Precio_mific_public'   => 0,
                     ];
