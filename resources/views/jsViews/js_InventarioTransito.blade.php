@@ -425,10 +425,13 @@ var ExcelToJSON = function() {
 							Documento	: rowArray[12] ||'N/D',
 							Via_transi	: rowArray[11],
 							Comment		: rowArray[15] ||'N/D',
-							isPedido	: rowArray[6] ||'N/D',
+							isPedido	: isValue(rowArray[6],'PEDIDO',true) ,
 							isOK		: isOK
 						})
+						console.log( rowArray[6]  ||'N/D');
 				}
+
+				console.log(dta_table_excel);
 				
 			})
 
