@@ -16,7 +16,8 @@ class Presupuesto extends Model
         $total = 0;
         $json = array();
         
-        $ventas = Presupuesto::selectRaw('CLASE_PRODUCTO, CANAL2, SUM(PRECIO_TOTAL) as total_precio, SUM(CONTRIBUCION) as contribucion')
+        $ventas = Presupuesto::selectRaw('CLASE_PRODUCTO, CANAL2, SUM(PRECIO_TOTAL) as total_precio, SUM(CONTRIBUCION) as contribucion' )
+            ->where('MES','!=',0)
             ->groupBy('CLASE_PRODUCTO', 'CANAL2')
             ->get();
         
@@ -54,20 +55,53 @@ class Presupuesto extends Model
 
     }
 
-    public static function getPresupuestoAnual($anio){
-        $update = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion ? ?', [$anio]);
-        return $update;
+    public static function getPresupuestoAnual(){
+        $ventas = "";
+        $totalVenta = $totalContribucion = 0;
+        $json = array();
+        
+        $ventas = Presupuesto::selectRaw('CLASE_PRODUCTO, CANAL2, SUM(PRECIO_TOTAL) as total_precio, SUM(CONTRIBUCION) as contribucion' )
+            ->groupBy('CLASE_PRODUCTO', 'CANAL2')
+            ->get();
+        
+        foreach($ventas as $v){
+            $totalVenta += $v->total_precio;
+            $totalContribucion += $v->contribucion;
+            $json[$v->CLASE_PRODUCTO]['VENTA'] = floatval($v->total_precio); 
+            $json[$v->CLASE_PRODUCTO]['CONTRIBUCION'] = floatval($v->contribucion); 
+        }        
+        $json['PRIMARIOS UMK']['PRESUPUESTO'] = 154655620; 
+        $json['SECUNDARIOS']['PRESUPUESTO'] = 33425391; 
+        $json['NUEVOS']['PRESUPUESTO'] = 0;
+        $json['ONCO']['PRESUPUESTO'] = 1222795; 
+        $json['GPHARMA']['PRESUPUESTO'] = 14751185;
+        $json['CRUZ AZUL']['PRESUPUESTO'] = 36245895; 
+        $json['LICITACIONES']['PRESUPUESTO'] = 112000000;
+
+        $json['VENTAS_PRIVADO']['EJECUTADO'] = $json['PRIMARIOS UMK']['VENTA'] + $json['SECUNDARIOS']['VENTA'] + $json['NUEVOS']['VENTA'];
+        $json['VENTAS_PRIVADO']['PRESUPUESTO'] = $json['PRIMARIOS UMK']['PRESUPUESTO'] + $json['SECUNDARIOS']['PRESUPUESTO'] + $json['NUEVOS']['PRESUPUESTO'];
+        
+        $json['VENTAS_PROYECTOS']['EJECUTADO'] = $json['ONCO']['VENTA'] + $json['GPHARMA']['VENTA'];
+        $json['VENTAS_PROYECTOS']['PRESUPUESTO'] = $json['ONCO']['PRESUPUESTO'] + $json['GPHARMA']['PRESUPUESTO'];
+        
+        $json['VENTAS_INSTITUCIONES']['EJECUTADO'] = $json['CRUZ AZUL']['VENTA'] + $json['LICITACIONES']['VENTA'];
+        $json['VENTAS_INSTITUCIONES']['PRESUPUESTO'] = $json['CRUZ AZUL']['PRESUPUESTO'] + $json['LICITACIONES']['PRESUPUESTO'];
+
+        $json['VENTAS_BRUTAS']['EJECUTADO'] = $totalVenta;
+        
+        //dd($json);
+        return $json;
 
     }
 
     public static function actualizarEjecucionPresupuesto($mes, $ano){
-        $update = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion ? ?', [$mes, $ano]);
+        $update = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.pr_calcular_presupuesto_umk ? ?', [$mes, $ano]);
         return $update;
     }
 
     public static function NameMonth()
     {
-        $date = new \DateTime(Presupuesto::distinct()->pluck('FECHA_FACTURA')->first());
+        $date = new \DateTime(Presupuesto::distinct()->where('MES','!=',0)->pluck('FECHA_FACTURA')->first());
 
         $month = $date->format('M');
 
@@ -77,7 +111,7 @@ class Presupuesto extends Model
             $month
         );
 
-        return $month; // Ejemplo: "Ene23"
+        return $month;
     }
 
 }

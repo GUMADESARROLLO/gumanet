@@ -308,3 +308,4 @@ Route::get('dtArticulo', 'BudgetController@dtArticulo')->name('dtArticulo');
 
 // PRESUPUESTO UMK
 Route::get('Presupuesto', 'PresupuestoController@Presupuesto')->name('Presupuesto');
+Route::get('PresupuestoAnual','PresupuestoController@PresupuestAnual')->name('PresupuestoAnual');

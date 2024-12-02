@@ -31,239 +31,518 @@
         <a id="exp-to-excel-canales" href="#!" class="btn btn-light btn-block text-success"><i class="fas fa-file-excel"></i> Exportar</a>
         </div>-->   
   </div>
-  <div class="card mt-5">
-    <div class="card-header d-flex flex-between-center ps-0 py-0 border-bottom justify-content-end">
-        <ul class="nav nav-tabs border-0 flex-nowrap tab-active-caret" id="crm-revenue-chart-tab" role="tablist" data-tab-has-echarts="data-tab-has-echarts">
-            <li class="nav-item" role="presupuesto"><a class="nav-link py-3 mb-0 active" id="crm-mes-tab" data-bs-toggle="tab" href="#crm-mes" role="tab" aria-controls="crm-mes" aria-selected="false">MES</a></li>
-            <li class="nav-item" role="presupuesto"><a class="nav-link py-3 mb-0" id="crm-anio-tab" data-bs-toggle="tab" href="#crm-anio" role="tab" aria-controls="crm-anio" aria-selected="false">TODOS</a></li> 
-        </ul>
-    </div>
-    <div class="card-body">
-        <div class="row g-1">                   
-            <div class="col-sm-12">
-                <div class="tab-content">
-                    <div class="tab-pane active" id="crm-mes" role="tabpanel" aria-labelledby="crm-mes-tab">
-                        <table id="table_presupuesto" class="table table-bordered" >
-                            <thead>
-                                <tr class="bg-blue text-light">
-                                <th >CONSOLIDADO {{$presupuesto['MES']}} {{$presupuesto['ANIO']}}</th>
-                                <th >EJECUTADO</th>
-                                <th >%</th>
-                                <th >PRESUPUESTO</th>
-                                <th >%</th>
-                                <th >DIF. ABSOLUTA</th>
-                                <th >DIF. RELATIVA</th>
-                                </tr>               
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="bg-blue text-light">VENTAS BRUTAS</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['VENTAS_BRUTAS']['EJECUTADO'])}}</td>
-                                    <td style="text-align:right">100.00%</td>
-                                    <td style="text-align:right">29,358,407</td>
-                                    <td style="text-align:right">100.00%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['VENTAS_BRUTAS']['EJECUTADO'] - 29358407)}}</td>
-                                    <td style="text-align:right">({{@number_format((($presupuesto['VENTAS_BRUTAS']['EJECUTADO'] - 29358407)/29358407)*100,2)}}%)</td>
-                                </tr>
-                                <tr class="text-light" style="background-color: dodgerblue;">
-                                    <td>VENTAS PRIVADO</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PRIVADO']['EJECUTADO'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_PRIVADO']['EJECUTADO']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PRIVADO']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_PRIVADO']['PRESUPUESTO']/29358407)*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PRIVADO']['EJECUTADO'] - $presupuesto['VENTAS_PRIVADO']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">({{@number_format((($presupuesto['VENTAS_PRIVADO']['EJECUTADO'] - $presupuesto['VENTAS_PRIVADO']['PRESUPUESTO'])/$presupuesto['VENTAS_PRIVADO']['PRESUPUESTO'])*100,2)}}%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">VENTAS PRIMARIOS UMK</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['PRIMARIOS UMK']['VENTA'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['PRIMARIOS UMK']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['PRIMARIOS UMK']['PRESUPUESTO']),2)}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['PRIMARIOS UMK']['PRESUPUESTO']/29358407)*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['PRIMARIOS UMK']['VENTA'] - $presupuesto['PRIMARIOS UMK']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">({{@number_format((($presupuesto['PRIMARIOS UMK']['VENTA'] - $presupuesto['PRIMARIOS UMK']['PRESUPUESTO'])/$presupuesto['PRIMARIOS UMK']['PRESUPUESTO'])*100,2)}}%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">VENTAS SECUNDARIOS UMK</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['SECUNDARIOS']['VENTA'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['SECUNDARIOS']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['SECUNDARIOS']['PRESUPUESTO']),2)}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['SECUNDARIOS']['PRESUPUESTO']/29358407)*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['SECUNDARIOS']['VENTA'] - $presupuesto['SECUNDARIOS']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">({{@number_format((($presupuesto['SECUNDARIOS']['VENTA'] - $presupuesto['SECUNDARIOS']['PRESUPUESTO'])/$presupuesto['SECUNDARIOS']['PRESUPUESTO'])*100,2)}}%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">VENTAS NUEVOS</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['NUEVOS']['VENTA'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['NUEVOS']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['NUEVOS']['PRESUPUESTO']),2)}}</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['NUEVOS']['VENTA'] - $presupuesto['NUEVOS']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">(0%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">VENTAS LIQUIDACION</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">(0%)</td>
-                                </tr>
-                                <tr class="text-light" style="background-color: dodgerblue;">
-                                    <td>VENTAS PROYECTOS ESPECIALES</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PROYECTOS']['EJECUTADO'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_PROYECTOS']['EJECUTADO']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PROYECTOS']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_PROYECTOS']['PRESUPUESTO']/29358407)*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PROYECTOS']['EJECUTADO'] - $presupuesto['VENTAS_PROYECTOS']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">({{@number_format((($presupuesto['VENTAS_PROYECTOS']['EJECUTADO'] - $presupuesto['VENTAS_PROYECTOS']['PRESUPUESTO'])/$presupuesto['VENTAS_PROYECTOS']['PRESUPUESTO'])*100,2)}}%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">VENTAS ONCO</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['ONCO']['VENTA'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['ONCO']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['ONCO']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['ONCO']['PRESUPUESTO']/29358407)*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['ONCO']['VENTA'] - $presupuesto['ONCO']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">({{@number_format((($presupuesto['ONCO']['VENTA'] - $presupuesto['ONCO']['PRESUPUESTO'])/$presupuesto['ONCO']['PRESUPUESTO'])*100,2)}}%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">VENTAS GUMAPHARMA</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['GPHARMA']['VENTA'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['GPHARMA']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['GPHARMA']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['GPHARMA']['PRESUPUESTO']/29358407)*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['GPHARMA']['VENTA'] - $presupuesto['GPHARMA']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">({{@number_format((($presupuesto['GPHARMA']['VENTA'] - $presupuesto['GPHARMA']['PRESUPUESTO'])/$presupuesto['GPHARMA']['PRESUPUESTO'])*100,2)}}%)</td>
-                                </tr>
-                                <tr class="text-light" style="background-color: dodgerblue;">
-                                    <td>VENTAS INSTITUCIONALES</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['VENTAS_INSTITUCIONES']['EJECUTADO'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_INSTITUCIONES']['EJECUTADO']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['VENTAS_INSTITUCIONES']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_INSTITUCIONES']['PRESUPUESTO']/29358407)*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['VENTAS_INSTITUCIONES']['EJECUTADO'] - $presupuesto['VENTAS_INSTITUCIONES']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">({{@number_format((($presupuesto['VENTAS_INSTITUCIONES']['EJECUTADO'] - $presupuesto['VENTAS_INSTITUCIONES']['PRESUPUESTO'])/$presupuesto['VENTAS_INSTITUCIONES']['PRESUPUESTO'])*100,2)}}%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">VENTAS CRUZ AZUL</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['CRUZ AZUL']['VENTA'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['CRUZ AZUL']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['CRUZ AZUL']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['CRUZ AZUL']['PRESUPUESTO']/29358407)*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['CRUZ AZUL']['VENTA'] - $presupuesto['CRUZ AZUL']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">({{@number_format((($presupuesto['CRUZ AZUL']['VENTA'] - $presupuesto['CRUZ AZUL']['PRESUPUESTO'])/$presupuesto['CRUZ AZUL']['PRESUPUESTO'])*100,2)}}%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">VENTAS LICITACIÓN</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['LICITACIONES']['VENTA'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['LICITACIONES']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['LICITACIONES']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['LICITACIONES']['PRESUPUESTO']/29358407)*100,2)}}%</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['LICITACIONES']['VENTA'] - $presupuesto['LICITACIONES']['PRESUPUESTO'])}}</td>
-                                    <td style="text-align:right">({{@number_format((($presupuesto['LICITACIONES']['VENTA'] - $presupuesto['LICITACIONES']['PRESUPUESTO'])/$presupuesto['LICITACIONES']['PRESUPUESTO'])*100,2)}}%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">DESCUENTOS Y DEVOLUCIONES (4%)</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">(0%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">VENTAS NETAS</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">(0%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">COSTO DE VENTA</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">(0%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">CONTRIBUCION NETA</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">(0%)</td>
-                                </tr>
-                                <tr class="text-light" style="background-color: dodgerblue;">
-                                    <td class="bg-blue text-light">CONTRIBUCION PRIVADA</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">(0%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">CONTRIBUCION PRIMARIOS UMK</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['PRIMARIOS UMK']['CONTRIBUCION'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['PRIMARIOS UMK']['CONTRIBUCION']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">(0%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">CONTRIBUCION SECUNDARIOS UMK</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['SECUNDARIOS']['CONTRIBUCION'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['SECUNDARIOS']['CONTRIBUCION']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">(0%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">CONTRIBUCION NUEVOS</td>
-                                    <td style="text-align:right">{{@number_format($presupuesto['NUEVOS']['CONTRIBUCION'])}}</td>
-                                    <td style="text-align:right">{{@number_format(($presupuesto['NUEVOS']['CONTRIBUCION']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">(0%)</td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-blue text-light">CONTRIBUCION LIQUIDACION</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">0%</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">(0%)</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane" id="crm-anio" role="tabpanel" aria-labelledby="crm-anio-tab">
-                        <table id="table_presupuesto" class="table table-bordered" >
-                            <thead>
-                              <tr class="bg-blue text-light">
-                                <th >CONSOLIDADO {{$presupuesto['MES']}} {{$presupuesto['ANIO']}}</th>
-                              </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
+  <div>
+    <nav >
+        <div class="nav nav-tabs mt-5 justify-content-end" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="navMes" data-toggle="tab" href="#nav-mes" role="tab" aria-controls="nav-mes" aria-selected="true">MES</a>
+            <a class="nav-item nav-link" id="navAnio" data-toggle="tab" href="#nav-anio" role="tab" aria-controls="nav-anio" aria-selected="false">TODOS</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-mes" role="tabpanel" aria-labelledby="navMes">
+            <table id="table_presupuesto" class="table table-bordered" >
+                <thead>
+                    <tr class="bg-blue text-light">
+                    <th >CONSOLIDADO {{$presupuesto['MES']}} {{$presupuesto['ANIO']}}</th>
+                    <th >EJECUTADO</th>
+                    <th >%</th>
+                    <th >PRESUPUESTO</th>
+                    <th >%</th>
+                    <th >DIF. ABSOLUTA</th>
+                    <th >DIF. RELATIVA</th>
+                    </tr>               
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS BRUTAS</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['VENTAS_BRUTAS']['EJECUTADO'])}}</td>
+                        <td style="text-align:right">100.00%</td>
+                        <td style="text-align:right">29,358,407</td>
+                        <td style="text-align:right">100.00%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['VENTAS_BRUTAS']['EJECUTADO'] - 29358407)}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuesto['VENTAS_BRUTAS']['EJECUTADO'] - 29358407)/29358407)*100,2)}}%)</td>
+                    </tr>
+                    <tr class="text-light" style="background-color: dodgerblue;">
+                        <td>VENTAS PRIVADO</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PRIVADO']['EJECUTADO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_PRIVADO']['EJECUTADO']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PRIVADO']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_PRIVADO']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PRIVADO']['EJECUTADO'] - $presupuesto['VENTAS_PRIVADO']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuesto['VENTAS_PRIVADO']['EJECUTADO'] - $presupuesto['VENTAS_PRIVADO']['PRESUPUESTO'])/$presupuesto['VENTAS_PRIVADO']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS PRIMARIOS UMK</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['PRIMARIOS UMK']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['PRIMARIOS UMK']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['PRIMARIOS UMK']['PRESUPUESTO']),2)}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['PRIMARIOS UMK']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['PRIMARIOS UMK']['VENTA'] - $presupuesto['PRIMARIOS UMK']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuesto['PRIMARIOS UMK']['VENTA'] - $presupuesto['PRIMARIOS UMK']['PRESUPUESTO'])/$presupuesto['PRIMARIOS UMK']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS SECUNDARIOS UMK</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['SECUNDARIOS']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['SECUNDARIOS']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['SECUNDARIOS']['PRESUPUESTO']),2)}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['SECUNDARIOS']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['SECUNDARIOS']['VENTA'] - $presupuesto['SECUNDARIOS']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuesto['SECUNDARIOS']['VENTA'] - $presupuesto['SECUNDARIOS']['PRESUPUESTO'])/$presupuesto['SECUNDARIOS']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS NUEVOS</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['NUEVOS']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['NUEVOS']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['NUEVOS']['PRESUPUESTO']),2)}}</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['NUEVOS']['VENTA'] - $presupuesto['NUEVOS']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS LIQUIDACION</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr class="text-light" style="background-color: dodgerblue;">
+                        <td>VENTAS PROYECTOS ESPECIALES</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PROYECTOS']['EJECUTADO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_PROYECTOS']['EJECUTADO']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PROYECTOS']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_PROYECTOS']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['VENTAS_PROYECTOS']['EJECUTADO'] - $presupuesto['VENTAS_PROYECTOS']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuesto['VENTAS_PROYECTOS']['EJECUTADO'] - $presupuesto['VENTAS_PROYECTOS']['PRESUPUESTO'])/$presupuesto['VENTAS_PROYECTOS']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS ONCO</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['ONCO']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['ONCO']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['ONCO']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['ONCO']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['ONCO']['VENTA'] - $presupuesto['ONCO']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuesto['ONCO']['VENTA'] - $presupuesto['ONCO']['PRESUPUESTO'])/$presupuesto['ONCO']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS GUMAPHARMA</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['GPHARMA']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['GPHARMA']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['GPHARMA']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['GPHARMA']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['GPHARMA']['VENTA'] - $presupuesto['GPHARMA']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuesto['GPHARMA']['VENTA'] - $presupuesto['GPHARMA']['PRESUPUESTO'])/$presupuesto['GPHARMA']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr class="text-light" style="background-color: dodgerblue;">
+                        <td>VENTAS INSTITUCIONALES</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['VENTAS_INSTITUCIONES']['EJECUTADO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_INSTITUCIONES']['EJECUTADO']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['VENTAS_INSTITUCIONES']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['VENTAS_INSTITUCIONES']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['VENTAS_INSTITUCIONES']['EJECUTADO'] - $presupuesto['VENTAS_INSTITUCIONES']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuesto['VENTAS_INSTITUCIONES']['EJECUTADO'] - $presupuesto['VENTAS_INSTITUCIONES']['PRESUPUESTO'])/$presupuesto['VENTAS_INSTITUCIONES']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS CRUZ AZUL</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['CRUZ AZUL']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['CRUZ AZUL']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['CRUZ AZUL']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['CRUZ AZUL']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['CRUZ AZUL']['VENTA'] - $presupuesto['CRUZ AZUL']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuesto['CRUZ AZUL']['VENTA'] - $presupuesto['CRUZ AZUL']['PRESUPUESTO'])/$presupuesto['CRUZ AZUL']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS LICITACIÓN</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['LICITACIONES']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['LICITACIONES']['VENTA']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['LICITACIONES']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['LICITACIONES']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['LICITACIONES']['VENTA'] - $presupuesto['LICITACIONES']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuesto['LICITACIONES']['VENTA'] - $presupuesto['LICITACIONES']['PRESUPUESTO'])/$presupuesto['LICITACIONES']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">DESCUENTOS Y DEVOLUCIONES (4%)</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS NETAS</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">COSTO DE VENTA</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">CONTRIBUCION NETA</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr class="text-light" style="background-color: dodgerblue;">
+                        <td class="bg-blue text-light">CONTRIBUCION PRIVADA</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">CONTRIBUCION PRIMARIOS UMK</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['PRIMARIOS UMK']['CONTRIBUCION'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['PRIMARIOS UMK']['CONTRIBUCION']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">CONTRIBUCION SECUNDARIOS UMK</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['SECUNDARIOS']['CONTRIBUCION'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['SECUNDARIOS']['CONTRIBUCION']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">CONTRIBUCION NUEVOS</td>
+                        <td style="text-align:right">{{@number_format($presupuesto['NUEVOS']['CONTRIBUCION'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuesto['NUEVOS']['CONTRIBUCION']/$presupuesto['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">CONTRIBUCION LIQUIDACION</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">GASTOS DE COMERCIALIZACION</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">COMISIONES</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">GASTO DE VENTA</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">GASTO DE MERCADEO</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr class="text-light" style="background-color: dodgerblue;">
+                        <td >MARGEN COMERCIAL</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="nav-anio" role="tabpanel" aria-labelledby="navAnio">
+            <table id="table_presupuesto_anual" class="table table-bordered" >
+                <thead>
+                    <tr class="bg-blue text-light">
+                    <th >CONSOLIDADO {{$presupuesto['ANIO']}}</th>
+                    <th >EJECUTADO</th>
+                    <th >%</th>
+                    <th >PRESUPUESTO</th>
+                    <th >%</th>
+                    <th >DIF. ABSOLUTA</th>
+                    <th >DIF. RELATIVA</th>
+                    </tr>               
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS BRUTAS</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])}}</td>
+                        <td style="text-align:right">100.00%</td>
+                        <td style="text-align:right">29,358,407</td>
+                        <td style="text-align:right">100.00%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'] - 29358407)}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'] - 29358407)/29358407)*100,2)}}%)</td>
+                    </tr>
+                    <tr class="text-light" style="background-color: dodgerblue;">
+                        <td>VENTAS PRIVADO</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['VENTAS_PRIVADO']['EJECUTADO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['VENTAS_PRIVADO']['EJECUTADO']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['VENTAS_PRIVADO']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['VENTAS_PRIVADO']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['VENTAS_PRIVADO']['EJECUTADO'] - $presupuestoAnual['VENTAS_PRIVADO']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuestoAnual['VENTAS_PRIVADO']['EJECUTADO'] - $presupuestoAnual['VENTAS_PRIVADO']['PRESUPUESTO'])/$presupuestoAnual['VENTAS_PRIVADO']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS PRIMARIOS UMK</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['PRIMARIOS UMK']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['PRIMARIOS UMK']['VENTA']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['PRIMARIOS UMK']['PRESUPUESTO']),2)}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['PRIMARIOS UMK']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['PRIMARIOS UMK']['VENTA'] - $presupuestoAnual['PRIMARIOS UMK']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuestoAnual['PRIMARIOS UMK']['VENTA'] - $presupuestoAnual['PRIMARIOS UMK']['PRESUPUESTO'])/$presupuestoAnual['PRIMARIOS UMK']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS SECUNDARIOS UMK</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['SECUNDARIOS']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['SECUNDARIOS']['VENTA']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['SECUNDARIOS']['PRESUPUESTO']),2)}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['SECUNDARIOS']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['SECUNDARIOS']['VENTA'] - $presupuestoAnual['SECUNDARIOS']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuestoAnual['SECUNDARIOS']['VENTA'] - $presupuestoAnual['SECUNDARIOS']['PRESUPUESTO'])/$presupuestoAnual['SECUNDARIOS']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS NUEVOS</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['NUEVOS']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['NUEVOS']['VENTA']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['NUEVOS']['PRESUPUESTO']),2)}}</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['NUEVOS']['VENTA'] - $presupuestoAnual['NUEVOS']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS LIQUIDACION</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr class="text-light" style="background-color: dodgerblue;">
+                        <td>VENTAS PROYECTOS ESPECIALES</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['VENTAS_PROYECTOS']['EJECUTADO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['VENTAS_PROYECTOS']['EJECUTADO']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['VENTAS_PROYECTOS']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['VENTAS_PROYECTOS']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['VENTAS_PROYECTOS']['EJECUTADO'] - $presupuestoAnual['VENTAS_PROYECTOS']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuestoAnual['VENTAS_PROYECTOS']['EJECUTADO'] - $presupuestoAnual['VENTAS_PROYECTOS']['PRESUPUESTO'])/$presupuestoAnual['VENTAS_PROYECTOS']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS ONCO</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['ONCO']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['ONCO']['VENTA']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['ONCO']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['ONCO']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['ONCO']['VENTA'] - $presupuestoAnual['ONCO']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuestoAnual['ONCO']['VENTA'] - $presupuestoAnual['ONCO']['PRESUPUESTO'])/$presupuestoAnual['ONCO']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS GUMAPHARMA</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['GPHARMA']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['GPHARMA']['VENTA']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['GPHARMA']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['GPHARMA']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['GPHARMA']['VENTA'] - $presupuestoAnual['GPHARMA']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuestoAnual['GPHARMA']['VENTA'] - $presupuestoAnual['GPHARMA']['PRESUPUESTO'])/$presupuestoAnual['GPHARMA']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr class="text-light" style="background-color: dodgerblue;">
+                        <td>VENTAS INSTITUCIONALES</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['VENTAS_INSTITUCIONES']['EJECUTADO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['VENTAS_INSTITUCIONES']['EJECUTADO']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['VENTAS_INSTITUCIONES']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['VENTAS_INSTITUCIONES']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['VENTAS_INSTITUCIONES']['EJECUTADO'] - $presupuestoAnual['VENTAS_INSTITUCIONES']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuestoAnual['VENTAS_INSTITUCIONES']['EJECUTADO'] - $presupuestoAnual['VENTAS_INSTITUCIONES']['PRESUPUESTO'])/$presupuestoAnual['VENTAS_INSTITUCIONES']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS CRUZ AZUL</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['CRUZ AZUL']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['CRUZ AZUL']['VENTA']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['CRUZ AZUL']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['CRUZ AZUL']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['CRUZ AZUL']['VENTA'] - $presupuestoAnual['CRUZ AZUL']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuestoAnual['CRUZ AZUL']['VENTA'] - $presupuestoAnual['CRUZ AZUL']['PRESUPUESTO'])/$presupuestoAnual['CRUZ AZUL']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS LICITACIÓN</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['LICITACIONES']['VENTA'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['LICITACIONES']['VENTA']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['LICITACIONES']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['LICITACIONES']['PRESUPUESTO']/29358407)*100,2)}}%</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['LICITACIONES']['VENTA'] - $presupuestoAnual['LICITACIONES']['PRESUPUESTO'])}}</td>
+                        <td style="text-align:right">({{@number_format((($presupuestoAnual['LICITACIONES']['VENTA'] - $presupuestoAnual['LICITACIONES']['PRESUPUESTO'])/$presupuestoAnual['LICITACIONES']['PRESUPUESTO'])*100,2)}}%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">DESCUENTOS Y DEVOLUCIONES (4%)</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">VENTAS NETAS</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">COSTO DE VENTA</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">CONTRIBUCION NETA</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr class="text-light" style="background-color: dodgerblue;">
+                        <td class="bg-blue text-light">CONTRIBUCION PRIVADA</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">CONTRIBUCION PRIMARIOS UMK</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['PRIMARIOS UMK']['CONTRIBUCION'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['PRIMARIOS UMK']['CONTRIBUCION']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">CONTRIBUCION SECUNDARIOS UMK</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['SECUNDARIOS']['CONTRIBUCION'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['SECUNDARIOS']['CONTRIBUCION']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">CONTRIBUCION NUEVOS</td>
+                        <td style="text-align:right">{{@number_format($presupuestoAnual['NUEVOS']['CONTRIBUCION'])}}</td>
+                        <td style="text-align:right">{{@number_format(($presupuestoAnual['NUEVOS']['CONTRIBUCION']/$presupuestoAnual['VENTAS_BRUTAS']['EJECUTADO'])*100,2)}}%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">CONTRIBUCION LIQUIDACION</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">GASTOS DE COMERCIALIZACION</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">COMISIONES</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">GASTO DE VENTA</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-blue text-light">GASTO DE MERCADEO</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                    <tr class="text-light" style="background-color: dodgerblue;">
+                        <td >MARGEN COMERCIAL</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0%</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">(0%)</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
   </div>
-
   
 </div>
 
