@@ -417,7 +417,6 @@ var ExcelToJSON = function() {
 						isError = (isOK == 'N')? true : false;		
 						
 					
-						console.log(isOK,rowArray.length);
 
 						dta_table_excel.push({
 							ARTICULO	: rowArray[0] || 'N/D',
@@ -470,9 +469,11 @@ var ExcelToJSON = function() {
 
 	};
 };
+
 function dtFormat(fecha) {
     return (fecha.indexOf('N/') !== -1) ? fecha : moment(fecha, 'M/D/YY').format('YYYY-MM-DD');
 }
+
 function table_render(Table,datos,Header,columnDefs,Filter)
 {
 

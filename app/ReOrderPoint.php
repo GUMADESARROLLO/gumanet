@@ -12,6 +12,7 @@ use PHPExcel_Style;
 use PHPExcel_Style_Border;
 use PHPExcel_Style_Fill;
 use PHPExcel_Cell;
+use App\Logs_calcs;
 
 class ReOrderPoint extends Model
 {
@@ -44,6 +45,14 @@ class ReOrderPoint extends Model
 
         // Ejecutar el cuarto procedimiento almacenado        
         //DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales");
+        
+        // Insertar en el modelo Logs_calcs
+        Logs_calcs::create([
+            'Modulo'        =>  'ReOrderPoint',
+            'ini'           => $FechaIni,
+            'end'           => $FechaEnd,
+            'Observacion'   => 'Calculo de Reorder Point con Dia Actual: ' . $DiaActual
+        ]);
         
 
     }
@@ -191,7 +200,7 @@ class ReOrderPoint extends Model
             'LIMITE_LOGISTICO_MEDIO'        => isset($Sales->LIMITE_LOGISTICO_MEDIO) ? number_format($Sales->LIMITE_LOGISTICO_MEDIO, 0, '.', '') : 0,
             'CONTRIBUCION'                  => isset($Sales->CONTRIBUCION) ? number_format($Sales->CONTRIBUCION, 0, '.', '') : 0,
 
-            'REORDER1'                      => isset($Sales->REORDER1) ? number_format($Sales->REORDER1, 0, '.', '') : 0,
+            'REORDER1'                      => isset($Sales->REORDER1) ? number_format($Sales->REORDER1, 2, '.', '') : 0,
             'REORDER'                       => isset($Sales->REORDER) ? number_format($Sales->REORDER, 0, '.', '') : 0,
             'CANTIDAD_ORDENAR'              => isset($Sales->CANTIDAD_ORDENAR) ? number_format($Sales->CANTIDAD_ORDENAR, 0, '.', '') : 0,
             'MOQ'                           => isset($Sales->MOQ) ? number_format($Sales->MOQ, 0, '.', '') : 0,

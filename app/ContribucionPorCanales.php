@@ -16,6 +16,8 @@ use PHPExcel_Style_Fill;
 use PHPExcel_Cell;
 use PhpParser\Node\Stmt\Foreach_;
 
+use App\Logs_calcs;
+
 class ContribucionPorCanales extends Model
 {
     protected $connection = 'sqlsrv';
@@ -213,6 +215,7 @@ class ContribucionPorCanales extends Model
 
     public static function calcularCanales($fechaIni, $fechaEnd)
     {
+        
         DB::connection('sqlsrv')->statement("SET NOCOUNT ON ; EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion");        
         ContribucionPorCanalesTable::where(function ($query) use ($fechaIni, $fechaEnd) {
             $query->where('FECHA', '<', $fechaIni)
@@ -220,6 +223,14 @@ class ContribucionPorCanales extends Model
         })->delete();
 
         DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales");
+
+        // Insertar en el modelo Logs_calcs
+        Logs_calcs::create([
+            'Modulo'        => 'AportePorCanales',
+            'ini'           => $fechaIni,
+            'end'           => $fechaEnd,
+            'Observacion'   => 'Calculo de Aporte por canales con fechas: ' . date('Y-m-d H:i')
+        ]);
         
     }
 
