@@ -412,7 +412,9 @@ var ExcelToJSON = function() {
 
 						var isOK = (rowArray.length < 17 )? 'N' : 'S';
 
+
 						isError = (isOK == 'N')? true : false;		
+
 
 						dta_table_excel.push({
 							ARTICULO	: rowArray[0] || 'N/D',
@@ -425,10 +427,11 @@ var ExcelToJSON = function() {
 							Documento	: rowArray[12] ||'N/D',
 							Via_transi	: rowArray[11],
 							Comment		: rowArray[15] ||'N/D',
-							isPedido	: rowArray[6] ||'N/D',
-							isOK		: isOK
+							isOK		: isOK,
+							estado_pedido	: isValue(rowArray[6],'PEDIDO',true) 
 						})
 				}
+
 				
 			})
 
@@ -445,7 +448,7 @@ var ExcelToJSON = function() {
 			{"title": "MIFIC","data": "Mific"},
 			{"title": "VIA DE TRANSITO","data": "Via_transi"},
 			{"title": "COMENTARIO","data": "Comment"},
-			{"title": "PEDIDO","data": "isPedido"},
+			{"title": "PEDIDO","data": "estado_pedido"},
 			{"title": "","data": "isOK"}
 		]
 		dta_columnDefs = [

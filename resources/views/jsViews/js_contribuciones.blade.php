@@ -148,7 +148,7 @@ $(document).ready(function () {
                                         }).removeClass('dt-button-active');;
                                     });
 
-                                    dt.draw(false);
+                                    calcularTotales(dt);
                                 
                                 }
                             },
@@ -167,12 +167,13 @@ $(document).ready(function () {
                                             'color': '#dc3545',
                                             'background-color': 'transparent'
                                         });
+                                        calcularTotales(dt);
                                     } else {
                                         $(node).css({
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
-                                        dt.draw(false);
+                                        calcularTotales(dt);
                                     }
                                     
                                 }
@@ -191,12 +192,13 @@ $(document).ready(function () {
                                             'color': '#dc3545',
                                             'background-color': 'transparent'
                                         });
+                                        calcularTotales(dt);
                                     } else {
                                         $(node).css({
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
-                                        dt.draw(false);
+                                        calcularTotales(dt);
                                     }
                                     
                                 }
@@ -215,12 +217,13 @@ $(document).ready(function () {
                                             'color': '#dc3545',
                                             'background-color': 'transparent'
                                         });
+                                        calcularTotales(dt);
                                     } else {
                                         $(node).css({
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
-                                        dt.draw(false);
+                                        calcularTotales(dt);
                                     }
                                     
                                 }
@@ -239,12 +242,13 @@ $(document).ready(function () {
                                             'color': '#dc3545',
                                             'background-color': 'transparent'
                                         });
+                                        calcularTotales(dt);
                                     } else {
                                         $(node).css({
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
-                                        dt.draw(false);
+                                        calcularTotales(dt);
                                     }
                                     
                                 }
@@ -263,12 +267,13 @@ $(document).ready(function () {
                                             'color': '#dc3545',
                                             'background-color': 'transparent'
                                         });
+                                        calcularTotales(dt);
                                     } else {
                                         $(node).css({
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
-                                        dt.draw(false);
+                                        calcularTotales(dt);
                                     }
                                    
                                 }
@@ -287,12 +292,13 @@ $(document).ready(function () {
                                             'color': '#dc3545',
                                             'background-color': 'transparent'
                                         });
+                                        calcularTotales(dt);
                                     } else {
                                         $(node).css({
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
-                                        dt.draw(false);
+                                        calcularTotales(dt);
                                     }
                                     
                                 }
@@ -311,12 +317,13 @@ $(document).ready(function () {
                                             'color': '#dc3545',
                                             'background-color': 'transparent'
                                         });
+                                        calcularTotales(dt);
                                     } else {
                                         $(node).css({
                                             'color': '#000000',
                                             'background-color': 'transparent'
                                         });
-                                        dt.draw(false);
+                                        calcularTotales(dt);
                                     }
                                     
                                 }
@@ -430,7 +437,7 @@ $(document).ready(function () {
                 }else{viArray.push('INSTITUCIONES_PRIVADAS');}
 
                 if (ctable.column(28).visible()) {
-                cantidad += parseFloat(row.CRUZ_AZUL_CANTIDAD.replace(/,/g, ''));
+                    cantidad += parseFloat(row.CRUZ_AZUL_CANTIDAD.replace(/,/g, ''));
                 }else{viArray.push('CRUZ_AZUL');}
 
                 if (ctable.column(34).visible()) {
@@ -445,13 +452,202 @@ $(document).ready(function () {
                     viArray.push('Todos');
                 }                
 
-                return '<a href="#" onclick=\'getDetalleCanal("' + row.ARTICULODESC + '", ' + JSON.stringify(viArray) + ', "' + row.DESCRIPCION + '", "' + 1 + '")\'>' + numeral(cantidad).format('0,0.00') + '</a>';
+                return '<a href="#" onclick=\'getDetalleCanal("' + row.ARTICULODESC + '", ' + JSON.stringify(viArray) + ', "' + row.DESCRIPCION + '", "' + 1 + '")\'>' + numeral(cantidad).format('0,0') + '</a>';
             }},
-            {"data": "TOTAL_PRECIO_PROM",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "TOTAL_VENTAS_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "TOTAL_COSTOS_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "TOTAL_CONTRIBUCION_C$",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
-            {"data": "TOTAL_MARGEN",render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},         
+            {"data": "TOTAL_PRECIO_PROM","render": function(data, type, row, meta) {
+                var ctable = $('#table_contribucion').DataTable();
+                var venta = 0;
+                var cantidad = 0;
+
+                if (ctable.column(4).visible()) {
+                    venta += parseFloat(row.FARMACIA_VENTA.replace(/,/g, ''));
+                    cantidad += parseFloat(row.FARMACIA_CANTIDAD.replace(/,/g, ''));
+                }
+                
+                if (ctable.column(10).visible()) {
+                    venta += parseFloat(row.CADENA_FARMACIA_VENTA.replace(/,/g, ''));
+                    cantidad += parseFloat(row.CADENA_FARMACIA_CANTIDAD.replace(/,/g, ''));
+                }
+
+                if (ctable.column(16).visible()) {
+                    venta += parseFloat(row.MAYORISTA_VENTA.replace(/,/g, ''));
+                    cantidad += parseFloat(row.MAYORISTA_CANTIDAD.replace(/,/g, ''));
+                }
+
+                if (ctable.column(22).visible()) {
+                    venta += parseFloat(row.INSTITUCION_PRIVADA_VENTA.replace(/,/g, ''));
+                    cantidad += parseFloat(row.INSTITUCION_PRIVADA_CANTIDAD.replace(/,/g, ''));
+                }
+
+                if (ctable.column(28).visible()) {
+                    venta += parseFloat(row.CRUZ_AZUL_VENTA.replace(/,/g, ''));
+                    cantidad += parseFloat(row.CRUZ_AZUL_CANTIDAD.replace(/,/g, ''));
+                }
+
+                if (ctable.column(34).visible()) {
+                    venta += parseFloat(row.INSTITUCION_PUBLICA_VENTA.replace(/,/g, ''));
+                    cantidad += parseFloat(row.INSTITUCION_PUBLICA_CANTIDAD.replace(/,/g, ''));
+                }
+
+                if (ctable.column(40).visible()) {
+                    venta += parseFloat(row.LICITACION_VENTA.replace(/,/g, ''));
+                    cantidad += parseFloat(row.LICITACION_CANTIDAD.replace(/,/g, ''));
+                }
+
+                return numeral(venta/cantidad).format('0,0.00');
+             }},
+            {"data": "TOTAL_VENTAS_C$", "render": function(data, type, row, meta) {
+                var ctable = $('#table_contribucion').DataTable();
+                var venta = 0;
+
+                if (ctable.column(4).visible()) {
+                    venta += parseFloat(row.FARMACIA_VENTA.replace(/,/g, ''));
+                }
+                
+                if (ctable.column(10).visible()) {
+                    venta += parseFloat(row.CADENA_FARMACIA_VENTA.replace(/,/g, ''));
+                }
+
+                if (ctable.column(16).visible()) {
+                    venta += parseFloat(row.MAYORISTA_VENTA.replace(/,/g, ''));
+                }
+
+                if (ctable.column(22).visible()) {
+                    venta += parseFloat(row.INSTITUCION_PRIVADA_VENTA.replace(/,/g, ''));
+                }
+
+                if (ctable.column(28).visible()) {
+                    venta += parseFloat(row.CRUZ_AZUL_VENTA.replace(/,/g, ''));
+                }
+
+                if (ctable.column(34).visible()) {
+                    venta += parseFloat(row.INSTITUCION_PUBLICA_VENTA.replace(/,/g, ''));
+                }
+
+                if (ctable.column(40).visible()) {
+                    venta += parseFloat(row.LICITACION_VENTA.replace(/,/g, ''));
+                }
+
+                return numeral(venta).format('0,0.00');
+             }},
+            {"data": "TOTAL_COSTOS_C$","render": function(data, type, row, meta) { 
+                var ctable = $('#table_contribucion').DataTable();
+                var costo = 0;
+
+                if (ctable.column(4).visible()) {
+                    costo += parseFloat(row.FARMACIA_COSTO.replace(/,/g, ''));
+                }
+                
+                if (ctable.column(10).visible()) {
+                    costo += parseFloat(row.CADENA_FARMACIA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(16).visible()) {
+                    costo += parseFloat(row.MAYORISTA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(22).visible()) {
+                    costo += parseFloat(row.INSTITUCION_PRIVADA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(28).visible()) {
+                    costo += parseFloat(row.CRUZ_AZUL_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(34).visible()) {
+                    costo += parseFloat(row.INSTITUCION_PUBLICA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(40).visible()) {
+                    costo += parseFloat(row.LICITACION_COSTO.replace(/,/g, ''));
+                }
+
+                return numeral(costo).format('0,0.00');
+            }},
+            {"data": "TOTAL_CONTRIBUCION_C$","render": function(data, type, row, meta) { 
+                var ctable = $('#table_contribucion').DataTable();
+                var venta = 0;
+                var costo = 0;
+
+                if (ctable.column(4).visible()) {
+                    venta += parseFloat(row.FARMACIA_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.FARMACIA_COSTO.replace(/,/g, ''));
+                }
+                
+                if (ctable.column(10).visible()) {
+                    venta += parseFloat(row.CADENA_FARMACIA_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.CADENA_FARMACIA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(16).visible()) {
+                    venta += parseFloat(row.MAYORISTA_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.MAYORISTA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(22).visible()) {
+                    venta += parseFloat(row.INSTITUCION_PRIVADA_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.INSTITUCION_PRIVADA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(28).visible()) {
+                    venta += parseFloat(row.CRUZ_AZUL_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.CRUZ_AZUL_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(34).visible()) {
+                    venta += parseFloat(row.INSTITUCION_PUBLICA_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.INSTITUCION_PUBLICA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(40).visible()) {
+                    venta += parseFloat(row.LICITACION_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.LICITACION_COSTO.replace(/,/g, ''));
+                }
+
+                return numeral(venta-costo).format('0,0.00');
+            }},
+            {"data": "TOTAL_MARGEN","render": function(data, type, row, meta) {
+                var ctable = $('#table_contribucion').DataTable();
+                var venta = 0;
+                var costo = 0;
+
+                if (ctable.column(4).visible()) {
+                    venta += parseFloat(row.FARMACIA_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.FARMACIA_COSTO.replace(/,/g, ''));
+                }
+                
+                if (ctable.column(10).visible()) {
+                    venta += parseFloat(row.CADENA_FARMACIA_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.CADENA_FARMACIA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(16).visible()) {
+                    venta += parseFloat(row.MAYORISTA_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.MAYORISTA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(22).visible()) {
+                    venta += parseFloat(row.INSTITUCION_PRIVADA_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.INSTITUCION_PRIVADA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(28).visible()) {
+                    venta += parseFloat(row.CRUZ_AZUL_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.CRUZ_AZUL_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(34).visible()) {
+                    venta += parseFloat(row.INSTITUCION_PUBLICA_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.INSTITUCION_PUBLICA_COSTO.replace(/,/g, ''));
+                }
+
+                if (ctable.column(40).visible()) {
+                    venta += parseFloat(row.LICITACION_VENTA.replace(/,/g, ''));
+                    costo += parseFloat(row.LICITACION_COSTO.replace(/,/g, ''));
+                }
+
+                return numeral(((venta-costo)/venta)*100).format('0,0.00');
+             }},        
         ],
         "columnDefs": [        
             {"className": "dt-center", "targets":[ 3 ]},               
@@ -543,16 +739,14 @@ $(document).ready(function () {
     })
 
     Table.on('draw.dt', function () {
-        calcularTotales();        
+       calcularTotales(Table);        
     });
 
     
     
 });
 
-function calcularTotales() {    
-    console.log('hoy')
-    var table = $('#table_contribucion').DataTable();
+function calcularTotales(table) {  
     var Farmacia_Cantidad = Farmacia_Costo = Farmacia_Venta = Farmacia_Contribucion = 0;
     var Cadena_Farmacia_Cantidad = Cadena_Farmacia_Costo = Cadena_Farmacia_Venta = Cadena_Farmacia_Contribucion = 0;
     var Mayorista_Cantidad = Mayorista_Costo = Mayorista_Venta = Mayorista_Contribucion = 0;
@@ -561,7 +755,8 @@ function calcularTotales() {
     var Institucion_Publica_Cantidad = Institucion_Publica_Costo = Institucion_Publica_Venta = Institucion_Publica_Contribucion = 0;
     var Licitacion_Cantidad = Licitacion_Costo = Licitacion_Venta = Licitacion_Contribucion = 0;
     var Total_Cantidad = Total_Costo = Total_Venta = Total_Contribucion = 0;
-
+    
+    
     table.rows({ search: 'applied' }).every(function() {
         var data = this.data();
         
@@ -609,70 +804,71 @@ function calcularTotales() {
 
         // TOTAL DE TOTALES
         if (table.column(4).visible()) {
-            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            Total_Cantidad      += parseFloat(data.FARMACIA_CANTIDAD) || 0;
         }
         if (table.column(10).visible()) {
-            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            Total_Cantidad      += parseFloat(data.CADENA_FARMACIA_CANTIDAD) || 0;
         }
         if (table.column(16).visible()) {
-            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            Total_Cantidad      += parseFloat(data.MAYORISTA_CANTIDAD) || 0;
         }
         if (table.column(22).visible()) {
-            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            Total_Cantidad      += parseFloat(data.INSTITUCION_PRIVADA_CANTIDAD) || 0;
         }
         if (table.column(28).visible()) {
-            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            Total_Cantidad      += parseFloat(data.CRUZ_AZUL_CANTIDAD) || 0;
         }
         if (table.column(34).visible()) {
-            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            Total_Cantidad      += parseFloat(data.INSTITUCION_PUBLICA_CANTIDAD) || 0;
         }
         if (table.column(40).visible()) {
-            Total_Cantidad      += parseFloat(data.TOTAL_VENTAS_PACK) || 0;
+            Total_Cantidad      += parseFloat(data.LICITACION_CANTIDAD) || 0;
         }
         if (table.column(6).visible()) {
-            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            Total_Venta         += parseFloat(data.FARMACIA_VENTA) || 0;
         }
         if (table.column(12).visible()) {
-            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            Total_Venta         += parseFloat(data.CADENA_FARMACIA_VENTA) || 0;
         }
         if (table.column(18).visible()) {
-            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            Total_Venta         += parseFloat(data.MAYORISTA_VENTA) || 0;
         }
         if (table.column(24).visible()) {
-            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            Total_Venta         += parseFloat(data.INSTITUCION_PRIVADA_VENTA) || 0;
         }
         if (table.column(30).visible()) {
-            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            Total_Venta        += parseFloat(data.CRUZ_AZUL_VENTA) || 0;
         }
         if (table.column(36).visible()) {
-            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            Total_Venta         += parseFloat(data.INSTITUCION_PUBLICA_VENTA) || 0;
         }
         if (table.column(42).visible()) {
-            Total_Venta         += parseFloat(data.TOTAL_VENTAS_C$) || 0;
+            Total_Venta        += parseFloat(data.LICITACION_VENTA) || 0;
         }
         if (table.column(7).visible()) {
-            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            Total_Costo         += parseFloat(data.FARMACIA_COSTO) || 0;
         }
         if (table.column(13).visible()) {
-            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            Total_Costo         += parseFloat(data.CADENA_FARMACIA_COSTO) || 0;
         }
         if (table.column(19).visible()) {
-            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            Total_Costo         += parseFloat(data.MAYORISTA_COSTO) || 0;
         }
         if (table.column(25).visible()) {
-            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            Total_Costo         += parseFloat(data.INSTITUCION_PRIVADA_COSTO) || 0;
         }
         if (table.column(31).visible()) {
-            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            Total_Costo         += parseFloat(data.CRUZ_AZUL_COSTO) || 0;
         }
         if (table.column(37).visible()) {
-            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            Total_Costo         += parseFloat(data.INSTITUCION_PUBLICA_COSTO) || 0;
         }
         if (table.column(43).visible()) {
-            Total_Costo         += parseFloat(data.TOTAL_COSTOS_C$) || 0;
+            Total_Costo         += parseFloat(data.LICITACION_COSTO) || 0;
         }
         
-    });
+    })
+    
     
     // TOTAL DE FARMACIAS
     $('#Farmacia_Cantidad').html(numeral(Farmacia_Cantidad).format('0,0'));
@@ -737,6 +933,7 @@ function calcularTotales() {
     $('#Total_Costo').html('C$ '+numeral(Total_Costo).format('0,0'));
     $('#Total_Contribucion').html('C$ '+numeral(Total_Venta-Total_Costo).format('0,0'));
     $('#Total_Margen').html(numeral(((Total_Venta-Total_Costo)/Total_Venta)*100).format('0,0.00'));
+    
 }
 function getDetalleArticulo(Articulos, Descripcion){
     $("#id_descripcion").html(Descripcion+` | `+ Articulos);
@@ -849,7 +1046,7 @@ function verificarLocalStorage(boton, canal) {
     } else {
         localStorage.setItem(boton, canal);
        return true;
-    }
+    }    
 }
 
 </script>
