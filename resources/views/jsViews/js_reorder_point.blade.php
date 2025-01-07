@@ -471,7 +471,7 @@ function grafVentasMensuales(Articulos, Canal) {
             $("#id_limite_logistico_medio").html(json['LIMITE_LOGISTICO_MEDIO']);
         
 
-            $("#id_reorder1").html(numeral(json['REORDER1']).format('0,0'));
+            $("#id_reorder1").html(numeral(json['REORDER1']).format('0,0.00'));
             $("#id_reordenar").html(numeral(json['REORDER']).format('0,0'));
             $("#id_cant_ordenar").html(numeral(json['CANTIDAD_ORDENAR']).format('0,0'));
             $("#id_cant_ordenar_v2").html(numeral(json['CANTIDAD_V2']).format('0,0'));

@@ -211,7 +211,7 @@
                                                   <h6 class="text-white m-0">ORDENAR 1</h6>
                                               </div>
                                               <div class="card-body ">
-                                                <h6 class="text-center  font-weight-bold" style="font-size: 1.3rem!important"  id="xxxx"> 0.00</h6>
+                                                <h6 class="text-center  font-weight-bold" style="font-size: 1.3rem!important"  id="id_reorder1"> 0.00</h6>
                                                 
                                               </div>
                                               
