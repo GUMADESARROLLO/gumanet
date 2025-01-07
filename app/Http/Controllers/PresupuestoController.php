@@ -15,6 +15,15 @@ class PresupuestoController extends Controller {
     public function Presupuesto()
     {
         $presupuesto = Presupuesto::getEjecucionPresupuesto();
-        return view('pages.Presupuesto.Table',compact('presupuesto'));
+        $presupuestoAnual = Presupuesto::getPresupuestoAnual();
+        return view('pages.Presupuesto.Table',compact('presupuesto','presupuestoAnual'));
+    }
+
+    public function calcularPresupuesto(Request $request){
+        $mes = $request->InputMeses;
+        $anio = $request->InputAnio;
+
+        Presupuesto::actualizarEjecucionPresupuesto($mes, $anio);
+        return redirect('Presupuesto');
     }
 }
