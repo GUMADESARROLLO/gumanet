@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use App\Http\Controllers\InnovaController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
 use App\Logs_calcs;
 
 
@@ -51,6 +50,7 @@ class UpdateSales extends Command
         $DiaActual  = (int) date('d', strtotime($FechaEnd)); 
 
         // Este procedimiento , actualiza la informacion de facturaas      
+        DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.pr_gnet_reorder_UpdateSales");
         
         // Insertar en el modelo Logs_calcs
         Logs_calcs::create([
