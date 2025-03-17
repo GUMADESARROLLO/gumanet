@@ -37,4 +37,9 @@ class ReOrderPointController extends Controller
         $obj = ContribucionPorCanales::ExportToExcel();
         return $obj;
     }
+
+    public function UpdateSales() {
+        $obj = ReOrderPoint::UpdateSales();
+        return response()->json($obj);
+    }
 }

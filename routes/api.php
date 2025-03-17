@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('calcInnStat', 'InnovaController@saveInnStat')->name('calcInnStat');
+Route::get('UpdateSales', 'ReOrderPointController@UpdateSales')->name('UpdateSales');

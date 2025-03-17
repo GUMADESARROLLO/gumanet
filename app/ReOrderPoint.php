@@ -57,6 +57,31 @@ class ReOrderPoint extends Model
 
     }
 
+    public static function UpdateSales()
+    {
+        $currentDate = date('Y-m-d');
+        $startOfMonth = date('Y-m-01', strtotime($currentDate));
+
+        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
+        $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
+        $DiaActual  = (int) date('d', strtotime($FechaEnd)); 
+        
+
+        // Este procedimiento , actualiza la informacion de facturaas      
+        DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.pr_gnet_reorder_UpdateSales");
+        
+        // Insertar en el modelo Logs_calcs
+        Logs_calcs::create([
+            'Modulo'        =>  'ReOrderPoint',
+            'ini'           => $FechaIni,
+            'end'           => $FechaEnd,
+            'Observacion'   => 'Actualizacion de Facturas al : ' . $DiaActual
+        ]);
+        
+
+    }
+
+
     public static function getArticulo() 
     {
         $array = [];
