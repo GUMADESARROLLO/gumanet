@@ -44,7 +44,7 @@ class UpdateSales extends Command
     {
 
         define( 'WP_MAX_MEMORY_LIMIT' , '512M' );
-        
+
         $currentDate = date('Y-m-d');
         $startOfMonth = date('Y-m-01', strtotime($currentDate));
 
@@ -52,9 +52,6 @@ class UpdateSales extends Command
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
         $DiaActual  = (int) date('d', strtotime($FechaEnd)); 
 
-        // Este procedimiento , actualiza la informacion de facturaas      
-        DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.pr_gnet_reorder_UpdateSales");
-        
         // Insertar en el modelo Logs_calcs
         Logs_calcs::create([
             'Modulo'        =>  'ReOrderPoint',
@@ -62,6 +59,11 @@ class UpdateSales extends Command
             'end'           => $FechaEnd,
             'Observacion'   => 'Actualizacion de Facturas al : ' . $DiaActual
         ]);
+
+        // Este procedimiento , actualiza la informacion de facturaas      
+        DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.pr_gnet_reorder_UpdateSales");
+        
+        
 
         return response()->json(['message' => 'Success'], 200);
     }
