@@ -7,6 +7,8 @@ use App\Http\Controllers\InnovaController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use App\Logs_calcs;
+
 
 class UpdateSales extends Command
 {
