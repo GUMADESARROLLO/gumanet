@@ -42,6 +42,9 @@ class UpdateSales extends Command
      */
     public function handle()
     {
+
+        define( 'WP_MAX_MEMORY_LIMIT' , '512M' );
+        
         $currentDate = date('Y-m-d');
         $startOfMonth = date('Y-m-01', strtotime($currentDate));
 
