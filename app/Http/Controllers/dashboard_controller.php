@@ -206,11 +206,14 @@ class dashboard_controller extends Controller {
   }
 
   public function canalData(){
+   
     $obj = ContribucionPorCanales::getData();
     $obj2 = ContribucionPorCanales::periodoFechas();
+  
     return response()->json([
       'Registros' => $obj,
-      'Periodo' => $obj2]);
+      'Periodo' => $obj2
+    ]);
   }
 
   public function getDataCanal($articulo, $canal, $opcion){

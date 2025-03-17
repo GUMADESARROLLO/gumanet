@@ -72,6 +72,9 @@ class ArticulosTransito extends Model
                         'Precio_mific_public'   => 0,
                     ];
                 }
+
+
+                
                 $response = ArticulosTransito::insert($datos_a_insertar);
                 
                 return $response;

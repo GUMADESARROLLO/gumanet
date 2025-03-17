@@ -130,6 +130,7 @@ class InnovaEstadisticas extends Model
             $datos_a_insertar[$key]['MES']              = $mes;       
             $datos_a_insertar[$key]['ANNIO']            = $anio;          
         }
+        
         $response = InnovaEstadisticas::insert($datos_a_insertar);
 
 
