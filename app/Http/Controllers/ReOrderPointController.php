@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\ReOrderPoint;
 use App\ContribucionPorCanales;
+use Illuminate\Support\Facades\Session;
+
 
 class ReOrderPointController extends Controller
 {
@@ -26,8 +28,13 @@ class ReOrderPointController extends Controller
         return response()->json($obj);
     }
     public function CalcReorder() {
-        $obj = ReOrderPoint::CalcReorder();
-        return response()->json($obj);
+        $isSesion = Session::isStarted();
+        if ($isSesion) {
+            $obj = ReOrderPoint::CalcReorder();
+            return response()->json($obj);
+        }else{
+            return response()->json(['error' => 'La Sesion ha expirado.'],404);
+        }
     }
     public function ExportToExcel() {
         $obj = ReOrderPoint::ExportToExcel();

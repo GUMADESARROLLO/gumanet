@@ -11,6 +11,7 @@ use App\Company;
 use App\ContribucionPorCanales;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Session;
 
 class dashboard_controller extends Controller {
   
@@ -222,8 +223,13 @@ class dashboard_controller extends Controller {
   }
 
   public function calcularCanales($fechaIni, $fechaEnd){
-    $obj = ContribucionPorCanales::calcularCanales($fechaIni, $fechaEnd);
-    return response()->json($obj);
+    $isSesion = Session::isStarted();
+    if ($isSesion) {
+      $obj = ContribucionPorCanales::calcularCanales($fechaIni, $fechaEnd);
+      return response()->json($obj);
+    }else{
+      return response()->json(['error' => 'La Sesion ha expirado.'],404);
+    }
   }
 
   public function getVentasExportacion($xbolsones,$segmentos) {
