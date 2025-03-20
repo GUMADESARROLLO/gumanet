@@ -715,7 +715,8 @@ $(document).ready(function () {
                     const githubUrl = `calcularCanales/`+fechaIni+`/`+fechaEnd;
                     const response = await fetch(githubUrl);
                     if (!response.ok) {
-                        return Swal.showValidationMessage(`${JSON.stringify(await response.json())}`);
+                        rconst respuesta = await response.json();
+                        return Swal.showValidationMessage(`${respuesta.error}`);
                     }
                     
                     return response.json();
@@ -728,7 +729,8 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
-                    title: "Calculos completados",
+                    title: result.value.Titulo,
+                    text: result.value.Mensaje,
                     confirmButtonText: "Ok",
                     }).then((result) => {
                         if (result.isConfirmed) {
