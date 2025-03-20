@@ -26,12 +26,12 @@ class ContribucionPorCanales extends Model
 
     public static function getData(){
         $json = array(); $i = 0;
-        $sql = ContribucionPorCanales::all();
-        $Meses = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo_dev ?, ?', ['Todos',0]);
-        $fecha = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
+        $sql        = ContribucionPorCanales::all();
+        $Meses      = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo_dev ?, ?', ['Todos',0]);
+        $fecha      = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
         $NameMonths = ContribucionPorCanales::NameMonth($fecha[0]->ultima_fecha);
-        $categoria = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.tbl_categoria_articulo_canales");
-        $lote = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.iweb_lotes");
+        $categoria  = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.tbl_categoria_articulo_canales");
+        $lote       = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.iweb_lotes");
 
         foreach($sql as $row){
             $TotalCantidad = $row['FARMACIA_CANTIDAD']+$row['CADENA_FARMACIA_CANTIDAD']+$row['MAYORISTA_CANTIDAD']+$row['INSTITUCION_PRIVADA_CANTIDAD']+$row['CRUZ_AZUL_CANTIDAD']+$row['INSTITUCION_PUBLICA_CANTIDAD']+$row['LICITACION_CANTIDAD'];
@@ -213,6 +213,7 @@ class ContribucionPorCanales extends Model
         
     }
 
+
     public static function calcularCanales($fechaIni, $fechaEnd)
     {
         
@@ -222,6 +223,7 @@ class ContribucionPorCanales extends Model
                 ->orWhere('FECHA', '>', $fechaEnd);
         })->delete();
 
+        
         DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales");
 
         // Insertar en el modelo Logs_calcs

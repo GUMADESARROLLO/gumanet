@@ -712,13 +712,15 @@ $(document).ready(function () {
             showLoaderOnConfirm: true,
             preConfirm: async (login) => {
                 try {
-                const githubUrl = `calcularCanales/`+fechaIni+`/`+fechaEnd;
-                const response = await fetch(githubUrl);
-                if (!response.ok) {
-                    return Swal.showValidationMessage(`${JSON.stringify(await response.json())}`);
-                }
-                return response.json();
+                    const githubUrl = `calcularCanales/`+fechaIni+`/`+fechaEnd;
+                    const response = await fetch(githubUrl);
+                    if (!response.ok) {
+                        return Swal.showValidationMessage(`${JSON.stringify(await response.json())}`);
+                    }
+                    
+                    return response.json();
                 } catch (error) {
+                    
                     Swal.showValidationMessage(`Request failed: ${error}`);
                 }
             },
