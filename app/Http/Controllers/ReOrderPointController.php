@@ -28,10 +28,15 @@ class ReOrderPointController extends Controller
         return response()->json($obj);
     }
     public function CalcReorder() {
+        
         $isSesion = Session::isStarted();
+        
         if ($isSesion) {
             $obj = ReOrderPoint::CalcReorder();
-            return response()->json($obj);
+            return response()->json([
+                'Titulo' => 'Reorder Point.',
+                'Mensaje' => 'Calculos completados' 
+            ],200);
         }else{
             return response()->json(['error' => 'La Sesion ha expirado.'],404);
         }
