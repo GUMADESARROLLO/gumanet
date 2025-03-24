@@ -225,8 +225,11 @@ class dashboard_controller extends Controller {
   public function calcularCanales($fechaIni, $fechaEnd){
     $isSesion = Session::isStarted();
     if ($isSesion) {
-      $obj = ContribucionPorCanales::calcularCanales($fechaIni, $fechaEnd);
-      return response()->json($obj);
+      ContribucionPorCanales::calcularCanales($fechaIni, $fechaEnd);
+      return response()->json([
+        'Titulo' => 'Contribucion por canales',
+        'Mensaje' => 'Calculos completados' 
+      ],200);
     }else{
       return response()->json(['error' => 'La Sesion ha expirado.'],404);
     }

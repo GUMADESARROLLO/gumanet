@@ -377,12 +377,15 @@ function UpdateDataTable() {
         showLoaderOnConfirm: true,
         preConfirm: async (login) => {
             try {
-            const githubUrl = `CalcReorder`;
-            const response = await fetch(githubUrl);
-            if (!response.ok) {
-                return Swal.showValidationMessage(`${JSON.stringify(await response.json())}`);
-            }
-            return response.json();
+
+                const response = await fetch(`CalcReorder`);
+                
+                if (!response.ok) {
+                    const respuesta = await response.json();
+                    return Swal.showValidationMessage(`${respuesta.error}`);
+                }
+                
+                return response.json();
             } catch (error) {
                 Swal.showValidationMessage(`Request failed: ${error}`);
             }
@@ -390,14 +393,15 @@ function UpdateDataTable() {
         allowOutsideClick: () => !Swal.isLoading()
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire({
-                title: "Calculos completados",
-                confirmButtonText: "Ok",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.reload();
-                    } 
-                });
+                Swal.fire({
+                    title: result.value.Titulo,
+                    text: result.value.Mensaje,
+                    confirmButtonText: "Ok",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        } 
+                    });
         }
     });
 }
