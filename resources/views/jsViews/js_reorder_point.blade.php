@@ -384,7 +384,8 @@ function UpdateDataTable() {
                     const respuesta = await response.json();
                     return Swal.showValidationMessage(`${respuesta.error}`);
                 }
-            
+                
+                return response.json();
             } catch (error) {
                 Swal.showValidationMessage(`Request failed: ${error}`);
             }
@@ -392,15 +393,15 @@ function UpdateDataTable() {
         allowOutsideClick: () => !Swal.isLoading()
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire({
-                title: result.value.Titulo,
-                text: result.value.Mensaje,
-                confirmButtonText: "Ok",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.reload();
-                    } 
-                });
+                Swal.fire({
+                    title: result.value.Titulo,
+                    text: result.value.Mensaje,
+                    confirmButtonText: "Ok",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        } 
+                    });
         }
     });
 }

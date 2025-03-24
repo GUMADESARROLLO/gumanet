@@ -715,7 +715,7 @@ $(document).ready(function () {
                     const githubUrl = `calcularCanales/`+fechaIni+`/`+fechaEnd;
                     const response = await fetch(githubUrl);
                     if (!response.ok) {
-                        rconst respuesta = await response.json();
+                        const respuesta = await response.json();
                         return Swal.showValidationMessage(`${respuesta.error}`);
                     }
                     
