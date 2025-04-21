@@ -8,12 +8,10 @@
 
 class git_version
 {
-    const MAJOR = 1;
-    const MINOR = 0;
-
     public static  function get()
     {
-        $commitHash = trim(exec('git rev-list --all --count'));
-        return sprintf('UNIMARK S.A © %s V%s.%s.%s', date('Y'),self::MAJOR, self::MINOR,  $commitHash);
+        return sprintf('UNIMARK S.A © %s %s', date('Y'), env('APP_VERSION'));
+        //return sprintf('UNIMARK S.A © %s V%s.%s.%s', date('Y'), self::MAJOR, self::MINOR, self::getGitVersion());
     }
 }
+
