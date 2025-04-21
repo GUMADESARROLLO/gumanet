@@ -10,8 +10,7 @@ class git_version
 {
     public static  function get()
     {
-        return sprintf('UNIMARK S.A © %s %s', date('Y'), env('APP_VERSION'));
-        //return sprintf('UNIMARK S.A © %s V%s.%s.%s', date('Y'), self::MAJOR, self::MINOR, self::getGitVersion());
+        return sprintf('UNIMARK S.A © %s %s.%s', date('Y'), 'v1.'.date('y'), date('W'));
     }
 }
 
