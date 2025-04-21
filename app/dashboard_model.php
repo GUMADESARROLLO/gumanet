@@ -1804,13 +1804,15 @@ class dashboard_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec ="SELECT count(distinct t.[Cod. Cliente]) as totalClientes
-                            FROM
-                                Softland.dbo.VtasTotal_UMK (nolock) t
-                            WHERE
-                                t.[Año] = ".$anio." AND t.nMes = ".$mes."
-                            AND [P. Unitario] > 0
-                            AND Ruta NOT IN ('F01', 'F12')";
+                $sql_exec ="
+                        SELECT 
+                        COUNT (  DISTINCT CLIENTE ) AS totalClientes 
+                    FROM
+                        Softland.umk.FACTURA 
+                    WHERE
+                        YEAR ( FECHA ) = ".$anio."  
+                        AND MONTH ( FECHA ) = ".$mes."
+                        AND CLIENTE NOT IN ( SELECT CLIENTE FROM PRODUCCION.dbo.tbl_cadena_de_farmacia) and VENDEDOR NOT IN ( 'F17' , 'F12' ) AND ANULADA = 'N' ";
                 break;
             case '2':                
                 /*$sql_exec ="SELECT count(distinct t.[Cod. Cliente]) as totalClientes
@@ -1866,7 +1868,7 @@ class dashboard_model extends Model {
                 $array[2]['data'] = $clientesMeta;
 
                 $array[3]['title'] = 'clientesReal';
-                $array[3]['data'] = ( $query[0]['totalClientes']=='' )?0:$query[0]['totalClientes'];
+                $array[3]['data'] = ( $query[0]['totalClientes']=='' ) ? 0 : $query[0]['totalClientes'];
             }
         }
 
@@ -2694,8 +2696,12 @@ class dashboard_model extends Model {
         $clientesMeta = clientes_x_rutas::sum('cantidad');
 
         $sql_count="SELECT T0.CLIENTE  FROM Softland.umk.FACTURA T0  WHERE YEAR ( T0.FECHA ) = YEAR ( GETDATE( ) ) - 1 	GROUP BY T0.CLIENTE";
+
+      
+        
         $qCount = $sql_server->fetchArray($sql_count, SQLSRV_FETCH_ASSOC);
         $Master_Cliente = count($qCount);
+   
 
         if($elemento=="[Cod. Cliente]"){
 
@@ -2706,6 +2712,7 @@ class dashboard_model extends Model {
                 $json[2]['name'] = "Master Cliente";
                 $json[2]['venta'] = $array;
             }
+            
             $array = array();
 
             for ($m = 1; $m <= 12; $m++) {
@@ -2728,8 +2735,10 @@ class dashboard_model extends Model {
         $meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
         
         if ($company_user==1) {
+
             $View       = "Softland.dbo.VtasTotal_UMK(nolock)";
-            $mercado     = "AND Ruta NOT IN('F01', 'F12')";
+            $mercado     = "AND [Cod. Cliente] NOT IN ( SELECT CLIENTE FROM PRODUCCION.dbo.tbl_cadena_de_farmacia) and Ruta NOT IN ( 'F17' , 'F12' ) ";
+
         } else {
             if ($company_user==2) {
                 $View = "Softland.dbo.GP_VtasTotal_UMK(nolock)";
@@ -2747,9 +2756,12 @@ class dashboard_model extends Model {
                 FROM ".$View."
                 WHERE [Año] IN ( YEAR(DATEADD(year, -1,GETDATE())), YEAR(GETDATE()))
                 AND [P. Unitario] > 0 
+                
                 ".$mercado."
                 GROUP BY Mes,Año,nMes
                 ORDER BY nMes";
+
+      
 
         
         $query = $sql_server->fetchArray($sql, SQLSRV_FETCH_ASSOC);
@@ -2763,12 +2775,12 @@ class dashboard_model extends Model {
                 foreach ($meses as $key => $mes) {
                     $vntMes = array_column(array_filter($query, function($item) use($mes,$anio) { return $item['annio'] == $anio and $item['mes']==$mes; } ), 'vntMes');
                     
-                    (count($vntMes) > 0 ) ? (array_push($array, $vntMes[0])):false;
+                    (count($vntMes) > 0 ) ? (array_push($array, $vntMes[0])) : false;
                 }
             }else{
                 foreach ($meses as $key => $mes) {
                     $temp = array_column(array_filter($query, function($item) use($mes,$anio) { return $item['annio'] == $anio and $item['mes']==$mes; } ), 'cvalue');
-                    (count($temp) > 0 ) ? (array_push($array, $temp[0])):false;
+                    (count($temp) > 0 ) ? (array_push($array, $temp[0])) : false;
                 }
             }
 

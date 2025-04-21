@@ -45,6 +45,7 @@ class inventario_model extends Model {
                                 INNER JOIN PRODUCCION.dbo.iweb_articulos T1 ON T0.ARTICULO = T1.ARTICULO
                             WHERE
                                 T0.ARTICULO LIKE 'VU%'";
+                                
                 $qResult = $sql_server->fetchArray( $qSKU , SQLSRV_FETCH_ASSOC);
 
                 $sql_vent_art = "SELECT
@@ -153,7 +154,7 @@ class inventario_model extends Model {
             $query[$i]['ARTICULO']          = '<a href="#!" onclick="getDetalleArticulo('."'".$key['ARTICULO']."'".', '."'".$desc_art."'".')" >'.$key['ARTICULO'].'</a>';
             $query[$i]['ARTICULO_']         = $key['ARTICULO'];
             $query[$i]['CLASE_TERAPEUTICA'] = $key['CLASE_TERAPEUTICA'];
-            $query[$i]['DESCRIPCION']       = $key['DESCRIPCION'];
+            $query[$i]['DESCRIPCION']       = strtoupper($key['DESCRIPCION']);
             $query[$i]['total']             = number_format($key['total'], 2);
             $query[$i]['und']               = number_format($key['UNIDADES'], 2);
             $query[$i]['LABORATORIO']       = $key['LABORATORIO'];
