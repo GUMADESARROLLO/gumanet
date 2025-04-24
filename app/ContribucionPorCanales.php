@@ -23,15 +23,41 @@ class ContribucionPorCanales extends Model
     protected $connection = 'sqlsrv';
     public $timestamps = false;
     protected $table = "PRODUCCION.dbo.view_contribucion_canales";
+    //protected $table = 'PRODUCCION.dbo.tbl_gnet_ContribucionCanales';
+
+    public function getLoteExpDate()
+    {
+        return $this->hasOne(Lote::class, 'ARTICULO', 'ARTICULO')
+            ->orderBy('FECHA_VENCIMIENTO', 'asc');
+    }
+    public function getClasificacion()
+    {
+        return $this->hasOne(ReorderPointArticulos::class, 'ARTICULO', 'ARTICULO');
+    }
+
 
     public static function getData(){
         $json = array(); $i = 0;
-        $sql        = ContribucionPorCanales::all();
+        $sql  = ContribucionPorCanales::get();
         $Meses      = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo_dev ?, ?', ['Todos',0]);
         $fecha      = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
         $NameMonths = ContribucionPorCanales::NameMonth($fecha[0]->ultima_fecha);
         $categoria  = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.tbl_categoria_articulo_canales");
         $lote       = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.iweb_lotes");
+
+
+        // NUEVA FORMA DE RECORRER LOS ARTICULOS
+        // EXEC dbo.pr_calc_canales '2025-01-01', '2025-03-31';
+        // $Articulo_Contribucion = ContribucionPorCanales::all();
+        // foreach ($Articulo_Contribucion as $key => $value) {
+        //     $json[$key] = [
+        //         'ARTICULO'          => $value->ARTICULO,
+        //         'CASIFICACION'      => trim($value->getClasificacion->CATEGORIA) ?? '',
+        //         'LOTE'              => $value->getLoteExpDate->LOTE ?? '',
+        //         'LOTE_DATE_EXP'     => $value->getLoteExpDate->FECHA_VENCIMIENTO ?? '',
+        //         'LOTE_CANT_EXP'     => $value->getLoteExpDate->CANT_DISPONIBLE ?? '',
+        //     ];
+        // }
 
         foreach($sql as $row){
             $TotalCantidad = $row['FARMACIA_CANTIDAD']+$row['CADENA_FARMACIA_CANTIDAD']+$row['MAYORISTA_CANTIDAD']+$row['INSTITUCION_PRIVADA_CANTIDAD']+$row['CRUZ_AZUL_CANTIDAD']+$row['INSTITUCION_PUBLICA_CANTIDAD']+$row['LICITACION_CANTIDAD'];
@@ -90,6 +116,7 @@ class ContribucionPorCanales extends Model
                 }
             }
             
+
             $json[$i]['COSTO_PROM_PRIV_PACK']                       = (($TotalCantidad-$row['INSTITUCION_PUBLICA_CANTIDAD']) > 0) ? ($TotalCosto-$row['INSTITUCION_PUBLICA_COSTO'])/($TotalCantidad-$row['INSTITUCION_PUBLICA_CANTIDAD']):0;
             $json[$i]['COSTO_PROM_MINSA_PACK']                      = ($row['INSTITUCION_PUBLICA_CANTIDAD'] > 0) ? $row['INSTITUCION_PUBLICA_COSTO']/$row['INSTITUCION_PUBLICA_CANTIDAD']:0;
             $json[$i]['Valor_USD_Inventario_ONHAND_PRIVADO']        = $CantOnHand;
