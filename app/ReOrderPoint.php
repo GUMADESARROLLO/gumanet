@@ -33,15 +33,15 @@ class ReOrderPoint extends Model
         $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
         $DiaActual  = (int) date('d', strtotime($FechaEnd)); 
-        
-        // Ejecutar el tercer procedimiento almacenado
-        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_Calc_12_month_reorder_point ?, ?, ?", [$FechaIni, $FechaEnd, $DiaActual]);
 
         // Ejecutar el primer procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calc_reorder_factura_linea ?, ?", [$FechaIni, $FechaEnd]);
 
         // Ejecutar el segundo procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.pr_calc_reorder_factura_linea_ca ?", [$FechaEnd]);
+
+        // Ejecutar el tercer procedimiento almacenado
+        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_Calc_12_month_reorder_point ?, ?, ?", [$FechaIni, $FechaEnd, $DiaActual]);
 
         // Ejecutar el cuarto procedimiento almacenado        
         DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales");
