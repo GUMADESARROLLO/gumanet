@@ -1,6 +1,6 @@
 FROM  kooldev/php:7.4-nginx-sqlsrv-prod
 
-ARG ARG_APP_NAME=guma
+ARG ARG_APP_NAME=gnet
 
 ENV APP_NAME=${ARG_APP_NAME} \
     PHP_FPM_LISTEN=/run/php-fpm.sock \
