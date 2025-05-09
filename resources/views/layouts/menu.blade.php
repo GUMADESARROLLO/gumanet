@@ -21,27 +21,32 @@
       </div>
     </div>
     <hr style="padding:0; margin:0;"></hr>
+
     <div class="row mt-4">
       <div class="col-sm-12">
-        <ul class="nav flex-column">
-       
-          @foreach ($menus as $menu)
+        <div style="max-height: 700px; overflow-y: auto;">
+          <ul class="nav flex-column">
+            @foreach ($menus as $menu)
             <li class="nav-item">
               <a class="nav-link text-secondary" href="{{url($menu['url'])}}">
                 <span data-feather="{{$menu['icono']}}" class="mr-3"></span>
                 {{$menu['nombre']}}
               </a>
             </li>
-          @endforeach
-          <li class="nav-item">
-          <a class="nav-link text-danger font-weight-bold" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><span data-feather="log-out" class="mr-3"></span> Cerrar sesion
-          </a>
-          </li>
-        </ul>
+            @endforeach
+
+            <li class="nav-item">
+              <a class="nav-link text-danger font-weight-bold" href="{{ route('logout') }}" 
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <span data-feather="log-out" class="mr-3"></span> 
+                Cerrar sesión
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
+
+    
     </div>
   </div>
-<div id="_version">
-  @include('layouts.app_version', array( 'appVersion'=>Auth::User()->gitVersion() ))
-</div>
