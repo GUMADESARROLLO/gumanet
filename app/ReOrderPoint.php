@@ -211,9 +211,14 @@ class ReOrderPoint extends Model
             'VIA_TRANSITO'                  => isset($Sales->VIA_TRANSITO) ? $Sales->VIA_TRANSITO : ' - ',
             'CLASE'                         => isset($Sales->CLASE) ? $Sales->CLASE : '',
 
-            'ROTACION_CORTA'                => isset($Sales->ROTACION_CORTA) ? bcadd(number_format($Sales->ROTACION_CORTA, 0), 5, 0) : 0,
-            'ROTACION_MEDIA'                => isset($Sales->ROTACION_MEDIA) ? bcadd(number_format($Sales->ROTACION_MEDIA, 0), 5, 0) : 0, 
-            'ROTACION_LARGA'                => isset($Sales->ROTACION_LARGA) ? bcadd(number_format($Sales->ROTACION_LARGA, 0), 5, 0) : 0,
+            // 'ROTACION_CORTA'                => isset($Sales->ROTACION_CORTA) ? bcadd(number_format($Sales->ROTACION_CORTA, 0), 5, 0) : 0,
+            // 'ROTACION_MEDIA'                => isset($Sales->ROTACION_MEDIA) ? bcadd(number_format($Sales->ROTACION_MEDIA, 0), 5, 0) : 0, 
+            // 'ROTACION_LARGA'                => isset($Sales->ROTACION_LARGA) ? bcadd(number_format($Sales->ROTACION_LARGA, 0), 5, 0) : 0,
+
+            'ROTACION_CORTA'                => isset($Sales->ROTACION_CORTA) ? bcadd((string) round($Sales->ROTACION_CORTA), '5', 0) : '0',
+            'ROTACION_MEDIA'                => isset($Sales->ROTACION_MEDIA) ? bcadd((string) round($Sales->ROTACION_MEDIA), '5', 0) : '0',
+            'ROTACION_LARGA' > isset($Sales->ROTACION_LARGA) ? bcadd((string) round($Sales->ROTACION_LARGA), '5', 0) : '0',
+
 
             'COSTO_PROMEDIO_USD'            => isset($Sales->COSTO_PROMEDIO_USD) ? number_format($Sales->COSTO_PROMEDIO_USD, 0, '.', '') : 0,
             'ULTIMO_COSTO_USD'              => isset($Sales->ULTIMO_COSTO_USD) ? number_format($Sales->ULTIMO_COSTO_USD, 0, '.', '') : 0,
