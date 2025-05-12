@@ -217,7 +217,7 @@ class ReOrderPoint extends Model
 
             'ROTACION_CORTA'                => isset($Sales->ROTACION_CORTA) ? bcadd((string) round($Sales->ROTACION_CORTA), '5', 0) : '0',
             'ROTACION_MEDIA'                => isset($Sales->ROTACION_MEDIA) ? bcadd((string) round($Sales->ROTACION_MEDIA), '5', 0) : '0',
-            'ROTACION_LARGA' > isset($Sales->ROTACION_LARGA) ? bcadd((string) round($Sales->ROTACION_LARGA), '5', 0) : '0',
+            'ROTACION_LARGA'                => isset($Sales->ROTACION_LARGA) ? bcadd((string) round($Sales->ROTACION_LARGA), '5', 0) : '0',
 
 
             'COSTO_PROMEDIO_USD'            => isset($Sales->COSTO_PROMEDIO_USD) ? number_format($Sales->COSTO_PROMEDIO_USD, 0, '.', '') : 0,
