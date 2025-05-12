@@ -14,6 +14,8 @@ use PHPExcel_Style_Fill;
 use PHPExcel_Cell;
 use App\Logs_calcs;
 
+use Session;
+
 class ReOrderPoint extends Model
 {
     protected $connection = 'sqlsrv';
@@ -158,12 +160,12 @@ class ReOrderPoint extends Model
     }
     public static function getDataGrafica($Articulos,$Canal) {
 
+        $companiy_id = Session::get('company_id');
 
         //Busca Directamente sobre la base de datos de images, si existe una imagen para el articulo        
         $ImagesArticulos = ArticulosPicture::getPictures($Articulos);
 
         $InfoTransito = ArticulosTransito::where('ARTICULO', $Articulos)->first();
-
 
 
         $array = array();
@@ -193,7 +195,25 @@ class ReOrderPoint extends Model
         
         $NameMonths = ($Canal === 'TODOS') ? ReOrderPoint::NameMonth($Sales->FechaFinal) : ReOrderPoint::NameMonth($FechaEnd) ;
 
-        $InfoArticulo = Articulos::WHERE('ARTICULO',$Articulos)->first();
+
+
+
+        switch ($companiy_id) {
+            case '1':
+                $InfoArticulo = Articulos::WHERE('ARTICULO',$Articulos)->first();
+                break;
+            case '2':
+                $InfoArticulo = ArticulosGP::WHERE('ARTICULO',$Articulos)->first();
+                break;
+            default:
+                dd('No se encontro la compañia');
+                break;
+        }
+
+        $Total_disp = $InfoArticulo->total;
+
+        
+
 
         $array = [
             'LEADTIME'                      => isset($Sales->LEADTIME) ? number_format($Sales->LEADTIME, 0, '.', '') : 0,
@@ -235,7 +255,8 @@ class ReOrderPoint extends Model
             'CLASE_TERAPEUTICA'             => isset($InfoArticulo->CLASE_TERAPEUTICA) ? $InfoArticulo->CLASE_TERAPEUTICA : ' - ',
             'LABORATORIO'                   => isset($InfoArticulo->LABORATORIO) ? $InfoArticulo->LABORATORIO : ' - ',
             'UNIDAD_ALMACEN'                => isset($InfoArticulo->UNIDAD_ALMACEN) ? $InfoArticulo->UNIDAD_ALMACEN : ' - ',
-            'DESCRIPCION'                   => isset($InfoArticulo->DESCRIPCION) ? strtoupper($InfoArticulo->DESCRIPCION) : ' - '
+            'DESCRIPCION'                   => isset($InfoArticulo->DESCRIPCION) ? strtoupper($InfoArticulo->DESCRIPCION) : ' - ',
+            'CANT_TOTAL_DISP'               => isset($Total_disp) ? number_format($Total_disp, 2) : 0.00,
 
 
         ];
