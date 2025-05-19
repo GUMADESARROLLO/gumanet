@@ -622,7 +622,11 @@ class inventario_controller extends Controller
 
 	public function transaccionesDetalle(Request $request) {
 		if($request->isMethod('post')){
-			$obj = inventario_model::transaccionesDetalle($request->input('f1'),$request->input('f2'),$request->input('art'),$request->input('tp'));
+			$obj = inventario_model::transaccionesDetalle(
+				$request->input('f1'),
+				$request->input('f2'),
+				$request->input('art'),
+				$request->input('tp'));
 			return response()->json($obj);
 		}
 	}

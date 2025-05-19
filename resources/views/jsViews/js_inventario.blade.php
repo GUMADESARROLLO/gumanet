@@ -637,6 +637,7 @@ function detalles_transacciones ( callback, Factura_ ) {
         url: "getDetFactVenta",
         data:{
             factura: Factura_,
+            _token      : "{{ csrf_token() }}"
         },
         success: function ( data ) {
             if (data.length==0) {
