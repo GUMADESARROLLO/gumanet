@@ -362,6 +362,8 @@ function getDetalleArticulo(articulo, descripcion) {
         $("#IdUnidadMedida").html(data.UNIDAD_ALMACEN);
         $("#IdUnidadMedidaSpan").html(data.UNIDAD_ALMACEN);
 
+        $("#id_disponibles").html(data.CANT_TOTAL_DISP)
+
     });
 
 
@@ -393,13 +395,7 @@ function getDataBodega(articulo) {
         "paging":   false,
         "columns":[
             { "data": "DETALLE"},
-            { "data": "BODEGA" , render: function ( data, type, row ) { 
-                if(data === '002'){
-                    console.log();
-                    $("#id_disponibles").html(row.CANT_DISPONIBLE)
-                }
-                return data; 
-            } },
+            { "data": "BODEGA" },
             { "data": "UNIDAD" },
             { "data": "NOMBRE" },
             { "data": "CANT_DISPONIBLE" }
@@ -641,6 +637,7 @@ function detalles_transacciones ( callback, Factura_ ) {
         url: "getDetFactVenta",
         data:{
             factura: Factura_,
+            _token      : "{{ csrf_token() }}"
         },
         success: function ( data ) {
             if (data.length==0) {
