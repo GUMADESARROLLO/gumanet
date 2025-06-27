@@ -310,3 +310,9 @@ Route::get('dtArticulo', 'BudgetController@dtArticulo')->name('dtArticulo');
 Route::get('Presupuesto', 'PresupuestoController@Presupuesto')->name('Presupuesto');
 Route::get('PresupuestoAnual','PresupuestoController@PresupuestAnual')->name('PresupuestoAnual');   
 Route::post('calcularPresupuesto','PresupuestoController@calcularPresupuesto')->name('calcularPresupuesto');   
+
+
+
+
+// RUTAS PARA NEW DASHBOARD INNOVA
+Route::get('getDataInnova', 'DashboardInnovaController@getDataInnova')->name('getDataInnova');
