@@ -5,6 +5,9 @@
     @section('name_user' , 'Administrador')
 @section('metodosjs')
     @include('Pages.Dashboard.js_dashboard_innova')
+    @include('Pages.Dashboard.js_chart_SKU')  
+    @include('Pages.Dashboard.js_chart_cliente_bolson')   
+    @include('Pages.Dashboard.js_chart_YTD')   
     @include('Pages.Dashboard.css_dasboard')
 @endsection
 
@@ -92,8 +95,7 @@
     </div>
 
     <!-- Tablas -->
-    <div class="row g-4">
-      
+    <div class="row g-4">      
       <div class="col-md-6">
         <div class="card">
           <div class="card-header bg-innova text-white">            
@@ -122,6 +124,78 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row g-4 ">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-header bg-innova text-white">
+            <h6 class="mb-0">Gráfico de Ventas</h6>
+          </div>
+          <div class="card-body">
+            <figure class="highcharts-figure">
+                <div id="container"></div>   
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-header bg-innova text-white">
+            <h6 class="mb-0">Gráfico de Clientes</h6>
+          </div>
+          <div class="card-body">
+            <div id="chart_cliente_bolson"></div>
+          </div>
+        </div>
+      </div>    
+    </div>
+
+     <!-- Tablas -->
+    <div class="row g-4">      
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-innova text-white">            
+            <div class="d-flex justify-content-between">
+              <h6 class="mb-0">Top SKUs Ventas Netas</h6>
+              <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
+            </div>
+            <p class="text-white mb-0">00/00/0000 al  00/00/0000</p>
+          </div>
+          <div class="card-body">
+            <table id="tbl_top_sku" class="display" style="width:100%"></table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-innova text-white">            
+            <div class="d-flex justify-content-between">
+              <h6 class="mb-0">Top Cliente Ventas Netas</h6>
+              <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
+            </div>
+            <p class="text-white mb-0">00/00/0000 al  00/00/0000</p>
+          </div>
+          <div class="card-body">
+            <table id="tbl_top_clientes" class="display" style="width:100%"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-innova text-white">
+            <h6 class="mb-0">Gráfico YTD Ventas</h6>
+          </div>
+          <div class="card-body">
+            <div id="chart_ytd"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
   
