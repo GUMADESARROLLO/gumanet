@@ -23,6 +23,7 @@
     function loadAndBuildTable(selector, data) {
       $(selector).DataTable({
         data: data,
+        destroy: true,
         paging: true,
         pageLength: 5,
         info: false,
@@ -47,9 +48,11 @@
       $(selector + '_length').hide();
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
+     async function cargarGetDataInnova(desde, hasta){
         try {
-            const response = await fetch('getDataInnova');
+            
+            const url = "{{ route('getDataInnova') }}";
+            const response = await fetch(`${url}?desde=${desde}&hasta=${hasta}`);
             const result = await response.json();
             
             loadAndBuildTable('#clientesTable', result.ACTUAL.Clientes);
@@ -60,9 +63,29 @@
             $('#bultos_valor').text("C$. "+result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
             $('#bultos_anterior').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ACTUAL);
             $('#bultos_actual').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ANTERIOR);
+            $('#fechaClienteFact').text(result.ACTUAL.DESDE+' al '+result.ACTUAL.HASTA);
+            $('#fechaVentaVendedor').text(result.ACTUAL.DESDE+' al '+result.ACTUAL.HASTA);
 
         } catch (error) {
             console.error('Error al obtener los datos:', error);
         }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const hoyDesde = new Date().toISOString().split('T')[0]; 
+      $('#desdeInnova').val(hoyDesde);
+      const hoyHasta = new Date().toISOString().split('T')[0]; 
+      $('#hastaInnova').val(hoyHasta);
+
+      cargarGetDataInnova(hoyDesde, hoyHasta);
+        
     });
+  
+    document.getElementById('filtrarFechas').addEventListener('click', async () => {
+      const desde = $('#desdeInnova').val();
+      const hasta = $('#hastaInnova').val();
+
+      cargarGetDataInnova(desde, hasta);
+    });
+
   </script>
