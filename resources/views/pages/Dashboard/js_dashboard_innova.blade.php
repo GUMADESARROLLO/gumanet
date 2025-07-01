@@ -40,9 +40,6 @@
           
         
         ],
-        createdRow: function (row, rowData) {
-          //row.innerHTML = `<td colspan="4">${formatRow(rowData)}</td>`;
-        }
       });
       $(selector + '_length').hide();
     }
@@ -52,9 +49,10 @@
             const response = await fetch('getDataInnova');
             const result = await response.json();
             
-            loadAndBuildTable('#clientesTable', result.ACTUAL.Clientes);
-            
+            loadAndBuildTable('#clientesTable', result.ACTUAL.Clientes);            
             loadAndBuildTable('#vendedoresTable', result.ACTUAL.Vendedores);
+            loadAndBuildTable('#tbl_top_sku', result.ACTUAL.Vendedores);
+            loadAndBuildTable('#tbl_top_clientes', result.ACTUAL.Vendedores);
 
             $('#bultos_facturacion').text(result.ACTUAL.Metricas.BULTOS_TOTAL_NIO);
             $('#bultos_valor').text("C$. "+result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
