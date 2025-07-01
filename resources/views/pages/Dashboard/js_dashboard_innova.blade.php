@@ -1,4 +1,12 @@
    <script>
+    function OnWay() {
+      swal.fire({
+        title: 'En Construcción',
+        text: 'Esta sección está en desarrollo y estará disponible pronto.',
+        icon: 'info',
+        confirmButtonText: 'Aceptar'
+      });
+    }
     function formatRow(rowData) {
       return `
         <div class="item-left">
@@ -15,20 +23,28 @@
     function loadAndBuildTable(selector, data) {
       $(selector).DataTable({
         data: data,
-        paging: false,
+        paging: true,
+        pageLength: 5,
         info: false,
         searching: false,
         ordering: false,
         columns: [
-          { data: 'NOMBRE' },
-          { data: 'BULTOS_TOTAL_UND' },
-          { data: 'BULTOS_TOTAL_NIO' },
-          { data: 'CODIGO' }
+          { data: 'NOMBRE', render: function(data, type, row) {
+              return `<div class="item-left">${data}<br><span class="item-sub">${row.CODIGO}</span></div>`;
+            }
+          },
+          { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
+            return `<div class="item-right">${data}<br><span class="item-sub">${row.BULTOS_TOTAL_UND}</span></div>`;
+          }
+          }
+          
+        
         ],
         createdRow: function (row, rowData) {
-          row.innerHTML = `<td colspan="4">${formatRow(rowData)}</td>`;
+          //row.innerHTML = `<td colspan="4">${formatRow(rowData)}</td>`;
         }
       });
+      $(selector + '_length').hide();
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
@@ -41,7 +57,7 @@
             loadAndBuildTable('#vendedoresTable', result.ACTUAL.Vendedores);
 
             $('#bultos_facturacion').text(result.ACTUAL.Metricas.BULTOS_TOTAL_NIO);
-            $('#bultos_valor').text(result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
+            $('#bultos_valor').text("C$. "+result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
             $('#bultos_anterior').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ACTUAL);
             $('#bultos_actual').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ANTERIOR);
 

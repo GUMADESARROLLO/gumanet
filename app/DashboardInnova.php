@@ -72,8 +72,8 @@ class DashboardInnova extends Model
         $Today       = date('Y-m-d');
 
         //DIA ACTUAL
-        $Clientes   = DashboardInnova::TransacionesClientes($Today, $Today);
-        $Vendedores = DashboardInnova::TransacionesVendedores($Today, $Today);
+        $Clientes   = DashboardInnova::TransacionesClientes($desde, $hasta);
+        $Vendedores = DashboardInnova::TransacionesVendedores($desde, $hasta);
 
         // RANGO DE FECHA
         $Ventas     = DashboardInnova::TransacionesBultosValor($desde, $hasta);
@@ -83,7 +83,7 @@ class DashboardInnova extends Model
 
         // ESTAS METRICAS SERAN AFECTADAS POR EL RANGO DE FECHA BUSCADO
         $Metricas = [
-            'UpdateAt'                 => $Today,
+            'UpdateAt'                 => $hasta,
             'BULTOS_TOTAL_UND'         => number_format($Ventas['CANTIDAD'], 2),
             'BULTOS_TOTAL_NIO'         => number_format($Ventas['VENTA_CON_IVA'],2),       
         ];
