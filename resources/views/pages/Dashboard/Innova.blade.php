@@ -34,7 +34,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <span id="bultos_facturacion">9</span>
                 <span>
-                  <i class="fas fa-box"></i>
+                  <i class="fas fa-boxes"></i>
                 </span>
               </div>
             </div>
@@ -51,7 +51,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <span id="bultos_valor">0.00</span>
                 <span>
-                  <i class="fas fa-box"></i>
+                  <i class="fas fa-comment-dollar"></i>
                 </span>
               </div>
             </div>
@@ -95,7 +95,7 @@
     </div>
 
     <!-- Tablas -->
-    <div class="row g-4">      
+    <div class="row g-4 mb-4">      
       <div class="col-md-6">
         <div class="card">
           <div class="card-header bg-innova text-white">            
@@ -127,7 +127,7 @@
     </div>
 
     <!-- Charts -->
-    <div class="row g-4 ">
+    <div class="row g-4 mb-4">
       <div class="col-md-3">
         <div class="card">
           <div class="card-header bg-innova text-white">
@@ -153,7 +153,7 @@
     </div>
 
      <!-- Tablas -->
-    <div class="row g-4">      
+    <div class="row g-4 mb-4">      
       <div class="col-md-6">
         <div class="card">
           <div class="card-header bg-innova text-white">            

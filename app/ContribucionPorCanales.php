@@ -73,7 +73,7 @@ class ContribucionPorCanales extends Model
             $costoPromedio = 0;
             $mess12 = null;
             
-            /*foreach($lote as $item) {
+            foreach($lote as $item) {
                 if($item->ARTICULO == $articulo){
                     $convertida = $item->CANT_DISPONIBLE * $item->FACTOR_CONVER_6;
                     $costoTotal += $convertida * $item->COSTO_PROM_LOC;
@@ -90,9 +90,9 @@ class ContribucionPorCanales extends Model
                 }
             }
             $CantOnHand = $costoTotal/36.62;
-            $CantOnHandTransito = ($costoPromedio*($cantDisponible+$cantProxima))/36.62;*/
+            $CantOnHandTransito = ($costoPromedio*($cantDisponible+$cantProxima))/36.62;
 
-            // CANTIDAD POR MESES Juvenile Law
+            // CANTIDAD POR MESES
             foreach($Meses as $item){
                 if($item->ARTICULO == $articulo){
                     $mess12 = array_map(function($month, $value) use ($item) { 
@@ -105,13 +105,13 @@ class ContribucionPorCanales extends Model
             }
 
             
-            /*$json[$i]['COSTO_PROM_PRIV_PACK']                       = (($TotalCantidad-$row['INSTITUCION_PUBLICA_CANTIDAD']) > 0) ? ($TotalCosto-$row['INSTITUCION_PUBLICA_COSTO'])/($TotalCantidad-$row['INSTITUCION_PUBLICA_CANTIDAD']):0;
+            $json[$i]['COSTO_PROM_PRIV_PACK']                       = (($TotalCantidad-$row['INSTITUCION_PUBLICA_CANTIDAD']) > 0) ? ($TotalCosto-$row['INSTITUCION_PUBLICA_COSTO'])/($TotalCantidad-$row['INSTITUCION_PUBLICA_CANTIDAD']):0;
             $json[$i]['COSTO_PROM_MINSA_PACK']                      = ($row['INSTITUCION_PUBLICA_CANTIDAD'] > 0) ? $row['INSTITUCION_PUBLICA_COSTO']/$row['INSTITUCION_PUBLICA_CANTIDAD']:0;
             $json[$i]['Valor_USD_Inventario_ONHAND_PRIVADO']        = $CantOnHand;
             $json[$i]['Valor_USD_Total_OnHand_Tránsito_PRIVADO']    = $CantOnHandTransito;
             $json[$i]['Disponibilidad_Packs_PRIVADO_6_MESES']       = $cantDisponible;
             $json[$i]['Lote_Mas_a_Vencer_PRIVADO_6_MESES']          = date('d/m/Y',strtotime(optional($row->getLoteExpDate)->FECHA_VENCIMIENTO ?? 'Sin clasificación'));
-            $json[$i]['Existencia_En_Lote_proximo_Vencer_6_MESES']  = $cantProxima;*/
+            $json[$i]['Existencia_En_Lote_proximo_Vencer_6_MESES']  = $cantProxima;
             $json[$i]['ARTICULO']                                   = '<a href="#!" onclick="getDetalleArticulo('."'".$row['ARTICULO']."'".', '."'".strtoupper(optional($row->getClasificacion)->DESCRIPCION ?? 'SIN DESCRIPCIÓN')."'".')" >'.$row['ARTICULO'].'</a>';
             $json[$i]['ARTICULODESC']                               = $row['ARTICULO'];
             $json[$i]['DESCRIPCION']                                = strtoupper(optional($row->getClasificacion)->DESCRIPCION ?? 'SIN DESCRIPCIÓN');
@@ -178,6 +178,10 @@ class ContribucionPorCanales extends Model
         return $json;
     }
 
+    public static function getContribucionArticulo($articulo){
+
+    }
+
 
     public static function getDataCanal($articulo, $canal, $opcion){
         $Meses = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo_dev ?, ?', [$canal,$opcion]);
@@ -238,13 +242,8 @@ class ContribucionPorCanales extends Model
     public static function calcularCanales($fechaIni, $fechaEnd)
     {
         
-        DB::connection('sqlsrv')->statement("SET NOCOUNT ON ; EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion");        
-        ContribucionPorCanalesTable::where(function ($query) use ($fechaIni, $fechaEnd) {
-            $query->where('FECHA', '<', $fechaIni)
-                ->orWhere('FECHA', '>', $fechaEnd);
-        })->delete();
-
-        
+        DB::connection('sqlsrv')->statement("SET NOCOUNT ON ; EXEC PRODUCCION.dbo.pr_calc_canales ?, ?", [$fechaIni, $fechaEnd]);        
+                
         DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales");
 
         // Insertar en el modelo Logs_calcs
