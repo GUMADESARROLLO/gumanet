@@ -62,14 +62,14 @@ class DashboardInnova extends Model
         $Vendedores = [];
         $SKU_CHART  = [];
         $CLS_CHART  = [];
+        
+        $desde      = $request->desde;
+        $hasta      = $request->hasta;
 
-        // $desde      = $request->desde;
-        // $hasta      = $request->hasta;
+        //$desde      = '2025-06-01';
+        //$hasta      = '2025-06-30';
 
-        $desde      = '2025-06-01';
-        $hasta      = '2025-06-30';
-
-        $Today       = date('Y-m-d');
+        //$Today       = date('Y-m-d');
 
         //DIA ACTUAL
         $Clientes   = DashboardInnova::TransacionesClientes($desde, $hasta);
@@ -130,7 +130,9 @@ class DashboardInnova extends Model
             'Clientes' => $Clientes,
             'Vendedores' => $Vendedores,
             'SKU_CHART' => $SKU_CHART,
-            'CLS_CHART' => $CLS_CHART
+            'CLS_CHART' => $CLS_CHART,
+            'DESDE'     => $desde,
+            'HASTA'     => $hasta
         ];
 
         return $Metricas_Merge;

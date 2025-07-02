@@ -18,14 +18,15 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
       <img src="{{ url('img/innova.png') }}" width="150" height="70" alt="Innova Logo">
       <div class="d-flex gap-2">
-        <input type="date" class="form-control" value="2025-01-16">
-        <input type="date" class="form-control" value="2025-06-23">
+        <input type="date" class="form-control" value="2025-01-16" id="desdeInnova">
+        <input type="date" class="form-control" value="2025-06-23" id="hastaInnova">
+        <button id="filtrarFechas" class="btn btn-primary">Filtrar</button>
       </div>
     </div>
 
     <!-- Summary -->
     <div class="row g-3 mb-4">
-      <div class="col-md-3">
+      <div class="col-md-3 border-end">
         <div class="card summary-card">
           <div class="card-body">
             
@@ -33,16 +34,16 @@
               <div class="d-flex justify-content-between align-items-center">
                 <span id="bultos_facturacion">9</span>
                 <span>
-                  <i class="fas fa-box"></i>
+                  <i class="fas fa-boxes"></i>
                 </span>
               </div>
             </div>
-            <div class="summary-title">Bultos Fact. Actual</div>
+            <div class="summary-title" style="color: #890fa1">Bultos Fact. Actual</div>
             <div class="summary-sub">↑ 0.00 Lorem Ipsum</div>
           </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-3 border-end">
         <div class="card summary-card">
           <div class="card-body">
             
@@ -50,43 +51,43 @@
               <div class="d-flex justify-content-between align-items-center">
                 <span id="bultos_valor">0.00</span>
                 <span>
-                  <i class="fas fa-box"></i>
+                  <i class="fas fa-comment-dollar"></i>
                 </span>
               </div>
             </div>
-            <div class="summary-title">Bultos Valor Actual</div>
+            <div class="summary-title" style="color: #890fa1">Bultos Valor Actual</div>
             <div class="summary-sub">↑ 0.00 Lorem Ipsum</div>
           </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-3 border-end">
         <div class="card summary-card">
           <div class="card-body">            
             <div class="summary-value">
               <div class="d-flex justify-content-between align-items-center">
                 <span id="bultos_anterior">0.00</span>
                 <span>
-                  <i class="fas fa-box"></i>
+                  <i class="fa fa-exclamation-circle"></i>
                 </span>
               </div>
             </div>
-            <div class="summary-title">Bultos 2024</div>
+            <div class="summary-title" style="color: #890fa1">Bultos 2024</div>
             <div class="summary-sub text-danger">↓ 0.00 Lorem Ipsum</div>
           </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-3 border-end">
         <div class="card summary-card">
           <div class="card-body">            
             <div class="summary-value"> 
               <div class="d-flex justify-content-between align-items-center">
                 <span id="bultos_actual">0.00</span>
                 <span>
-                  <i class="fas fa-box"></i>
+                  <i class="fa fa-exclamation-circle"></i>
                 </span>
               </div>
             </div>
-            <div class="summary-title">Bultos 2025</div>
+            <div class="summary-title" style="color: #890fa1">Bultos 2025</div>
             <div class="summary-sub">↑ 0.00 Lorem Ipsum</div>
           </div>
         </div>
@@ -94,7 +95,7 @@
     </div>
 
     <!-- Tablas -->
-    <div class="row g-4">      
+    <div class="row g-4 mb-4">      
       <div class="col-md-6">
         <div class="card">
           <div class="card-header bg-innova text-white">            
@@ -102,7 +103,7 @@
               <h6 class="mb-0">Clientes Facturados</h6>
               <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
             </div>
-            <p class="text-white mb-0">00/00/0000 al  00/00/0000</p>
+            <p class="text-white mb-0" id="fechaClienteFact">00/00/0000 al  00/00/0000</p>
           </div>
           <div class="card-body">
             <table id="clientesTable" class="display" style="width:100%"></table>
@@ -116,7 +117,7 @@
               <h6 class="mb-0">Ventas por Vendedor</h6>
               <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
             </div>
-            <p class="text-white mb-0">00/00/0000 al  00/00/0000</p>
+            <p class="text-white mb-0" id="fechaVentaVendedor">00/00/0000 al  00/00/0000</p>
           </div>
           <div class="card-body">
             <table id="vendedoresTable" class="display" style="width:100%"></table>
@@ -126,7 +127,7 @@
     </div>
 
     <!-- Charts -->
-    <div class="row g-4 ">
+    <div class="row g-4 mb-4">
       <div class="col-md-3">
         <div class="card">
           <div class="card-header bg-innova text-white">
@@ -152,7 +153,7 @@
     </div>
 
      <!-- Tablas -->
-    <div class="row g-4">      
+    <div class="row g-4 mb-4">      
       <div class="col-md-6">
         <div class="card">
           <div class="card-header bg-innova text-white">            

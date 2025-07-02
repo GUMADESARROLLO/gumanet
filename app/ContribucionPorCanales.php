@@ -22,8 +22,8 @@ class ContribucionPorCanales extends Model
 {
     protected $connection = 'sqlsrv';
     public $timestamps = false;
-    protected $table = "PRODUCCION.dbo.view_contribucion_canales";
-    //protected $table = 'PRODUCCION.dbo.tbl_gnet_ContribucionCanales';
+    //protected $table = "PRODUCCION.dbo.view_contribucion_canales";
+    protected $table = 'PRODUCCION.dbo.tbl_gnet_ContribucionCanales';
 
     public function getLoteExpDate()
     {
@@ -42,10 +42,9 @@ class ContribucionPorCanales extends Model
         $Meses      = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo_dev ?, ?', ['Todos',0]);
         $fecha      = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
         $NameMonths = ContribucionPorCanales::NameMonth($fecha[0]->ultima_fecha);
-        $categoria  = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.tbl_categoria_articulo_canales");
         $lote       = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.iweb_lotes");
 
-
+        
         // NUEVA FORMA DE RECORRER LOS ARTICULOS
         // EXEC dbo.pr_calc_canales '2025-01-01', '2025-03-31';
         // $Articulo_Contribucion = ContribucionPorCanales::all();
@@ -60,9 +59,9 @@ class ContribucionPorCanales extends Model
         // }
 
         foreach($sql as $row){
-            $TotalCantidad = $row['FARMACIA_CANTIDAD']+$row['CADENA_FARMACIA_CANTIDAD']+$row['MAYORISTA_CANTIDAD']+$row['INSTITUCION_PRIVADA_CANTIDAD']+$row['CRUZ_AZUL_CANTIDAD']+$row['INSTITUCION_PUBLICA_CANTIDAD']+$row['LICITACION_CANTIDAD'];
-            $TotalCosto = $row['FARMACIA_COSTO']+$row['CADENA_FARMACIA_COSTO']+$row['MAYORISTA_COSTO']+$row['INSTITUCION_PRIVADA_COSTO']+$row['CRUZ_AZUL_COSTO']+$row['INSTITUCION_PUBLICA_COSTO']+$row['LICITACION_COSTO'];
-            $TotalVenta = $row['FARMACIA_VENTA']+$row['CADENA_FARMACIA_VENTA']+$row['MAYORISTA_VENTA']+$row['INSTITUCION_PRIVADA_VENTA']+$row['CRUZ_AZUL_VENTA']+$row['INSTITUCION_PUBLICA_VENTA']+$row['LICITACION_VENTA'];
+            $TotalCantidad = $row['F_UNDS_FARMACIAS']+$row['F_UNDS_CADENAS']+$row['F_UNDS_MAYORISTAS']+$row['F_UNDS_INST_PRIVADAS']+$row['F_UNDS_CRUZ_AZUL']+$row['F_UNDS_INST_PUBLICAS']+$row['F_UNDS_LICITACIONES'];
+            $TotalCosto = $row['F_CTO_FARMACIAS']+$row['F_CTO_CADENAS']+$row['F_CTO_MAYORISTAS']+$row['F_CTO_INST_PRIVADAS']+$row['F_CTO_CRUZ_AZUL']+$row['F_CTO_INST_PUBLICAS']+$row['F_CTO_LICITACIONES'];
+            $TotalVenta = $row['F_VTA_FARMACIAS']+$row['F_VTA_CADENAS']+$row['F_VTA_MAYORISTAS']+$row['F_VTA_INST_PRIVADAS']+$row['F_VTA_CRUZ_AZUL']+$row['F_VTA_INST_PUBLICAS']+$row['F_VTA_LICITACIONES'];
             $CantOnHand = 0;
             $CantOnHandTransito = 0;
             $fechaActual = date('Y-m-d'); 
@@ -73,9 +72,7 @@ class ContribucionPorCanales extends Model
             $costoTotal = 0;
             $costoPromedio = 0;
             $mess12 = null;
-            $categ = ""; $factor = 0;
             
-            // FECHA DE VENCIMIENTO Y CANTIDAD DISPONIBLE
             foreach($lote as $item) {
                 if($item->ARTICULO == $articulo){
                     $convertida = $item->CANT_DISPONIBLE * $item->FACTOR_CONVER_6;
@@ -83,7 +80,6 @@ class ContribucionPorCanales extends Model
                     $costoPromedio = $item->COSTO_PROM_LOC;
                 }
                 
-                $factor = $item->FECHA_VENCIMIENTO;
                 if($item->ARTICULO == $articulo &&  $item->FECHA_VENCIMIENTO >= $fechaActual) {
                     $cantDisponible += $item->CANT_DISPONIBLE; 
             
@@ -96,7 +92,7 @@ class ContribucionPorCanales extends Model
             $CantOnHand = $costoTotal/36.62;
             $CantOnHandTransito = ($costoPromedio*($cantDisponible+$cantProxima))/36.62;
 
-            // CANTIDAD POR MESES Juvenile Law
+            // CANTIDAD POR MESES
             foreach($Meses as $item){
                 if($item->ARTICULO == $articulo){
                     $mess12 = array_map(function($month, $value) use ($item) { 
@@ -108,69 +104,67 @@ class ContribucionPorCanales extends Model
                 }
             }
 
-            // CLASIFICACION DE ARTICULO
-            foreach($categoria as $item){
-                if($item->ARTICULO == $articulo){
-                    $categ = $item->CATEGORIA;
-                    break;
-                }
-            }
             
-
             $json[$i]['COSTO_PROM_PRIV_PACK']                       = (($TotalCantidad-$row['INSTITUCION_PUBLICA_CANTIDAD']) > 0) ? ($TotalCosto-$row['INSTITUCION_PUBLICA_COSTO'])/($TotalCantidad-$row['INSTITUCION_PUBLICA_CANTIDAD']):0;
             $json[$i]['COSTO_PROM_MINSA_PACK']                      = ($row['INSTITUCION_PUBLICA_CANTIDAD'] > 0) ? $row['INSTITUCION_PUBLICA_COSTO']/$row['INSTITUCION_PUBLICA_CANTIDAD']:0;
             $json[$i]['Valor_USD_Inventario_ONHAND_PRIVADO']        = $CantOnHand;
             $json[$i]['Valor_USD_Total_OnHand_Tránsito_PRIVADO']    = $CantOnHandTransito;
             $json[$i]['Disponibilidad_Packs_PRIVADO_6_MESES']       = $cantDisponible;
-            $json[$i]['Lote_Mas_a_Vencer_PRIVADO_6_MESES']          = date('d/m/Y',strtotime($fechaVencimiento));
+            $json[$i]['Lote_Mas_a_Vencer_PRIVADO_6_MESES']          = date('d/m/Y',strtotime(optional($row->getLoteExpDate)->FECHA_VENCIMIENTO ?? 'Sin clasificación'));
             $json[$i]['Existencia_En_Lote_proximo_Vencer_6_MESES']  = $cantProxima;
-            $json[$i]['ARTICULO']                                   = '<a href="#!" onclick="getDetalleArticulo('."'".$row['ARTICULO']."'".', '."'".strtoupper($row['DESCRIPCION'])."'".')" >'.$row['ARTICULO'].'</a>';
+            $json[$i]['ARTICULO']                                   = '<a href="#!" onclick="getDetalleArticulo('."'".$row['ARTICULO']."'".', '."'".strtoupper(optional($row->getClasificacion)->DESCRIPCION ?? 'SIN DESCRIPCIÓN')."'".')" >'.$row['ARTICULO'].'</a>';
             $json[$i]['ARTICULODESC']                               = $row['ARTICULO'];
-            $json[$i]['DESCRIPCION']                                = strtoupper($row['DESCRIPCION']);
+            $json[$i]['DESCRIPCION']                                = strtoupper(optional($row->getClasificacion)->DESCRIPCION ?? 'SIN DESCRIPCIÓN');
             $json[$i]['FABRICANTE']                                 = strtoupper($row['FABRICANTE']);
-            $json[$i]['CATEGORIA']                                  = $categ;
-            $json[$i]['FARMACIA_CANTIDAD']                          = number_format($row['FARMACIA_CANTIDAD'],0,'.',',');            
-            $json[$i]['FARMACIA_PROMEDIO']                          = $row['FARMACIA_PROMEDIO'];
-            $json[$i]['FARMACIA_VENTA']                             = $row['FARMACIA_VENTA'];
-            $json[$i]['FARMACIA_COSTO']                             = $row['FARMACIA_COSTO'];
-            $json[$i]['FARMACIA_CONTRIBUCION']                      = $row['FARMACIA_CONTRIBUCION'];
-            $json[$i]['FARMACIA_MARGEN']                            = $row['FARMACIA_MARGEN'];
-            $json[$i]['CADENA_FARMACIA_CANTIDAD']                   = number_format($row['CADENA_FARMACIA_CANTIDAD'],0,'.',',');
-            $json[$i]['CADENA_FARMACIA_PROMEDIO']                   = $row['CADENA_FARMACIA_PROMEDIO'];
-            $json[$i]['CADENA_FARMACIA_VENTA']                      = $row['CADENA_FARMACIA_VENTA'];
-            $json[$i]['CADENA_FARMACIA_COSTO']                      = $row['CADENA_FARMACIA_COSTO'];
-            $json[$i]['CADENA_FARMACIA_CONTRIBUCION']               = $row['CADENA_FARMACIA_CONTRIBUCION'];
-            $json[$i]['CADENA_FARMACIA_MARGEN']                     = $row['CADENA_FARMACIA_MARGEN'];
-            $json[$i]['MAYORISTA_CANTIDAD']                         = number_format($row['MAYORISTA_CANTIDAD'],0,'.',',');
-            $json[$i]['MAYORISTA_PROMEDIO']                         = $row['MAYORISTA_PROMEDIO'];
-            $json[$i]['MAYORISTA_VENTA']                            = $row['MAYORISTA_VENTA'];
-            $json[$i]['MAYORISTA_COSTO']                            = $row['MAYORISTA_COSTO'];
-            $json[$i]['MAYORISTA_CONTRIBUCION']                     = $row['MAYORISTA_CONTRIBUCION'];
-            $json[$i]['MAYORISTA_MARGEN']                           = $row['MAYORISTA_MARGEN'];
-            $json[$i]['INSTITUCION_PRIVADA_CANTIDAD']               = number_format($row['INSTITUCION_PRIVADA_CANTIDAD'],0,'.',',');
-            $json[$i]['INSTITUCION_PRIVADA_PROMEDIO']               = $row['INSTITUCION_PRIVADA_PROMEDIO'];
-            $json[$i]['INSTITUCION_PRIVADA_VENTA']                  = $row['INSTITUCION_PRIVADA_VENTA'];
-            $json[$i]['INSTITUCION_PRIVADA_COSTO']                  = $row['INSTITUCION_PRIVADA_COSTO'];
-            $json[$i]['INSTITUCION_PRIVADA_CONTRIBUCION']           = $row['INSTITUCION_PRIVADA_CONTRIBUCION'];
-            $json[$i]['INSTITUCION_PRIVADA_MARGEN']                 = $row['INSTITUCION_PRIVADA_MARGEN'];
-            $json[$i]['CRUZ_AZUL_CANTIDAD']                         = number_format($row['CRUZ_AZUL_CANTIDAD'],0,'.',',');
-            $json[$i]['CRUZ_AZUL_PROMEDIO']                         = $row['CRUZ_AZUL_PROMEDIO'];
-            $json[$i]['CRUZ_AZUL_VENTA']                            = $row['CRUZ_AZUL_VENTA'];
-            $json[$i]['CRUZ_AZUL_COSTO']                            = $row['CRUZ_AZUL_COSTO'];
-            $json[$i]['CRUZ_AZUL_CONTRIBUCION']                     = $row['CRUZ_AZUL_CONTRIBUCION'];
-            $json[$i]['CRUZ_AZUL_MARGEN']                           = $row['CRUZ_AZUL_MARGEN'];
-            $json[$i]['INSTITUCION_PUBLICA_CANTIDAD']               = number_format($row['INSTITUCION_PUBLICA_CANTIDAD'],0,'.',',');
-            $json[$i]['INSTITUCION_PUBLICA_PROMEDIO']               = $row['INSTITUCION_PUBLICA_PROMEDIO'];
-            $json[$i]['INSTITUCION_PUBLICA_VENTA']                  = $row['INSTITUCION_PUBLICA_VENTA'];
-            $json[$i]['INSTITUCION_PUBLICA_COSTO']                  = $row['INSTITUCION_PUBLICA_COSTO'];
-            $json[$i]['INSTITUCION_PUBLICA_CONTRIBUCION']           = $row['INSTITUCION_PUBLICA_CONTRIBUCION'];
-            $json[$i]['INSTITUCION_PUBLICA_MARGEN']                 = $row['INSTITUCION_PUBLICA_MARGEN'];
-            $json[$i]['LICITACION_CANTIDAD']                        = number_format($row['LICITACION_CANTIDAD'],0,'.',',');
-            $json[$i]['LICITACION_PROMEDIO']                        = $row['LICITACION_PROMEDIO'];
-            $json[$i]['LICITACION_VENTA']                           = $row['LICITACION_VENTA'];
-            $json[$i]['LICITACION_COSTO']                           = $row['LICITACION_COSTO'];
-            $json[$i]['LICITACION_CONTRIBUCION']                    = $row['LICITACION_CONTRIBUCION'];
-            $json[$i]['LICITACION_MARGEN']                          = $row['LICITACION_MARGEN'];
+            $json[$i]['CATEGORIA']                                  = optional($row->getClasificacion)->CATEGORIA ?? 'SIN CATEGORIA';
+
+            /**------------------------------------------------------------------------------------------------------------------- */
+            /**------------------------------------------------------------------------------------------------------------------- */
+            $json[$i]['FARMACIA_CANTIDAD']                          = number_format($row['F_UNDS_FARMACIAS'],0,'.',',');            
+            $json[$i]['FARMACIA_PROMEDIO']                          = $row['PREC_PROM_FARMACIAS'];
+            $json[$i]['FARMACIA_VENTA']                             = $row['F_VTA_FARMACIAS'];
+            $json[$i]['FARMACIA_COSTO']                             = $row['F_CTO_FARMACIAS'];
+            $json[$i]['FARMACIA_CONTRIBUCION']                      = $row['F_CTB_FARMACIAS'];
+            $json[$i]['FARMACIA_MARGEN']                            = $row['MARGEN_FARMACIAS'];
+            $json[$i]['CADENA_FARMACIA_CANTIDAD']                   = number_format($row['F_UNDS_CADENAS'],0,'.',',');
+            $json[$i]['CADENA_FARMACIA_PROMEDIO']                   = $row['PREC_PROM_CADENAS'];
+            $json[$i]['CADENA_FARMACIA_VENTA']                      = $row['F_VTA_CADENAS'];
+            $json[$i]['CADENA_FARMACIA_COSTO']                      = $row['F_CTO_CADENAS'];
+            $json[$i]['CADENA_FARMACIA_CONTRIBUCION']               = $row['F_CTB_CADENAS'];
+            $json[$i]['CADENA_FARMACIA_MARGEN']                     = $row['MARGEN_CADENAS'];
+            $json[$i]['MAYORISTA_CANTIDAD']                         = number_format($row['F_UNDS_MAYORISTAS'],0,'.',',');
+            $json[$i]['MAYORISTA_PROMEDIO']                         = $row['PREC_PROM_MAYORISTAS'];
+            $json[$i]['MAYORISTA_VENTA']                            = $row['F_VTA_MAYORISTAS'];
+            $json[$i]['MAYORISTA_COSTO']                            = $row['F_CTO_MAYORISTAS'];
+            $json[$i]['MAYORISTA_CONTRIBUCION']                     = $row['F_CTB_MAYORISTAS'];
+            $json[$i]['MAYORISTA_MARGEN']                           = $row['MARGEN_MAYORISTAS'];
+            $json[$i]['INSTITUCION_PRIVADA_CANTIDAD']               = number_format($row['F_UNDS_INST_PRIVADAS'],0,'.',',');
+            $json[$i]['INSTITUCION_PRIVADA_PROMEDIO']               = $row['PREC_PROM_INST_PRIVADAS'];
+            $json[$i]['INSTITUCION_PRIVADA_VENTA']                  = $row['F_VTA_INST_PRIVADAS'];
+            $json[$i]['INSTITUCION_PRIVADA_COSTO']                  = $row['F_CTO_INST_PRIVADAS'];
+            $json[$i]['INSTITUCION_PRIVADA_CONTRIBUCION']           = $row['F_CTB_INST_PRIVADAS'];
+            $json[$i]['INSTITUCION_PRIVADA_MARGEN']                 = $row['MARGEN_INST_PRIVADAS'];
+            $json[$i]['CRUZ_AZUL_CANTIDAD']                         = number_format($row['F_UNDS_CRUZ_AZUL'],0,'.',',');
+            $json[$i]['CRUZ_AZUL_PROMEDIO']                         = $row['PREC_PROM_CRUZ_AZUL'];
+            $json[$i]['CRUZ_AZUL_VENTA']                            = $row['F_VTA_CRUZ_AZUL'];
+            $json[$i]['CRUZ_AZUL_COSTO']                            = $row['F_CTO_CRUZ_AZUL'];
+            $json[$i]['CRUZ_AZUL_CONTRIBUCION']                     = $row['F_CTB_CRUZ_AZUL'];
+            $json[$i]['CRUZ_AZUL_MARGEN']                           = $row['MARGEN_CRUZ_AZUL'];
+            $json[$i]['INSTITUCION_PUBLICA_CANTIDAD']               = number_format($row['F_UNDS_INST_PUBLICAS'],0,'.',',');
+            $json[$i]['INSTITUCION_PUBLICA_PROMEDIO']               = $row['PREC_PROM_INST_PUBLICAS'];
+            $json[$i]['INSTITUCION_PUBLICA_VENTA']                  = $row['F_VTA_INST_PUBLICAS'];
+            $json[$i]['INSTITUCION_PUBLICA_COSTO']                  = $row['F_CTO_INST_PUBLICAS'];
+            $json[$i]['INSTITUCION_PUBLICA_CONTRIBUCION']           = $row['F_CTB_INST_PUBLICAS'];
+            $json[$i]['INSTITUCION_PUBLICA_MARGEN']                 = $row['MARGEN_INST_PUBLICAS'];
+            $json[$i]['LICITACION_CANTIDAD']                        = number_format($row['F_UNDS_LICITACIONES'],0,'.',',');
+            $json[$i]['LICITACION_PROMEDIO']                        = $row['PREC_PROM_LICITACIONES'];
+            $json[$i]['LICITACION_VENTA']                           = $row['F_VTA_LICITACIONES'];
+            $json[$i]['LICITACION_COSTO']                           = $row['F_CTO_LICITACIONES'];
+            $json[$i]['LICITACION_CONTRIBUCION']                    = $row['F_CTB_LICITACIONES'];
+            $json[$i]['LICITACION_MARGEN']                          = $row['MARGEN_LICITACIONES'];
+
+            /**------------------------------------------------------------------------------------------------------------------- */
+            /**------------------------------------------------------------------------------------------------------------------- */
             $json[$i]['TOTAL_VENTAS_PACK']                          = number_format($TotalCantidad,0,'.',',');
             $json[$i]['TOTAL_PRECIO_PROM']                          = ($TotalCantidad > 0) ? $TotalVenta/$TotalCantidad:0;
             $json[$i]['TOTAL_VENTAS_C$']                            = $TotalVenta;
@@ -182,6 +176,10 @@ class ContribucionPorCanales extends Model
         }
 
         return $json;
+    }
+
+    public static function getContribucionArticulo($articulo){
+
     }
 
 
@@ -244,13 +242,8 @@ class ContribucionPorCanales extends Model
     public static function calcularCanales($fechaIni, $fechaEnd)
     {
         
-        DB::connection('sqlsrv')->statement("SET NOCOUNT ON ; EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion");        
-        ContribucionPorCanalesTable::where(function ($query) use ($fechaIni, $fechaEnd) {
-            $query->where('FECHA', '<', $fechaIni)
-                ->orWhere('FECHA', '>', $fechaEnd);
-        })->delete();
-
-        
+        DB::connection('sqlsrv')->statement("SET NOCOUNT ON ; EXEC PRODUCCION.dbo.pr_calc_canales ?, ?", [$fechaIni, $fechaEnd]);        
+                
         DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_categoria_articulo_canales");
 
         // Insertar en el modelo Logs_calcs
