@@ -42,8 +42,7 @@ class DashboardInnova extends Model
             ->selectRaw('ARTICULO,DESCRIPCION, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
             ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
             ->groupBy('ARTICULO', 'DESCRIPCION')
-            ->orderByDesc('CANTIDAD')
-            ->get();
+            ->orderByDesc('CANTIDAD');
     }
 
     public static function BultosComparativa( $nYearAnterior, $nYearActual)
@@ -78,6 +77,15 @@ class DashboardInnova extends Model
         // RANGO DE FECHA
         $Ventas     = DashboardInnova::TransacionesBultosValor($desde, $hasta);
         $Articulos  = DashboardInnova::TransacionesArticulos($desde, $hasta);
+
+        $SumaVentas = array_sum(array_column($Articulos->get()->toArray(), 'VENTA_CON_IVA'));
+        $SumaBultos = array_sum(array_column($Articulos->get()->toArray(), 'CANTIDAD'));
+
+        // PARA QUE NO EXISTAN DIVICION ENTRE ZERO
+        $SumaVentas = $SumaVentas ?? 0.002;
+        $SumaBultos = $SumaBultos ?? 0.002;
+
+
         $ClientesHoy = DashboardInnova::TransacionesClientes($desde, $hasta);
 
 
@@ -108,11 +116,15 @@ class DashboardInnova extends Model
         }
 
         //MUESTRA EL VALOR Y CANTIDADDES DE BULTOS ENTRE EL GANGO DE FECHA
-        foreach ($Articulos as $key => $value) {        
+        foreach ($Articulos->get() as $key => $value) {  
+
+            $Peso = ($value->VENTA_CON_IVA / $SumaVentas ) * 100;
+
             $SKU_CHART[$key] = [
                 'SKU'               => $value->ARTICULO,
-                'BULTOS_TOTAL_UND'  => number_format($value->CANTIDAD, 2), 
-                'BULTOS_TOTAL_NIO'  => number_format($value->VENTA_CON_IVA, 2),
+                'BULTOS_TOTAL_UND'  => round($value->CANTIDAD, 2), 
+                'BULTOS_TOTAL_NIO'  => round($value->VENTA_CON_IVA, 2),
+                'PESO'              => round($Peso, 2),
             ];
         }
 
@@ -129,7 +141,12 @@ class DashboardInnova extends Model
             'Metricas' => $Metricas,
             'Clientes' => $Clientes,
             'Vendedores' => $Vendedores,
-            'SKU_CHART' => $SKU_CHART,
+            'SKU_CHART' => [
+                'data' => $SKU_CHART,
+                'Totals' => 
+                    ['Bultos' => number_format($SumaBultos, 2), 'Valor' => number_format($SumaVentas, 2)]
+                
+            ],
             'CLS_CHART' => $CLS_CHART,
             'DESDE'     => $desde,
             'HASTA'     => $hasta

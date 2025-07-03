@@ -42,4 +42,13 @@
       font-weight: 600;
       color: black;
     }
+    .drawBorder {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .table-footer {
+      width: 20% !important;
+      float: right;
+    }
   </style>

@@ -164,7 +164,25 @@
             <p class="text-white mb-0">00/00/0000 al  00/00/0000</p>
           </div>
           <div class="card-body">
-            <table id="tbl_top_sku" class="display" style="width:100%"></table>
+            <table id="tbl_top_sku" class="display" style="width:100%">
+              <tfoot>
+                <tr>
+                  <th colspan="3" >
+                    <div class="row">
+                      <div class="col-md-4">
+                        <span class="item-left">Total:</span>
+                      </div>
+                      <div class="col-md-4">
+                        <span class="item-right" id="total_sku_bultos">0.00 Bls</span>  
+                      </div>
+                      <div class="col-md-4">  
+                        <span class="item-right" id="total_sku_valor">C$. 0.00</span>
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </div>
       </div>
