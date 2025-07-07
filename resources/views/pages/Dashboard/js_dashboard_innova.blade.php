@@ -78,28 +78,41 @@
       $(selector + '_length').hide();
     }
 
-     async function cargarGetDataInnova(desde, hasta){
+    async function cargarGetDataInnova(desde, hasta){
         try {
             
 
             //TODO: CAMBIARLO POR UN METODO POST
-            const url = "{{ route('getDataInnova') }}";
-            const response = await fetch(`${url}?desde=${desde}&hasta=${hasta}`);
-             //TODO: CAMBIARLO POR UN METODO POST
+            const response = await fetch('getDataInnova', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    desde: desde,
+                    hasta: hasta
+                })
+            });
+            //TODO: CAMBIARLO POR UN METODO POST
             
             const result = await response.json();
             
             loadAndBuildTable('#clientesTable', result.ACTUAL.Clientes);            
             loadAndBuildTable('#vendedoresTable', result.ACTUAL.Vendedores);
             Tbl_TopSKU('#tbl_top_sku', result.ACTUAL.SKU_CHART.data);
-            loadAndBuildTable('#tbl_top_clientes', result.ACTUAL.Vendedores);
-
+            loadAndBuildTable('#tbl_top_clientes', result.ACTUAL.CLS_CHART);
+            renderSKUPieChart(result.ACTUAL.SKU_CHART.data);
+            renderClienteBolsonChart(result.ACTUAL.CLS_CHART);
+            
             $('#bultos_facturacion').text(result.ACTUAL.Metricas.BULTOS_TOTAL_NIO);
             $('#bultos_valor').text("C$. "+result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
             $('#bultos_anterior').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ACTUAL);
             $('#bultos_actual').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ANTERIOR);
             $('#fechaClienteFact').text(result.ACTUAL.DESDE+' al '+result.ACTUAL.HASTA);
             $('#fechaVentaVendedor').text(result.ACTUAL.DESDE+' al '+result.ACTUAL.HASTA);
+            $('#fechaSKU').text(result.ACTUAL.DESDE+' al '+result.ACTUAL.HASTA);
+            $('#fechaVentaNeta').text(result.ACTUAL.DESDE+' al '+result.ACTUAL.HASTA);
 
             $("#total_sku_bultos").text(result.ACTUAL.SKU_CHART.Totals.Bultos + " Bls.");
             $("#total_sku_valor").text("C$. "+result.ACTUAL.SKU_CHART.Totals.Valor);
@@ -126,4 +139,4 @@
       cargarGetDataInnova(desde, hasta);
     });
 
-  </script>
+</script>
