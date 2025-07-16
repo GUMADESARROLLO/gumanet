@@ -130,7 +130,7 @@ class DashboardInnova extends Model
 
         foreach ($ClientesHoy as $key => $value) {           
             $CLS_CHART[$key] = [
-                'CLIENTE'           => $value->CLIENTE,
+                'CODIGO'           => $value->CLIENTE,
                 'NOMBRE'            => $value->NOMBRE,
                 'BULTOS_TOTAL_UND'  => number_format($value->CANTIDAD, 2),  
                 'BULTOS_TOTAL_NIO'  => number_format($value->VENTA_CON_IVA, 2),
