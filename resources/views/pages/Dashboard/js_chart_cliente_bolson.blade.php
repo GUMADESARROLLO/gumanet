@@ -1,104 +1,74 @@
 <script>
-Highcharts.chart('chart_cliente_bolson', {
-    
-    title: {
-        text: ''
-    },
-    xAxis: [{
-        categories: [
-            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ],
-        crosshair: true
-    }],
-    yAxis: [{ // Primary yAxis
-        labels: {
-            format: '{value}°C',
-            style: {
-                color: Highcharts.getOptions().colors[2]
-            }
+function renderClienteBolsonChart(data) {
+    const categorias = data.map(item => item.CODIGO);
+    const nombresClientes = data.map(item => item.NOMBRE);
+    const valoresNIO = data.map(item => parseFloat(item.BULTOS_TOTAL_NIO.replace(/,/g, '')));
+    const valoresUND = data.map(item => parseFloat(item.BULTOS_TOTAL_UND.replace(/,/g, '')));
+
+    Highcharts.chart('chart_cliente_bolson', {
+        chart: {
+            zoomType: 'xy'
         },
         title: {
-            text: 'Temperature',
-            style: {
-                color: Highcharts.getOptions().colors[2]
-            }
+            text: 'Comparativo de Bultos por Cliente'
         },
-        opposite: true
-
-    }, { // Secondary yAxis
-        gridLineWidth: 0,
-        title: {
-            text: 'Rainfall',
-            style: {
-                color: Highcharts.getOptions().colors[0]
+        xAxis: [{
+            categories: categorias,
+            crosshair: true,
+            labels: {
+                rotation: -45
             }
-        },
-        labels: {
-            format: '{value} mm',
-            style: {
-                color: Highcharts.getOptions().colors[0]
+        }],
+        yAxis: [{ // Primary yAxis
+            title: {
+                text: 'Valor (C$)',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
             }
-        }
-
-    }],
-
-    series: [{
-        name: 'Rainfall',
-        type: 'column',
-        yAxis: 1,
-        data: [
-            49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1,
-            95.6, 54.4
-        ],
-        tooltip: {
-            valueSuffix: ' mm'
-        }
-
-    }, {
-        name: 'Temperature',
-        type: 'spline',
-        data: [
-            7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6
-        ],
-        tooltip: {
-            valueSuffix: ' °C'
-        }
-    }],
-    responsive: {
-        rules: [{
-            condition: {
-                maxWidth: 500
+        }, { // Secondary yAxis
+            title: {
+                text: 'Bultos UND',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
             },
-            chartOptions: {
-                legend: {
-                    floating: false,
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom',
-                    x: 0,
-                    y: 0
-                },
-                yAxis: [{
-                    labels: {
-                        align: 'right',
-                        x: 0,
-                        y: -6
-                    },
-                    showLastLabel: false
-                }, {
-                    labels: {
-                        align: 'left',
-                        x: 0,
-                        y: -6
-                    },
-                    showLastLabel: false
-                }, {
-                    visible: false
-                }]
+            opposite: true
+        }],
+        tooltip: {
+            shared: true,
+            formatter: function () {
+                const index = this.points[0].point.index;
+                return `
+                    <b>${categorias[index]}</b><br/>
+                    Cliente: ${nombresClientes[index]}<br/>
+                    Valor: C$ ${valoresNIO[index].toLocaleString()}<br/>
+                    Bultos UND: ${valoresUND[index]}
+                `;
+            }
+        },
+        legend: {
+            align: 'center',
+            verticalAlign: 'bottom',
+            layout: 'horizontal'
+        },
+        series: [{
+            name: 'Valor (C$)',
+            type: 'column',
+            yAxis: 0,
+            data: valoresNIO,
+            tooltip: {
+                valuePrefix: 'C$ '
+            }
+        }, {
+            name: 'Bultos UND',
+            type: 'spline',
+            yAxis: 1,
+            data: valoresUND,
+            tooltip: {
+                valueSuffix: ' UND'
             }
         }]
-    }
-});
-
+    });
+}
 </script>

@@ -128,7 +128,7 @@
 
     <!-- Charts -->
     <div class="row g-4 mb-4">
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-innova text-white">
             <h6 class="mb-0">Gráfico de Ventas</h6>
@@ -140,7 +140,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-9">
+      <div class="col-md-8">
         <div class="card">
           <div class="card-header bg-innova text-white">
             <h6 class="mb-0">Gráfico de Clientes</h6>
@@ -161,7 +161,7 @@
               <h6 class="mb-0">Top SKUs Ventas Netas</h6>
               <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
             </div>
-            <p class="text-white mb-0">00/00/0000 al  00/00/0000</p>
+            <p class="text-white mb-0" id="fechaSKU">00/00/0000 al  00/00/0000</p>
           </div>
           <div class="card-body">
             <table id="tbl_top_sku" class="display" style="width:100%">
@@ -173,10 +173,11 @@
                         <span class="item-left">Total:</span>
                       </div>
                       <div class="col-md-4">
-                        <span class="item-right" id="total_sku_bultos">0.00 Bls</span>  
+                          
                       </div>
                       <div class="col-md-4">  
-                        <span class="item-right" id="total_sku_valor">C$. 0.00</span>
+                        <span class="item-right" id="total_sku_valor">C$. 0.00</span><br>
+                        <span class="item-right" id="total_sku_bultos">0.00 Bls</span>
                       </div>
                     </div>
                   </th>
@@ -193,7 +194,7 @@
               <h6 class="mb-0">Top Cliente Ventas Netas</h6>
               <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
             </div>
-            <p class="text-white mb-0">00/00/0000 al  00/00/0000</p>
+            <p class="text-white mb-0" id="fechaVentaNeta">00/00/0000 al  00/00/0000</p>
           </div>
           <div class="card-body">
             <table id="tbl_top_clientes" class="display" style="width:100%"></table>

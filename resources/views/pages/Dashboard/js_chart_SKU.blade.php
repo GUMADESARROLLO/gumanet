@@ -1,78 +1,56 @@
 <script>
-Highcharts.chart('container', {
-    chart: {
-        type: 'pie',
-       
-        panning: {
-            enabled: true,
-            type: 'xy'
-        },
-    },
-    title: {
-        text: ''
-    },
-    tooltip: {
-        valueSuffix: '%'
-    },
-   
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: [{
-                enabled: true,
-                distance: 20
-            }, {
-                enabled: true,
-                distance: -40,
-                format: '{point.percentage:.1f}%',
-                style: {
-                    fontSize: '1.2em',
-                    textOutline: 'none',
-                    opacity: 0.7
-                },
-                filter: {
-                    operator: '>',
-                    property: 'percentage',
-                    value: 1
-                }
-            }]
-        }
-    },
-    series: [
-        {
-            name: 'Percentage',
-            colorByPoint: true,
-            data: [
+    function renderSKUPieChart(data) {
+        const totalPeso = data.reduce((sum, item) => sum + parseFloat(item.PESO), 0);
 
-                {
-                    name: 'Fat',
-                    sliced: true,
-                    selected: true,
-                    y: 10
-                },
-                {
-                    name: 'Water',
-                    color: '#F7931E',
-                    y: 30
-                },
-                {
-                    name: 'Carbohydrates',
-                    color: '#802980',
-                    y: 20
-                },
-                {
-                    name: 'Protein',
-                    color: '#008000',
-                    y: 30
-                },
-                {
-                    name: 'Ash',
-                    color: '#B65FB5',
-                    y: 10
+        const chartData = data.map(item => ({
+            name: item.SKU,
+            y: parseFloat(((item.PESO / totalPeso) * 100).toFixed(2))
+        }));
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Participación por SKU (%)'
+            },
+            tooltip: {
+                pointFormat: '<b>{point.y:.2f}%</b>'
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
                 }
-            ]
-        }
-    ]
-});
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        distance: -30,
+                        color: 'white',
+                        style: {
+                            fontWeight: 'bold',
+                            textOutline: '1px contrast'
+                        }
+                    },
+                    showInLegend: true
+                }
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                itemMarginTop: 5,
+                itemMarginBottom: 5
+            },
+            series: [{
+                name: 'Participación',
+                colorByPoint: true,
+                data: chartData
+            }]
+        });
+    }
 </script>
