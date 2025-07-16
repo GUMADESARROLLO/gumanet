@@ -321,5 +321,6 @@ Route::get('getDataInnova', 'DashboardInnovaController@getDataInnova')->name('ge
 // INICIO RUTAS PARA EL DASHBOARD DE IMPORTACION
 
 Route::get('Importacion', 'ImportacionController@Home')->name('Importacion');
+Route::post('getImportacion', 'ImportacionController@getImportacion')->name('getImportacion');
 
 // FINAL RUTAS PARA EL DASHBOARD DE IMPORTACION
