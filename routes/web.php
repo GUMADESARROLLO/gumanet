@@ -316,3 +316,12 @@ Route::post('calcularPresupuesto','PresupuestoController@calcularPresupuesto')->
 
 // RUTAS PARA NEW DASHBOARD INNOVA
 Route::get('getDataInnova', 'DashboardInnovaController@getDataInnova')->name('getDataInnova'); 
+
+
+
+
+// INICIO RUTAS PARA EL DASHBOARD DE IMPORTACION
+
+Route::get('Importacion', 'ImportacionController@Home')->name('Importacion');
+
+// FINAL RUTAS PARA EL DASHBOARD DE IMPORTACION
