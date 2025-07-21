@@ -80,47 +80,71 @@
 
     async function cargarGetDataInnova(desde, hasta){
         try {
-            
-
-            //TODO: CAMBIARLO POR UN METODO POST
             const response = await fetch('getDataInnova', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({
-                    desde: desde,
-                    hasta: hasta
-                })
+                body: JSON.stringify({ desde: desde, hasta: hasta })
             });
-            //TODO: CAMBIARLO POR UN METODO POST
-            
+
             const result = await response.json();
-            
+
             loadAndBuildTable('#clientesTable', result.ACTUAL.Clientes);            
             loadAndBuildTable('#vendedoresTable', result.ACTUAL.Vendedores);
             Tbl_TopSKU('#tbl_top_sku', result.ACTUAL.SKU_CHART.data);
             loadAndBuildTable('#tbl_top_clientes', result.ACTUAL.CLS_CHART);
             renderSKUPieChart(result.ACTUAL.SKU_CHART.data);
             renderClienteBolsonChart(result.ACTUAL.CLS_CHART);
+
+            let datos = [];
+            let totales = [];
             
+            datos = result.COMPARATIVAYTD.COMPARATIVA_YTD;
+            totales = result.COMPARATIVAYTD;
+
+            renderComparativaYTD(datos, 'valor');
+
             $('#bultos_facturacion').text(result.ACTUAL.Metricas.BULTOS_TOTAL_NIO);
-            $('#bultos_valor').text("C$. "+result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
+            $('#bultos_valor').text("C$. " + result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
             $('#bultos_anterior').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ACTUAL);
             $('#bultos_actual').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ANTERIOR);
-            $('#fechaClienteFact').text(result.ACTUAL.DESDE+' al '+result.ACTUAL.HASTA);
-            $('#fechaVentaVendedor').text(result.ACTUAL.DESDE+' al '+result.ACTUAL.HASTA);
-            $('#fechaSKU').text(result.ACTUAL.DESDE+' al '+result.ACTUAL.HASTA);
-            $('#fechaVentaNeta').text(result.ACTUAL.DESDE+' al '+result.ACTUAL.HASTA);
+            $('#fechaClienteFact').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
+            $('#fechaVentaVendedor').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
+            $('#fechaSKU').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
+            $('#fechaVentaNeta').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
+
+            $('#ytd_anterior').text(numeral(result.COMPARATIVAYTD.YTD_VALOR_ANTERIOR).format('0,0.00'));
+            $('#ytd_actual').text(numeral(result.COMPARATIVAYTD.YTD_VALOR_ACTUAL).format('0,0.00'));
+            $('#ytd_crecimiento').text(numeral(result.COMPARATIVAYTD.YTD_VALOR_CRECIMIENTO).format('0,0.00'));
 
             $("#total_sku_bultos").text(result.ACTUAL.SKU_CHART.Totals.Bultos + " Bls.");
-            $("#total_sku_valor").text("C$. "+result.ACTUAL.SKU_CHART.Totals.Valor);
+            $("#total_sku_valor").text("C$. " + result.ACTUAL.SKU_CHART.Totals.Valor);
+
+
+            //Declarar la variable como global
+            window.datos = datos;
+            window.totales = totales;
 
         } catch (error) {
             console.error('Error al obtener los datos:', error);
         }
     }
+
+    //Funcion para actualizar el grafico ytd segun el tipo que se escoja 
+    function actualizarGraficoYTD() {
+      const tipo = document.getElementById("tipoDato").value;
+      
+      //Las variable se actualizaran en funcion del tipo de dato que se necesite
+      $('#ytd_anterior').text(tipo === 'valor' ? numeral(window.totales.YTD_VALOR_ANTERIOR).format('0,0.00') : numeral(window.totales.YTD_UND_ANTERIOR).format('0,0'));
+      $('#ytd_actual').text(tipo === 'valor' ? numeral(window.totales.YTD_VALOR_ACTUAL).format('0,0.00') : numeral(window.totales.YTD_UND_ACTUAL).format('0,0'));
+      $('#ytd_crecimiento').text(tipo === 'valor' ? numeral(window.totales.YTD_VALOR_CRECIMIENTO).format('0,0.00') : numeral(window.totales.YTD_UND_CRECIMIENTO).format('0,0.00'));
+      
+      //Llamada a la funcion que se encuentra en js_chart_YTD.blade
+      renderComparativaYTD(window.datos, tipo);
+    }
+
 
     document.addEventListener('DOMContentLoaded', async () => {
       const hoyDesde = new Date().toISOString().split('T')[0]; 

@@ -4,6 +4,8 @@ namespace App;
 
 use App\user;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
 class DashboardInnova extends Model
 {
     protected $connection = 'sqlsrv';
@@ -48,11 +50,22 @@ class DashboardInnova extends Model
     public static function BultosComparativa( $nYearAnterior, $nYearActual)
     {
         return self::query()
-            ->selectRaw('Anio,SUM(Cantidad) AS CANTIDAD,SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+            ->selectRaw('Anio, SUM(Cantidad) AS CANTIDAD,SUM(Venta) * 1.15 AS VENTA_CON_IVA')
             ->whereBetween('Anio', [$nYearAnterior, $nYearActual])
             ->groupBy('Anio')
             ->get()->toArray();
     }
+
+    public static function BultosComparativaYTD($nYearAnterior, $nYearActual)
+    {
+        return self::query()
+                ->selectRaw('Anio, nMes, SUM(Cantidad) AS CANTIDAD,SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+                ->whereBetween('Anio', [$nYearAnterior, $nYearActual])
+                ->groupBy('Anio','nMes')
+                ->orderBy('Anio', 'nMes')
+                ->get()->toArray();
+    }
+
 
     public static function getActuales($request)
     {
@@ -204,6 +217,65 @@ class DashboardInnova extends Model
         ];
 
         return $Metricas_Merge;
+    }
+
+    public static function getComparativasYTD($request)
+    {
+        $nYearActual    = date('Y');
+        $nYearAnterior  = date('Y', strtotime('-1 year'));
+        $valorAnterior  = 0;
+        $valorActual    = 0;
+        $bultoAnterior  = 0;
+        $bultoActual    = 0; 
+
+        $BultosMensual = DashboardInnova::BultosComparativaYTD($nYearAnterior, $nYearActual);
+
+        $comparativaMensual = [];
+
+        for ($mes = 1; $mes <= 12; $mes++) {
+            $anioAnteriorData = array_filter($BultosMensual, function ($item) use ($mes, $nYearAnterior) {
+                return $item['Anio'] == $nYearAnterior && $item['nMes'] == $mes;
+            });
+
+            $anioActualData = array_filter($BultosMensual, function ($item) use ($mes, $nYearActual) {
+                return $item['Anio'] == $nYearActual && $item['nMes'] == $mes;
+            });
+
+            $anioAnteriorData = array_values($anioAnteriorData);
+            $anioActualData = array_values($anioActualData);
+
+            $ventaAnterior = isset($anioAnteriorData[0]) ? $anioAnteriorData[0]['VENTA_CON_IVA'] : 0;
+            $ventaActual = isset($anioActualData[0]) ? $anioActualData[0]['VENTA_CON_IVA'] : 0;
+
+            $cantAnterior = isset($anioAnteriorData[0]) ? $anioAnteriorData[0]['CANTIDAD'] : 0;
+            $cantActual = isset($anioActualData[0]) ? $anioActualData[0]['CANTIDAD'] : 0;
+
+            $valorAnterior = $valorAnterior + $ventaAnterior;
+            $valorActual = $valorActual + $ventaActual;
+            $bultoAnterior = $bultoAnterior + $cantAnterior;
+            $bultoActual = $bultoActual + $cantActual;
+
+            $comparativaMensual[] = [
+                'Mes' => $mes,
+                'Venta_Anterior' => round($ventaAnterior, 2),
+                'Venta_Actual' => round($ventaActual, 2),
+                'Cantidad_Anterior' => round($cantAnterior, 2),
+                'Cantidad_Actual' => round($cantActual, 2),
+            ];
+        }
+
+        $crecimientoValor = (($valorActual / $valorAnterior)-1) * 100;
+        $crecimientoBulto = (($bultoActual / $bultoAnterior)-1) * 100;
+
+        return [
+            'COMPARATIVA_YTD'       => $comparativaMensual,
+            'YTD_VALOR_ANTERIOR'    => $valorAnterior,
+            'YTD_VALOR_ACTUAL'      => $valorActual,
+            'YTD_VALOR_CRECIMIENTO' => $crecimientoValor,
+            'YTD_UND_ANTERIOR'      => $bultoAnterior,
+            'YTD_UND_ACTUAL'        => $bultoActual,
+            'YTD_UND_CRECIMIENTO'   => $crecimientoBulto
+        ];
     }
 
 
