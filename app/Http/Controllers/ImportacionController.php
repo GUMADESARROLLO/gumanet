@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\ImportacionMuestra;
+use App\ImportacionView;
 use Illuminate\Http\Request;
 
 
@@ -18,7 +19,7 @@ class ImportacionController extends Controller
     }
     public function getImportacion(Request $request)
     {
-        $ImportacionMuestra = ImportacionMuestra::All();
-        return response()->json($ArticuloImportacion);
+        $getImportacionView = ImportacionView::getImportacionView($request);
+        return response()->json($getImportacionView);
     }
 }

@@ -8,25 +8,27 @@
 @endsection
 @section('content')
 <div class="container-fluid">
+
+
+    
     <div class="row " >
-        <div class="col-md-12">
+        <div class="col-md-12">            
             <h4 class="h4 text-umk">REPORTE DE IMPORTACIONES</h4>
             <p class="text-muted mb-4">En esta sección podrás visualizar los reportes de importaciones de productos, así como los competidores y sus marcas.</p>
         </div>
-
-        <div class="col-md-11" >
+        <div class="col-md-10" >
             <div class="form-group">
-                <label for="cmbLabs" class="col-form-label-sm text-muted mb-0">MOLECULAS</label>
-                <select class="selectpicker form-control form-control-sm" id="cmbLabs" data-show-subtext="true" data-live-search="true">
+                <label for="Id_Molecula" class="col-form-label-sm text-muted mb-0">MOLECULAS</label>
+                <select class="selectpicker form-control form-control-sm" id="Id_Molecula" data-show-subtext="true" data-live-search="true">                    
                     @foreach($ImportacionMuestra as $key)
-                    <option>{{ $key['DESCRIPCION'] }}</option>
+                    <option value="{{ $key['ARTICULO'] }}">{{ $key['DESCRIPCION'] }}</option>
                     @endforeach
                 </select>
             </div>
         </div>	
 
-        <div class="col-md-1">
-            <a href="#!" id="filterHide" class="btn btn-primary-umk btn-block float-right mt-4 ">FILTRAR</a>			
+        <div class="col-md-2">
+            <button id="IdFilterMolecula" class="btn btn-primary-umk btn-block float-right mt-4 ">FILTRAR</button>		
         </div>
 
         <div class="col-sm-6 mt-3">
@@ -40,20 +42,20 @@
                 <div class="card-body">
                     <div class="row">
                          <div class="col-sm-12 col-md-5 col-lg-3 text-center">                    
-                            <p class="text-muted m-0"> - </p>
+                            <p class="text-muted m-0" > - </p>
                             <p class="font-weight-bolder text-style" style="">MERCADO</p>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-3 text-center">                    
-                            <p class="text-muted m-0"> 2024 </p>
-                            <p class="font-weight-bolder text-style" >$ 1,000,000.00 </p>
+                            <p class="text-muted m-0" id="text-anio-pasado-valor"> -  </p>
+                            <p class="font-weight-bolder text-style" id="val-anio-pasado-valor" >$ 0.00 </p>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-4 text-center">
-                            <p class="text-muted m-0">2025</p>
-                            <p class="font-weight-bolder text-style" >$ 1,000,000.00</p>
+                            <p class="text-muted m-0" id="text-anio-actual-valor"> - </p>
+                            <p class="font-weight-bolder text-style" id="val-anio-actual-valor">$ 0.00 </p>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-2 text-center">
                             <p class="text-muted m-0">%.</p>
-                            <p class="font-weight-bolder text-style" > 35 %</p>
+                            <p class="font-weight-bolder text-style" id="dif-porcen-valor" > - </p>
                         </div>
                     </div>
                     <div class="row">
@@ -85,16 +87,16 @@
                 <div class="card-body">
                     <div class="row" >
                         <div class="col-sm-12 col-md-5 col-lg-5 text-center">                    
-                            <p class="text-muted m-0"> 2024 </p>
-                            <p class="font-weight-bolder text-style" >1,000,000.00 </p>
+                            <p class="text-muted m-0" id="text-anio-pasado-unidades"> - </p>
+                            <p class="font-weight-bolder text-style" id="val-anio-pasado-unidades" > 0.00 </p>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-5 text-center">
-                            <p class="text-muted m-0">2025</p>
-                            <p class="font-weight-bolder text-style" >1,000,000.00</p>
+                            <p class="text-muted m-0" id="text-anio-actual-unidades">-</p>
+                            <p class="font-weight-bolder text-style" id="val-anio-actual-unidades" > 0.00 </p>
                         </div>
                         <div class="col-sm-12 col-md-2 col-lg-2 text-center">
                             <p class="text-muted m-0">%.</p>
-                            <p class="font-weight-bolder text-style" > 45</p>
+                            <p class="font-weight-bolder text-style" id="dif-porcen-unidades" > - </p>
                         </div>
                     </div>
                     <div class="row">
@@ -132,21 +134,7 @@
                         <th>%</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @for ($i = 1; $i <= 15; $i++)
-                        <tr class="text-center">
-                            <td >COMPETIDOR {{ $i }}</td>
-                            <td>MARCA {{ $i }}</td>
-                            <td>{{ number_format(rand(1, 100), 0) }}</td>
-                            <td>{{ number_format(rand(1, 100), 0) }}</td>
-                            <td>{{ number_format(rand(1, 100), 0) }}%</td>
-                            <td>ORIGEN {{ $i }}</td>
-                            <td>{{ number_format(rand(1, 100), 0) }}</td>
-                            <td>{{ number_format(rand(1, 100), 0) }}</td>
-                            <td>{{ number_format(rand(1, 100), 0) }}%</td>
-                        </tr>
-                    @endfor                    
-                </tbody>
+                <tbody></tbody>
                 </tbody>
             </table>
         </div>

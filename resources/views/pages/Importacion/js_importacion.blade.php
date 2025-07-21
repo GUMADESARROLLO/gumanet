@@ -1,23 +1,65 @@
 <script>
 $(document).ready(function() {
-    // Initialize the DataTable
+    const nyear_actual = new Date().getFullYear();
+    const nyear_pasado = nyear_actual - 1;
+    
+    $("#text-anio-pasado-valor").text(nyear_pasado);
+    $("#text-anio-actual-valor").text(nyear_actual)
+
+    $("#text-anio-pasado-unidades").text(nyear_pasado);
+    $("#text-anio-actual-unidades").text(nyear_actual);
+
+    InitializeTable();
+    
+    // Event listener for the filter button
+    $('#IdFilterMolecula').on('click', function() {
+
+        // Logic to filter by molecule
+        const COD_MOLECULA = $("#Id_Molecula").val();   
+        eneableButton(true,'Calc...')        
+        //const COD_MOLECULA = "18805013"
+        getRequest(COD_MOLECULA, nyear_actual, nyear_pasado);
+    });
+
+});
+
+// Function to fetch data based on the selected molecule
+function eneableButton(EnableButton, textButton = 'Filtrar') {
+    $('#IdFilterMolecula').prop('disabled', EnableButton);
+    $('#IdFilterMolecula').text(textButton);
+}
+
+// Initialize the DataTable
+function InitializeTable(Dt = []) {
+    console.log(Dt);
+    // Clear the table before initializing
+    $('#tbl_competidores').DataTable().clear().destroy();
+
+    // Populate the table with data
     $('#tbl_competidores').DataTable({
+        "data": Dt,
+        "order" : [[ 3, "desc" ]],
+        "columns": [
+            { "data": "COMPETIDOR" },
+            { "data": "MARCA", class: "text-center" },
+            { "data": "PASADO_FOB", class: "text-right" },
+            { "data": "ACTUAL_FOB", class: "text-right" },
+            { "data": "FOB_CREC", class: "text-center" },
+            { "data": "ORIGEN", class: "text-center" },
+            { "data": "PASADO_CANT", class: "text-right" },
+            { "data": "ACTUAL_CANT", class: "text-right" },
+            { "data": "CNT_CREC", class: "text-center" },
+        ],
         "pageLength": 7,
         "bLengthChange": false,
         "searching": false
     });
-
-    // Add any additional JavaScript functionality here
-    const COD_MOLECULA = "18813022"
-    getRequest(COD_MOLECULA);
-
-    
-
-});
+}
 
 
-async function getRequest(COD_MOLECULA){
+async function getRequest(COD_MOLECULA, nyear_actual, nyear_pasado) {
     try {
+
         // Fetch data from the server
         const response = await fetch('getImportacion', {
             method: 'POST',
@@ -31,10 +73,26 @@ async function getRequest(COD_MOLECULA){
         });        
 
         const result = await response.json();
+
+        var vMercado = result.original.MERCADO;
+        var vCompetidores = result.original.COMPETIDORES;
+
+        $("#val-anio-pasado-unidades").text(vMercado.CANT_HOMOLOGADAS[nyear_pasado])
+        $("#val-anio-actual-unidades").text(vMercado.CANT_HOMOLOGADAS[nyear_actual])
+        $("#dif-porcen-unidades").text(vMercado.CANT_HOMOLOGADAS.Crec)
+
+        $("#val-anio-pasado-valor").text( '$ ' + vMercado.VALOR_MERCADO[nyear_pasado]) 
+        $("#val-anio-actual-valor").text( '$ ' + vMercado.VALOR_MERCADO[nyear_actual])
+        $("#dif-porcen-valor").text(vMercado.VALOR_MERCADO.Crec)
+
+        InitializeTable(vCompetidores);
+
+        eneableButton(false)
         
 
     } catch (error) {
         console.error('Error al obtener los datos:', error);
+        eneableButton(false)
     }
 }
 
