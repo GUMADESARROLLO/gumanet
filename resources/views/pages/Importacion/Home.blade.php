@@ -18,7 +18,7 @@
             <div class="form-group">
                 <label for="cmbLabs" class="col-form-label-sm text-muted mb-0">MOLECULAS</label>
                 <select class="selectpicker form-control form-control-sm" id="cmbLabs" data-show-subtext="true" data-live-search="true">
-                    @foreach($ArticuloImportacion as $key)
+                    @foreach($ImportacionMuestra as $key)
                     <option>{{ $key['DESCRIPCION'] }}</option>
                     @endforeach
                 </select>

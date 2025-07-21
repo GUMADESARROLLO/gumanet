@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ArticuloImportacion extends Model
+class ImportacionMuestra extends Model
 {
     protected $connection = 'sqlsrv';
     public $timestamps = false;

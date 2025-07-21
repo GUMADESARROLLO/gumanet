@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\ArticuloImportacion;
+use App\ImportacionMuestra;
 use Illuminate\Http\Request;
 
 
@@ -9,16 +9,16 @@ class ImportacionController extends Controller
 {
     public function Home()
     {
-        $ArticuloImportacion     = ArticuloImportacion::All();
+        $ImportacionMuestra     = ImportacionMuestra::All();
         $data = [
             'name' =>  'GUMA@NET',
             'page' => 'Importacion'
         ];
-        return view('pages.Importacion.Home', compact('data', 'ArticuloImportacion'));
+        return view('pages.Importacion.Home', compact('data', 'ImportacionMuestra'));
     }
     public function getImportacion(Request $request)
     {
-        $ArticuloImportacion = ArticuloImportacion::All();
+        $ImportacionMuestra = ImportacionMuestra::All();
         return response()->json($ArticuloImportacion);
     }
 }
