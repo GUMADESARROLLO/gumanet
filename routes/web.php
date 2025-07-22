@@ -311,15 +311,11 @@ Route::get('Presupuesto', 'PresupuestoController@Presupuesto')->name('Presupuest
 Route::get('PresupuestoAnual','PresupuestoController@PresupuestAnual')->name('PresupuestoAnual');   
 Route::post('calcularPresupuesto','PresupuestoController@calcularPresupuesto')->name('calcularPresupuesto');   
 
-
-
-
 // RUTAS PARA NEW DASHBOARD INNOVA
-Route::get('getDataInnova', 'DashboardInnovaController@getDataInnova')->name('getDataInnova'); 
+Route::post('getDataInnova', 'DashboardInnovaController@getDataInnova')->name('getDataInnova'); 
 
 
 // INICIO RUTAS PARA EL DASHBOARD DE IMPORTACION
-
 Route::get('Importacion', 'ImportacionController@Home')->name('Importacion');
 Route::post('getImportacion', 'ImportacionController@getImportacion')->name('getImportacion');
 
