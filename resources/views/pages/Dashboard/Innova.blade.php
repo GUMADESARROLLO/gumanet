@@ -203,6 +203,69 @@
       </div>
     </div>
 
+    <!-- Summary -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3 border-end">
+        <div class="card summary-card">
+          <div class="card-body">
+            
+            <div class="summary-title">
+              <div class="d-flex justify-content-between align-items-center border-bottom">
+                <span>VENTA NETA</span>
+                <span>2024</span>
+              </div>
+            </div>
+            <div class="summary-value" style="color: #890fa1"><span id="ytd_anterior">0.00</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 border-end">
+        <div class="card summary-card">
+          <div class="card-body">
+            
+            <div class="summary-title">
+              <div class="d-flex justify-content-between align-items-center border-bottom">
+                <span>VENTA NETA</span>
+                <span>2025</span>
+              </div>
+            </div>
+            <div class="summary-value" style="color: #890fa1"><span id="ytd_actual">0.00</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 border-end">
+        <div class="card summary-card">
+          <div class="card-body">            
+            <div class="summary-title">
+              <div class="d-flex justify-content-between align-items-center border-bottom">
+                <span>CRECIMIENTO</span>
+                <span>%</span>
+              </div>
+            </div>
+            <div class="summary-value" style="color: #890fa1"><span id="ytd_crecimiento">0.00</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 border-end">
+        <div class="card summary-card">
+          <div class="card-body">            
+            <div class="summary-title"> 
+              <div class="d-flex justify-content-between align-items-center border-bottom">
+                <span id="filtro">FILTRADO POR:</span>
+                <span></span>
+              </div>
+            </div>
+            <div class="summary-value" style="color: #890fa1">
+              <select class="custom-select" id="tipoDato" onchange="actualizarGraficoYTD()">
+                <option value="valor">VALOR</option>
+                <option value="bulto">BULTOS</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row g-4">
       <div class="col-md-12">
         <div class="card">
@@ -210,7 +273,7 @@
             <h6 class="mb-0">Gráfico YTD Ventas</h6>
           </div>
           <div class="card-body">
-            <div id="chart_ytd"></div>
+            <div id="chart_ytd" style="height: 500px;"></div>
           </div>
         </div>
       </div>

@@ -10,11 +10,13 @@ class DashboardInnovaController extends Controller
     {
         $Metricas_Actuales = DashboardInnova::getActuales($request);
         $Metricas_Comparativas = DashboardInnova::getComparativas($request);
+        $Metricas_YTD = DashboardInnova::getComparativasYTD($request);
 
 
         $Metricas = [
             'ACTUAL'        => $Metricas_Actuales,
-            'COMPARATIVA'   => $Metricas_Comparativas
+            'COMPARATIVA'   => $Metricas_Comparativas,
+            'COMPARATIVAYTD'=> $Metricas_YTD
         ];
         return response()->json($Metricas);
     }
