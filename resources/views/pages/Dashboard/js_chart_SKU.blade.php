@@ -3,7 +3,7 @@
         const totalPeso = data.reduce((sum, item) => sum + parseFloat(item.PESO), 0);
 
         const chartData = data.map(item => ({
-            name: item.SKU,
+            name: item.DESCRIPCION,
             y: parseFloat(((item.PESO / totalPeso) * 100).toFixed(2))
         }));
 
@@ -22,6 +22,9 @@
                     valueSuffix: '%'
                 }
             },
+            exporting: {
+                enabled: false  
+            },
             plotOptions: {
                 pie: {
                     allowPointSelect: true,
@@ -36,7 +39,7 @@
                             textOutline: '1px contrast'
                         }
                     },
-                    showInLegend: true
+                    showInLegend: false
                 }
             },
             legend: {

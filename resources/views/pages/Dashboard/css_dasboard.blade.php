@@ -51,4 +51,20 @@
       width: 20% !important;
       float: right;
     }
+    body {
+      font-size: 0.85rem;
+    }
+
+    #vistaCompleta {
+      width: 100vw;
+      height: 100vh;
+      background-color: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-family: sans-serif;
+    }
+
+
   </style>

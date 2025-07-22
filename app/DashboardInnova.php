@@ -41,9 +41,9 @@ class DashboardInnova extends Model
     public static function TransacionesArticulos($desde, $hasta)
     {
         return self::query()
-            ->selectRaw('ARTICULO,DESCRIPCION, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+            ->selectRaw('CLASIFICACION_SIMPLE, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
             ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
-            ->groupBy('ARTICULO', 'DESCRIPCION')
+            ->groupBy('CLASIFICACION_SIMPLE')
             ->orderByDesc('CANTIDAD');
     }
 
@@ -134,11 +134,13 @@ class DashboardInnova extends Model
             $Peso = ($value->VENTA_CON_IVA / $SumaVentas ) * 100;
 
             $SKU_CHART[$key] = [
-                'SKU'               => $value->ARTICULO,
+                'SKU'               => '',
+                'DESCRIPCION'       => $value->CLASIFICACION_SIMPLE,
                 'BULTOS_TOTAL_UND'  => round($value->CANTIDAD, 2), 
                 'BULTOS_TOTAL_NIO'  => round($value->VENTA_CON_IVA, 2),
                 'PESO'              => round($Peso, 2),
             ];
+            
         }
 
         foreach ($ClientesHoy as $key => $value) {           
