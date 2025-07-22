@@ -13,14 +13,14 @@
 
 @section('content')
 
-  <div class="">
+  <div class="vistaCompleta">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
       <img src="{{ url('img/innova.png') }}" width="150" height="70" alt="Innova Logo">
       <div class="d-flex gap-2">
         <input type="date" class="form-control" value="2025-01-16" id="desdeInnova">
         <input type="date" class="form-control" value="2025-06-23" id="hastaInnova">
-        <button id="filtrarFechas" class="btn btn-primary">Filtrar</button>
+        <button id="filtrarFechas" class="btn text-light" style="background-color: #fc5404" >Filtrar</button>
       </div>
     </div>
 
@@ -39,7 +39,6 @@
               </div>
             </div>
             <div class="summary-title" style="color: #890fa1">Bultos Fact. Actual</div>
-            <div class="summary-sub">↑ 0.00 Lorem Ipsum</div>
           </div>
         </div>
       </div>
@@ -56,7 +55,6 @@
               </div>
             </div>
             <div class="summary-title" style="color: #890fa1">Bultos Valor Actual</div>
-            <div class="summary-sub">↑ 0.00 Lorem Ipsum</div>
           </div>
         </div>
       </div>
@@ -72,7 +70,6 @@
               </div>
             </div>
             <div class="summary-title" style="color: #890fa1">Bultos 2024</div>
-            <div class="summary-sub text-danger">↓ 0.00 Lorem Ipsum</div>
           </div>
         </div>
       </div>
@@ -88,7 +85,6 @@
               </div>
             </div>
             <div class="summary-title" style="color: #890fa1">Bultos 2025</div>
-            <div class="summary-sub">↑ 0.00 Lorem Ipsum</div>
           </div>
         </div>
       </div>
@@ -273,7 +269,7 @@
             <h6 class="mb-0">Gráfico YTD Ventas</h6>
           </div>
           <div class="card-body">
-            <div id="chart_ytd" style="height: 500px;"></div>
+            <div id="chart_ytd"></div>
           </div>
         </div>
       </div>

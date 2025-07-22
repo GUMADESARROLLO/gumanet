@@ -35,6 +35,9 @@ function renderClienteBolsonChart(data) {
             },
             opposite: true
         }],
+        exporting: {
+            enabled: false  
+        },
         tooltip: {
             shared: true,
             formatter: function () {

@@ -7,6 +7,21 @@
         confirmButtonText: 'Aceptar'
       });
     }
+
+    window.onload = function () {
+      const elem = document.getElementById("vistaCompleta");
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(err => {
+          console.warn("El navegador bloqueó el modo pantalla completa automáticamente.");
+        });
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    };
+
     function formatRow(rowData) {
       return `
         <div class="item-left">
@@ -55,7 +70,7 @@
         ordering: false,
         columns: [
           { 
-            data: 'SKU', render: function(data, type, row) { return `<div class="item-left">${data}<br><span class="item-sub">${row.SKU}</span></div>`;}
+            data: 'DESCRIPCION', render: function(data, type, row) { return `<div class="item-left">${data}<br><span class="item-sub">${row.SKU}</span></div>`;}
           },
           { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
               return `<div class="item-right">

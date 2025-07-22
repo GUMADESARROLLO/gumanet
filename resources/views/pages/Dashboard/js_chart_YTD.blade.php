@@ -45,6 +45,9 @@ function renderComparativaYTD(data, tipo = 'valor') {
         }
       }
     },
+    exporting: {
+        enabled: false  
+    },
     tooltip: {
       headerFormat: '<span style="font-size:10px"></span><table>',
       pointFormat: `<tr><td style="color:{series.color};padding:0">{series.name}: </td>` +
@@ -77,7 +80,7 @@ function renderComparativaYTD(data, tipo = 'valor') {
     }, {
       name: anio2,
       data: dta2,
-      color: tipo === 'valor' ? '#f1c40f' : '#f1c40f'
+      color: tipo === 'valor' ? '#fc5404' : '#fc5404'
     }]
   });
 }
