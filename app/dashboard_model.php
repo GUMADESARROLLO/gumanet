@@ -3080,7 +3080,7 @@ class dashboard_model extends Model {
        
         }
 
-        $average = array_sum($array_item) / count($array_item);
+        $average = (count($array_item) > 0) ? array_sum($array_item) / count($array_item) : 0;
 
         if($cantidadItem > 0){
             $precioProm = floatval($cantidadVentas) / floatval($cantidadItem);
