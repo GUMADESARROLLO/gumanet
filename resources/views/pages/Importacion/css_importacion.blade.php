@@ -11,7 +11,8 @@
 
   --medical-green: #2B9F6C;
   --purple: #582F87;
-
+  --green-strong: #00af43;
+  --green-light: #00cc8b;
 }
 
 .bg-umk {
@@ -33,10 +34,25 @@
   text-align: center;
 }
 
+
 .badge-ranking {
   display: inline-block;
   padding: .25em .4em;
-  font-size: 75%;
+  font-size: 85%;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  color: var(--white) !important;
+  background-color: var(--green-strong) !important;
+}
+
+.badge-participacion {
+  display: inline-block;
+  padding: .25em .4em;
+  font-size: 85%;
   font-weight: 700;
   text-align: center;
   white-space: nowrap;

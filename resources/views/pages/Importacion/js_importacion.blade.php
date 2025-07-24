@@ -13,7 +13,6 @@ $(document).ready(function() {
     
     // Event listener for the filter button
     $('#IdFilterMolecula').on('click', function() {
-
         // Logic to filter by molecule
         const COD_MOLECULA = $("#Id_Molecula").val();   
         eneableButton(true,'Calc...')        
@@ -27,6 +26,29 @@ $(document).ready(function() {
 function eneableButton(EnableButton, textButton = 'Filtrar') {
     $('#IdFilterMolecula').prop('disabled', EnableButton);
     $('#IdFilterMolecula').html('<i class="fas fa-spinner fa-spin" style="display:' + (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton);
+}
+
+function cleanTextos() {
+    $("#ranking_valor").text('0')
+    $("#ranking_cant").text('0')
+
+    $("#val-anio-pasado-unidades").text('0.00')
+    $("#val-anio-actual-unidades").text('0.00')
+    $("#dif-porcen-unidades").text('-')
+
+    $("#val-anio-pasado-valor").text( '$ 0.00' ) 
+    $("#val-anio-actual-valor").text( '$ 0.00' )
+    $("#dif-porcen-valor").text('-')
+
+    $("#val-umk-anio-pasado-valor").text( '$ 0.00' )
+    $("#val-umk-anio-actual-valor").text( '$ 0.00' )
+    $("#dif-porcen-umk-valor").html('-')
+
+    $("#val-umk-anio-pasado-unidades").text('0.00')
+    $("#val-umk-anio-actual-unidades").text('0.00')
+    $("#dif-porcen-umk-unidades").html('-')
+    $("#id_participacion").text(' 0' );
+    InitializeTable(Dt = []);
 }
 
 // Initialize the DataTable
@@ -49,7 +71,7 @@ function InitializeTable(Dt = []) {
             { "data": "ACTUAL_CANT", class: "text-right" },
             { "data": "CNT_CREC", class: "text-center" },
         ],
-        "pageLength": 7,
+        "pageLength": 5,
         "bLengthChange": false,
         "searching": false
     });
@@ -58,7 +80,7 @@ function InitializeTable(Dt = []) {
 
 async function getRequest(COD_MOLECULA, nyear_actual, nyear_pasado) {
     try {
-
+        cleanTextos();
         // Fetch data from the server
         const response = await fetch('getImportacion', {
             method: 'POST',
@@ -76,6 +98,9 @@ async function getRequest(COD_MOLECULA, nyear_actual, nyear_pasado) {
         var vMercado = result.original.MERCADO;
         var vCompetidores = result.original.COMPETIDORES;
 
+        $("#ranking_valor").text(result.original.RANKING.VALOR)
+        $("#ranking_cant").text(result.original.RANKING.CANTIDAD)
+
         $("#val-anio-pasado-unidades").text(vMercado.CANT_HOMOLOGADAS[nyear_pasado])
         $("#val-anio-actual-unidades").text(vMercado.CANT_HOMOLOGADAS[nyear_actual])
         $("#dif-porcen-unidades").text(vMercado.CANT_HOMOLOGADAS.Crec)
@@ -84,13 +109,14 @@ async function getRequest(COD_MOLECULA, nyear_actual, nyear_pasado) {
         $("#val-anio-actual-valor").text( '$ ' + vMercado.VALOR_MERCADO[nyear_actual])
         $("#dif-porcen-valor").text(vMercado.VALOR_MERCADO.Crec)
 
-        $("#val-umk-anio-pasado-valor").text(result.original.UNIMARKSA.VALOR_MERCADO[nyear_pasado])
-        $("#val-umk-anio-actual-valor").text(result.original.UNIMARKSA.VALOR_MERCADO[nyear_actual])
-        $("#dif-porcen-umk-valor").html(result.original.UNIMARKSA.VALOR_MERCADO.Crec + ' <i class="fas ' + result.original.UNIMARKSA.VALOR_MERCADO.icon +'"></i>')
+        $("#val-umk-anio-pasado-valor").text( '$ ' + result.original.UNIMARKSA.VALOR_MERCADO[nyear_pasado])
+        $("#val-umk-anio-actual-valor").text( '$ ' + result.original.UNIMARKSA.VALOR_MERCADO[nyear_actual])
+        $("#dif-porcen-umk-valor").html(result.original.UNIMARKSA.VALOR_MERCADO.Crec)
 
         $("#val-umk-anio-pasado-unidades").text(result.original.UNIMARKSA.CANTIDAD[nyear_pasado])
         $("#val-umk-anio-actual-unidades").text(result.original.UNIMARKSA.CANTIDAD[nyear_actual])
-        $("#dif-porcen-umk-unidades").html(result.original.UNIMARKSA.CANTIDAD.Crec + ' <i class="fas ' + result.original.UNIMARKSA.CANTIDAD.icon +'"></i>')
+        $("#dif-porcen-umk-unidades").html(result.original.UNIMARKSA.CANTIDAD.Crec)
+        $("#id_participacion").text(' ' + result.original.PARTICION)
 
         InitializeTable(vCompetidores);
 

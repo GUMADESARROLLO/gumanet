@@ -31,18 +31,22 @@
             <button id="IdFilterMolecula" class="btn btn-primary-umk btn-block float-right mt-4 ">FILTRAR</button>		
         </div>
 
-        <div class="col-sm-6 mt-3">
+        <div class="col-sm-7 mt-3">
             <div class="card border-0 shadow-sm">
                 <div class="card-header text-white bg-umk border-0">
                     <div class="d-flex justify-content-between bg-umk">
-                        <h6 class="font-weight-bold mb-0">COMERCIO NICARAGUA $</h6>
-                        <span class="rounded-pill badge-ranking "><i class="fas fa-star"></i> 5 / 10 Ranking</span>
+                        <h6 class="font-weight-bold mb-0">COMERCIO NICARAGUA $: </h6>
+                        <div class="d-flex align-items-center">
+                            <span class="rounded-pill badge-ranking"><i class="fas fa-star"></i> <span id="ranking_valor">0</span> Ranking </span>
+                            <span class="rounded-pill badge-participacion ml-1"><i class="fas fa-crown"></i><span id="id_participacion"> 0</span> % Participación</span>
+                        </div>
+                        
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-12 col-md-5 col-lg-3 text-center">                    
-                            <p class="text-muted m-0" > - </p>
+                        <div class="col-sm-12 col-md-5 col-lg-3 text-center ">      
+                            <p class="text-muted m-0"> -  </p>
                             <p class="font-weight-bolder text-style" style="">MERCADO</p>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-3 text-center">                    
@@ -76,37 +80,37 @@
             </div>
         </div>
 
-        <div class="col-sm-6 mt-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header text-white bg-umk border-0">
+        <div class="col-sm-5 mt-3">
+            <div class="card shadow-sm">
+                <div class="card-header text-white bg-umk">
                     <div class="d-flex justify-content-between ">
                         <h6 class="mb-0 font-weight-bold">COMERCIO NICARAGUA UNIDADES HOMOLOGADAS</h6>
-                        <span class="badge-ranking mb-0"><i class="fas fa-star"></i> 5 / 10 Ranking</span>
+                        <span class="badge-ranking mb-0"><i class="fas fa-star"></i> <span id="ranking_cant">0</span> Ranking </span>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row" >
-                        <div class="col-sm-12 col-md-5 col-lg-5 text-center">                    
+                        <div class="col text-center">                    
                             <p class="text-muted m-0" id="text-anio-pasado-unidades"> - </p>
                             <p class="font-weight-bolder text-style" id="val-anio-pasado-unidades" > 0.00 </p>
                         </div>
-                        <div class="col-sm-12 col-md-5 col-lg-5 text-center">
+                        <div class="col text-center">
                             <p class="text-muted m-0" id="text-anio-actual-unidades">-</p>
                             <p class="font-weight-bolder text-style" id="val-anio-actual-unidades" > 0.00 </p>
                         </div>
-                        <div class="col-sm-12 col-md-2 col-lg-2 text-center">
+                        <div class="col text-center">
                             <p class="text-muted m-0">%.</p>
                             <p class="font-weight-bolder text-style" id="dif-porcen-unidades" > - </p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12 col-md-5 col-lg-5 text-center">
+                        <div class="col text-center">
                             <p class="font-weight-bolder text-style" id="val-umk-anio-pasado-unidades"> 0.00 </p>
                         </div>
-                        <div class="col-sm-12 col-md-5 col-lg-5 text-center">
+                        <div class="col text-center">
                             <p class="font-weight-bolder text-style" id="val-umk-anio-actual-unidades"> 0.00</p>
                         </div>
-                        <div class="col-sm-12 col-md-5 col-lg-2 text-center">
+                        <div class="col text-center">
                             <p class="font-weight-bolder text-style" id="dif-porcen-umk-unidades" > - </p>
                         </div>
                     </div>
