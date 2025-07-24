@@ -22,9 +22,12 @@ class ImportacionView extends Model
 
         $IMPORTACIONES      = ImportacionView::WHERE('ARTICULO', $COD_MOLECULA)->get()->toArray();
 
+
         // Agrupar y sumar UNIDADES_HOMOLOGADAS por NYEAR
         foreach ($IMPORTACIONES as $item) {
+            $ruc = $item['NRO_RUC'] ?? '';
             $year = $item['NYEAR'] ?? null;
+
 
             if (!$year) {
                 continue;
@@ -39,26 +42,58 @@ class ImportacionView extends Model
 
             $CANT_HOMOLO_GROUP[$year]['UNIDADES_HOMOLOGADAS'] += (float)($item['UNIDADES_HOMOLOGADAS'] ?? 0);
             $CANT_HOMOLO_GROUP[$year]['FOB_TOTAL'] += (float)($item['FOB_TOTAL'] ?? 0);
+
+            if (strpos($ruc, '5555555555') === 0) {
+                $CANT_HOMOLO_GROUP[$year]['UNIDADES_HOMOLOGADAS'] += (float)($item['UNIDADES_HOMOLOGADAS'] ?? 0);
+                $CANT_HOMOLO_GROUP[$year]['FOB_TOTAL'] += (float)($item['FOB_TOTAL'] ?? 0);
+            }
         }
 
         $nyear_val_actual = (!isset($CANT_HOMOLO_GROUP[$nYEar_actual])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_actual]['FOB_TOTAL'] ;
         $nyear_val_pasado = (!isset($CANT_HOMOLO_GROUP[$nYEar_pasado])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_pasado]['FOB_TOTAL'] ;
+        $nyear_val_crec    = ($nyear_val_pasado != 0) ? number_format(($nyear_val_actual - $nyear_val_pasado) / $nyear_val_pasado * 100, 2) : 0; 
 
         $nyear_cant_actual = (!isset($CANT_HOMOLO_GROUP[$nYEar_actual])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_actual]['UNIDADES_HOMOLOGADAS'] ;
         $nyear_cant_pasado = (!isset($CANT_HOMOLO_GROUP[$nYEar_pasado])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_pasado]['UNIDADES_HOMOLOGADAS'] ;
+        $nyear_cant_crec   = ($nyear_cant_pasado != 0) ? number_format(($nyear_cant_actual - $nyear_cant_pasado) / $nyear_cant_pasado * 100, 2) : 0;
+
+        $umk_val_pasado = 20;
+        $umk_val_actual = 80;
+        $umk_val_crec    = ($umk_val_pasado != 0) ? number_format(($umk_val_actual - $umk_val_pasado) / $umk_val_pasado * 100, 2) : 0;
+        $ic_crec_val = ($umk_val_crec < 0) ? 'fa-caret-down text-danger' : 'fa-caret-up text-success';
+        
+        $umk_cant_pasado = 0;
+        $umk_cant_actual = 100;
+        $umk_cant_crec   = ($umk_cant_pasado != 0) ? number_format(($umk_cant_actual - $umk_cant_pasado) / $umk_cant_pasado * 100, 2) : 0;
+        $ic_crec_cant    = ($umk_cant_crec < 0) ? 'fa-caret-down text-danger' : 'fa-caret-up text-success';
+
 
 
         $dta_return = [ 
             'MERCADO'   =>[
                 'VALOR_MERCADO' => [
-                    $nYEar_actual  => number_format($nyear_val_actual, 2),
                     $nYEar_pasado  => number_format($nyear_val_pasado, 2),
-                    'Crec'         => 0.02,
+                    $nYEar_actual  => number_format($nyear_val_actual, 2),
+                    'Crec'         => $nyear_val_crec,
                 ],
                 'CANT_HOMOLOGADAS' => [
-                    $nYEar_actual  => number_format($nyear_cant_actual, 0),
                     $nYEar_pasado  => number_format($nyear_cant_pasado, 0),
-                    'Crec'         => 0.12,
+                    $nYEar_actual  => number_format($nyear_cant_actual, 0),
+                    'Crec'         => $nyear_cant_crec,
+                ],
+            ],
+            'UNIMARKSA'   =>[
+                'VALOR_MERCADO' => [
+                    $nYEar_pasado  => number_format($umk_val_pasado, 2),
+                    $nYEar_actual  => number_format($umk_val_actual, 2),
+                    'Crec'         => $umk_val_crec,
+                    'icon'         => $ic_crec_val,
+                ],
+                'CANTIDAD' => [
+                    $nYEar_pasado  => number_format($umk_cant_pasado, 0),
+                    $nYEar_actual  => number_format($umk_cant_actual, 0),
+                    'Crec'         => $umk_cant_crec,
+                    'icon'         => $ic_crec_cant,
                 ],
             ],
             'COMPETIDORES' => self::getTopCompetidores($COD_MOLECULA, $nYEar_actual, $nYEar_pasado)

@@ -41,7 +41,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                         <div class="col-sm-12 col-md-5 col-lg-3 text-center">                    
+                        <div class="col-sm-12 col-md-5 col-lg-3 text-center">                    
                             <p class="text-muted m-0" > - </p>
                             <p class="font-weight-bolder text-style" style="">MERCADO</p>
                         </div>
@@ -63,13 +63,13 @@
                             <p class="font-weight-bolder text-style" >UNIMARK S,A.</p>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-3 text-center">
-                            <p class="font-weight-bolder text-style" >$ 1,000,000.00 </p>
+                            <p class="font-weight-bolder text-style" id="val-umk-anio-pasado-valor" > $ 0.00  </p>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-4 text-center">
-                            <p class="font-weight-bolder text-style" >$ 1,000,000.00</p>
+                            <p class="font-weight-bolder text-style" id="val-umk-anio-actual-valor"> $ 0.00 </p>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-2 text-center">
-                            <p class="font-weight-bolder text-style" > 35 %</p>
+                            <p class="font-weight-bolder text-style" id="dif-porcen-umk-valor" > - </p>
                         </div>
                     </div>
                 </div>
@@ -101,13 +101,13 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-5 col-lg-5 text-center">
-                            <p class="font-weight-bolder text-style" >1,000,000.00 </p>
+                            <p class="font-weight-bolder text-style" id="val-umk-anio-pasado-unidades"> 0.00 </p>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-5 text-center">
-                            <p class="font-weight-bolder text-style" >1,000,000.00</p>
+                            <p class="font-weight-bolder text-style" id="val-umk-anio-actual-unidades"> 0.00</p>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-2 text-center">
-                            <p class="font-weight-bolder text-style" > 35 %</p>
+                            <p class="font-weight-bolder text-style" id="dif-porcen-umk-unidades" > - </p>
                         </div>
                     </div>
                 </div>

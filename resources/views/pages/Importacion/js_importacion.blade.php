@@ -26,12 +26,11 @@ $(document).ready(function() {
 // Function to fetch data based on the selected molecule
 function eneableButton(EnableButton, textButton = 'Filtrar') {
     $('#IdFilterMolecula').prop('disabled', EnableButton);
-    $('#IdFilterMolecula').text(textButton);
+    $('#IdFilterMolecula').html('<i class="fas fa-spinner fa-spin" style="display:' + (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton);
 }
 
 // Initialize the DataTable
 function InitializeTable(Dt = []) {
-    console.log(Dt);
     // Clear the table before initializing
     $('#tbl_competidores').DataTable().clear().destroy();
 
@@ -84,6 +83,14 @@ async function getRequest(COD_MOLECULA, nyear_actual, nyear_pasado) {
         $("#val-anio-pasado-valor").text( '$ ' + vMercado.VALOR_MERCADO[nyear_pasado]) 
         $("#val-anio-actual-valor").text( '$ ' + vMercado.VALOR_MERCADO[nyear_actual])
         $("#dif-porcen-valor").text(vMercado.VALOR_MERCADO.Crec)
+
+        $("#val-umk-anio-pasado-valor").text(result.original.UNIMARKSA.VALOR_MERCADO[nyear_pasado])
+        $("#val-umk-anio-actual-valor").text(result.original.UNIMARKSA.VALOR_MERCADO[nyear_actual])
+        $("#dif-porcen-umk-valor").html(result.original.UNIMARKSA.VALOR_MERCADO.Crec + ' <i class="fas ' + result.original.UNIMARKSA.VALOR_MERCADO.icon +'"></i>')
+
+        $("#val-umk-anio-pasado-unidades").text(result.original.UNIMARKSA.CANTIDAD[nyear_pasado])
+        $("#val-umk-anio-actual-unidades").text(result.original.UNIMARKSA.CANTIDAD[nyear_actual])
+        $("#dif-porcen-umk-unidades").html(result.original.UNIMARKSA.CANTIDAD.Crec + ' <i class="fas ' + result.original.UNIMARKSA.CANTIDAD.icon +'"></i>')
 
         InitializeTable(vCompetidores);
 
