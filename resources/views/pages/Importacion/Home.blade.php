@@ -2,8 +2,8 @@
 @section('title' , $data['name'])
 @section('name_user' , 'Administrador')
 @section('metodosjs')
-@include('Pages.Importacion.js_importacion');
-@include('Pages.Importacion.css_importacion');
+@include('pages.Importacion.js_importacion');
+@include('pages.Importacion.css_importacion');
 
 @endsection
 @section('content')
