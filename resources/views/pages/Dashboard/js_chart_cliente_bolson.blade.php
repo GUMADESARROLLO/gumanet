@@ -60,6 +60,7 @@ function renderClienteBolsonChart(data) {
             type: 'column',
             yAxis: 0,
             data: valoresNIO,
+            color: '#8e44ad',
             tooltip: {
                 valuePrefix: 'C$ '
             }

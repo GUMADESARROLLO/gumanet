@@ -3,8 +3,11 @@
 namespace App;
 
 use App\user;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+
+use function GuzzleHttp\Promise\exception_for;
 
 class DashboardInnova extends Model
 {
@@ -229,8 +232,15 @@ class DashboardInnova extends Model
         $valorActual    = 0;
         $bultoAnterior  = 0;
         $bultoActual    = 0; 
+        try{
 
         $BultosMensual = DashboardInnova::BultosComparativaYTD($nYearAnterior, $nYearActual);
+
+        //$SumaVentas = array_sum(array_column($BultosMensual->get()->toArray(), 'VENTA_CON_IVA'));
+        //$SumaBultos = array_sum(array_column($BultosMensual->get()->toArray(), 'CANTIDAD'));
+
+        //$SumaVentas = $SumaVentas ?? 0.002;
+        //$SumaBultos = $SumaBultos ?? 0.002;
 
         $comparativaMensual = [];
 
@@ -278,6 +288,10 @@ class DashboardInnova extends Model
             'YTD_UND_ACTUAL'        => $bultoActual,
             'YTD_UND_CRECIMIENTO'   => $crecimientoBulto
         ];
+        }catch (Exception $e) {
+                $mensaje =  'Excepción capturada: ' . $e->getMessage() . "\n";
+                return response()->json($mensaje);
+        }
     }
 
 

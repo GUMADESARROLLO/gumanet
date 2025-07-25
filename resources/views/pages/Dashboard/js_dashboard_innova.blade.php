@@ -8,19 +8,12 @@
       });
     }
 
-    window.onload = function () {
-      const elem = document.getElementById("vistaCompleta");
+    $(document).ready(function() {
+      fullScreen();
+      
+      inicializaControlFecha();
 
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen().catch(err => {
-          console.warn("El navegador bloqueó el modo pantalla completa automáticamente.");
-        });
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-      }
-    };
+  });
 
     function formatRow(rowData) {
       return `
@@ -74,13 +67,13 @@
           },
           { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
               return `<div class="item-right">
-                    C$ ${data}<br>
-                    <span class="item-sub">${row.BULTOS_TOTAL_UND} Bls.</span>
+                    C$ ${numeral(data).format('0,0.00')}<br>
+                    <span class="item-sub">${numeral(row.BULTOS_TOTAL_UND).format('0,0')} Bls.</span>
                   </div>`;
             }          
           },
           { data: 'PESO', render: function(data, type, row){
-              return `<div class="item-right">${data} %</div>`;
+              return `<div class="item-right">${numeral(data).format('0,0.00')} %</div>`;
             }          
           }
         ],
@@ -137,8 +130,12 @@
             $('#ytd_actual').text(numeral(result.COMPARATIVAYTD.YTD_VALOR_ACTUAL).format('0,0.00'));
             $('#ytd_crecimiento').text(numeral(result.COMPARATIVAYTD.YTD_VALOR_CRECIMIENTO).format('0,0.00'));
 
+            $("#anioAnterior").text(new Date().getFullYear() - 1);
+            $("#anioActual").text(new Date().getFullYear());
             $("#total_sku_bultos").text(result.ACTUAL.SKU_CHART.Totals.Bultos + " Bls.");
             $("#total_sku_valor").text("C$. " + result.ACTUAL.SKU_CHART.Totals.Valor);
+            $("#total_Cliente_bultos").text(result.ACTUAL.SKU_CHART.Totals.Bultos + " Bls.");
+            $("#total_Cliente_valor").text("C$. " + result.ACTUAL.SKU_CHART.Totals.Valor);
 
 
             //Declarar la variable como global
