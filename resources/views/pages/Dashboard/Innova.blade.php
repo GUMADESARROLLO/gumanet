@@ -4,11 +4,11 @@
 @section('title' , $name)
     @section('name_user' , 'Administrador')
 @section('metodosjs')
-    @include('Pages.Dashboard.js_dashboard_innova')
-    @include('Pages.Dashboard.js_chart_SKU')  
-    @include('Pages.Dashboard.js_chart_cliente_bolson')   
-    @include('Pages.Dashboard.js_chart_YTD')   
-    @include('Pages.Dashboard.css_dasboard')
+    @include('pages.Dashboard.js_dashboard_innova')
+    @include('pages.Dashboard.js_chart_SKU')  
+    @include('pages.Dashboard.js_chart_cliente_bolson')   
+    @include('pages.Dashboard.js_chart_YTD')   
+    @include('pages.Dashboard.css_dasboard')
 @endsection
 
 @section('content')
