@@ -16,15 +16,22 @@ class ImportacionView extends Model
     {
         $COD_MOLECULA       = $request->COD_MOLECULA;
         $CANT_HOMOLO_GROUP  = [];
+        $UMK_IMPORTACION    = [];
         $dta_return         = [];
         $nYEar_actual       = date('Y');
         $nYEar_pasado       = $nYEar_actual - 1;
 
+        $TOTAL_UMK_VALOR    = 0;
+        $TOTAL_UMK_CANT     = 0;
+
         $IMPORTACIONES      = ImportacionView::WHERE('ARTICULO', $COD_MOLECULA)->get()->toArray();
+
 
         // Agrupar y sumar UNIDADES_HOMOLOGADAS por NYEAR
         foreach ($IMPORTACIONES as $item) {
+            $ruc = $item['NRO_RUC'] ?? '';
             $year = $item['NYEAR'] ?? null;
+
 
             if (!$year) {
                 continue;
@@ -37,28 +44,78 @@ class ImportacionView extends Model
                 ];
             }
 
+            if (!isset($UMK_IMPORTACION[$year])) {
+                $UMK_IMPORTACION[$year] = [
+                    'CANTIDAD' => 0,
+                    'VALOR' => 0,
+                ];
+            }
+
             $CANT_HOMOLO_GROUP[$year]['UNIDADES_HOMOLOGADAS'] += (float)($item['UNIDADES_HOMOLOGADAS'] ?? 0);
-            $CANT_HOMOLO_GROUP[$year]['FOB_TOTAL'] += (float)($item['FOB_TOTAL'] ?? 0);
+            $CANT_HOMOLO_GROUP[$year]['FOB_TOTAL']  += (float)($item['FOB_TOTAL'] ?? 0);
+
+            //ESE ES EL CODIGO DE IMPORTACION DE UMK
+            $ImportCode = env('UMK_IMPORT_CODE', '1234567890'); 
+            if (in_array($ruc, [$ImportCode])) {
+                $UMK_IMPORTACION[$year]['CANTIDAD'] += (float)($item['UNIDADES_HOMOLOGADAS'] ?? 0);
+                $UMK_IMPORTACION[$year]['VALOR']    += (float)($item['FOB_TOTAL'] ?? 0);
+            }
+
         }
 
-        $nyear_val_actual = (!isset($CANT_HOMOLO_GROUP[$nYEar_actual])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_actual]['FOB_TOTAL'] ;
-        $nyear_val_pasado = (!isset($CANT_HOMOLO_GROUP[$nYEar_pasado])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_pasado]['FOB_TOTAL'] ;
+        $nyear_val_actual   = (!isset($CANT_HOMOLO_GROUP[$nYEar_actual])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_actual]['FOB_TOTAL'] ;
+        $nyear_val_pasado   = (!isset($CANT_HOMOLO_GROUP[$nYEar_pasado])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_pasado]['FOB_TOTAL'] ;
+        $nyear_val_crec     = ($nyear_val_pasado != 0) ? number_format(($nyear_val_actual - $nyear_val_pasado) / $nyear_val_pasado * 100, 2) : 0; 
 
-        $nyear_cant_actual = (!isset($CANT_HOMOLO_GROUP[$nYEar_actual])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_actual]['UNIDADES_HOMOLOGADAS'] ;
-        $nyear_cant_pasado = (!isset($CANT_HOMOLO_GROUP[$nYEar_pasado])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_pasado]['UNIDADES_HOMOLOGADAS'] ;
+        $nyear_cant_actual  = (!isset($CANT_HOMOLO_GROUP[$nYEar_actual])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_actual]['UNIDADES_HOMOLOGADAS'] ;
+        $nyear_cant_pasado  = (!isset($CANT_HOMOLO_GROUP[$nYEar_pasado])) ? 0 : $CANT_HOMOLO_GROUP[$nYEar_pasado]['UNIDADES_HOMOLOGADAS'] ;
+        $nyear_cant_crec    = ($nyear_cant_pasado != 0) ? number_format(($nyear_cant_actual - $nyear_cant_pasado) / $nyear_cant_pasado * 100, 2) : 0;
+
+        $umk_val_pasado     = $UMK_IMPORTACION[$nYEar_pasado]['VALOR'] ?? 0;
+        $umk_val_actual     = $UMK_IMPORTACION[$nYEar_actual]['VALOR'] ?? 0;
+        $umk_val_crec       = ($umk_val_pasado != 0) ? number_format(($umk_val_actual - $umk_val_pasado) / $umk_val_pasado * 100, 2) : 0;
+        $ic_crec_val        = ($umk_val_crec < 0) ? 'fa-caret-down text-danger' : 'fa-caret-up text-success';
+        
+        $umk_cant_pasado    = $UMK_IMPORTACION[$nYEar_pasado]['CANTIDAD'] ?? 0;
+        $umk_cant_actual    = $UMK_IMPORTACION[$nYEar_actual]['CANTIDAD'] ?? 0;
+        $umk_cant_crec      = ($umk_cant_pasado != 0) ? number_format(($umk_cant_actual - $umk_cant_pasado) / $umk_cant_pasado * 100, 2) : 0;
+        $ic_crec_cant       = ($umk_cant_crec < 0) ? 'fa-caret-down text-danger' : 'fa-caret-up text-success';
+
+        $Particion          = ($nyear_val_actual != 0) ?  ( $umk_val_actual / $nyear_val_actual ) * 100 : 0;
+        $Particion          = number_format($Particion, 2);
+
 
 
         $dta_return = [ 
-            'MERCADO'   =>[
+            'PARTICION'   => $Particion,
+            'RANKING'     => [
+                'VALOR'     => ' 3 / 10',
+                'CANTIDAD'  => ' 5 / 10',
+            ],
+            'MERCADO'   => [
                 'VALOR_MERCADO' => [
-                    $nYEar_actual  => number_format($nyear_val_actual, 2),
                     $nYEar_pasado  => number_format($nyear_val_pasado, 2),
-                    'Crec'         => 0.02,
+                    $nYEar_actual  => number_format($nyear_val_actual, 2),
+                    'Crec'         => $nyear_val_crec,
                 ],
                 'CANT_HOMOLOGADAS' => [
-                    $nYEar_actual  => number_format($nyear_cant_actual, 0),
                     $nYEar_pasado  => number_format($nyear_cant_pasado, 0),
-                    'Crec'         => 0.12,
+                    $nYEar_actual  => number_format($nyear_cant_actual, 0),
+                    'Crec'         => $nyear_cant_crec,
+                ],
+            ],
+            'UNIMARKSA'   =>[
+                'VALOR_MERCADO' => [
+                    $nYEar_pasado  => number_format($umk_val_pasado, 2),
+                    $nYEar_actual  => number_format($umk_val_actual, 2),
+                    'Crec'         => $umk_val_crec,
+                    'icon'         => $ic_crec_val,
+                ],
+                'CANTIDAD' => [
+                    $nYEar_pasado  => number_format($umk_cant_pasado, 0),
+                    $nYEar_actual  => number_format($umk_cant_actual, 0),
+                    'Crec'         => $umk_cant_crec,
+                    'icon'         => $ic_crec_cant,
                 ],
             ],
             'COMPETIDORES' => self::getTopCompetidores($COD_MOLECULA, $nYEar_actual, $nYEar_pasado)
@@ -70,7 +127,6 @@ class ImportacionView extends Model
     public static function getTopCompetidores($Articulos,$nYear_actual, $nYear_pasado){
 
         $Competidores = [];
-
         $Consulta_SQL = 'SELECT
                 NOMBRE_IMPORTADOR AS COMPETIDOR,
                 NOMBRE_COMERCIAL AS MARCA,
