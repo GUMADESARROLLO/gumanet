@@ -55,16 +55,18 @@
       font-size: 0.85rem;
     }
 
-    #vistaCompleta {
-      width: 100vw;
-      height: 100vh;
-      background-color: #f8f9fa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      font-family: sans-serif;
+    .highcharts-axis-labels text {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+      cursor: text;
     }
+
+    .highcharts-root {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+
+
 
 
   </style>

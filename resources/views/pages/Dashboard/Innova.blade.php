@@ -18,8 +18,8 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
       <img src="{{ url('img/innova.png') }}" width="150" height="70" alt="Innova Logo">
       <div class="d-flex gap-2">
-        <input type="date" class="form-control" value="2025-01-16" id="desdeInnova">
-        <input type="date" class="form-control" value="2025-06-23" id="hastaInnova">
+        <input type="text" class="input-fecha" id="desdeInnova">
+        <input type="text" class="input-fecha" value="2025-06-23" id="hastaInnova">
         <button id="filtrarFechas" class="btn text-light" style="background-color: #fc5404" >Filtrar</button>
       </div>
     </div>
@@ -193,7 +193,26 @@
             <p class="text-white mb-0" id="fechaVentaNeta">00/00/0000 al  00/00/0000</p>
           </div>
           <div class="card-body">
-            <table id="tbl_top_clientes" class="display" style="width:100%"></table>
+            <table id="tbl_top_clientes" class="display" style="width:100%">
+              <tfoot>
+                <tr>
+                  <th colspan="2">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <span class="item-left">Total:</span>
+                      </div>
+                      <div class="col-md-6">
+                          
+                      </div>
+                      <div class="col-md-2" style="text-align: right">  
+                        <span class="item-left" id="total_Cliente_valor">C$. 0.00</span><br>
+                        <span class="item-right" id="total_Cliente_bultos">0.00 Bls</span>
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </div>
       </div>
@@ -208,7 +227,7 @@
             <div class="summary-title">
               <div class="d-flex justify-content-between align-items-center border-bottom">
                 <span>VENTA NETA</span>
-                <span>2024</span>
+                <span id="anioAnterior">0</span>
               </div>
             </div>
             <div class="summary-value" style="color: #890fa1"><span id="ytd_anterior">0.00</span></div>
@@ -222,7 +241,7 @@
             <div class="summary-title">
               <div class="d-flex justify-content-between align-items-center border-bottom">
                 <span>VENTA NETA</span>
-                <span>2025</span>
+                <span id="anioActual">0</span>
               </div>
             </div>
             <div class="summary-value" style="color: #890fa1"><span id="ytd_actual">0.00</div>
