@@ -12,8 +12,20 @@
       fullScreen();
       
       inicializaControlFecha();
+      $('#filtrarFechas').on('click', function() {
+        const desde = $('#desdeInnova').val();
+        const hasta = $('#hastaInnova').val(); 
+        eneableButton(true,'Calc...')        
+      
+        cargarGetDataInnova(desde, hasta);
+    });
 
   });
+
+  function eneableButton(EnableButton, textButton = 'Filtrar') {
+    $('#filtrarFechas').prop('disabled', EnableButton);
+    $('#filtrarFechas').html('<i class="fas fa-spinner fa-spin" style="display:' + (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton);
+  }
 
     function formatRow(rowData) {
       return `
@@ -142,8 +154,11 @@
             window.datos = datos;
             window.totales = totales;
 
+            eneableButton(false)
+
         } catch (error) {
             console.error('Error al obtener los datos:', error);
+            eneableButton(false)
         }
     }
 
@@ -171,11 +186,11 @@
         
     });
   
-    document.getElementById('filtrarFechas').addEventListener('click', async () => {
+    /*document.getElementById('filtrarFechas').addEventListener('click', async () => {
       const desde = $('#desdeInnova').val();
       const hasta = $('#hastaInnova').val();
 
       cargarGetDataInnova(desde, hasta);
-    });
+    });*/
 
 </script>
