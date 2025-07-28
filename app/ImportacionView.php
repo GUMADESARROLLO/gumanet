@@ -24,6 +24,9 @@ class ImportacionView extends Model
         $TOTAL_UMK_VALOR    = 0;
         $TOTAL_UMK_CANT     = 0;
 
+        //ESE ES EL CODIGO DE IMPORTACION DE UMK
+        $ImportCode = env('UMK_IMPORT_CODE', '1234567890'); 
+
         $IMPORTACIONES      = ImportacionView::WHERE('ARTICULO', $COD_MOLECULA)->get()->toArray();
 
 
@@ -54,8 +57,7 @@ class ImportacionView extends Model
             $CANT_HOMOLO_GROUP[$year]['UNIDADES_HOMOLOGADAS'] += (float)($item['UNIDADES_HOMOLOGADAS'] ?? 0);
             $CANT_HOMOLO_GROUP[$year]['FOB_TOTAL']  += (float)($item['FOB_TOTAL'] ?? 0);
 
-            //ESE ES EL CODIGO DE IMPORTACION DE UMK
-            $ImportCode = env('UMK_IMPORT_CODE', '1234567890'); 
+            
             if (in_array($ruc, [$ImportCode])) {
                 $UMK_IMPORTACION[$year]['CANTIDAD'] += (float)($item['UNIDADES_HOMOLOGADAS'] ?? 0);
                 $UMK_IMPORTACION[$year]['VALOR']    += (float)($item['FOB_TOTAL'] ?? 0);
@@ -84,13 +86,18 @@ class ImportacionView extends Model
         $Particion          = ($nyear_val_actual != 0) ?  ( $umk_val_actual / $nyear_val_actual ) * 100 : 0;
         $Particion          = number_format($Particion, 2);
 
+        $TopCompetidores    = self::getTopCompetidores($COD_MOLECULA, $nYEar_actual, $nYEar_pasado);
+        $ttCompetidores     = count($TopCompetidores);
+        $UMKPosition        = array_search($ImportCode, array_column($TopCompetidores, 'NRO_RUC')) + 1 ?? 0;
+
+
 
 
         $dta_return = [ 
             'PARTICION'   => $Particion,
             'RANKING'     => [
-                'VALOR'     => ' 3 / 10',
-                'CANTIDAD'  => ' 5 / 10',
+                'VALOR'     => $UMKPosition . ' / ' . $ttCompetidores,
+                'CANTIDAD'  => $UMKPosition . ' / ' . $ttCompetidores,
             ],
             'MERCADO'   => [
                 'VALOR_MERCADO' => [
@@ -118,7 +125,8 @@ class ImportacionView extends Model
                     'icon'         => $ic_crec_cant,
                 ],
             ],
-            'COMPETIDORES' => self::getTopCompetidores($COD_MOLECULA, $nYEar_actual, $nYEar_pasado)
+            'COMPETIDORES'          => $TopCompetidores,
+            'DATA_IMPORTACION'      => $IMPORTACIONES,
         ];
 
         return response()->json($dta_return);
@@ -127,7 +135,9 @@ class ImportacionView extends Model
     public static function getTopCompetidores($Articulos,$nYear_actual, $nYear_pasado){
 
         $Competidores = [];
-        $Consulta_SQL = 'SELECT
+        $Consulta_SQL = '
+            SELECT
+                NRO_RUC,
                 NOMBRE_IMPORTADOR AS COMPETIDOR,
                 NOMBRE_COMERCIAL AS MARCA,
                 PAIS_ORIGEN AS ORIGEN,
@@ -140,9 +150,11 @@ class ImportacionView extends Model
             WHERE
                 ARTICULO = '.$Articulos.'
             GROUP BY
+                NRO_RUC,
                 NOMBRE_IMPORTADOR,
                 NOMBRE_COMERCIAL,
-                PAIS_ORIGEN;';
+                PAIS_ORIGEN
+            ORDER BY [ACTUAL_FOB] DESC;';
 
         $Top_Competidores = DB::connection('sqlsrv')->select($Consulta_SQL);
 
@@ -159,6 +171,7 @@ class ImportacionView extends Model
 
 
             $Competidores[] = [
+                'NRO_RUC'       => $item->NRO_RUC,
                 'COMPETIDOR'    => $item->COMPETIDOR,
                 'MARCA'         => $item->MARCA,
                 'ORIGEN'        => $item->ORIGEN,
@@ -170,8 +183,8 @@ class ImportacionView extends Model
                 'CNT_CREC'      => $item->CNT_CREC,
                 
             ];
+            
         }
-
 
         return $Competidores;
 
