@@ -97,7 +97,6 @@ class ImportacionView extends Model
             'PARTICION'   => $Particion,
             'RANKING'     => [
                 'VALOR'     => $UMKPosition . ' / ' . $ttCompetidores,
-                'CANTIDAD'  => $UMKPosition . ' / ' . $ttCompetidores,
             ],
             'MERCADO'   => [
                 'VALOR_MERCADO' => [
@@ -165,6 +164,7 @@ class ImportacionView extends Model
             $item->PASADO_FOB = $item->PASADO_FOB ?? 0;
             $item->ACTUAL_CANT = $item->ACTUAL_CANT ?? 0;
             $item->PASADO_CANT = $item->PASADO_CANT ?? 0;
+            
 
             $item->FOB_CREC = ($item->PASADO_FOB != 0) ? number_format(($item->ACTUAL_FOB - $item->PASADO_FOB) / $item->PASADO_FOB * 100, 2) . '%' : 0; // FOB_CREC
             $item->CNT_CREC = ($item->PASADO_CANT != 0) ? number_format(($item->ACTUAL_CANT - $item->PASADO_CANT) / $item->PASADO_CANT * 100, 2) . '%' : 0; // CNT_CREC
@@ -175,6 +175,7 @@ class ImportacionView extends Model
                 'COMPETIDOR'    => $item->COMPETIDOR,
                 'MARCA'         => $item->MARCA,
                 'ORIGEN'        => $item->ORIGEN,
+                'DESCRIPCION'   => $item->DESCRIPCION ?? '',
                 'ACTUAL_FOB'    => number_format($item->ACTUAL_FOB, 2),
                 'PASADO_FOB'    => number_format($item->PASADO_FOB, 2),
                 'FOB_CREC'      => $item->FOB_CREC,

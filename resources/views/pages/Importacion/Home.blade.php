@@ -11,7 +11,7 @@
     <div class="row border" >
 
         <div class="col-md-12">            
-            <h4 class="h4 text-umk">REPORTE DE IMPORTACIONES</h4>
+            <h4 class="h4 text-umk">REPORTE DE IMPORTACIONES YTD 2024 vs 2025</h4>
             <p class="text-muted mb-4">En esta sección podrás visualizar los reportes de importaciones de productos, así como los competidores y sus marcas.</p>
         </div>
 
@@ -87,7 +87,6 @@
                 <div class="card-header text-white bg-umk">
                     <div class="d-flex justify-content-between ">
                         <h6 class="mb-0 font-weight-bold">COMERCIO NICARAGUA UNIDADES HOMOLOGADAS</h6>
-                        <span class="badge-ranking mb-0"><i class="fas fa-star"></i> <span id="ranking_cant">0</span> Ranking </span>
                     </div>
                 </div>
                 <div class="card-body">
@@ -178,6 +177,7 @@
                             <thead>
                                 <tr class="text-center bg-umk text-white">
                                     <th>ARTICULO</th>
+                                    <th>DESCRIPCION</th>
                                     <th>CANTIDAD</th>
                                     <th>FOB_TOTAL</th>
                                     <th>FOB_UNITARIO</th>

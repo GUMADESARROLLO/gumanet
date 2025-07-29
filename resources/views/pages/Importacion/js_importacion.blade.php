@@ -62,7 +62,6 @@ function eneableButton(EnableButton, textButton = 'Filtrar') {
 
 function cleanTextos() {
     $("#ranking_valor").text('0')
-    $("#ranking_cant").text('0')
 
     $("#val-anio-pasado-unidades").text('0.00')
     $("#val-anio-actual-unidades").text('0.00')
@@ -127,6 +126,7 @@ function TableDataImportacion(Dt = []) {
         buttons: [{extend: 'excelHtml5'}],
         columns: [
             { data: "ARTICULO", title: "ARTICULO" },
+            { data: "DESCRIPCION", title: "DESCRIPCION" },
             { data: "CANTIDAD", title: "CANTIDAD", class: "text-right" },
             { data: "FOB_TOTAL", title: "FOB_TOTAL", class: "text-right" },
             { data: "FOB_UNITARIO", title: "FOB_UNITARIO", class: "text-right" },
@@ -170,7 +170,6 @@ async function getRequest(COD_MOLECULA, nyear_actual, nyear_pasado) {
         var vCompetidores = result.original.COMPETIDORES;
 
         $("#ranking_valor").text(result.original.RANKING.VALOR)
-        $("#ranking_cant").text(result.original.RANKING.CANTIDAD)
 
         $("#val-anio-pasado-unidades").text(vMercado.CANT_HOMOLOGADAS[nyear_pasado])
         $("#val-anio-actual-unidades").text(vMercado.CANT_HOMOLOGADAS[nyear_actual])
