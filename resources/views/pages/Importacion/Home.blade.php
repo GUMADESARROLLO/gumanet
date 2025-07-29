@@ -11,8 +11,8 @@
     <div class="row border" >
 
         <div class="col-md-12">            
-            <h4 class="h4 text-umk">REPORTE DE IMPORTACIONES YTD 2024 vs 2025</h4>
-            <p class="text-muted mb-4">En esta sección podrás visualizar los reportes de importaciones de productos, así como los competidores y sus marcas.</p>
+            <h4 class="h4 text-umk" id="tl_titulo"> Cargando...</h4>
+            <p class="text-muted mb-4">En esta sección podrás visualizar los reportes de importaciones de productos, tomando en cuenta el período de <span id="tl_periodo"></span>, así como los competidores y sus marcas.</p>
         </div>
 
         <div class="col-md-10" >

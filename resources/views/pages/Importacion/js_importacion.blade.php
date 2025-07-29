@@ -1,7 +1,24 @@
 <script>
 $(document).ready(function() {
-    const nyear_actual = new Date().getFullYear();
+    fullScreen();
+    const now = new Date();
+    const nyear_actual = now.getFullYear();
     const nyear_pasado = nyear_actual - 1;
+
+    const getMonthName = (monthIndex) => {
+        return new Intl.DateTimeFormat('es-ES', { month: 'long' })
+            .format(new Date(2000, monthIndex))
+            .replace(/^\w/, c => c.toUpperCase());
+    };    
+
+    const nMonth_ini = 0;
+    const nMonth_end = now.getMonth();
+
+    const NameMonth_ini = getMonthName(nMonth_ini); 
+    const NameMonth_end = getMonthName(nMonth_end); 
+
+    $("#tl_titulo").text(`REPORTE DE IMPORTACIONES YTD ${nyear_pasado} vs ${nyear_actual}`);
+    $("#tl_periodo").html(`<b>${NameMonth_ini}</b> a <b>${NameMonth_end}</b>`);
     
     $("#text-anio-pasado-valor").text(nyear_pasado);
     $("#text-anio-actual-valor").text(nyear_actual)
@@ -16,6 +33,7 @@ $(document).ready(function() {
 
     TableTopCompetencia();
     TableDataImportacion();
+    //cleanTextos();
     
     // Event listener for the filter button
     $('#IdFilterMolecula').on('click', function() {
@@ -23,7 +41,7 @@ $(document).ready(function() {
         const COD_MOLECULA = $("#Id_Molecula").val();   
         eneableButton(true,'Calc...')        
         //const COD_MOLECULA = "18805013"
-        getRequest(COD_MOLECULA, nyear_actual, nyear_pasado);
+        getRequest(COD_MOLECULA, nyear_actual, nyear_pasado,  ( nMonth_ini + 1), (nMonth_end + 1));
     });
 
     $('#modal_importacion').on('click', function() {
@@ -62,6 +80,8 @@ function eneableButton(EnableButton, textButton = 'Filtrar') {
 
 function cleanTextos() {
     $("#ranking_valor").text('0')
+    
+    $("#tl_periodo").html("....");
 
     $("#val-anio-pasado-unidades").text('0.00')
     $("#val-anio-actual-unidades").text('0.00')
@@ -149,7 +169,7 @@ function TableDataImportacion(Dt = []) {
 }
 
 
-async function getRequest(COD_MOLECULA, nyear_actual, nyear_pasado) {
+async function getRequest(COD_MOLECULA, nyear_actual, nyear_pasado, nmonth_ini, nmonth_end) {
     try {
         cleanTextos();
         // Fetch data from the server
@@ -160,7 +180,11 @@ async function getRequest(COD_MOLECULA, nyear_actual, nyear_pasado) {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify({
-                COD_MOLECULA: COD_MOLECULA,
+                COD_MOLECULA    : COD_MOLECULA,
+                nyear_actual    : nyear_actual,
+                nyear_pasado    : nyear_pasado,
+                nmonth_ini      : nmonth_ini,
+                nmonth_end      : nmonth_end
             })
         });        
 
@@ -187,6 +211,7 @@ async function getRequest(COD_MOLECULA, nyear_actual, nyear_pasado) {
         $("#val-umk-anio-actual-unidades").text(result.original.UNIMARKSA.CANTIDAD[nyear_actual])
         $("#dif-porcen-umk-unidades").html(result.original.UNIMARKSA.CANTIDAD.Crec)
         $("#id_participacion").text(' ' + result.original.PARTICION)
+        $("#tl_periodo").html(result.original.PERIODO);
 
         TableTopCompetencia(vCompetidores);
         TableDataImportacion(result.original.DATA_IMPORTACION);
