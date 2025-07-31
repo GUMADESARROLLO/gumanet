@@ -29,7 +29,7 @@ class dashboard_controller extends Controller {
       $company = $request->session()->get('company_id');
 
 
-      $View = ($company != 4) ? "pages.dashboard" : "pages.Dashboard.Innova" ;
+      $View = ($company != 4) ? "pages.DashboardUMK.Unimark" : "pages.Dashboard.Innova" ;
 
 
       return view($View,$data);
