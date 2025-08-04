@@ -14,11 +14,13 @@ class DashboardInnova extends Model
     protected $connection = 'sqlsrv';
     public $timestamps = false;
     protected $table = "PRODUCCION.dbo.view_VtasTotal_Innova";
+    protected static $ClientesNoFacturables = ['CL000029','CL004185','CL009746'];
 
     public static function TransacionesBultosValor($desde, $hasta)
     {
         return self::query()
             ->selectRaw('SUM(Cantidad) as CANTIDAD, SUM(Venta) as VENTA_SIN_IVA, SUM(Venta) * 1.15 as VENTA_CON_IVA')
+            ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
             ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
             ->orderByDesc('CANTIDAD')
             ->get()->toArray()[0];
@@ -27,7 +29,19 @@ class DashboardInnova extends Model
     {
         return self::query()
             ->selectRaw('CLIENTE,NOMBRE, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+            ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
             ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
+            ->groupBy('CLIENTE', 'NOMBRE')
+            ->orderByDesc('CANTIDAD')
+            ->get();
+    }
+    public static function Detalles_SKU_TOP($desde, $hasta, $Articulo)
+    {
+        return self::query()
+            ->selectRaw('CLIENTE,NOMBRE, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+            ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
+            ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
+            ->where('ARTICULO', $Articulo)
             ->groupBy('CLIENTE', 'NOMBRE')
             ->orderByDesc('CANTIDAD')
             ->get();
@@ -36,6 +50,7 @@ class DashboardInnova extends Model
     {
         return self::query()
             ->selectRaw('VENDEDOR,NOMBRE_VENDEDOR, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+            ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
             ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
             ->groupBy('VENDEDOR', 'NOMBRE_VENDEDOR')
             ->orderByDesc('CANTIDAD')
@@ -44,9 +59,10 @@ class DashboardInnova extends Model
     public static function TransacionesArticulos($desde, $hasta)
     {
         return self::query()
-            ->selectRaw('CLASIFICACION_SIMPLE, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+            ->selectRaw('ARTICULO,CLASIFICACION_SIMPLE, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+            ->whereNotIn('CLIENTE', ['CL000029','CL004185','CL009746'])
             ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
-            ->groupBy('CLASIFICACION_SIMPLE')
+            ->groupBy('ARTICULO','CLASIFICACION_SIMPLE')
             ->orderByDesc('CANTIDAD');
     }
 
@@ -54,6 +70,7 @@ class DashboardInnova extends Model
     {
         return self::query()
             ->selectRaw('Anio, SUM(Cantidad) AS CANTIDAD,SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+            ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
             ->whereBetween('Anio', [$nYearAnterior, $nYearActual])
             ->groupBy('Anio')
             ->get()->toArray();
@@ -63,6 +80,7 @@ class DashboardInnova extends Model
     {
         return self::query()
                 ->selectRaw('Anio, nMes, SUM(Cantidad) AS CANTIDAD,SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+                ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
                 ->whereBetween('Anio', [$nYearAnterior, $nYearActual])
                 ->groupBy('Anio','nMes')
                 ->orderBy('Anio', 'nMes')
@@ -94,7 +112,7 @@ class DashboardInnova extends Model
         $Ventas     = DashboardInnova::TransacionesBultosValor($desde, $hasta);
         $Articulos  = DashboardInnova::TransacionesArticulos($desde, $hasta);
 
-        $SumaVentas = array_sum(array_column($Articulos->get()->toArray(), 'VENTA_CON_IVA'));
+        $SumaVentas = array_sum(array_column($Articulos->get()->toArray(), 'VENTA_SIN_IVA'));
         $SumaBultos = array_sum(array_column($Articulos->get()->toArray(), 'CANTIDAD'));
 
         // PARA QUE NO EXISTAN DIVICION ENTRE ZERO
@@ -109,7 +127,7 @@ class DashboardInnova extends Model
         $Metricas = [
             'UpdateAt'                 => $hasta,
             'BULTOS_TOTAL_UND'         => number_format($Ventas['CANTIDAD'], 2),
-            'BULTOS_TOTAL_NIO'         => number_format($Ventas['VENTA_CON_IVA'],2),       
+            'BULTOS_TOTAL_NIO'         => number_format($Ventas['VENTA_SIN_IVA'],2),       
         ];
 
 
@@ -119,7 +137,7 @@ class DashboardInnova extends Model
                 'CODIGO'            => $value->CLIENTE,
                 'NOMBRE'            => $value->NOMBRE,
                 'BULTOS_TOTAL_UND'  => number_format($value->CANTIDAD, 2),  
-                'BULTOS_TOTAL_NIO'  => number_format($value->VENTA_CON_IVA, 2),
+                'BULTOS_TOTAL_NIO'  => number_format($value->VENTA_SIN_IVA, 2),
             ];
         }
         foreach ($Vendedores as $key => $value) {
@@ -127,20 +145,20 @@ class DashboardInnova extends Model
                 'CODIGO'            => $value->VENDEDOR,
                 'NOMBRE'            => $value->NOMBRE_VENDEDOR,
                 'BULTOS_TOTAL_UND'  => number_format($value->CANTIDAD, 2),  
-                'BULTOS_TOTAL_NIO'  => number_format($value->VENTA_CON_IVA, 2),
+                'BULTOS_TOTAL_NIO'  => number_format($value->VENTA_SIN_IVA, 2),
             ];
         }
 
         //MUESTRA EL VALOR Y CANTIDADDES DE BULTOS ENTRE EL GANGO DE FECHA
         foreach ($Articulos->get() as $key => $value) {  
 
-            $Peso = ($value->VENTA_CON_IVA / $SumaVentas ) * 100;
+            $Peso = ($value->VENTA_SIN_IVA / $SumaVentas ) * 100;
 
             $SKU_CHART[$key] = [
-                'SKU'               => '',
+                'SKU'               => $value->ARTICULO,
                 'DESCRIPCION'       => $value->CLASIFICACION_SIMPLE,
                 'BULTOS_TOTAL_UND'  => round($value->CANTIDAD, 2), 
-                'BULTOS_TOTAL_NIO'  => round($value->VENTA_CON_IVA, 2),
+                'BULTOS_TOTAL_NIO'  => round($value->VENTA_SIN_IVA, 2),
                 'PESO'              => round($Peso, 2),
             ];
             
@@ -151,7 +169,7 @@ class DashboardInnova extends Model
                 'CODIGO'           => $value->CLIENTE,
                 'NOMBRE'            => $value->NOMBRE,
                 'BULTOS_TOTAL_UND'  => number_format($value->CANTIDAD, 2),  
-                'BULTOS_TOTAL_NIO'  => number_format($value->VENTA_CON_IVA, 2),
+                'BULTOS_TOTAL_NIO'  => number_format($value->VENTA_SIN_IVA, 2),
             ];
         }
 
@@ -292,6 +310,16 @@ class DashboardInnova extends Model
                 $mensaje =  'Excepción capturada: ' . $e->getMessage() . "\n";
                 return response()->json($mensaje);
         }
+    }
+
+    public static function getDetallesSKUCliente($request)
+    {
+        $desde = $request->desde;
+        $hasta = $request->hasta;   
+        $Artic = $request->articulo;   
+
+        $data = DashboardInnova::Detalles_SKU_TOP($desde, $hasta, $Artic);
+        return $data;
     }
 
 

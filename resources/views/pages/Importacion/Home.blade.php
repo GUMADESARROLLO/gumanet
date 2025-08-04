@@ -8,7 +8,7 @@
 @section('content')
 <div class="container-fluid">
 
-    <div class="row border" >
+    <div class="row" >
 
         <div class="col-md-12">            
             <h4 class="h4 text-umk" id="tl_titulo"> Cargando...</h4>
