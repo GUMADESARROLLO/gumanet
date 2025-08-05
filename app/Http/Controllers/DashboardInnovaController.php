@@ -20,5 +20,10 @@ class DashboardInnovaController extends Controller
         ];
         return response()->json($Metricas);
     }
+    public function getDetallesSKUCliente(Request $request)
+    {
+        $data = DashboardInnova::getDetallesSKUCliente($request);
+        return response()->json($data);
+    }
     
 }

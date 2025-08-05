@@ -1,51 +1,54 @@
-   <script>
-    function OnWay() {
-      swal.fire({
-        title: 'En Construcción',
-        text: 'Esta sección está en desarrollo y estará disponible pronto.',
-        icon: 'info',
-        confirmButtonText: 'Aceptar'
-      });
-    }
-
-    $(document).ready(function() {
-      fullScreen();
+  <script>
+  $(document).ready(function() {
+      
       
       inicializaControlFecha();
-      $('#filtrarFechas').on('click', function() {
-        const desde = $('#desdeInnova').val();
-        const hasta = $('#hastaInnova').val(); 
-        eneableButton(true,'Calc...')        
       
-        cargarGetDataInnova(desde, hasta);
-    });
+      //inicializa los filtros
+      CallFilter();
+
+      
+      $('#filtrarFechas').on('click', function() {
+        CallFilter();        
+      });
+
+      fullScreen();
+
 
   });
 
+
+  function CallFilter() {
+
+      const desde = $('#desdeInnova').val();
+      const hasta = $('#hastaInnova').val(); 
+
+      $("#tl_periodo").html(`<b>${desde}</b> a <b>${hasta}</b>`);
+
+      eneableButton(true,'Calc...')        
+      
+      cargarGetDataInnova(desde, hasta);
+    
+  }
+  function OnWay() {
+    swal.fire({
+      title: 'En Construcción',
+      text: 'Esta sección está en desarrollo y estará disponible pronto.',
+      icon: 'info',
+      confirmButtonText: 'Aceptar'
+    });
+  }
   function eneableButton(EnableButton, textButton = 'Filtrar') {
     $('#filtrarFechas').prop('disabled', EnableButton);
     $('#filtrarFechas').html('<i class="fas fa-spinner fa-spin" style="display:' + (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton);
   }
-
-    function formatRow(rowData) {
-      return `
-        <div class="item-left">
-          ${rowData.NOMBRE}<br>
-          <span class="item-sub">${rowData.CODIGO}</span>
-        </div>
-        <div class="item-right">
-          ${rowData.BULTOS_TOTAL_NIO}<br>
-          <span class="item-sub">${rowData.BULTOS_TOTAL_UND}</span>
-        </div>
-      `;
-    }
 
     function loadAndBuildTable(selector, data) {
       $(selector).DataTable({
         data: data,
         destroy: true,
         paging: true,
-        pageLength: 5,
+        pageLength: 21,
         info: false,
         searching: false,
         ordering: false,
@@ -69,7 +72,7 @@
         data: data,
         destroy: true,
         paging: true,
-        pageLength: 5,
+        pageLength: 21,
         info: false,
         searching: false,
         ordering: false,
@@ -90,7 +93,14 @@
           }
         ],
         createdRow: function (row, rowData) {
-          
+          $(row).on('click', function() {
+            var data = table.row(this).data();
+
+            $('#mdl-topsku').modal('show');
+            $('#id-name-articulo').text(data.DESCRIPCION );
+            getDetallesSKUCliente(data.SKU);
+            
+          });
         }
       });
 
@@ -98,6 +108,52 @@
       $(selector + '_length').hide();
     }
 
+    function TBL_TOP_SKU_CLIENTES(Dt) {
+        
+        // Populate the table with data
+        $("#tbl_topsku_clientes").DataTable({
+            data: Dt,
+            order: [],
+            columns: [
+                { data: "CLIENTE", title: "CLIENTE" },
+                { data: "NOMBRE", title: "NOMBRE" },
+                { data: "CANTIDAD", title: "BULTOS", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { data: "VENTA_SIN_IVA", title: "VENTA_SIN_IVA", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { data: "VENTA_CON_IVA", title: "VENTA_CON_IVA", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') }
+
+            ],
+            destroy: true,
+            pageLength: 100,
+            bLengthChange: false,
+            searching: true,
+        });
+        
+        $("#tbl_topsku_clientes_filter").hide();
+    }
+    async function getDetallesSKUCliente(articulo) {
+      try {
+        const desde = $('#desdeInnova').val();
+        const hasta = $('#hastaInnova').val();
+
+        const response = await fetch('getDetallesSKUCliente', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({ 
+            desde     : desde, 
+            hasta     : hasta,
+            articulo  : articulo
+          })
+        });
+        const result = await response.json();
+
+        TBL_TOP_SKU_CLIENTES(result);
+      } catch (error) {
+        console.error(error);
+      }
+    }
     async function cargarGetDataInnova(desde, hasta){
         try {
             const response = await fetch('getDataInnova', {
@@ -129,8 +185,8 @@
 
             renderComparativaYTD(datos, 'valor');
 
-            $('#bultos_facturacion').text(result.ACTUAL.Metricas.BULTOS_TOTAL_NIO);
-            $('#bultos_valor').text("C$. " + result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
+            $('#bultos_facturacion').text("C$ " + result.ACTUAL.Metricas.BULTOS_TOTAL_NIO);
+            $('#bultos_valor').text(result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
             $('#bultos_anterior').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ACTUAL);
             $('#bultos_actual').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ANTERIOR);
             $('#fechaClienteFact').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
@@ -145,9 +201,9 @@
             $("#anioAnterior").text(new Date().getFullYear() - 1);
             $("#anioActual").text(new Date().getFullYear());
             $("#total_sku_bultos").text(result.ACTUAL.SKU_CHART.Totals.Bultos + " Bls.");
-            $("#total_sku_valor").text("C$. " + result.ACTUAL.SKU_CHART.Totals.Valor);
+            $("#total_sku_valor").text("C$ " + result.ACTUAL.SKU_CHART.Totals.Valor);
             $("#total_Cliente_bultos").text(result.ACTUAL.SKU_CHART.Totals.Bultos + " Bls.");
-            $("#total_Cliente_valor").text("C$. " + result.ACTUAL.SKU_CHART.Totals.Valor);
+            $("#total_Cliente_valor").text("C$ " + result.ACTUAL.SKU_CHART.Totals.Valor);
 
 
             //Declarar la variable como global

@@ -15,11 +15,8 @@ class ImportacionController extends Controller
     public function Home()
     {
         $ImportacionMuestra     = ImportacionMuestra::All();
-        $data = [
-            'name' =>  'GUMA@NET',
-            'page' => 'Importacion'
-        ];
-        return view('pages.Importacion.Home', compact('data', 'ImportacionMuestra'));
+        $NamePath = 'GUMANET | IMPORTACIONES';
+        return view('pages.Importacion.Home', compact('NamePath', 'ImportacionMuestra'));
     }
     public function getImportacion(Request $request)
     {

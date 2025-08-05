@@ -1,9 +1,11 @@
 <script>
 function renderClienteBolsonChart(data) {
-    const categorias = data.map(item => item.CODIGO);
-    const nombresClientes = data.map(item => item.NOMBRE);
-    const valoresNIO = data.map(item => parseFloat(item.BULTOS_TOTAL_NIO.replace(/,/g, '')));
-    const valoresUND = data.map(item => parseFloat(item.BULTOS_TOTAL_UND.replace(/,/g, '')));
+
+    const dataLimit = data.slice(0, 10);
+    const categorias = dataLimit.map(item => item.CODIGO);
+    const nombresClientes = dataLimit.map(item => item.NOMBRE);
+    const valoresNIO = dataLimit.map(item => parseFloat(item.BULTOS_TOTAL_NIO.replace(/,/g, '')));
+    const valoresUND = dataLimit.map(item => parseFloat(item.BULTOS_TOTAL_UND.replace(/,/g, '')));
 
     Highcharts.chart('chart_cliente_bolson', {
         chart: {
@@ -43,10 +45,10 @@ function renderClienteBolsonChart(data) {
             formatter: function () {
                 const index = this.points[0].point.index;
                 return `
-                    <b>${categorias[index]}</b><br/>
-                    Cliente: ${nombresClientes[index]}<br/>
-                    Valor: C$ ${valoresNIO[index].toLocaleString()}<br/>
-                    Bultos UND: ${valoresUND[index]}
+                    <b>${nombresClientes[index]}</b><br/>
+                    CLIENTE: ${categorias[index]}<br/>
+                    VALOR: C$ ${valoresNIO[index].toLocaleString()}<br/>
+                    BULTOS: ${ valoresUND[index] }
                 `;
             }
         },
