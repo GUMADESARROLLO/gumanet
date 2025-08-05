@@ -15,16 +15,26 @@ class ImportacionView extends Model
     public static function getImportacionView(Request $request)
     {
         $COD_MOLECULA       = $request->COD_MOLECULA;
+        $nYEar_actual       = $request->nyear_actual;
+        $nYEar_pasado       = $request->nyear_pasado;
+        $nMonth_ini         = $request->nmonth_ini;
+        $nMonth_end         = $request->nmonth_end;
+
         $CANT_HOMOLO_GROUP  = [];
         $UMK_IMPORTACION    = [];
         $dta_return         = [];
-        $nYEar_actual       = date('Y');
-        $nYEar_pasado       = $nYEar_actual - 1;
 
         $TOTAL_UMK_VALOR    = 0;
         $TOTAL_UMK_CANT     = 0;
 
-        $IMPORTACIONES      = ImportacionView::WHERE('ARTICULO', $COD_MOLECULA)->get()->toArray();
+        //ESE ES EL CODIGO DE IMPORTACION DE UMK
+        $ImportCode = env('UMK_IMPORT_CODE', '1234567890'); 
+        $IMPORTACIONES = ImportacionView::where('ARTICULO', $COD_MOLECULA)
+            ->whereIn('NYEAR', [$nYEar_pasado, $nYEar_actual])
+            ->whereBetween('NMONTH', [$nMonth_ini, $nMonth_end])
+            ->distinct()
+            ->get()
+            ->toArray();
 
 
         // Agrupar y sumar UNIDADES_HOMOLOGADAS por NYEAR
@@ -54,8 +64,7 @@ class ImportacionView extends Model
             $CANT_HOMOLO_GROUP[$year]['UNIDADES_HOMOLOGADAS'] += (float)($item['UNIDADES_HOMOLOGADAS'] ?? 0);
             $CANT_HOMOLO_GROUP[$year]['FOB_TOTAL']  += (float)($item['FOB_TOTAL'] ?? 0);
 
-            //ESE ES EL CODIGO DE IMPORTACION DE UMK
-            $ImportCode = env('UMK_IMPORT_CODE', '1234567890'); 
+            
             if (in_array($ruc, [$ImportCode])) {
                 $UMK_IMPORTACION[$year]['CANTIDAD'] += (float)($item['UNIDADES_HOMOLOGADAS'] ?? 0);
                 $UMK_IMPORTACION[$year]['VALOR']    += (float)($item['FOB_TOTAL'] ?? 0);
@@ -84,13 +93,18 @@ class ImportacionView extends Model
         $Particion          = ($nyear_val_actual != 0) ?  ( $umk_val_actual / $nyear_val_actual ) * 100 : 0;
         $Particion          = number_format($Particion, 2);
 
+        $TopCompetidores    = self::getTopCompetidores($COD_MOLECULA, $nYEar_actual, $nYEar_pasado,$nMonth_ini, $nMonth_end);
+        $ttCompetidores     = count($TopCompetidores);
+        $UMKPosition        = array_search($ImportCode, array_column($TopCompetidores, 'NRO_RUC')) + 1 ?? 0;
+
+
 
 
         $dta_return = [ 
+            'PERIODO' => '<b>' . self::NameMonth($nMonth_ini) . '</b> a <b>' . self::NameMonth($nMonth_end) . '</b>',
             'PARTICION'   => $Particion,
             'RANKING'     => [
-                'VALOR'     => ' 3 / 10',
-                'CANTIDAD'  => ' 5 / 10',
+                'VALOR'     => $UMKPosition . ' / ' . $ttCompetidores,
             ],
             'MERCADO'   => [
                 'VALOR_MERCADO' => [
@@ -118,31 +132,39 @@ class ImportacionView extends Model
                     'icon'         => $ic_crec_cant,
                 ],
             ],
-            'COMPETIDORES' => self::getTopCompetidores($COD_MOLECULA, $nYEar_actual, $nYEar_pasado)
+            'COMPETIDORES'          => $TopCompetidores,
+            'DATA_IMPORTACION'      => $IMPORTACIONES,
         ];
 
         return response()->json($dta_return);
     }
 
-    public static function getTopCompetidores($Articulos,$nYear_actual, $nYear_pasado){
+    public static function getTopCompetidores($Articulos,$nYear_actual, $nYear_pasado, $nMonth_ini, $nMonth_end){
 
         $Competidores = [];
-        $Consulta_SQL = 'SELECT
+        $Consulta_SQL = '
+            SELECT DISTINCT
+                NRO_RUC,
                 NOMBRE_IMPORTADOR AS COMPETIDOR,
                 NOMBRE_COMERCIAL AS MARCA,
                 PAIS_ORIGEN AS ORIGEN,
-                SUM(CASE WHEN NYEAR = '.$nYear_pasado.' THEN FOB_TOTAL ELSE 0 END) AS [PASADO_FOB],
-                SUM(CASE WHEN NYEAR = '.$nYear_actual.' THEN FOB_TOTAL ELSE 0 END) AS [ACTUAL_FOB],
-                SUM(CASE WHEN NYEAR = '.$nYear_pasado.' THEN UNIDADES_HOMOLOGADAS ELSE 0 END) AS [PASADO_CANT],
-                SUM(CASE WHEN NYEAR = '.$nYear_actual.' THEN UNIDADES_HOMOLOGADAS ELSE 0 END) AS [ACTUAL_CANT]
+                SUM(CASE WHEN NYEAR = '.$nYear_pasado.' AND NMONTH BETWEEN '.$nMonth_ini.' AND '.$nMonth_end.' THEN FOB_TOTAL ELSE 0 END) AS [PASADO_FOB],
+                SUM(CASE WHEN NYEAR = '.$nYear_actual.' AND NMONTH BETWEEN '.$nMonth_ini.' AND '.$nMonth_end.' THEN FOB_TOTAL ELSE 0 END) AS [ACTUAL_FOB],
+                SUM(CASE WHEN NYEAR = '.$nYear_pasado.' AND NMONTH BETWEEN '.$nMonth_ini.' AND '.$nMonth_end.' THEN UNIDADES_HOMOLOGADAS ELSE 0 END) AS [PASADO_CANT],
+                SUM(CASE WHEN NYEAR = '.$nYear_actual.' AND NMONTH BETWEEN '.$nMonth_ini.' AND '.$nMonth_end.' THEN UNIDADES_HOMOLOGADAS ELSE 0 END) AS [ACTUAL_CANT]
             FROM
                 PRODUCCION.dbo.view_gnet_ImportacionCalc
             WHERE
                 ARTICULO = '.$Articulos.'
+                AND NYEAR IN ('.$nYear_pasado.', '.$nYear_actual.')
+                AND NMONTH BETWEEN '.$nMonth_ini.' AND '.$nMonth_end.'
             GROUP BY
+                NRO_RUC,
                 NOMBRE_IMPORTADOR,
                 NOMBRE_COMERCIAL,
-                PAIS_ORIGEN;';
+                PAIS_ORIGEN
+            ORDER BY [ACTUAL_FOB] DESC;';
+
 
         $Top_Competidores = DB::connection('sqlsrv')->select($Consulta_SQL);
 
@@ -153,15 +175,18 @@ class ImportacionView extends Model
             $item->PASADO_FOB = $item->PASADO_FOB ?? 0;
             $item->ACTUAL_CANT = $item->ACTUAL_CANT ?? 0;
             $item->PASADO_CANT = $item->PASADO_CANT ?? 0;
+            
 
             $item->FOB_CREC = ($item->PASADO_FOB != 0) ? number_format(($item->ACTUAL_FOB - $item->PASADO_FOB) / $item->PASADO_FOB * 100, 2) . '%' : 0; // FOB_CREC
             $item->CNT_CREC = ($item->PASADO_CANT != 0) ? number_format(($item->ACTUAL_CANT - $item->PASADO_CANT) / $item->PASADO_CANT * 100, 2) . '%' : 0; // CNT_CREC
 
 
             $Competidores[] = [
+                'NRO_RUC'       => $item->NRO_RUC,
                 'COMPETIDOR'    => $item->COMPETIDOR,
                 'MARCA'         => $item->MARCA,
                 'ORIGEN'        => $item->ORIGEN,
+                'DESCRIPCION'   => $item->DESCRIPCION ?? '',
                 'ACTUAL_FOB'    => number_format($item->ACTUAL_FOB, 2),
                 'PASADO_FOB'    => number_format($item->PASADO_FOB, 2),
                 'FOB_CREC'      => $item->FOB_CREC,
@@ -170,12 +195,32 @@ class ImportacionView extends Model
                 'CNT_CREC'      => $item->CNT_CREC,
                 
             ];
+            
         }
-
 
         return $Competidores;
 
     }
+
+    public static function NameMonth($month)
+    {
+        
+        $months = [
+            1 => 'Enero',
+            2 => 'Febrero',
+            3 => 'Marzo',
+            4 => 'Abril',
+            5 => 'Mayo',
+            6 => 'Junio',
+            7 => 'Julio',
+            8 => 'Agosto',
+            9 => 'Septiembre',
+            10 => 'Octubre',
+            11 => 'Noviembre',
+            12 => 'Diciembre'
+        ];
+        return $months[$month] ?? '';
+    }    
 
     
 }
