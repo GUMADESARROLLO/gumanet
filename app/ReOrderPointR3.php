@@ -39,7 +39,7 @@ class ReOrderPointR3 extends Model
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate ));
 
         // Ejecutar el primer procedimiento almacenado
-        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_reorder_FacturaLinea ?, ?", [$FechaIni, $FechaEnd]);
+        DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_base_reorder_v3 ?, ?", [$FechaIni, $FechaEnd]);
         
         // Insertar en el modelo Logs_calcs
         // Logs_calcs::create([
