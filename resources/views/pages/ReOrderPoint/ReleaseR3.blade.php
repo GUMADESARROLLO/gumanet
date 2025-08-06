@@ -8,14 +8,14 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">       
-          <h4 class="h4 text-umk" id="tl_titulo"> Cargando...</h4>
-          <p class="text-muted">Calculo de Reorder Point Revision 3ra</p>
-      </div>
+        <div class="col-md-12">       
+            <h4 class="h4 text-umk" > REORDER POINT</h4>
+            <p class="text-muted" id="tl_titulo">Re-Order Point Actualizado al : </p>
+        </div>
         <div class="col-md-9" >
           <div class="input-group mt-4">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></i></span>
             </div>
             <input type="text" id="id_search_reorder" class="form-control" placeholder="Buscar..." aria-label="Username" aria-describedby="basic-addon1">
           </div>
@@ -41,26 +41,7 @@
         <div class="col-sm-12 ">
             <div class="table-responsive">
                 <table id="tbl_competidores" class="table table-striped table-bordered" width="100%">
-                    <thead>                        
-                        <tr class="text-center bg-umk text-white">           
-                            <th>ARTICULO</th>
-                            <th>DESCRIPCION</th>
-                            <th>LABORATORIO</th>                          
-                            <th>PROMEDIO NORMAL</th>
-                            <th>PROMEDIO 3 MESES + ALTOS</th>
-                            <th>CANTIDAD PROMEDIO ANNUAL</th>
-                            <th>INVENTARIO</th>
-                            <th>ONHAND</th>
-                            <th>BONIFICACION</th>
-                            <th>NECESIDAD DE COMPRA AL AÑO</th>
-                            <th >TOTAL VENDIDO AL AÑO DISCASA</th>
-                            <th >POTENCIAL DISCASA</th>
-                            <th style="color:white; background-color: #2B9F6C">PEDIDO TOTAL</th>
-                            <th>MOQ</th>
-                            <th>ULTM. COST. USD.</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
+                   
                 </table>
             </div>
         </div>
