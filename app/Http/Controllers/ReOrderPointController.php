@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Session;
 
 class ReOrderPointController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
     public function ReOrderPoint()
     {  
         $data = array(
