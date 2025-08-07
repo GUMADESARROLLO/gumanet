@@ -285,7 +285,8 @@ Route::post('getSaleDetalleInsta', 'dashboard_controller@getSaleDetalleInsta')->
 
 
 // TODAS LAS RUTAS DEL REORDER POINT
-Route::get('ReOrder', 'ReOrderPointController@ReOrderPoint')->name('ReOrder');
+//Route::get('ReOrder', 'ReOrderPointController@ReOrderPoint')->name('ReOrder');
+
 Route::get('getData', 'ReOrderPointController@getData')->name('getData');
 Route::get('CalcReorder', 'ReOrderPointController@CalcReorder')->name('CalcReorder');
 Route::get('dtGraf/{articulo}/{canal}','ReOrderPointController@getDataGrafica')->name('dtGraf/{articulo}/{canal}');
@@ -321,3 +322,13 @@ Route::get('Importacion', 'ImportacionController@Home')->name('Importacion');
 Route::post('getImportacion', 'ImportacionController@getImportacion')->name('getImportacion');
 
 // FINAL RUTAS PARA EL DASHBOARD DE IMPORTACION
+
+
+
+
+//RUTAS PARA REORDER POINT REVISION Y APROBACION 2
+Route::get('ReOrderPoint', 'ReOrderPointController@ReOrderPoint')->name('ReOrderPoint');
+
+Route::get('ReOrder', 'ReOrderPointController@ReorderPointView')->name('ReOrder');
+Route::post('getReorderPoint', 'ReOrderPointController@getReorderPoint')->name('getReorderPoint');
+Route::post('getCalcular', 'ReOrderPointController@getCalcular')->name('getCalcular');

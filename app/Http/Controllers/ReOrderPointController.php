@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\ReOrderPoint;
+use App\ReOrderPointR3;
+use App\ReOrderPointBase;
 use App\ContribucionPorCanales;
 use Illuminate\Support\Facades\Session;
 
@@ -49,4 +51,31 @@ class ReOrderPointController extends Controller
         $obj = ContribucionPorCanales::ExportToExcel();
         return $obj;
     }
+
+    public function ReorderPointView() {
+    
+        return view('pages.ReOrderPoint.ReleaseR3',);
+    }
+
+    public function getReorderPoint(Request $request) {
+        $ReOrder = ReOrderPointR3::getReorderPoint($request);
+        $Records = ReOrderPointBase::getRecords($request);
+
+        $Data= [
+            'ReOrder' => $ReOrder,
+            'Records' => $Records,
+        ];
+        return response()->json($Data);
+    }
+    public function getCalcular(Request $request) {
+        $ReOrder = ReOrderPointR3::Calcular();
+        return response()->json([
+            'Titulo' => 'Reorder Point.',
+            'Mensaje' => 'Calculos completados' 
+        ],200);
+    }
+
+
+
+    
 }
