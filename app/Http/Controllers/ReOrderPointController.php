@@ -6,11 +6,15 @@ use App\ReOrderPoint;
 use App\ReOrderPointR3;
 use App\ReOrderPointBase;
 use App\ContribucionPorCanales;
+use App\Logs_calcs;
 use Illuminate\Support\Facades\Session;
 
 
 class ReOrderPointController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
     public function ReOrderPoint()
     {  
         $data = array(
@@ -58,12 +62,14 @@ class ReOrderPointController extends Controller
     }
 
     public function getReorderPoint(Request $request) {
-        $ReOrder = ReOrderPointR3::getReorderPoint($request);
-        $Records = ReOrderPointBase::getRecords($request);
+        $ReOrder    = ReOrderPointR3::getReorderPoint($request);
+        $Records    = ReOrderPointBase::getRecords($request);
+        $Update_at  = Logs_calcs::where('Modulo', 'ReOrderPoint_R3')->orderBy('id_log', 'desc')->first();
 
         $Data= [
             'ReOrder' => $ReOrder,
             'Records' => $Records,
+            'Update_at' => $Update_at->Observacion
         ];
         return response()->json($Data);
     }

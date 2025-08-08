@@ -1,4 +1,22 @@
 <script>
+    // Columna base definida fuera de la función para evitar duplicación si se llama varias veces
+    const staticColumns = [
+        { data: "ARTICULO", title: "ARTICULO", class: "text-left" },
+        { data: "DESCRIPCION", title: "DESCRIPCION", class: "text-left" },
+        { data: "LABORATORIO", title: "LABORATORIO", class: "text-center" },
+        { data: "PROM_NORMAL", title: "PROMEDIO NORMAL PRIV.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+        { data: "PROM_3M", title: "PROMEDIO 3 MESES + ALTOS PRIV.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+        { data: "PROM_ANUAL", title: "PROMEDIO CANTIDAD ANNUAL PRIV.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+        { data: "INVENTARIO", title: "INVENTARIO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) }, 
+        { data: "ONHAND", title: "ONHAND", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+        { data: "PROCENT_ANUAL", title: "BONIFICACION", class: "text-center", render: data => data + ' %' },
+        { data: "NECESITDAD_COMPRA_ANUAL", title: "NECESIDAD DE COMPRA AL AÑO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+        { data: "FACT_CA_YEAR_ACTUAL", title: "TOTAL VENDIDO AL AÑO DISCASA", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+        { data: "POTENCIAL_CA", title: "POTENCIAL DISCASA", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+        { data: "PEDIDO_TOTAL", title: "PEDIDO TOTAL", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+        { data: "MOQ", title: "MOQ", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+        { data: "ULTM_COST_USD", title: "ULTM. COST. USD.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+    ];
 $(document).ready(function() {
     fullScreen();
     const now = new Date();
@@ -7,7 +25,6 @@ $(document).ready(function() {
 
     //getRequest(nyear_actual, nyear_pasado);
 
-    $("#tl_titulo").text(`CALCULO DE REORDER POINT ${nyear_pasado} vs ${nyear_actual}`);
     
     TableReorderPoint();
     TableBase();
@@ -15,12 +32,12 @@ $(document).ready(function() {
     
     // Event listener for the filter button
     $('#IdFilterMolecula').on('click', function() {
-        eneableButton(true,'Calc...')          
+        eneableButton(true,'Calc...')
+        //cleanTextos();
         getCalcular(nyear_actual, nyear_pasado)
     });
 
     $('#modal_importacion').on('click', function() {
-
         if ($('#tbl_competidores').DataTable().data().any()) {
             $('#mdlImportacion').modal('show');
         } else {
@@ -62,46 +79,46 @@ function eneableButton(EnableButton, textButton = 'Calcular') {
 }
 
 function cleanTextos() {
-
     TableReorderPoint(Dt = []);
     TableBase(Dt = []);
 }
 
 // Initialize the DataTable
 function TableReorderPoint(Dt = []) {
+
     // Clear the table before initializing
     $('#tbl_competidores').DataTable().clear().destroy();
+        // Copiar columnas base (para que no modifiques el original)
+        let DtColumns = [...staticColumns];
+        // Crear un Set con las claves de columnas ya incluidas
+        const existingKeys = new Set(DtColumns.map(col => col.data));
+        // Agregar columnas dinámicas si no existen
+        if (Dt.Columns && Array.isArray(Dt.Columns)) {
+            Dt.Columns.forEach(colName => {
+                if (!existingKeys.has(colName) && !['ARTICULO_pv', 'ARTICULO_ds'].includes(colName)) {
+                    DtColumns.push({
+                        data: colName,
+                        title: colName.toUpperCase(),
+                        class: "text-right",
+                        render: $.fn.dataTable.render.number(',', '.', 2)
+                    });
+                    // Añadir al set para evitar futuros duplicados
+                    existingKeys.add(colName); 
+                }
+            });
+        }
 
     // Populate the table with data
+    $('#tbl_competidores thead tr').addClass('bg-umk text-white text-center');
     new DataTable('#tbl_competidores', {
-        data: Dt,
+        data: Dt.Rows,
         order: [12 , 'desc'],
         buttons: [{extend: 'excelHtml5'}],
-        columns: [
-            { data: "ARTICULO", class: "text-left" },
-            { data: "DESCRIPCION", class: "text-left" },
-            { data: "LABORATORIO", class: "text-center" },
-            { data: "PROM_NORMAL", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
-            { data: "PROM_3M", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
-            { data: "PROM_ANUAL", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
-            { data: "INVENTARIO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) }, 
-            { data: "ONHAND", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
-            { data: "PROCENT_ANUAL", class: "text-center", render: function(data, type, row, meta) {
-                return data + ' %';
-            }},
-            { data: "NECESITDAD_COMPRA_ANUAL", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
-            { data: "FACT_CA_YEAR_ACTUAL", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
-            { data: "POTENCIAL_CA", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
-            { data: "PEDIDO_TOTAL", render: $.fn.dataTable.render.number(',', '.', 2) },
-            { data: "MOQ", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
-            { data: "ULTM_COST_USD", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
-        ],
+        columns: DtColumns,
         pageLength: 7,
         bLengthChange: false,
         searching: true,
         rowCallback: function(row, data, index) {
-            
-
             // $(row).find('td:eq(3), td:eq(4), td:eq(5)').css({
             //     'background-color': '#72d083',
             //     'text-align': 'right'
@@ -150,7 +167,6 @@ function TableBase(Dt = []) {
 
 async function getRequest() {
     try {
-        cleanTextos();
         eneableButton(true,'Cargando...') 
         // Fetch data from the server
         const response = await fetch('getReorderPoint', {
@@ -166,6 +182,11 @@ async function getRequest() {
         TableReorderPoint(result.ReOrder);
 
         TableBase(result.Records);
+
+        
+        console.log(result.Update_at);
+        
+        $("#tl_titulo").text(` ${result.Update_at} `);
 
         eneableButton(false);
         

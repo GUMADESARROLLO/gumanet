@@ -12,8 +12,8 @@
 @section('content')
 
     <!-- Header -->
-    <div class="row">
-      <div class="col-md-7">            
+    <div class="row border">
+      <div class="col-md-6">            
         <h4 class="h4 text-innova"> INNOVA INDUSTRIAS S.A. </h4>
         <p class="text-muted mb-4">Reportes de ventas de productos, tomando en cuenta el periodo de <span id="tl_periodo"></span>.</p>
       </div>
@@ -32,7 +32,12 @@
       <div class="col-md-1 mt-4">
         <div class="btn-group w-100">               
           <button type="button" class="btn btn-primary-umk btn-block float-right" id="filtrarFechas">Filtrar </button>		
+        </div>      
       </div>
+      <div class="col-md-1 mt-4">
+        <div class="btn-group w-100">               
+          <button type="button" class="btn btn-success btn-block float-right" id="export_excel">Exportar </button>		
+        </div>      
       </div>
     </div>
 
@@ -108,10 +113,9 @@
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
-              <h6 class="mb-0 text-bold">CLIENTES FACTURADOS AL:</h6>
+              <h6 class="mb-0 text-bold">CLIENTES FACTURADOS AL: <b><span id="fechaClienteFact" >0000/00/00</span></b> </h6>
               <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
             </div>
-            <p class="text-white mb-0" id="fechaClienteFact">00/00/0000 al  00/00/0000</p>
           </div>
           <div class="card-body">
             <table id="clientesTable" class="display" style="width:100%"></table>
@@ -122,10 +126,9 @@
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
-              <h6 class="mb-0">VENTAS POR VENDEDOR</h6>
+              <h6 class="mb-0">VENTAS POR VENDEDOR: <b><span id="fechaVentaVendedor" >0000/00/00</span></b></h6>
               <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
             </div>
-            <p class="text-white mb-0" id="fechaVentaVendedor">00/00/0000 al  00/00/0000</p>
           </div>
           <div class="card-body">
             <table id="vendedoresTable" class="display" style="width:100%"></table>
@@ -316,7 +319,7 @@
                         <div class="col-sm-11">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                                    <span class="input-group-text" id="basic-addon1"> <i class="fas fa-search"></i> </span>
                                 </div>
                                 <input type="text" id="id_search_importaciones" class="form-control" placeholder="Buscar..." aria-label="Username" aria-describedby="basic-addon1">
                             </div>
@@ -328,17 +331,7 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table id="tbl_topsku_clientes" class="table table-striped " width="100%">
-                            <thead>
-                                <tr class="text-center bg-umk text-white">
-                                    <th>CLIENTE</th>
-                                    <th>NOMBRE</th>
-                                    <th>BULTOS</th>
-                                    <th>VENTAS SIN IVA</th>
-                                    <th>VENTAS CON IVA</th>
-                                </tr>
-                            </thead>
-                        </table>
+                        <table id="tbl_topsku_clientes" class="table table-striped " width="100%"></table>
                     </div>
                 </div>
             </div>

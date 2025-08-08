@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Schema;
+
 use PHPExcel;
 use PHPExcel_IOFactory;
 use PHPExcel_Style_Alignment;
@@ -42,22 +44,63 @@ class ReOrderPointR3 extends Model
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_base_reorder_v3 ?, ?", [$FechaIni, $FechaEnd]);
         
         // Insertar en el modelo Logs_calcs
-        // Logs_calcs::create([
-        //     'Modulo'        => 'ReOrderPoint',
-        //     'ini'           => $FechaIni,
-        //     'end'           => $FechaEnd,
-        //     'Observacion'   => 'Calculo de Reorder Point con Dia Actual: ' . $FechaEnd
-        // ]);
+        Logs_calcs::create([
+            'Modulo'        => 'ReOrderPoint_R3',
+            'ini'           => $FechaIni,
+            'end'           => $FechaEnd,
+            'Observacion'   => 'Calculo de Reorder Point actualizado al: ' . date('Y-m-d' , strtotime($FechaEnd)),
+        ]);
         
 
     }
     public static function getReorderPoint($request) 
     {        
         $DataReturn = [];
-        $DataReorderPoint = ReOrderPointR3::Where('SEGMENTO', 'FARMACIAS')->get();
+        $Columms    = [];
 
+        $CountColums = 0;
+
+        $DataReorderPoint = ReOrderPointR3::get();
+
+        $Months_Privado  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_privado ?, ?, ?", [2024,8,'PRIVADO']);
+
+        $Months_Discasa  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa ?", [2025]); 
+
+        // Obtener los nombres de las columnas dinámicamente
+        $Columns_Privado = array_keys(get_object_vars($Months_Privado[0]));
+        $Columns_Discasa = array_keys(get_object_vars($Months_Discasa[0]));
+        
         foreach ($DataReorderPoint as $key => $value) {
-            $DataReturn[] = [
+
+            $Position_Privado = array_search($value->ARTICULO, array_column($Months_Privado, 'ARTICULO'));
+            $Position_Discasa = array_search($value->ARTICULO, array_column($Months_Discasa, 'ARTICULO'));
+
+            // Inicializar arrays de datos extra
+            $PrivadoData = [];
+            $DiscasaData = [];
+
+            // Agregar dinámicamente las columnas de Months_Privado
+            foreach ($Columns_Privado as $columnName) {
+                $Prefix = $columnName.'_pv';
+                $PrivadoData[$Prefix] = ($Position_Privado !== false) ? $Months_Privado[$Position_Privado]->$columnName : 0 ;
+                
+                // Agregar al array de columnas
+                $Columms[$CountColums] = $Prefix; 
+                $CountColums++;
+            }
+
+            // Agregar dinámicamente las columnas de Months_Discasa
+            foreach ($Columns_Discasa as $columnName) {
+                $Prefix = $columnName.'_ds';
+                $DiscasaData[$Prefix] =  ($Position_Discasa !== false) ?  $Months_Discasa[$Position_Discasa]->$columnName : 0 ;
+
+                // Agregar al array de columnas
+                $Columms[$CountColums] = $Prefix; 
+                $CountColums++;
+            }
+
+            // Merge entre los datos fijos + privados + discasa
+            $DataReturn[] = array_merge([
                 'ARTICULO'                  => $value->ARTICULO,
                 'DESCRIPCION'               => strtoupper($value->DESCRIPCION),
                 'LABORATORIO'               => strtoupper($value->LABORATORIO),
@@ -66,16 +109,22 @@ class ReOrderPointR3 extends Model
                 'PROM_ANUAL'                => $value->PROM_ANUAL,
                 'INVENTARIO'                => $value->INVENTARIO,
                 'ONHAND'                    => $value->ONHAND,
-                'PROCENT_ANUAL'             => number_format(($value->PROCENT_ANUAL * 100 ), 2, '.', ''),
+                'PROCENT_ANUAL'             => number_format(($value->PROCENT_ANUAL * 100), 2, '.', ''),
                 'NECESITDAD_COMPRA_ANUAL'   => $value->NECESITDAD_COMPRA_ANUAL,
                 'FACT_CA_YEAR_ACTUAL'       => $value->FACT_CA_YEAR_ACTUAL,
                 'POTENCIAL_CA'              => $value->POTENCIAL_CA,
                 'PEDIDO_TOTAL'              => $value->PEDIDO_TOTAL,
                 'MOQ'                       => $value->MOQ,
                 'ULTM_COST_USD'             => $value->ULTM_COST_USD,
-            ];
+            ], $PrivadoData, $DiscasaData); // <-- Se agregan aquí
         }
-        return $DataReturn;
+
+        $MergeData = [
+            'Rows' => $DataReturn,
+            'Columns' => $Columms,
+        ];
+
+        return $MergeData;
     }
 
     

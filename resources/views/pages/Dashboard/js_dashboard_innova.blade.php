@@ -15,6 +15,12 @@
       fullScreen();
 
 
+      $("#id_search_importaciones").on('keyup', function() {
+        var searchTerm = $(this).val().toLowerCase();
+        $('#tbl_topsku_clientes').DataTable().search(searchTerm).draw();
+      });
+
+
   });
 
 
@@ -48,7 +54,7 @@
         data: data,
         destroy: true,
         paging: true,
-        pageLength: 21,
+        pageLength: 7,
         info: false,
         searching: false,
         ordering: false,
@@ -72,7 +78,7 @@
         data: data,
         destroy: true,
         paging: true,
-        pageLength: 21,
+        pageLength: 7,
         info: false,
         searching: false,
         ordering: false,
@@ -109,22 +115,20 @@
       $(selector + '_length').hide();
     }
 
-    function TBL_TOP_SKU_CLIENTES(Dt) {
-        
+    function TBL_TOP_SKU_CLIENTES(Dt) {        
         // Populate the table with data
         $("#tbl_topsku_clientes").DataTable({
             data: Dt,
             destroy: true,
             order: [],
             columns: [
-                { data: "CLIENTE" },
-                { data: "NOMBRE" },
-                { data: "CANTIDAD",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-                { data: "VENTA_SIN_IVA",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-                { data: "VENTA_CON_IVA",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') }
-
+                { data: "CLIENTE", title: "CLIENTE" },
+                { data: "NOMBRE", title: "NOMBRE" },
+                { data: "CANTIDAD", title: "CANTIDAD" ,  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { data: "VENTA_SIN_IVA", title: "VENTA SIN IVA",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { data: "VENTA_CON_IVA", title: "VENTA CON IVA",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') }
             ],
-            pageLength: 100,
+            pageLength: 7,
             bLengthChange: false,
             searching: true,
         });
