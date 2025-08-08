@@ -58,7 +58,7 @@
             }
           },
           { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
-            return `<div class="item-right">${data}<br><span class="item-sub">${row.BULTOS_TOTAL_UND}</span></div>`;
+            return `<div class="item-right">C$ ${data}<br><span class="item-sub">${row.BULTOS_TOTAL_UND}</span></div>`;
           }
           }
           
@@ -99,6 +99,7 @@
             $('#mdl-topsku').modal('show');
             $('#id-name-articulo').text(data.DESCRIPCION );
             getDetallesSKUCliente(data.SKU);
+            excelSku(data.SKU);
             
           });
         }
@@ -113,16 +114,16 @@
         // Populate the table with data
         $("#tbl_topsku_clientes").DataTable({
             data: Dt,
+            destroy: true,
             order: [],
             columns: [
-                { data: "CLIENTE", title: "CLIENTE" },
-                { data: "NOMBRE", title: "NOMBRE" },
-                { data: "CANTIDAD", title: "BULTOS", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-                { data: "VENTA_SIN_IVA", title: "VENTA_SIN_IVA", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-                { data: "VENTA_CON_IVA", title: "VENTA_CON_IVA", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') }
+                { data: "CLIENTE" },
+                { data: "NOMBRE" },
+                { data: "CANTIDAD",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { data: "VENTA_SIN_IVA",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { data: "VENTA_CON_IVA",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') }
 
             ],
-            destroy: true,
             pageLength: 100,
             bLengthChange: false,
             searching: true,
@@ -187,10 +188,10 @@
 
             $('#bultos_facturacion').text("C$ " + result.ACTUAL.Metricas.BULTOS_TOTAL_NIO);
             $('#bultos_valor').text(result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
-            $('#bultos_anterior').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ACTUAL);
-            $('#bultos_actual').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ANTERIOR);
-            $('#fechaClienteFact').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
-            $('#fechaVentaVendedor').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
+            $('#bultos_actual').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ACTUAL);
+            $('#bultos_anterior').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ANTERIOR);
+            $('#fechaClienteFact').text(result.ACTUAL.HASTA);
+            $('#fechaVentaVendedor').text(result.ACTUAL.HASTA);
             $('#fechaSKU').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
             $('#fechaVentaNeta').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
 
@@ -231,6 +232,14 @@
       renderComparativaYTD(window.datos, tipo);
     }
 
+    function excelSku(articulo){
+
+      $("#exp-to-excel").click(function() {    
+        const desde = $('#desdeInnova').val();
+        const hasta = $('#hastaInnova').val();
+        location.href = "getExcelSku?desde=" + encodeURIComponent(desde) + "&hasta=" + encodeURIComponent(hasta) + "&articulo=" + encodeURIComponent(articulo);
+      })
+    }
 
     document.addEventListener('DOMContentLoaded', async () => {
       const hoyDesde = new Date().toISOString().split('T')[0]; 

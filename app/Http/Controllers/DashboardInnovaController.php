@@ -25,5 +25,10 @@ class DashboardInnovaController extends Controller
         $data = DashboardInnova::getDetallesSKUCliente($request);
         return response()->json($data);
     }
+
+    public function ExportToExcel(Request $request) {
+        $obj = DashboardInnova::ExportToExcel($request);
+        return $obj;
+    }
     
 }

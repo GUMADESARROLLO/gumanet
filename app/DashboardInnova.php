@@ -6,6 +6,12 @@ use App\user;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use PHPExcel;
+use PHPExcel_Cell;
+use PHPExcel_IOFactory;
+use PHPExcel_Style;
+use PHPExcel_Style_Alignment;
+use PHPExcel_Style_Border;
 
 use function GuzzleHttp\Promise\exception_for;
 
@@ -102,11 +108,11 @@ class DashboardInnova extends Model
         //$desde      = '2025-06-01';
         //$hasta      = '2025-06-30';
 
-        //$Today       = date('Y-m-d');
+        $Today       = date('Y-m-d');
 
         //DIA ACTUAL
-        $Clientes   = DashboardInnova::TransacionesClientes($desde, $hasta);
-        $Vendedores = DashboardInnova::TransacionesVendedores($desde, $hasta);
+        $Clientes   = DashboardInnova::TransacionesClientes($Today, $Today);
+        $Vendedores = DashboardInnova::TransacionesVendedores($Today, $Today);
 
         // RANGO DE FECHA
         $Ventas     = DashboardInnova::TransacionesBultosValor($desde, $hasta);
@@ -254,12 +260,6 @@ class DashboardInnova extends Model
 
         $BultosMensual = DashboardInnova::BultosComparativaYTD($nYearAnterior, $nYearActual);
 
-        //$SumaVentas = array_sum(array_column($BultosMensual->get()->toArray(), 'VENTA_CON_IVA'));
-        //$SumaBultos = array_sum(array_column($BultosMensual->get()->toArray(), 'CANTIDAD'));
-
-        //$SumaVentas = $SumaVentas ?? 0.002;
-        //$SumaBultos = $SumaBultos ?? 0.002;
-
         $comparativaMensual = [];
 
         for ($mes = 1; $mes <= 12; $mes++) {
@@ -280,9 +280,11 @@ class DashboardInnova extends Model
             $cantAnterior = isset($anioAnteriorData[0]) ? $anioAnteriorData[0]['CANTIDAD'] : 0;
             $cantActual = isset($anioActualData[0]) ? $anioActualData[0]['CANTIDAD'] : 0;
 
-            $valorAnterior = $valorAnterior + $ventaAnterior;
-            $valorActual = $valorActual + $ventaActual;
-            $bultoAnterior = $bultoAnterior + $cantAnterior;
+            if($mes <= date('m')){
+                $valorAnterior = $valorAnterior + $ventaAnterior;
+                $bultoAnterior = $bultoAnterior + $cantAnterior;
+            }
+            $valorActual = $valorActual + $ventaActual;            
             $bultoActual = $bultoActual + $cantActual;
 
             $comparativaMensual[] = [
@@ -322,6 +324,112 @@ class DashboardInnova extends Model
         return $data;
     }
 
+     public static function ExportToExcel($request) {
+        $objPHPExcel = new PHPExcel();
+        $titulosColumnas = array();
+        $columnIndex = 0;
+        $rowIndex = 1;
+        $desde = $request->desde;
+        $hasta = $request->hasta;   
+        $Artic = $request->articulo;
+
+        $estiloTituloReporte = array(
+            'font' => array(
+            'name'      => 'Tahoma',
+            'bold'      => true,
+            'italic'    => false,
+            'strike'    => false,
+            'size'      => 14,
+            'color'     => array(
+                            'rgb' => '212121')
+            ),
+            'alignment' =>  array(
+                            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                            'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                            'rotation'   => 0,
+                            'wrap'       => TRUE,
+                            )
+        );
+
+        $estiloTituloColumnas = array(
+            'font' => array(
+                        'name'  => 'Arial',
+                        'bold'  => true
+            ),
+            'alignment' =>  array(
+                                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                                'wrap'          => TRUE
+                            ),
+            'borders' => array(
+                            'top' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        ),
+            'allborders' => array(
+                                'style' => PHPExcel_Style_Border::BORDER_THIN,
+                            )
+            )
+        );
+                
+        $estiloInformacion = new PHPExcel_Style();
+        $estiloInformacion->applyFromArray(
+            array(
+                'borders' => array(
+                'top' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        ),
+                'allborders' => array(
+                                'style' => PHPExcel_Style_Border::BORDER_THIN,
+                                ),
+                )
+            )
+        );    
+
+        $SkuVentas = DashboardInnova::Detalles_SKU_TOP($desde, $hasta, $Artic);
+        $titulosColumnas = array_keys($SkuVentas->first()->toArray());
+        
+        foreach ($titulosColumnas as $titulo) {
+            $i = 2;
+
+            $NameColumna = $titulo ;
+
+            //ASIGNA LA LETRA A LA COLUMNA
+            $columnLetter = PHPExcel_Cell::stringFromColumnIndex($columnIndex);
+            
+            $objPHPExcel->setActiveSheetIndex()->setCellValue($columnLetter . $rowIndex, $NameColumna);
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnLetter)->setWidth(15);
+
+            //ASIGNA LOS VALORES A CADA UNA DE LAS CELDAS
+            foreach ($SkuVentas as $key) {
+                $objPHPExcel->setActiveSheetIndex()->setCellValue($columnLetter.$i,  $key[$titulo]);
+                $i++;
+            }
+            
+            $columnIndex++;
+        }
+        $ultimaColumnaLetra = PHPExcel_Cell::stringFromColumnIndex($columnIndex - 1);
+    
+        $i++;   
+
+        //ANCHO DE CADA COLUMNAS
+        $objPHPExcel->getActiveSheet()->getColumnDimension("B")->setWidth(110);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:' . $ultimaColumnaLetra . '1')->applyFromArray($estiloTituloColumnas);
+
+        $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A2:". $ultimaColumnaLetra .($i-1));
+
+        //FORMATOS NUMERICOS
+        $formatCode = '_-" "* #,##0.00_-;_-" "* #,##0.00_-;_-" "* "-"??_-;_-@_-';
+        $objPHPExcel->getActiveSheet()->getStyle("C2:". $ultimaColumnaLetra .($i-1))->getNumberFormat()->setFormatCode($formatCode);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="TopSKUVentas.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
+
+
+    }
 
     
 }

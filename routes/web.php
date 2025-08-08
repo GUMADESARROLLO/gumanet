@@ -315,6 +315,7 @@ Route::post('calcularPresupuesto','PresupuestoController@calcularPresupuesto')->
 // RUTAS PARA NEW DASHBOARD INNOVA
 Route::post('getDataInnova', 'DashboardInnovaController@getDataInnova')->name('getDataInnova'); 
 Route::post('getDetallesSKUCliente', 'DashboardInnovaController@getDetallesSKUCliente')->name('getDetallesSKUCliente');
+Route::get('getExcelSku', 'DashboardInnovaController@ExportToExcel')->name('getExcelSku');
 
 
 // INICIO RUTAS PARA EL DASHBOARD DE IMPORTACION
