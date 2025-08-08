@@ -4,10 +4,14 @@
         { data: "ARTICULO", title: "ARTICULO", class: "text-left" },
         { data: "DESCRIPCION", title: "DESCRIPCION", class: "text-left" },
         { data: "LABORATORIO", title: "LABORATORIO", class: "text-center" },
+        { data: "CATEGORIA", title: "CATEGORIA", class: "text-right" },     
         { data: "PROM_NORMAL", title: "PROMEDIO NORMAL PRIV.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "PROM_3M", title: "PROMEDIO 3 MESES + ALTOS PRIV.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "PROM_ANUAL", title: "PROMEDIO CANTIDAD ANNUAL PRIV.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "INVENTARIO", title: "INVENTARIO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) }, 
+        { data: "LOTE", title: "LOTE", class: "text-left" },   
+        { data: "FECHA_VENCE_LOTE", title: "VENC. LOTE", class: "text-left" },   
+        { data: "CANT_VENCE_LOTE", title: "CANT. VENCE LOTE", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },   
         { data: "ONHAND", title: "ONHAND", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "PROCENT_ANUAL", title: "BONIFICACION", class: "text-center", render: data => data + ' %' },
         { data: "NECESITDAD_COMPRA_ANUAL", title: "NECESIDAD DE COMPRA AL AÑO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
@@ -112,7 +116,7 @@ function TableReorderPoint(Dt = []) {
     $('#tbl_competidores thead tr').addClass('bg-umk text-white text-center');
     new DataTable('#tbl_competidores', {
         data: Dt.Rows,
-        order: [12 , 'desc'],
+        order: [16 , 'desc'],
         buttons: [{extend: 'excelHtml5'}],
         columns: DtColumns,
         pageLength: 7,
@@ -129,7 +133,7 @@ function TableReorderPoint(Dt = []) {
             //     'text-align': 'right'
             // });
 
-            $(row).find('td:eq(12)').css({
+            $(row).find('td:eq(16)').css({
                 'font-weight': 'bold',
                 'background-color': '#a4edb2',
                 'text-align': 'right'
@@ -149,7 +153,7 @@ function TableBase(Dt = []) {
         columns: [
             { data: "ARTICULO", title: "ARTICULO" },
             { data: "DESCRIPCION", title: "DESCRIPCION" },    
-            { data: "LABORATORIO", title: "LABORATORIO", class: "text-center" },        
+            { data: "LABORATORIO", title: "LABORATORIO", class: "text-center" },
             { data: "CANTIDAD", title: "CANTIDAD", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
             { data: "NMONTH", title: "MONTH", class: "text-right" },
             { data: "NYEAR", title: "YEAR", class: "text-right" },           

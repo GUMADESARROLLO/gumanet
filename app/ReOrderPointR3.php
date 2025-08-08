@@ -104,10 +104,16 @@ class ReOrderPointR3 extends Model
                 'ARTICULO'                  => $value->ARTICULO,
                 'DESCRIPCION'               => strtoupper($value->DESCRIPCION),
                 'LABORATORIO'               => strtoupper($value->LABORATORIO),
+                'CATEGORIA'                 => $value->CATEGORIA,
                 'PROM_NORMAL'               => $value->PROM_NORMAL,
                 'PROM_3M'                   => $value->PROM_3M,
                 'PROM_ANUAL'                => $value->PROM_ANUAL,
                 'INVENTARIO'                => $value->INVENTARIO,
+                
+                'LOTE'                      => $value->LOTE,
+                'FECHA_VENCE_LOTE'          => date('d-m-Y', strtotime($value->FECHA_VENCE_LOTE)),
+                'CANT_VENCE_LOTE'           => $value->CANT_VENCE_LOTE,
+
                 'ONHAND'                    => $value->ONHAND,
                 'PROCENT_ANUAL'             => number_format(($value->PROCENT_ANUAL * 100), 2, '.', ''),
                 'NECESITDAD_COMPRA_ANUAL'   => $value->NECESITDAD_COMPRA_ANUAL,
