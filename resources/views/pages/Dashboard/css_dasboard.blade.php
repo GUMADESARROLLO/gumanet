@@ -40,9 +40,7 @@
       font-weight: bold;
       text-align: left;
     }
-    table.dataTable thead {
-      display: none;
-    }
+    
 
     .item-left {
       font-weight: 600;
