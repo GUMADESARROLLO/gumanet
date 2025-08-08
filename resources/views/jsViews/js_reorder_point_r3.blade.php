@@ -4,6 +4,7 @@
         { data: "ARTICULO", title: "ARTICULO", class: "text-left" },
         { data: "DESCRIPCION", title: "DESCRIPCION", class: "text-left" },
         { data: "LABORATORIO", title: "LABORATORIO", class: "text-center" },
+        { data: "LEADTIME", title: "LEADTIME", class: "text-Left" },
         { data: "CATEGORIA", title: "CATEGORIA", class: "text-right" },     
         { data: "PROM_NORMAL", title: "PROMEDIO NORMAL PRIV.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "PROM_3M", title: "PROMEDIO 3 MESES + ALTOS PRIV.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
@@ -11,7 +12,10 @@
         { data: "INVENTARIO", title: "INVENTARIO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) }, 
         { data: "LOTE", title: "LOTE", class: "text-left" },   
         { data: "FECHA_VENCE_LOTE", title: "VENC. LOTE", class: "text-left" },   
+        { data: "CANTIDAD_INGRESADA", title: "ULT. CANT. INGRESADA", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "CANT_VENCE_LOTE", title: "CANT. VENCE LOTE", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },   
+        { data: "PEDIDO", title: "PEDIDO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+        { data: "TRANSITO", title: "TRANSITO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "ONHAND", title: "ONHAND", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "PROCENT_ANUAL", title: "BONIFICACION", class: "text-center", render: data => data + ' %' },
         { data: "NECESITDAD_COMPRA_ANUAL", title: "NECESIDAD DE COMPRA AL AÑO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
@@ -20,6 +24,7 @@
         { data: "PEDIDO_TOTAL", title: "PEDIDO TOTAL", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "MOQ", title: "MOQ", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "ULTM_COST_USD", title: "ULTM. COST. USD.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
+        { data: "COSTO_PROM_DOL", title: "COSTO PROM. USD.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) }
     ];
 $(document).ready(function() {
     fullScreen();
@@ -116,7 +121,7 @@ function TableReorderPoint(Dt = []) {
     $('#tbl_competidores thead tr').addClass('bg-umk text-white text-center');
     new DataTable('#tbl_competidores', {
         data: Dt.Rows,
-        order: [16 , 'desc'],
+        order: [20 , 'desc'],
         buttons: [{extend: 'excelHtml5'}],
         columns: DtColumns,
         pageLength: 7,
@@ -133,7 +138,7 @@ function TableReorderPoint(Dt = []) {
             //     'text-align': 'right'
             // });
 
-            $(row).find('td:eq(16)').css({
+            $(row).find('td:eq(20)').css({
                 'font-weight': 'bold',
                 'background-color': '#a4edb2',
                 'text-align': 'right'
