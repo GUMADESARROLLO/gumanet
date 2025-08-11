@@ -34,7 +34,7 @@ function renderComparativaYTD(data, tipo = 'valor') {
       type: 'column'
     },
     title: {
-      text: `Comparativa de ${tipo === 'valor' ? 'Ventas' : 'Unidades'} YTD`
+      text: `COMPARATIVA DE ${tipo === 'valor' ? 'VENTAS' : 'UNIDADES'} YTD`
     },
     xAxis: {
       categories: categories_,
