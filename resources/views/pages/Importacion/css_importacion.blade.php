@@ -29,6 +29,11 @@
   border-color: var(--orage) !important;
   color: var(--white) !important;
 }
+.btn-primary-umk-success {
+  background-color: var(--green-strong) !important;
+  border-color: var(--green-strong) !important;
+  color: var(--white) !important;
+}
 .bg-ranking {
   background-color: var(--orage) !important;
   text-align: center;
