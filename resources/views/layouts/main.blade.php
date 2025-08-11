@@ -124,7 +124,7 @@
     </div>
   </div>
 </div>
-<script src="{{ url('js/ext/feather.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 <script src="{{ url('js/ext/Chart.min.js') }}"></script>
 <script src="{{ url('js/jquery-2.1.1.min.js') }}"></script>
 <script src="{{ url('js/jquery.maskMoney.js') }}"></script>

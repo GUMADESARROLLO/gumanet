@@ -104,10 +104,18 @@ class ReOrderPointR3 extends Model
                 'ARTICULO'                  => $value->ARTICULO,
                 'DESCRIPCION'               => strtoupper($value->DESCRIPCION),
                 'LABORATORIO'               => strtoupper($value->LABORATORIO),
+                'LEADTIME'                  => $value->LEADTIME,
+                'CATEGORIA'                 => $value->CATEGORIA,
                 'PROM_NORMAL'               => $value->PROM_NORMAL,
                 'PROM_3M'                   => $value->PROM_3M,
                 'PROM_ANUAL'                => $value->PROM_ANUAL,
-                'INVENTARIO'                => $value->INVENTARIO,
+                'INVENTARIO'                => $value->INVENTARIO,                
+                'LOTE'                      => $value->LOTE,
+                'FECHA_VENCE_LOTE'          => date('d-m-Y', strtotime($value->FECHA_VENCE_LOTE)),
+                'CANT_VENCE_LOTE'           => $value->CANT_VENCE_LOTE,
+                'CANTIDAD_INGRESADA'        => $value->CANTIDAD_INGRESADA,
+                'PEDIDO'                    => $value->PEDIDO,
+                'TRANSITO'                  => $value->TRANSITO,
                 'ONHAND'                    => $value->ONHAND,
                 'PROCENT_ANUAL'             => number_format(($value->PROCENT_ANUAL * 100), 2, '.', ''),
                 'NECESITDAD_COMPRA_ANUAL'   => $value->NECESITDAD_COMPRA_ANUAL,
@@ -116,7 +124,8 @@ class ReOrderPointR3 extends Model
                 'PEDIDO_TOTAL'              => $value->PEDIDO_TOTAL,
                 'MOQ'                       => $value->MOQ,
                 'ULTM_COST_USD'             => $value->ULTM_COST_USD,
-            ], $PrivadoData, $DiscasaData); // <-- Se agregan aquí
+                'COSTO_PROM_DOL'            => $value->COSTO_PROM_DOL
+            ], $PrivadoData, $DiscasaData); 
         }
 
         $MergeData = [
