@@ -66,11 +66,12 @@ class ReOrderPointController extends Controller
         $Records    = ReOrderPointBase::getRecords($request);
         $Update_at  = Logs_calcs::where('Modulo', 'ReOrderPoint_R3')->orderBy('id_log', 'desc')->first();
 
-        $Data= [
+        $Data = [
             'ReOrder' => $ReOrder,
             'Records' => $Records,
             'Update_at' => $Update_at->Observacion
         ];
+        
         return response()->json($Data);
     }
     public function getCalcular(Request $request) {

@@ -125,7 +125,7 @@ class ReOrderPointR3 extends Model
                 'MOQ'                       => $value->MOQ,
                 'ULTM_COST_USD'             => $value->ULTM_COST_USD,
                 'COSTO_PROM_DOL'            => $value->COSTO_PROM_DOL
-            ], $PrivadoData, $DiscasaData); // <-- Se agregan aquí
+            ], $PrivadoData, $DiscasaData); 
         }
 
         $MergeData = [
