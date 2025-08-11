@@ -1,5 +1,5 @@
 @extends('layouts.ly_reorder')
-@section('title' , 'GUMA@NET | REORDER POINT R3' )
+@section('title' , 'GUMA@NET | REORDER POINT R3 '.date('d-m-Y') )
 @section('name_user' , 'Administrador')
 @section('metodosjs')
     @include('jsViews.js_reorder_point_r3')    

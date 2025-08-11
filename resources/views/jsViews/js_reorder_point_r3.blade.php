@@ -181,7 +181,7 @@ function TableReorderPoint(Dt = []) {
                     text:   `<i class="fas fa-file-excel"></i> Exportar`,
                     extend: 'excelHtml5',
                     className: 'btn-primary-umk-success',
-                    title:  'ReporderPoint: ' + moment().format('MMMM D, YYYY h:mm a'),
+                    title:  'Reporder Point: ' + moment().format('MMMM D, YYYY H:mm'),
                     exportOptions: {
                         columns: ':visible'
                     }
