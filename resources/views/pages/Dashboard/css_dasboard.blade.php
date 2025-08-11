@@ -92,6 +92,11 @@
       max-width: 100%;
       height: auto;
     }
+    #tbl_topsku_clientes thead th {
+      background-color: #802980 !important;
+      color: #fff !important;
+      border-color: rgba(255,255,255,0.08);
+    }
 
 
 

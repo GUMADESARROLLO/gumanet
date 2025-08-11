@@ -12,13 +12,25 @@ function renderClienteBolsonChart(data) {
             zoomType: 'xy'
         },
         title: {
-            text: 'Comparativo de Bultos por Cliente'
+            text: 'COMPARATIVO DE BULTOS POR CLIENTE'
         },
         xAxis: [{
-            categories: categorias,
+            categories: nombresClientes,
             crosshair: true,
             labels: {
-                rotation: -45
+                rotation: 0,
+                useHTML: true,
+                formatter: function () {
+                    const texto = String(this.value || '');
+                    // Dividir por espacios
+                    const partes = texto.split(' ');
+                    if (partes.length > 2) {
+                        // Insertar <br/> después del segundo elemento
+                        partes.splice(2, 0, '<br/>');
+                        return partes.join(' ');
+                    }
+                    return texto; // Si no hay suficiente para un salto, lo deja igual
+                }
             }
         }],
         yAxis: [{ // Primary yAxis
