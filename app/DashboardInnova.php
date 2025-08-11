@@ -111,8 +111,8 @@ class DashboardInnova extends Model
         $Today       = date('Y-m-d');
 
         //DIA ACTUAL
-        $Clientes   = DashboardInnova::TransacionesClientes($Today, $Today);
-        $Vendedores = DashboardInnova::TransacionesVendedores($Today, $Today);
+        $Clientes   = DashboardInnova::TransacionesClientes($hasta, $hasta);
+        $Vendedores = DashboardInnova::TransacionesVendedores($hasta, $hasta);
 
         // RANGO DE FECHA
         $Ventas     = DashboardInnova::TransacionesBultosValor($desde, $hasta);
