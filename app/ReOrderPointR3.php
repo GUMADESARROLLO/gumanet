@@ -55,6 +55,11 @@ class ReOrderPointR3 extends Model
     }
     public static function getReorderPoint($request) 
     {        
+
+        $Year_actual       = date('Y');
+        $Year_anterior     = date('Y', strtotime('-1 year'));
+        $Month_actual      = intval(date('n'));
+
         $DataReturn = [];
         $Columms    = [];
 
@@ -62,9 +67,9 @@ class ReOrderPointR3 extends Model
 
         $DataReorderPoint = ReOrderPointR3::get();
 
-        $Months_Privado  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_privado ?, ?, ?", [2024,8,'PRIVADO']);
+        $Months_Privado  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_privado ?, ?, ?", [$Year_anterior,$Month_actual,'PRIVADO']);
 
-        $Months_Discasa  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa ?", [2025]); 
+        $Months_Discasa  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa ?", [$Year_actual]); 
 
         // Obtener los nombres de las columnas dinámicamente
         $Columns_Privado = array_keys(get_object_vars($Months_Privado[0]));
