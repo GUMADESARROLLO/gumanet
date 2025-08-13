@@ -199,8 +199,8 @@
             $('#fechaSKU').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
             $('#fechaVentaNeta').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
 
-            $('#ytd_anterior').text(numeral(result.COMPARATIVAYTD.YTD_VALOR_ANTERIOR).format('0,0.00'));
-            $('#ytd_actual').text(numeral(result.COMPARATIVAYTD.YTD_VALOR_ACTUAL).format('0,0.00'));
+            $('#ytd_anterior').text('C$ '+ numeral(result.COMPARATIVAYTD.YTD_VALOR_ANTERIOR).format('0,0.00'));
+            $('#ytd_actual').text('C$ '+ numeral(result.COMPARATIVAYTD.YTD_VALOR_ACTUAL).format('0,0.00'));
             $('#ytd_crecimiento').text(numeral(result.COMPARATIVAYTD.YTD_VALOR_CRECIMIENTO).format('0,0.00'));
 
             $("#anioAnterior").text(new Date().getFullYear() - 1);
@@ -228,8 +228,8 @@
       const tipo = document.getElementById("tipoDato").value;
       
       //Las variable se actualizaran en funcion del tipo de dato que se necesite
-      $('#ytd_anterior').text(tipo === 'valor' ? numeral(window.totales.YTD_VALOR_ANTERIOR).format('0,0.00') : numeral(window.totales.YTD_UND_ANTERIOR).format('0,0'));
-      $('#ytd_actual').text(tipo === 'valor' ? numeral(window.totales.YTD_VALOR_ACTUAL).format('0,0.00') : numeral(window.totales.YTD_UND_ACTUAL).format('0,0'));
+      $('#ytd_anterior').text(tipo === 'valor' ? 'C$ '+ numeral(window.totales.YTD_VALOR_ANTERIOR).format('0,0.00') : numeral(window.totales.YTD_UND_ANTERIOR).format('0,0'));
+      $('#ytd_actual').text(tipo === 'valor' ? 'C$ '+ numeral(window.totales.YTD_VALOR_ACTUAL).format('0,0.00') : numeral(window.totales.YTD_UND_ACTUAL).format('0,0'));
       $('#ytd_crecimiento').text(tipo === 'valor' ? numeral(window.totales.YTD_VALOR_CRECIMIENTO).format('0,0.00') : numeral(window.totales.YTD_UND_CRECIMIENTO).format('0,0.00'));
       
       //Llamada a la funcion que se encuentra en js_chart_YTD.blade
