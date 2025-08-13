@@ -55,7 +55,7 @@
                 </span>
               </div>
             </div>
-            <div class="summary-title" style="color: #890fa1">Bultos Valor Actual</div>
+            <div class="summary-title" style="color: #890fa1">Valor Actual</div>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@
                 </span>
               </div>
             </div>
-            <div class="summary-title" style="color: #890fa1">Bultos Fact. Actual</div>
+            <div class="summary-title" style="color: #890fa1">Volumen Actual</div>
           </div>
         </div>
       </div>

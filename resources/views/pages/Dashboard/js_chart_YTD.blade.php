@@ -74,11 +74,11 @@ function renderComparativaYTD(data, tipo = 'valor') {
       }
     },
    series: [{
-      name: anio1,
+      name: tipo === 'valor' ? anio1+' C$' : anio1,
       data: dta1,
       color: tipo === 'valor' ? '#8e44ad' : '#8e44ad'
     }, {
-      name: anio2,
+      name: tipo === 'valor' ? anio2+' C$' : anio2,
       data: dta2,
       color: tipo === 'valor' ? '#fc5404' : '#fc5404'
     }]
