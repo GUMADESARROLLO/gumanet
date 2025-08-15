@@ -2,11 +2,11 @@
 @section('title' , $name)
     @section('name_user' , 'Administrador')
 @section('metodosjs')
-    @include('pages.Dashboard.js_dashboard_innova')
-    @include('pages.Dashboard.js_chart_SKU')  
-    @include('pages.Dashboard.js_chart_cliente_bolson')   
-    @include('pages.Dashboard.js_chart_YTD')   
-    @include('pages.Dashboard.css_dasboard')
+    @include('pages.DashboardINN.js_dashboard_innova')
+    @include('pages.DashboardINN.js_chart_SKU')  
+    @include('pages.DashboardINN.js_chart_cliente_bolson')   
+    @include('pages.DashboardINN.js_chart_YTD')   
+    @include('pages.DashboardINN.css_dasboard')
 @endsection
 
 @section('content')
@@ -31,7 +31,7 @@
       </div>
       <div class="col-md-1 mt-4">
         <div class="btn-group w-100">               
-          <button type="button" class="btn btn-primary-umk btn-block float-right" id="filtrarFechas">Filtrar </button>		
+          <button type="button" class="btn btn-primary-umk btn-block float-right" id="filtrarFechas">  Filtrar </button>		
         </div>      
       </div>
       <!-- <div class="col-md-1 mt-4">
@@ -293,8 +293,11 @@
     <div class="row g-4">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header bg-innova text-white">
-            <h6 class="mb-0">GRAFICO YTD VENTAS</h6>
+            <div class="card-header bg-innova text-white">
+              <div class="d-flex justify-content-between">
+              <h6 class="mb-0">GRAFICO YTD VENTAS</h6>
+              <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
+            </div>
           </div>
           <div class="card-body">
             <div id="chart_ytd"></div>
