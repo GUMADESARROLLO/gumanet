@@ -1,18 +1,13 @@
   <script>
   $(document).ready(function() {
-      
-      
       inicializaControlFecha();
-      
-      //inicializa los filtros
-      CallFilter();
-
+      fullScreen();
       
       $('#filtrarFechas').on('click', function() {
-        CallFilter();        
+          CallFilter();        
       });
 
-      fullScreen();
+      
 
 
       $("#id_search_importaciones").on('keyup', function() {
@@ -30,8 +25,6 @@
       const hasta = $('#hastaInnova').val(); 
 
       $("#tl_periodo").html(`<b>${desde}</b> a <b>${hasta}</b>`);
-
-      eneableButton(true,'Calc...')        
       
       cargarGetDataInnova(desde, hasta);
     
@@ -44,7 +37,7 @@
       confirmButtonText: 'Aceptar'
     });
   }
-  function eneableButton(EnableButton, textButton = 'Filtrar') {
+  function eneableButton(EnableButton, textButton = '<i class="fas fa-filter"></i> Filtrar') {
     $('#filtrarFechas').prop('disabled', EnableButton);
     $('#filtrarFechas').html('<i class="fas fa-spinner fa-spin" style="display:' + (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton);
   }
@@ -60,20 +53,16 @@
         ordering: false,
         columns: [
           { data: 'NOMBRE', render: function(data, type, row) {
-              return `<div class="item-left">${data}<br><span class="item-sub">${row.CODIGO}</span></div>`;
-            }
-          },
+            return `<div class="item-left">${data}<br><span class="item-sub">${row.CODIGO}</span></div>`;
+          }},
           { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
             return `<div class="item-right">C$ ${data}<br><span class="item-sub">${row.BULTOS_TOTAL_UND}</span></div>`;
-          }
-          }
-          
-        
+          }},
         ],
       });
       $(selector + '_length').hide();
     }
-    function Tbl_TopSKU(selector, data) {
+    function TBL_TOP_SKU(selector, data) {
       var table = $(selector).DataTable({
         data: data,
         destroy: true,
@@ -83,17 +72,14 @@
         searching: false,
         ordering: false,
         columns: [
-          { 
-            data: 'DESCRIPCION', render: function(data, type, row) { return `<div class="item-left">${data}<br><span class="item-sub">${row.SKU}</span></div>`;}
-          },
+          { data: 'DESCRIPCION', render: function(data, type, row) { return `<div class="item-left">${data}<br><span class="item-sub">${row.SKU}</span></div>`;}},
           { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
-              return `<div class="item-right">
-                    C$ ${numeral(data).format('0,0.00')}<br>
-                    <span class="item-sub">${numeral(row.BULTOS_TOTAL_UND).format('0,0')} Bls.</span>
-                  </div>`;
-            }          
+            return `<div class="item-right">
+                  C$ ${numeral(data).format('0,0.00')}<br>
+                  <span class="item-sub">${numeral(row.BULTOS_TOTAL_UND).format('0,0')} Bls.</span>
+                </div>`;}          
           },
-          { data: 'PESO', render: function(data, type, row){
+          { data: 'PESO', render: function(data, type, row) {
               return `<div class="item-right">${numeral(data).format('0,0.00')} %</div>`;
             }          
           }
@@ -101,14 +87,13 @@
         createdRow: function (row, rowData) {
           $(row).on('click', function() {
             var data = table.row(this).data();
-
             $('#mdl-topsku').modal('show');
             $('#id-name-articulo').text(data.DESCRIPCION );
             getDetallesSKUCliente(data.SKU);
             excelSku(data.SKU);
             
           });
-        }
+        },
       });
 
     
@@ -160,7 +145,10 @@
       }
     }
     async function cargarGetDataInnova(desde, hasta){
+      
         try {
+            eneableButton(true,'Calc...')   
+            
             const response = await fetch('getDataInnova', {
                 method: 'POST',
                 headers: {
@@ -177,7 +165,7 @@
 
             loadAndBuildTable('#clientesTable', result.ACTUAL.Clientes);            
             loadAndBuildTable('#vendedoresTable', result.ACTUAL.Vendedores);
-            Tbl_TopSKU('#tbl_top_sku', result.ACTUAL.SKU_CHART.data);
+            TBL_TOP_SKU('#tbl_top_sku', result.ACTUAL.SKU_CHART.data);
             loadAndBuildTable('#tbl_top_clientes', result.ACTUAL.CLS_CHART);
             renderSKUPieChart(result.ACTUAL.SKU_CHART.data);
             renderClienteBolsonChart(result.ACTUAL.CLS_CHART);
@@ -215,11 +203,11 @@
             window.datos = datos;
             window.totales = totales;
 
-            eneableButton(false)
+            eneableButton(false,'<i class="fas fa-filter"></i> Filtrar')
 
         } catch (error) {
             console.error('Error al obtener los datos:', error);
-            eneableButton(false)
+            eneableButton(false,null)
         }
     }
 
@@ -254,12 +242,6 @@
       cargarGetDataInnova(hoyDesde, hoyHasta);
         
     });
-  
-    /*document.getElementById('filtrarFechas').addEventListener('click', async () => {
-      const desde = $('#desdeInnova').val();
-      const hasta = $('#hastaInnova').val();
 
-      cargarGetDataInnova(desde, hasta);
-    });*/
 
 </script>
