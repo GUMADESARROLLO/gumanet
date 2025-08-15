@@ -106,7 +106,7 @@ function eneableButton(EnableButton, textButton = '<i class="fas fa-sync"></i> A
 
     const table = $('#tbl_reorder_point').DataTable();
     const nuevoTexto = EnableButton
-        ? '<i class="fas fa-spinner fa-spin"></i> Calculando...'
+        ? '<i class="fas fa-spinner fa-spin"></i> Cargando...'
         : textButton;
 
     table.button(0, 0).text(nuevoTexto);
@@ -167,7 +167,7 @@ function TableReorderPoint(Dt = []) {
                     text: `<i class="fas fa-sync"></i> Actualizar.`,                    
                     className: 'btn-primary-umk',
                     action: function ( e, dt, node, config ) {
-                        eneableButton(true,'Calc...')
+                        //eneableButton(true,'Calc...')
                         //cleanTextos();
                         getCalcular(nyear_actual, nyear_pasado)
                     }
@@ -270,7 +270,7 @@ function TableBase(Dt = []) {
 
 
 
-async function getRequest(ShowSuccess = false) {
+async function getRequest() {
     try {
         eneableButton(true,'Cargando...') 
         // Fetch data from the server
@@ -290,15 +290,6 @@ async function getRequest(ShowSuccess = false) {
         $("#tl_titulo").text(` ${result.Update_at} `);
 
         eneableButton(false);
-
-        if (ShowSuccess) {
-            Swal.fire({
-                title: '¡Cálculo del Reorder Point completado!',
-                text: 'Actualizado a la Fecha de ' + moment().format('MMMM D, YYYY H:mm'),
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-        }
         
 
     } catch (error) {
@@ -310,18 +301,57 @@ async function getRequest(ShowSuccess = false) {
 async function getCalcular( nyear_actual, nyear_pasado) {
     try {
         // Fetch data from the server
-        const response = await fetch('getCalcular', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        Swal.fire({
+            title: "Cálculo del Reorder Point",
+            text: "¿Desea calcular el Reorder Point?",
+            inputAttributes: {
+                autocapitalize: "off"
             },
-            body: JSON.stringify({
-                nyear_actual    : nyear_actual,
-                nyear_pasado    : nyear_pasado,
-            })
-        });        
-        getRequest(true);
+            showCancelButton: true,
+            confirmButtonText: "Calcular",
+            showLoaderOnConfirm: true,
+            preConfirm: async (login) => {
+                try {
+
+                    const response = await fetch('getCalcular', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            nyear_actual    : nyear_actual,
+                            nyear_pasado    : nyear_pasado,
+                        })
+                    });        
+                    
+                    
+                    if (!response.ok) {
+                        const respuesta = await response.json();
+                        getRequest();
+                        return Swal.showValidationMessage(`${respuesta.error}`);
+                    }
+                    
+                    return response.json();
+                } catch (error) {
+                    Swal.showValidationMessage(`Request failed: ${error}`);
+                }
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                        Swal.fire({
+                            title: '¡Cálculo del Reorder Point completado!',
+                            text: 'Actualizado a la Fecha de ' + moment().format('MMMM D, YYYY H:mm'),
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                        });
+                }
+            });
         
 
     } catch (error) {
