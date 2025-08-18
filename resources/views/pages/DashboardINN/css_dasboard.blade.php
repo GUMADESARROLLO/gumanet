@@ -98,6 +98,18 @@
       border-color: rgba(255,255,255,0.08);
     }
 
+    /* .daterangepicker td.active, .daterangepicker td.active:hover {
+      background-color: #357ebd !important;
+      border-radius: 25% !important;
+      border-color: transparent !important;
+      color: #fff !important;
+      padding: 0.5rem !important;
+    } */
+
+    
+
+    
+
 
 
 
