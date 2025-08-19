@@ -1,10 +1,54 @@
   <script>
   $(document).ready(function() {
-      inicializaControlFecha();
+      //inicializaControlFecha();
       fullScreen();
-      
+
+      $('input[name="dt_range"]').daterangepicker({
+          "autoApply": true,
+          ranges: {
+              'Hoy': [moment(), moment()],
+              'Últimos 7 Días': [moment().subtract(6, 'days'), moment()],
+              'Últimos 30 Días': [moment().subtract(29, 'days'), moment()],
+              'Semana Anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+              'Esta Semana': [moment().startOf('week'), moment().endOf('week')],
+              'Mes Anterior' : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+              'Este mes a la Fecha': [moment().startOf('month'), moment()],
+          },
+          "showCustomRangeLabel": false,
+          "alwaysShowCalendars": true,
+          "startDate": moment().format('D MMM. YYYY'),
+          "endDate": moment().format('D MMM. YYYYY'),
+          opens: 'left',
+          locale: {
+              //format: "DD/MM/YYYY",
+              format: "D MMM. YYYY",   // Ejemplo: 1 ago. 2025
+              separator: " - ",
+              applyLabel: "Aplicar",
+              cancelLabel: "Cancelar",
+              fromLabel: "Desde",
+              toLabel: "Hasta",
+              customRangeLabel: "Personalizado",
+              weekLabel: "S",
+              daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie", "Sab."],
+              monthNames: [
+                  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+              ],
+              firstDay: 1
+          }
+      }, function(start, end, label) {
+          //console.log('Nuevo rango seleccionado: ' + start.format('YYYY-MM-DD') + ' a ' + end.format('YYYY-MM-DD') + ' (rango: ' + label + ')');
+          CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+      });
+
+
+
       $('#filtrarFechas').on('click', function() {
-          CallFilter();        
+
+          var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+          var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+          CallFilter( desde, hasta );        
       });
 
       
@@ -19,10 +63,7 @@
   });
 
 
-  function CallFilter() {
-
-      const desde = $('#desdeInnova').val();
-      const hasta = $('#hastaInnova').val(); 
+  function CallFilter( desde = null, hasta = null ) {
 
       $("#tl_periodo").html(`<b>${desde}</b> a <b>${hasta}</b>`);
       
