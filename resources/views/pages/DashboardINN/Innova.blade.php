@@ -1,4 +1,4 @@
-@extends('layouts.lyt_innova')
+@extends('layouts.main')
 @section('title' , $name)
     @section('name_user' , 'Administrador')
 @section('metodosjs')
@@ -14,7 +14,7 @@
     <!-- Header -->
     <div class="row border">
       <div class="col-md-9">            
-        <h4 class="h4 text-innova"> INNOVA INDUSTRIAS S.A. (Beta)</h4>
+        <h4 class="h4 text-innova"> INNOVA INDUSTRIAS S.A.</h4>
         <p class="text-muted mb-4">Reportes de ventas de productos, tomando en cuenta el periodo de <span id="tl_periodo"></span>.</p>
       </div>
       <div class="col-md-2 ">        

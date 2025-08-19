@@ -16,12 +16,12 @@
           },
           "showCustomRangeLabel": false,
           "alwaysShowCalendars": true,
-          "startDate": moment().format('DD/MM/YYYY'),
-          "endDate": moment().format('DD/MM/YYYY'),
+          "startDate": moment().format('D MMM. YYYY'),
+          "endDate": moment().format('D MMM. YYYYY'),
           opens: 'left',
           locale: {
-              format: "DD/MM/YYYY",
-              //format: "D MMM. YYYY",   // Ejemplo: 1 ago. 2025
+              //format: "DD/MM/YYYY",
+              format: "D MMM. YYYY",   // Ejemplo: 1 ago. 2025
               separator: " - ",
               applyLabel: "Aplicar",
               cancelLabel: "Cancelar",
@@ -37,7 +37,7 @@
               firstDay: 1
           }
       }, function(start, end, label) {
-          console.log('Nuevo rango seleccionado: ' + start.format('YYYY-MM-DD') + ' a ' + end.format('YYYY-MM-DD') + ' (rango: ' + label + ')');
+          //console.log('Nuevo rango seleccionado: ' + start.format('YYYY-MM-DD') + ' a ' + end.format('YYYY-MM-DD') + ' (rango: ' + label + ')');
           CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
       });
 
