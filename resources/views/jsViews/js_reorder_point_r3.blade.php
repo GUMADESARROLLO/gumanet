@@ -1,4 +1,8 @@
 <script>
+    const now = new Date();
+    const nyear_actual = now.getFullYear();
+    const nyear_pasado = nyear_actual - 1;
+    
     // Columna base definida fuera de la función para evitar duplicación si se llama varias veces
     const staticColumns = [
         { data: "ARTICULO", title: "ARTICULO", class: "text-left" },
@@ -26,21 +30,34 @@
         { data: "LOTE", title: "LOTE", class: "text-left" },   
         { data: "FECHA_VENCE_LOTE", title: "VENC. LOTE", class: "text-left" },   
         { data: "CANTIDAD_INGRESADA", title: "ULT. CANT. INGRESADA", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
-        { data: "CANT_VENCE_LOTE", title: "CANT. VENCE LOTE", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },   
-        
-        
-        
-        
-        
-        
-       
-        
+        { data: "CANT_VENCE_LOTE", title: "CANT. VENCE LOTE", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },           
     ];
+
+    let topStart_custom = document.createElement('div');
+    topStart_custom.setAttribute('class', 'col-12 ');
+    topStart_custom.innerHTML = `
+    <div class="row">
+        <div class="col-sm-10">	
+            <div class="input-group"> 
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></i></span>
+                </div>
+                <input type="text" id="id_search_reorder" class="form-control" placeholder="Buscar..." aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <select class="custom-select" id="select_rows">
+                <option value="7" selected>7</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="100">100</option>
+                <option value="-1">Todo</option>
+            </select>
+        </div>
+    </div>`;
 $(document).ready(function() {
     fullScreen();
-    const now = new Date();
-    const nyear_actual = now.getFullYear();
-    const nyear_pasado = nyear_actual - 1;
+    
 
     //getRequest(nyear_actual, nyear_pasado);
 
@@ -49,12 +66,6 @@ $(document).ready(function() {
     TableBase();
     getRequest()
     
-    // Event listener for the filter button
-    $('#IdFilterMolecula').on('click', function() {
-        eneableButton(true,'Calc...')
-        //cleanTextos();
-        getCalcular(nyear_actual, nyear_pasado)
-    });
 
     $('#modal_importacion').on('click', function() {
         if ($('#tbl_competidores').DataTable().data().any()) {
@@ -81,20 +92,32 @@ $(document).ready(function() {
         $('#tbl_competidores').DataTable().search(searchTerm).draw();
     });
 
+    $( "#select_rows").change(function() {
+        var table = $('#tbl_competidores').DataTable();
+        table.page.len(this.value).draw();
+    });
+
     $('.button_export_excel').click(() => {
         $('#tbl_base_reorder').DataTable().buttons(0,0).trigger()
     })
-    $('.btn_export_excel').click(() => {
-        $('#tbl_competidores').DataTable().buttons(0,0).trigger()
-    })
+    
 
 });
 
 
 // Function to fetch data based on the selected molecule
-function eneableButton(EnableButton, textButton = 'Calcular') {
-    $('#IdFilterMolecula').prop('disabled', EnableButton);
-    $('#IdFilterMolecula').html('<i class="fas fa-spinner fa-spin" style="display:' + (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton);
+function eneableButton(EnableButton, textButton = '<i class="fas fa-sync"></i> Actualizar.') {
+
+
+    const table = $('#tbl_competidores').DataTable();
+    const nuevoTexto = EnableButton
+        ? '<i class="fas fa-spinner fa-spin"></i> Calculando...'
+        : textButton;
+
+    table.button(0, 0).text(nuevoTexto);
+
+    // Cambiar estado del botón
+    table.button(0, 0).enable(!EnableButton);
 }
 
 function cleanTextos() {
@@ -136,7 +159,56 @@ function TableReorderPoint(Dt = []) {
         columns: DtColumns,
         pageLength: 7,
         bLengthChange: false,
-        searching: true,
+        searching: true,   
+        layout: {
+            topStart: null,
+            bottom: 'paging',
+            bottomStart: null,
+            bottomEnd: null,     
+            topStart : topStart_custom,  
+            topEnd: {
+                buttons: [
+                {
+                    text: `<i class="fas fa-sync"></i> Actualizar.`,                    
+                    className: 'btn-primary-umk',
+                    action: function ( e, dt, node, config ) {
+                        eneableButton(true,'Calc...')
+                        //cleanTextos();
+                        getCalcular(nyear_actual, nyear_pasado)
+                    }
+                },               
+                {
+                    text:   `<i class="fas fa-file-excel"></i> Exportar`,
+                    extend: 'excelHtml5',
+                    className: 'btn-primary-umk-success',
+                    title:  'Reporder Point: ' + moment().format('MMMM D, YYYY H:mm'),
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    text: `<i class="fas fa-database"></i> Datos de Reorder`,
+                    className: 'btn-primary-umk-success',
+                    action: function ( e, dt, node, config ) {
+
+                        if ($('#tbl_competidores').DataTable().data().any()) {
+                            $('#mdlImportacion').modal('show');
+                        } else {
+                            Swal.fire({
+                                title: 'No hay datos para mostrar',
+                                icon: 'warning',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'OK'
+                            })
+                        }
+                        
+                    }
+                },
+                    
+                ]
+            }
+        },
         rowCallback: function(row, data, index) {
             // $(row).find('td:eq(3), td:eq(4), td:eq(5)').css({
             //     'background-color': '#72d083',
@@ -202,8 +274,7 @@ async function getRequest() {
 
         TableBase(result.Records);
 
-        
-        console.log(result.Update_at);
+
         
         $("#tl_titulo").text(` ${result.Update_at} `);
 

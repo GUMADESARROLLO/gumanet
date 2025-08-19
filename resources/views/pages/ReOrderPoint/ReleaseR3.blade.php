@@ -1,5 +1,5 @@
 @extends('layouts.ly_reorder')
-@section('title' , 'GUMA@NET | REORDER POINT R3' )
+@section('title' , 'GUMA@NET | REORDER POINT R3 '.date('d-m-Y') )
 @section('name_user' , 'Administrador')
 @section('metodosjs')
     @include('jsViews.js_reorder_point_r3')    
@@ -9,34 +9,11 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">       
-            <h4 class="h4 text-umk" > REORDER POINT</h4>
+            <h4 class="h4 text-umk" id="" > REORDER POINT</h4>
             <p class="text-muted" id="tl_titulo">Re-Order Point Actualizado al : </p>
         </div>
-        <div class="col-md-9" >
-          <div class="input-group mt-4">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></i></span>
-            </div>
-            <input type="text" id="id_search_reorder" class="form-control" placeholder="Buscar..." aria-label="Username" aria-describedby="basic-addon1">
-          </div>
-        </div>	
 
-        <div class="col-md-1">
-            <div class="btn-group w-100">               
-                <button type="button" class="btn btn-primary-umk btn-block float-right mt-4" id="IdFilterMolecula">Calcular </button>		
-            </div>
-        </div>
-        <div class="col-md-1">
-            <div class="btn-group w-100">               
-                <button type="button" class="btn btn-success btn-block float-right mt-4 btn_export_excel" id="IdExport">Exportar </button>		
-            </div>
-        </div>
-        <div class="col-md-1">
-            <div class="btn-group w-100">               
-                <button type="button" class="btn btn-success btn-block float-right mt-4" id="modal_importacion"><i class="fas fa-database"></i> </button>
-            </div>
-        </div>
-
+        
       
         <div class="col-sm-12 ">
             <div class="table-responsive">
