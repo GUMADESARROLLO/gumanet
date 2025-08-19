@@ -17,7 +17,7 @@
           "showCustomRangeLabel": false,
           "alwaysShowCalendars": true,
           "startDate": moment().format('D MMM. YYYY'),
-          "endDate": moment().format('D MMM. YYYYY'),
+          "endDate": moment().format('D MMM. YYYY'),
           opens: 'left',
           locale: {
               //format: "DD/MM/YYYY",
