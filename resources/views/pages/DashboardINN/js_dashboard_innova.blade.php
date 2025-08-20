@@ -5,15 +5,21 @@
 
       $('input[name="dt_range"]').daterangepicker({
           "autoApply": true,
-          ranges: {
+            ranges: {
               'Hoy': [moment(), moment()],
-              'Últimos 7 Días': [moment().subtract(6, 'days'), moment()],
-              'Últimos 30 Días': [moment().subtract(29, 'days'), moment()],
-              'Semana Anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+              'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
+              'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
+              
               'Esta Semana': [moment().startOf('week'), moment().endOf('week')],
-              'Mes Anterior' : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-              'Este mes a la Fecha': [moment().startOf('month'), moment()],
-          },
+              'Semana Anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+              
+              'Este Mes': [moment().startOf('month'), moment()],
+              'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+              
+              //'1 Año': [moment().subtract(1, 'year'), moment()],
+              // '2 Años': [moment().subtract(2, 'year'), moment()],
+              // '3 Años': [moment().subtract(3, 'year'), moment()]
+            },
           "showCustomRangeLabel": false,
           "alwaysShowCalendars": true,
           "startDate": moment().format('D MMM. YYYY'),
@@ -163,8 +169,10 @@
     }
     async function getDetallesSKUCliente(articulo) {
       try {
-        const desde = $('#desdeInnova').val();
-        const hasta = $('#hastaInnova').val();
+
+        var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
 
         const response = await fetch('getDetallesSKUCliente', {
           method: 'POST',
