@@ -16,14 +16,18 @@ class AnalisisIMSController extends Controller
         return view('pages.AnalisisIMS.Home', compact('NamePath'));
     }
 
-    public function getDataAnalisisIMS(Request $request) {
-        $data = AnalisisIMS::getAnalisisIMS($request);
-        return response()->json($data);
+    public function getDataAnalisisIMS(Request $request) 
+    {
+
+        $data   = AnalisisIMS::getAnalisisIMS($request);
+        $Origin = AnalisisIMS::getAnalisisIMSOrigin($request);
+
+        $Dts = [
+            'AnalisisIMS'   => $data,
+            'Origin'        => $Origin,
+        ];
+        return response()->json($Dts);
     }
-
-
-
-    
 
 
 }

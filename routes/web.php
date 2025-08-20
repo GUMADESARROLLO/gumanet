@@ -336,6 +336,6 @@ Route::post('saveInfoTransito', 'TransitoController@saveInfoTransito')->name('sa
 
 // RUTAS PARA EL ANALISIS DE IMS
 Route::get('AnalisisIMS', 'AnalisisIMSController@ViewHome')->name('AnalisisIMS');
-Route::get('getDataAnalisisIMS', 'AnalisisIMSController@getDataAnalisisIMS')->name('getDataAnalisisIMS');
+Route::post('getDataAnalisisIMS', 'AnalisisIMSController@getDataAnalisisIMS')->name('getDataAnalisisIMS');
 
 // 
