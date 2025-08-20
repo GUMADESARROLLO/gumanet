@@ -332,3 +332,10 @@ Route::post('getCalcular', 'ReOrderPointController@getCalcular')->name('getCalcu
 
 //RUTAS DE TRANSITO 
 Route::post('saveInfoTransito', 'TransitoController@saveInfoTransito')->name('saveInfoTransito');
+
+
+// RUTAS PARA EL ANALISIS DE IMS
+Route::get('AnalisisIMS', 'AnalisisIMSController@ViewHome')->name('AnalisisIMS');
+Route::get('getDataAnalisisIMS', 'AnalisisIMSController@getDataAnalisisIMS')->name('getDataAnalisisIMS');
+
+// 
