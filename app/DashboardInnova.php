@@ -52,6 +52,17 @@ class DashboardInnova extends Model
             ->orderByDesc('CANTIDAD')
             ->get();
     }
+    public static function FACTURAS_CLIENTES($INI, $END, $CLI)
+    {
+        return self::query()
+            ->selectRaw('FACTURA,CLIENTE,FECHA_FACTURA,SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+            ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
+            ->whereBetween('FECHA_FACTURA', [$INI, $END])
+            ->where('CLIENTE', $CLI)
+            ->groupBy('FACTURA', 'CLIENTE','FECHA_FACTURA')
+            ->orderByDesc('CANTIDAD')
+            ->get();
+    }
     public static function TransacionesVendedores($desde, $hasta)
     {
         return self::query()
@@ -321,6 +332,16 @@ class DashboardInnova extends Model
         $Artic = $request->articulo;   
 
         $data = DashboardInnova::Detalles_SKU_TOP($desde, $hasta, $Artic);
+        return $data;
+    }
+    public static function getFacturasClientes($request)
+    {
+        $ini    = $request->desde;
+        $end    = $request->hasta;   
+        $CLI    = $request->CLIENTE;   
+
+        $data = DashboardInnova::FACTURAS_CLIENTES($ini, $end, $CLI);
+
         return $data;
     }
 

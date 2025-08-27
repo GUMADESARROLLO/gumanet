@@ -89,6 +89,39 @@
     $('#filtrarFechas').html('<i class="fas fa-spinner fa-spin" style="display:' + (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton);
   }
 
+    function TBL_TOP_CLIENTES(selector, data) {
+
+      var table = $(selector).DataTable({
+        data: data,
+        destroy: true,
+        paging: true,
+        pageLength: 7,
+        info: false,
+        searching: false,
+        ordering: false,
+        columns: [
+          { data: 'NOMBRE', render: function(data, type, row) {
+            return `<div class="item-left">${data}<br><span class="item-sub">${row.CODIGO}</span></div>`;
+          }},
+          { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
+            return `<div class="item-right">C$ ${data}<br><span class="item-sub">${row.BULTOS_TOTAL_UND}</span></div>`;
+          }},
+        ],
+        createdRow: function (row, rowData) {
+          $(row).on('click', function() {
+            var data = table.row(this).data();
+            $('#mdl-topsku').modal('show');
+            $('#id-name-articulo').text(data.NOMBRE);
+            getDetallesCliente(data.CODIGO);
+            //excelSku(data.SKU);
+            
+          });
+        },
+      });
+      $(selector + '_length').hide();
+    
+    }
+
     function loadAndBuildTable(selector, data) {
       $(selector).DataTable({
         data: data,
@@ -167,6 +200,30 @@
         
         $("#tbl_topsku_clientes_filter").hide();
     }
+    function TBL_DETALLES_FACTURAS_CLIENTES(Dt) {        
+        // Populate the table with data
+        $("#tbl_topsku_clientes").DataTable({
+            data: Dt,
+            destroy: true,
+            order: [],
+            columns: [
+                { data: "FACTURA", title: "FACT.",  class: "text-center" },
+                { data: "FECHA_FACTURA", title: "FECHA FACT." , class: "text-center",
+                    render: function ( data, type, row ) {
+                        return moment(data).format('D MMM. YYYY');
+                    }
+                },
+                { data: "CANTIDAD", title: "CANT." ,  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                { data: "VENTA_SIN_IVA", title: "SIN IVA C$.",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                { data: "VENTA_CON_IVA", title: "CON IVA C$.",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') }
+            ],
+            pageLength: 7,
+            bLengthChange: false,
+            searching: true,
+        });
+        
+        $("#tbl_topsku_clientes_filter").hide();
+    }
     async function getDetallesSKUCliente(articulo) {
       try {
 
@@ -193,6 +250,33 @@
         console.error(error);
       }
     }
+    async function getDetallesCliente(CLIENTE) {
+      try {
+
+        var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+
+        const response = await fetch('getFacturasClientes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({ 
+            desde     : desde, 
+            hasta     : hasta,
+            CLIENTE   : CLIENTE
+          })
+        });
+
+        const result = await response.json();
+
+        TBL_DETALLES_FACTURAS_CLIENTES(result);
+      } catch (error) {
+        console.error(error);
+      }
+    }
     async function cargarGetDataInnova(desde, hasta){
       
         try {
@@ -215,7 +299,7 @@
             loadAndBuildTable('#clientesTable', result.ACTUAL.Clientes);            
             loadAndBuildTable('#vendedoresTable', result.ACTUAL.Vendedores);
             TBL_TOP_SKU('#tbl_top_sku', result.ACTUAL.SKU_CHART.data);
-            loadAndBuildTable('#tbl_top_clientes', result.ACTUAL.CLS_CHART);
+            TBL_TOP_CLIENTES('#tbl_top_clientes', result.ACTUAL.CLS_CHART);
             renderSKUPieChart(result.ACTUAL.SKU_CHART.data);
             renderClienteBolsonChart(result.ACTUAL.CLS_CHART);
 
