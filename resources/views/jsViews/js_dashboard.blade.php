@@ -1639,7 +1639,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     }); 
 
                     //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
-                    moneda = (xbolsones)? "" :"C$ "
+                    moneda = (xbolsones)? "" : " C$ "
                     temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
                     temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';  
                     temporal += '<span style="color:black">\u25CF</span> CANT. FACT.: <b>  {point.FACT} </b><br/>';                   
@@ -1648,7 +1648,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                     }
                     vVtsDiarias = numeral(tmp_total).format('0,0.00');
                     grafiacas_productos_Diarios.xAxis.categories = title;
-                    grafiacas_productos_Diarios.subtitle.text = moneda + vVtsDiarias + " Total";
+                    grafiacas_productos_Diarios.subtitle.text = " C$ " + vVtsDiarias + " Total";
                     grafiacas_productos_Diarios.series[0].data = dta;
 
 
