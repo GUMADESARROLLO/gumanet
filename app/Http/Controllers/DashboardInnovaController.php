@@ -31,6 +31,12 @@ class DashboardInnovaController extends Controller
         return response()->json($data);
     }
 
+    public function getDetallesFacturasInnova(Request $request)
+    {
+        $data = DashboardInnova::getDetallesFacturasInnova($request);
+        return response()->json($data);
+    }
+
     public function ExportToExcel(Request $request) {
         $obj = DashboardInnova::ExportToExcel($request);
         return $obj;

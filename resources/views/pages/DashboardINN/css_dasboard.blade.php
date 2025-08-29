@@ -93,7 +93,9 @@
       max-width: 100%;
       height: auto;
     }
-    #tbl_topsku_clientes thead th {
+
+
+    #tbl_topsku_clientes thead th, #id_exp_detalles thead th {
       background-color: #802980 !important;
       color: #fff !important;
       border-color: rgba(255,255,255,0.08);
@@ -107,8 +109,11 @@
     }
 
     .daterangepicker td.in-range {
-        background-color: var(--agriam-color) ;;
-      }
+      background-color: var(--agriam-color) ;;
+    }
+    .input-fecha {
+      height: 38px !important;
+    }
 
 
 
