@@ -32,7 +32,8 @@ class recibos_controller extends Controller {
 
     }
 
-    public function print_resumen(Request $request) {
+    public function print_resumen(Request $request) 
+    {
 
         $vlLinea        = 0; 
         $recibido       = 0; 
@@ -88,7 +89,8 @@ class recibos_controller extends Controller {
     }
 
 
-    public function rePrint(Request $request) {
+    public function rePrint(Request $request) 
+    {
 
         
         $IdLiquidacion = $request->input('Id') ;
@@ -126,7 +128,8 @@ class recibos_controller extends Controller {
         
     }
 
-    public function index() {
+    public function index() 
+    {
         $this->agregarDatosASession();
 
         $clientes   = reportes_model::clientes();
@@ -187,7 +190,59 @@ class recibos_controller extends Controller {
         return response()->json($data);
 
     }
-    public static function getRecibos(Request $request) {
+    public function getExportRecibos(Request $request)
+    {
+
+        $RECIBOS_LINEA = [];
+
+        $Ini    = $request->input('f1').' 00:00:00';
+        $Fin    = $request->input('f2').' 23:59:59';        
+        $Rut   = $request->input('RU');
+
+        $Recibos    = recibos_model::whereBetween('fecha_recibo', [$Ini, $Fin])
+                    ->when($Rut != '', function ($query) use ($Rut) {
+                        return $query->where('ruta', $Rut);
+                    })->get();        
+
+        foreach ($Recibos as $r => $key) {
+
+            $OrdenList  = $key->order_list;
+            $Lineas     = explode("],", $OrdenList);
+            $cLineas    = count($Lineas) - 1;
+
+            for ($l = 0; $l < $cLineas; $l++) { 
+                
+                $Lineas_detalles = explode(";", $Lineas[$l]);
+
+                $NumRec = substr($key->ruta, 1) . $key->recibo;
+
+                $RECIBOS_LINEA[] = [ 
+                    // CABECERA DE RECIBO
+                    'RUTA'          => $key->ruta,
+                    'RECIBO'        => $NumRec,
+                    'FECHA'         => $key->fecha_recibo,
+                    'CLIENTE'       => preg_replace('/\D/', '', $key->cod_cliente),
+                    'TOTAL_RECIBO'  => preg_replace('/[^0-9-.]+/', '', $key->order_total),
+                    // DETALLES DE RECIBO
+                    'FACTURA'       => str_replace('[', '', $Lineas_detalles[0]),
+                    'VALORFACTURA'  => $Lineas_detalles[1],
+                    'NOTACREDITO'   => $Lineas_detalles[2],
+                    'RETENCION'     => $Lineas_detalles[3],
+                    'DESCUENTO'     => $Lineas_detalles[4],
+                    'VALORRECIBIDO' => $Lineas_detalles[5],
+                    'TIPO'          => (!isset($Lineas_detalles[8])) ? "N/D" : $Lineas_detalles[8]
+                ];
+            }
+        }
+
+
+        return response()->json($RECIBOS_LINEA);
+
+
+
+    }
+    public static function getRecibos(Request $request) 
+    {
         
 
         $from   = $request->input('f1').' 00:00:00';

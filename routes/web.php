@@ -241,6 +241,8 @@ Route::get('/getData','DetalleOrdenController@getData');
 //RUTAS PARA LOS RECIBOS
 Route::get('recibos', 'recibos_controller@index');  
 Route::get('getRecibos', 'recibos_controller@getRecibos');
+Route::post('getExportRecibos', 'recibos_controller@getExportRecibos');
+
 
 Route::get('Cartera', 'recibos_controller@getReporte');  
 Route::get('getCartera', 'recibos_controller@getCartera');
