@@ -22,71 +22,108 @@ class DashboardInnova extends Model
     protected $table = "PRODUCCION.dbo.view_VtasTotal_Innova";
     protected static $ClientesNoFacturables = ['CL000029','CL004185','CL009746'];
 
-    public static function TransacionesBultosValor($desde, $hasta)
+
+    public static function DetalleFactura($Factura)
+    {
+        return self::query()
+            ->selectRaw('ARTICULO,DESCRIPCION,CANTIDAD,PRECIO_UNITARIO,TOTAL')
+            ->where('FACTURA', $Factura)
+            ->get();
+    }
+
+    public static function TransacionesBultosValor($desde, $hasta, $Cliente)
     {
         return self::query()
             ->selectRaw('SUM(Cantidad) as CANTIDAD, SUM(Venta) as VENTA_SIN_IVA, SUM(Venta) * 1.15 as VENTA_CON_IVA')
-            ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
+            ->when($Cliente != 0, function ($query) {
+                return $query->whereNotIn('CLIENTE', self::$ClientesNoFacturables);
+            })
             ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
             ->orderByDesc('CANTIDAD')
             ->get()->toArray()[0];
     }
-    public static function TransacionesClientes($desde, $hasta)
+    public static function TransacionesClientes($desde, $hasta, $Cliente)
     {
         return self::query()
             ->selectRaw('CLIENTE,NOMBRE, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
-            ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
+            ->when($Cliente != 0, function ($query) {
+                return $query->whereNotIn('CLIENTE', self::$ClientesNoFacturables);
+            })
             ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
             ->groupBy('CLIENTE', 'NOMBRE')
             ->orderByDesc('CANTIDAD')
             ->get();
     }
-    public static function Detalles_SKU_TOP($desde, $hasta, $Articulo)
+    public static function Detalles_SKU_TOP($desde, $hasta, $Articulo, $Cliente)
     {
         return self::query()
             ->selectRaw('CLIENTE,NOMBRE, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
-            ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
+            ->when($Cliente != 0, function ($query) {
+                return $query->whereNotIn('CLIENTE', self::$ClientesNoFacturables);
+            })
             ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
             ->where('ARTICULO', $Articulo)
             ->groupBy('CLIENTE', 'NOMBRE')
             ->orderByDesc('CANTIDAD')
             ->get();
     }
-    public static function TransacionesVendedores($desde, $hasta)
+    public static function FACTURAS_CLIENTES($INI, $END, $CLI)
     {
         return self::query()
+            ->selectRaw('FACTURA,CLIENTE,FECHA_FACTURA,SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
+            ->when($CLI != 0, function ($query) {
+                return $query->whereNotIn('CLIENTE', self::$ClientesNoFacturables);
+            })
+            ->whereBetween('FECHA_FACTURA', [$INI, $END])
+            ->where('CLIENTE', $CLI)
+            ->groupBy('FACTURA', 'CLIENTE','FECHA_FACTURA')
+            ->orderByDesc('CANTIDAD')
+            ->get();
+    }
+    public static function TransacionesVendedores($desde, $hasta, $Cliente)
+    {
+        
+        return self::query()
             ->selectRaw('VENDEDOR,NOMBRE_VENDEDOR, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
-            ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
+            ->when($Cliente != 0, function ($query) {
+                return $query->whereNotIn('CLIENTE', self::$ClientesNoFacturables);
+            })
             ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
             ->groupBy('VENDEDOR', 'NOMBRE_VENDEDOR')
             ->orderByDesc('CANTIDAD')
             ->get();
     }
-    public static function TransacionesArticulos($desde, $hasta)
+    public static function TransacionesArticulos($desde, $hasta, $Cliente)
     {
         return self::query()
             ->selectRaw('ARTICULO,CLASIFICACION_SIMPLE, SUM(Cantidad) AS CANTIDAD, SUM(Venta) AS VENTA_SIN_IVA, SUM(Venta) * 1.15 AS VENTA_CON_IVA')
-            ->whereNotIn('CLIENTE', ['CL000029','CL004185','CL009746'])
+            ->when($Cliente != 0, function ($query) {
+                return $query->whereNotIn('CLIENTE', self::$ClientesNoFacturables);
+            })
             ->whereBetween('FECHA_FACTURA', [$desde, $hasta])
             ->groupBy('ARTICULO','CLASIFICACION_SIMPLE')
             ->orderByDesc('CANTIDAD');
     }
 
-    public static function BultosComparativa( $nYearAnterior, $nYearActual)
+    public static function BultosComparativa( $nYearAnterior, $nYearActual, $Cliente)
     {
         return self::query()
             ->selectRaw('Anio, SUM(Cantidad) AS CANTIDAD,SUM(Venta) * 1.15 AS VENTA_CON_IVA')
-            ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
+            ->when($Cliente != 0, function ($query) {
+                return $query->whereNotIn('CLIENTE', self::$ClientesNoFacturables);
+            })
             ->whereBetween('Anio', [$nYearAnterior, $nYearActual])
             ->groupBy('Anio')
             ->get()->toArray();
     }
 
-    public static function BultosComparativaYTD($nYearAnterior, $nYearActual)
+    public static function BultosComparativaYTD($nYearAnterior, $nYearActual,$Cliente)
     {
         return self::query()
                 ->selectRaw('Anio, nMes, SUM(Cantidad) AS CANTIDAD,SUM(Venta) * 1.15 AS VENTA_CON_IVA')
-                ->whereNotIn('CLIENTE', self::$ClientesNoFacturables)
+                ->when($Cliente != 0, function ($query) {
+                    return $query->whereNotIn('CLIENTE', self::$ClientesNoFacturables);
+                })
                 ->whereBetween('Anio', [$nYearAnterior, $nYearActual])
                 ->groupBy('Anio','nMes')
                 ->orderBy('Anio', 'nMes')
@@ -104,6 +141,7 @@ class DashboardInnova extends Model
         
         $desde      = $request->desde;
         $hasta      = $request->hasta;
+        $CodClien   = (int) $request->Clste;
 
         //$desde      = '2025-06-01';
         //$hasta      = '2025-06-30';
@@ -111,12 +149,13 @@ class DashboardInnova extends Model
         $Today       = date('Y-m-d');
 
         //DIA ACTUAL
-        $Clientes   = DashboardInnova::TransacionesClientes($hasta, $hasta);
-        $Vendedores = DashboardInnova::TransacionesVendedores($hasta, $hasta);
+        $Clientes   = DashboardInnova::TransacionesClientes($hasta, $hasta, $CodClien);
+        
+        $Vendedores = DashboardInnova::TransacionesVendedores($hasta, $hasta, $CodClien);
 
         // RANGO DE FECHA
-        $Ventas     = DashboardInnova::TransacionesBultosValor($desde, $hasta);
-        $Articulos  = DashboardInnova::TransacionesArticulos($desde, $hasta);
+        $Ventas     = DashboardInnova::TransacionesBultosValor($desde, $hasta, $CodClien);
+        $Articulos  = DashboardInnova::TransacionesArticulos($desde, $hasta, $CodClien);
 
         $SumaVentas = array_sum(array_column($Articulos->get()->toArray(), 'VENTA_SIN_IVA'));
         $SumaBultos = array_sum(array_column($Articulos->get()->toArray(), 'CANTIDAD'));
@@ -126,7 +165,7 @@ class DashboardInnova extends Model
         $SumaBultos = $SumaBultos ?? 0.002;
 
 
-        $ClientesHoy = DashboardInnova::TransacionesClientes($desde, $hasta);
+        $ClientesHoy = DashboardInnova::TransacionesClientes($desde, $hasta, $CodClien);
 
 
         // ESTAS METRICAS SERAN AFECTADAS POR EL RANGO DE FECHA BUSCADO
@@ -207,7 +246,7 @@ class DashboardInnova extends Model
 
 
 
-        $Bultos_Comparativa = DashboardInnova::BultosComparativa( $nYearAnterior,$nYearActual );
+        $Bultos_Comparativa = DashboardInnova::BultosComparativa( $nYearAnterior,$nYearActual, $request->Clientes);
 
 
         $KeyYearActual      = array_search($nYearActual, array_column($Bultos_Comparativa, 'Anio'));
@@ -256,9 +295,10 @@ class DashboardInnova extends Model
         $valorActual    = 0;
         $bultoAnterior  = 0;
         $bultoActual    = 0; 
+        $Clientes       = $request->Clientes;
         try{
 
-        $BultosMensual = DashboardInnova::BultosComparativaYTD($nYearAnterior, $nYearActual);
+        $BultosMensual = DashboardInnova::BultosComparativaYTD($nYearAnterior, $nYearActual, $Clientes);
 
         $comparativaMensual = [];
 
@@ -319,12 +359,60 @@ class DashboardInnova extends Model
         $desde = $request->desde;
         $hasta = $request->hasta;   
         $Artic = $request->articulo;   
+        $Cliente = $request->Clientes;
 
-        $data = DashboardInnova::Detalles_SKU_TOP($desde, $hasta, $Artic);
+        $data = DashboardInnova::Detalles_SKU_TOP($desde, $hasta, $Artic, $Cliente);
         return $data;
     }
+    public static function getFacturasClientes($request)
+    {
+        $ini    = $request->desde;
+        $end    = $request->hasta;   
+        $CLI    = $request->CLIENTE;   
+        $ExClu  = $request->ExClu;
 
-     public static function ExportToExcel($request) {
+        $FACTURAS  = [];
+
+        $data = DashboardInnova::FACTURAS_CLIENTES($ini, $end, $CLI, $ExClu);
+
+        foreach ($data as $key => $value) {  
+
+
+            $FACTURAS[$key] = [
+                'FACTURA'           => $value->FACTURA,
+                'FECHA_FACTURA'     => $value->FECHA_FACTURA,
+                'CANTIDAD'          => round($value->CANTIDAD, 2), 
+                'VENTA_SIN_IVA'     => round($value->VENTA_SIN_IVA, 2),
+                'VENTA_CON_IVA'     => round($value->VENTA_CON_IVA, 2),
+            ];
+            
+        }
+
+        return $FACTURAS;
+    }
+
+    public static function getDetallesFacturasInnova($request)
+    {
+        $FCT    = $request->FACTURA;   
+
+        $DETALLES  = [];
+
+        $data = DashboardInnova::DetalleFactura($FCT);
+
+        foreach ($data as $key => $value) {  
+            $DETALLES[$key] = [
+                'ARTICULO'          => $value->ARTICULO,
+                'DESCRIPCION'       => $value->DESCRIPCION,
+                'CANTIDAD'          => number_format($value->CANTIDAD, 2), 
+                'TOTAL'             => number_format($value->TOTAL, 2),
+            ];
+            
+        }
+
+        return $DETALLES;
+    }
+
+    public static function ExportToExcel($request) {
         $objPHPExcel = new PHPExcel();
         $titulosColumnas = array();
         $columnIndex = 0;

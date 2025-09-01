@@ -211,7 +211,8 @@ class dashboard_controller extends Controller {
 
   public function canalXcontribucion()
   {
-    return view('pages.canalXcontribucion');
+    
+    return view('pages.ContribucionCanales.Home');
   }
 
   public function canalData(){

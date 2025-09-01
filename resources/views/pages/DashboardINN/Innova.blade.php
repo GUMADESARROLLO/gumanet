@@ -14,21 +14,25 @@
     <!-- Header -->
     <div class="row border">
       <div class="col-md-7">            
-        <h4 class="h4 text-innova"> INNOVA INDUSTRIAS S.A. </h4>
+        <h4 class="h4 text-innova"> INNOVA INDUSTRIAS S.A.</h4>
         <p class="text-muted mb-4">Reportes de ventas de productos, tomando en cuenta el periodo de <span id="tl_periodo"></span>.</p>
       </div>
-      <div class="col-md-2 ">
+      <div class="col-md-2 ">        
         <div class="form-group">                
-          <label for="f1">Desde:</label>
-          <input type="text" class="input-fecha" id="desdeInnova">
+          <label for="f1">Excluir Clientes</label>
+          <select class="custom-select" id="cmbClientesExcluir">
+            <option value="1">SI</option>
+            <option value="0">NO</option>
+          </select>
         </div>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-2 ">        
         <div class="form-group">                
-          <label for="f2">Hasta:</label>
-          <input type="text" class="input-fecha" id="hastaInnova">
+          <label for="f1">Fecha Evaluacion</label>
+          <input type="text" class="input-fecha" name="dt_range" />
         </div>
       </div>
+
       <div class="col-md-1 mt-4">
         <div class="btn-group w-100">               
           <button type="button" class="btn btn-primary-umk btn-block float-right" id="filtrarFechas">  Filtrar </button>		
