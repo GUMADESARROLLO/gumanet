@@ -241,6 +241,9 @@ Route::get('/getData','DetalleOrdenController@getData');
 //RUTAS PARA LOS RECIBOS
 Route::get('recibos', 'recibos_controller@index');  
 Route::get('getRecibos', 'recibos_controller@getRecibos');
+Route::post('getExportRecibos', 'recibos_controller@getExportRecibos');
+Route::get('ExportRecibos', 'recibos_controller@ExportRecibos');
+
 
 Route::get('Cartera', 'recibos_controller@getReporte');  
 Route::get('getCartera', 'recibos_controller@getCartera');
@@ -315,7 +318,9 @@ Route::post('calcularPresupuesto','PresupuestoController@calcularPresupuesto')->
 // RUTAS PARA NEW DASHBOARD INNOVA
 Route::post('getDataInnova', 'DashboardInnovaController@getDataInnova')->name('getDataInnova'); 
 Route::post('getDetallesSKUCliente', 'DashboardInnovaController@getDetallesSKUCliente')->name('getDetallesSKUCliente');
+Route::post('getFacturasClientes', 'DashboardInnovaController@getFacturasClientes')->name('getFacturasClientes');
 Route::get('getExcelSku', 'DashboardInnovaController@ExportToExcel')->name('getExcelSku');
+Route::post('getDetallesFacturasInnova', 'DashboardInnovaController@getDetallesFacturasInnova')->name('getDetallesFacturasInnova');
 
 
 // INICIO RUTAS PARA EL DASHBOARD DE IMPORTACION
@@ -336,6 +341,6 @@ Route::post('saveInfoTransito', 'TransitoController@saveInfoTransito')->name('sa
 
 // RUTAS PARA EL ANALISIS DE IMS
 Route::get('AnalisisIMS', 'AnalisisIMSController@ViewHome')->name('AnalisisIMS');
-Route::get('getDataAnalisisIMS', 'AnalisisIMSController@getDataAnalisisIMS')->name('getDataAnalisisIMS');
+Route::post('getDataAnalisisIMS', 'AnalisisIMSController@getDataAnalisisIMS')->name('getDataAnalisisIMS');
 
 // 

@@ -25,6 +25,11 @@ $('#InputDtShowSearchFilterInvTotal').on( 'keyup', function () {
     table.search(this.value).draw();
 });
 
+$("#txtSearchRecibos").on('keyup', function () {
+    var table = $('#tbl_plantilla').DataTable();
+    table.search(this.value).draw();
+});
+
 $( "#InputDtShowColumnsInvTotal").change(function() {
     var table = $('#dtInventarioTotal').DataTable();
     table.page.len(this.value).draw();
@@ -219,6 +224,114 @@ function attach_file(idRecibo){
         }
     })
 }
+
+$("#btn_to_plantilla").click( function() {
+   
+
+
+    f1      = $("#f1").val();
+    f2      = $("#f2").val();
+    Ruta    = $("#id-form-ruta").text();
+
+    if (f1 == '' || f2 == '' ) {
+        swal.fire({
+            title: 'Atención',
+            text: 'Tiene datos pendientes.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });      
+    } else {
+        location.href = "ExportRecibos?f1="+f1+"&f2="+f2+"&RU="+Ruta;
+        //$('#mdlResumen').modal('hide')
+    }
+})
+
+$("#ExportRecibos").click( function() {
+
+    $('#mdlDataPlantilla').modal('show');
+    getDetallesCliente();
+    
+});
+
+async function getDetallesCliente() {
+    try {
+
+        vf1      = $("#f1").val();
+        vf2      = $("#f2").val();
+        Ruta    = $("#dtRutas").val();
+        $Titulo = "PERIODO : " + vf1 + " - " + vf2;
+        
+        $("#lblModalLongTitle").html($Titulo);
+
+        const response = await fetch('getExportRecibos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ 
+                f1 : vf1,
+                f2 : vf2,
+                RU : Ruta,
+            })
+        });
+
+    const result = await response.json();
+
+    tblExport(result);
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+    function tblExport(Dt) {        
+        $("#tbl_plantilla").DataTable({
+            data: Dt,
+            destroy: true,            
+            order: [[0, 'asc'], [1, 'asc']],            
+            "language": {
+                "zeroRecords": "-",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Última ",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "info":       "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                "infoEmpty":  "",
+                "infoPostFix":    "",
+                "infoFiltered":   "",
+                "lengthMenu": "MOSTRAR _MENU_",
+                "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
+                "search": "BUSCAR"
+            },
+            columns: [
+                { data: "RUTA", title: "RUTA",class: "text-center" },
+                { data: "RECIBO", title: "RECIBO", class: "text-center" },    
+                { data: "TOTAL_RECIBO", title: "VALOR REC. C$" , class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },   
+
+                { data: "FECHA", title: "FECHA" },                
+                { data: "CLIENTE", title: "CLIENTE" },  
+                { data: "FACTURA", title: "FACT." },           
+                { data: "VALORFACTURA", title: "VALOR FACT. C$", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                { data: "NOTACREDITO", title: "N/C", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                { data: "RETENCION", title: "RETENCION", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                { data: "DESCUENTO", title: "DESCUENTO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                
+                { data: "VALORRECIBIDO", title: "RECIBO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },   
+            ],
+            pageLength: 12,
+            bLengthChange: false,
+            searching: true,
+        });
+        
+        $("#tbl_plantilla_filter").hide();
+    }
+
+
+
 $("#resument").click( function() {
 
     Opt     = $('input[name=inlineRadioOptions]:checked', '#FrmOptns').val();
@@ -228,8 +341,6 @@ $("#resument").click( function() {
     var table = $('#dtVinneta').DataTable();
 
     var form_data  = table.rows().data().toArray();
-
-    console.log(form_data);
     
         
     var time = moment().format('DD/MM/YYYY');
@@ -399,7 +510,14 @@ $("#id-print-pdf").click( function() {
     Nota    = $("#id-coment").val();
     
     if (Ruta=='' ) {
-        alert(" Tiene Información pendiente ")        
+
+        swal.fire({
+            title: 'Atención',
+            text: 'Tiene datos pendientes.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        
     } else {
         location.href = "print_resumen?f1="+f1+"&f2="+f2+"&RU="+Ruta+"&CL="+Clie+"&nota="+Nota+"&St="+Stat;
         $('#mdlResumen').modal('hide')
@@ -544,47 +662,47 @@ $(document).on('click', '#exp_more', function(ef) {
 
 function format ( callback, dta ) {    
 
-var thead = tbody = tNule = '';
+    var thead = tbody = tNule = '';
 
-thead =`<table class="table table-striped table-bordered table-sm">
-            <thead class="text-center bg-secondary text-light">
-                <tr>
-                    <th class="center">FACTURA</th>
-                    <th class="center">VALOR FACTURA</th>
-                    <th class="center">VALOR N/C</th>
-                    <th class="center">RETENCION</th>
-                    <th class="center">DESCUENTO</th>
-                    <th class="center">VALOR RECIBIDO</th>
-                    <th class="center">SALDO</th>
-                    <th class="center">TIPO</th>
-                    
-                </tr>
-            </thead>
-            <tbody>`;
-            
+    thead =`<table class="table table-striped table-bordered table-sm">
+                <thead class="text-center bg-secondary text-light">
+                    <tr>
+                        <th class="center">FACTURA</th>
+                        <th class="center">VALOR FACTURA</th>
+                        <th class="center">VALOR N/C</th>
+                        <th class="center">RETENCION</th>
+                        <th class="center">DESCUENTO</th>
+                        <th class="center">VALOR RECIBIDO</th>
+                        <th class="center">SALDO</th>
+                        <th class="center">TIPO</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>`;
+                
 
-if (dta.length==0) {
-    tbody +=`<tr>
-                <td colspan='6'><center>Bodega sin existencia</center></td>
-            </tr>`;
-    callback(thead + tbody).show();
-}
+    if (dta.length==0) {
+        tbody +=`<tr>
+                    <td colspan='6'><center>Bodega sin existencia</center></td>
+                </tr>`;
+        callback(thead + tbody).show();
+    }
 
-$.each(dta.DETALLES, function (i, item) {
+    $.each(dta.DETALLES, function (i, item) {
 
-    var total = item['VALORFACTURA'] - item['NOTACREDITO'] - item['RETENCION'] - item['DESCUENTO'] - item['VALORRECIBIDO'];
+        var total = item['VALORFACTURA'] - item['NOTACREDITO'] - item['RETENCION'] - item['DESCUENTO'] - item['VALORRECIBIDO'];
 
 
-    tbody +='<tr>'+
-                '<td class="text-center">' + item['FACTURA'] + '</td>'+
-                '<td class="text-center">C$ ' + numeral(item['VALORFACTURA']).format('0,0') + '</td>'+
-                '<td class="text-center">C$ ' + numeral(item['NOTACREDITO']).format('0,0') + '</td>'+
-                '<td class="text-center">C$ ' + numeral(item['RETENCION']).format('0,0') + '</td>'+
-                '<td class="text-right">C$ ' + numeral(item['DESCUENTO']).format('0,0.00')  + '</td>'+
-                '<td class="text-right">C$ ' + numeral(item['VALORRECIBIDO']).format('0,0.00')  + '</td>'+
-                '<td class="text-right">C$ ' + numeral(total).format('0,0.00')  + '</td>'+
-                '<td class="text-center">' + item['TIPO']  + '</td>'+
-            '</tr>';
+        tbody +='<tr>'+
+                    '<td class="text-center">' + item['FACTURA'] + '</td>'+
+                    '<td class="text-center">C$ ' + numeral(item['VALORFACTURA']).format('0,0') + '</td>'+
+                    '<td class="text-center">C$ ' + numeral(item['NOTACREDITO']).format('0,0') + '</td>'+
+                    '<td class="text-center">C$ ' + numeral(item['RETENCION']).format('0,0') + '</td>'+
+                    '<td class="text-right">C$ ' + numeral(item['DESCUENTO']).format('0,0.00')  + '</td>'+
+                    '<td class="text-right">C$ ' + numeral(item['VALORRECIBIDO']).format('0,0.00')  + '</td>'+
+                    '<td class="text-right">C$ ' + numeral(total).format('0,0.00')  + '</td>'+
+                    '<td class="text-center">' + item['TIPO']  + '</td>'+
+                '</tr>';
 
 });
 

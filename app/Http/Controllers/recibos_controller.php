@@ -2,6 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use PHPExcel;
+use PHPExcel_IOFactory;
+use PHPExcel_Style_Alignment;
+use PHPExcel_Style;
+use PHPExcel_Style_Border;
+use PHPExcel_Style_Fill;
+
+
+
 use App\Models;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,7 +41,8 @@ class recibos_controller extends Controller {
 
     }
 
-    public function print_resumen(Request $request) {
+    public function print_resumen(Request $request) 
+    {
 
         $vlLinea        = 0; 
         $recibido       = 0; 
@@ -88,7 +98,8 @@ class recibos_controller extends Controller {
     }
 
 
-    public function rePrint(Request $request) {
+    public function rePrint(Request $request) 
+    {
 
         
         $IdLiquidacion = $request->input('Id') ;
@@ -126,7 +137,8 @@ class recibos_controller extends Controller {
         
     }
 
-    public function index() {
+    public function index() 
+    {
         $this->agregarDatosASession();
 
         $clientes   = reportes_model::clientes();
@@ -187,7 +199,192 @@ class recibos_controller extends Controller {
         return response()->json($data);
 
     }
-    public static function getRecibos(Request $request) {
+    public function getExportRecibos(Request $request)
+    {
+
+        $RECIBOS_LINEA = [];
+
+        $Ini    = $request->input('f1').' 00:00:00';
+        $Fin    = $request->input('f2').' 23:59:59';        
+        $Rut   = $request->input('RU');
+
+        $Recibos    = recibos_model::whereBetween('fecha_recibo', [$Ini, $Fin])
+                    ->when($Rut != '', function ($query) use ($Rut) {
+                        return $query->where('ruta', $Rut);
+                    })->get();        
+
+        foreach ($Recibos as $r => $key) {
+
+            $OrdenList  = $key->order_list;
+            $Lineas     = explode("],", $OrdenList);
+            $cLineas    = count($Lineas) - 1;
+
+            for ($l = 0; $l < $cLineas; $l++) { 
+                
+                $Lineas_detalles = explode(";", $Lineas[$l]);
+
+                $NumRec = substr($key->ruta, 1) . $key->recibo;
+
+                $RECIBOS_LINEA[] = [ 
+                    // CABECERA DE RECIBO
+                    'RUTA'          => $key->ruta,
+                    'RECIBO'        => $NumRec,
+                    'FECHA'         => $key->fecha_recibo,
+                    'CLIENTE'       => preg_replace('/\D/', '', $key->cod_cliente),
+                    'TOTAL_RECIBO'  => preg_replace('/[^0-9-.]+/', '', $key->order_total),
+                    // DETALLES DE RECIBO
+                    'FACTURA'       => str_replace('[', '', $Lineas_detalles[0]),
+                    'VALORFACTURA'  => $Lineas_detalles[1],
+                    'NOTACREDITO'   => $Lineas_detalles[2],
+                    'RETENCION'     => $Lineas_detalles[3],
+                    'DESCUENTO'     => $Lineas_detalles[4],
+                    'VALORRECIBIDO' => $Lineas_detalles[5],
+                    'TIPO'          => (!isset($Lineas_detalles[8])) ? "N/D" : $Lineas_detalles[8]
+                ];
+            }
+        }
+
+
+        return response()->json($RECIBOS_LINEA);
+
+
+
+    }
+
+    public function ExportRecibos(Request $request)
+    {
+        $objPHPExcel = new PHPExcel();
+        $tituloReporte = "";
+        $titulosColumnas = array();
+
+        $RECIBOS_LINEA = [];
+
+        $Ini    = $request->input('f1').' 00:00:00';
+        $Fin    = $request->input('f2').' 23:59:59';        
+        $Rut    = $request->input('RU');
+
+        $estiloTituloColumnas = array(
+            'font' => array(
+                        'name'  => 'Arial',
+                        'bold'  => true,
+                        'size'      => 10,
+            ),
+            'alignment' =>  array(
+                                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                                'wrap'          => TRUE
+                            ),
+            'borders' => array(
+                            'top' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        ),
+            'allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN,)
+            )
+        );
+
+        $estiloInformacion = new PHPExcel_Style();
+        $estiloInformacion->applyFromArray(
+            array(
+                'borders' => array(
+                'top' => array('style' => PHPExcel_Style_Border::BORDER_THIN,),
+                'allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN,),
+                )
+            )
+        );
+
+
+
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue('A1',  'RUTA')
+            ->setCellValue('B1',  'RECIBO')
+            ->setCellValue('C1',  'VALOR REC. C$')
+            ->setCellValue('D1',  'FECHA')
+            ->setCellValue('E1',  'CLIENTE')
+            ->setCellValue('F1',  'FACT.')
+            ->setCellValue('G1',  'VALOR FACT. C$')
+            ->setCellValue('H1',  'N/C')
+            ->setCellValue('I1',  'RETENCION')
+            ->setCellValue('J1',  'DESCUENTO')
+            ->setCellValue('K1',  'RECIBIDO');
+            //->setCellValue('L1',  'TIPO');
+
+        $i=2;
+
+        $Recibos    = recibos_model::whereBetween('fecha_recibo', [$Ini, $Fin])
+                    ->when($Rut != '', function ($query) use ($Rut) {
+                        return $query->where('ruta', $Rut);
+                    })->get();   
+
+        $num_row    = $Recibos->count() - 1;
+
+       
+                    
+        $objPHPExcel->getActiveSheet()->getStyle('A1:K1')->applyFromArray($estiloTituloColumnas);     
+
+        foreach ($Recibos as $r => $key) {
+
+            $OrdenList  = $key->order_list;
+            $Lineas     = explode("],", $OrdenList);
+            $cLineas    = count($Lineas) - 1;
+
+            for ($l = 0; $l < $cLineas; $l++) { 
+                
+                $Lineas_detalles = explode(";", $Lineas[$l]);
+
+                $NumRec = substr($key->ruta, 1) . $key->recibo;
+
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A'.$i,  $key->ruta)
+                    ->setCellValue('B'.$i,  $NumRec)
+                    ->setCellValue('C'.$i,  preg_replace('/[^0-9-.]+/', '', $key->order_total))
+                    ->setCellValue('D'.$i,  $key->fecha_recibo)
+                    ->setCellValue('E'.$i,  preg_replace('/\D/', '', $key->cod_cliente))
+                    ->setCellValue('F'.$i,  str_replace('[', '', $Lineas_detalles[0]))
+                    ->setCellValue('G'.$i,  $Lineas_detalles[1])
+                    ->setCellValue('H'.$i,  $Lineas_detalles[2])
+                    ->setCellValue('I'.$i,  $Lineas_detalles[3])
+                    ->setCellValue('J'.$i,  $Lineas_detalles[4])
+                    ->setCellValue('K'.$i,  $Lineas_detalles[5]);
+                    //->setCellValue('L'.$i,  (!isset($Lineas_detalles[8])) ? "N/D" : $Lineas_detalles[8]);
+
+                $i++;
+            }
+        }
+
+
+        if ($i > 2) {
+            $i--;
+        }
+         $objPHPExcel->getActiveSheet()->setTitle('Gastos Operativos');
+        $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A2:K". $i );        
+
+
+        $cols = ['A', 'B', 'D', 'E', 'F'];
+        foreach ($cols as $col) {
+            $objPHPExcel->getActiveSheet()->getStyle($col . '2:' . $col . $i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        }
+
+        foreach (range('A', 'K') as $col) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setWidth(20);
+        }
+
+
+
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="GastosOperativos.xlsx"');
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
+
+
+        //return response()->json($RECIBOS_LINEA);
+
+
+
+    }
+    public static function getRecibos(Request $request) 
+    {
         
 
         $from   = $request->input('f1').' 00:00:00';

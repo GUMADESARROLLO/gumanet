@@ -89,6 +89,39 @@
     $('#filtrarFechas').html('<i class="fas fa-spinner fa-spin" style="display:' + (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton);
   }
 
+    function TBL_TOP_CLIENTES(selector, data) {
+
+      var table = $(selector).DataTable({
+        data: data,
+        destroy: true,
+        paging: true,
+        pageLength: 7,
+        info: false,
+        searching: false,
+        ordering: false,
+        columns: [
+          { data: 'NOMBRE', render: function(data, type, row) {
+            return `<div class="item-left">${data}<br><span class="item-sub">${row.CODIGO}</span></div>`;
+          }},
+          { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
+            return `<div class="item-right">C$ ${data}<br><span class="item-sub">${row.BULTOS_TOTAL_UND}</span></div>`;
+          }},
+        ],
+        createdRow: function (row, rowData) {
+          $(row).on('click', function() {
+            var data = table.row(this).data();
+            $('#mdl-topsku').modal('show');
+            $('#id-name-articulo').text(data.NOMBRE);
+            getDetallesCliente(data.CODIGO);
+            //excelSku(data.SKU);
+            
+          });
+        },
+      });
+      $(selector + '_length').hide();
+    
+    }
+
     function loadAndBuildTable(selector, data) {
       $(selector).DataTable({
         data: data,
@@ -149,14 +182,20 @@
 
     function TBL_TOP_SKU_CLIENTES(Dt) {        
         // Populate the table with data
+        
         $("#tbl_topsku_clientes").DataTable({
             data: Dt,
             destroy: true,
+            columnDefs: [
+                { targets: 0, visible: false }
+            ],
+            
             order: [],
             columns: [
+                { data: "CLIENTE", title: "" },
                 { data: "CLIENTE", title: "CLIENTE" },
                 { data: "NOMBRE", title: "NOMBRE" },
-                { data: "CANTIDAD", title: "CANTIDAD" ,  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { data: "CANTIDAD", title: "CANT." ,  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
                 { data: "VENTA_SIN_IVA", title: "VENTA SIN IVA",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
                 { data: "VENTA_CON_IVA", title: "VENTA CON IVA",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') }
             ],
@@ -167,11 +206,122 @@
         
         $("#tbl_topsku_clientes_filter").hide();
     }
+    function TBL_DETALLES_FACTURAS_CLIENTES(Dt) {        
+        // Populate the table with data
+        $("#tbl_topsku_clientes").DataTable({
+            data: Dt,
+            destroy: true,
+            order: [],
+            columns: [
+                { data: "FACTURA", title: "",  class: "text-center",render: function ( data, type, row ) {
+                    return `<a id="exp_factura" href="#!"><i class="material-icons expan_more">expand_more</i></a>`;
+                }},
+                { data: "FACTURA", title: "FACT.",  class: "text-center" },
+                { data: "FECHA_FACTURA", title: "FECHA FACT." , class: "text-center",
+                    render: function ( data, type, row ) {
+                        return moment(data).format('D MMM. YYYY');
+                    }
+                },
+                { data: "CANTIDAD", title: "CANT." ,  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                { data: "VENTA_SIN_IVA", title: "SIN IVA C$.",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                { data: "VENTA_CON_IVA", title: "CON IVA C$.",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') }
+            ],
+            pageLength: 7,
+            bLengthChange: false,
+            searching: true,
+        });
+        
+        $("#tbl_topsku_clientes_filter").hide();
+    }
+    $(document).on('click', '#exp_factura', function(ef) {
+      
+        var table = $('#tbl_topsku_clientes').DataTable();
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+        var data = table.row($(this).parents('tr')).data();
+
+      if (row.child.isShown()) {
+          row.child.hide();
+          tr.removeClass('shown');
+          ef.target.innerHTML = "expand_more";
+          ef.target.style.background = '#e2e2e2';
+          ef.target.style.color = '#007bff';
+      } else {
+          table.rows().eq(0).each( function ( idx ) {
+              var row = table.row( idx );
+
+              if ( row.child.isShown() ) {
+                  row.child.hide();
+                  ef.target.innerHTML = "expand_more";
+
+                  var c_1 = $(".expan_more");
+                  c_1.text('expand_more');
+                  c_1.css({
+                      background: '#e2e2e2',
+                      color: '#007bff',
+                  });
+              }
+          } );
+
+          console.log(row.child,data.FACTURA);
+
+          format( row.child,  data.FACTURA );
+          tr.addClass('shown');
+          
+          ef.target.innerHTML = "expand_less";
+          ef.target.style.background = '#F39200';
+          ef.target.style.color = '#e2e2e2';
+      }
+    });
+
+    function format ( callback, Factura ) {
+
+    
+        var thead = tbody = '';            
+            thead =`<table id="id_exp_detalles" width='100%'>
+                      <thead>                        
+                          <tr>
+                              <th class="center">ARTICULO</th>
+                              <th class="center">DESC.</th>
+                              <th class="center">CANT.</th>
+                              <th class="center">TOTAL</th>
+                          </tr>
+                      </thead>
+
+
+                    <tbody>`;
+        $.ajax({
+            type: "POST",
+            url: "getDetallesFacturasInnova",
+            data:{
+                FACTURA: Factura,      
+            },        
+            success: function ( data ) {
+                if (data.length==0) {
+                    tbody +=`<tr>
+                                <td colspan='6'><center>Bodega sin existencia</center></td>
+                            </tr>`;
+                    callback(thead + tbody).show();
+                }
+                $.each(data, function (i, item) {
+                    tbody +=`<tr >
+                                <td class="text-center">` + item['ARTICULO'] + `</td>
+                                <td>` + item['DESCRIPCION'] + `</td>
+                                <td class="text-right">` + item['CANTIDAD'] + `</td>
+                                <td class="text-right">` + item['TOTAL'] + `</td>
+                            </tr>`;
+                });
+                tbody += `</tbody></table>`;
+                callback(thead + tbody).show();
+            }
+        });
+    }
     async function getDetallesSKUCliente(articulo) {
       try {
 
         var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
         var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+        var Clientes = $('#cmbClientesExcluir').val();
 
 
         const response = await fetch('getDetallesSKUCliente', {
@@ -183,7 +333,8 @@
           body: JSON.stringify({ 
             desde     : desde, 
             hasta     : hasta,
-            articulo  : articulo
+            articulo  : articulo,
+            Clientes  : Clientes
           })
         });
         const result = await response.json();
@@ -193,10 +344,41 @@
         console.error(error);
       }
     }
+    async function getDetallesCliente(CLIENTE) {
+      try {
+
+        var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+        var ExClu = $('#cmbClientesExcluir').val();
+
+
+        const response = await fetch('getFacturasClientes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({ 
+            desde     : desde, 
+            hasta     : hasta,
+            CLIENTE   : CLIENTE,
+            ExClu     : ExClu
+          })
+        });
+
+        const result = await response.json();
+
+        TBL_DETALLES_FACTURAS_CLIENTES(result);
+      } catch (error) {
+        console.error(error);
+      }
+    }
     async function cargarGetDataInnova(desde, hasta){
       
         try {
-            eneableButton(true,'Calc...')   
+            eneableButton(true,'Calc...') ;
+
+            var Clientes = $('#cmbClientesExcluir').val();
             
             const response = await fetch('getDataInnova', {
                 method: 'POST',
@@ -206,7 +388,9 @@
                 },
                 body: JSON.stringify({ 
                   desde: desde, 
-                  hasta: hasta 
+                  hasta: hasta,
+                  Clste: Clientes
+
                 })
             });
 
@@ -215,7 +399,7 @@
             loadAndBuildTable('#clientesTable', result.ACTUAL.Clientes);            
             loadAndBuildTable('#vendedoresTable', result.ACTUAL.Vendedores);
             TBL_TOP_SKU('#tbl_top_sku', result.ACTUAL.SKU_CHART.data);
-            loadAndBuildTable('#tbl_top_clientes', result.ACTUAL.CLS_CHART);
+            TBL_TOP_CLIENTES('#tbl_top_clientes', result.ACTUAL.CLS_CHART);
             renderSKUPieChart(result.ACTUAL.SKU_CHART.data);
             renderClienteBolsonChart(result.ACTUAL.CLS_CHART);
 

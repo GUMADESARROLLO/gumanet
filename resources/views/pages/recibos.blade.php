@@ -19,16 +19,16 @@
 							</div>
 						</div>
 
-					<div class="col-sm-4 mt-4 ">
-						<div class="form-group">
-							<select class="selectpicker form-control" id="dtCliente" data-show-subtext="true" data-live-search="true">					
-								<option selected value="">TODOS</option>
-								@foreach($clientes as $key)										
-									<option value="{{$key['CLIENTE']}}">{{ $key['NOMBRE'] }}</option>
-								@endforeach
-							</select>
+						<div class="col-sm-4 mt-4 ">
+							<div class="form-group">
+								<select class="selectpicker form-control" id="dtCliente" data-show-subtext="true" data-live-search="true">					
+									<option selected value="">TODOS</option>
+									@foreach($clientes as $key)										
+										<option value="{{$key['CLIENTE']}}">{{ $key['NOMBRE'] }}</option>
+									@endforeach
+								</select>
+							</div>
 						</div>
-					</div>
 
 						<div class="col-sm-1 mt-4 ">
 							<div class="input-group">
@@ -40,8 +40,6 @@
 								</select>
 							</div>
 						</div>
-
-						
 
 						<div class="col-sm-1 mt-4 ">
 							<div class="input-group">
@@ -56,32 +54,33 @@
 						
 						<div class="col-sm-4 border-left">
 							<div class="row ">
-								<div class="col-sm-4 ">
+								<div class="col-sm-3 ">
 									<div class="form-group">                
 										<label for="f1">Desde:</label>
 										<input type="text" class="input-fecha" id="f1">
 									</div>
 								</div>
-								<div class="col-sm-4 ">
+								<div class="col-sm-3 ">
 									<div class="form-group">                
 										<label for="f2">Hasta:</label>
 										<input type="text" class="input-fecha" id="f2">
 									</div>
 								</div>
-								<div class="col-sm-2 mt-4 ">
-									<div class="form-group"> 
-										<a href="#!" class="btn btn-primary float-left" id="BuscarVinneta">
-											<i class="material-icons text-white mt-1"  style="font-size: 20px">filter_list_alt</i>
-										</a>
+								<div class="col-sm-6 ">
+
+									<div class="btn-group w-100">               
+										<button type="button" class="btn btn-primary btn-block float-right mt-4" id="BuscarVinneta"> 
+											<i class="material-icons text-white mt-1"  style="font-size: 20px">filter_list_alt</i> 
+										</button>
+										<button type="button" class="btn btn-primary btn-block float-right mt-4" id="resument"> 
+											<i class="material-icons text-white mt-1"  style="font-size: 20px">local_printshop</i> 
+										</button>
+										<button type="button" class="btn btn-success btn-block float-right mt-4" id="ExportRecibos"> 
+											<i class="fas fa-file-excel text-white mt-1"  style="font-size: 20px"></i> 
+										</button>	
 									</div>
+
 								</div>	
-								<div class="col-sm-2 mt-4">
-									<div class="form-group"> 
-										<a href="#!" class="btn btn-primary float-left" id="resument">
-											<i class="material-icons text-white mt-1"  style="font-size: 20px">local_printshop</i>
-										</a>
-									</div>
-								</div>							
 							</div>
 						</div>  
 					</div>
@@ -203,6 +202,45 @@
 		<div class="modal-footer">			
 			<button type="button" class="btn btn-primary" id="id-print-pdf">Imprimir</button>
 		</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal EXPORTADO PARA PLANTILLA -->
+<div class="modal fade" id="mdlDataPlantilla" tabindex="-1" role="dialog"  aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="lblModalLongTitle">Cargando...</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-sm-10 mb-3 ">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+						</div>
+						<input type="text" id="txtSearchRecibos" class="form-control" placeholder="Buscar...">
+					</div>
+				</div>
+
+				<div class="col-sm-2 mb-3 ">
+					<div class="btn-group w-100">               	
+						<button type="button" class="btn btn-success btn-block float-right" id="btn_to_plantilla">Exportar</button>
+					</div>
+				</div>	
+				
+			</div>
+			
+			<div class="table-responsive">
+				<table id="tbl_plantilla" class="table table-striped " width="100%"></table>
+			</div>			
+		</div>
+		
 		</div>
 	</div>
 </div>
