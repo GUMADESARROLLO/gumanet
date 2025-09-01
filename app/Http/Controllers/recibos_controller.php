@@ -211,7 +211,7 @@ class recibos_controller extends Controller {
         $Recibos    = recibos_model::whereBetween('fecha_recibo', [$Ini, $Fin])
                     ->when($Rut != '', function ($query) use ($Rut) {
                         return $query->where('ruta', $Rut);
-                    })->get();        
+                    })->whereNotIn('status', [3])->get();        
 
         foreach ($Recibos as $r => $key) {
 
