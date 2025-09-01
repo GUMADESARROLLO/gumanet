@@ -226,12 +226,24 @@ function attach_file(idRecibo){
 }
 
 $("#btn_to_plantilla").click( function() {
-    swal.fire({
-      title: 'En Construcción',
-      text: 'Esta sección está en desarrollo y estará disponible pronto.',
-      icon: 'info',
-      confirmButtonText: 'Aceptar'
-    });
+   
+
+
+    f1      = $("#f1").val();
+    f2      = $("#f2").val();
+    Ruta    = $("#id-form-ruta").text();
+
+    if (f1 == '' || f2 == '' ) {
+        swal.fire({
+            title: 'Atención',
+            text: 'Tiene datos pendientes.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });      
+    } else {
+        location.href = "ExportRecibos?f1="+f1+"&f2="+f2+"&RU="+Ruta;
+        //$('#mdlResumen').modal('hide')
+    }
 })
 
 $("#ExportRecibos").click( function() {
@@ -278,7 +290,7 @@ async function getDetallesCliente() {
         $("#tbl_plantilla").DataTable({
             data: Dt,
             destroy: true,            
-            order: [],
+            order: [[0, 'asc'], [1, 'asc']],            
             "language": {
                 "zeroRecords": "-",
                 "paginate": {
@@ -287,7 +299,7 @@ async function getDetallesCliente() {
                     "next": "Siguiente",
                     "previous": "Anterior"
                 },
-                "info":       "Linea de Recibos Colectores",
+                "info":       "Mostrando _START_ a _END_ de _TOTAL_ registros",
                 "infoEmpty":  "",
                 "infoPostFix":    "",
                 "infoFiltered":   "",
@@ -310,7 +322,7 @@ async function getDetallesCliente() {
                 
                 { data: "VALORRECIBIDO", title: "RECIBO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },   
             ],
-            pageLength: 7,
+            pageLength: 12,
             bLengthChange: false,
             searching: true,
         });
@@ -498,7 +510,14 @@ $("#id-print-pdf").click( function() {
     Nota    = $("#id-coment").val();
     
     if (Ruta=='' ) {
-        alert(" Tiene Información pendiente ")        
+
+        swal.fire({
+            title: 'Atención',
+            text: 'Tiene datos pendientes.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        
     } else {
         location.href = "print_resumen?f1="+f1+"&f2="+f2+"&RU="+Ruta+"&CL="+Clie+"&nota="+Nota+"&St="+Stat;
         $('#mdlResumen').modal('hide')

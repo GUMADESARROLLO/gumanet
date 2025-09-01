@@ -53,7 +53,7 @@
 						</div>
 						
 						<div class="col-sm-4 border-left">
-							<div class="row border">
+							<div class="row ">
 								<div class="col-sm-3 ">
 									<div class="form-group">                
 										<label for="f1">Desde:</label>
@@ -66,27 +66,21 @@
 										<input type="text" class="input-fecha" id="f2">
 									</div>
 								</div>
-								<div class="col-sm-2 mt-4 ">
-									<div class="form-group"> 
-										<a href="#!" class="btn btn-primary float-left" id="BuscarVinneta">
-											<i class="material-icons text-white mt-1"  style="font-size: 20px">filter_list_alt</i>
-										</a>
+								<div class="col-sm-6 ">
+
+									<div class="btn-group w-100">               
+										<button type="button" class="btn btn-primary btn-block float-right mt-4" id="BuscarVinneta"> 
+											<i class="material-icons text-white mt-1"  style="font-size: 20px">filter_list_alt</i> 
+										</button>
+										<button type="button" class="btn btn-primary btn-block float-right mt-4" id="resument"> 
+											<i class="material-icons text-white mt-1"  style="font-size: 20px">local_printshop</i> 
+										</button>
+										<button type="button" class="btn btn-success btn-block float-right mt-4" id="ExportRecibos"> 
+											<i class="fas fa-file-excel text-white mt-1"  style="font-size: 20px"></i> 
+										</button>	
 									</div>
+
 								</div>	
-								<div class="col-sm-2 mt-4">
-									<div class="form-group"> 
-										<a href="#!" class="btn btn-primary float-left" id="resument">
-											<i class="material-icons text-white mt-1"  style="font-size: 20px">local_printshop</i>
-										</a>
-									</div>
-								</div>
-								<div class="col-sm-2 mt-4 ">
-									<div class="form-group"> 
-										<a href="#!" class="btn btn-primary float-left" id="ExportRecibos">
-											<i class="material-icons text-white mt-1"  style="font-size: 20px">filter_list_alt</i>
-										</a>
-									</div>
-								</div>								
 							</div>
 						</div>  
 					</div>
@@ -246,9 +240,7 @@
 				<table id="tbl_plantilla" class="table table-striped " width="100%"></table>
 			</div>			
 		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-primary" id="id_frm_save_anulacion">Guardar</button>
-		</div>
+		
 		</div>
 	</div>
 </div>
