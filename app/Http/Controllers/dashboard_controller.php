@@ -168,6 +168,18 @@ class dashboard_controller extends Controller {
     $obj = json_encode(dashboard_model::getDataGraficas($mes, $anio, $xbolsones));
     return response()->json(json_decode($obj));
   }
+
+  public function getSaleDaly(Request $request) 
+  {
+    $num_month  = $request->input('NumMonth');
+    $num_year   = $request->input('NumYear');
+
+    $Sales = dashboard_model::get_Ventas_diarias($num_month, $num_year, 1 ,1,0);
+
+    return response()->json($Sales);
+    
+  }
+
   public function getComportamiento($elemento) {
     $Key = 'getComportamiento_'.$elemento;
     $cached = Redis::get($Key);

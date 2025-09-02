@@ -73,6 +73,9 @@ $(document).ready(function() {
     reordenandoPantalla();
     actualizandoGraficasDashboard(mes, anio, tipo);
 
+    //Loading Sales Daily
+    getSalesDialy(mes, anio);
+
     
     Highcharts.setOptions({
         lang: {
@@ -1401,9 +1404,12 @@ $("#filterM_A").click( function(e) {
 
     if ($('#customSwitch1').is(':checked')) {
         actualizandoGraficasDashboard(mes, anio, 1);
+        getSalesDialy(mes, anio);
+
     }
     else {
         actualizandoGraficasDashboard(mes, anio, 0);
+        getSalesDialy(mes, anio);
     }
 
     tableCierreMesInnova(mes, anio, lmes);
@@ -1426,6 +1432,7 @@ $("#customSwitch1").change( function() {
         grafRealVentasMensuales(1,0);
         fn_grafica_ventas_exportacion(1,0);
         actualizandoGraficasDashboard(mes, anio, 1);
+        getSalesDialy(mes, anio);
     }
     else {
         switchStatus = $(this).is(':checked');
@@ -1434,8 +1441,97 @@ $("#customSwitch1").change( function() {
         grafRealVentasMensuales(0,0);
         fn_grafica_ventas_exportacion(0,0);
         actualizandoGraficasDashboard(mes, anio, 0);
+        getSalesDialy(mes, anio);
     }
 });
+
+
+
+    // PROMESA PARA SOLICITAR LA INFORMACION DE VENTAS DIARIAS
+    async function getSalesDialy(num_month, num_year) {
+        try {
+            const response = await fetch('getDataSalesDaly', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ 
+                    NumMonth  : num_month, 
+                    NumYear   : num_year
+                })
+            });
+            const result = await response.json();
+
+
+            dta = [];
+            dta_avr = [];
+            title = [];
+            tmp_total = 0;
+            Tendencia = 1;
+            Day_Max = [];
+
+            var vVtsDiarias;
+
+            $.each(result, function(i, x) {
+
+                tmp_total = tmp_total + parseFloat(x['data']);
+
+                dta.push({
+                    name  :'Dia ' + x['articulo'],
+                    mAVG  : x['dtAVG'],
+                    FACT  : x['FACTURAS'],
+                    dtavg : x['dtavg_'],
+                    y     : x['data'], 
+                    und   : (x['dtUnd'] > 0 ) ?  x['dtUnd']  : '  '
+                });
+
+                goal = x['dtAVG']
+                title.push(x['name']); 
+                Day_Max.push(x['data']); 
+            }); 
+
+            //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
+            //moneda = (xbolsones)? "" : " C$ "
+            temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
+            temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';  
+            temporal += '<span style="color:black">\u25CF</span> CANT. FACT.: <b>  {point.FACT} </b><br/>';                   
+            grafiacas_productos_Diarios.tooltip = {
+                pointFormat : temporal
+            }
+            vVtsDiarias = numeral(tmp_total).format('0,0.00');
+            grafiacas_productos_Diarios.xAxis.categories = title;
+            grafiacas_productos_Diarios.subtitle.text = " C$ " + vVtsDiarias + " Total";
+            grafiacas_productos_Diarios.series[0].data = dta;
+
+
+            $("#id_ventas_diarias").html(" C$ " + vVtsDiarias)
+
+            //Lblmoneda = (xbolsones)? "Bolsones Venta Local" : "Venta Local "
+            $("#id_lbl_ventas_diarias").html("Venta Local ")
+
+            
+            Tendencia = (tmp_total / dta.length ) 
+
+            var var_Day_Max = Math.max.apply(Math, Day_Max);
+
+            var_Day_Max = var_Day_Max + (var_Day_Max * 0.12);
+            
+            
+            chart = new Highcharts.Chart(grafiacas_productos_Diarios);
+
+            chart.yAxis[0].options.plotLines[0].value = goal;
+            chart.yAxis[0].options.plotLines[0].label.text = "P. D. M. C$ " + numeral(goal).format('0,0.00');
+
+            chart.yAxis[0].options.plotLines[1].value = Tendencia
+            chart.yAxis[0].options.plotLines[1].label.text = "P. D. T. C$ " + numeral(Tendencia ).format('0,0.00');
+            
+            chart.yAxis[0].update();
+
+        } catch (error) {
+        console.error(error);
+        }
+    }
 
 var val_bodega                  = {};
 var clientes                    = {};
@@ -1609,75 +1705,71 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
 
                 break;
 
-                case 'dtaVentasDiarias':
+                // case 'dtaVentasDiarias':
 
-                    dta = [];
-                    dta_avr = [];
-                    title = [];
-                    tmp_total = 0;
-                    Tendencia = 1;
-                    Day_Max = [];
+                //     dta = [];
+                //     dta_avr = [];
+                //     title = [];
+                //     tmp_total = 0;
+                //     Tendencia = 1;
+                //     Day_Max = [];
 
-                    var vVtsDiarias;
+                //     var vVtsDiarias;
 
-                    $.each(item['data'], function(i, x) {
+                //     $.each(item['data'], function(i, x) {
 
-                        tmp_total = tmp_total + parseFloat(x['data']);
+                //         tmp_total = tmp_total + parseFloat(x['data']);
 
-                        dta.push({
-                            name  :'Dia ' + x['articulo'],
-                            mAVG  : x['dtAVG'],
-                            FACT  : x['FACTURAS'],
-                            dtavg : x['dtavg_'],
-                            y     : x['data'], 
-                            und   : (x['dtUnd'] > 0 ) ?  x['dtUnd']  : '  '
-                        });
+                //         dta.push({
+                //             name  :'Dia ' + x['articulo'],
+                //             mAVG  : x['dtAVG'],
+                //             FACT  : x['FACTURAS'],
+                //             dtavg : x['dtavg_'],
+                //             y     : x['data'], 
+                //             und   : (x['dtUnd'] > 0 ) ?  x['dtUnd']  : '  '
+                //         });
 
-                        goal = x['dtAVG']
-                        title.push(x['name']); 
-                        Day_Max.push(x['data']); 
-                    }); 
+                //         goal = x['dtAVG']
+                //         title.push(x['name']); 
+                //         Day_Max.push(x['data']); 
+                //     }); 
 
-                    //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
-                    moneda = (xbolsones)? "" : " C$ "
-                    temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
-                    temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';  
-                    temporal += '<span style="color:black">\u25CF</span> CANT. FACT.: <b>  {point.FACT} </b><br/>';                   
-                    grafiacas_productos_Diarios.tooltip = {
-                        pointFormat : temporal
-                    }
-                    vVtsDiarias = numeral(tmp_total).format('0,0.00');
-                    grafiacas_productos_Diarios.xAxis.categories = title;
-                    grafiacas_productos_Diarios.subtitle.text = " C$ " + vVtsDiarias + " Total";
-                    grafiacas_productos_Diarios.series[0].data = dta;
-
-
-                    $("#id_ventas_diarias").html(moneda + vVtsDiarias)
-
-                    Lblmoneda = (xbolsones)? "Bolsones Venta Local" :"Venta Local "
-                    $("#id_lbl_ventas_diarias").html(Lblmoneda)
-
-                    
+                //     //temporal = (xbolsones)?'<span style="color:black"><b>{point.y}</b></span>' : '<span style="color:black"><b> C$ {point.y} {point.und}</b></span>';
+                //     moneda = (xbolsones)? "" : " C$ "
+                //     temporal = '<span style="color:black">\u25CF</span> VALOR :<b>C$  {point.y} </b><br/>';
+                //     temporal += '<span style="color:black">\u25CF</span> UNITS.: <b>  {point.und} </b><br/>';  
+                //     temporal += '<span style="color:black">\u25CF</span> CANT. FACT.: <b>  {point.FACT} </b><br/>';                   
+                //     grafiacas_productos_Diarios.tooltip = {
+                //         pointFormat : temporal
+                //     }
+                //     vVtsDiarias = numeral(tmp_total).format('0,0.00');
+                //     grafiacas_productos_Diarios.xAxis.categories = title;
+                //     grafiacas_productos_Diarios.subtitle.text = " C$ " + vVtsDiarias + " Total";
+                //     grafiacas_productos_Diarios.series[0].data = dta;
 
 
+                //     $("#id_ventas_diarias").html(moneda + vVtsDiarias)
+
+                //     Lblmoneda = (xbolsones)? "Bolsones Venta Local" :"Venta Local "
+                //     $("#id_lbl_ventas_diarias").html(Lblmoneda)
 
                     
-                    Tendencia = (tmp_total / dta.length ) 
+                //     Tendencia = (tmp_total / dta.length ) 
 
-                    var var_Day_Max = Math.max.apply(Math, Day_Max);
+                //     var var_Day_Max = Math.max.apply(Math, Day_Max);
 
-                    var_Day_Max = var_Day_Max + (var_Day_Max * 0.12);
+                //     var_Day_Max = var_Day_Max + (var_Day_Max * 0.12);
                     
                     
-                    chart = new Highcharts.Chart(grafiacas_productos_Diarios);
+                //     chart = new Highcharts.Chart(grafiacas_productos_Diarios);
 
-                    chart.yAxis[0].options.plotLines[0].value = goal;
-                    chart.yAxis[0].options.plotLines[0].label.text = "P. D. M. C$ " + numeral(goal).format('0,0.00');
+                //     chart.yAxis[0].options.plotLines[0].value = goal;
+                //     chart.yAxis[0].options.plotLines[0].label.text = "P. D. M. C$ " + numeral(goal).format('0,0.00');
 
-                    chart.yAxis[0].options.plotLines[1].value = Tendencia
-                    chart.yAxis[0].options.plotLines[1].label.text = "P. D. T. C$ " + numeral(Tendencia ).format('0,0.00');
+                //     chart.yAxis[0].options.plotLines[1].value = Tendencia
+                //     chart.yAxis[0].options.plotLines[1].label.text = "P. D. T. C$ " + numeral(Tendencia ).format('0,0.00');
                     
-                    chart.yAxis[0].update();
+                //     chart.yAxis[0].update();
     
                 break;
 
