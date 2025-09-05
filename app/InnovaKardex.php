@@ -49,6 +49,7 @@ class InnovaKardex extends Model
                 $i++;
             }
             $Rows = DB::connection('sqlsrv')->select('SET NOCOUNT ON ;EXEC PRODUCCION.dbo.gnet_calc_kardex '."'".$d1."'".','."'".$d2."'".",''" );
+            
             foreach($Rows as $r){
 
                 $RoleUsr = KardexUsuario::find($r->USUARIO);

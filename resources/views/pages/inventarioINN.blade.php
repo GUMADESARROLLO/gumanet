@@ -12,7 +12,7 @@
   </div>
   
 
-    <div class="card border-0 shadow-sm ">
+    <div class="card border-0 shadow-sm " style="display:none">
       <div class="card-body col-sm-12 p-0 mb-2">	
         <div class="p-0 px-car">
           <div class="flex-between-center scrollbar border border-1 border-300 rounded-2">
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div class="card border-0 shadow-sm ">
+    <div class="card border-0 shadow-sm " style="display:none" >
       <div class="card-body col-sm-12 p-0">	
         <div class="p-0 px-car">
           <div class="">

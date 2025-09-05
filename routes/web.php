@@ -345,4 +345,7 @@ Route::post('saveInfoTransito', 'TransitoController@saveInfoTransito')->name('sa
 Route::get('AnalisisIMS', 'AnalisisIMSController@ViewHome')->name('AnalisisIMS');
 Route::post('getDataAnalisisIMS', 'AnalisisIMSController@getDataAnalisisIMS')->name('getDataAnalisisIMS');
 
+
+Route::get('/Updates', 'ControllerUpdateClientes@Updates')->name('Updates');
+
 // 
