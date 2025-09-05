@@ -136,6 +136,8 @@ Route::get('/getClientesSinComprar/{mes}/{anio}','dashboard_controller@getClient
 
 //RUTAS GRAFICAS DASHBOARDS
 Route::get('/dataGraf/{mes}/{anio}/{xbolsones}','dashboard_controller@getDataGraficas');
+Route::post('getDataSalesDaly','dashboard_controller@getSaleDaly');
+
 Route::get('/Grafselect/{mes}/{anio}/{xbolsones}/{segmento}','dashboard_controller@getDataGrafSelect');
 
 Route::get('/detailsAllCls/{mes}/{anio}/{categoria}/{bolson}','dashboard_controller@getAllClientsByCategory');

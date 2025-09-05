@@ -60,12 +60,12 @@ class dashboard_model extends Model {
     ];
     $tiempos['getVentasMes'] = microtime(true) - $inicio;
 
-    $inicio = microtime(true);
-    $dtaVtnDiarias[] = [
-        'tipo' => 'dtaVentasDiarias',
-        'data' => dashboard_model::get_Ventas_diarias($mes, $anio, $company_user, $xbolsones, 0)
-    ];
-    $tiempos['get_Ventas_diarias'] = microtime(true) - $inicio;
+    // $inicio = microtime(true);
+    // $dtaVtnDiarias[] = [
+    //     'tipo' => 'dtaVentasDiarias',
+    //     'data' => dashboard_model::get_Ventas_diarias($mes, $anio, $company_user, $xbolsones, 0)
+    // ];
+    // $tiempos['get_Ventas_diarias'] = microtime(true) - $inicio;
 
     $inicio = microtime(true);
     $dtaRecupera[] = [
@@ -123,7 +123,7 @@ class dashboard_model extends Model {
         $dtaBodega, $dtaTop10Cl, $dtaTop10Pr, $dtaVtasMes,
         $dtaRecupera, $dtaCompMesesVentas, $dtaCompMesesItems,
         $dtaVentasXCateg, $dtaClientes, $dtaProyectos,
-        $dtaVtnDiarias, $dtaDolares
+        $dtaDolares
     );
 
     // Puedes imprimir los tiempos para debug
@@ -132,7 +132,6 @@ class dashboard_model extends Model {
 
     return $array_merge;
 }
-
     
     public static function getVentasExportacion($xbolsones,$Segmento) {
         $sql_server = new \sql_server();
