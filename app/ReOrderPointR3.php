@@ -129,7 +129,8 @@ class ReOrderPointR3 extends Model
                 'PEDIDO_TOTAL'              => $value->PEDIDO_TOTAL,
                 'MOQ'                       => $value->MOQ,
                 'ULTM_COST_USD'             => $value->ULTM_COST_USD,
-                'COSTO_PROM_DOL'            => $value->COSTO_PROM_DOL
+                'COSTO_PROM_DOL'            => $value->COSTO_PROM_DOL,
+                'DESCONTINUADO'             => (in_array($value->DESCONTINUADO, ['SI', 'S'])) ? 'SI': 'NO',
             ], $PrivadoData, $DiscasaData); 
         }
 
