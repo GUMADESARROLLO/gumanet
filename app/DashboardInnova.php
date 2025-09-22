@@ -141,17 +141,20 @@ class DashboardInnova extends Model
         
         $desde      = $request->desde;
         $hasta      = $request->hasta;
+        $desdeR      = date('Y-m-01');
         $CodClien   = (int) $request->Clste;
-
-        //$desde      = '2025-06-01';
-        //$hasta      = '2025-06-30';
 
         $Today       = date('Y-m-d');
 
+        if($desde != $Today){
+            $desdeR      = $desde;
+        }
         //DIA ACTUAL
         $Clientes   = DashboardInnova::TransacionesClientes($hasta, $hasta, $CodClien);
         
         $Vendedores = DashboardInnova::TransacionesVendedores($hasta, $hasta, $CodClien);
+
+        $VendedoresRango = DashboardInnova::TransacionesVendedores($desdeR, $hasta, $CodClien);
 
         // RANGO DE FECHA
         $Ventas     = DashboardInnova::TransacionesBultosValor($desde, $hasta, $CodClien);
@@ -194,6 +197,15 @@ class DashboardInnova extends Model
             ];
         }
 
+        foreach ($VendedoresRango as $key => $value) {
+            $VendedoresRango[$key] = [
+                'CODIGO'            => $value->VENDEDOR,
+                'NOMBRE'            => $value->NOMBRE_VENDEDOR,
+                'BULTOS_TOTAL_UND'  => number_format($value->CANTIDAD, 2),  
+                'BULTOS_TOTAL_NIO'  => number_format($value->VENTA_CON_IVA, 2),
+            ];
+        }
+
         //MUESTRA EL VALOR Y CANTIDADDES DE BULTOS ENTRE EL GANGO DE FECHA
         foreach ($Articulos->get() as $key => $value) {  
 
@@ -222,6 +234,7 @@ class DashboardInnova extends Model
             'Metricas' => $Metricas,
             'Clientes' => $Clientes,
             'Vendedores' => $Vendedores,
+            'VendedoresRango' => $VendedoresRango,
             'SKU_CHART' => [
                 'data' => $SKU_CHART,
                 'Totals' => 
@@ -229,6 +242,7 @@ class DashboardInnova extends Model
                 
             ],
             'CLS_CHART' => $CLS_CHART,
+            'DESDER'    => $desdeR,
             'DESDE'     => $desde,
             'HASTA'     => $hasta
         ];

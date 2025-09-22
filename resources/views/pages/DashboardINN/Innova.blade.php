@@ -112,13 +112,13 @@
     </div>
 
     <!-- Tablas -->
-    <div class="row g-4 mb-4">      
-      <div class="col-md-6">
+    <div class="row g-3 mb-4"> 
+      <div class="row col-md-6 g-2 mb-4">   
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
               <h6 class="mb-0 text-bold">CLIENTES FACTURADOS AL: <b><span id="fechaClienteFact" >0000/00/00</span></b> </h6>
-              <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
             </div>
           </div>
           <div class="card-body">
@@ -126,16 +126,29 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
               <h6 class="mb-0">VENTAS POR VENDEDOR: <b><span id="fechaVentaVendedor" >0000/00/00</span></b></h6>
-              <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
             </div>
           </div>
           <div class="card-body">
             <table id="vendedoresTable" class="display" style="width:100%"></table>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-inn-card text-white">            
+            <div class="d-flex justify-content-between">
+              <h6 class="mb-0">VENDEDORES: <b><span id="fechaRangoVentaVendedor" >0000/00/00</span></b></h6>
+            </div>
+          </div>
+          <div class="card-body">
+            <table id="vendedoresRangoTable" class="display" style="width:100%"></table>
           </div>
         </div>
       </div>
@@ -174,7 +187,6 @@
           <div class="card-header bg-innova text-white">            
             <div class="d-flex justify-content-between">
               <h6 class="mb-0">TOP SKUs VENTAS NETAS</h6>
-              <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
             </div>
             <p class="text-white mb-0" id="fechaSKU">00/00/0000 al  00/00/0000</p>
           </div>
@@ -204,7 +216,6 @@
           <div class="card-header bg-innova text-white">            
             <div class="d-flex justify-content-between">
               <h6 class="mb-0">TOP CLIENTES VENTAS NETAS</h6>
-              <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
             </div>
             <p class="text-white mb-0" id="fechaVentaNeta">00/00/0000 al  00/00/0000</p>
           </div>
@@ -300,7 +311,6 @@
             <div class="card-header bg-innova text-white">
               <div class="d-flex justify-content-between">
               <h6 class="mb-0">GRAFICO YTD VENTAS</h6>
-              <a href="#!" class="text-white mb-0" onClick="OnWay();" >Detalles <i class="fas fa-arrow-alt-circle-right"></i></a>
             </div>
           </div>
           <div class="card-body">

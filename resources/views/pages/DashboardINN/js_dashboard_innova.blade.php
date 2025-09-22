@@ -398,6 +398,7 @@
 
             loadAndBuildTable('#clientesTable', result.ACTUAL.Clientes);            
             loadAndBuildTable('#vendedoresTable', result.ACTUAL.Vendedores);
+            loadAndBuildTable('#vendedoresRangoTable', result.ACTUAL.VendedoresRango);
             TBL_TOP_SKU('#tbl_top_sku', result.ACTUAL.SKU_CHART.data);
             TBL_TOP_CLIENTES('#tbl_top_clientes', result.ACTUAL.CLS_CHART);
             renderSKUPieChart(result.ACTUAL.SKU_CHART.data);
@@ -417,6 +418,7 @@
             $('#bultos_anterior').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ANTERIOR);
             $('#fechaClienteFact').text(result.ACTUAL.HASTA);
             $('#fechaVentaVendedor').text(result.ACTUAL.HASTA);
+            $('#fechaRangoVentaVendedor').text(moment(result.ACTUAL.DESDER).format('D MMM. YYYY') + ' al ' + moment(result.ACTUAL.HASTA).format('D MMM. YYYY'),);
             $('#fechaSKU').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
             $('#fechaVentaNeta').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
 
