@@ -28,6 +28,7 @@
         { data: "LEADTIME", title: "LEADTIME", class: "text-Left" },
         { data: "CATEGORIA", title: "CATEGORIA", class: "text-right" },     
         { data: "LOTE", title: "LOTE", class: "text-left" },   
+        { data: "DESCONTINUADO", title: "DESCONTINUADO", class: "text-center"},
         { data: "FECHA_VENCE_LOTE", title: "VENC. LOTE", class: "text-left" },   
         { data: "CANTIDAD_INGRESADA", title: "ULT. CANT. INGRESADA", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "CANT_VENCE_LOTE", title: "CANT. VENCE LOTE", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },           

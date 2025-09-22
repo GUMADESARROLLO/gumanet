@@ -142,6 +142,20 @@ return [
                 PDO::SQLSRV_ATTR_QUERY_TIMEOUT => 300
             ],
         ],
+        'sqlsrv_old' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_SQL_HOST_OLD', 'localhost'),
+            'port' => env('DB_SQL_PORT_OLD', '1433'),
+            'database' => env('DB_SQL_DATABASE_OLD', 'forge'),
+            'username' => env('DB_SQL_USERNAME_OLD', 'forge'),
+            'password' => env('DB_SQL_PASSWORD_OLD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'options'   => [
+                PDO::SQLSRV_ATTR_QUERY_TIMEOUT => 300
+            ],
+        ],
 
     ],
 

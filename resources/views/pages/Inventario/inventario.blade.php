@@ -159,6 +159,7 @@
                 <div class="card shadow-0 border rounded-3">
                   <div class="card-body">
                     <div class="row">
+                      @if (session('company_id') != 4)
                       <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                         <div class="bg-image hover-zoom ripple rounded ripple-surface">
                           <img src="{{ asset('img/placeholder.jpg') }}" id="id_product_img"
@@ -170,6 +171,7 @@
                           </a>
                         </div>
                       </div>
+                      @endif
                       <div class="col-md-6 col-lg-6 col-xl-6">
                         <h5 id="tArticulo" >Quant trident shirts</h5>
                         <div class="d-flex flex-row">
@@ -204,7 +206,21 @@
             </div>
           </div>
         </section>
-      
+        
+        @if (session('company_id') == 4)
+        <nav>
+          <div class="nav nav-tabs mt-3" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="navBodega" data-toggle="tab" href="#nav-bod" role="tab" aria-controls="nav-bod" aria-selected="true">Bodega</a>
+            <a class="nav-item nav-link" id="navPrecios" data-toggle="tab" href="#nav-prec" role="tab" aria-controls="nav-prec" aria-selected="false">Precios</a>
+            <a class="nav-item nav-link" id="navBonificados" data-toggle="tab" href="#nav-boni" role="tab" aria-controls="nav-boni" aria-selected="false">Bonificados</a>
+            @if( Auth::User()->role == 1  || Auth::User()->role== 2 || Auth::User()->role== 6 || Auth::User()->role== 7 )
+              <a class="nav-item nav-link" id="navCostos" data-toggle="tab" href="#nav-costos" role="tab" aria-controls="nav-trans" aria-selected="false">Costos</a>
+            @endif
+            <a class="nav-item nav-link" id="navTransaccion" data-toggle="tab" href="#nav-trans" role="tab" aria-controls="nav-trans" aria-selected="false">Transacciones</a>
+            
+          </div>
+        </nav>
+        @else
         <nav>
           <div class="nav nav-tabs mt-3" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="navBodega" data-toggle="tab" href="#nav-bod" role="tab" aria-controls="nav-bod" aria-selected="true">Bodega</a>
@@ -224,6 +240,7 @@
             
           </div>
         </nav>
+        @endif
         <div class="tab-content" id="nav-tabContent">
 
           <div class="tab-pane fade show active" id="nav-bod" role="tabpanel" aria-labelledby="navBodega">

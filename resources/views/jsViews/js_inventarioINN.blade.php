@@ -84,20 +84,22 @@ function tblKardex(primerDia, ultimoDia) {
                     `<tbody style="scrollbar: collapse;">`;
                         $.each(data['header_date_rows'], function (i, item) {
                             table +=`<tr>`+
-                                        `<td style="width: 700px; ">`+
+                                        `<td>`+
                                             `<div class="d-flex position-relative">`+
-                                                `<div class="flex-1" style="width: 400px; ">`+
-                                                    `<h6 class="mb-0 fw-semi-bold">`+ item.DESCRIPCION +`</h6>`+
-                                                    `<p class="text-500 fs--2 mb-0">`+ item.ARTICULO +` | `+item.UND+` | <span class="badge rounded-pill badge-primary">`+item.USUARIO  +`</span></b></p>`+
+                                                `<div class="flex-1" >`+
+                                                    `<h6 class="mb-0 fw-semi-bold">`+ item.ARTICULO + ` |  ` + item.DESCRIPCION + ` |  ` + item.UND  +`</h6>`+
                                                 `</div>`+
                                             `</div>`+
                                         `</td>`;
+                                        
                                         $.each(data['header_date'], function (i, kar) {
-                                            table += `<td> <p class="text-right" style="width: 60px;">`+numeral(item['IN01_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p> </td>`+
-                                                    `<td> <p class="text-right" style="width: 60px;">`+numeral(item['OUT02_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p></td>`+
-                                                    `<td> <p class="text-right" style="width: 60px;">`+numeral(item['STOCK03_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</p></td>`;
+
+                                            table += `<td class="text-right">`+numeral(item['IN01_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+` </td>`+
+                                                    `<td class="text-right"> `+numeral(item['OUT02_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</td>`+
+                                                    `<td class="text-right"> `+numeral(item['STOCK03_'+moment(kar).format('YYYYMMDD')]).format('0,0.00')+`</td>`;
                                         });
                                         table += `</tr>`;
+
                                 
                                
                     });
@@ -109,7 +111,7 @@ function tblKardex(primerDia, ultimoDia) {
             $('#tbl_kardex').DataTable({
                 "destroy" : true,
                 "info":    false,
-                "lengthMenu": [[15,10,-1], [15,10,"Todo"]],
+                "lengthMenu": [[7,10,-1], [,10,"Todo"]],
                 "language": {
                     "zeroRecords": "NO HAY COINCIDENCIAS",
                     "paginate": {
@@ -131,32 +133,32 @@ function tblKardex(primerDia, ultimoDia) {
                 },
                 createdRow: function (row, data, index) {
                     // Obtener la referencia a la tabla DataTable
-                    var table = $('#tbl_kardex').DataTable();
+                    // var table = $('#tbl_kardex').DataTable();
 
-                    // Obtener las últimas tres celdas de la fila actual
-                    var lastCells = $('td', row).slice(-3);
+                    // // Obtener las últimas tres celdas de la fila actual
+                    // var lastCells = $('td', row).slice(-3);
 
-                    // Agregar la clase CSS personalizada a esas celdas
-                    lastCells.addClass('colorTable');
-                    lastCells.addClass('encabezadoInv');
-                    lastCells.hide();
+                    // // Agregar la clase CSS personalizada a esas celdas
+                    // lastCells.addClass('colorTable');
+                    // lastCells.addClass('encabezadoInv');
+                    // lastCells.hide();
                     
 
-                    // Obtener las cabeceras de las últimas tres celdas de la tabla
-                    var lastHeaders = $('th', table.table().header()).slice(-3);
+                    // // Obtener las cabeceras de las últimas tres celdas de la tabla
+                    // var lastHeaders = $('th', table.table().header()).slice(-3);
 
-                    // Agregar la clase CSS personalizada a esas cabeceras
-                    lastHeaders.addClass('colorTable');
-                    lastHeaders.hide();
+                    // // Agregar la clase CSS personalizada a esas cabeceras
+                    // lastHeaders.addClass('colorTable');
+                    // lastHeaders.hide();
                     
 
-                    // Obtener la última cabecera de la tabla (corresponde a las tres ultimas columnas)
-                    var lastHeader = $('th:last-child', '#tbl_kardex');
+                    // // Obtener la última cabecera de la tabla (corresponde a las tres ultimas columnas)
+                    // var lastHeader = $('th:last-child', '#tbl_kardex');
 
-                    // Agregar la clase CSS personalizada a esa cabecera
-                    lastHeader.addClass('colorTable');
-                    lastHeader.addClass('text-dark');
-                    lastHeader.hide();
+                    // // Agregar la clase CSS personalizada a esa cabecera
+                    // lastHeader.addClass('colorTable');
+                    // lastHeader.addClass('text-dark');
+                    // lastHeader.hide();
                     
                 }
             });

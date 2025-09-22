@@ -165,7 +165,17 @@ class dashboard_controller extends Controller {
   }
 
   public function getDataGraficas($mes, $anio, $xbolsones) {
-    $obj = json_encode(dashboard_model::getDataGraficas($mes, $anio, $xbolsones));
+
+    $Key = 'getDataGraficas_'.$mes."_".$anio."_".$xbolsones;
+
+    $cached = Redis::get($Key);
+    if ($cached) {
+        $obj = $cached;
+    } else {
+        $obj = json_encode(dashboard_model::getDataGraficas($mes, $anio, $xbolsones));
+        Redis::setex($Key, 900, $obj);
+    }
+    
     return response()->json(json_decode($obj));
   }
 
