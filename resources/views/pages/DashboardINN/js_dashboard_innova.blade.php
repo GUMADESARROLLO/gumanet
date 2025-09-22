@@ -48,15 +48,17 @@
       });
 
 
+      var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+      var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+
 
       $('#filtrarFechas').on('click', function() {
-
           var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
           var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
 
           CallFilter( desde, hasta );        
       });
-
       
 
 
@@ -64,6 +66,8 @@
         var searchTerm = $(this).val().toLowerCase();
         $('#tbl_topsku_clientes').DataTable().search(searchTerm).draw();
       });
+
+      CallFilter( desde, hasta );  
 
 
   });
