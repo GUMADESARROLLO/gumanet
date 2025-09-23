@@ -118,7 +118,7 @@
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
-              <h6 class="mb-0 text-bold">CLIENTES FACTURADOS AL: <b><span id="fechaClienteFact" >0000/00/00</span></b> </h6>
+              <h6 class="mb-0 text-bold">CLIENTES FACT.: <b><span id="fechaClienteFact" >0000/00/00</span></b> </h6>
             </div>
           </div>
           <div class="card-body">
@@ -130,7 +130,7 @@
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
-              <h6 class="mb-0">VENTAS POR VENDEDOR: <b><span id="fechaVentaVendedor" >0000/00/00</span></b></h6>
+              <h6 class="mb-0">VENDEDORES: <b><span id="fechaVentaVendedor" >0000/00/00</span></b></h6>
             </div>
           </div>
           <div class="card-body">
