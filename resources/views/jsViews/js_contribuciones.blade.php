@@ -88,6 +88,7 @@ $(document).ready(function () {
                     $("#f1").val( moment(periodo.primera_fecha).format('YYYY-MM-DD'));
                     $("#f2").val( moment(periodo.ultima_fecha).format('YYYY-MM-DD'));
                 }
+
                 JsonCanal = json.Registros;
                 return json.Registros;
             }
@@ -348,7 +349,7 @@ $(document).ready(function () {
         },    
         stateSave: true,
         fixedColumns: {
-            start: 4
+            start: 8
         },
         paging: true,
         scrollCollapse: true,
@@ -359,6 +360,10 @@ $(document).ready(function () {
             {"data": "DESCRIPCION"},
             {"data": "FABRICANTE"},
             {"data": "CATEGORIA"},
+            {"data": "INVENTARIO", render: $.fn.dataTable.render.number(',', '.', 2, '')},
+            {"data": "PEDIDO", render: $.fn.dataTable.render.number(',', '.', 2, '')},
+            {"data": "TRANSITO", render: $.fn.dataTable.render.number(',', '.', 2, '')},
+            {"data": "PROM_NORMAL", render: $.fn.dataTable.render.number(',', '.', 2, '')},
             {"data": "FARMACIA_CANTIDAD", "render": function(data, type, row, meta) {                
                 return '<a href="#" onclick="getDetalleCanal(\'' + row.ARTICULODESC + '\',\'FARMACIAS\', \'' + row.DESCRIPCION + '\', 0)">' + data + '</a>';
             }},
@@ -420,31 +425,31 @@ $(document).ready(function () {
                 var cantidad = 0;
                 var viArray = [];
 
-                if (ctable.column(4).visible()) {
+                if (ctable.column(7).visible()) {
                     cantidad += parseFloat(row.FARMACIA_CANTIDAD.replace(/,/g, ''));
                 }else {viArray.push('FARMACIAS');}
                 
-                if (ctable.column(10).visible()) {
+                if (ctable.column(13).visible()) {
                     cantidad += parseFloat(row.CADENA_FARMACIA_CANTIDAD.replace(/,/g, ''));
                 }else{viArray.push('CADENAS');}
 
-                if (ctable.column(16).visible()) {
+                if (ctable.column(19).visible()) {
                     cantidad += parseFloat(row.MAYORISTA_CANTIDAD.replace(/,/g, ''));
                 }else{viArray.push('MAYORISTAS');}
 
-                if (ctable.column(22).visible()) {
+                if (ctable.column(25).visible()) {
                     cantidad += parseFloat(row.INSTITUCION_PRIVADA_CANTIDAD.replace(/,/g, ''));
                 }else{viArray.push('INSTITUCIONES_PRIVADAS');}
 
-                if (ctable.column(28).visible()) {
+                if (ctable.column(31).visible()) {
                     cantidad += parseFloat(row.CRUZ_AZUL_CANTIDAD.replace(/,/g, ''));
                 }else{viArray.push('CRUZ_AZUL');}
 
-                if (ctable.column(34).visible()) {
+                if (ctable.column(37).visible()) {
                     cantidad += parseFloat(row.INSTITUCION_PUBLICA_CANTIDAD.replace(/,/g, ''));
                 }else{viArray.push('INSTITUCIONES_PUBLICAS');}
 
-                if (ctable.column(40).visible()) {
+                if (ctable.column(43).visible()) {
                     cantidad += parseFloat(row.LICITACION_CANTIDAD.replace(/,/g, ''));
                 }else{viArray.push('LICITACIONES');}
 
@@ -459,37 +464,37 @@ $(document).ready(function () {
                 var venta = 0;
                 var cantidad = 0;
 
-                if (ctable.column(4).visible()) {
+                if (ctable.column(7).visible()) {
                     venta += parseFloat(row.FARMACIA_VENTA.replace(/,/g, ''));
                     cantidad += parseFloat(row.FARMACIA_CANTIDAD.replace(/,/g, ''));
                 }
                 
-                if (ctable.column(10).visible()) {
+                if (ctable.column(13).visible()) {
                     venta += parseFloat(row.CADENA_FARMACIA_VENTA.replace(/,/g, ''));
                     cantidad += parseFloat(row.CADENA_FARMACIA_CANTIDAD.replace(/,/g, ''));
                 }
 
-                if (ctable.column(16).visible()) {
+                if (ctable.column(19).visible()) {
                     venta += parseFloat(row.MAYORISTA_VENTA.replace(/,/g, ''));
                     cantidad += parseFloat(row.MAYORISTA_CANTIDAD.replace(/,/g, ''));
                 }
 
-                if (ctable.column(22).visible()) {
+                if (ctable.column(25).visible()) {
                     venta += parseFloat(row.INSTITUCION_PRIVADA_VENTA.replace(/,/g, ''));
                     cantidad += parseFloat(row.INSTITUCION_PRIVADA_CANTIDAD.replace(/,/g, ''));
                 }
 
-                if (ctable.column(28).visible()) {
+                if (ctable.column(31).visible()) {
                     venta += parseFloat(row.CRUZ_AZUL_VENTA.replace(/,/g, ''));
                     cantidad += parseFloat(row.CRUZ_AZUL_CANTIDAD.replace(/,/g, ''));
                 }
 
-                if (ctable.column(34).visible()) {
+                if (ctable.column(37).visible()) {
                     venta += parseFloat(row.INSTITUCION_PUBLICA_VENTA.replace(/,/g, ''));
                     cantidad += parseFloat(row.INSTITUCION_PUBLICA_CANTIDAD.replace(/,/g, ''));
                 }
 
-                if (ctable.column(40).visible()) {
+                if (ctable.column(43).visible()) {
                     venta += parseFloat(row.LICITACION_VENTA.replace(/,/g, ''));
                     cantidad += parseFloat(row.LICITACION_CANTIDAD.replace(/,/g, ''));
                 }
@@ -500,31 +505,31 @@ $(document).ready(function () {
                 var ctable = $('#table_contribucion').DataTable();
                 var venta = 0;
 
-                if (ctable.column(4).visible()) {
+                if (ctable.column(8).visible()) {
                     venta += parseFloat(row.FARMACIA_VENTA.replace(/,/g, ''));
                 }
                 
-                if (ctable.column(10).visible()) {
+                if (ctable.column(14).visible()) {
                     venta += parseFloat(row.CADENA_FARMACIA_VENTA.replace(/,/g, ''));
                 }
 
-                if (ctable.column(16).visible()) {
+                if (ctable.column(20).visible()) {
                     venta += parseFloat(row.MAYORISTA_VENTA.replace(/,/g, ''));
                 }
 
-                if (ctable.column(22).visible()) {
+                if (ctable.column(26).visible()) {
                     venta += parseFloat(row.INSTITUCION_PRIVADA_VENTA.replace(/,/g, ''));
                 }
 
-                if (ctable.column(28).visible()) {
+                if (ctable.column(32).visible()) {
                     venta += parseFloat(row.CRUZ_AZUL_VENTA.replace(/,/g, ''));
                 }
 
-                if (ctable.column(34).visible()) {
+                if (ctable.column(38).visible()) {
                     venta += parseFloat(row.INSTITUCION_PUBLICA_VENTA.replace(/,/g, ''));
                 }
 
-                if (ctable.column(40).visible()) {
+                if (ctable.column(44).visible()) {
                     venta += parseFloat(row.LICITACION_VENTA.replace(/,/g, ''));
                 }
 
@@ -534,31 +539,31 @@ $(document).ready(function () {
                 var ctable = $('#table_contribucion').DataTable();
                 var costo = 0;
 
-                if (ctable.column(4).visible()) {
+                if (ctable.column(8).visible()) {
                     costo += parseFloat(row.FARMACIA_COSTO.replace(/,/g, ''));
                 }
                 
-                if (ctable.column(10).visible()) {
+                if (ctable.column(14).visible()) {
                     costo += parseFloat(row.CADENA_FARMACIA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(16).visible()) {
+                if (ctable.column(20).visible()) {
                     costo += parseFloat(row.MAYORISTA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(22).visible()) {
+                if (ctable.column(26).visible()) {
                     costo += parseFloat(row.INSTITUCION_PRIVADA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(28).visible()) {
+                if (ctable.column(32).visible()) {
                     costo += parseFloat(row.CRUZ_AZUL_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(34).visible()) {
+                if (ctable.column(38).visible()) {
                     costo += parseFloat(row.INSTITUCION_PUBLICA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(40).visible()) {
+                if (ctable.column(42).visible()) {
                     costo += parseFloat(row.LICITACION_COSTO.replace(/,/g, ''));
                 }
 
@@ -569,37 +574,37 @@ $(document).ready(function () {
                 var venta = 0;
                 var costo = 0;
 
-                if (ctable.column(4).visible()) {
+                if (ctable.column(8).visible()) {
                     venta += parseFloat(row.FARMACIA_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.FARMACIA_COSTO.replace(/,/g, ''));
                 }
                 
-                if (ctable.column(10).visible()) {
+                if (ctable.column(14).visible()) {
                     venta += parseFloat(row.CADENA_FARMACIA_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.CADENA_FARMACIA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(16).visible()) {
+                if (ctable.column(20).visible()) {
                     venta += parseFloat(row.MAYORISTA_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.MAYORISTA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(22).visible()) {
+                if (ctable.column(26).visible()) {
                     venta += parseFloat(row.INSTITUCION_PRIVADA_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.INSTITUCION_PRIVADA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(28).visible()) {
+                if (ctable.column(32).visible()) {
                     venta += parseFloat(row.CRUZ_AZUL_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.CRUZ_AZUL_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(34).visible()) {
+                if (ctable.column(38).visible()) {
                     venta += parseFloat(row.INSTITUCION_PUBLICA_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.INSTITUCION_PUBLICA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(40).visible()) {
+                if (ctable.column(44).visible()) {
                     venta += parseFloat(row.LICITACION_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.LICITACION_COSTO.replace(/,/g, ''));
                 }
@@ -611,37 +616,37 @@ $(document).ready(function () {
                 var venta = 0;
                 var costo = 0;
 
-                if (ctable.column(4).visible()) {
+                if (ctable.column(8).visible()) {
                     venta += parseFloat(row.FARMACIA_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.FARMACIA_COSTO.replace(/,/g, ''));
                 }
                 
-                if (ctable.column(10).visible()) {
+                if (ctable.column(14).visible()) {
                     venta += parseFloat(row.CADENA_FARMACIA_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.CADENA_FARMACIA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(16).visible()) {
+                if (ctable.column(20).visible()) {
                     venta += parseFloat(row.MAYORISTA_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.MAYORISTA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(22).visible()) {
+                if (ctable.column(26).visible()) {
                     venta += parseFloat(row.INSTITUCION_PRIVADA_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.INSTITUCION_PRIVADA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(28).visible()) {
+                if (ctable.column(32).visible()) {
                     venta += parseFloat(row.CRUZ_AZUL_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.CRUZ_AZUL_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(34).visible()) {
+                if (ctable.column(38).visible()) {
                     venta += parseFloat(row.INSTITUCION_PUBLICA_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.INSTITUCION_PUBLICA_COSTO.replace(/,/g, ''));
                 }
 
-                if (ctable.column(40).visible()) {
+                if (ctable.column(44).visible()) {
                     venta += parseFloat(row.LICITACION_VENTA.replace(/,/g, ''));
                     costo += parseFloat(row.LICITACION_COSTO.replace(/,/g, ''));
                 }
@@ -651,14 +656,14 @@ $(document).ready(function () {
         ],
         "columnDefs": [        
             {"className": "dt-center", "targets":[ 3 ]},               
-            {"className": "dt-right", "targets": [ 4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45 ]},
+            { "className": "dt-right", "targets": [ 7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48 ]}, 
             { "width": "200px", "targets": [ 1 ] },
-            { "width": "10px", "targets": [ 4, 5, 6, 7, 9, 10, 11, 12, 13, 16, 18, 19, 22, 24, 25, 28, 30, 31, 36, 37, 40, 41, 42, 43 ] },
-            { "width": "10px", "targets": [ 8, 14, 20, 26, 32, 38, 44 ] },
-            { "width": "10px", "targets": [ 35 ] },
-            { "width": "10px", "targets": [ 17, 23, 29, 34 ] },
-            { "width": "10px", "targets": [ 9, 15, 21, 27, 33, 45 ] },
-            { "width": "50px", "targets": [ 39 ] }
+            { "width": "10px", "targets": [ 7, 8, 9, 10, 12, 13, 14, 15, 16, 19, 21, 22, 25, 27, 28, 31, 33, 34, 39, 40, 43, 44, 45, 46 ] },
+            { "width": "10px", "targets": [ 11, 17, 23, 29, 35, 41, 47 ] },
+            { "width": "10px", "targets": [ 38 ] },
+            { "width": "10px", "targets": [ 20, 26, 32, 37 ] },
+            { "width": "10px", "targets": [ 12, 18, 24, 30, 36, 48 ] },
+            { "width": "50px", "targets": [ 42 ] }
         ],
         "initComplete": function(settings, json) {
             const buttons = [selectedButton, buttonCadena, buttonMayorista, buttonPrivada, buttonCruzAzul, buttonPublica, buttonLicitacion];
@@ -760,6 +765,36 @@ function calcularTotales(table) {
     var Licitacion_Cantidad = Licitacion_Costo = Licitacion_Venta = Licitacion_Contribucion = 0;
     var Total_Cantidad = Total_Costo = Total_Venta = Total_Contribucion = 0;
     
+    const config = {
+        cantidad: [
+            { col: 8,  field: "FARMACIA_CANTIDAD" },
+            { col: 14, field: "CADENA_FARMACIA_CANTIDAD" },
+            { col: 20, field: "MAYORISTA_CANTIDAD" },
+            { col: 26, field: "INSTITUCION_PRIVADA_CANTIDAD" },
+            { col: 32, field: "CRUZ_AZUL_CANTIDAD" },
+            { col: 38, field: "INSTITUCION_PUBLICA_CANTIDAD" },
+            { col: 44, field: "LICITACION_CANTIDAD" }
+        ],
+        venta: [
+            { col: 10,  field: "FARMACIA_VENTA" },
+            { col: 16, field: "CADENA_FARMACIA_VENTA" },
+            { col: 22, field: "MAYORISTA_VENTA" },
+            { col: 28, field: "INSTITUCION_PRIVADA_VENTA" },
+            { col: 34, field: "CRUZ_AZUL_VENTA" },
+            { col: 40, field: "INSTITUCION_PUBLICA_VENTA" },
+            { col: 46, field: "LICITACION_VENTA" }
+        ],
+        costo: [
+            { col: 11, field: "FARMACIA_COSTO" },
+            { col: 17, field: "CADENA_FARMACIA_COSTO" },
+            { col: 23, field: "MAYORISTA_COSTO" },
+            { col: 29, field: "INSTITUCION_PRIVADA_COSTO" },
+            { col: 35, field: "CRUZ_AZUL_COSTO" },
+            { col: 41, field: "INSTITUCION_PUBLICA_COSTO" },
+            { col: 47, field: "LICITACION_COSTO" }
+        ]
+    };
+
     
     table.rows({ search: 'applied' }).every(function() {
         var data = this.data();
@@ -805,71 +840,20 @@ function calcularTotales(table) {
         Licitacion_Venta       += parseFloat(data.LICITACION_VENTA) || 0;
         Licitacion_Costo       += parseFloat(data.LICITACION_COSTO) || 0;
         Licitacion_Contribucion+= parseFloat(data.LICITACION_CONTRIBUCION) || 0;
+  
+        // Función para acumular según config
+        function acumularTotales(tipo, total) {
+            config[tipo].forEach(({ col, field }) => {
+                if (table.column(col).visible()) {
+                    total += parseFloat(data[field]) || 0;
+                }
+            });
+            return total;
+        }
 
-        // TOTAL DE TOTALES
-        if (table.column(4).visible()) {
-            Total_Cantidad      += parseFloat(data.FARMACIA_CANTIDAD) || 0;
-        }
-        if (table.column(10).visible()) {
-            Total_Cantidad      += parseFloat(data.CADENA_FARMACIA_CANTIDAD) || 0;
-        }
-        if (table.column(16).visible()) {
-            Total_Cantidad      += parseFloat(data.MAYORISTA_CANTIDAD) || 0;
-        }
-        if (table.column(22).visible()) {
-            Total_Cantidad      += parseFloat(data.INSTITUCION_PRIVADA_CANTIDAD) || 0;
-        }
-        if (table.column(28).visible()) {
-            Total_Cantidad      += parseFloat(data.CRUZ_AZUL_CANTIDAD) || 0;
-        }
-        if (table.column(34).visible()) {
-            Total_Cantidad      += parseFloat(data.INSTITUCION_PUBLICA_CANTIDAD) || 0;
-        }
-        if (table.column(40).visible()) {
-            Total_Cantidad      += parseFloat(data.LICITACION_CANTIDAD) || 0;
-        }
-        if (table.column(6).visible()) {
-            Total_Venta         += parseFloat(data.FARMACIA_VENTA) || 0;
-        }
-        if (table.column(12).visible()) {
-            Total_Venta         += parseFloat(data.CADENA_FARMACIA_VENTA) || 0;
-        }
-        if (table.column(18).visible()) {
-            Total_Venta         += parseFloat(data.MAYORISTA_VENTA) || 0;
-        }
-        if (table.column(24).visible()) {
-            Total_Venta         += parseFloat(data.INSTITUCION_PRIVADA_VENTA) || 0;
-        }
-        if (table.column(30).visible()) {
-            Total_Venta        += parseFloat(data.CRUZ_AZUL_VENTA) || 0;
-        }
-        if (table.column(36).visible()) {
-            Total_Venta         += parseFloat(data.INSTITUCION_PUBLICA_VENTA) || 0;
-        }
-        if (table.column(42).visible()) {
-            Total_Venta        += parseFloat(data.LICITACION_VENTA) || 0;
-        }
-        if (table.column(7).visible()) {
-            Total_Costo         += parseFloat(data.FARMACIA_COSTO) || 0;
-        }
-        if (table.column(13).visible()) {
-            Total_Costo         += parseFloat(data.CADENA_FARMACIA_COSTO) || 0;
-        }
-        if (table.column(19).visible()) {
-            Total_Costo         += parseFloat(data.MAYORISTA_COSTO) || 0;
-        }
-        if (table.column(25).visible()) {
-            Total_Costo         += parseFloat(data.INSTITUCION_PRIVADA_COSTO) || 0;
-        }
-        if (table.column(31).visible()) {
-            Total_Costo         += parseFloat(data.CRUZ_AZUL_COSTO) || 0;
-        }
-        if (table.column(37).visible()) {
-            Total_Costo         += parseFloat(data.INSTITUCION_PUBLICA_COSTO) || 0;
-        }
-        if (table.column(43).visible()) {
-            Total_Costo         += parseFloat(data.LICITACION_COSTO) || 0;
-        }
+        Total_Cantidad = acumularTotales("cantidad", Total_Cantidad);
+        Total_Venta    = acumularTotales("venta", Total_Venta);
+        Total_Costo    = acumularTotales("costo", Total_Costo);
         
     })
     
