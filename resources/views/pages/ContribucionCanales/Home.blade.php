@@ -66,7 +66,7 @@
             <table id="table_contribucion" class="table table-bordered table-sm" width="100%">
               <thead>
                 <tr class="bg-blue text-light">
-                  <th class="bg-blue text-light" colspan="4">SKU</th>
+                  <th class="bg-blue text-light" colspan="8">SKU</th>
                   <th colspan="6">FARMACIA</th>
                   <th colspan="6">CADENA FARMACIA</th>
                   <th colspan="6">MAYORISTA</th>
@@ -77,7 +77,7 @@
                   <th colspan="6">TOTAL</th>
                 </tr>
                 <tr>
-                  <th class="bg-blue" colspan="4"></th>
+                  <th class="bg-blue" colspan="8"></th>
                   <th id="Farmacia_Cantidad"></th>
                   <th id="Farmacia_Promedio"></th>
                   <th id="Farmacia_Venta"></th>
@@ -132,6 +132,10 @@
                     <th class="bg-blue text-light">DESCRIPCION</th>
                     <th class="bg-blue text-light">FABRICANTE</th>
                     <th class="bg-blue text-light">CATEGORIA</th>
+                    <th class="bg-blue text-light">INVENTARIO</th>
+                    <th class="bg-blue text-light">PEDIDO</th>
+                    <th class="bg-blue text-light">TRANSITO</th>
+                    <th class="bg-blue text-light">PROM. NORMAL</th>
                     <th class="bg-warning text-black">F. UNDS</th>
                     <th class="bg-warning text-black">F. PREC. P</th>
                     <th class="bg-warning text-black">F. VTA</th>

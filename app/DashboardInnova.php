@@ -191,7 +191,7 @@ class DashboardInnova extends Model
         foreach ($Vendedores as $key => $value) {
             $Vendedores[$key] = [
                 'CODIGO'            => $value->VENDEDOR,
-                'NOMBRE'            => $value->NOMBRE_VENDEDOR,
+                'NOMBRE'            => strtoupper($value->NOMBRE_VENDEDOR),
                 'BULTOS_TOTAL_UND'  => number_format($value->CANTIDAD, 2),  
                 'BULTOS_TOTAL_NIO'  => number_format($value->VENTA_SIN_IVA, 2),
             ];
@@ -200,7 +200,7 @@ class DashboardInnova extends Model
         foreach ($VendedoresRango as $key => $value) {
             $VendedoresRango[$key] = [
                 'CODIGO'            => $value->VENDEDOR,
-                'NOMBRE'            => $value->NOMBRE_VENDEDOR,
+                'NOMBRE'            => strtoupper($value->NOMBRE_VENDEDOR),
                 'BULTOS_TOTAL_UND'  => number_format($value->CANTIDAD, 2),  
                 'BULTOS_TOTAL_NIO'  => number_format($value->VENTA_CON_IVA, 2),
             ];

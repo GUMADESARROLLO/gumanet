@@ -75,7 +75,7 @@
 
   function CallFilter( desde = null, hasta = null ) {
 
-      $("#tl_periodo").html(`<b>${desde}</b> a <b>${hasta}</b>`);
+      $('#tl_periodo').html(`<b>${moment(desde).format('D MMM. YYYY')}</b> al <b>${moment(hasta).format('D MMM. YYYY')}</b>`);
       
       cargarGetDataInnova(desde, hasta);
     
@@ -420,11 +420,11 @@
             $('#bultos_valor').text(result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
             $('#bultos_actual').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ACTUAL);
             $('#bultos_anterior').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ANTERIOR);
-            $('#fechaClienteFact').text(result.ACTUAL.HASTA);
-            $('#fechaVentaVendedor').text(result.ACTUAL.HASTA);
+            $('#fechaClienteFact').text(moment(result.ACTUAL.HASTA).format('D MMM. YYYY'));
+            $('#fechaVentaVendedor').text(moment(result.ACTUAL.HASTA ).format('D MMM. YYYY'));
             $('#fechaRangoVentaVendedor').text(moment(result.ACTUAL.DESDER).format('D MMM. YYYY') + ' al ' + moment(result.ACTUAL.HASTA).format('D MMM. YYYY'),);
-            $('#fechaSKU').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
-            $('#fechaVentaNeta').text(result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
+            $('#fechaSKU').text( moment(result.ACTUAL.DESDE).format('D MMM. YYYY') + ' al ' + moment(result.ACTUAL.HASTA).format('D MMM. YYYY'),); //result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
+            $('#fechaVentaNeta').text( moment(result.ACTUAL.DESDE).format('D MMM. YYYY') + ' al ' + moment(result.ACTUAL.HASTA).format('D MMM. YYYY'),); // result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
 
             $('#ytd_anterior').text('C$ '+ numeral(result.COMPARATIVAYTD.YTD_VALOR_ANTERIOR).format('0,0.00'));
             $('#ytd_actual').text('C$ '+ numeral(result.COMPARATIVAYTD.YTD_VALOR_ACTUAL).format('0,0.00'));

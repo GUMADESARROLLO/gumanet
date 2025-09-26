@@ -35,6 +35,11 @@ class ContribucionPorCanales extends Model
         return $this->hasOne(ReorderPointArticulos::class, 'ARTICULO', 'ARTICULO');
     }
 
+    public function getTransito()
+    {
+        return $this->hasOne(ReOrderPointR3::class, 'ARTICULO', 'ARTICULO');
+    }
+
 public static function getData(){
         $json = array(); $i = 0;
         $sql  = ContribucionPorCanales::get();
@@ -43,8 +48,8 @@ public static function getData(){
         $NameMonths = ContribucionPorCanales::NameMonth($fecha[0]->ultima_fecha);
         $categoria  = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.tbl_categoria_articulo_canales");
         $lote       = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.iweb_lotes");
-
-
+        $sql        = ContribucionPorCanales::with('getTransito')->get();
+        
         // NUEVA FORMA DE RECORRER LOS ARTICULOS
         // EXEC dbo.pr_calc_canales '2025-01-01', '2025-03-31';
         // $Articulo_Contribucion = ContribucionPorCanales::all();
@@ -58,10 +63,59 @@ public static function getData(){
         //     ];
         // }
 
+        $fields = [
+            "FARMACIA_CANTIDAD",
+            "CADENA_FARMACIA_CANTIDAD",
+            "MAYORISTA_CANTIDAD",
+            "INSTITUCION_PRIVADA_CANTIDAD",
+            "CRUZ_AZUL_CANTIDAD",
+            "INSTITUCION_PUBLICA_CANTIDAD",
+            "LICITACION_CANTIDAD"
+        ];
+        $fieldsVenta = [
+            "FARMACIA_VENTA",
+            "CADENA_FARMACIA_VENTA",
+            "MAYORISTA_VENTA",
+            "INSTITUCION_PRIVADA_VENTA",
+            "CRUZ_AZUL_VENTA",
+            "INSTITUCION_PUBLICA_VENTA",
+            "LICITACION_VENTA"
+        ];
+        $fieldsCosto = [
+            "FARMACIA_COSTO",
+            "CADENA_FARMACIA_COSTO",
+            "MAYORISTA_COSTO",
+            "INSTITUCION_PRIVADA_COSTO",
+            "CRUZ_AZUL_COSTO",
+            "INSTITUCION_PUBLICA_COSTO",
+            "LICITACION_COSTO"
+        ];
+
         foreach($sql as $row){
-            $TotalCantidad = $row['FARMACIA_CANTIDAD']+$row['CADENA_FARMACIA_CANTIDAD']+$row['MAYORISTA_CANTIDAD']+$row['INSTITUCION_PRIVADA_CANTIDAD']+$row['CRUZ_AZUL_CANTIDAD']+$row['INSTITUCION_PUBLICA_CANTIDAD']+$row['LICITACION_CANTIDAD'];
-            $TotalCosto = $row['FARMACIA_COSTO']+$row['CADENA_FARMACIA_COSTO']+$row['MAYORISTA_COSTO']+$row['INSTITUCION_PRIVADA_COSTO']+$row['CRUZ_AZUL_COSTO']+$row['INSTITUCION_PUBLICA_COSTO']+$row['LICITACION_COSTO'];
-            $TotalVenta = $row['FARMACIA_VENTA']+$row['CADENA_FARMACIA_VENTA']+$row['MAYORISTA_VENTA']+$row['INSTITUCION_PRIVADA_VENTA']+$row['CRUZ_AZUL_VENTA']+$row['INSTITUCION_PUBLICA_VENTA']+$row['LICITACION_VENTA'];
+            $TotalCantidad = 0; $TotalCosto = 0; $TotalVenta = 0; $countGlobal = 0; 
+            foreach ($fields as $field) {
+                if (isset($row->$field)) {
+                    $valor = (float)$row->$field;
+
+                    $TotalCantidad += $valor;
+                    $countGlobal++;
+                }
+            }
+            foreach ($fieldsVenta as $field) {
+                if (isset($row->$field)) {
+                    $valor = (float)$row->$field;
+                
+                    $TotalVenta += $valor;
+                }
+            }
+
+            foreach ($fieldsCosto as $field) {
+                if (isset($row->$field)) {
+                    $valor = (float)$row->$field;
+                
+                    $TotalCosto += $valor;
+                }
+            }
             $CantOnHand = 0;
             $CantOnHandTransito = 0;
             $fechaActual = date('Y-m-d'); 
@@ -73,7 +127,8 @@ public static function getData(){
             $costoPromedio = 0;
             $mess12 = null;
             $categ = ""; $factor = 0;
-            
+
+
             // FECHA DE VENCIMIENTO Y CANTIDAD DISPONIBLE
             foreach($lote as $item) {
                 if($item->ARTICULO == $articulo){
@@ -176,13 +231,17 @@ public static function getData(){
             $json[$i]['TOTAL_COSTOS_C$']                            = $TotalCosto;
             $json[$i]['TOTAL_CONTRIBUCION_C$']                      = $TotalVenta-$TotalCosto;
             $json[$i]['TOTAL_MARGEN']                               = (($TotalVenta > 0) ? ($TotalVenta-$TotalCosto)/$TotalVenta:0)*100;
+            $json[$i]['INVENTARIO']                                 = optional($row->getTransito)->INVENTARIO;
+            $json[$i]['PEDIDO']                                     = optional($row->getTransito)->PEDIDO;
+            $json[$i]['TRANSITO']                                   = optional($row->getTransito)->TRANSITO;
+            $json[$i]['PROM_NORMAL']                                = $TotalCantidad / $countGlobal;
             $json[$i]['CANTIDAD_MES']                               = $mess12;
             $i++;
         }
-
+     
+       //dd($TotalCantidad . '/ '. $countGlobal);  
         return $json;
     }
-   
 
     public static function getContribucionArticulo($articulo){
 
