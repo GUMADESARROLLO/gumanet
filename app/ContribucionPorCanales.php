@@ -37,32 +37,28 @@ class ContribucionPorCanales extends Model
 
     public function getTransito()
     {
-        return $this->hasOne(ReOrderPointR3::class, 'ARTICULO', 'ARTICULO');
+        return $this->hasMany(EstadoCompras::class, 'ARTICULO', 'ARTICULO');
     }
 
-public static function getData(){
+    public function getInventario()
+    {
+        return $this->hasMany(IwebBodegas::class, 'ARTICULO', 'ARTICULO');
+    }
+
+    public function getPromedio()
+    {
+        return $this->hasOne(PromedioCanales::class, 'ARTICULO', 'ARTICULO');
+    }
+
+    public static function getData(){
         $json = array(); $i = 0;
-        $sql  = ContribucionPorCanales::get();
+        $sql        = ContribucionPorCanales::with(['getTransito','getInventario','getPromedio'])->get();
         $Meses      = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo_dev ?, ?', ['Todos',0]);
         $fecha      = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
         $NameMonths = ContribucionPorCanales::NameMonth($fecha[0]->ultima_fecha);
         $categoria  = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.tbl_categoria_articulo_canales");
         $lote       = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.iweb_lotes");
-        $sql        = ContribucionPorCanales::with('getTransito')->get();
         
-        // NUEVA FORMA DE RECORRER LOS ARTICULOS
-        // EXEC dbo.pr_calc_canales '2025-01-01', '2025-03-31';
-        // $Articulo_Contribucion = ContribucionPorCanales::all();
-        // foreach ($Articulo_Contribucion as $key => $value) {
-        //     $json[$key] = [
-        //         'ARTICULO'          => $value->ARTICULO,
-        //         'CASIFICACION'      => trim($value->getClasificacion->CATEGORIA) ?? '',
-        //         'LOTE'              => $value->getLoteExpDate->LOTE ?? '',
-        //         'LOTE_DATE_EXP'     => $value->getLoteExpDate->FECHA_VENCIMIENTO ?? '',
-        //         'LOTE_CANT_EXP'     => $value->getLoteExpDate->CANT_DISPONIBLE ?? '',
-        //     ];
-        // }
-
         $fields = [
             "FARMACIA_CANTIDAD",
             "CADENA_FARMACIA_CANTIDAD",
@@ -92,7 +88,7 @@ public static function getData(){
         ];
 
         foreach($sql as $row){
-            $TotalCantidad = 0; $TotalCosto = 0; $TotalVenta = 0; $countGlobal = 0; 
+            $TotalCantidad = 0; $TotalCosto = 0; $TotalVenta = 0; $countGlobal = 0;
             foreach ($fields as $field) {
                 if (isset($row->$field)) {
                     $valor = (float)$row->$field;
@@ -127,7 +123,9 @@ public static function getData(){
             $costoPromedio = 0;
             $mess12 = null;
             $categ = ""; $factor = 0;
-
+            $pedido = 0;
+            $transito = 0;
+            $inventario = 0;
 
             // FECHA DE VENCIMIENTO Y CANTIDAD DISPONIBLE
             foreach($lote as $item) {
@@ -169,6 +167,22 @@ public static function getData(){
                     break;
                 }
             }
+
+            foreach ($row->getTransito as $transitos) {
+                if ($transitos->estado_compra == 'TRANSITO') {
+                    $transito += $transitos->Cantidad;
+                }
+
+                if ($transitos->estado_compra == 'PEDIDO') {
+                    $pedido += $transitos->Cantidad;
+                }
+            }
+            foreach ($row->getInventario as $disponible) {
+                if ($disponible->BODEGA == '002') {
+                    $inventario += $disponible->CANT_DISPONIBLE;
+                }
+            }
+
             
 
             $json[$i]['COSTO_PROM_PRIV_PACK']                       = (($TotalCantidad-$row['INSTITUCION_PUBLICA_CANTIDAD']) > 0) ? ($TotalCosto-$row['INSTITUCION_PUBLICA_COSTO'])/($TotalCantidad-$row['INSTITUCION_PUBLICA_CANTIDAD']):0;
@@ -231,22 +245,15 @@ public static function getData(){
             $json[$i]['TOTAL_COSTOS_C$']                            = $TotalCosto;
             $json[$i]['TOTAL_CONTRIBUCION_C$']                      = $TotalVenta-$TotalCosto;
             $json[$i]['TOTAL_MARGEN']                               = (($TotalVenta > 0) ? ($TotalVenta-$TotalCosto)/$TotalVenta:0)*100;
-            $json[$i]['INVENTARIO']                                 = optional($row->getTransito)->INVENTARIO;
-            $json[$i]['PEDIDO']                                     = optional($row->getTransito)->PEDIDO;
-            $json[$i]['TRANSITO']                                   = optional($row->getTransito)->TRANSITO;
-            $json[$i]['PROM_NORMAL']                                = $TotalCantidad / $countGlobal;
+            $json[$i]['INVENTARIO']                                 = $inventario;
+            $json[$i]['PEDIDO']                                     = $pedido;
+            $json[$i]['TRANSITO']                                   = $transito;
+            $json[$i]['PROM_NORMAL']                                = optional($row->getPromedio)->PROM_MONTH;
             $json[$i]['CANTIDAD_MES']                               = $mess12;
             $i++;
         }
-     
-       //dd($TotalCantidad . '/ '. $countGlobal);  
         return $json;
     }
-
-    public static function getContribucionArticulo($articulo){
-
-    }
-
 
     public static function getDataCanal($articulo, $canal, $opcion){
         $Meses = DB::connection('sqlsrv')->select('EXEC PRODUCCION.dbo.sp_calc_12_month_canales_articulo_dev ?, ?', [$canal,$opcion]);
