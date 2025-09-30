@@ -22,11 +22,11 @@
         title: {
             text: ''
         },
-        subtitle: {
-            text: 'C$ 0.00',
-            align: 'right',
-            x: -10
-        },
+        // subtitle: {
+        //     text: 'C$ 0.00',
+        //     align: 'right',
+        //     x: -10
+        // },
         exporting: {enabled: false},
         xAxis: [{type: 'category' }],
         legend: {enabled: false},
@@ -755,6 +755,16 @@ $(document).ready(function () {
     
 });
 
+
+function UpdateUI(Prom, Units) {
+
+    $("#prom_normal").text("0.00");
+    $("#units_desplazadas").text("0.00");
+
+    $("#prom_normal").text(Prom);
+    $("#units_desplazadas").text(Units);
+    
+}
 function calcularTotales(table) {  
     var Farmacia_Cantidad = Farmacia_Costo = Farmacia_Venta = Farmacia_Contribucion = 0;
     var Cadena_Farmacia_Cantidad = Cadena_Farmacia_Costo = Cadena_Farmacia_Venta = Cadena_Farmacia_Contribucion = 0;
@@ -948,34 +958,46 @@ function grafCanales(Articulos, Canal, opcion){
             title = [];
             tmp_total = 0;
             Day_Max = [];
+            numMonths = 0;
        
             var vVtsDiarias;
 
+            numMonths = 0;
             $.each(json[0]['CANTIDAD_MES'], function(i, x) {
-                tmp_total = tmp_total + parseFloat(x['data']);
+
+                if (parseFloat(x['data']) > 0) {
+                    numMonths++;
+                }
+                tmp_total += parseFloat(x['data']);
+
                 dta.push({
-                    name  : x['Mes'],                                        
+                    name  : x['Mes'],
                     y     : x['data'], 
                 });
 
                 title.push(x['name']); 
-                Day_Max.push(x['data']); 
-            }); 
+                Day_Max.push(x['data']);
+            });
 
             temporal = '<span style="color:black">\u25CF</span><b>{point.y} </b> UNITS<br/>';                
             grafica_articulos.tooltip = {
                 pointFormat : temporal
             }
 
+            var PromUnits = tmp_total / numMonths
+
             vVtsDiarias = numeral(tmp_total).format('0,0.00');
+            PromUnits = numeral(PromUnits).format('0,0.00');
             
-            grafica_articulos.xAxis.categories = title;
-            grafica_articulos.subtitle.text = vVtsDiarias + " UNITS";
+            //grafica_articulos.xAxis.categories = title;
+            //grafica_articulos.subtitle.text = vVtsDiarias + " UNITS";
             grafica_articulos.series[0].data = dta;
 
             chart = new Highcharts.Chart(grafica_articulos);
             
-            chart.yAxis[0].update();
+            chart.yAxis[0].update();            
+
+            UpdateUI(PromUnits, vVtsDiarias);
 
     })
 }
@@ -986,6 +1008,8 @@ function grafMensual(Articulo){
         title = [];
         tmp_total = 0;
         Day_Max = [];
+        numMonths = 0;
+
         if(item.ARTICULODESC === Articulo){
             $("#idCostoPriv").html(numeral(item.COSTO_PROM_PRIV_PACK).format('0,0.00'));
             $("#idCostoMinsa").html(numeral(item.COSTO_PROM_MINSA_PACK).format('0,0.00'));
@@ -995,6 +1019,11 @@ function grafMensual(Articulo){
             $('#idLoteVencer').html(item.Lote_Mas_a_Vencer_PRIVADO_6_MESES);
             $('#idCantProxima').html(numeral(item.Existencia_En_Lote_proximo_Vencer_6_MESES).format('0,0'));
             $.each(item.CANTIDAD_MES, function(i, x) {
+                
+                if (parseFloat(x['data']) > 0) {
+                    numMonths++;
+                }
+
                 tmp_total = tmp_total + parseFloat(x['data']);
                 dta.push({
                     name  : x['Mes'],                                        
@@ -1010,15 +1039,19 @@ function grafMensual(Articulo){
                 pointFormat : temporal
             }
 
-            vVtsDiarias = numeral(tmp_total).format('0,0.00');
+            var PromUnits = tmp_total / numMonths
 
-            grafica_articulos.xAxis.categories = title;
-            grafica_articulos.subtitle.text = vVtsDiarias + " UNITS";
+            vVtsDiarias = numeral(tmp_total).format('0,0.00');
+            PromUnits = numeral(PromUnits).format('0,0.00');
+
+            //grafica_articulos.xAxis.categories = title;
+            //grafica_articulos.subtitle.text = vVtsDiarias + " UNITS";
             grafica_articulos.series[0].data = dta;
 
             chart = new Highcharts.Chart(grafica_articulos);
             
             chart.yAxis[0].update();
+            UpdateUI(PromUnits, vVtsDiarias);
             return false;
         }
 

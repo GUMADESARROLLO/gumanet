@@ -269,7 +269,7 @@
                         <!-- [ Header orden produccion ] end -->
                     </div>
                     <div class="row mt-3" id="info2">
-                      <div class="col-4">
+                        <div class="col-4">
                             <div class="card card-social" style="height: 120px">
                                 <div class="card-header text-center bg-blue">
                                     <h6 class="text-white m-0">DISPONIBILIDAD PACKS-PRIVADO >= 6 MESES</h6>
@@ -301,7 +301,18 @@
                         </div>
                     </div>
                 </div>
-                <div class=" modal-body">
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-sm-6 text-center">
+                      <p class="text-muted m-0">PROM. NORMAL</p>
+                      <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="prom_normal">0.00</p>
+                    </div>
+
+                    <div class="col-sm-6 text-center">
+                      <p class="text-muted m-0">UNITS DESPLAZADAS.</p>
+                      <p class="font-weight-bolder" style="font-size: 1.3rem!important" id="units_desplazadas">0.00</p>
+                    </div>
+                  </div>
                   <div class="row">
                       <div class="col-sm-12 col-md-12 col-xs-12">
                           <div class="container-vms" id="grafMeses" style="width: 100%; margin: 0 auto"></div>
