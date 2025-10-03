@@ -32,7 +32,7 @@
         { data: "FECHA_VENCE_LOTE", title: "VENC. LOTE", class: "text-left" },   
         { data: "CANTIDAD_INGRESADA", title: "ULT. CANT. INGRESADA", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "CANT_VENCE_LOTE", title: "CANT. VENCE LOTE", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },     
-        { data: "FECHA_VENCIMIENTO", title: "FECHA VENC.", class: "text-left" },      
+        { data: "FECHA_VENCIMIENTO", title: "FECHA VENC. LIC.", class: "text-left" },      
     ];
 
     let topStart_custom = document.createElement('div');
