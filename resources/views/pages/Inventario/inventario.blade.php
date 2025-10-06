@@ -185,6 +185,11 @@
                           <span class="text-primary"> • </span>
                           <span id="IdUnidadMedida">UNIDAD MEDIDA<br /></span>
                         </div>
+                        <div class="mt-1 mb-0 text-muted small">
+                          <span>Lic. Expira.</span>
+                          <span class="text-primary"> • </span>
+                          <span id="lic_exp">00/00/0000</span>
+                        </div>
                       </div>
                       <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                         <div class="d-flex flex-row align-items-center mb-1">
