@@ -1,10 +1,19 @@
 @extends('layouts.main')
+<style>
+  .table thead th {
+    background-color: #004e7e !important;
+    color: #fff !important;
+    font-weight: bold !important;
+  }
+
+</style>
 @section('title' , $name)
 @section('name_user' , 'Administrador')
 @section('metodosjs')
   @include('jsViews.js_inventario');
 @endsection
 @section('content')
+
 <div class="container-fluid">
   <div class="row mb-5">
     <div class="col-md-6">
@@ -184,6 +193,11 @@
                           <span id="IdLaboratorio">LABORATORIO</span>
                           <span class="text-primary"> • </span>
                           <span id="IdUnidadMedida">UNIDAD MEDIDA<br /></span>
+                        </div>
+                        <div class="mt-1 mb-0 text-muted small" style="display: none;">
+                          <span>Lic. Expira.</span>
+                          <span class="text-primary"> • </span>
+                          <span id="lic_exp">00/00/0000</span>
                         </div>
                       </div>
                       <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">

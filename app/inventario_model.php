@@ -150,8 +150,11 @@ class inventario_model extends Model {
             $Existencia =  number_format($key['total'], 2,".","");
 
             $MesInventario = ($key['total'] > 0.10 && $PromedioActual > 0.10) ? $Existencia   / $PromedioActual : "0.00" ;
+            $LicExpira = ($key['LIC_EXP']->format('Y-m-d') === '1900-01-01' ) ? 'N/D': $key['LIC_EXP']->format('d/m/Y') ;
 
-            $query[$i]['ARTICULO']          = '<a href="#!" onclick="getDetalleArticulo('."'".$key['ARTICULO']."'".', '."'".$desc_art."'".')" >'.$key['ARTICULO'].'</a>';
+       
+
+            $query[$i]['ARTICULO']          = '<a href="#!" onclick="getDetalleArticulo('."'".$key['ARTICULO']."'".', '."'".$desc_art."'".','."'".$LicExpira."'".' )" >'.$key['ARTICULO'].'</a>';
             $query[$i]['ARTICULO_']         = $key['ARTICULO'];
             $query[$i]['CLASE_TERAPEUTICA'] = $key['CLASE_TERAPEUTICA'];
             $query[$i]['DESCRIPCION']       = strtoupper($key['DESCRIPCION']);
