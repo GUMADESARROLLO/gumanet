@@ -348,4 +348,6 @@ Route::post('getDataAnalisisIMS', 'AnalisisIMSController@getDataAnalisisIMS')->n
 
 Route::get('/Updates', 'ControllerUpdateClientes@Updates')->name('Updates');
 
-// 
+// METRICAS METAS
+
+Route::get('MetricasMetas', 'MetricasMetasController@index')->name('MetricasMetas'); 
