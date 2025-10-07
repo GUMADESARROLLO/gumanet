@@ -339,6 +339,7 @@ Route::post('getCalcular', 'ReOrderPointController@getCalcular')->name('getCalcu
 
 //RUTAS DE TRANSITO 
 Route::post('saveInfoTransito', 'TransitoController@saveInfoTransito')->name('saveInfoTransito');
+Route::get('ExportToExcelTransito', 'TransitoController@ExportToExcel')->name('ExportToExcelTransito');
 
 
 // RUTAS PARA EL ANALISIS DE IMS

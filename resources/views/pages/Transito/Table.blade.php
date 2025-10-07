@@ -27,6 +27,9 @@
         <div class="input-group-text bg-transparent" id="btn_upload">
           <span class="fas fa-upload fs--1 text-success" ></span>
         </div>
+        <a href="{{ route('ExportToExcelTransito') }}" target="_blank" class="input-group-text bg-transparent">
+          <span class="fas fa-file-excel text-success"></span>
+        </a>
       </div>
     </div>
     <div class="col-sm-1">

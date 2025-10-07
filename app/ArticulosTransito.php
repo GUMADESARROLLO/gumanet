@@ -4,6 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use PHPExcel;
+use PHPExcel_Cell;
+use PHPExcel_IOFactory;
+use PHPExcel_Style;
+use PHPExcel_Style_Alignment;
+use PHPExcel_Style_Border;
 
 class ArticulosTransito extends Model
 {
@@ -144,6 +150,115 @@ class ArticulosTransito extends Model
                 return response()->json($mensaje);
             }
         }
+    }
+
+    public static function ExportToExcel() {
+        $objPHPExcel = new PHPExcel();
+        $titulosColumnas = array();
+        $columnIndex = 0;
+        $rowIndex = 1;
+
+        $estiloTituloReporte = array(
+            'font' => array(
+            'name'      => 'Tahoma',
+            'bold'      => true,
+            'italic'    => false,
+            'strike'    => false,
+            'size'      => 14,
+            'color'     => array(
+                            'rgb' => '212121')
+            ),
+            'alignment' =>  array(
+                            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                            'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                            'rotation'   => 0,
+                            'wrap'       => TRUE,
+                            )
+        );
+
+        $estiloTituloColumnas = array(
+            'font' => array(
+                        'name'  => 'Arial',
+                        'bold'  => true
+            ),
+            'alignment' =>  array(
+                                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                                'wrap'          => TRUE
+                            ),
+            'borders' => array(
+                            'top' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        ),
+            'allborders' => array(
+                                'style' => PHPExcel_Style_Border::BORDER_THIN,
+                            )
+            )
+        );
+                
+        $estiloInformacion = new PHPExcel_Style();
+        $estiloInformacion->applyFromArray(
+            array(
+                'borders' => array(
+                'top' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN,
+                        ),
+                'allborders' => array(
+                                'style' => PHPExcel_Style_Border::BORDER_THIN,
+                                ),
+                )
+            )
+        );    
+
+        $transito = ArticulosTransito::get();
+        $titulosColumnas = array_keys($transito->first()->toArray());
+        
+        foreach ($titulosColumnas as $titulo) {
+            $i = 2;
+
+            // Convierte a mayúsculas y reemplaza guiones bajos por espacios
+            $NameColumna = strtoupper(str_replace('_', ' ', $titulo));
+
+            // Asigna la letra a la columna (A, B, C, ...)
+            $columnLetter = PHPExcel_Cell::stringFromColumnIndex($columnIndex);
+
+            // Escribe el nombre de la columna en la primera fila
+            $objPHPExcel->setActiveSheetIndex()->setCellValue($columnLetter . $rowIndex, $NameColumna);
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnLetter)->setWidth(15);
+
+            // Asigna los valores a cada una de las celdas
+            foreach ($transito as $key) {
+                $objPHPExcel->setActiveSheetIndex()->setCellValue($columnLetter.$i, $key[$titulo]);
+                $i++;
+            }
+
+            $columnIndex++;
+        }
+
+        $ultimaColumnaLetra = PHPExcel_Cell::stringFromColumnIndex($columnIndex - 1);
+    
+        $i++;   
+
+        //ANCHO DE CADA COLUMNAS
+        $objPHPExcel->getActiveSheet()->getColumnDimension("E")->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("I")->setWidth(50);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("K")->setWidth(110);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:' . $ultimaColumnaLetra . '1')->applyFromArray($estiloTituloColumnas);
+
+        $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A2:". $ultimaColumnaLetra .($i-1));
+
+        //FORMATOS NUMERICOS
+        $formatCode = '_-" "* #,##0.00_-;_-" "* #,##0.00_-;_-" "* "-"??_-;_-@_-';
+        $objPHPExcel->getActiveSheet()->getStyle("C2:". $ultimaColumnaLetra .($i-1))->getNumberFormat()->setFormatCode($formatCode);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Transito.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
+
+
     }
 
 }

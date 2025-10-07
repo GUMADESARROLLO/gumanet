@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\ArticuloPotencialDiscasa;
 use App\ArticuloMOQ;
+use App\ArticulosTransito;
 use Illuminate\Http\Request;
 
 class TransitoController extends Controller
@@ -39,5 +40,10 @@ class TransitoController extends Controller
         
         
         
-    }  
+    } 
+
+    public function ExportToExcel(){
+        $obj = ArticulosTransito::ExportToExcel();
+        return $obj;
+    }
 }
