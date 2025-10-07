@@ -351,7 +351,7 @@ $('nav .nav.nav-tabs a').click(function(){
 })
 
 var articulo_g = 0;
-function getDetalleArticulo(articulo, descripcion) {
+function getDetalleArticulo(articulo, descripcion,LicExpira) {
     $("#idArti").val(articulo);
     articulo_g = articulo;
 
@@ -361,6 +361,7 @@ function getDetalleArticulo(articulo, descripcion) {
 
         $("#id_cod_articulo").html(articulo);
         $("#tArticulo").html(data.DESCRIPCION);
+        $("#lic_exp").html(LicExpira);
 
         $("#IdClaseTerapeutica").html(data.CLASE_TERAPEUTICA);
         $("#IdLaboratorio").html(data.LABORATORIO);

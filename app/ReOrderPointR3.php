@@ -131,6 +131,7 @@ class ReOrderPointR3 extends Model
                 'ULTM_COST_USD'             => $value->ULTM_COST_USD,
                 'COSTO_PROM_DOL'            => $value->COSTO_PROM_DOL,
                 'DESCONTINUADO'             => (in_array($value->DESCONTINUADO, ['SI', 'S'])) ? 'SI': 'NO',
+                'FECHA_VENCIMIENTO'         => date('d-m-Y', strtotime($value->FECHA_VENCIMIENTO)),
             ], $PrivadoData, $DiscasaData); 
         }
 
