@@ -156,8 +156,6 @@ class inventario_controller extends Controller
 		$NumRow = $request->NumRow;
 
 		$request->validate([
-			'Articulo' 				=> 'required',
-			'Descripcion' 			=> 'required',
             'fecha_estimada' 		=> 'required',
             'fecha_pedido' 			=> 'required',
             'documento' 			=> 'required',

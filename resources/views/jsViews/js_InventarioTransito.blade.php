@@ -136,7 +136,7 @@ function InitTable(){
 		},
 		'destroy' : true,
 		'info': false,
-		"lengthMenu": [[5,10,20,100,-1], [5,10,20,100,"Todo"]],
+		"lengthMenu": [[12,10,20,100,-1], [12,10,20,100,"Todo"]],
 		"language": {
 			"infoFiltered": "(Filtrado de _MAX_ total entradas)",
 			"zeroRecords": "No hay coincidencias",
@@ -181,8 +181,8 @@ function getDetalleArticulo(Articulo,Descripcion,ID)
 {
 
 	$("#txtNumRow").html(ID)
-	$("#txtArticulo").val(Articulo)
-	$("#txtDescripcion").val(Descripcion)
+	$("#txtArticulo").html(Articulo)
+	$("#txtDescripcion").html(Descripcion)
 
 	$("#date_estimada").val("")
 	$("#date_pedido").val("")
@@ -253,8 +253,8 @@ new Vue({
 
 			let formData = new FormData();
 
-			formData.append('Articulo', document.getElementById('txtArticulo').value);
-			formData.append('Descripcion', document.getElementById('txtDescripcion').value);
+			formData.append('Articulo', document.getElementById('txtArticulo').innerHTML);
+			formData.append('Descripcion', document.getElementById('txtDescripcion').innerHTML);
 			formData.append('NumRow', document.getElementById('txtNumRow').innerHTML);
 
 			formData.append('fecha_estimada', document.getElementById('date_estimada').value);
@@ -393,11 +393,12 @@ var ExcelToJSON = function() {
 
 		workbook.SheetNames.forEach(function(sheetName) {
 
-			isError=false;
-
+			isError = false;
 			var worksheet = workbook.Sheets[sheetName];
 			var range = XLSX.utils.decode_range('A1:Q200');
 			var rows = XLSX.utils.sheet_to_json(worksheet, {range: range});
+			
+			
 			
 		
 			rows.forEach(function(row) {
@@ -410,17 +411,14 @@ var ExcelToJSON = function() {
 						var fechaPedido 	= dtFormat(rowArray[7]);
 						var fechaEstimada 	= dtFormat(rowArray[10]);
 
-						var isOK = (rowArray.length < 17 )? 'N' : 'S';
+						var isOK = (rowArray.length < 17 )? 'N' : 'S';						
 
-						
+						isError = (isOK == 'N')? true : false;	
 
-						isError = (isOK == 'N')? true : false;		
-						
-					
 
 						dta_table_excel.push({
 							ARTICULO	: rowArray[0] || 'N/D',
-							DESCRIPC	: rowArray[1] || 'N/D',
+							DESCRIPC	: (rowArray[1] || 'N/D').toUpperCase(),
 							CANTIDAD	: numeral(rowArray[5]).format('0,0') || 'N/D',
 							dtPedido	: fechaPedido || 'N/D',
 							dtEstimada	: fechaEstimada || 'N/D',
@@ -438,6 +436,10 @@ var ExcelToJSON = function() {
 			})
 
 		});
+
+		$("#id_registros_encontrados").text(dta_table_excel.length).addClass('text-success font-weight-bolder');
+		var errados = dta_table_excel.filter(item => item.isOK === 'N');
+		$("#id_registros_errados").text(errados.length).addClass('text-danger font-weight-bolder');
 
 		dta_table_header = [
 			{"title": "ARTICULO","data": "ARTICULO"},
@@ -505,7 +507,8 @@ function table_render(Table,datos,Header,columnDefs,Filter)
 		"columnDefs": columnDefs,
 		rowCallback: function( row, data, index ) {
 			if ( data.isOK == 'N' ) {
-				$(row).addClass('table-danger');
+				$(row).addClass('text-danger font-weight-bolder');
+				
 			} 
 		}
 	});
@@ -517,7 +520,13 @@ function table_render(Table,datos,Header,columnDefs,Filter)
 }
 
 $("#id_send_data_excel").click(function(){ 
-	if(!isError){
+	
+	var Erros = $("#id_registros_errados").text();
+
+	var Encontrados = $("#id_registros_encontrados").text();
+
+
+	if(Erros == 0 && Encontrados > 0){
 		Swal.fire({
 			title: '¿Estas Seguro de cargar  ?',
 			text: "¡Se cargara la informacion previamente visualizada!",
@@ -565,8 +574,8 @@ $("#id_send_data_excel").click(function(){
 	}else{
 		Swal.fire({
 			icon: 'error',
-			title: 'Oops...',
-			text: "Existen Filas con espacios Vacios ",
+			title: ':(',
+			text: "¡Verifique que no haya errores y que existan registros para cargar!",
 			
 		})
 	}

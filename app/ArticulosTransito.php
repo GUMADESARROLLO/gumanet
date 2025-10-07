@@ -10,7 +10,7 @@ class ArticulosTransito extends Model
     
     protected $connection = 'sqlsrv';
     public $timestamps = false;
-    protected $table = "PRODUCCION.dbo.tbl_articulos_transito";
+    protected $table = "PRODUCCION.dbo.tbl_articulos_transito_v2";
     protected $primaryKey = 'Id_transito';
     protected $keyType    = 'string';
 
@@ -41,6 +41,7 @@ class ArticulosTransito extends Model
                 $datos_a_insertar = array();    
             
                 ArticulosTransito::truncate();
+
                 foreach ($request->input('datos') as $k => $v) 
                 {
                     $Cantidad = number_format(str_replace(',', '', $v['CANTIDAD']), 4,'.','');
@@ -51,8 +52,6 @@ class ArticulosTransito extends Model
                     $Documento = (isset($v['Documento'])) ? $v['Documento'] : 'N/D';
                     $Comment = (isset($v['Comment'])) ? $v['Comment'] : 'N/D';
                     $Via_transi = (isset($v['Via_transi'])) ? $v['Via_transi'] : 'N/D';
-
-                    //dd($datos_a_insertar);
 
                     $datos_a_insertar[$k] = [
                         'Articulo'		        => $Articulo,
