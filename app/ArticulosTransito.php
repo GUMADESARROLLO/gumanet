@@ -16,7 +16,7 @@ class ArticulosTransito extends Model
     
     protected $connection = 'sqlsrv';
     public $timestamps = false;
-    protected $table = "PRODUCCION.dbo.tbl_articulos_transito";
+    protected $table = "PRODUCCION.dbo.tbl_articulos_transito_v2";
     protected $primaryKey = 'Id_transito';
     protected $keyType    = 'string';
 
@@ -47,6 +47,7 @@ class ArticulosTransito extends Model
                 $datos_a_insertar = array();    
             
                 ArticulosTransito::truncate();
+
                 foreach ($request->input('datos') as $k => $v) 
                 {
                     $Cantidad = number_format(str_replace(',', '', $v['CANTIDAD']), 4,'.','');
@@ -57,8 +58,6 @@ class ArticulosTransito extends Model
                     $Documento = (isset($v['Documento'])) ? $v['Documento'] : 'N/D';
                     $Comment = (isset($v['Comment'])) ? $v['Comment'] : 'N/D';
                     $Via_transi = (isset($v['Via_transi'])) ? $v['Via_transi'] : 'N/D';
-
-                    //dd($datos_a_insertar);
 
                     $datos_a_insertar[$k] = [
                         'Articulo'		        => $Articulo,
@@ -213,7 +212,7 @@ class ArticulosTransito extends Model
         $transito = ArticulosTransito::get();
         $titulosColumnas = array_keys($transito->first()->toArray());
         
-        foreach ($titulosColumnas as $titulo) {
+        foreach (array_slice($titulosColumnas, 1) as $titulo) {
             $i = 2;
 
             // Convierte a mayúsculas y reemplaza guiones bajos por espacios
@@ -235,14 +234,15 @@ class ArticulosTransito extends Model
             $columnIndex++;
         }
 
+
         $ultimaColumnaLetra = PHPExcel_Cell::stringFromColumnIndex($columnIndex - 1);
     
         $i++;   
 
         //ANCHO DE CADA COLUMNAS
-        $objPHPExcel->getActiveSheet()->getColumnDimension("E")->setWidth(20);
-        $objPHPExcel->getActiveSheet()->getColumnDimension("I")->setWidth(50);
-        $objPHPExcel->getActiveSheet()->getColumnDimension("K")->setWidth(110);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("D")->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("H")->setWidth(50);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("J")->setWidth(110);
         $objPHPExcel->getActiveSheet()->getStyle('A1:' . $ultimaColumnaLetra . '1')->applyFromArray($estiloTituloColumnas);
 
         $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A2:". $ultimaColumnaLetra .($i-1));
