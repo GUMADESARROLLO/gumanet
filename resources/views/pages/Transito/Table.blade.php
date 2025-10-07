@@ -1,6 +1,22 @@
 @extends('layouts.main')
 
+<style>
+  .table thead th {
+    background-color: #004e7e !important;
+    color: #fff !important;
+    font-weight: bold !important;
+  }
 
+  .text-umk {
+    color: #004e7e !important;
+    font-weight: bold;
+  }
+
+  .bg-umk {
+    background-color: #004e7e !important;
+  }
+
+</style>
 @section('title' , $data['name'])
 @section('name_user' , 'Administrador')
 @section('metodosjs')
@@ -10,7 +26,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-10">
-      <h4 class="h4">Inventario {{ ($data['ID'] == 0)? 'Transito Sin Codigo' : 'Transito Con Codigo' }} </h4>
+      <h4 class="h4">Inventario {{ ($data['ID'] == 0)? 'Transito Sin Codigo' : 'en Transito' }} </h4>
     </div>
   </div>
   <span id="id_frm_show" style="display:none">{{ $data['ID'] }}</span>
@@ -58,47 +74,32 @@
 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="mdDetalleArt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content" id="id_form_save">
-      <div class="modal-header d-block">
+      <div class="modal-header d-block bg-umk">
         
         <span id="txtNumRow" style="display:none">0000</span>   
-        <h5 class="modal-title text-center" id="tArticulo"></h5>
+        <h4 class="h4 text-white" id="txtDescripcion"></h4>
+        <p class="text-white" id="txtArticulo"> </p>
       </div>
       <div class="modal-body">
         <div class="row" >   
 
-          <div class="col-sm-12">
+          <div class="col-sm-4">
             <div class="form-group">
-                <label for="txtDescripcion">DESCRIPCION:</label>
-                <input type="text" class="form-control" id="txtDescripcion">
-                <small id="alert_Descripcion" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-            </div>
-          </div>
-              
-          <div class="col-sm-3">
-            <div class="form-group">
-                <label for="txtArticulo">ARTICULO:</label>
-                <input type="text" class="form-control" id="txtArticulo" >
-                <small id="alert_Articulo" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+                <label for="txtCantidad">CANTIDAD PEDIDO:</label>
+                <input type="text" class="form-control" id="txtCantidad" oninput="validateInput(this)">
+                <small id="alert_cantidad" class="form-text text-danger">0.00</small>
             </div>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="form-group">
-                <label for="date_estimada">FECHA ESTIMADA DE ARRIBO:</label>
-                <input type="text" class="input-fecha" id="date_estimada" >
-                <small id="alert_fecha_estimada" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+                <label for="txtCantidad">CANTIDAD TRANSITO:</label>
+                <input type="text" class="form-control" id="txtCantidadTransito" oninput="validateInput(this)">
+                <small id="alert_cantidad" class="form-text text-danger">0.00</small>
             </div>
           </div>
 
-          <div class="col-sm-3">
-            <div class="form-group">
-                <label for="date_pedido">FECHA CREACION PEDIDO:</label>
-                <input type="text" class="input-fecha" id="date_pedido" >
-                <small id="alert_fecha_pedido" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-            </div>
-          </div>
-
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="form-group">
                 <label for="select_estado">ESTADO:</label>
                 <select class="form-control" id="select_estado">
@@ -112,30 +113,15 @@
           </div>
 
         
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="form-group">
                 <label for="exampleInputEmail1">DOC. (FACT. , BL/AWB ):</label>
                 <input type="text" class="form-control" id="txtDocuments" >
                 <small id="alert_documento" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
-
-          <div class="col-sm-3">
-            <div class="form-group">
-                <label for="txtCantidad">CANTIDAD PEDIDO:</label>
-                <input type="text" class="form-control" id="txtCantidad" oninput="validateInput(this)">
-                <small id="alert_cantidad" class="form-text text-danger">0.00</small>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="form-group">
-                <label for="txtCantidad">CANTIDAD TRANSITO:</label>
-                <input type="text" class="form-control" id="txtCantidadTransito" oninput="validateInput(this)">
-                <small id="alert_cantidad" class="form-text text-danger">0.00</small>
-            </div>
-          </div>
         
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="form-group">
                 <label for="slcMercado">MERCADO:</label>
                 <select class="form-control" id="slcMercado">
@@ -148,7 +134,7 @@
           </div>
 
 
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">MIFIC:</label>
                 <select class="form-control" id="slcMIFIC">
@@ -160,21 +146,21 @@
             </div>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="form-group">
                 <label for="txtPrecioMific">PREC. MIFIC FARMACIA:</label>
                 <input type="text" class="form-control" id="txtPrecioMific" oninput="validateInput(this)">
                 <small id="alert_precio_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="form-group">
                 <label for="txtPrecioMificPublic">PREC. MIFIC PUBLIC:</label>
                 <input type="text" class="form-control" id="txtPrecioMificPublic" oninput="validateInput(this)">
                 <small id="alert_precio_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">VIA TRANSITO:</label>
                 <select class="form-control" id="id_via_transito">
@@ -184,6 +170,21 @@
                     <option value="TERRESTRE">TERRESTRE</option>
                 </select>
                 <small id="alert_via_transito" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="form-group">
+                <label for="date_estimada">FECHA ESTIMADA DE ARRIBO:</label>
+                <input type="text" class="input-fecha" id="date_estimada" >
+                <small id="alert_fecha_estimada" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="form-group">
+                <label for="date_pedido">FECHA CREACION PEDIDO:</label>
+                <input type="text" class="input-fecha" id="date_pedido" >
+                <small id="alert_fecha_pedido" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
           <div class="col-sm-12 mb-3">
@@ -203,39 +204,39 @@
   </div>
 </div>
 
-<div class="modal fade" id="modal_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl mt-6" role="document">
+<div class="modal fade bd-example-modal-xl" id="modal_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
-        <div class="modal-header d-block">
-            <h4 class="modal-title text-center" id="id_titulo_modal"> Actualizar Informacion Transito.</h4>
+        <div class="modal-header d-block ">
+            <h4 class="h4 text-umk" > CARGAR ARCHIVO TRANSITO...</h4>
+            <p class="text-muted">El proceso de carga de archivo Excel que se encuentra en este modulo reemplazar  toda la Información existente anteriormente.</p>
         </div>
-        <div class="modal-body py-4 px-5 ">
+        <div class="modal-body ">
           <div class="row">
-            <div class="col-md-12">  
-                <div class="row">
-                <div class="col-md-3">
-                    <div class="input-group" > 
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" id="search"><i data-feather="search"></i></span>
-                      </div>
-                      <input class="form-control form-control-sm shadow-none search" type="search" placeholder="Buscar..." aria-label="search" id="id_txt_excel" />
-                    </div>
-                  </div>
-                  <div class="col-md-9">
-                    <div class="input-group">
-                      <div class="custom-file" id="contInputExlFileTransito">
-                        <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="upload" class="custom-file-input" name="addExlFileTransito" id="frm-upload"/>
-                        <label class="custom-file-label" id="fileLabelTransito" for="addExlFileTransito" data-label="Buscar">Seleccione un archivo Excel
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                 
+            
+            <div class="col-md-12 mb-3">
+              <div class="input-group">
+                <div class="custom-file" id="contInputExlFileTransito">
+                  <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="upload" class="custom-file-input" name="addExlFileTransito" id="frm-upload"/>
+                  <label class="custom-file-label" id="fileLabelTransito" for="addExlFileTransito" data-label="Cargar">Seleccione un archivo Excel
+                  </label>
                 </div>
+              </div>
             </div>
-             
-            <div class="col-md-12 mt-3">
-              <div class="table-responsive" >                        
+            <div class="col-md-6">
+              <p class="font-italic text-muted">Encontrados: ( <span id="id_registros_encontrados">0</span> )</p>	
+            </div>
+            <div class="col-md-6 text-right">
+              <p class="font-italic text-muted">Errados: ( <span id="id_registros_errados"> 0 </span> )</p>	
+            </div>
+            <div class="col-md-12">
+              <div class="input-group" > 
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="search"><i data-feather="search"></i></span>
+                </div>
+                <input class="form-control form-control-sm shadow-none search" type="search" placeholder="Buscar..." aria-label="search" id="id_txt_excel" />
+              </div>
+              <div class="table-responsive mt-3" >                        
                   <table class="table table-hover table-striped overflow-hidden" id="tbl_excel" >
                     <thead>
                         <tr>
@@ -261,7 +262,7 @@
                   </table>  
               </div>
             </div>
-            <button class="btn btn-bg-inn btn-primary d-block w-100 mt-3" id="id_send_data_excel" type="submit" name="submit">Procesar</button>
+            <button class="btn btn-bg-inn btn-success d-block w-100 mt-3" id="id_send_data_excel" type="submit" name="submit">Procesar</button>
           </div>                                 
             
         </div>
