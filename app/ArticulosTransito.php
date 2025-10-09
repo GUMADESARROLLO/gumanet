@@ -67,7 +67,7 @@ class ArticulosTransito extends Model
 
                     $datos_a_insertar[$k] = [
                         'Articulo'		        => $Articulo,
-                        'Descripcion'		    => strtoupper($v['DESCRIPC']),
+                        'Descripcion'		    => '',
                         'cantidad'		        => $Cantidad,
                         'cantidad_pedido'	    => ($Estado === 'PEDIDO') ? $Cantidad : '0' ,
                         'cantidad_transito'	    => ($Estado === 'TRANSITO' || $Estado ==='ON-HAND') ? $Cantidad : '0',
