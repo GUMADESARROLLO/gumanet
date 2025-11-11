@@ -41,6 +41,31 @@ class inteligenciaMercado_controller extends Controller
 		return view('pages.inteligenciaMercado', $data);		
 	}
 
+	public function responder(Request $request)
+	{
+		$request->validate([
+			'comentario_id' => 'required|integer',
+			'respuesta' => 'required|string|max:1000'
+		]);
+
+		\DB::table('tbl_comments_post_im')->insert([
+			'id_post' => $request->comentario_id,
+			'comments' => $request->respuesta,
+			'created_by' => auth()->user()->name ?? 'Admin',
+			'created_at' => now()
+		]);
+
+		return back()->with('success', 'Respuesta enviada correctamente');
+	}
+
+	public function respuestas($id)
+	{
+		return \DB::table('tbl_comments_post_im')
+			->where('id_post', $id)
+			->orderBy('created_at','DESC')
+			->get();
+	}
+
     public function agregarDatosASession() {
         $request = Request();
         $ApplicationVersion = new \git_version();
