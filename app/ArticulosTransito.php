@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use PHPExcel;
@@ -57,7 +58,9 @@ class ArticulosTransito extends Model
                 foreach ($request->input('datos') as $k => $v) 
                 {
                     $Cantidad = number_format(str_replace(',', '', $v['CANTIDAD']), 4,'.','');
-                    $Articulo = ($v['ARTICULO'] == 'N/D' || $v['ARTICULO'] == 'N/A' || is_numeric(intval($v['ARTICULO']) == false)) ? mt_rand(10000000, 99999999).'-N' : $v['ARTICULO'] ;
+                    $Articulo = ($v['ARTICULO'] == 'N/D' || $v['ARTICULO'] == 'N/A' || !is_numeric($v['ARTICULO'])) ? mt_rand(10000000, 99999999).'-N' : $v['ARTICULO'];
+
+                    //$Articulo = ($v['ARTICULO'] == 'N/D' || $v['ARTICULO'] == 'N/A' || is_numeric(intval($v['ARTICULO']) == false)) ? mt_rand(10000000, 99999999).'-N' : $v['ARTICULO'] ;
                     $Estado = strtoupper((isset($v['estado_pedido'])) ? $v['estado_pedido'] : 'N/D');
                     $Mercado = (isset($v['Mercado'])) ? $v['Mercado'] : 'N/D';
                     $Mific = (isset($v['Mific'])) ? $v['Mific'] : 'N/D';
@@ -67,7 +70,7 @@ class ArticulosTransito extends Model
 
                     $datos_a_insertar[$k] = [
                         'Articulo'		        => $Articulo,
-                        'Descripcion'		    => '',
+                        'Descripcion'		    => '-',
                         'cantidad'		        => $Cantidad,
                         'cantidad_pedido'	    => ($Estado === 'PEDIDO') ? $Cantidad : '0' ,
                         'cantidad_transito'	    => ($Estado === 'TRANSITO' || $Estado ==='ON-HAND') ? $Cantidad : '0',
@@ -86,7 +89,6 @@ class ArticulosTransito extends Model
                 }
 
 
-                
                 $response = ArticulosTransito::insert($datos_a_insertar);
                 
                 return $response;
