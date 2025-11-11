@@ -410,10 +410,16 @@ var ExcelToJSON = function() {
 
 						var fechaPedido 	= dtFormat(rowArray[7]);
 						var fechaEstimada 	= dtFormat(rowArray[10]);
+					
 
-						var isOK = (rowArray.length < 17 )? 'N' : 'S';						
+						var isOK = (rowArray.length < 17 )? 'N' : 'S';
 
 						isError = (isOK == 'N')? true : false;	
+						
+						if (fechaPedido === 'Invalid Date' || fechaEstimada === 'Invalid Date') {
+							isError = true;
+						}
+
 
 
 						dta_table_excel.push({
@@ -473,7 +479,15 @@ var ExcelToJSON = function() {
 };
 
 function dtFormat(fecha) {
-    return (fecha.indexOf('N/') !== -1) ? fecha : moment(fecha, 'M/D/YY').format('YYYY-MM-DD');
+	if (!fecha || fecha.includes('N/')) return 'N/D';
+
+	const formatos = [
+		'M/D/YY', 'MM/DD/YY', 'DD-MMM-YY', 'D-MMM-YY', 'YYYY/MM/DD',
+		'YYYY-MM-DD', 'DD/MM/YYYY', 'DD/MM/YY', 'MMM D, YYYY', 'D MMM YYYY'
+	];
+
+	const f = moment(fecha, formatos, true);
+	return f.isValid() ? f.format('YYYY-MM-DD') : 'N/D';
 }
 
 function table_render(Table,datos,Header,columnDefs,Filter)

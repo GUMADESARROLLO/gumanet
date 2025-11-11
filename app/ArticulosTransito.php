@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use PHPExcel;
@@ -19,6 +20,12 @@ class ArticulosTransito extends Model
     protected $table = "PRODUCCION.dbo.tbl_articulos_transito_v2";
     protected $primaryKey = 'Id_transito';
     protected $keyType    = 'string';
+
+
+    public function getArticulo()
+    {
+        return $this->belongsTo(Articulo::class, 'Articulo', 'ARTICULO');
+    }
 
     protected $fillable = [
         'Articulo',
@@ -51,7 +58,9 @@ class ArticulosTransito extends Model
                 foreach ($request->input('datos') as $k => $v) 
                 {
                     $Cantidad = number_format(str_replace(',', '', $v['CANTIDAD']), 4,'.','');
-                    $Articulo = ($v['ARTICULO'] == 'N/D' || $v['ARTICULO'] == 'N/A' || is_numeric(intval($v['ARTICULO']) == false)) ? mt_rand(10000000, 99999999).'-N' : $v['ARTICULO'] ;
+                    $Articulo = ($v['ARTICULO'] == 'N/D' || $v['ARTICULO'] == 'N/A' || !is_numeric($v['ARTICULO'])) ? mt_rand(10000000, 99999999).'-N' : $v['ARTICULO'];
+
+                    //$Articulo = ($v['ARTICULO'] == 'N/D' || $v['ARTICULO'] == 'N/A' || is_numeric(intval($v['ARTICULO']) == false)) ? mt_rand(10000000, 99999999).'-N' : $v['ARTICULO'] ;
                     $Estado = strtoupper((isset($v['estado_pedido'])) ? $v['estado_pedido'] : 'N/D');
                     $Mercado = (isset($v['Mercado'])) ? $v['Mercado'] : 'N/D';
                     $Mific = (isset($v['Mific'])) ? $v['Mific'] : 'N/D';
@@ -61,7 +70,7 @@ class ArticulosTransito extends Model
 
                     $datos_a_insertar[$k] = [
                         'Articulo'		        => $Articulo,
-                        'Descripcion'		    => strtoupper($v['DESCRIPC']),
+                        'Descripcion'		    => '-',
                         'cantidad'		        => $Cantidad,
                         'cantidad_pedido'	    => ($Estado === 'PEDIDO') ? $Cantidad : '0' ,
                         'cantidad_transito'	    => ($Estado === 'TRANSITO' || $Estado ==='ON-HAND') ? $Cantidad : '0',
@@ -80,7 +89,6 @@ class ArticulosTransito extends Model
                 }
 
 
-                
                 $response = ArticulosTransito::insert($datos_a_insertar);
                 
                 return $response;
@@ -102,7 +110,8 @@ class ArticulosTransito extends Model
             $Array[$k] = [
                 'ID'                => $v['Id_transito'],
                 'ARTICULO'          => $v['Articulo'],
-                'DESCRIPCION'       => strtoupper($v['Descripcion']),
+                //'DESCRIPCION'       => strtoupper($v['Descripcion']),
+                'DESCRIPCION'       => strtoupper($v->getArticulo->DESCRIPCION) ?? 'N/D',
                 'FECHA_ESTIMADA'    => ($v['fecha_estimada']== null) ? 'N/D' : \Date::parse($v['fecha_estimada'])->format('D, M d, Y') ,
                 'FECHA_PEDIDO'      => ($v['fecha_pedido']== null) ? 'N/D' : \Date::parse($v['fecha_pedido'])->format('D, M d, Y') ,
                 'PEDIDO'            => number_format($v['cantidad_pedido'], 0),
