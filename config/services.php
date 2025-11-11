@@ -29,6 +29,11 @@ return [
     'sparkpost' => [
         'secret' => env('SPARKPOST_SECRET'),
     ],
+    'onesignal' => [
+        'app_id' => env('ONESIGNAL_APP_ID'),
+        'api_key' => env('ONESIGNAL_API_KEY'),
+        'api_url' => env('ONESIGNAL_API_URL'),
+    ],
 
     'stripe' => [
         'model' => App\User::class,
