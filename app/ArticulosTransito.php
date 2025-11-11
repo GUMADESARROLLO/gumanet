@@ -20,6 +20,12 @@ class ArticulosTransito extends Model
     protected $primaryKey = 'Id_transito';
     protected $keyType    = 'string';
 
+
+    public function getArticulo()
+    {
+        return $this->belongsTo(Articulo::class, 'Articulo', 'ARTICULO');
+    }
+
     protected $fillable = [
         'Articulo',
         'Descripcion',
@@ -61,7 +67,7 @@ class ArticulosTransito extends Model
 
                     $datos_a_insertar[$k] = [
                         'Articulo'		        => $Articulo,
-                        'Descripcion'		    => strtoupper($v['DESCRIPC']),
+                        'Descripcion'		    => '',
                         'cantidad'		        => $Cantidad,
                         'cantidad_pedido'	    => ($Estado === 'PEDIDO') ? $Cantidad : '0' ,
                         'cantidad_transito'	    => ($Estado === 'TRANSITO' || $Estado ==='ON-HAND') ? $Cantidad : '0',
@@ -102,7 +108,8 @@ class ArticulosTransito extends Model
             $Array[$k] = [
                 'ID'                => $v['Id_transito'],
                 'ARTICULO'          => $v['Articulo'],
-                'DESCRIPCION'       => strtoupper($v['Descripcion']),
+                //'DESCRIPCION'       => strtoupper($v['Descripcion']),
+                'DESCRIPCION'       => strtoupper($v->getArticulo->DESCRIPCION) ?? 'N/D',
                 'FECHA_ESTIMADA'    => ($v['fecha_estimada']== null) ? 'N/D' : \Date::parse($v['fecha_estimada'])->format('D, M d, Y') ,
                 'FECHA_PEDIDO'      => ($v['fecha_pedido']== null) ? 'N/D' : \Date::parse($v['fecha_pedido'])->format('D, M d, Y') ,
                 'PEDIDO'            => number_format($v['cantidad_pedido'], 0),

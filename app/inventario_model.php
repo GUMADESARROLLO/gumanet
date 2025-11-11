@@ -63,7 +63,7 @@ class inventario_model extends Model {
                                 GROUP BY ARTICULO, DESCRIPCION";
                 break;
             case '2':                
-                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH FROM PRODUCCION.dbo.gp_iweb_articulos T0 LEFT JOIN PRODUCCION.dbo.gnet_inventario_promedios_anuales_gup T1 ON T0.ARTICULO = T1.ARTICULO ";
+                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH , '1900-01-01' AS LIC_EXP FROM PRODUCCION.dbo.gp_iweb_articulos T0 LEFT JOIN PRODUCCION.dbo.gnet_inventario_promedios_anuales_gup T1 ON T0.ARTICULO = T1.ARTICULO ";
                 $sql_vent_art = "SELECT
                                 ARTICULO,
                                 DESCRIPCION,
@@ -72,7 +72,7 @@ class inventario_model extends Model {
                                     SUM ([P. Unitario] * Cantidad) AS FLOAT
                                 ) AS VENTA,
                                 (SELECT ISNULL(CAST ( SUM ( T1.Cantidad ) AS FLOAT ), 0) AS CANTIDAD FROM Softland.dbo.GP_VtasTotal_UMK T1 ( nolock ) WHERE T1.[Año] = YEAR(GETDATE()) AND T1.nMes= MONTH(GETDATE()) AND T1.ARTICULO=T0.ARTICULO AND T1.[P. Unitario] > 0  ) AS VstMesActual,
-	                            (SELECT ISNULL(CAST ( SUM ( T1.Cantidad ) AS FLOAT ), 0) AS CANTIDAD FROM Softland.dbo.GP_VtasTotal_UMK T1 ( nolock ) WHERE T1.[Año] = YEAR(GETDATE()) AND T1.ARTICULO=T0.ARTICULO AND T1.[P. Unitario] > 0 )  AS VstAnnoActual 
+	                            (SELECT ISNULL(CAST ( SUM ( T1.Cantidad ) AS FLOAT ), 0) AS CANTIDAD FROM Softland.dbo.GP_VtasTotal_UMK T1 ( nolock ) WHERE T1.[Año] = YEAR(GETDATE()) AND T1.ARTICULO=T0.ARTICULO AND T1.[P. Unitario] > 0 )  AS VstAnnoActual
                             FROM
                                 Softland.dbo.GP_VtasTotal_UMK T0 (nolock)
                             WHERE
@@ -98,6 +98,7 @@ class inventario_model extends Model {
                                 ) AS VENTA,
                                 (SELECT ISNULL(CAST ( SUM ( T1.Cantidad ) AS FLOAT ), 0) AS CANTIDAD FROM Softland.dbo.INN_VtasTotal_UMK T1 ( nolock ) WHERE T1.[Año] = YEAR(GETDATE()) AND T1.nMes= MONTH(GETDATE()) AND T1.ARTICULO=T0.ARTICULO AND T1.[P. Unitario] > 0  ) AS VstMesActual,
 	                            (SELECT ISNULL(CAST ( SUM ( T1.Cantidad ) AS FLOAT ), 0) AS CANTIDAD FROM Softland.dbo.INN_VtasTotal_UMK T1 ( nolock ) WHERE T1.[Año] = YEAR(GETDATE()) AND T1.ARTICULO=T0.ARTICULO AND T1.[P. Unitario] > 0 )  AS VstAnnoActual 
+                               
                             FROM
                                 Softland.dbo.INN_VtasTotal_UMK T0 (nolock)
                             WHERE
@@ -150,9 +151,8 @@ class inventario_model extends Model {
             $Existencia =  number_format($key['total'], 2,".","");
 
             $MesInventario = ($key['total'] > 0.10 && $PromedioActual > 0.10) ? $Existencia   / $PromedioActual : "0.00" ;
-            $LicExpira = ($key['LIC_EXP']->format('Y-m-d') === '1900-01-01' ) ? 'N/D': $key['LIC_EXP']->format('d/m/Y') ;
 
-       
+            $LicExpira = ($company_user == '1') ? ($key['LIC_EXP']->format('Y-m-d') === '1900-01-01' ) ? 'N/D': $key['LIC_EXP']->format('d/m/Y')  :  'N/D';
 
             $query[$i]['ARTICULO']          = '<a href="#!" onclick="getDetalleArticulo('."'".$key['ARTICULO']."'".', '."'".$desc_art."'".','."'".$LicExpira."'".' )" >'.$key['ARTICULO'].'</a>';
             $query[$i]['ARTICULO_']         = $key['ARTICULO'];
