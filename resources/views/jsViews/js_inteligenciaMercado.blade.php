@@ -20,11 +20,19 @@ $(document).ready(function() {
 
 var fechas = {};
 
+// ✅ Controlar los clics en la paginación de Laravel (por AJAX)
 $(document).on('click', '.pagination a', function (e) {
-	e.preventDefault();
-	var page = $(this).attr('href').split('page=')[1];
-	fetch_data(page);
+    e.preventDefault();
+
+    // Evitar clicks duplicados durante la carga
+    if ($(this).parent().hasClass('active')) return;
+
+    const page = $(this).attr('href').split('page=')[1];
+
+    // Llamar a la función que ya tienes
+    fetch_data(page);
 });
+
 
 $(document).on('change', '#orderByDate', function (e) {
 	fetch_data(1)
@@ -40,37 +48,33 @@ function setFechas(f1, f2) {
 }
 
 function fetch_data(page) {
-	var base_url = window.location.origin + '/' + window.location.pathname.split ('/') [1] + '/';
-	value 		= $('#search').val();
-	valueDate 	= $('#orderByDate').val();
-	fechas_		= fechas;
+    let value = $('#search').val();
+    let valueDate = $('#orderByDate').val();
+    let fechas_ = fechas;
 
-	$.ajax({
-		type : 'post',
-		url: 'paginateDataSearch',
-		data:{ 'search':value, 'date':valueDate, 'page':page, 'fechas':fechas_ },
-		success:function(data) {
-			
-			if (data.length=='') {
-				$('.comentarios').html(`<div class="row">
-					<div class="col-12">
-						<div class="card">
-							<div class="card-body">
-								<p class="text-center font-weight-bolder">No se encontraron registros</p>
-								<center><img src="./images/icon_sinresultados.png" width="100" class="mt-4 mb-4" /></center>
-							</div>
-						</div>
-					</div>
-					</div>`);
-				
-			}else {
-				$('.comentarios').html(data);
-			}				
-		}
-	});
+    $('.comentarios').html(`
+        <div class="text-center mt-5 mb-5">
+            <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem;"></div>
+            <p class="mt-3 font-weight-bold text-secondary">Cargando comentarios...</p>
+        </div>
+    `);
+
+    $.ajax({
+        type: 'POST',
+        url: 'paginateDataSearch',
+        data: { search: value, date: valueDate, page: page, fechas: fechas_ },
+        success: function(data) {
+			console.log(data);
+            $('.comentarios').hide().html(data).fadeIn(300);
+        },
+        error: function() {
+            $('.comentarios').html('<p class="text-center text-danger mt-3">Error al cargar los comentarios</p>');
+        }
+    });
 }
 
-$('.btnVerChat').on('click', function() {
+
+$(document).on('click', '.cardComentario', function() {
 	let autor = $(this).data('autor');
     let id = $(this).data('id');
     let titulo = $(this).data('titulo');
@@ -109,7 +113,7 @@ $('.btnVerChat').on('click', function() {
 
         <div class="direct-chat-text p-3"
             style="
-                background:${esAutor ? '#006a89' : '#e9ecef'};
+                background:${esAutor ? '#64bc61' : '#e9ecef'};
                 color:${esAutor ? '#fff' : '#333'};
                 border-radius:18px;
                 line-height:1.4;
@@ -127,7 +131,7 @@ $('.btnVerChat').on('click', function() {
 
             <!-- Mensaje -->
             <div class="w-100 mb-1"
-                style="text-align:${esAutor ? 'right' : 'left'};">
+                style="text-align:left">
                 ${r.comments}
             </div>
 

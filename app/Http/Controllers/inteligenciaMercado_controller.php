@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models;
 use App\Company;
+use App\IM_Comentarios;
 use PHPExcel;
 use PHPExcel_IOFactory;
 use PHPExcel_Style_Alignment;
@@ -15,6 +16,7 @@ use PHPExcel_Style_Border;
 use PHPExcel_Style_Fill;
 use App\inteligenciaMercado_model;
 use DB;
+use Exception;
 
 class inteligenciaMercado_controller extends Controller
 {
@@ -38,7 +40,7 @@ class inteligenciaMercado_controller extends Controller
 
 		inteligenciaMercado_controller::Update();
 
-		return view('pages.inteligenciaMercado', $data);		
+		return view('pages.Inteligencia_Mercado.inteligenciaMercado', $data);		
 	}
 
 	public function responder(Request $request)
@@ -48,15 +50,49 @@ class inteligenciaMercado_controller extends Controller
 			'respuesta' => 'required|string|max:1000'
 		]);
 
-		\DB::table('tbl_comments_post_im')->insert([
-			'id_post' => $request->comentario_id,
-			'comments' => $request->respuesta,
-			'created_by' => auth()->user()->name ?? 'Admin',
-			'created_at' => now()
-		]);
+		try {
 
-		return back()->with('success', 'Respuesta enviada correctamente');
+			$id_post = $request->comentario_id;
+			$comments = $request->respuesta;
+			$created_by = auth()->user()->name ?? 'Admin';
+			$created_at = now();
+			
+			$obj = new IM_Comentarios();
+			$obj->id_post = $id_post;
+			$obj->comments = $comments;
+			$obj->created_by = $created_by;
+			$obj->created_at = $created_at;
+
+
+			$response = $obj->save();
+
+			if($response == true){
+				$IdOneSignal = env('ONESIGNAL_API_USR');
+        
+				IM_Comentarios::sendNotification(
+					$IdOneSignal,
+					'Notificación',
+					'Respondieron tu comentario.', 
+					['tipo' => 'alerta']  
+				);
+
+			}
+
+			return back()->with('success', 'Respuesta enviada correctamente');
+
+		} catch (Exception $e) {
+			$mensaje =  'Excepción capturada: ' . $e->getMessage() . "\n";
+			return response()->json($mensaje);
+		}
 	}
+
+	public function paginateDataSearch(Request $request)
+	{
+		$comentarios = inteligenciaMercado_model::filtro($request)->paginate(5);
+
+		return view('pages.Inteligencia_Mercado.cards_Comentarios', compact('comentarios'))->render();
+	}
+
 
 	public function respuestas($id)
 	{
