@@ -28,7 +28,7 @@ class inteligenciaMercado_controller extends Controller
 		$this->agregarDatosASession();
 		$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
 		
-		$comentarios = inteligenciaMercado_model::where('empresa', $company_user)->orderBy('Fecha', 'desc')->paginate(5);
+		$comentarios = inteligenciaMercado_model::where('empresa', $company_user)->withCount('respuestas')->orderBy('Fecha', 'desc')->paginate(5);
 		
 		$data = [
 			'page' 				=> 'Inteligencia de Mercado',
@@ -88,18 +88,25 @@ class inteligenciaMercado_controller extends Controller
 
 	public function paginateDataSearch(Request $request)
 	{
-		$comentarios = inteligenciaMercado_model::filtro($request)->paginate(5);
+		$texto  = $request->input('search');
+		$fecha  = $request->input('date');
+		$fechas = $request->input('fechas'); 
+		$page   = $request->input('page');   
+
+		$comentarios = inteligenciaMercado_model::filtro($texto, $fecha, $fechas)
+							->orderBy('Fecha', 'desc')
+							->paginate(5, ['*'], 'page', $page);
 
 		return view('pages.Inteligencia_Mercado.cards_Comentarios', compact('comentarios'))->render();
 	}
 
 
+
 	public function respuestas($id)
 	{
-		return \DB::table('tbl_comments_post_im')
-			->where('id_post', $id)
-			->orderBy('created_at','DESC')
-			->get();
+		$sql = IM_Comentarios::where('id_post',$id)->orderBy('created_at', 'DESC')->get();
+			
+		return $sql;
 	}
 
     public function agregarDatosASession() {
@@ -127,7 +134,7 @@ class inteligenciaMercado_controller extends Controller
 			
 			$comentarios = inteligenciaMercado_model::where(function($q) use ($search) {
 				$q->where('Nombre', 'LIKE', $search)->orWhere('Titulo', 'LIKE', $search)->orWhere('Contenido', 'LIKE', $search)->orWhere('Autor', 'LIKE', $search);
-			})->where('empresa', $company_user)->whereBetween('Fecha', [$from, $to])->orderBy('Fecha', $order)->paginate(5);
+			})->where('empresa', $company_user)->whereBetween('Fecha', [$from, $to])->withCount('respuestas')->orderBy('Fecha', $order)->paginate(5);
 
 			return view('pages.comentarios', compact('comentarios'))->render();
 		}
@@ -169,7 +176,7 @@ class inteligenciaMercado_controller extends Controller
 			
 			$comentarios = inteligenciaMercado_model::where(function($q) use ($search) {
 				$q->where('Nombre', 'LIKE', $search)->orWhere('Titulo', 'LIKE', $search)->orWhere('Contenido', 'LIKE', $search)->orWhere('Autor', 'LIKE', $search);
-			})->where('empresa', $company_user)->whereBetween('Fecha', [$from, $to])->orderBy('Fecha', $order)->paginate(5);
+			})->where('empresa', $company_user)->whereBetween('Fecha', [$from, $to])->withCount('respuestas')->orderBy('Fecha', $order)->paginate(5);
 		}
 
 		$objPHPExcel = new PHPExcel();
