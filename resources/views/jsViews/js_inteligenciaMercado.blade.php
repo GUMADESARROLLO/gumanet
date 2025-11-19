@@ -1,4 +1,14 @@
 <script>
+    $(document).on('click', '.img-fluid', function (e) {
+ 
+    Swal.fire({
+        showCloseButton: true,
+        showConfirmButton: false,
+        imageUrl: $(this).attr('src'),
+    })
+
+    $(".swal2-popup").css('width', '50%');
+})
 $(document).ready(function() {
 	fullScreen();
 	fechas = {};

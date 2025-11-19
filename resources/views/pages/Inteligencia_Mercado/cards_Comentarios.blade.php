@@ -9,16 +9,23 @@
     data-fecha="{{ date('d/m/Y h:i a', strtotime($key->Fecha)) }}">
     <div class="card-body">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <h5 class="card-title font-weight-bold text-primary">{{ $key->Titulo }}</h5>
                 <p class="card-text">{{ $key->Contenido }}</p>
+                <div class="col-md-2">
+                    @if($key->Imagen)
+                        <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                        <img src="{{ Storage::disk('s3')->temporaryUrl('news/'.$key->Imagen, now()->addMinutes(5)) }}" width="50" class="img-fluid img-thumbnail w-50" />
+                            <a href="#!">
+                            <div class="hover-overlay">
+                                <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                            </div>
+                            </a>
+                        </div>
+                    @endif
+                </div>
             </div>
-            <div class="col-md-2">
-                @if($key->Imagen)
-                <img src="{{ Storage::disk('s3')->temporaryUrl('news/'.$key->Imagen, now()->addMinutes(5)) }}"
-                     width="100" class="img-fluid rounded float-right" />
-                @endif
-            </div>
+            
         </div>
     </div>
 
