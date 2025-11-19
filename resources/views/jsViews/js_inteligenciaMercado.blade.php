@@ -2,18 +2,65 @@
 $(document).ready(function() {
 	fullScreen();
 	fechas = {};
-	$('#dom-id').dateRangePicker({
-		language: 'es',
-		singleMonth: true,
-		showShortcuts: false,
-		startOfWeek: 'monday',
-		separator : ' al ',
-		showTopbar: false,
-		autoClose: true,
-		setValue: function(s,s1,s2) {
-			setFechas(s1, s2)
-		}
-	});
+
+    $('input[name="dt_range"]').daterangepicker({
+        "autoApply": true,
+            ranges: {
+            'Hoy': [moment(), moment()],
+            'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
+            'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
+            
+            'Esta Semana': [moment().startOf('week'), moment().endOf('week')],
+            'Semana Anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+            
+            'Este Mes': [moment().startOf('month'), moment()],
+            'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            
+            //'1 Año': [moment().subtract(1, 'year'), moment()],
+            // '2 Años': [moment().subtract(2, 'year'), moment()],
+            // '3 Años': [moment().subtract(3, 'year'), moment()]
+            },
+        "showCustomRangeLabel": false,
+        "alwaysShowCalendars": true,
+        "startDate": moment().startOf('month').format('D MMM. YYYY'),
+        "endDate": moment().format('D MMM. YYYY'),
+        opens: 'left',
+        locale: {
+            //format: "DD/MM/YYYY",
+            format: "D MMM. YYYY",   // Ejemplo: 1 ago. 2025
+            separator: " - ",
+            applyLabel: "Aplicar",
+            cancelLabel: "Cancelar",
+            fromLabel: "Desde",
+            toLabel: "Hasta",
+            customRangeLabel: "Personalizado",
+            weekLabel: "S",
+            daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie", "Sab."],
+            monthNames: [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            ],
+            firstDay: 1
+        }
+    }, function(start, end, label) {
+        //console.log('Nuevo rango seleccionado: ' + start.format('YYYY-MM-DD') + ' a ' + end.format('YYYY-MM-DD') + ' (rango: ' + label + ')');
+        //CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+        setFechas(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'))
+    });
+
+
+	// $('#dom-id').dateRangePicker({
+	// 	language: 'es',
+	// 	singleMonth: true,
+	// 	showShortcuts: false,
+	// 	startOfWeek: 'monday',
+	// 	separator : ' al ',
+	// 	showTopbar: false,
+	// 	autoClose: true,
+	// 	setValue: function(s,s1,s2) {
+	// 		setFechas(s1, s2)
+	// 	}
+	// });
 
 	$("#item-nav-01").after(`<li class="breadcrumb-item active">Inteligencia de Mercado</li>`);
 });
@@ -61,7 +108,7 @@ function fetch_data(page) {
         url: 'paginateDataSearch',
         data: { 
             search: value, 
-            date: valueDate, 
+            date: 'desc', 
             page: page, 
             fechas: fechas_,
             _token: $('meta[name="csrf-token"]').attr('content')
