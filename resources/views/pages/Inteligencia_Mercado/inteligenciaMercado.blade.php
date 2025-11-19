@@ -3,10 +3,10 @@
 @section('name_user' , 'Administrador')
 @section('metodosjs')
 @include('jsViews.js_inteligenciaMercado');
+@include('pages.Inteligencia_Mercado.css_imteligenciaMercado');
 @endsection
 @section('content')
 <?php setlocale(LC_TIME, "spanish") ?>
-<link rel="stylesheet" type="text/css" href="{{ url('css/daterangepicker.min.css') }}">
 <div class="container-fluid">	
 	<div class="row">
 		<div class="col-md-12">
@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-5">
+		<div class="col-8">
 			<div class="input-group mt-3">
 				<div class="input-group-prepend">
 					<span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
@@ -22,19 +22,15 @@
 				<input type="text" id="search" class="form-control" placeholder="Buscar por Titulo, Contenido, Autor o por Ruta Asignada" aria-label="Username" aria-describedby="basic-addon1">
 			</div>
 		</div>
-		<div class="col-md-3">
-			<div class="form-group">
-				<label for="orderByDate" class="text-muted m-0">Ordenar por</label>
-				<select class="form-control form-control-sm" id="orderByDate">
-					<option value="desc">Recientes</option>
-					<option value="asc">Mas antiguos</option>
-				</select>
-			</div>
+		
+
+		<div class="col-2">
+			<div class="form-group mt-3">          
+				<input type="text" class="input-fecha" name="dt_range" />
+			</div>     
 		</div>
-		<div class="col-sm-2 mt-3">
-			<button id="dom-id" class="btn btn-light btn-block text-primary fa-1x"><i class="fas fa-calendar-day"></i> Filtro por Fechas</button>
-		</div>
-		<div class="col-sm-2 mt-3">
+		
+		<div class="col-2 mt-3">
 			<a id="exp-to-excel" href="#!" class="btn btn-light btn-block text-success" onclick="descargarArchivo()"><i class="fas fa-file-excel"></i> Exportar</a>
 		</div>
 	</div>
@@ -84,5 +80,4 @@
 </div>
 
 
-<script src="{{ url('js/jquery.daterangepicker.min.js') }}"></script>
 @endsection

@@ -54,6 +54,7 @@ class inteligenciaMercado_controller extends Controller
 
 			$id_post = $request->comentario_id;
 			$comments = $request->respuesta;
+			
 			$created_by = auth()->user()->name ?? 'Admin';
 			$created_at = now();
 			
@@ -67,14 +68,16 @@ class inteligenciaMercado_controller extends Controller
 			$response = $obj->save();
 
 			if($response == true){
+
 				$IdOneSignal = env('ONESIGNAL_API_USR');
         
-				IM_Comentarios::sendNotification(
+				$result = IM_Comentarios::sendNotification(
 					$IdOneSignal,
 					'Notificación',
 					'Respondieron tu comentario.', 
 					['tipo' => 'alerta']  
 				);
+
 
 			}
 
@@ -117,7 +120,8 @@ class inteligenciaMercado_controller extends Controller
         $request->session()->put('companyName', $company->nombre);// agregar nombre de compañia a session[], para obtenert el nombre al cargar otras pagina 
     }
 
-    public function searchComentarios(Request $request) {
+    public function searchComentarios(Request $request) 
+	{
 		if($request->isMethod('post')) {
 			$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
 
@@ -136,11 +140,12 @@ class inteligenciaMercado_controller extends Controller
 				$q->where('Nombre', 'LIKE', $search)->orWhere('Titulo', 'LIKE', $search)->orWhere('Contenido', 'LIKE', $search)->orWhere('Autor', 'LIKE', $search);
 			})->where('empresa', $company_user)->whereBetween('Fecha', [$from, $to])->withCount('respuestas')->orderBy('Fecha', $order)->paginate(5);
 
-			return view('pages.comentarios', compact('comentarios'))->render();
+			return view('pages.Inteligencia_Mercado.cards_Comentarios', compact('comentarios'))->render();
 		}
     }
 
-	public function countim(Request $request){
+	public function countim(Request $request)
+	{
 		$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;	
 
 		return inteligenciaMercado_model::where('Read', '=', 0)->where('empresa', $company_user)->count();
@@ -148,7 +153,8 @@ class inteligenciaMercado_controller extends Controller
 
 	}
 
-	public static function Update(){
+	public static function Update()
+	{
 		$request = Request();
 		$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;	
 		inteligenciaMercado_model::where('Read',"=", 0)->where('empresa', $company_user)->update(['Read' => 1]);
@@ -156,10 +162,11 @@ class inteligenciaMercado_controller extends Controller
 	}
 
 
-    public function descargarComentarios( Request $request ) {
-    	setlocale(LC_TIME, "spanish");
-    	$base = config('global.url_server');
-    	$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
+    public function descargarComentarios( Request $request ) 
+	{
+		setlocale(LC_TIME, "spanish");
+		$base = config('global.url_server');
+		$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
 		
 		if($request->isMethod('post')) {
 			$search 	= $request->input('valueFiltro_');
