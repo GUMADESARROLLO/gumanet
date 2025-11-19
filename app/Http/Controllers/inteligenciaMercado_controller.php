@@ -54,6 +54,7 @@ class inteligenciaMercado_controller extends Controller
 
 			$id_post = $request->comentario_id;
 			$comments = $request->respuesta;
+			
 			$created_by = auth()->user()->name ?? 'Admin';
 			$created_at = now();
 			
@@ -67,14 +68,16 @@ class inteligenciaMercado_controller extends Controller
 			$response = $obj->save();
 
 			if($response == true){
+
 				$IdOneSignal = env('ONESIGNAL_API_USR');
         
-				IM_Comentarios::sendNotification(
+				$result = IM_Comentarios::sendNotification(
 					$IdOneSignal,
 					'Notificación',
 					'Respondieron tu comentario.', 
 					['tipo' => 'alerta']  
 				);
+
 
 			}
 
