@@ -45,8 +45,8 @@
 
 
 <div class="modal fade" id="modalChat" tabindex="-1">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
+  <div class="modal-dialog modal-xl" style="max-width:80% !important;">
+    <div class="modal-content" style="height:97vh;">
 
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title">COMENTARIO</h5>
@@ -61,7 +61,7 @@
         <hr>
 
         {{-- Respuestas cargadas aquí --}}
-        <div id="contenedor_respuestas" style="max-height: 460px; overflow-y:auto;"></div>
+        <div id="contenedor_respuestas" style="max-height: 600px; overflow-y:auto;"></div>
 
         <hr>
 

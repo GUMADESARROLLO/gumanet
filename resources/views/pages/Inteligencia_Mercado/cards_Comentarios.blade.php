@@ -34,6 +34,9 @@
                 <p class="float-left font-weight-bold mr-4">
                     <img src="./images/globe.svg" class="img01" /> {{ $key->Autor }}
                 </p>
+                <p class="float-left font-weight-bold mr-4">
+                    <img src="./images/messages.svg" class="img01" /> {{ $key->respuestas_count }}
+                </p>
             </div>
             <div class="col-1 text-center">
                 @if($key->Read==0)

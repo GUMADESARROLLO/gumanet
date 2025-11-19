@@ -20,16 +20,13 @@ $(document).ready(function() {
 
 var fechas = {};
 
-// ✅ Controlar los clics en la paginación de Laravel (por AJAX)
 $(document).on('click', '.pagination a', function (e) {
     e.preventDefault();
 
-    // Evitar clicks duplicados durante la carga
     if ($(this).parent().hasClass('active')) return;
 
     const page = $(this).attr('href').split('page=')[1];
 
-    // Llamar a la función que ya tienes
     fetch_data(page);
 });
 
@@ -62,15 +59,23 @@ function fetch_data(page) {
     $.ajax({
         type: 'POST',
         url: 'paginateDataSearch',
-        data: { search: value, date: valueDate, page: page, fechas: fechas_ },
-        success: function(data) {
-			console.log(data);
+        data: { 
+            search: value, 
+            date: valueDate, 
+            page: page, 
+            fechas: fechas_,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {console.log(data)
             $('.comentarios').hide().html(data).fadeIn(300);
         },
         error: function() {
-            $('.comentarios').html('<p class="text-center text-danger mt-3">Error al cargar los comentarios</p>');
+            $('.comentarios').html(
+                '<p class="text-center text-danger mt-3">Error al cargar los comentarios</p>'
+            );
         }
     });
+
 }
 
 
