@@ -36,40 +36,49 @@
 	</div>
 	<form id="fmrDescargarComent" method="post" action="dowloadComents"> @csrf </form>
 	<div class="comentarios">
-		 @include('pages.Inteligencia_Mercado.cards_Comentarios', ['comentarios' => $comentarios])
+		 @include('pages.Inteligencia_Mercado.comments_v3', ['comentarios' => $comentarios])
 	</div>
 
 
 <div class="modal fade" id="modalChat" tabindex="-1">
   <div class="modal-dialog modal-xl" style="max-width:80% !important;">
-    <div class="modal-content" style="height:97vh;">
+    <div class="modal-content" style="height:97vh; display:flex; flex-direction:column;">
 
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title">COMENTARIO</h5>
         <button class="close text-white" data-dismiss="modal">&times;</button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body" style="overflow:hidden; display:flex; flex-direction:column;">
 
-        {{-- Comentario principal --}}
+        <!-- Comentario principal -->
         <div class="direct-chat-msg" id="comentario_principal"></div>
 
         <hr>
 
-        {{-- Respuestas cargadas aquí --}}
-        <div id="contenedor_respuestas" style="max-height: 600px; overflow-y:auto;"></div>
+        <!-- Respuestas -->
+        <div id="contenedor_respuestas" 
+             style="max-height:40vh; overflow-y:auto; margin-bottom:1rem;">
+        </div>
 
         <hr>
 
-        {{-- Formulario respuesta --}}
+        <!-- Formulario -->
         <form id="formRespuesta" method="POST" action="{{ route('comentarios') }}">
-          @csrf
+          @csrf          
           <input type="hidden" name="comentario_id" id="comentario_id">
-          <div class="input-group">
-            <textarea name="respuesta" id="respuesta" class="form-control" placeholder="Escriba una respuesta..." required></textarea>
-            <div class="input-group-append">
-              <button class="btn btn-primary"><i class='fas fa-paper-plane'></i></span></button>
-            </div>
+
+          <div>
+              <textarea name="respuesta" id="respuesta" 
+                class="form-control"
+                placeholder="Escriba una respuesta..."
+                required
+                style="min-height:120px; resize:none;">
+              </textarea>
+          </div>
+
+          <div class="text-right mt-3">
+              <button class="btn-responder">Responder</button>
           </div>
         </form>
 
@@ -78,6 +87,7 @@
     </div>
   </div>
 </div>
+
 
 
 @endsection
