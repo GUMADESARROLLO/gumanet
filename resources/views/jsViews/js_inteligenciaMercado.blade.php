@@ -13,6 +13,14 @@ $(document).ready(function() {
 	fullScreen();
 	fechas = {};
 
+    CKEDITOR.replace( 'respuesta', {
+        language: 'es',
+        toolbar: [{ name: 'basicstyles', items: [ 'Bold', 'Italic' ] }],
+        removeButtons: 'Underline,Strike,Subscript,Superscript,RemoveFormat,Copy,Paste,Undo,Redo,Link,Unlink,Image,Table,Source', 
+        allowedContent: true, 
+    });
+
+
     $('input[name="dt_range"]').daterangepicker({
         "autoApply": true,
             ranges: {

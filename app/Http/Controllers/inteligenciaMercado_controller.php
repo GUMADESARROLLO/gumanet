@@ -100,7 +100,7 @@ class inteligenciaMercado_controller extends Controller
 							->orderBy('Fecha', 'desc')
 							->paginate(5, ['*'], 'page', $page);
 
-		return view('pages.Inteligencia_Mercado.cards_Comentarios', compact('comentarios'))->render();
+		return view('pages.Inteligencia_Mercado.comments_v3', compact('comentarios'))->render();
 	}
 
 
@@ -140,7 +140,7 @@ class inteligenciaMercado_controller extends Controller
 				$q->where('Nombre', 'LIKE', $search)->orWhere('Titulo', 'LIKE', $search)->orWhere('Contenido', 'LIKE', $search)->orWhere('Autor', 'LIKE', $search);
 			})->where('empresa', $company_user)->whereBetween('Fecha', [$from, $to])->withCount('respuestas')->orderBy('Fecha', $order)->paginate(5);
 
-			return view('pages.Inteligencia_Mercado.cards_Comentarios', compact('comentarios'))->render();
+			return view('pages.Inteligencia_Mercado.comments_v3', compact('comentarios'))->render();
 		}
     }
 
