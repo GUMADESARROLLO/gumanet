@@ -37,7 +37,6 @@ class inteligenciaMercado_controller extends Controller
 			'comentarios'		=> $comentarios
 		];	
 
-
 		inteligenciaMercado_controller::Update();
 
 		return view('pages.Inteligencia_Mercado.inteligenciaMercado', $data);		
@@ -54,6 +53,7 @@ class inteligenciaMercado_controller extends Controller
 
 			$id_post = $request->comentario_id;
 			$comments = $request->respuesta;
+			$oneSignal = $request->oneSignal;
 			
 			$created_by = auth()->user()->name ?? 'Admin';
 			$created_at = now();
@@ -63,16 +63,15 @@ class inteligenciaMercado_controller extends Controller
 			$obj->comments = $comments;
 			$obj->created_by = $created_by;
 			$obj->created_at = $created_at;
+			$obj->IdOneSignal = $oneSignal;
 
 
 			$response = $obj->save();
 
 			if($response == true){
 
-				$IdOneSignal = env('ONESIGNAL_API_USR');
-        
-				$result = IM_Comentarios::sendNotification(
-					$IdOneSignal,
+				IM_Comentarios::sendNotification(
+					$oneSignal,
 					'Notificación',
 					'Respondieron tu comentario.', 
 					['tipo' => 'alerta']  

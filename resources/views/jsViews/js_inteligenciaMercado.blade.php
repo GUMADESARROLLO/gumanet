@@ -81,7 +81,32 @@ $(document).ready(function() {
 	// });
 
 	$("#item-nav-01").after(`<li class="breadcrumb-item active">Inteligencia de Mercado</li>`);
+
+    var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+    var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+
+
+    $('#filtrarFechas').on('click', function() {
+        
+
+        fetch_data(1);      
+    });
+    
+
+
+    $("#id_search_importaciones").on('keyup', function() {
+    var searchTerm = $(this).val().toLowerCase();
+    $('#tbl_topsku_clientes').DataTable().search(searchTerm).draw();
+    });
+
+    fetch_data(1);
 });
+
+function eneableButton(EnableButton, textButton = '<i class="fas fa-filter"></i> Filtrar') {
+    $('#filtrarFechas').prop('disabled', EnableButton);
+    $('#filtrarFechas').html('<i class="fas fa-spinner fa-spin" style="display:' + (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton);
+  }
 
 var fechas = {};
 
@@ -113,7 +138,7 @@ function fetch_data(page) {
     let value = $('#search').val();
     let valueDate = $('#orderByDate').val();
     let fechas_ = fechas;
-
+    eneableButton(true,'Calc...') ;
     $('.comentarios').html(`
         <div class="text-center mt-5 mb-5">
             <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem;"></div>
@@ -137,9 +162,11 @@ function fetch_data(page) {
         error: function() {
             $('.comentarios').html(
                 '<p class="text-center text-danger mt-3">Error al cargar los comentarios</p>'
+                
             );
         }
     });
+    eneableButton(false,'<i class="fas fa-filter"></i> Filtrar')
 
 }
 
@@ -151,19 +178,36 @@ $(document).on('click', '.cardComentario', function() {
     let contenido = $(this).data('contenido');
     let nombre = $(this).data('nombre');
     let fecha = $(this).data('fecha');
+    let imagen = $(this).data('imagen');
+    let oneSignal = $(this).data('onesignal');
 
     $('#comentario_id').val(id);
+    $('#oneSignal').val(oneSignal);
 
     // Construir mensaje principal
     $('#comentario_principal').html(`
-        <div class="direct-chat-infos clearfix">
+        <div class="direct-chat-infos clearfix ">
             <span class="direct-chat-name float-left">${nombre}</span>
             <span class="direct-chat-timestamp float-right">${fecha}</span>
         </div>
-        <div class="direct-chat-text">
-            <strong>${titulo}</strong><br>${contenido}
+
+        <div class="row mt-3">
+            <div class="col-12 col-sm-8">
+                <div class="direct-chat-text border-sm-bottom">
+                    <strong>${titulo}</strong><br>
+                    ${contenido}
+                </div>
+            </div>
+
+            ${imagen ? `
+            <div class="col-12 col-sm-4 text-center mb-3">
+                <img src="${imagen}" class="img-fluid rounded" style="max-height:120px;">
+            </div>
+            ` : ''}
+
         </div>
     `);
+
 
     // Limpiar respuestas antes de cargar
     $('#contenedor_respuestas').html("Cargando respuestas...");
@@ -211,7 +255,6 @@ $(document).on('click', '.cardComentario', function() {
                 text-align:${esAutor ? 'right' : 'left'};">
                 ${moment(r.created_at).format('DD/MM/YYYY h:mm a')}
             </div>
-
         </div>
 
         <div style="clear:both;"></div>
@@ -231,8 +274,10 @@ function descargarArchivo() {
 	valueFiltro	= $('#search').val();
 	valueDate 	= $('#orderByDate').val();
 	
-	valueFecha1	= ( Object.entries(fechas).length===0 )?'ND':fechas['fecha1'];
-	valueFecha2	= ( Object.entries(fechas).length===0 )?'ND':fechas['fecha2'];
+    var valueFecha1 = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+    var valueFecha2 = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+	//valueFecha1	= ( Object.entries(fechas).length===0 )?'ND':fechas['fecha1'];
+	//valueFecha2	= ( Object.entries(fechas).length===0 )?'ND':fechas['fecha2'];
 
 	$('<input />')
 	.attr('type', 'hidden')

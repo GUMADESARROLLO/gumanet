@@ -50,6 +50,9 @@
         height: 200px;
         margin-top: 0.75rem;
       }
+      .border-sm-bottom {
+        border-bottom: 1px solid #dee2e6 !important;
+      }
     }
     .modal-body .cke {
         width: 100% !important;
@@ -57,6 +60,7 @@
 
     #respuesta {
         width: 100% !important;
+        height: 40px !important;
         overflow: hidden;
     }
 
