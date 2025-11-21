@@ -1,5 +1,10 @@
 @foreach($comentarios as $key)
 <div class="container-fluid p-0 mb-4">
+  @if($key->Imagen)
+      @php  
+          $urlImagen = Storage::disk('s3')->temporaryUrl('news/'.$key->Imagen, now()->addMinutes(5));
+      @endphp
+  @endif
     <div class="card card-post p-3 mb-4 cardComentario" 
     style="cursor:pointer;"
     data-id="{{ $key->id }}"
@@ -7,6 +12,8 @@
     data-contenido="{{ $key->Contenido }}"
     data-nombre="{{ $key->Nombre }}"
     data-autor="{{ $key->Autor }}"
+    data-imagen="{{ $urlImagen }}"
+    data-onesignal="{{ $key->IdOneSignal}}"
     data-fecha="{{ date('d/m/Y h:i a', strtotime($key->Fecha)) }}">
       <div class="d-flex align-items-start post-content-row">
         <div class="flex-grow-1 pe-3">

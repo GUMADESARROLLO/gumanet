@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-8">
+		<div class="col-9">
 			<div class="input-group mt-3">
 				<div class="input-group-prepend">
 					<span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
@@ -30,9 +30,14 @@
 			</div>     
 		</div>
 		
-		<div class="col-2 mt-3">
+		<!--<div class="col-1 mt-3">
 			<a id="exp-to-excel" href="#!" class="btn btn-light btn-block text-success" onclick="descargarArchivo()"><i class="fas fa-file-excel"></i> Exportar</a>
-		</div>
+		</div>-->
+    <div class="col-1 mt-3">
+        <div class="btn-group w-100">               
+          <button type="button" class="btn btn-primary btn-block float-right" id="filtrarFechas">  Filtrar </button>		
+        </div>      
+      </div>
 	</div>
 	<form id="fmrDescargarComent" method="post" action="dowloadComents"> @csrf </form>
 	<div class="comentarios">
@@ -67,13 +72,14 @@
         <form id="formRespuesta" method="POST" action="{{ route('comentarios') }}">
           @csrf          
           <input type="hidden" name="comentario_id" id="comentario_id">
+          <input type="hidden" name="oneSignal" id="oneSignal">
 
           <div>
               <textarea name="respuesta" id="respuesta" 
                 class="form-control"
                 placeholder="Escriba una respuesta..."
                 required
-                style="min-height:120px; resize:none;">
+                style="min-height:100px; resize:none;">
               </textarea>
           </div>
 
