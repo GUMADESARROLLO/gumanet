@@ -182,8 +182,7 @@
                       @endif
                       <div class="col-md-6 col-lg-6 col-xl-6">
                         <h5 id="tArticulo" >Quant trident shirts</h5>
-                        <div class="d-flex flex-row">
-                          
+                        <div class="d-flex flex-row">                          
                           <span id="id_cod_articulo" >310</span>
                         </div>
                         <div class="mt-1 mb-0 text-muted small">

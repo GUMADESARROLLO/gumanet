@@ -1,51 +1,66 @@
 <script>
-    $(document).on('click', '.img-fluid', function (e) {
- 
-    Swal.fire({
-        showCloseButton: true,
-        showConfirmButton: false,
-        imageUrl: $(this).attr('src'),
-    })
+// ============================================================================
+// VARIABLES GLOBALES
+// ============================================================================
+var fechas = {};
 
-    $(".swal2-popup").css('width', '50%');
-})
+// ============================================================================
+// INICIALIZACIÓN DEL DOCUMENTO
+// ============================================================================
 $(document).ready(function() {
-	fullScreen();
-	fechas = {};
+    inicializarPantalla();
+    inicializarCKEditor();
+    inicializarDateRangePicker();
+    inicializarBreadcrumb();
+    cargarDatosIniciales();
+});
 
-    CKEDITOR.replace( 'respuesta', {
+// ============================================================================
+// FUNCIONES DE INICIALIZACIÓN
+// ============================================================================
+
+/**
+ * Configura la pantalla en modo fullscreen
+ */
+function inicializarPantalla() {
+    fullScreen();
+}
+
+/**
+ * Inicializa el editor de texto CKEditor para respuestas
+ */
+function inicializarCKEditor() {
+    CKEDITOR.replace('respuesta', {
         language: 'es',
-        toolbar: [{ name: 'basicstyles', items: [ 'Bold', 'Italic' ] }],
-        removeButtons: 'Underline,Strike,Subscript,Superscript,RemoveFormat,Copy,Paste,Undo,Redo,Link,Unlink,Image,Table,Source', 
-        allowedContent: true, 
+        toolbar: [{ name: 'basicstyles', items: ['Bold', 'Italic'] }],
+        removeButtons: 'Underline,Strike,Subscript,Superscript,RemoveFormat,Copy,Paste,Undo,Redo,Link,Unlink,Image,Table,Source',
+        allowedContent: true,
+        height: '100px'
     });
+}
 
-
+/**
+ * Configura el selector de rango de fechas
+ */
+function inicializarDateRangePicker() {
     $('input[name="dt_range"]').daterangepicker({
-        "autoApply": true,
-            ranges: {
+        autoApply: true,
+        ranges: {
             'Hoy': [moment(), moment()],
             'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
             'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
-            
             'Esta Semana': [moment().startOf('week'), moment().endOf('week')],
             'Semana Anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
-            
             'Este Mes': [moment().startOf('month'), moment()],
-            'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-            
-            //'1 Año': [moment().subtract(1, 'year'), moment()],
-            // '2 Años': [moment().subtract(2, 'year'), moment()],
-            // '3 Años': [moment().subtract(3, 'year'), moment()]
-            },
-        "showCustomRangeLabel": false,
-        "alwaysShowCalendars": true,
-        "startDate": moment().startOf('month').format('D MMM. YYYY'),
-        "endDate": moment().format('D MMM. YYYY'),
+            'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        showCustomRangeLabel: false,
+        alwaysShowCalendars: true,
+        startDate: moment().startOf('month').format('D MMM. YYYY'),
+        endDate: moment().format('D MMM. YYYY'),
         opens: 'left',
         locale: {
-            //format: "DD/MM/YYYY",
-            format: "D MMM. YYYY",   // Ejemplo: 1 ago. 2025
+            format: "D MMM. YYYY",
             separator: " - ",
             applyLabel: "Aplicar",
             cancelLabel: "Cancelar",
@@ -61,84 +76,123 @@ $(document).ready(function() {
             firstDay: 1
         }
     }, function(start, end, label) {
-        //console.log('Nuevo rango seleccionado: ' + start.format('YYYY-MM-DD') + ' a ' + end.format('YYYY-MM-DD') + ' (rango: ' + label + ')');
-        //CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
-        setFechas(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'))
+        setFechas(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
     });
+}
 
+/**
+ * Agrega el breadcrumb de navegación
+ */
+function inicializarBreadcrumb() {
+    $("#item-nav-01").after(`<li class="breadcrumb-item active">Inteligencia de Mercado</li>`);
+}
 
-	// $('#dom-id').dateRangePicker({
-	// 	language: 'es',
-	// 	singleMonth: true,
-	// 	showShortcuts: false,
-	// 	startOfWeek: 'monday',
-	// 	separator : ' al ',
-	// 	showTopbar: false,
-	// 	autoClose: true,
-	// 	setValue: function(s,s1,s2) {
-	// 		setFechas(s1, s2)
-	// 	}
-	// });
+/**
+ * Carga los datos iniciales de la página
+ */
+function cargarDatosIniciales() {
+    fetch_data(1);
+}
 
-	$("#item-nav-01").after(`<li class="breadcrumb-item active">Inteligencia de Mercado</li>`);
+// ============================================================================
+// EVENT LISTENERS
+// ============================================================================
 
-    var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
-    var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
-
-
-
-    $('#filtrarFechas').on('click', function() {
-        
-
-        fetch_data(1);      
-    });
-    
-
-
-    $("#id_search_importaciones").on('keyup', function() {
-    var searchTerm = $(this).val().toLowerCase();
-    $('#tbl_topsku_clientes').DataTable().search(searchTerm).draw();
-    });
-
+/**
+ * Filtrar datos por fechas
+ */
+$('#filtrarFechas').on('click', function() {
     fetch_data(1);
 });
 
-function eneableButton(EnableButton, textButton = '<i class="fas fa-filter"></i> Filtrar') {
-    $('#filtrarFechas').prop('disabled', EnableButton);
-    $('#filtrarFechas').html('<i class="fas fa-spinner fa-spin" style="display:' + (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton);
-  }
+/**
+ * Búsqueda en tiempo real
+ */
+$('#search').on('keyup', function(event) {
+    fetch_data(1);
+});
 
-var fechas = {};
+/**
+ * Búsqueda en DataTable de importaciones
+ */
+$("#id_search_importaciones").on('keyup', function() {
+    var searchTerm = $(this).val().toLowerCase();
+    $('#tbl_topsku_clientes').DataTable().search(searchTerm).draw();
+});
 
-$(document).on('click', '.pagination a', function (e) {
+/**
+ * Cambio en ordenamiento por fecha
+ */
+$('#orderByDate').on('change', function(e) {
+    fetch_data(1);
+});
+
+/**
+ * Paginación
+ */
+$(document).on('click', '.pagination a', function(e) {
     e.preventDefault();
-
     if ($(this).parent().hasClass('active')) return;
-
+    
     const page = $(this).attr('href').split('page=')[1];
-
     fetch_data(page);
 });
 
+/**
+ * Mostrar imagen en modal al hacer clic
+ */
+$(document).on('click', '.img-fluid', function(e) {
+    Swal.fire({
+        showCloseButton: true,
+        showConfirmButton: false,
+        imageUrl: $(this).attr('src')
+    });
+    $(".swal2-popup").css('width', '50%');
+});
 
-$(document).on('change', '#orderByDate', function (e) {
-	fetch_data(1)
-})
+/**
+ * Efecto hover en tarjetas
+ */
+$(document).on('mouseenter', '.card', function(event) {
+    $(this).removeClass('border-light').addClass('border-primary');
+}).on('mouseleave', '.card', function() {
+    $(this).removeClass('border-primary').addClass('border-light');
+});
 
-$(document).on('keyup','#search', function (event) {
-	fetch_data(1);
- });
+/**
+ * Abrir modal de comentario con detalles
+ */
+$(document).on('click', '.cardComentario', function() {
+    mostrarDetalleComentario($(this));
+});
 
+// ============================================================================
+// FUNCIONES DE DATOS
+// ============================================================================
+
+/**
+ * Establece el rango de fechas y recarga los datos
+ * @param {string} f1 - Fecha inicial (YYYY-MM-DD)
+ * @param {string} f2 - Fecha final (YYYY-MM-DD)
+ */
 function setFechas(f1, f2) {
-	fechas = { fecha1:f1, fecha2:f2 };
-	fetch_data(1);
+    fechas = { fecha1: f1, fecha2: f2 };
+    fetch_data(1);
 }
 
+/**
+ * Obtiene los datos filtrados del servidor
+ * @param {number} page - Número de página a cargar
+ */
 function fetch_data(page) {
     let value = $('#search').val();
     let valueDate = $('#orderByDate').val();
     let fechas_ = fechas;
-    eneableButton(true,'Calc...') ;
+    
+    // Deshabilitar botón y mostrar loading
+    eneableButton(true, 'Calc...');
+    
+    // Mostrar spinner de carga
     $('.comentarios').html(`
         <div class="text-center mt-5 mb-5">
             <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem;"></div>
@@ -146,182 +200,185 @@ function fetch_data(page) {
         </div>
     `);
 
+    // Petición AJAX
     $.ajax({
         type: 'POST',
         url: 'paginateDataSearch',
-        data: { 
-            search: value, 
-            date: 'desc', 
-            page: page, 
+        data: {
+            search: value,
+            date: 'desc',
+            page: page,
             fechas: fechas_,
             _token: $('meta[name="csrf-token"]').attr('content')
         },
-        success: function(data) {console.log(data)
+        success: function(data) {
             $('.comentarios').hide().html(data).fadeIn(300);
         },
         error: function() {
             $('.comentarios').html(
                 '<p class="text-center text-danger mt-3">Error al cargar los comentarios</p>'
-                
             );
+        },
+        complete: function() {
+            // Habilitar botón nuevamente
+            eneableButton(false, '<i class="fas fa-filter"></i> Filtrar');
         }
     });
-    eneableButton(false,'<i class="fas fa-filter"></i> Filtrar')
-
 }
 
+// ============================================================================
+// FUNCIONES DE UI
+// ============================================================================
 
-$(document).on('click', '.cardComentario', function() {
-	let autor = $(this).data('autor');
-    let id = $(this).data('id');
-    let titulo = $(this).data('titulo');
-    let contenido = $(this).data('contenido');
-    let nombre = $(this).data('nombre');
-    let fecha = $(this).data('fecha');
-    let imagen = $(this).data('imagen');
-    let oneSignal = $(this).data('onesignal');
+/**
+ * Habilita/deshabilita el botón de filtrar
+ * @param {boolean} EnableButton - true para deshabilitar, false para habilitar
+ * @param {string} textButton - Texto a mostrar en el botón
+ */
+function eneableButton(EnableButton, textButton = '<i class="fas fa-filter"></i> Filtrar') {
+    $('#filtrarFechas').prop('disabled', EnableButton);
+    $('#filtrarFechas').html(
+        '<i class="fas fa-spinner fa-spin" style="display:' + 
+        (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton
+    );
+}
 
+/**
+ * Muestra el detalle de un comentario en el modal
+ * @param {jQuery} elemento - Elemento clickeado con los datos
+ */
+function mostrarDetalleComentario(elemento) {
+    // Extraer datos del elemento
+    let autor = elemento.data('autor');
+    let id = elemento.data('id');
+    let titulo = elemento.data('titulo');
+    let contenido = elemento.data('contenido');
+    let nombre = elemento.data('nombre');
+    let fecha = elemento.data('fecha');
+    let imagen = elemento.data('imagen');
+    let oneSignal = elemento.data('onesignal');
+
+    // Establecer valores en el modal
     $('#comentario_id').val(id);
     $('#oneSignal').val(oneSignal);
+    $('#txtTitle').html(titulo.toUpperCase());
+    $('#txtAutor').html(autor);
+    $('#txtAutorNombre').html(nombre);
+    $('#txtCreado').html(fecha);
 
     // Construir mensaje principal
     $('#comentario_principal').html(`
-        <div class="direct-chat-infos clearfix ">
-            <span class="direct-chat-name float-left">${nombre}</span>
-            <span class="direct-chat-timestamp float-right">${fecha}</span>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col-12 col-sm-8">
-                <div class="direct-chat-text border-sm-bottom">
-                    <strong>${titulo}</strong><br>
+        <div class="row">
+            <div class="col-md-3 col-lg-3 col-xl-3 mb-lg-0">
+                <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                    ${imagen ? `<img src="${imagen}" id="id_product_img" class="img-fluid img-thumbnail w-100" />` : ``}
+                    <a href="#!">
+                        <div class="hover-overlay">
+                            <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-9 col-lg-9 col-xl-9">
+                <h5 id="tArticulo">${titulo.toUpperCase()}</h5>
+                <div class="d-flex flex-row" style="font-size: 0.9rem; line-height:1.4;">
                     ${contenido}
                 </div>
             </div>
-
-            ${imagen ? `
-            <div class="col-12 col-sm-4 text-center mb-3">
-                <img src="${imagen}" class="img-fluid rounded" style="max-height:120px;">
-            </div>
-            ` : ''}
-
         </div>
     `);
 
+    // Cargar respuestas
+    cargarRespuestas(id, autor);
 
-    // Limpiar respuestas antes de cargar
-    $('#contenedor_respuestas').html("Cargando respuestas...");
-
-    // Obtener respuestas vía AJAX
-    $.get("comentarios/respuestas/" + id, function(res){
-        let html = "";
-        if(res.length === 0){
-            html = `<p class="text-muted text-center">Sin respuestas aún...</p>`;
-        } else {
-           res.forEach(r => {
-
-    const esAutor = (r.created_by === autor);
-
-    html += `
-    <div class="direct-chat-msg mb-3 clearfix">
-
-        <div class="direct-chat-text p-3"
-            style="
-                background:${esAutor ? '#64bc61' : '#e9ecef'};
-                color:${esAutor ? '#fff' : '#333'};
-                border-radius:18px;
-                line-height:1.4;
-                max-width:82%;
-                float:${esAutor ? 'right' : 'left'};
-                clear:both;
-                box-shadow:0px 2px 6px rgba(0,0,0,0.15);
-            ">
-
-            <!-- Usuario -->
-            <div class="w-100 mb-1" style="font-size:13px; font-weight:bold;
-                text-align:${esAutor ? 'right' : 'left'};">
-                ${r.created_by}
-            </div>
-
-            <!-- Mensaje -->
-            <div class="w-100 mb-1"
-                style="text-align:left">
-                ${r.comments}
-            </div>
-
-            <!-- Fecha -->
-            <div class="w-100 text-muted"
-                style="font-size:11px;
-                text-align:${esAutor ? 'right' : 'left'};">
-                ${moment(r.created_at).format('DD/MM/YYYY h:mm a')}
-            </div>
-        </div>
-
-        <div style="clear:both;"></div>
-    </div>`;
-});
-
-
-        }
-        $('#contenedor_respuestas').html(html);
-    });
-
+    // Mostrar modal
     $('#modalChat').modal('show');
-});
-
-
-function descargarArchivo() {
-	valueFiltro	= $('#search').val();
-	valueDate 	= $('#orderByDate').val();
-	
-    var valueFecha1 = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
-    var valueFecha2 = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
-	//valueFecha1	= ( Object.entries(fechas).length===0 )?'ND':fechas['fecha1'];
-	//valueFecha2	= ( Object.entries(fechas).length===0 )?'ND':fechas['fecha2'];
-
-	$('<input />')
-	.attr('type', 'hidden')
-	.attr('name', "valueFiltro_")
-	.attr('value', valueFiltro)
-	.appendTo('#fmrDescargarComent');
-
-	$('<input />')
-	.attr('type', 'hidden')
-	.attr('name', "valueDate_")
-	.attr('value', valueDate)
-	.appendTo('#fmrDescargarComent');
-
-	$('<input />')
-	.attr('type', 'hidden')
-	.attr('name', "valueFecha1")
-	.attr('value', valueFecha1)
-	.appendTo('#fmrDescargarComent');
-
-	$('<input />')
-	.attr('type', 'hidden')
-	.attr('name', "valueFecha2")
-	.attr('value', valueFecha2)
-	.appendTo('#fmrDescargarComent');
-
-	$('#fmrDescargarComent').submit();
 }
 
-$(document).on('click', '.img-fluid', function (e) {
-	url_image = $(this).attr('src');
-	swal({
-		showCloseButton: true,
-		showConfirmButton: false,
-		imageUrl: url_image,
-		imageAlt: 'Custom image'
-	})
+/**
+ * Carga las respuestas de un comentario
+ * @param {number} id - ID del comentario
+ * @param {string} autor - Nombre del autor del comentario principal
+ */
+function cargarRespuestas(id, autor) {
+    $('#contenedor_respuestas').html("Cargando respuestas...");
 
-	$(".swal2-popup").css('width', '50%');
-})
+    $.get("comentarios/respuestas/" + id, function(res) {
+        let html = "";
 
-$(document).on('mouseenter','.card', function (event) {
-    $( this ).removeClass('border-light').addClass('border-primary')
-}).on('mouseleave','.card',  function(){
-	$( this ).removeClass('border-primary').addClass('border-light')
-});
+        if (res.length === 0) {
+            html = `<p class="text-muted text-center">Sin respuestas aún...</p>`;
+        } else {
+            res.forEach(r => {
+                const esAutor = (r.created_by === autor);
+
+                html += `
+                <div class="mb-3 clearfix">
+                    <div class="p-3 w-100"
+                        style="
+                            background:${esAutor ? '#64bc61' : '#e9ecef'};
+                            color:${esAutor ? '#fff' : '#333'};
+                            border-radius:18px;
+                            line-height:1.4;
+                            clear:both;
+                            box-shadow:0px 2px 6px rgba(0,0,0,0.15);
+                        ">
+                        <!-- Usuario -->
+                        <div class="w-100 mb-1 d-flex align-items-center" 
+                             style="font-size:13px; font-weight:bold; text-align:${esAutor ? 'right' : 'left'};">
+                            <img src="{{ asset('images/avatar-4.jpg') }}" 
+                                 class="rounded-circle me-2 mr-1" width="25" height="25">
+                            ${r.created_by} • ${moment(r.created_at).fromNow()}
+                        </div>
+                        <!-- Mensaje -->
+                        <div class="w-100 mb-1" style="text-align:left; font-size:1.2em">
+                            ${r.comments}
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>`;
+            });
+        }
+
+        $("#total_comentarios").html("( " + res.length + " )");
+        $('#contenedor_respuestas').html(html);
+    });
+}
+
+// ============================================================================
+// FUNCIONES DE DESCARGA
+// ============================================================================
+
+/**
+ * Descarga el archivo de comentarios con los filtros aplicados
+ */
+function descargarArchivo() {
+    let valueFiltro = $('#search').val();
+    let valueDate = $('#orderByDate').val();
+    let valueFecha1 = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+    let valueFecha2 = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+    // Agregar campos ocultos al formulario
+    agregarCampoOculto('valueFiltro_', valueFiltro);
+    agregarCampoOculto('valueDate_', valueDate);
+    agregarCampoOculto('valueFecha1', valueFecha1);
+    agregarCampoOculto('valueFecha2', valueFecha2);
+
+    // Enviar formulario
+    $('#fmrDescargarComent').submit();
+}
+
+/**
+ * Agrega un campo oculto al formulario de descarga
+ * @param {string} name - Nombre del campo
+ * @param {string} value - Valor del campo
+ */
+function agregarCampoOculto(name, value) {
+    $('<input />')
+        .attr('type', 'hidden')
+        .attr('name', name)
+        .attr('value', value)
+        .appendTo('#fmrDescargarComent');
+}
 
 </script>

@@ -25,7 +25,7 @@
             </div>
           </div>
 
-          <h5 class="mb-1" style="font-weight:700; margin-bottom:.15rem;">{{ $key->Titulo }}</h5>
+          <h5 class="mb-1" style="font-weight:700; margin-bottom:.15rem;">{{ strtoupper($key->Titulo) }}</h5>
           <p class="text-muted mb-2">{{ $key->Contenido }}</p>
 
           <div class="d-flex align-items-center meta">

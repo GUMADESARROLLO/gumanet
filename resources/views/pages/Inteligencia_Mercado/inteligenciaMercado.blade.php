@@ -49,25 +49,23 @@
   <div class="modal-dialog modal-xl" style="max-width:80% !important;">
     <div class="modal-content" style="height:97vh; display:flex; flex-direction:column;">
 
+    
+
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">COMENTARIO</h5>
+        <div class="col-md-11 col-lg-11 col-xl-11">
+          <h5 class="modal-title" id="txtTitle">TITULO</h5>            
+          <div class="mt-1 mb-0 text-white small">
+            <span id="txtAutor">AUTOR</span>
+            <span class="text-primary"> • </span>
+            <span id="txtAutorNombre">LABORATORIO</span>
+            <span class="text-primary"> • </span>
+            <span id="txtCreado">UNIDAD MEDIDA<br /></span>
+          </div>          
+        </div>
         <button class="close text-white" data-dismiss="modal">&times;</button>
       </div>
 
       <div class="modal-body" style="overflow:hidden; display:flex; flex-direction:column;">
-
-        <!-- Comentario principal -->
-        <div class="direct-chat-msg" id="comentario_principal"></div>
-
-        <hr>
-
-        <!-- Respuestas -->
-        <div id="contenedor_respuestas" 
-             style="max-height:40vh; overflow-y:auto; margin-bottom:1rem;">
-        </div>
-
-        <hr>
-
         <!-- Formulario -->
         <form id="formRespuesta" method="POST" action="{{ route('comentarios') }}">
           @csrf          
@@ -88,6 +86,26 @@
           </div>
         </form>
 
+       
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="comentarios-tab" data-toggle="tab" data-target="#comentarios" type="button" role="tab" aria-controls="home" aria-selected="true">Comentarios <span id="total_comentarios">0</span> </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="descripcion-tab" data-toggle="tab" data-target="#descripcion" type="button" role="tab" aria-controls="profile" aria-selected="false">Descripción</button>
+          </li>          
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="comentarios" role="tabpanel" aria-labelledby="comentarios-tab">
+            <div id="contenedor_respuestas" class="mt-3" style="max-height:55vh; overflow-y:auto; margin-bottom:1rem;">
+        </div>
+          </div>
+          <div class="tab-pane fade" id="descripcion" role="tabpanel" aria-labelledby="descripcion-tab">
+              <!-- Comentario principal -->
+              <div class="direct-chat-msg mt-5" id="comentario_principal"></div>
+          </div>
+        </div>
       </div>
 
     </div>
