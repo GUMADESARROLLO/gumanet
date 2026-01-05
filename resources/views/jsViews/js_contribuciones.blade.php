@@ -73,6 +73,7 @@ $(document).ready(function () {
     let Table = new DataTable('#table_contribucion',{ 
         "destroy": true,
         "info": true,
+        
         "ajax":{
             "url": "canalData",
             'dataSrc': function(json) {
@@ -106,246 +107,253 @@ $(document).ready(function () {
             "emptyTable": "REALICE UNA BUSQUEDA UTILIZANDO LOS FILTROS DE FECHA",
             "search": "BUSCAR"
         },
-        "lengthMenu": [[5,-1], [5,"Todo"]],
+        "lengthMenu": [[17,-1], [17,"Todo"]],
         layout: {
             topStart: null,
             bottom: 'paging',
             bottomStart: null,
             bottomEnd: null,            
-            topStart: {
-                buttons: [ 
+            // topEnd: {
+            //     buttons: [ 
                 
-                    { 
-                        text: 'Columnas Visibles',
-                        extend: 'collection',
-                        className: 'btn-outline-success ',
-                        buttons: [
-                            {
-                                extend: 'colvisGroup',
-                                text: 'TODAS',
-                                show: ':hidden',
-                                action: function ( e, dt, node, config ) {
+            //         { 
+            //             text: 'Columnas Visibles',
+            //             extend: 'collection',
+            //             className: 'btn-outline-success ',
+            //             buttons: [
+            //                 {
+            //                     extend: 'colvisGroup',
+            //                     text: 'TODAS',
+            //                     show: ':hidden',
+            //                     action: function ( e, dt, node, config ) {
 
-                                    dt.columns(':hidden').visible(true);
+            //                         dt.columns(':hidden').visible(true);
 
-                                    const keysToRemove = [
-                                        'buttonselected',
-                                        'buttonCadena',
-                                        'buttonMayorista',
-                                        'buttonPrivada',
-                                        'buttonCruzAzul',
-                                        'buttonPublica',
-                                        'buttonLicitacion'
-                                    ];
+            //                         const keysToRemove = [
+            //                             'buttonselected',
+            //                             'buttonCadena',
+            //                             'buttonMayorista',
+            //                             'buttonPrivada',
+            //                             'buttonCruzAzul',
+            //                             'buttonPublica',
+            //                             'buttonLicitacion'
+            //                         ];
 
-                                    keysToRemove.forEach(key => localStorage.removeItem(key));
+            //                         keysToRemove.forEach(key => localStorage.removeItem(key));
 
 
-                                    // Recorrer y cambiar el estilo de todos los botones
-                                    $('.dt-button').each(function() {
-                                        $(this).css({
-                                            'color': '#000000', 
-                                            'background-color': 'transparent' 
-                                        }).removeClass('dt-button-active');;
-                                    });
+            //                         // Recorrer y cambiar el estilo de todos los botones
+            //                         $('.dt-button').each(function() {
+            //                             $(this).css({
+            //                                 'color': '#000000', 
+            //                                 'background-color': 'transparent' 
+            //                             }).removeClass('dt-button-active');;
+            //                         });
 
-                                    calcularTotales(dt);
+            //                         calcularTotales(dt);
                                 
-                                }
-                            },
-                            { 
+            //                     }
+            //                 },
+            //                 { 
                                 
-                                text: '1 : FARMACIA',
-                                className: 'btn-farmacia',
-                                action: function ( e, dt, node, config ) {
-                                    for (let i = 4; i <= 9; i++) {
-                                        dt.column(i).visible(!dt.column(i).visible());
-                                    }
-                                    //this.active(!this.active());                                    
-                                    this.active(verificarLocalStorage('buttonselected', 'farmacia'));
-                                    if (this.active()) {
-                                        $(node).css({
-                                            'color': '#dc3545',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    } else {
-                                        $(node).css({
-                                            'color': '#000000',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    }
+            //                     text: '1 : FARMACIA',
+            //                     className: 'btn-farmacia',
+            //                     action: function ( e, dt, node, config ) {
+            //                         for (let i = 4; i <= 9; i++) {
+            //                             dt.column(i).visible(!dt.column(i).visible());
+            //                         }
+            //                         //this.active(!this.active());                                    
+            //                         this.active(verificarLocalStorage('buttonselected', 'farmacia'));
+            //                         if (this.active()) {
+            //                             $(node).css({
+            //                                 'color': '#dc3545',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         } else {
+            //                             $(node).css({
+            //                                 'color': '#000000',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         }
                                     
-                                }
-                            },
-                            { 
-                                text: '2 : CAD. FARMACIA',
-                                className: 'btn-cadena',
-                                action: function ( e, dt, node, config ) {
-                                    for (let i = 10; i <= 15; i++) {
-                                        dt.column(i).visible(!dt.column(i).visible());
-                                    }
-                                    //this.active(!this.active());
-                                    this.active(verificarLocalStorage('buttonCadena', 'cadena'));
-                                    if (this.active()) {
-                                        $(node).css({
-                                            'color': '#dc3545',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    } else {
-                                        $(node).css({
-                                            'color': '#000000',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    }
+            //                     }
+            //                 },
+            //                 { 
+            //                     text: '2 : CAD. FARMACIA',
+            //                     className: 'btn-cadena',
+            //                     action: function ( e, dt, node, config ) {
+            //                         for (let i = 10; i <= 15; i++) {
+            //                             dt.column(i).visible(!dt.column(i).visible());
+            //                         }
+            //                         //this.active(!this.active());
+            //                         this.active(verificarLocalStorage('buttonCadena', 'cadena'));
+            //                         if (this.active()) {
+            //                             $(node).css({
+            //                                 'color': '#dc3545',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         } else {
+            //                             $(node).css({
+            //                                 'color': '#000000',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         }
                                     
-                                }
-                            },
-                            { 
-                                text: '3 : MAYORISTAS',
-                                className: 'btn-mayorista',
-                                action: function ( e, dt, node, config ) {
-                                    for (let i = 16; i <= 21; i++) {
-                                        dt.column(i).visible(!dt.column(i).visible());
-                                    }
-                                    //this.active(!this.active());
-                                    this.active(verificarLocalStorage('buttonMayorista', 'mayorista'));
-                                    if (this.active()) {
-                                        $(node).css({
-                                            'color': '#dc3545',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    } else {
-                                        $(node).css({
-                                            'color': '#000000',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    }
+            //                     }
+            //                 },
+            //                 { 
+            //                     text: '3 : MAYORISTAS',
+            //                     className: 'btn-mayorista',
+            //                     action: function ( e, dt, node, config ) {
+            //                         for (let i = 16; i <= 21; i++) {
+            //                             dt.column(i).visible(!dt.column(i).visible());
+            //                         }
+            //                         //this.active(!this.active());
+            //                         this.active(verificarLocalStorage('buttonMayorista', 'mayorista'));
+            //                         if (this.active()) {
+            //                             $(node).css({
+            //                                 'color': '#dc3545',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         } else {
+            //                             $(node).css({
+            //                                 'color': '#000000',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         }
                                     
-                                }
-                            },
-                            { 
-                                text: '4 : INSTI. PRIVADAS',
-                                className: 'btn-privada',
-                                action: function ( e, dt, node, config ) {
-                                    for (let i = 22; i <= 27; i++) {
-                                        dt.column(i).visible(!dt.column(i).visible());
-                                    }
-                                    //this.active(!this.active());
-                                    this.active(verificarLocalStorage('buttonPrivada', 'privada'));
-                                    if (this.active()) {
-                                        $(node).css({
-                                            'color': '#dc3545',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    } else {
-                                        $(node).css({
-                                            'color': '#000000',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    }
+            //                     }
+            //                 },
+            //                 { 
+            //                     text: '4 : INSTI. PRIVADAS',
+            //                     className: 'btn-privada',
+            //                     action: function ( e, dt, node, config ) {
+            //                         for (let i = 22; i <= 27; i++) {
+            //                             dt.column(i).visible(!dt.column(i).visible());
+            //                         }
+            //                         //this.active(!this.active());
+            //                         this.active(verificarLocalStorage('buttonPrivada', 'privada'));
+            //                         if (this.active()) {
+            //                             $(node).css({
+            //                                 'color': '#dc3545',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         } else {
+            //                             $(node).css({
+            //                                 'color': '#000000',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         }
                                     
-                                }
-                            },
-                            { 
-                                text: '5 : CRUZ AZUL',
-                                className: 'btn-cruzAzul',
-                                action: function ( e, dt, node, config ) {
-                                    for (let i = 28; i <= 33; i++) {
-                                        dt.column(i).visible(!dt.column(i).visible());
-                                    }
-                                    //this.active(!this.active());
-                                    this.active(verificarLocalStorage('buttonCruzAzul', 'cruzAzul'));
-                                    if (this.active()) {
-                                        $(node).css({
-                                            'color': '#dc3545',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    } else {
-                                        $(node).css({
-                                            'color': '#000000',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    }
+            //                     }
+            //                 },
+            //                 { 
+            //                     text: '5 : CRUZ AZUL',
+            //                     className: 'btn-cruzAzul',
+            //                     action: function ( e, dt, node, config ) {
+            //                         for (let i = 28; i <= 33; i++) {
+            //                             dt.column(i).visible(!dt.column(i).visible());
+            //                         }
+            //                         //this.active(!this.active());
+            //                         this.active(verificarLocalStorage('buttonCruzAzul', 'cruzAzul'));
+            //                         if (this.active()) {
+            //                             $(node).css({
+            //                                 'color': '#dc3545',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         } else {
+            //                             $(node).css({
+            //                                 'color': '#000000',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         }
                                    
-                                }
-                            },
-                            { 
-                                text: '6 : INSTI. PUBLICAS',
-                                className: 'btn-publica',
-                                action: function ( e, dt, node, config ) {
-                                    for (let i = 34; i <= 39; i++) {
-                                        dt.column(i).visible(!dt.column(i).visible());
-                                    }
-                                    //this.active(!this.active());
-                                    this.active(verificarLocalStorage('buttonPublica', 'publica'));
-                                    if (this.active()) {
-                                        $(node).css({
-                                            'color': '#dc3545',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    } else {
-                                        $(node).css({
-                                            'color': '#000000',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    }
+            //                     }
+            //                 },
+            //                 { 
+            //                     text: '6 : INSTI. PUBLICAS',
+            //                     className: 'btn-publica',
+            //                     action: function ( e, dt, node, config ) {
+            //                         for (let i = 34; i <= 39; i++) {
+            //                             dt.column(i).visible(!dt.column(i).visible());
+            //                         }
+            //                         //this.active(!this.active());
+            //                         this.active(verificarLocalStorage('buttonPublica', 'publica'));
+            //                         if (this.active()) {
+            //                             $(node).css({
+            //                                 'color': '#dc3545',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         } else {
+            //                             $(node).css({
+            //                                 'color': '#000000',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         }
                                     
-                                }
-                            },
-                            { 
-                                text: '7 : MINSA LICITACIONES',
-                                className: 'btn-licitacion',
-                                action: function ( e, dt, node, config ) {
-                                    for (let i = 40; i <= 45; i++) {
-                                        dt.column(i).visible(!dt.column(i).visible());
-                                    }
-                                    //this.active(!this.active());
-                                    this.active(verificarLocalStorage('buttonLicitacion', 'licitacion'));
-                                    if (this.active()) {
-                                        $(node).css({
-                                            'color': '#dc3545',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    } else {
-                                        $(node).css({
-                                            'color': '#000000',
-                                            'background-color': 'transparent'
-                                        });
-                                        calcularTotales(dt);
-                                    }
+            //                     }
+            //                 },
+            //                 { 
+            //                     text: '7 : MINSA LICITACIONES',
+            //                     className: 'btn-licitacion',
+            //                     action: function ( e, dt, node, config ) {
+            //                         for (let i = 40; i <= 45; i++) {
+            //                             dt.column(i).visible(!dt.column(i).visible());
+            //                         }
+            //                         //this.active(!this.active());
+            //                         this.active(verificarLocalStorage('buttonLicitacion', 'licitacion'));
+            //                         if (this.active()) {
+            //                             $(node).css({
+            //                                 'color': '#dc3545',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         } else {
+            //                             $(node).css({
+            //                                 'color': '#000000',
+            //                                 'background-color': 'transparent'
+            //                             });
+            //                             calcularTotales(dt);
+            //                         }
                                     
-                                }
-                            },
-                        ]
-                    },
+            //                     }
+            //                 },
+            //             ]
+            //         },
+            //         {
+            //             className: 'btn-outline-success ',
+            //             text: 'Exportar a excel',
+            //             extend: 'excelHtml5',
+            //             title:  'Contribucion por canal: ' + moment().format('YYYY-MM-DD HH:mm'),
+            //             exportOptions: {
+            //                 columns: ':visible'
+            //             }
+            //         },
+                    
+                    
                 
-                ]
+            //     ]
                 
-            },
-            topEnd: {
-                buttons: [ {
-                    className: 'btn-outline-success ',
-                    text: 'Exportar a excel',
-                    extend: 'excelHtml5',
-                    title:  'Contribucion por canal: ' + moment().format('YYYY-MM-DD HH:mm'),
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                }]
-            }
+            // },
+            // topStart: function () {
+            //     let toolbar = document.createElement('div');
+
+            //     toolbar.innerHTML = ' <p class="font-italic text-muted pt-0 mt-0 ml-1"><b>Todos los valores estan en C$.</b></p> ';
+    
+            //     return toolbar;
+            // }
         },    
         stateSave: true,
         fixedColumns: {
@@ -355,6 +363,7 @@ $(document).ready(function () {
         scrollCollapse: true,
         scrollY: '1200px',
         scrollX: true,
+        
         'columns': [
             {"data": "ARTICULO"},
             {"data": "DESCRIPCION"},
@@ -703,9 +712,13 @@ $(document).ready(function () {
         location.href = "ExportToExcelCanales";
     })
 
-    $("#BtnClick").click(function() {
-        fechaIni = $("#f1").val();
-        fechaEnd = $("#f2").val();
+   
+
+    $("#BtnClick").on('click', function() {
+
+        var fechaIni = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var fechaEnd = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
         
         Swal.fire({
             title: "Recalcular contribución de canales",
@@ -748,7 +761,51 @@ $(document).ready(function () {
     })
 
     Table.on('draw.dt', function () {
-       calcularTotales(Table);        
+        calcularTotales(Table);        
+    });
+
+    $('input[name="dt_range"]').daterangepicker({
+        "autoApply": true,
+            ranges: {
+            'Hoy': [moment(), moment()],
+            'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
+            'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
+            
+            'Esta Semana': [moment().startOf('week'), moment().endOf('week')],
+            'Semana Anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+            
+            'Este Mes': [moment().startOf('month'), moment()],
+            'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            
+            //'1 Año': [moment().subtract(1, 'year'), moment()],
+            // '2 Años': [moment().subtract(2, 'year'), moment()],
+            // '3 Años': [moment().subtract(3, 'year'), moment()]
+            },
+        "showCustomRangeLabel": false,
+        "alwaysShowCalendars": true,
+        "startDate": moment().startOf('month').format('D MMM. YYYY'),
+        "endDate": moment().format('D MMM. YYYY'),
+        opens: 'left',
+        locale: {
+            //format: "DD/MM/YYYY",
+            format: "D MMM. YYYY",   // Ejemplo: 1 ago. 2025
+            separator: " - ",
+            applyLabel: "Aplicar",
+            cancelLabel: "Cancelar",
+            fromLabel: "Desde",
+            toLabel: "Hasta",
+            customRangeLabel: "Personalizado",
+            weekLabel: "S",
+            daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie", "Sab."],
+            monthNames: [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            ],
+            firstDay: 1
+        }
+    }, function(start, end, label) {
+        //console.log('Nuevo rango seleccionado: ' + start.format('YYYY-MM-DD') + ' a ' + end.format('YYYY-MM-DD') + ' (rango: ' + label + ')');
+        //CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
     });
 
     

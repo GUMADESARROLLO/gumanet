@@ -7,29 +7,37 @@
   span.btn-change-color {
     background-color: #28a745;
   }
+  .input-fecha {
+    height: 38px !important;
+  }
+  .btn-primary-umk {
+    background-color: #e7551f !important;
+    border-color: #e7551f !important;
+    color: #fff !important;
+  }
+
+  
 </style>
 <div class="container-fluid"> 
   <div class="row">
     <div class="col-sm-6">
       <p class="font-italic text-muted pt-0 mt-0">Actualizado del <span id="tl_periodo"> - </span></p>	
     </div>
-    <div class="col-sm-6 text-right">
-      <p class="font-italic text-muted pt-0 mt-0 mr-3"><b>Todos los valores estan en C$.</b></p>	
-    </div>
+    
   </div>
   <div class="row">
     <div class="col">		      
       <div class="input-group"> 
-        <input type="text" id="id_txt_buscar" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">
           <div class="input-group-prepend">
-            <span class="btn-change-color text-white input-group-text" id="BtnClick"><i data-feather="refresh-cw"></i></span>
+            <span class="text-black input-group-text" ><i data-feather="search"></i></span>
           </div>
+          <input type="text" id="id_txt_buscar" class="form-control" aria-describedby="basic-addon1" placeholder="Buscar...">          
       </div>
     </div>
     <div class="col-sm-1">
       <div class="input-group">
         <select class="custom-select" id="InputCanales" name="InputCanales">
-          <option value="5" selected>5</option>
+          <option value="7" selected>7</option>
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="100">100</option>
@@ -38,8 +46,7 @@
       </div>
     </div>
     <div class="col-sm-3">
-      <div class="row ">
-        <div class="col mt-1">
+        <!-- <div class="col mt-1">
           <div class="form-group">  
             <input type="text" class="input-fecha" id="f1">
           </div>
@@ -48,13 +55,19 @@
           <div class="form-group">  
             <input type="text" class="input-fecha" id="f2">
           </div>
+        </div> -->
+        <div class="form-group">                
+          <input type="text" class="input-fecha" name="dt_range"  />
         </div>
-        
-      </div>
     </div>
     <!--<div class="col-sm-1" >
       <a id="exp-to-excel-canales" href="#!" class="btn btn-light btn-block text-success"><i class="fas fa-file-excel"></i> Exportar</a>
-    </div>-->   
+    </div>--> 
+    <div class="col-md-1">
+      <div class="btn-group w-100">               
+        <button type="button" class="btn btn-primary-umk btn-block float-right" id="BtnClick">  Actualizar </button>		
+      </div>      
+    </div>  
       
   </div>
 
