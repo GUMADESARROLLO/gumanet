@@ -69,7 +69,7 @@ class ReOrderPointR3 extends Model
 
         $Months_Privado  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_privado ?, ?, ?", [$Year_anterior,$Month_actual,'PRIVADO']);
 
-        $Months_Discasa  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa ?", [$Year_actual]); 
+        $Months_Discasa  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa ?", [$Year_anterior]); 
 
         // Obtener los nombres de las columnas dinámicamente
         $Columns_Privado = array_keys(get_object_vars($Months_Privado[0]));
