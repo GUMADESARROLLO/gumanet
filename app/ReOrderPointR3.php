@@ -29,7 +29,7 @@ class ReOrderPointR3 extends Model
      *
      * @return void
      */
-    public static function Calcular()
+    public static function Calcular($request)
     {
         $currentDate = date('Y-m-d');
         //$startOfMonth = date('Y-m-01', strtotime($currentDate));
@@ -37,8 +37,13 @@ class ReOrderPointR3 extends Model
         // $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
         // $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
 
-        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-12 months', strtotime($currentDate)));
-        $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate ));
+        //$FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-12 months', strtotime($currentDate)));
+        //$FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate ));
+
+        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime($request->fecha_inicial));
+        $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($request->fecha_final));
+
+        dd($FechaIni, $FechaEnd);
 
         // Ejecutar el primer procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_base_reorder_v3 ?, ?", [$FechaIni, $FechaEnd]);
@@ -69,7 +74,7 @@ class ReOrderPointR3 extends Model
 
         $Months_Privado  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_privado ?, ?, ?", [$Year_anterior,$Month_actual,'PRIVADO']);
 
-        $Months_Discasa  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa ?", [$Year_actual]); 
+        $Months_Discasa  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa ?", [$Year_anterior]); 
 
         // Obtener los nombres de las columnas dinámicamente
         $Columns_Privado = array_keys(get_object_vars($Months_Privado[0]));

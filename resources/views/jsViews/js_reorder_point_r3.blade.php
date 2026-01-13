@@ -1,7 +1,7 @@
 <script>
-    const now = new Date();
-    const nyear_actual = now.getFullYear();
-    const nyear_pasado = nyear_actual - 1;
+    // const now = new Date();
+    // const nyear_actual = now.getFullYear();
+    // const nyear_pasado = nyear_actual - 1;
     
     // Columna base definida fuera de la función para evitar duplicación si se llama varias veces
     const staticColumns = [
@@ -38,8 +38,8 @@
     let topStart_custom = document.createElement('div');
     topStart_custom.setAttribute('class', 'col-12 ');
     topStart_custom.innerHTML = `
-    <div class="row">
-        <div class="col-sm-10">	
+    <div class="row">        
+        <div class="col-sm-8 col-md-8">	
             <div class="input-group"> 
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></i></span>
@@ -47,21 +47,67 @@
                 <input type="text" id="id_search_reorder" class="form-control" placeholder="Buscar..." aria-label="Username" aria-describedby="basic-addon1">
             </div>
         </div>
-        <div class="col-sm-2 col-md-2">
-            <select class="custom-select" id="select_rows">
-                <option value="7" selected>7</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="100">100</option>
-                <option value="-1">Todo</option>
-            </select>
+
+        <div class="col-sm-4 col-md-4">
+            <div class="form-group">
+                <input type="text" class="input-fecha" name="dt_range" />
+            </div>
         </div>
+        
     </div>`;
 $(document).ready(function() {
     fullScreen();
     TableReorderPoint();
     TableBase();
     getRequest()
+    $('input[name="dt_range"]').prop('readonly', true);
+    $('input[name="dt_range"]').daterangepicker({
+            "autoApply": true,
+            ranges: {
+                'Hoy': [moment(), moment()],
+                'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
+                'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
+                
+                'Esta Semana': [moment().startOf('week'), moment().endOf('week')],
+                'Semana Anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+                
+                'Este Mes': [moment().startOf('month'), moment()],
+                'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            
+                '1 Año': [moment().subtract(1, 'year'), moment()],
+            // '2 Años': [moment().subtract(2, 'year'), moment()],
+            // '3 Años': [moment().subtract(3, 'year'), moment()]
+            },
+            "showCustomRangeLabel": false,
+            "alwaysShowCalendars": true,
+            "startDate": moment().startOf('month').format('D MMM. YYYY'),
+            "endDate": moment().format('D MMM. YYYY'),
+            opens: 'left',
+            locale: {
+                //format: "DD/MM/YYYY",
+                format: "D MMM. YYYY", 
+                separator: " - ",
+                applyLabel: "Aplicar",
+                cancelLabel: "Cancelar",
+                fromLabel: "Desde",
+                toLabel: "Hasta",
+                customRangeLabel: "Personalizado",
+                weekLabel: "S",
+                daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie", "Sab."],
+                monthNames: [
+                    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+                ],
+                firstDay: 1
+            }
+
+        }, function(start, end, label) {            
+            //CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+
+            const nyear_actual = start.format('YYYY-MM-DD')
+            const nyear_pasado = end.format('YYYY-MM-DD')
+
+        });
     
 
     $('#modal_importacion').on('click', function() {
@@ -171,7 +217,11 @@ function TableReorderPoint(Dt = []) {
                     action: function ( e, dt, node, config ) {
                         //eneableButton(true,'Calc...')
                         //cleanTextos();
-                        getCalcular(nyear_actual, nyear_pasado)
+                        var picker = $('input[name="dt_range"]').data('daterangepicker');
+
+                        var fecha_inicial = picker.startDate.format('YYYY-MM-DD');
+                        var fecha_final   = picker.endDate.format('YYYY-MM-DD');    
+                        getCalcular(fecha_inicial, fecha_final);
                     }
                 },               
                 {
@@ -300,12 +350,12 @@ async function getRequest() {
     }
 }
 
-async function getCalcular( nyear_actual, nyear_pasado) {
+async function getCalcular( fecha_inicial, fecha_final) {
     try {
         // Fetch data from the server
         Swal.fire({
             title: "Cálculo del Reorder Point",
-            text: "¿Desea calcular el Reorder Point?",
+            text: `La fecha actual es ${fecha_inicial} y la fecha pasada es ${fecha_final}`,
             inputAttributes: {
                 autocapitalize: "off"
             },
@@ -322,8 +372,8 @@ async function getCalcular( nyear_actual, nyear_pasado) {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         },
                         body: JSON.stringify({
-                            nyear_actual    : nyear_actual,
-                            nyear_pasado    : nyear_pasado,
+                            fecha_inicial   : fecha_inicial,
+                            fecha_final     : fecha_final,
                         })
                     });        
                     
@@ -344,7 +394,7 @@ async function getCalcular( nyear_actual, nyear_pasado) {
                 if (result.isConfirmed) {
                         Swal.fire({
                             title: '¡Cálculo del Reorder Point completado!',
-                            text: 'Actualizado a la Fecha de ' + moment().format('MMMM D, YYYY H:mm'),
+                            text: 'Actualizado a la Fecha de ' + fecha_final,
                             icon: 'success',
                             confirmButtonText: 'Aceptar',
                             }).then((result) => {

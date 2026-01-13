@@ -84,7 +84,7 @@
 						exportarDatosExlAModalMetas();//Funcion para exportar datos de excel a la tabla temporal
 					}else{// existe mes y a{ño uestra un alerta de bootstrap
 
-						swal({
+						swal.fire({
 						  html: `<p class="font-weight-bold">¡Ya existe un registo con esta fecha!</p>
 						  		<p class="font-weight-normal">¿Quiere sobreescribir estos registros?</p>`,
 						  text: "¿Deseas sobreescribir estos registros?",
