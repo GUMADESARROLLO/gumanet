@@ -29,7 +29,7 @@ class ReOrderPointR3 extends Model
      *
      * @return void
      */
-    public static function Calcular()
+    public static function Calcular($request)
     {
         $currentDate = date('Y-m-d');
         //$startOfMonth = date('Y-m-01', strtotime($currentDate));
@@ -37,8 +37,13 @@ class ReOrderPointR3 extends Model
         // $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-11 months', strtotime($startOfMonth)));
         // $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
 
-        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-12 months', strtotime($currentDate)));
-        $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate ));
+        //$FechaIni   = date('Y-m-d 00:00:00.000', strtotime('-12 months', strtotime($currentDate)));
+        //$FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate ));
+
+        $FechaIni   = date('Y-m-d 00:00:00.000', strtotime($request->fecha_inicial));
+        $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($request->fecha_final));
+
+        dd($FechaIni, $FechaEnd);
 
         // Ejecutar el primer procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_base_reorder_v3 ?, ?", [$FechaIni, $FechaEnd]);

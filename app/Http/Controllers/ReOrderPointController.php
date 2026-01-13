@@ -75,7 +75,8 @@ class ReOrderPointController extends Controller
         return response()->json($Data);
     }
     public function getCalcular(Request $request) {
-        $ReOrder = ReOrderPointR3::Calcular();
+
+        $ReOrder = ReOrderPointR3::Calcular($request);
         return response()->json([
             'Titulo' => 'Reorder Point.',
             'Mensaje' => 'Calculos completados' 
