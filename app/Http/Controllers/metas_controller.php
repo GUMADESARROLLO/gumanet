@@ -299,7 +299,7 @@ class metas_controller extends Controller
 
     private function addDataFromTmpToCoutaXProd($metaXProducto, $idPeriodo){//Agregar datos Calculados
         foreach ($metaXProducto as $key){
-            Gn_couta_x_producto::insert(['CodVendedor' => $key['ruta'],'CodProducto' => $key['articulo'],'NombreProducto' => $key['descripcion'], 'FHGrabacion' => new\DateTime(),'Meta' => $key['unidad'], 'IdPeriodo' => $idPeriodo, 'val' => $key['valor']]);
+            Gn_couta_x_producto::insert(['CodVendedor' => $key['ruta'],'NombreVendedor' => $key['cliente'], 'CodProducto' => $key['articulo'],'NombreProducto' => $key['descripcion'], 'FHGrabacion' => new\DateTime(),'Meta' => $key['unidad'], 'IdPeriodo' => $idPeriodo, 'val' => $key['valor']]);
         }
         
     }
