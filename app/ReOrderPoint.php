@@ -63,6 +63,7 @@ class ReOrderPoint extends Model
     {
         $array = [];
         $Articulos = ReOrderPoint::all();
+        dd($Articulos);
         $NameMonths = ReOrderPoint::NameMonth($Articulos[0]->FechaFinal)  ;
         foreach ($Articulos as $key => $a) {
             $array[$key] = [

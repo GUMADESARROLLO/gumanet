@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models;
 use App\Company;
+use App\IM_Comentarios;
 use PHPExcel;
 use PHPExcel_IOFactory;
 use PHPExcel_Style_Alignment;
@@ -15,6 +16,7 @@ use PHPExcel_Style_Border;
 use PHPExcel_Style_Fill;
 use App\inteligenciaMercado_model;
 use DB;
+use Exception;
 
 class inteligenciaMercado_controller extends Controller
 {
@@ -26,7 +28,7 @@ class inteligenciaMercado_controller extends Controller
 		$this->agregarDatosASession();
 		$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
 		
-		$comentarios = inteligenciaMercado_model::where('empresa', $company_user)->orderBy('Fecha', 'desc')->paginate(5);
+		$comentarios = inteligenciaMercado_model::where('empresa', $company_user)->withCount('respuestas')->orderBy('Fecha', 'desc')->paginate(5);
 		
 		$data = [
 			'page' 				=> 'Inteligencia de Mercado',
@@ -35,10 +37,78 @@ class inteligenciaMercado_controller extends Controller
 			'comentarios'		=> $comentarios
 		];	
 
-
 		inteligenciaMercado_controller::Update();
 
-		return view('pages.inteligenciaMercado', $data);		
+		return view('pages.Inteligencia_Mercado.inteligenciaMercado', $data);		
+	}
+
+	public function responder(Request $request)
+	{
+		$request->validate([
+			'comentario_id' => 'required|integer',
+			'respuesta' => 'required|string|max:1000'
+		]);
+
+		try {
+
+			$id_post = $request->comentario_id;
+			$comments = $request->respuesta;
+			$oneSignal = $request->oneSignal;
+			
+			$created_by = auth()->user()->name ?? 'Admin';
+			$created_at = now();
+			
+			$obj = new IM_Comentarios();
+			$obj->id_post = $id_post;
+			$obj->comments = $comments;
+			$obj->created_by = $created_by;
+			$obj->created_at = $created_at;
+			$obj->IdOneSignal = $oneSignal;
+
+
+			$response = $obj->save();
+
+			if($response == true){
+
+				IM_Comentarios::sendNotification(
+					$oneSignal,
+					'Notificación',
+					'Respondieron tu comentario.', 
+					['tipo' => 'alerta']  
+				);
+
+
+			}
+
+			return back()->with('success', 'Respuesta enviada correctamente');
+
+		} catch (Exception $e) {
+			$mensaje =  'Excepción capturada: ' . $e->getMessage() . "\n";
+			return response()->json($mensaje);
+		}
+	}
+
+	public function paginateDataSearch(Request $request)
+	{
+		$texto  = $request->input('search');
+		$fecha  = $request->input('date');
+		$fechas = $request->input('fechas'); 
+		$page   = $request->input('page');   
+
+		$comentarios = inteligenciaMercado_model::filtro($texto, $fecha, $fechas)
+							->orderBy('Fecha', 'desc')
+							->paginate(5, ['*'], 'page', $page);
+
+		return view('pages.Inteligencia_Mercado.comments_v3', compact('comentarios'))->render();
+	}
+
+
+
+	public function respuestas($id)
+	{
+		$sql = IM_Comentarios::where('id_post',$id)->orderBy('created_at', 'DESC')->get();
+			
+		return $sql;
 	}
 
     public function agregarDatosASession() {
@@ -49,7 +119,8 @@ class inteligenciaMercado_controller extends Controller
         $request->session()->put('companyName', $company->nombre);// agregar nombre de compañia a session[], para obtenert el nombre al cargar otras pagina 
     }
 
-    public function searchComentarios(Request $request) {
+    public function searchComentarios(Request $request) 
+	{
 		if($request->isMethod('post')) {
 			$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
 
@@ -66,13 +137,14 @@ class inteligenciaMercado_controller extends Controller
 			
 			$comentarios = inteligenciaMercado_model::where(function($q) use ($search) {
 				$q->where('Nombre', 'LIKE', $search)->orWhere('Titulo', 'LIKE', $search)->orWhere('Contenido', 'LIKE', $search)->orWhere('Autor', 'LIKE', $search);
-			})->where('empresa', $company_user)->whereBetween('Fecha', [$from, $to])->orderBy('Fecha', $order)->paginate(5);
+			})->where('empresa', $company_user)->whereBetween('Fecha', [$from, $to])->withCount('respuestas')->orderBy('Fecha', $order)->paginate(5);
 
-			return view('pages.comentarios', compact('comentarios'))->render();
+			return view('pages.Inteligencia_Mercado.comments_v3', compact('comentarios'))->render();
 		}
     }
 
-	public function countim(Request $request){
+	public function countim(Request $request)
+	{
 		$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;	
 
 		return inteligenciaMercado_model::where('Read', '=', 0)->where('empresa', $company_user)->count();
@@ -80,7 +152,8 @@ class inteligenciaMercado_controller extends Controller
 
 	}
 
-	public static function Update(){
+	public static function Update()
+	{
 		$request = Request();
 		$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;	
 		inteligenciaMercado_model::where('Read',"=", 0)->where('empresa', $company_user)->update(['Read' => 1]);
@@ -88,10 +161,11 @@ class inteligenciaMercado_controller extends Controller
 	}
 
 
-    public function descargarComentarios( Request $request ) {
-    	setlocale(LC_TIME, "spanish");
-    	$base = config('global.url_server');
-    	$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
+    public function descargarComentarios( Request $request ) 
+	{
+		setlocale(LC_TIME, "spanish");
+		$base = config('global.url_server');
+		$company_user = Company::where('id',$request->session()->get('company_id'))->first()->id;
 		
 		if($request->isMethod('post')) {
 			$search 	= $request->input('valueFiltro_');
@@ -108,7 +182,7 @@ class inteligenciaMercado_controller extends Controller
 			
 			$comentarios = inteligenciaMercado_model::where(function($q) use ($search) {
 				$q->where('Nombre', 'LIKE', $search)->orWhere('Titulo', 'LIKE', $search)->orWhere('Contenido', 'LIKE', $search)->orWhere('Autor', 'LIKE', $search);
-			})->where('empresa', $company_user)->whereBetween('Fecha', [$from, $to])->orderBy('Fecha', $order)->paginate(5);
+			})->where('empresa', $company_user)->whereBetween('Fecha', [$from, $to])->withCount('respuestas')->orderBy('Fecha', $order)->paginate(5);
 		}
 
 		$objPHPExcel = new PHPExcel();

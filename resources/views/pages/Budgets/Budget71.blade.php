@@ -30,22 +30,10 @@
 					</div>
 						
                     <div class="col-sm-3 border-left">
-                        <div class="row ">
-                            <div class="col-sm-6 ">
-                                <div class="form-group">                
-                                    <label for="f1">Desde:</label>
-                                    <input type="text" class="input-fecha" id="f1_p71">
-                                </div>
+                        <div class="form-group">                
+                            <label for="f1">Fecha Evaluacion</label>
+                            <input type="text" class="input-fecha" name="dt_range" />
                             </div>
-                            <div class="col-sm-6 ">
-                                <div class="form-group">                
-                                    <label for="f2">Hasta:</label>
-                                    <input type="text" class="input-fecha" id="f2_p71">
-                                </div>
-                                
-                            </div>
-                            
-                        </div>
                     </div>  
 				</div>
 

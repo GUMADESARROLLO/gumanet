@@ -60,20 +60,13 @@
             <table id="table_metas" class="table table-bordered table-sm" width="100%">
              <thead>
                 <tr>
-                    <th>Articulo</th>
                     <th>Descripcion</th>
-                    <th>Promedio Venta</th>
-                    <th>Meta</th>
+                    <th>Facturado</th>
+                    <th>Mes</th>
+                    <th>Año</th>
+                    <th>Estado</th>
                 </tr>
              </thead>
-             <tbody>
-                <tr>
-                    <td>11111111</td>
-                    <td>Medicina</td>
-                    <td>C$5,000,000.00</td>
-                    <td>C$6,000,000.00</td>
-                </tr>
-             </tbody>
             </table>
           </div>
         </div>
