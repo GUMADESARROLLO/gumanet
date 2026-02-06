@@ -40,6 +40,9 @@ Route::get('/Recuperacion','recuperacion_controller@index');
 Route::get('/Saldos','saldos_controller@index');
 Route::get('/Proyecciones','proyecciones_controller@index');
 Route::get('/InteligenciaMercado','inteligenciaMercado_controller@index');
+Route::post('/comentarios', 'inteligenciaMercado_controller@responder')->name('comentarios');
+Route::get('/comentarios/respuestas/{id}', 'inteligenciaMercado_controller@respuestas');
+Route::post('/paginateDataSearch', 'inteligenciaMercado_controller@paginateDataSearch');
 Route::get('/InvTotalizado','inventario_controller@inventarioTotalizado');
 Route::get('/VtsProyectos','ventasProyectos_controller@index');
 Route::get('/MinutasCorporativas','minutasCorp_controller@index');
@@ -352,3 +355,4 @@ Route::get('/Updates', 'ControllerUpdateClientes@Updates')->name('Updates');
 // METRICAS METAS
 
 Route::get('MetricasMetas', 'MetricasMetasController@index')->name('MetricasMetas'); 
+Route::get('getMetricasMetas', 'MetricasMetasController@getMetricasMetas')->name('getMetricasMetas'); 

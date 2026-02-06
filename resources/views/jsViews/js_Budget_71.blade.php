@@ -1,10 +1,59 @@
 <script type="text/javascript">
     $(document).ready(function() {
     $("#item-nav-01").after(`<li class="breadcrumb-item active">Presupuesto</li>`);
-    inicializaControlFecha();    
-    DrawTable71();
+
+    $('input[name="dt_range"]').daterangepicker({
+          "autoApply": true,
+            ranges: {
+              'Hoy': [moment(), moment()],
+              'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
+              'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
+              
+              'Esta Semana': [moment().startOf('week'), moment().endOf('week')],
+              'Semana Anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+              
+              'Este Mes': [moment().startOf('month'), moment()],
+              'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+              
+              //'1 Año': [moment().subtract(1, 'year'), moment()],
+              // '2 Años': [moment().subtract(2, 'year'), moment()],
+              // '3 Años': [moment().subtract(3, 'year'), moment()]
+            },
+          "showCustomRangeLabel": false,
+          "alwaysShowCalendars": true,
+          "startDate": moment().format('D MMM. YYYY'),//moment().startOf('month').format('D MMM. YYYY'),
+          "endDate": moment().format('D MMM. YYYY'),
+          opens: 'left',
+          locale: {
+              //format: "DD/MM/YYYY",
+              format: "D MMM. YYYY",   // Ejemplo: 1 ago. 2025
+              separator: " - ",
+              applyLabel: "Aplicar",
+              cancelLabel: "Cancelar",
+              fromLabel: "Desde",
+              toLabel: "Hasta",
+              customRangeLabel: "Personalizado",
+              weekLabel: "S",
+              daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie", "Sab."],
+              monthNames: [
+                  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+              ],
+              firstDay: 1
+          }
+      }, function(start, end, label) {
+          //console.log('Nuevo rango seleccionado: ' + start.format('YYYY-MM-DD') + ' a ' + end.format('YYYY-MM-DD') + ' (rango: ' + label + ')');
+          CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+      });
+      DrawTable71(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'));
 
 });
+
+    function CallFilter( desde = null, hasta = null ) {
+
+        DrawTable71(desde, hasta);
+        
+    }
     $('#txt_Search71').on( 'keyup', function () {
         var table = $('#dtProyect71').DataTable();
         table.search(this.value).draw();
@@ -115,12 +164,12 @@
     
     });
 
-    function DrawTable71(){
+    function DrawTable71(desde = null, hasta = null){
 
 
 
-        f1 = $("#f1_p71").val();
-        f2 = $("#f2_p71").val();
+        f1 = desde;
+        f2 = hasta;
 
         $("#spn_dtIni_71").html(moment(f1).format('DD/MMM/YY'))
         $("#spn_dtEnd_71").html(moment(f2).format('DD/MMM/YY'))

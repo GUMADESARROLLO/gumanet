@@ -6,10 +6,7 @@ use App\Models;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Company;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Session;
+use App\MetricasMetas;
 
 class MetricasMetasController extends Controller {
 
@@ -21,5 +18,16 @@ class MetricasMetasController extends Controller {
     function index()
     {
         return view('pages.MetricasMetas.Meta');
+    }
+
+    public function getMetricasMetas(Request $request)
+    {
+        $general = MetricasMetas::getDatageneral($request);
+
+
+        $Metricas = [
+            'General'        => $general
+        ];
+        return response()->json($Metricas);
     }
 }
