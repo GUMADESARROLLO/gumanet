@@ -77,9 +77,10 @@
 
       $('#tl_periodo').html(`<b>${moment(desde).format('D MMM. YYYY')}</b> al <b>${moment(hasta).format('D MMM. YYYY')}</b>`);
       
-      cargarGetDataInnova(desde, hasta);
+      cargarGetProyecto(desde, hasta);
     
   }
+
   function OnWay() {
     swal.fire({
       title: 'En Construcción',
@@ -88,10 +89,20 @@
       confirmButtonText: 'Aceptar'
     });
   }
-  function eneableButton(EnableButton, textButton = '<i class="fas fa-filter"></i> Filtrar') {
-    $('#filtrarFechas').prop('disabled', EnableButton);
-    $('#filtrarFechas').html('<i class="fas fa-spinner fa-spin" style="display:' + (EnableButton ? 'inline-block' : 'none') + '"></i> ' + textButton);
+
+  function eneableButton(EnableButton, textButton) {
+
+      textButton = textButton ?? '<i class="fas fa-filter"></i> Filtrar';
+
+      $('#filtrarFechas').prop('disabled', EnableButton);
+
+      $('#filtrarFechas').html(
+          '<i class="fas fa-spinner fa-spin" style="display:' +
+          (EnableButton ? 'inline-block' : 'none') +
+          '"></i> ' + textButton
+      );
   }
+
 
     function TBL_TOP_CLIENTES(selector, data) {
 
@@ -107,8 +118,8 @@
           { data: 'NOMBRE', render: function(data, type, row) {
             return `<div class="item-left">${data}<br><span class="item-sub">${row.CODIGO}</span></div>`;
           }},
-          { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
-            return `<div class="item-right">C$ ${data}<br><span class="item-sub">${row.BULTOS_TOTAL_UND}</span></div>`;
+          { data: 'VENTA', render: function(data, type, row) {
+            return `<div class="item-right">C$ ${numeral(data).format('0,0.00')}<br><span class="item-sub">${numeral(row.CANTIDAD).format('0,0.00')}</span></div>`;
           }},
         ],
         createdRow: function (row, rowData) {
@@ -139,8 +150,8 @@
           { data: 'NOMBRE', render: function(data, type, row) {
             return `<div class="item-left">${data}<br><span class="item-sub">${row.CODIGO}</span></div>`;
           }},
-          { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
-            return `<div class="item-right">C$ ${data}<br><span class="item-sub">${row.BULTOS_TOTAL_UND}</span></div>`;
+          { data: 'VENTA', render: function(data, type, row) {
+            return `<div class="item-right">C$ ${numeral(data).format('0,0.00')}<br><span class="item-sub">${numeral(row.CANTIDAD).format('0,0.00')}</span></div>`;
           }},
         ],
       });
@@ -157,15 +168,11 @@
         ordering: false,
         columns: [
           { data: 'DESCRIPCION', render: function(data, type, row) { return `<div class="item-left">${data}<br><span class="item-sub">${row.SKU}</span></div>`;}},
-          { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
+          { data: 'VENTA', render: function(data, type, row) {
             return `<div class="item-right">
                   C$ ${numeral(data).format('0,0.00')}<br>
-                  <span class="item-sub">${numeral(row.BULTOS_TOTAL_UND).format('0,0')} Bls.</span>
+                  <span class="item-sub">${numeral(row.CANTIDAD).format('0,0')} Und.</span>
                 </div>`;}          
-          },
-          { data: 'PESO', render: function(data, type, row) {
-              return `<div class="item-right">${numeral(data).format('0,0.00')} %</div>`;
-            }          
           }
         ],
         createdRow: function (row, rowData) {
@@ -210,6 +217,31 @@
         
         $("#tbl_topsku_clientes_filter").hide();
     }
+
+    function tbl_grupos(Dt) {        
+        // Populate the table with data
+        
+        $("#table_grupos").DataTable({
+            data: Dt,
+            destroy: true,
+            columnDefs: [
+                
+            ],
+            
+            order: [],
+            columns: [
+                { data: "ARTICULO", title: "ARTICULO" },
+                { data: "DESCRIPCION", title: "NOMBRE" },
+                { data: "GRUPOS", title: "GRUPOS" },
+            ],
+            pageLength: 7,
+            bLengthChange: false,
+            searching: true,
+        });
+        
+        $("#table_grupos_filter").hide();
+    }
+
     function TBL_DETALLES_FACTURAS_CLIENTES(Dt) {        
         // Populate the table with data
         $("#tbl_topsku_clientes").DataTable({
@@ -377,14 +409,14 @@
         console.error(error);
       }
     }
-    async function cargarGetDataInnova(desde, hasta){
+    async function cargarGetProyecto(desde, hasta){
       
         try {
             eneableButton(true,'Calc...') ;
 
-            var Clientes = $('#cmbClientesExcluir').val();
+            var grupo = $('#cmbClientesExcluir').val();
             
-            const response = await fetch('getDataInnova', {
+            const response = await fetch('dtProyect', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -393,49 +425,34 @@
                 body: JSON.stringify({ 
                   desde: desde, 
                   hasta: hasta,
-                  Clste: Clientes
+                  grupo: grupo
 
                 })
             });
 
             const result = await response.json();
-
-            loadAndBuildTable('#clientesTable', result.ACTUAL.Clientes);            
-            loadAndBuildTable('#vendedoresTable', result.ACTUAL.Vendedores);
-            loadAndBuildTable('#vendedoresRangoTable', result.ACTUAL.VendedoresRango);
-            TBL_TOP_SKU('#tbl_top_sku', result.ACTUAL.SKU_CHART.data);
-            TBL_TOP_CLIENTES('#tbl_top_clientes', result.ACTUAL.CLS_CHART);
-            renderSKUPieChart(result.ACTUAL.SKU_CHART.data);
-            renderClienteBolsonChart(result.ACTUAL.CLS_CHART);
+            loadAndBuildTable('#clientesTable', result.CLIENTES);            
+            loadAndBuildTable('#vendedoresTable', result.VENDEDORESHOY);
+            loadAndBuildTable('#vendedoresRangoTable', result.VENDEDORES);
+            TBL_TOP_SKU('#tbl_top_sku', result.SKU_CHART);
+            TBL_TOP_CLIENTES('#tbl_top_clientes', result.CLS_CHART);
+            renderSKUPieChart(result.SKU_CHART);
+            renderClienteBolsonChart(result.CLS_CHART);
+            tbl_grupos(result.GRUPOS)
+            console.log(result.GRUPOS)
 
             let datos = [];
             let totales = [];
             
-            datos = result.COMPARATIVAYTD.COMPARATIVA_YTD;
-            totales = result.COMPARATIVAYTD;
-
-            renderComparativaYTD(datos, 'valor');
-
-            $('#bultos_facturacion').text("C$ " + result.ACTUAL.Metricas.BULTOS_TOTAL_NIO);
-            $('#bultos_valor').text(result.ACTUAL.Metricas.BULTOS_TOTAL_UND);
-            $('#bultos_actual').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ACTUAL);
-            $('#bultos_anterior').text(result.COMPARATIVA.UND_YTD.BULTOS_UND_ANIO_ANTERIOR);
-            $('#fechaClienteFact').text(moment(result.ACTUAL.HASTA).format('D MMM. YYYY'));
-            $('#fechaVentaVendedor').text(moment(result.ACTUAL.HASTA ).format('D MMM. YYYY'));
-            $('#fechaRangoVentaVendedor').text(moment(result.ACTUAL.DESDER).format('D MMM. YYYY') + ' al ' + moment(result.ACTUAL.HASTA).format('D MMM. YYYY'),);
-            $('#fechaSKU').text( moment(result.ACTUAL.DESDE).format('D MMM. YYYY') + ' al ' + moment(result.ACTUAL.HASTA).format('D MMM. YYYY'),); //result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
-            $('#fechaVentaNeta').text( moment(result.ACTUAL.DESDE).format('D MMM. YYYY') + ' al ' + moment(result.ACTUAL.HASTA).format('D MMM. YYYY'),); // result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
-
-            $('#ytd_anterior').text('C$ '+ numeral(result.COMPARATIVAYTD.YTD_VALOR_ANTERIOR).format('0,0.00'));
-            $('#ytd_actual').text('C$ '+ numeral(result.COMPARATIVAYTD.YTD_VALOR_ACTUAL).format('0,0.00'));
-            $('#ytd_crecimiento').text(numeral(result.COMPARATIVAYTD.YTD_VALOR_CRECIMIENTO).format('0,0.00'));
+            
+            $('#fechaClienteFact').text(moment(result.HASTA).format('D MMM. YYYY'));
+            $('#fechaVentaVendedor').text(moment(result.HASTA ).format('D MMM. YYYY'));
+            $('#fechaRangoVentaVendedor').text(moment(result.DESDE).format('D MMM. YYYY') + ' al ' + moment(result.HASTA).format('D MMM. YYYY'),);
+            $('#fechaSKU').text( moment(result.DESDE).format('D MMM. YYYY') + ' al ' + moment(result.HASTA).format('D MMM. YYYY'),); //result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
+            $('#fechaVentaNeta').text( moment(result.DESDE).format('D MMM. YYYY') + ' al ' + moment(result.HASTA).format('D MMM. YYYY'),); // result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
 
             $("#anioAnterior").text(new Date().getFullYear() - 1);
             $("#anioActual").text(new Date().getFullYear());
-            $("#total_sku_bultos").text(result.ACTUAL.SKU_CHART.Totals.Bultos + " Bls.");
-            $("#total_sku_valor").text("C$ " + result.ACTUAL.SKU_CHART.Totals.Valor);
-            $("#total_Cliente_bultos").text(result.ACTUAL.SKU_CHART.Totals.Bultos + " Bls.");
-            $("#total_Cliente_valor").text("C$ " + result.ACTUAL.SKU_CHART.Totals.Valor);
 
 
             //Declarar la variable como global
@@ -478,7 +495,7 @@
       const hoyHasta = new Date().toISOString().split('T')[0]; 
       $('#hastaInnova').val(hoyHasta);
 
-      cargarGetDataInnova(hoyDesde, hoyHasta);
+      cargarGetProyecto(hoyDesde, hoyHasta);
         
     });
 
