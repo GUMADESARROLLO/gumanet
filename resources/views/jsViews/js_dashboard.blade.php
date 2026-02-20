@@ -2237,7 +2237,7 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row" style="font-size: 1rem!important">Farmacia Expansion</th>
+                                <th scope="row" style="font-size: 1rem!important">Farmacia Expansión</th>
                                 <td class="text-right">
                                     <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP5__).format('0,0.00') +`</p>
                                 </td>
