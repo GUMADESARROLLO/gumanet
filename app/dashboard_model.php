@@ -2227,17 +2227,15 @@ class dashboard_model extends Model {
         $sql_server = new \sql_server();
         
 
-        $sql_exec = "SELECT
+        $sql_exec = "
+                    SELECT
                         T1.CADENA,
-                        SUM(T0.TOTAL_LINEA) AS TOTAL
+	                    SUM ( T0.venta_total ) AS TOTAL 
                     FROM
-                        view_master_pedidos_umk_v2 T0
-                        INNER JOIN tbl_cadena_de_farmacia T1 ON T0.CLIENTE = T1.CLIENTE
-                            WHERE MONTH(FECHA_PEDIDO)  = ".$nMes." AND YEAR(FECHA_PEDIDO) = ".$nAnio."
-                    GROUP BY
-                        T1.CADENA
-                    ORDER BY
-                        TOTAL DESC";
+                        Softland.dbo.ANA_VentasTotales_MOD_Contabilidad_UMK T0
+                        INNER JOIN tbl_cadena_de_farmacia T1 ON T0.CLIENTE_CODIGO = T1.CLIENTE WHERE MONTH(Fecha_de_factura)  = ".$nMes." AND YEAR(Fecha_de_factura) = ".$nAnio."
+                    GROUP BY T1.CADENA
+                    ORDER BY TOTAL DESC";
 
         $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
         $json = array();
