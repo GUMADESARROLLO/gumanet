@@ -13,16 +13,16 @@
     <!-- Header -->
     <div class="row border">
       <div class="col-md-7">            
-        <h4 class="h4 text-umk"> PRESUPUESTO 90 - 10.</h4>
-        <p class="text-muted mb-4">Reportes de ventas de productos, tomando en cuenta el periodo de <span id="tl_periodo"></span>.</p>
+        <h4 class="h4 text-umk"> Esencial & Expansión </h4>
+        <p class="text-muted mb-4">Del <span id="tl_periodo"></span>.</p>
       </div>
       <div class="col-md-2 ">        
         <div class="form-group">                
-          <label for="f1">Tomar presupuesto</label>
+          <label for="f1">Equipos</label>
           <select class="custom-select" id="cmbClientesExcluir">
             <option value="TODO">TODO</option>
-            <option value="A">90</option>
-            <option value="B">10</option>
+            <option value="A">Esencial</option>
+            <option value="B">Expansión</option>
           </select>
         </div>
       </div>
@@ -54,7 +54,7 @@
                 </span>
               </div>
             </div>
-            <div class="summary-title" style="color: #890fa1">Valor Actual</div>
+            <div class="summary-title" style="color: #890fa1">Fact. Actual Esencial</div>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
                 </span>
               </div>
             </div>
-            <div class="summary-title" style="color: #890fa1">Volumen Actual</div>
+            <div class="summary-title" style="color: #890fa1">Fact. Actual Expansión</div>
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@
                 </span>
               </div>
             </div>
-            <div class="summary-title" style="color: #890fa1">Bultos 2024</div>
+            <div class="summary-title" style="color: #890fa1">Fact. Total</div>
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@
                 </span>
               </div>
             </div>
-            <div class="summary-title" style="color: #890fa1">Bultos 2025</div>
+            <div class="summary-title" style="color: #890fa1">Clientes Colocados Periodo</div>
           </div>
         </div>
       </div>
@@ -109,7 +109,8 @@
     <!-- Tablas -->
     <div class="row g-3 mb-4"> 
       <div class="row col-md-12 g-2 mb-4">   
-      <div class="col-md-6">
+
+      <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
@@ -121,11 +122,13 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+
+      <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
-              <h6 class="mb-0">VENDEDORES: <b><span id="fechaVentaVendedor" >0000/00/00</span></b></h6>
+              <!-- TODO: ORDENAR DE LA MAYOR VENTA -->
+              <h6 class="mb-0">GRUPOS DEL DIA: <b><span id="fechaVentaVendedor" >0000/00/00</span></b></h6>
             </div>
           </div>
           <div class="card-body">
@@ -133,13 +136,13 @@
           </div>
         </div>
       </div>
-      </div>
+    
 
-      <div class="col-md-12">
+      <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
-              <h6 class="mb-0">VENDEDORES: <b><span id="fechaRangoVentaVendedor" >0000/00/00</span></b></h6>
+              <h6 class="mb-0">GRUPOS DEL RANGO: <b><span id="fechaRangoVentaVendedor" >0000/00/00</span></b></h6>
             </div>
           </div>
           <div class="card-body">
@@ -243,7 +246,7 @@
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
-              <h6 class="mb-0">GRUPOS 90 - 10</h6>
+              <h6 class="mb-0">CLASIFICACION ESENSIAL & EXPANSION</h6>
             </div>
           </div>
           <div class="card-body">
