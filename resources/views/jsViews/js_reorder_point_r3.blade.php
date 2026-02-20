@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <div class="col-sm-4 col-md-4">
+        <div class="col-sm-4 col-md-4 text-end">
             <div class="form-group">
                 <input type="text" class="input-fecha" name="dt_range" />
             </div>
@@ -355,7 +355,7 @@ async function getCalcular( fecha_inicial, fecha_final) {
         // Fetch data from the server
         Swal.fire({
             title: "Cálculo del Reorder Point",
-            text: `La fecha actual es ${fecha_inicial} y la fecha pasada es ${fecha_final}`,
+            text: `La fecha actual es ${fecha_final} y la fecha pasada es ${fecha_inicial}`,
             inputAttributes: {
                 autocapitalize: "off"
             },

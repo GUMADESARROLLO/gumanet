@@ -3,6 +3,8 @@
     @section('name_user' , 'Administrador')
 @section('metodosjs')
     @include('pages.Budgets.js_presupuesto')
+    @include('pages.Budgets.js_chart_SKU')  
+    @include('pages.Budgets.js_chart_cliente')  
     @include('pages.Budgets.css_presupuesto')
 @endsection
 
@@ -18,9 +20,9 @@
         <div class="form-group">                
           <label for="f1">Tomar presupuesto</label>
           <select class="custom-select" id="cmbClientesExcluir">
-            <option value="1">TODO</option>
-            <option value="0">90</option>
-            <option value="0">10</option>
+            <option value="TODO">TODO</option>
+            <option value="A">90</option>
+            <option value="B">10</option>
           </select>
         </div>
       </div>
@@ -33,7 +35,7 @@
 
       <div class="col-md-1 mt-4">
         <div class="btn-group w-100">               
-          <button type="button" class="btn btn-primary-umk btn-block float-right" id="filtrarFechas">  Filtrar </button>		
+          <button type="button" class="btn btn-primary-umk btn-block float-right" id="filtrarFechas">Filtrar</button>		
         </div>      
       </div>
     </div>
@@ -106,8 +108,8 @@
 
     <!-- Tablas -->
     <div class="row g-3 mb-4"> 
-      <div class="row col-md-6 g-2 mb-4">   
-      <div class="col-md-12">
+      <div class="row col-md-12 g-2 mb-4">   
+      <div class="col-md-6">
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
@@ -119,7 +121,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-6">
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
@@ -133,7 +135,7 @@
       </div>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
@@ -151,7 +153,7 @@
     <div class="row g-4 mb-4">
       <div class="col-md-4">
         <div class="card">
-          <div class="card-header bg-innova text-white">
+          <div class="card-header bg-umk text-white">
             <h6 class="mb-0">GRAFICO DE VENTAS</h6>
           </div>
           <div class="card-body">
@@ -163,7 +165,7 @@
       </div>
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header bg-innova text-white">
+          <div class="card-header bg-umk text-white">
             <h6 class="mb-0">GRAFICO DE CLIENTES</h6>
           </div>
           <div class="card-body">
@@ -177,7 +179,7 @@
     <div class="row g-4 mb-4">      
       <div class="col-md-6">
         <div class="card">
-          <div class="card-header bg-innova text-white">            
+          <div class="card-header bg-umk text-white">            
             <div class="d-flex justify-content-between">
               <h6 class="mb-0">TOP SKUs VENTAS NETAS</h6>
             </div>
@@ -187,7 +189,7 @@
             <table id="tbl_top_sku" class="display" style="width:100%">
               <tfoot>
                 <tr>
-                  <th colspan="3" >
+                  <th colspan="2" >
                     <div class="row">
                       <div class="col-md-6">
                         <span class="item-left">Total:</span>
@@ -206,7 +208,7 @@
       </div>
       <div class="col-md-6">
         <div class="card">
-          <div class="card-header bg-innova text-white">            
+          <div class="card-header bg-umk text-white">            
             <div class="d-flex justify-content-between">
               <h6 class="mb-0">TOP CLIENTES VENTAS NETAS</h6>
             </div>
@@ -236,78 +238,16 @@
     </div>
 
     <!-- Summary -->
-    <div class="row g-3 mb-4">
-      <div class="col-md-3 border-end">
-        <div class="card summary-card">
-          <div class="card-body">
-            
-            <div class="summary-title">
-              <div class="d-flex justify-content-between align-items-center border-bottom">
-                <span>VENTA NETA</span>
-                <span id="anioAnterior">0</span>
-              </div>
-            </div>
-            <div class="summary-value" style="color: #890fa1"><span id="ytd_anterior">0.00</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 border-end">
-        <div class="card summary-card">
-          <div class="card-body">
-            
-            <div class="summary-title">
-              <div class="d-flex justify-content-between align-items-center border-bottom">
-                <span>VENTA NETA</span>
-                <span id="anioActual">0</span>
-              </div>
-            </div>
-            <div class="summary-value" style="color: #890fa1"><span id="ytd_actual">0.00</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 border-end">
-        <div class="card summary-card">
-          <div class="card-body">            
-            <div class="summary-title">
-              <div class="d-flex justify-content-between align-items-center border-bottom">
-                <span>CRECIMIENTO</span>
-                <span>%</span>
-              </div>
-            </div>
-            <div class="summary-value" style="color: #890fa1"><span id="ytd_crecimiento">0.00</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 border-end">
-        <div class="card summary-card">
-          <div class="card-body">            
-            <div class="summary-title"> 
-              <div class="d-flex justify-content-between align-items-center border-bottom">
-                <span id="filtro">FILTRADO POR:</span>
-                <span></span>
-              </div>
-            </div>
-            <div class="summary-value" style="color: #890fa1">
-              <select class="custom-select" id="tipoDato" onchange="actualizarGraficoYTD()">
-                <option value="valor">VALOR</option>
-                <option value="bulto">BULTOS</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row g-4">
-      <div class="col-md-12">
+    
+    <div class="col-md-12">
         <div class="card">
-            <div class="card-header bg-innova text-white">
-              <div class="d-flex justify-content-between">
-              <h6 class="mb-0">GRAFICO YTD VENTAS</h6>
+          <div class="card-header bg-inn-card text-white">            
+            <div class="d-flex justify-content-between">
+              <h6 class="mb-0">GRUPOS 90 - 10</h6>
             </div>
           </div>
           <div class="card-body">
-            <div id="chart_ytd"></div>
+            <table id="table_grupos" class="display" style="width:100%"></table>
           </div>
         </div>
       </div>
