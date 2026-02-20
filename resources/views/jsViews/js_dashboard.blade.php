@@ -2148,8 +2148,8 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                    
 
                     var tbody = '';
-                    var metaGRP1__ = metaGRP2__ = metaGRP3__ = metaGRP4__ = 0;
-                    var realGRP1__ = realGRP2__ = realGRP3__ = realGRP4__ = 0;
+                    var metaGRP1__ = metaGRP2__ = metaGRP3__ = metaGRP4__ = metaGRP5__ = 0;
+                    var realGRP1__ = realGRP2__ = realGRP3__ = realGRP4__ = realGRP5__ = 0;
                     var totalMETA__ = totalREAL__ = totalALC__ = 0;
                    
                     if (item['data'].length>0) {
@@ -2164,12 +2164,14 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                 metaGRP2__ = x['meta'];
                                 realGRP2__ = x['real'];
                             }else if ( temp=='Farmacias' ) {
-
                                 metaGRP3__= x['meta'];
                                 realGRP3__ = x['real'];
                             }else if ( temp=='Cadena_farmacia' ) {
                                 metaGRP4__= x['meta'];
                                 realGRP4__ = x['real'];
+                            } else if ( temp=='Expansion' ) {
+                                metaGRP5__ = x['meta'];
+                                realGRP5__ = x['real'];
                             }
 
                             totalMETA__ = totalMETA__ + parseFloat(x['meta']);
@@ -2179,11 +2181,13 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                             cumplGRP1 = (parseFloat(realGRP1__)/parseFloat(metaGRP1__))*100;
                             cumplGRP2 = (parseFloat(realGRP2__)/parseFloat(metaGRP2__))*100;
 
-                            //metaGRP3__ = (metaGRP3__  - metaGRP4__)
-                            
+                            //metaGRP3__ = (metaGRP3__  - metaGRP4__)                           
                             
                             cumplGRP3 = (parseFloat(realGRP3__)/parseFloat(metaGRP3__))*100;
                             cumplGRP4 = (parseFloat(realGRP4__)/parseFloat(metaGRP4__))*100;
+                            cumplGRP5 = (parseFloat(realGRP5__)/parseFloat(metaGRP5__))*100;
+
+
 
                             //totalMETA__ = (totalMETA__  - metaGRP4__) + parseFloat(metaGRP4__)
                             //totalREAL__ = totalREAL__ + parseFloat(realGRP4__)
@@ -2217,18 +2221,35 @@ function actualizandoGraficasDashboard(mes, anio, xbolsones) {
                                 <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(cumplGRP2).format('0,0.00') +` %</p>
                             </td>
                             </tr>
+
+                            
+
                             <tr>
-                            <th scope="row" style="font-size: 1rem!important">Farmacia</th>
-                            <td class="text-right">
-                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP3__).format('0,0.00') +`</p>
-                            </td>
-                            <td class="text-right">
-                                <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(realGRP3__).format('0,0.00') +`</p>
-                            </td>
-                            <td class="text-right">
-                                <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(cumplGRP3).format('0,0.00') +` %</p>
-                            </td>
+                                <th scope="row" style="font-size: 1rem!important">Farmacia Esential</th>
+                                <td class="text-right">
+                                    <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP3__).format('0,0.00') +`</p>
+                                </td>
+                                <td class="text-right">
+                                    <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(realGRP3__).format('0,0.00') +`</p>
+                                </td>
+                                <td class="text-right">
+                                    <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(cumplGRP3).format('0,0.00') +` %</p>
+                                </td>
                             </tr>
+                            <tr>
+                                <th scope="row" style="font-size: 1rem!important">Farmacia Expansion</th>
+                                <td class="text-right">
+                                    <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP5__).format('0,0.00') +`</p>
+                                </td>
+                                <td class="text-right">
+                                    <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(realGRP5__).format('0,0.00') +`</p>
+                                </td>
+                                <td class="text-right">
+                                    <p class="font-weight-bolder" style="font-size: 1rem!important">`+ numeral(cumplGRP5).format('0,0.00') +` %</p>
+                                </td>
+                            </tr>
+
+                            
                             <th scope="row" style="font-size: 1rem!important"  onclick="ShowSaleCadena()" >Cadenas de Farmacias</th>
                             <td class="text-right">
                                 <p class="font-weight-bolder" style="font-size: 1rem!important">C$ `+ numeral(metaGRP4__).format('0,0.00') +`</p>

@@ -108,6 +108,7 @@ class dashboard_model extends Model {
         'tipo' => 'dtaProyectos',
         'data' => dashboard_model::dataProyectos($mes, $anio, $company_user)
     ];
+
     $tiempos['dataProyectos'] = microtime(true) - $inicio;
 
     // Medición ficticia, no hay consulta activa
@@ -305,35 +306,34 @@ class dashboard_model extends Model {
 
         $segmentos[2] = array(
             'name' => 'Farmacias',
-            'line' => "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F18','F19','F20','F21','F22','F24'",
-            'ruta' => ['F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F18','F19','F20','F21','F22','F24']
+            'line' => "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F18','F19','F20','F21','F24'",
+            'ruta' => ['F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F18','F19','F20','F21','F24']
+        );
+
+        $segmentos[3] = array(
+            'name' => 'Expansion',
+            'line' => "'F25','F26','F27','F28','F29','F30'",
+            'ruta' => ['F25','F26','F27','F28','F29','F30']
         );
 
         switch ($company_user) {
             case '1':
-                //$proyectos = proyectos_model::orderBy('priori', 'asc')->get();
-
-                
                 foreach ($segmentos as $key) {
                     
                     $retVal = ($key['name'] === 'Farmacias') ? 'AND T0.CLIENTE NOT IN (SELECT CLIENTE FROM view_cadena_de_farmacia)' : '' ;
 
-                    $sql_exec = "SELECT
-                                    SUM(TOTAL_LINEA) as total
-                                    FROM
-                                            PRODUCCION.dbo.view_master_pedidos_umk_v2 T0
-                                    WHERE
-                                            T0.FECHA_PEDIDO BETWEEN '".$fechaInicio."' AND '".$fechaFin."'  AND T0.VENDEDOR  IN (".$key['line']." )
-                                            ".$retVal."
-                                    GROUP BY T0.VENDEDOR";
+                    $sql_exec = "SELECT 
+                                SUM(TOTAL_LINEA) as total 
+                                FROM PRODUCCION.dbo.view_master_pedidos_umk_v2 T0
+                                WHERE T0.FECHA_PEDIDO BETWEEN '".$fechaInicio."' AND '".$fechaFin."'  AND T0.VENDEDOR  IN (".$key['line']." ) ".$retVal."
+                                GROUP BY T0.VENDEDOR";
                                             
                     $rutas =     $key['ruta'];
                     
                     $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
 
                     if ( count($idPeriodo)>0 ) {
-                        $meta =  Gn_couta_x_producto::where('IdPeriodo', $idPeriodo)
-                                    ->where(function ($query) use ($rutas) {                                     
+                        $meta =  Gn_couta_x_producto::where('IdPeriodo', $idPeriodo)->where(function ($query) use ($rutas) {                                     
                                         $query->whereIn('codVendedor', $rutas);
                                     })->sum('val');
                     }
@@ -351,12 +351,6 @@ class dashboard_model extends Model {
                 $array[$i]['proyecto'] = 'Cadena_farmacia';
                 $array[$i]['real'] = $query[0]->Venta;
                 $array[$i]['meta'] = $query[0]->Meta;
-            
-                
-
-                
-
-            
 
                 return $array;
                 break;
@@ -394,10 +388,16 @@ class dashboard_model extends Model {
             'ruta' => ['F04']
         );
 
-         $segmentos[2] = array(
+        $segmentos[2] = array(
             'name' => 'Farmacias',
             'line' => "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F19','F20','F21','F22','F24'",
             'ruta' => ['F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F19','F20','F21','F22','F24']
+        );
+
+        $segmentos[3] = array(
+            'name' => 'Expansion',
+            'line' => "'F25','F26','F27','F28','F29','F30'",
+            'ruta' => ['F25','F26','F27','F28','F29','F30']
         );
 
         switch ($company_user) {
