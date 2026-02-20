@@ -2261,19 +2261,19 @@ class dashboard_model extends Model {
         
 
         $sql_exec = "SELECT
-                        T2.ARTICULO,
-                        T2.DESCRIPCION,
-                        SUM ( T0.CANTIDAD_PEDIDA ) AS CANTIDAD,
+                        T0.ARTICULO,
+                        T0.DESCRIPCION,
+                        SUM ( T0.CANTIDAD_FACT ) AS CANTIDAD,
                         T2.UNIDAD_ALMACEN,
-                        SUM(T0.TOTAL_LINEA) AS VALOR
+                        SUM ( T0.venta_total ) AS VALOR
                     FROM
-                        view_master_pedidos_umk_v2 T0
-                        INNER JOIN tbl_cadena_de_farmacia T1 ON T0.CLIENTE = T1.CLIENTE
+                        Softland.dbo.ANA_VentasTotales_MOD_Contabilidad_UMK T0
+                        INNER JOIN tbl_cadena_de_farmacia T1 ON T0.CLIENTE_CODIGO = T1.CLIENTE
                         INNER JOIN iweb_articulos T2 ON T0.ARTICULO = T2.ARTICULO
-                    WHERE MONTH(FECHA_PEDIDO)  = ".$nMes." AND YEAR(FECHA_PEDIDO) = ".$nAnio." AND T1.CADENA = '".$nCadena."'
+                    WHERE MONTH(Fecha_de_factura)  = ".$nMes." AND YEAR(Fecha_de_factura) = ".$nAnio." AND T1.CADENA = '".$nCadena."'
                     GROUP BY
-                        T2.ARTICULO,
-                        T2.DESCRIPCION,
+                        T0.ARTICULO,
+                        T0.DESCRIPCION,
                         T2.UNIDAD_ALMACEN
                     ORDER BY
                         VALOR DESC";
