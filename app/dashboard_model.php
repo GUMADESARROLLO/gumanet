@@ -2225,25 +2225,57 @@ class dashboard_model extends Model {
         $nAnio = $request->input('annio'); 
 
         $sql_server = new \sql_server();
-        
+    
 
-        $sql_exec = "
+
+        $sql_exec = "WITH FACTURADO_CADENA AS (
+                        SELECT
+                            T1.CADENA,
+                            COUNT(DISTINCT T0.CLIENTE_CODIGO) AS SUC_FACT,
+                            COUNT(DISTINCT T0.ARTICULO) AS SKU_FACT,
+                            SUM(T0.venta_total) AS TOTAL_FACTURA
+                        FROM Softland.dbo.ANA_VentasTotales_MOD_Contabilidad_UMK T0
+                        INNER JOIN tbl_cadena_de_farmacia T1 
+                            ON T0.CLIENTE_CODIGO = T1.CLIENTE 
+                        WHERE 
+                            MONTH(T0.Fecha_de_factura) = ".$nMes."
+                            AND YEAR(T0.Fecha_de_factura) = ".$nAnio."
+                        GROUP BY 
+                            T1.CADENA
+                    )
+
                     SELECT
-                        T1.CADENA,
-	                    SUM ( T0.venta_total ) AS TOTAL 
-                    FROM
-                        Softland.dbo.ANA_VentasTotales_MOD_Contabilidad_UMK T0
-                        INNER JOIN tbl_cadena_de_farmacia T1 ON T0.CLIENTE_CODIGO = T1.CLIENTE WHERE MONTH(Fecha_de_factura)  = ".$nMes." AND YEAR(Fecha_de_factura) = ".$nAnio."
-                    GROUP BY T1.CADENA
-                    ORDER BY TOTAL DESC";
+                        M.CADENA,
+                        ISNULL(F.SUC_FACT, 0) AS SUC_FACT,
+                        ISNULL(F.SKU_FACT, 0) AS SKU_FACT,
+                        M.META,
+                        ISNULL(F.TOTAL_FACTURA, 0) AS VENTA_VALORES,
+                        CASE 
+                            WHEN M.META > 0
+                            THEN (ISNULL(F.TOTAL_FACTURA, 0) / M.META) * 100
+                            ELSE 0
+                        END AS CUMP_PORCENTAJE
+                    FROM PRODUCCION.dbo.tbl_meta_cadena M
+                    LEFT JOIN FACTURADO_CADENA F  ON M.CADENA = F.CADENA
+                    WHERE  
+                        M.MES =  ".$nMes."
+                    AND M.YEAR = ".$nAnio."
+
+                    ORDER BY VENTA_VALORES DESC;";
 
         $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
         $json = array();
         
         foreach($query as $key => $value) {
+
             $json[$key]['NUMBER'] = $key + 1;
             $json[$key]['CADENA'] = $value['CADENA'];
-            $json[$key]['VENDE']  = $value['TOTAL'];
+            $json[$key]['SUC_FACT'] = $value['SUC_FACT'];
+            $json[$key]['SKU_FACT'] = $value['SKU_FACT'];
+            $json[$key]['META'] = $value['META'];
+            $json[$key]['VENTA_VALORES']  =$value['VENTA_VALORES'];
+            $json[$key]['CUMP_PORCENTAJE']  = $value['CUMP_PORCENTAJE'];
+
         }
         
         $sql_server->close();           

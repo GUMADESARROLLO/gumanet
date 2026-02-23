@@ -2415,6 +2415,7 @@ function modalSegmento(data){
 }
 function ShowSaleInstitucion(){
 $('#mCadenaFarmacia').modal('show');
+
 $("#id_lbl_mdl_detalles").html('<b>INSTITUCIONALES</b>');
 var mes = $('#opcMes option:selected').val();
 var anio = $('#opcAnio option:selected').val();
@@ -2452,9 +2453,13 @@ $("#tb_cadena_farmacia").dataTable({
             }},
         { "title": "NOMBRE",    "data": "CADENA"},   
         { "title": "VENTA EN C$",  "data": "VENDE", render: $.fn.dataTable.render.number( ',', '.', 2, 'C$ ' )},
+        { "title": "CLIENTE",  "data": "CLIENTE"},
+        { "title": "CLIENTE", "data": "CLIENTE"},
+        { "title": "DETALLE", "data": "CLIENTE"},
+        { "title": "DETALLE", "data": "CLIENTE"}
     ],
     "columnDefs": [
-        {"className": "dt-back-unit", "targets": []},
+        {"visible": false, "targets": [3,4,5,6]},
         {"className": "dt-center", "targets": [ 0,1 ]},
         {"className": "dt-right", "targets": [ 2 ]}
         
@@ -2486,6 +2491,9 @@ $("#tb_cadena_farmacia_paginate").hide();
 }
 
 function ShowSaleCadena(){
+    if($("#tb_cadena_farmacia").is(":hidden")){
+        $("#tb_cadena_farmacia").show();
+    }
     $("#id_lbl_mdl_detalles").html('<b>CADENAS DE FARMACIAS</b>')
     $('#mCadenaFarmacia').modal('show');
 
@@ -2524,20 +2532,24 @@ function ShowSaleCadena(){
             {"title": "#", "data": 'NUMBER', "render": function(data, type, row, meta) {
                 return  `<a id="exp_more_cadena" class="exp_more" href="#!"> ▼</a>`
             }},
-            { "title": "CADENA",    "data": "CADENA"},   
-            { "title": "VENTA EN C$",  "data": "VENDE", render: $.fn.dataTable.render.number( ',', '.', 2, 'C$ ' )},
+            { "title": "CADENA", "data": "CADENA" },
+            { "title": "SUC FACT.", "data": "SUC_FACT" },
+            { "title": "SKU FACT.", "data": "SKU_FACT" },
+            { "title": "META C$.", "data": "META", "render": $.fn.dataTable.render.number( ',', '.', 0, '' ) },
+            { "title": "VNT C$", "data": "VENTA_VALORES", "render": $.fn.dataTable.render.number( ',', '.', 2, ' ' ) },
+            { "title": "%", "data": "CUMP_PORCENTAJE", "render": $.fn.dataTable.render.number( ',', '.', 2, '' ) },
 
         ],
         "columnDefs": [
-            {"className": "dt-back-unit", "targets": []},
-            {"className": "dt-center", "targets": [ 0,1 ]},
-            {"className": "dt-right", "targets": [ 2 ]}
+            {"className": "dt-back-unit", "targets": [ ]},
+            {"className": "dt-center", "targets": [ 2,3,6 ]},
+            {"className": "dt-right", "targets": [  4,5,6 ]},
             
         ],
         
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api();
-            var Total  = 0;
+            var SUC_FACT = 0, SKU_FACT  = 0, META = 0, VENTA_VALORES = 0, CUMP_PORCENTAJE = 0;
 
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -2546,13 +2558,34 @@ function ShowSaleCadena(){
                         i : 0;
             };
 
-            Total = api.column( 2 ).data().reduce( function (a, b){
+            SUC_FACT = api.column( 2 ).data().reduce( function (a, b){
+                return intVal(a) + intVal(b);
+            }, 0 );
+            
+            $(api.column(2).footer()).html(SUC_FACT);
+
+            SKU_FACT = api.column( 3 ).data().reduce( function (a, b){
+                return intVal(a) + intVal(b);
+            }, 0 );
+            
+            $(api.column(3).footer()).html(SKU_FACT);
+
+            META = api.column( 4 ).data().reduce( function (a, b){
+                return intVal(a) + intVal(b);
+            }, 0 );
+            
+            $(api.column(4).footer()).html(numeral(META).format('0,0.00'));
+
+            VENTA_VALORES = api.column( 5 ).data().reduce( function (a, b){
                 return intVal(a) + intVal(b);
             }, 0 );
 
-           
-            $(api.column(0).footer()).html('<h6 class="fs-0 text-900 mb-0 me-2">TOTAL</h6>');
-            $(api.column(2).footer()).html('<h6 class="text-right">C$ '+numeral(Total).format('0,0.00')+'</h6>');
+            $(api.column(5).footer()).html(numeral(VENTA_VALORES).format('0,0.00'));
+
+            CUMP_PORCENTAJE = (META!=0)? (VENTA_VALORES/META)*100 : 0;
+            $(api.column(6).footer()).html(numeral(CUMP_PORCENTAJE).format('0.00') + '%');
+
+
                 
 
                 
@@ -2575,7 +2608,7 @@ $(document).on('click', '#exp_more_insta', function(ef) {
     if (row.child.isShown()) {
         row.child.hide();
         tr.removeClass('shown');
-        ef.target.innerHTML = '▼';
+        ef.target.html('<i class="fas fa-chevron-down"></i>');
         ef.target.style.color = '#007bff';
     } else {
         //VALIDA SI EN LA TABLA HAY TABLAS SECUNDARIAS ABIERTAS
@@ -2584,7 +2617,7 @@ $(document).on('click', '#exp_more_insta', function(ef) {
 
             if ( row.child.isShown() ) {
                 row.child.hide();
-                ef.target.innerHTML =  '▼ ';
+                ef.target.html('<i class="fas fa-chevron-up"></i>');
 
                 var c_1 = $(".expan_more");
                 c_1.text( '▼ ');
