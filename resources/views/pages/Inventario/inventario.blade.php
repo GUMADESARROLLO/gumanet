@@ -182,8 +182,7 @@
                       @endif
                       <div class="col-md-6 col-lg-6 col-xl-6">
                         <h5 id="tArticulo" >Quant trident shirts</h5>
-                        <div class="d-flex flex-row">
-                          
+                        <div class="d-flex flex-row">                          
                           <span id="id_cod_articulo" >310</span>
                         </div>
                         <div class="mt-1 mb-0 text-muted small">
@@ -192,8 +191,14 @@
                           <span id="IdLaboratorio">LABORATORIO</span>
                           <span class="text-primary"> • </span>
                           <span id="IdUnidadMedida">UNIDAD MEDIDA<br /></span>
+                          <span><span class="text-primary"> • </span> <span id="IdPresentacion">PRESENTACION</span>
                         </div>
-                        <div class="mt-1 mb-0 text-muted small" style="display: none;">
+                        <div class="mt-1 mb-0 text-muted small">
+                          <span>Ultima Orden de Compras</span>
+                          <span class="text-primary"> • </span>
+                          <span style="color: black;" id="ULTIMA_COMPRA"></span>
+                        </div>
+                        <div class="mt-1 mb-0 text-muted small">
                           <span>Lic. Expira.</span>
                           <span class="text-primary"> • </span>
                           <span id="lic_exp">00/00/0000</span>

@@ -33,7 +33,10 @@ class inventario_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH FROM PRODUCCION.dbo.iweb_articulos T0 LEFT JOIN PRODUCCION.dbo.gnet_inventario_promedios_anuales_umk T1 ON T0.ARTICULO = T1.ARTICULO where T0.ARTICULO NOT LIKE 'VU%'";
+                $sql_exec = "SELECT T0.*,
+                T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH 
+                FROM PRODUCCION.dbo.iweb_articulos T0 
+                LEFT JOIN PRODUCCION.dbo.gnet_inventario_promedios_anuales_umk T1 ON T0.ARTICULO = T1.ARTICULO where T0.ARTICULO NOT LIKE 'VU%'";
 
                 $qSKU = "SELECT
                                     T1.ARTICULO,

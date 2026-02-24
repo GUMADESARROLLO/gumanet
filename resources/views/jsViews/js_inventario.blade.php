@@ -368,7 +368,10 @@ function getDetalleArticulo(articulo, descripcion,LicExpira) {
         $("#IdUnidadMedida").html(data.UNIDAD_ALMACEN);
         $("#IdUnidadMedidaSpan").html(data.UNIDAD_ALMACEN);
 
-        $("#id_disponibles").html(data.CANT_TOTAL_DISP)
+        $("#id_disponibles").html(data.CANT_TOTAL_DISP);
+
+        $("#ULTIMA_COMPRA").html("<strong><a href=OrdenCompra/"+data.ULTIMA_COMPRA+" target='_blank'>"+data.ULTIMA_COMPRA+"</a></strong>");
+
 
     });
 
