@@ -356,3 +356,7 @@ Route::get('/Updates', 'ControllerUpdateClientes@Updates')->name('Updates');
 
 Route::get('MetricasMetas', 'MetricasMetasController@index')->name('MetricasMetas'); 
 Route::get('getMetricasMetas', 'MetricasMetasController@getMetricasMetas')->name('getMetricasMetas'); 
+
+
+// RUTAS PARA ORDENES DE COMPRA
+Route::get('OrdenCompra/{Orden}', 'OrdenCompraController@Home')->name('OrdenCompra/{Orden}'); 
