@@ -370,7 +370,7 @@ function getDetalleArticulo(articulo, descripcion,LicExpira) {
 
         $("#id_disponibles").html(data.CANT_TOTAL_DISP);
 
-        $("#ULTIMA_COMPRA").html("<strong><a href=OrdenCompra/"+data.ULTIMA_COMPRA+" target='_blank'>"+data.ULTIMA_COMPRA+"</a></strong>");
+        $("#ULTIMA_COMPRA").html("<strong><a href=OrdenCompraDetalle/"+data.ULTIMA_COMPRA+" target='_blank'>"+data.ULTIMA_COMPRA+"</a></strong>");
 
 
     });

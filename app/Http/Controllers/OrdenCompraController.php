@@ -10,8 +10,51 @@ class OrdenCompraController extends Controller {
     public function __construct() {
         $this->middleware('auth');
     }
-    public function Home($OrdenCompraId) {
+    public function OrdenCompraDetalle($OrdenCompraId) {
         $OrdenCompra = OrdenCompra::where('ORDEN_COMPRA', $OrdenCompraId)->get()->first();
-        return view('Pages.OrdenCompra.Home', compact('OrdenCompra'));
+
+        $OC_ESTADO = $OrdenCompra->ESTADO;
+        $OC_PRIORIDAD = $OrdenCompra->PRIORIDAD;
+        $EM_ESTADO = $OrdenCompra->getEmbarqueLinea->first()->getInfoEmbarque->ESTADO ?? null;
+        $EM_LIQUIDADO = $OrdenCompra->getEmbarqueLinea->first()->getInfoEmbarque->LIQUIDADO ?? null;
+
+
+        $LISTA_ESTADOS = [
+            'R' => 'RECIBIDO',
+            'M' => 'MEDIA',            
+        ];
+        $LISTA_ESTADOS_LIQ = [
+            'S' => 'LIQUIDADO',
+            'N' => 'NO LIQUIDADO',            
+        ];
+
+
+        $OC_ESTADO = $LISTA_ESTADOS[$OC_ESTADO] ?? "N/D";
+        $OC_PRIORIDAD = $LISTA_ESTADOS[$OC_PRIORIDAD] ?? "N/D";
+        $EM_ESTADO = $LISTA_ESTADOS[$EM_ESTADO] ?? "N/D";
+        $EM_LIQUIDADO = $LISTA_ESTADOS_LIQ[$EM_LIQUIDADO] ?? "N/D";
+
+        $ESTADOS = [
+            'OC_ESTADO' => $OC_ESTADO,
+            'OC_PRIORIDAD' => $OC_PRIORIDAD,
+            'EM_ESTADO' => $EM_ESTADO,
+            'EM_LIQUIDADO' => $EM_LIQUIDADO
+        ];
+
+        return view('Pages.OrdenCompra.Home', compact('OrdenCompra', 'ESTADOS'));
+    }
+
+    public function OrdenesCompra() {
+        return view('Pages.OrdenCompra.Index');
+    }
+
+    public function getDataOrdenesCompra(Request $request)
+    {
+        $Metricas_Actuales = OrdenCompra::getData($request);
+
+
+        $Metricas = $Metricas_Actuales;
+        
+        return response()->json($Metricas);
     }
 }

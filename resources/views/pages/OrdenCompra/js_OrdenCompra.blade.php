@@ -1,7 +1,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
 
-        $('#tbl_compra_linea, #tbl_compra_monto').DataTable({
+        $('#tbl_compra_linea, #tbl_compra_monto, #tbl_embarque').DataTable({
             "destroy" : true,
             "info":    false,
             "lengthMenu": [[-1], ["Todo"]],
@@ -22,6 +22,11 @@
         $(".dt-length").hide();
         $(".dt-search").hide();
         $(".dt-paging").hide();
+
+
+        $("#MdlEmbarque").on("click", function() {
+            $("#ModalEmbarque").modal("show");
+        });
         
         
     })
