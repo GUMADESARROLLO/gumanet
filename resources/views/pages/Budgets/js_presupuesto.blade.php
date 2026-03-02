@@ -119,7 +119,7 @@
             return `<div class="item-left">${data}<br><span class="item-sub">${row.CODIGO}</span></div>`;
           }},
           { data: 'VENTA', render: function(data, type, row) {
-            return `<div class="item-right">C$ ${numeral(data).format('0,0.00')}<br><span class="item-sub">${numeral(row.CANTIDAD).format('0,0.00')}</span></div>`;
+            return `<div class="item-right">C$ ${numeral(data).format('0,0.00')}<br><span class="item-sub"></span></div>`;
           }},
         ],
         createdRow: function (row, rowData) {
@@ -151,7 +151,7 @@
             return `<div class="item-left">${data}<br><span class="item-sub">${row.CODIGO}</span></div>`;
           }},
           { data: 'VENTA', render: function(data, type, row) {
-            return `<div class="item-right">C$ ${numeral(data).format('0,0.00')}<br><span class="item-sub">${numeral(row.CANTIDAD).format('0,0.00')}</span></div>`;
+            return `<div class="item-right">C$ ${numeral(data).format('0,0.00')}</div>`;
           }},
         ],
       });
@@ -171,16 +171,16 @@
           { data: 'VENTA', render: function(data, type, row) {
             return `<div class="item-right">
                   C$ ${numeral(data).format('0,0.00')}<br>
-                  <span class="item-sub">${numeral(row.CANTIDAD).format('0,0')} Und.</span>
+                  <span class="item-sub"></span>
                 </div>`;}          
           }
         ],
         createdRow: function (row, rowData) {
           $(row).on('click', function() {
-            var data = table.row(this).data();
+           /* var data = table.row(this).data();
             $('#mdl-topsku').modal('show');
             $('#id-name-articulo').text(data.DESCRIPCION );
-            getDetallesSKUCliente(data.SKU);
+            getDetallesSKUCliente(data.SKU);*/
             excelSku(data.SKU);
             
           });
@@ -207,8 +207,7 @@
                 { data: "CLIENTE", title: "CLIENTE" },
                 { data: "NOMBRE", title: "NOMBRE" },
                 { data: "CANTIDAD", title: "CANT." ,  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-                { data: "VENTA_SIN_IVA", title: "VENTA SIN IVA",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-                { data: "VENTA_CON_IVA", title: "VENTA CON IVA",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') }
+                { data: "FACTURADO", title: "VENTA SIN IVA",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
             ],
             pageLength: 7,
             bLengthChange: false,
@@ -253,14 +252,13 @@
                     return `<a id="exp_factura" href="#!"><i class="material-icons expan_more">expand_more</i></a>`;
                 }},
                 { data: "FACTURA", title: "FACT.",  class: "text-center" },
-                { data: "FECHA_FACTURA", title: "FECHA FACT." , class: "text-center",
+                { data: "Dia", title: "FECHA FACT." , class: "text-center",
                     render: function ( data, type, row ) {
                         return moment(data).format('D MMM. YYYY');
                     }
                 },
                 { data: "CANTIDAD", title: "CANT." ,  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
-                { data: "VENTA_SIN_IVA", title: "SIN IVA C$.",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
-                { data: "VENTA_CON_IVA", title: "CON IVA C$.",  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') }
+                { data: "VENTA", title: "VALOR",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') }
             ],
             pageLength: 7,
             bLengthChange: false,
@@ -387,8 +385,7 @@
         var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
         var ExClu = $('#cmbClientesExcluir').val();
 
-
-        const response = await fetch('getFacturasClientes', {
+        const response = await fetch('getFacturasClientesUmk', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -439,7 +436,6 @@
             renderSKUPieChart(result.SKU_CHART);
             renderClienteBolsonChart(result.CLS_CHART);
             tbl_grupos(result.GRUPOS)
-            console.log(result.GRUPOS)
 
             let datos = [];
             let totales = [];
@@ -451,6 +447,9 @@
             $('#fechaSKU').text( moment(result.DESDE).format('D MMM. YYYY') + ' al ' + moment(result.HASTA).format('D MMM. YYYY'),); //result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
             $('#fechaVentaNeta').text( moment(result.DESDE).format('D MMM. YYYY') + ' al ' + moment(result.HASTA).format('D MMM. YYYY'),); // result.ACTUAL.DESDE + ' al ' + result.ACTUAL.HASTA);
 
+            $('#facturacion_esencial').text(result.FACTESEN);
+            $('#facturacion_expansion').text(result.FACTEXPA);
+            $('#facturacion_total').text(result.FACTTOTA);
             $("#anioAnterior").text(new Date().getFullYear() - 1);
             $("#anioActual").text(new Date().getFullYear());
 

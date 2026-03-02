@@ -48,7 +48,7 @@
             
             <div class="summary-value">
               <div class="d-flex justify-content-between align-items-center">
-                <span id="bultos_facturacion"> 0.00 </span>
+                <span id="facturacion_esencial"> 0.00 </span>
                 <span>
                   <i class="fas fa-comment-dollar"></i>
                 </span>
@@ -64,7 +64,7 @@
             
             <div class="summary-value">
               <div class="d-flex justify-content-between align-items-center">
-                <span id="bultos_valor">0.00</span>
+                <span id="facturacion_expansion">0.00</span>
                 <span>
                   <i class="fas fa-boxes"></i>
                 </span>
@@ -79,7 +79,7 @@
           <div class="card-body">            
             <div class="summary-value">
               <div class="d-flex justify-content-between align-items-center">
-                <span id="bultos_anterior">0.00</span>
+                <span id="facturacion_total">0.00</span>
                 <span>
                   <i class="fa fa-exclamation-circle"></i>
                 </span>
@@ -279,7 +279,6 @@
                         </div>
                         
                         <div class="col-sm-1">
-                            <a id="exp-to-excel" href="#!" class="btn btn-success btn-block text-light float-right button_export_excel"><i class="fas fa-file-excel"></i> </a>
                         </div>      
                     </div>
 
