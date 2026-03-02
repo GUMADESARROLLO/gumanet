@@ -16,13 +16,13 @@
       </div>
       <div class="col-md-2 ">        
         <div class="form-group">                
-          <label for="f1">Excluir Clientes</label>
-          <input type="text" class="form-control" placeholder="Ej: Algo va aqui">
+          <label for="f1">BUSQUEDA</label>
+          <input type="text" class="form-control" placeholder="Ej: OC0000XXXX" id="txt_busqueda_orden_compra">
         </div>
       </div>
       <div class="col-md-2 ">        
         <div class="form-group">                
-          <label for="f1">Fecha Evaluacion</label>
+          <label for="f1">FECHA DE EVALUACION</label>
           <input type="text" class="input-fecha" name="dt_range" />
         </div>
       </div>
@@ -56,14 +56,13 @@
             <table id="tbl_ordenes_compras" class="display" style="width:100%">
               <tfoot>
                 <tr>
-                  <th colspan="3" >
+                  <th colspan="11" >
                     <div class="row">
-                      <div class="col-md-6">
-                        <span class="item-left">Total:</span>
+                      <div class="col-md-10 text-right">
+                        <span class="item-right">TOTAL:</span>
                       </div>
-                      <div class="col-md-6 text-right">  
-                        <span id="total_sku_valor">C$. 0.00</span><br>
-                        <span id="total_sku_bultos">0.00 Bls</span>
+                      <div class="col-md-2 text-right">  
+                        <span id="total_ordenes">C$. 0.00</span><br>
                       </div>
                     </div>
                   </th>

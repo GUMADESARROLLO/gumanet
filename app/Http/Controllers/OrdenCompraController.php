@@ -21,7 +21,10 @@ class OrdenCompraController extends Controller {
 
         $LISTA_ESTADOS = [
             'R' => 'RECIBIDO',
-            'M' => 'MEDIA',            
+            'M' => 'MEDIA',
+            'A' => 'PLANEADA', 
+            'O' => 'CANCELADO',  
+            'E' => 'TRANSITO',          
         ];
         $LISTA_ESTADOS_LIQ = [
             'S' => 'LIQUIDADO',

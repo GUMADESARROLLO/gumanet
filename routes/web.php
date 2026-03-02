@@ -360,5 +360,5 @@ Route::get('getMetricasMetas', 'MetricasMetasController@getMetricasMetas')->name
 
 // RUTAS PARA ORDENES DE COMPRA
 Route::get('OrdenCompraDetalle/{Orden}', 'OrdenCompraController@OrdenCompraDetalle')->name('OrdenCompraDetalle/{Orden}'); 
-Route::get('OrdenesCompra', 'OrdenCompraController@OrdenesCompra')->name('OrdenesCompra');
+Route::get('Compras', 'OrdenCompraController@OrdenesCompra')->name('Compras');
 Route::post('getDataOrdenesCompra', 'OrdenCompraController@getDataOrdenesCompra')->name('getDataOrdenesCompra'); 

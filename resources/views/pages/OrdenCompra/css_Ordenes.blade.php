@@ -51,7 +51,7 @@
       color: #999;
     }
     .bg-innova {
-      background-color: #802980;
+      background-color: #273b7a;
     }
     .bg-inn-card {
       background-color: var(--green-inn) !important;
@@ -86,7 +86,7 @@
     }
 
     .text-innova {
-      color: #F39200;
+      color: #273b7a;
       font-weight: bold;
     }
     .img-fluid-inn {

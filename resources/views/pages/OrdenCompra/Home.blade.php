@@ -48,7 +48,11 @@
                 </div>
                 <div class="col-1 text-left">
                     <p class="text-muted m-0"># EMBARQUE: </p>
-                    <p class="font-weight-bolder" style="font-size: 1.0rem!important"><a href="#!" class="text-umk" id="MdlEmbarque">{{ $OrdenCompra->getEmbarqueLinea->first()->EMBARQUE }} </a></p>
+                    <p class="font-weight-bolder" style="font-size: 1.0rem!important">
+                        @if ($OrdenCompra->getEmbarqueLinea->first())
+                            <a href="#!" class="text-umk" id="MdlEmbarque">{{ $OrdenCompra->getEmbarqueLinea->first()->EMBARQUE  }}</a>
+                        @endif
+                    </p>
                 </div>
                 <div class="col-1 text-right">
                     <p class="text-muted m-0">MONTO $: </p>
@@ -230,7 +234,9 @@
 
 
 <div class="modal fade" id="ModalEmbarque" tabindex="-1" role="dialog" >
-    <div class="modal-dialog modal-xl modal-dialog-centered " >
+    <div class="modal-dialog modal-xl modal-dialog-centered ">
+        <!-- SE VALIDA QUE SI EXISTE UN EMBARQUE RELACIONADO CON EL CONTENIDO DE LA ORDEN DE COMPRA, SI ES ASI SE MUESTRA LA INFORMACION DEL EMBARQUE, DE LO CONTRARIO NO SE MUESTRA NADA -->
+        @if ($OrdenCompra->getEmbarqueLinea->first())
         <div class="modal-content">
             <div class="modal-header">                    
                 <h4 class="modal-title text-umk" id="exampleModalLongTitle">
@@ -240,10 +246,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                
-
                 <div class="table-responsive">
-                    
                     <div class="row">
                         <div class="col">
 
@@ -422,6 +425,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 </div>
 @endsection

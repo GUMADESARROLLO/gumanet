@@ -8,15 +8,13 @@
             ranges: {
               'Hoy': [moment(), moment()],
               'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
-              'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
-              
-              'Esta Semana': [moment().startOf('week'), moment().endOf('week')],
-              'Semana Anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
-              
+              'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],              
               'Este Mes': [moment().startOf('month'), moment()],
               'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+              "3 Meses": [moment().subtract(3, 'month'), moment()],
+              "6 Meses": [moment().subtract(6, 'month'), moment()],
               
-              //'1 Año': [moment().subtract(1, 'year'), moment()],
+              '1 Año': [moment().subtract(1, 'year'), moment()],
               // '2 Años': [moment().subtract(2, 'year'), moment()],
               // '3 Años': [moment().subtract(3, 'year'), moment()]
             },
@@ -63,6 +61,12 @@
       CallFilter( desde, hasta );  
 
 
+      $('#txt_busqueda_orden_compra').on('keyup', function() {   
+          var vTableArticulos = $('#tbl_ordenes_compras').DataTable();     
+          vTableArticulos.search(this.value).draw();
+      });
+
+
   });
 
 
@@ -81,48 +85,46 @@
 
   
 
-    function loadAndBuildTable(selector, data) {
-      $(selector).DataTable({
-        data: data,
-        destroy: true,
-        paging: true,
-        pageLength: 7,
-        info: false,
-        searching: false,
-        ordering: false,
-        columns: [
-          { data: 'NOMBRE', render: function(data, type, row) {
-            return `<div class="item-left">${data}<br><span class="item-sub">${row.CODIGO}</span></div>`;
-          }},
-          { data: 'BULTOS_TOTAL_NIO', render: function(data, type, row) {
-            return `<div class="item-right">C$ ${data}<br><span class="item-sub">${row.BULTOS_TOTAL_UND}</span></div>`;
-          }},
-        ],
-      });
-      $(selector + '_length').hide();
-    }
+    
     function TablaOrdenesCompras(selector, data) {
       var table = $(selector).DataTable({
-        data: data,
+        data: data.ORDEN_COMPRA,
         destroy: true,
         paging: true,
-        pageLength: 7,
+        pageLength: 17,
         info: false,
-        searching: false,
-        ordering: false,
+        searching: true,
+        ordering: true,
         columns: [
-          { data: 'ORDEN_COMPRA', render: function(data, type, row) {
+          { title : 'FECHA ORDEN', data: 'FECHA', className: 'text-center'},
+          { title: 'ORDEN COMPRA', data: 'ORDEN_COMPRA', className: 'text-center', render: function(data, type, row) {
               return `<strong><a href=OrdenCompraDetalle/${data} target='_blank'>${data}</a></strong>`;
-            
           }},
-          { data: 'FECHA', render: function(data, type, row) {
-              return `<div class="item-left">${ data} </div>`;
-            }
+          { title: 'ESTADO', data: 'ESTADO', className: 'text-center',render: function(data, type, row) {
+              return `<div class="item-center"><strong>${data}</strong></div>`;
+            }          
           },
-          { data: 'TOTAL_A_COMPRAR', render: function(data, type, row) {
+          { title: 'PRIORIDAD', data: 'PRIORIDAD',className: 'text-center', render: function(data, type, row) {
+              return `<div class="item-center"><strong>${data}</strong></div>`;
+            }          
+          },
+          { title: 'PROVEEDOR', data: 'PROVEEDOR', className: 'text-left', render: function(data, type, row) {
+              return `<div class="item-left"> ${data} </div>`;
+            }          
+          },
+          { title: 'NOMBRE PROVEEDOR', data: 'NOMBRE_PROVEEDOR', className: 'text-left', render: function(data, type, row) {
+              return `<div class="item-left"> ${data} </div>`;
+            }          
+          },
+          { title : 'FECHA COTIZACION', data: 'FECHA_COTIZACION', className: 'text-center'},
+          { title : 'FECHA OFRECIDA', data: 'FECHA_OFRECIDA', className: 'text-center'},
+          { title : 'FECHA REQUERIDA', data: 'FECHA_REQUERIDA', className: 'text-center'},
+          { title : 'FECHA REQ. EMBARQUE', data: 'FECHA_REQ_EMBARQUE', className: 'text-center'},
+          { title: 'TOTAL MERCADERIA $', data: 'TOTAL_A_COMPRAR', render: function(data, type, row) {
               return `<div class="item-right">${numeral(data).format('0,0.00')} </div>`;
             }          
-          }
+          },
+
         ],
         createdRow: function (row, rowData) {
           $(row).on('click', function() {
@@ -132,8 +134,12 @@
         },
       });
 
+
+      $("#total_ordenes").html(`C$. ${numeral(data.TOTAL_ORDENES).format('0,0.00')}`);
+
     
       $(selector + '_length').hide();
+      $(selector + '_filter').hide();
     }
 
 
@@ -157,8 +163,6 @@
             });
 
             const result = await response.json();
-
-            console.log(result);
 
             TablaOrdenesCompras('#tbl_ordenes_compras', result);
 
