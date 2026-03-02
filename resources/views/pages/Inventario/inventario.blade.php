@@ -198,7 +198,7 @@
                           <span class="text-primary"> • </span>
                           <span style="color: black;" id="ULTIMA_COMPRA"></span>
                         </div>
-                        <div class="mt-1 mb-0 text-muted small">
+                        <div class="mt-1 mb-0 text-muted small" style="display:none">
                           <span>Lic. Expira.</span>
                           <span class="text-primary"> • </span>
                           <span id="lic_exp">00/00/0000</span>
