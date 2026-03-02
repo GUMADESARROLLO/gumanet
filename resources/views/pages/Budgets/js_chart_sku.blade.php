@@ -1,14 +1,14 @@
 <script>
 function renderSKUPieChart(data) {
 
-    // 1️⃣ Ordenar por PESO (descendente)
+    // 1️⃣ Ordenar por VENTA (descendente) y tomar TOP 10
     const top10 = [...data]
-        .sort((a, b) => parseFloat(b.PESO) - parseFloat(a.PESO))
+        .sort((a, b) => parseFloat(b.VENTA) - parseFloat(a.VENTA))
         .slice(0, 10);
 
-    // 2️⃣ Total solo del TOP 10
-    const totalPeso = top10.reduce(
-        (sum, item) => sum + parseFloat(item.PESO),
+    // 2️⃣ Total de VENTA solo del TOP 10
+    const totalVenta = top10.reduce(
+        (sum, item) => sum + parseFloat(item.VENTA),
         0
     );
 
@@ -18,10 +18,10 @@ function renderSKUPieChart(data) {
         '#9C755F', '#BAB0AC'
     ];
 
-    // 3️⃣ Datos del gráfico
+    // 3️⃣ Datos del gráfico (porcentaje sobre VENTA)
     const chartData = top10.map((item, index) => ({
         name: item.DESCRIPCION,
-        y: parseFloat(((item.PESO / totalPeso) * 100).toFixed(2)),
+        y: parseFloat(((item.VENTA / totalVenta) * 100).toFixed(2)),
         color: colores[index % colores.length]
     }));
 
@@ -30,7 +30,7 @@ function renderSKUPieChart(data) {
             type: 'pie'
         },
         title: {
-            text: 'PARTICIPACIÓN POR SKU'
+            text: 'PARTICIPACIÓN POR SKU (VENTA)'
         },
         tooltip: {
             pointFormat: '<b>{point.y:.2f}%</b>'

@@ -4,14 +4,13 @@ function renderClienteBolsonChart(data) {
     const categorias = dataLimit.map(item => item.CODIGO);
     const nombresClientes = dataLimit.map(item => item.NOMBRE);
     const valoresNIO = dataLimit.map(item => parseFloat(item.VENTA.replace(/,/g, '')));
-    const valoresUND = dataLimit.map(item => parseFloat(item.CANTIDAD.replace(/,/g, '')));
 
     Highcharts.chart('chart_cliente_bolson', {
         chart: {
             zoomType: 'xy'
         },
         title: {
-            text: 'COMPARATIVO DE SKU POR CLIENTE'
+            text: 'COMPARATIVO DE VENTAS POR CLIENTE'
         },
         xAxis: [{
             categories: nombresClientes,
@@ -34,19 +33,11 @@ function renderClienteBolsonChart(data) {
         }],
         yAxis: [{ // Primary yAxis
             title: {
-                text: 'Valor (C$)',
+                text: 'FACTURADO (C$)',
                 style: {
                     color: Highcharts.getOptions().colors[0]
                 }
             }
-        }, { // Secondary yAxis
-            title: {
-                text: 'SKU UND',
-                style: {
-                    color: Highcharts.getOptions().colors[1]
-                }
-            },
-            opposite: true
         }],
         exporting: {
             enabled: false  
@@ -58,8 +49,7 @@ function renderClienteBolsonChart(data) {
                 return `
                     <b>${nombresClientes[index]}</b><br/>
                     CLIENTE: ${categorias[index]}<br/>
-                    VALOR: C$ ${valoresNIO[index].toLocaleString()}<br/>
-                    CANTIDAD: ${ valoresUND[index] }
+                    FACTURADO: C$ ${valoresNIO[index].toLocaleString()}
                 `;
             }
         },
@@ -69,21 +59,13 @@ function renderClienteBolsonChart(data) {
             layout: 'horizontal'
         },
         series: [{
-            name: 'Valor (C$)',
+            name: 'FACTURADO (C$)',
             type: 'column',
             yAxis: 0,
             data: valoresNIO,
             color: '#8e44ad',
             tooltip: {
                 valuePrefix: 'C$ '
-            }
-        }, {
-            name: 'Bultos UND',
-            type: 'spline',
-            yAxis: 1,
-            data: valoresUND,
-            tooltip: {
-                valueSuffix: ' UND'
             }
         }]
     });

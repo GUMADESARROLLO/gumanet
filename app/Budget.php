@@ -7,6 +7,40 @@ use Illuminate\Support\Facades\DB;
 class Budget extends Model
 {
 
+    protected $connection = 'sqlsrv';
+    public $timestamps = false;
+    protected $table = "PRODUCCION.dbo.tbl_gmv_master_articulos";
+
+    public static function GRUPO9010($ini, $end, $grupo){
+        return self::query()
+        ->selectRaw('
+            T2.Ruta,
+            T3.NOMBRE AS VENDEDOR,
+            T2.ARTICULO,
+            T2.DESCRIPCION,
+            T2.[Cod. Cliente] AS CODIGO,
+            T2.[Nombre del Cliente] AS CLIENTE,
+            SUM(T2.CANTIDAD) AS CANTIDAD,
+            SUM(T2.VENTA_NETA) AS VENTA,
+            T1.GRUPOS
+        ')
+        ->join('Softland.dbo.VtasTotal_UMK as T2', 'T1.ARTICULO', '=', 'T2.ARTICULO')
+        ->join('PRODUCCION.dbo.UMK_VENDEDOR as T3', 'T2.Ruta', '=', 'T3.VENDEDOR')
+        ->whereBetween('T2.Dia', [$ini, $end])
+        ->whereRaw('( ? = \'TODO\' OR T1.GRUPOS = ? )', [$grupo, $grupo])
+        ->groupBy(
+            'T2.Ruta',
+            'T3.NOMBRE',
+            'T2.ARTICULO',
+            'T2.DESCRIPCION',
+            'T2.[Cod. Cliente]',
+            'T2.[Nombre del Cliente]',
+            'T1.GRUPOS'
+        )
+        ->get();
+    }
+    
+
     public static function dtProyectClientesFact($request) {        
         
         $startDate  = $request->input('desde');
@@ -16,9 +50,11 @@ class Budget extends Model
         $vendedores = [];
         $SKU_CHART  = [];
         $CLS_CHART  = [];
+        $factEsencial = 0;
+        $factExpansion = 0;
+        $factTotal  = 0;
         $grupo      = $request->input('grupo');
         
-
         $resultadosHoy = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.fn_proyecto_90_10(?, ?, ?) ORDER BY VENTA DESC",[$endDate, $endDate, $grupo]);
         
         $clientesTmp = [];
@@ -155,6 +191,7 @@ class Budget extends Model
             $clientesTmp[$codigo]['VENTA']    += $row->VENTA;
         }
 
+        
         foreach ($clientesTmp as $item) {
             $CLS_CHART[] = [
                 'CODIGO'   => $item['CODIGO'],
@@ -166,6 +203,12 @@ class Budget extends Model
 
         $result = DB::connection('sqlsrv')->select("SELECT T1.ARTICULO, T2.DESCRIPCION, T1.GRUPOS FROM PRODUCCION.dbo.tbl_gmv_master_articulos T1 JOIN PRODUCCION.dbo.iweb_articulos T2 ON T1.ARTICULO = T2.ARTICULO WHERE T1.VENDEDOR = 'F05' GROUP BY T1.ARTICULO, T2.DESCRIPCION, T1.GRUPOS");
 
+        $esenacial = array_filter($resultados, fn($row) => $row->GRUPOS === 'A');
+        $expansion = array_filter($resultados, fn($row) => $row->GRUPOS === 'B');
+
+        $factEsencial = array_sum(array_column($esenacial, 'VENTA'));
+        $factExpansion = array_sum(array_column($expansion, 'VENTA'));
+        $factTotal = array_sum(array_column($resultados,'VENTA'));
 
         $metricas = [
             'CLIENTES'  => $clientes,
@@ -175,9 +218,38 @@ class Budget extends Model
             'CLS_CHART' => $CLS_CHART,
             'GRUPOS'    => $result,
             'DESDE'     => $startDate,
-            'HASTA'     => $endDate
+            'HASTA'     => $endDate,
+            'FACTESEN'  => number_format($factEsencial,2),
+            'FACTEXPA'  => number_format($factExpansion,2),
+            'FACTTOTA'  => number_format($factTotal,2)
         ];
         return $metricas;
+    }
+
+    public static function getFacturasClientesUmk($request){
+        $ini    = $request->desde;
+        $end    = $request->hasta;   
+        $CLI    = $request->CLIENTE;   
+
+        //$respuesta = Budget::GRUPO9010('2026-02-01','2026-02-26','04856');
+        
+        $result = DB::connection('sqlsrv')->select(
+                "
+                SELECT
+                    FACTURA,
+                    Dia,
+                    SUM(CANTIDAD)   AS CANTIDAD,
+                    SUM(VENTA_NETA) AS VENTA
+                FROM Softland.dbo.VtasTotal_UMK
+                WHERE [Cod. Cliente] = ?
+                AND Dia BETWEEN ? AND ?
+                GROUP BY
+                    FACTURA,
+                    Dia
+                ",
+                [$CLI, $ini, $end]
+            );
+        return $result;
     }
 
     public static function dtArticulo($request) {        
