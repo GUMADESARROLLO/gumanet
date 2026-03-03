@@ -362,3 +362,9 @@ Route::get('getMetricasMetas', 'MetricasMetasController@getMetricasMetas')->name
 Route::get('OrdenCompraDetalle/{Orden}', 'OrdenCompraController@OrdenCompraDetalle')->name('OrdenCompraDetalle/{Orden}'); 
 Route::get('Compras', 'OrdenCompraController@OrdenesCompra')->name('Compras');
 Route::post('getDataOrdenesCompra', 'OrdenCompraController@getDataOrdenesCompra')->name('getDataOrdenesCompra'); 
+
+
+
+Route::get('Mific', 'MificController@Mific')->name('Mific');
+Route::post('getDataMific', 'MificController@getDataMific')->name('getDataMific');
+Route::post('getDetallesMific', 'MificController@getDetallesMific')->name('getDetallesMific');

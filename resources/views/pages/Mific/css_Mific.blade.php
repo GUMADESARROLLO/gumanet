@@ -74,10 +74,7 @@
       border-radius: 4px;
     }
 
-    .table-footer {
-      width: 20% !important;
-      float: right;
-    }
+ 
     body {
       font-size: 0.85rem;
     }
