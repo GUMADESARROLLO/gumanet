@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\OrdenCompra;
+use App\LIQUIDAC_COMPRA;
 
 class OrdenCompraController extends Controller {
     public function __construct() {
@@ -17,7 +18,9 @@ class OrdenCompraController extends Controller {
         $OC_PRIORIDAD = $OrdenCompra->PRIORIDAD;
         $EM_ESTADO = $OrdenCompra->getEmbarqueLinea->first()->getInfoEmbarque->ESTADO ?? null;
         $EM_LIQUIDADO = $OrdenCompra->getEmbarqueLinea->first()->getInfoEmbarque->LIQUIDADO ?? null;
+        $LQ_COMPRA = $OrdenCompra->getEmbarqueLinea->first()->getInfoEmbarque->LIQUIDAC_COMPRA ?? null;
 
+        $LIQUIDACION_COMPRA = LIQUIDAC_COMPRA::where('LIQUIDAC_COMPRA', $LQ_COMPRA)->get()[0];
 
         $LISTA_ESTADOS = [
             'R' => 'RECIBIDO',
@@ -38,13 +41,14 @@ class OrdenCompraController extends Controller {
         $EM_LIQUIDADO = $LISTA_ESTADOS_LIQ[$EM_LIQUIDADO] ?? "N/D";
 
         $ESTADOS = [
-            'OC_ESTADO' => $OC_ESTADO,
-            'OC_PRIORIDAD' => $OC_PRIORIDAD,
-            'EM_ESTADO' => $EM_ESTADO,
-            'EM_LIQUIDADO' => $EM_LIQUIDADO
+            'OC_ESTADO'     => $OC_ESTADO,
+            'OC_PRIORIDAD'  => $OC_PRIORIDAD,
+            'EM_ESTADO'     => $EM_ESTADO,
+            'EM_LIQUIDADO'  => $EM_LIQUIDADO,
+            'LQ_COMPRA'     => $LQ_COMPRA,
         ];
 
-        return view('Pages.OrdenCompra.Home', compact('OrdenCompra', 'ESTADOS'));
+        return view('Pages.OrdenCompra.Home', compact('OrdenCompra', 'ESTADOS', 'LIQUIDACION_COMPRA'));
     }
 
     public function OrdenesCompra() {

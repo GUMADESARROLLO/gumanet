@@ -221,6 +221,40 @@ class inventario_model extends Model {
         return $query;
     }
 
+
+    public static function getInventario() {
+
+        $Inventario_umk = InventarioUMK::all();
+
+        $ArrayInventario = [];
+
+        foreach ($Inventario_umk as $key) {
+
+                $ArrayInventario[] = [
+                    'ARTICULO'           => '<a href="#!" onclick="getDetalleArticulo('."'".$key['ARTICULO']."'".', '."'".$key['DESCRIPCION']."'".')" >'.$key['ARTICULO'].'</a>',            
+                    'ARTICULO_'         =>  $key['ARTICULO'],
+                    'DESCRIPCION'       =>  strtoupper($key['DESCRIPCION']),
+                    'total'             =>  number_format($key['CANT_DISP_B002'], 2),
+                    'und'               =>  number_format($key['CANT_UNIT_DISP_B002'], 2),
+                    'UNIDAD_ALMACEN'    =>  $key['UNIDAD_ALMACEN'],
+                    'PROMEDIO_VENTA'    =>  number_format($key['PROM_YEAR_PASADO'], 2),
+                    'CANT_ANIO_PAS'     =>  number_format($key['TOTAL_ANUAL_PASADO'], 2),
+                    'VST_MES_ACTUAL'    =>  number_format($key['MES_ACTUAL'], 2),
+                    'PROM_VST_ANUAL'    =>  number_format($key['PROM_YEAR_ACTUAL'], 2),
+                    'VST_ANNO_ACTUAL'   =>  number_format($key['TOTAL_ANUAL_ACTUAL'], 2),
+                    'MESES_INVENTARIO'  =>  number_format($key['NUM_MONTHS_INV'], 2),
+                    'SUM_ANUAL'         =>  number_format($key['TOTAL_VTA_YEAR_ACTUAL'], 2),
+                    'AVG_ANUAL'         =>  number_format($key['PROM_VTA_YEAR_ACTUAL'], 2),
+                    'AVG_3M'            =>  number_format($key['PROM_TOP3_YEAR_PASADO'], 2),
+                    'COUNT_MONTH'       =>  number_format($key['MONTH_WITH_VTA'], 2),
+                ];
+                
+            }
+
+        return $ArrayInventario;
+        
+    }
+
     public static function invenVencidos() {
         $sql_server = new \sql_server();        
         $request = Request();

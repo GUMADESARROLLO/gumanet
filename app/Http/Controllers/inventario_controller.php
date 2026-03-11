@@ -295,17 +295,19 @@ class inventario_controller extends Controller
     }
 
 	public function getArticulos(Request $request)  {
-		// $obj = inventario_model::getArticulos();
-		// return response()->json($obj);
 		$Company = $request->session()->get('company_id');
 
-		$Key = 'gnet_Inventario_getArticulos_'.$Company;
+		$Key = 'gnet_inventario_'.$Company;
+
 		$cached = Redis::get($Key);
+
 		if ($cached) {
 			$obj = $cached;
 		} else {
-			$obj = json_encode(inventario_model::getArticulos());
-			Redis::setex($Key, 900, $obj); 
+
+			$obj = ($request->session()->get('company_id') == 1) ? json_encode(inventario_model::getInventario()) : json_encode(inventario_model::getArticulos());
+
+			Redis::setex($Key, 900, $obj);
 		}
 		return response()->json(json_decode($obj));
 	}

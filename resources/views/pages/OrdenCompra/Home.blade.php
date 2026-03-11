@@ -38,7 +38,7 @@
                     <p class=" m-0">ORDEN DE COMPRA:</span></p>
                     <span class="font-weight-bolder" style="font-size: 1.0rem!important">{{ $OrdenCompra->ORDEN_COMPRA }} </span>
                 </div>                          
-                <div class="col-6 text-left">                    
+                <div class="col-5 text-left">                    
                     <p class=" m-0">PROVEEDOR:</span></p>
                     <span class="font-weight-bolder" style="font-size: 1.0rem!important">{{ $OrdenCompra->PROVEEDOR }} - {{ $OrdenCompra->getProveedor->NOMBRE }}</span>
                 </div>
@@ -51,6 +51,14 @@
                     <p class="font-weight-bolder" style="font-size: 1.0rem!important">
                         @if ($OrdenCompra->getEmbarqueLinea->first())
                             <a href="#!" class="text-umk" id="MdlEmbarque">{{ $OrdenCompra->getEmbarqueLinea->first()->EMBARQUE  }}</a>
+                        @endif
+                    </p>
+                </div>
+                <div class="col-1 text-left">
+                    <p class="text-muted m-0"># LIQUIDACION : </p>
+                    <p class="font-weight-bolder" style="font-size: 1.0rem!important">
+                        @if ($OrdenCompra->getEmbarqueLinea->first())
+                            <a href="#!" class="text-umk" id="MdlLiquidacion">{{ $ESTADOS['LQ_COMPRA'] }}</a>
                         @endif
                     </p>
                 </div>
@@ -420,6 +428,147 @@
                             </div>
 
                         </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+        @endif
+    </div>
+</div>
+
+<div class="modal fade" id="ModalLiquidacion" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-xl modal-dialog-centered ">
+        <!-- SE VALIDA QUE SI EXISTE UN EMBARQUE RELACIONADO CON EL CONTENIDO DE LA ORDEN DE COMPRA, SI ES ASI SE MUESTRA LA INFORMACION DEL EMBARQUE, DE LO CONTRARIO NO SE MUESTRA NADA -->
+        @if ($OrdenCompra->getEmbarqueLinea->first())
+        <div class="modal-content">
+            <div class="modal-header">                    
+                <h4 class="modal-title text-umk" id="exampleModalLongTitle">
+                    <strong></strong> {{$LIQUIDACION_COMPRA->LIQUIDAC_COMPRA}} </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="row" > 
+
+                                <div class="col-sm-3 text-left">                    
+                                    <p class="text-muted m-0"> FECHA: </p>
+                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important">  {{ date('d/m/Y', strtotime($LIQUIDACION_COMPRA->FECHA_LIQUIDAC)) }} </p>
+                                </div>
+                                <div class="col-sm-3 text-center">
+                                    <p class="text-muted m-0">REFERENCIA: </p>
+                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important"> {{ $LIQUIDACION_COMPRA->REFERENCIA_LIQUID }} </p>
+                                </div>
+                                <div class="col-sm-3 text-center">
+                                    <p class="text-muted m-0">PROVEEDOR:</p>
+                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important"> {{ $LIQUIDACION_COMPRA->PROVEEDOR_LIQUIDAC }} </p>
+                                </div>
+                                <div class="col-sm-3 text-right">
+                                    <p class="text-muted m-0">ESTADO:</p>
+                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important"> {{ $LIQUIDACION_COMPRA->ESTADO_LIQUIDAC }} </p>
+                                </div>
+                            </div>             
+                        </div>
+
+                        <div class="col-sm-auto ms-auto">
+                            <div class="table-responsive">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="navDetallesLiquidacion" data-toggle="tab" href="#nav-linea-liquidacion" role="tab" aria-controls="nav-linea-liquidacion">Detalles Liquidacion</a>
+                            <a class="nav-item nav-link" id="navDetallesDocumentos" data-toggle="tab" href="#nav-linea-documentos" role="tab" aria-controls="nav-linea-documentos">Documentos</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-linea-liquidacion" role="tabpanel">
+                            <table id="tbl_embarque" class="table table-bordered">
+                                <thead class="bg-blue text-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ARTICULO</th>
+                                        <th>DESCRIPCION</th>
+                                        <th>EMBARQUE</th>
+                                        <th>ETIQUETA</th>                                        
+                                        <th>RUBRO</th>
+                                        <th>MONTO C$.</th>
+                                        <th>MONTO $.</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    @foreach($LIQUIDACION_COMPRA->LiquidacionLinea as $e) 
+                                    <tr>
+                                        <td class="text-center">{{ $e->EMBARQUE_LINEA }}</td>
+                                        <td class="text-center">{{ $e->ARTICULO }}</td>
+                                        <td> {{ strtoupper($e->DESCRIPCION ?? '') }}</td>
+                                        <td class="text-center">{{ $e->EMBARQUE }}</td>
+                                        <td class="text-center">{{ $e->ETIQUETA }}</td>                                        
+                                        <td class="text-center">{{ $e->RUBRO }}</td>
+
+                                        <td class="text-right">{{ number_format($e->MONTO_LOCAL, 2) }}</td>
+                                        <td class="text-right">{{ number_format($e->MONTO_DOLAR, 2) }}</td>
+                                    </tr>    
+                                    @endforeach                                 
+                                </tbody> 
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="6" class="text-right">TOTAL MONTOS:</th>
+                                        <th class="text-right">{{ number_format($LIQUIDACION_COMPRA->LiquidacionLinea->sum('MONTO_LOCAL'), 2) }}</th>
+                                        <th class="text-right">{{ number_format($LIQUIDACION_COMPRA->LiquidacionLinea->sum('MONTO_DOLAR'), 2) }}</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>   
+                        
+                        <div class="tab-pane fade show" id="nav-linea-documentos" role="tabpanel">
+                            <table id="tbl_embarque" class="table table-bordered">
+                                <thead class="bg-blue text-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ETIQUETA</th>
+                                        <th>TIPO DOCUMENTO</th>
+                                        <th>FACTURA</th>
+                                        <th>PROVEEDOR</th>                                        
+                                        <th>CONCEPTO</th>
+                                        <th>FECHA</th>
+                                        <th>MONTO C$.</th>
+                                        <th>MONTO $.</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    @foreach($LIQUIDACION_COMPRA->LiquidacionGasto as $e) 
+                                    <tr>
+                                        <td class="text-center">{{ $e->LINEA_GASTO }}</td>
+                                        <td class="text-center">{{ $e->ETIQUETA }}</td>
+                                        <td class="text-center">{{ $e->TIPO_DOCUMENTO }}</td>
+                                        <td class="text-center">{{ $e->FACTURA }}</td>
+                                        <td class="text-center">{{ $e->PROVEEDOR_FACTURA }}</td>                                        
+                                        <td class="text-center">{{ $e->DESCRIPCION }}</td>
+
+                                        <td class="text-right">{{ $e->FECHA_GASTO }}</td>
+                                        <td class="text-right">{{ number_format($e->MONTO_GASTO, 2) }}</td>
+                                        <td class="text-right">{{ number_format($e->MONTO_GASTO, 2) }}</td>
+                                    </tr>    
+                                    @endforeach                                 
+                                </tbody> 
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="7" class="text-right">TOTAL MONTOS:</th>
+                                        <th class="text-right">{{ number_format($LIQUIDACION_COMPRA->LiquidacionGasto->sum('MONTO_GASTO'), 2) }}</th>
+                                        <th class="text-right">{{ number_format($LIQUIDACION_COMPRA->LiquidacionGasto->sum('MONTO_GASTO'), 2) }}</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div> 
                     </div>
                 
                 </div>

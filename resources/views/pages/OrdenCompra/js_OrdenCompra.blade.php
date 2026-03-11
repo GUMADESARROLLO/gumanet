@@ -27,6 +27,12 @@
         $("#MdlEmbarque").on("click", function() {
             $("#ModalEmbarque").modal("show");
         });
+
+        $("#MdlLiquidacion").on("click", function() {
+            $("#ModalLiquidacion").modal("show");
+        });
+
+
         
         
     })
