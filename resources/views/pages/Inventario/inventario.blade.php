@@ -664,6 +664,14 @@
                         <td class="bg-blue text-light"><b>PRECIO MIFIC PUBLICO.</b></td>
                         <td id="id_precio_mific_public" class="dt-right">0</td>
                       </tr>
+                      <tr >
+                        <td class="bg-blue text-light"><b>REG. MIFIC.</b></td>
+                        <td id="txt_mific" class="dt-right">0</td>
+                      </tr>
+                      <tr >
+                        <td class="bg-blue text-light"><b>COMENTARIOS.</b></td>
+                        <td id="mific_comentarios" class="dt-right">0</td>
+                      </tr>
                       
                     </tbody>
                 </table>

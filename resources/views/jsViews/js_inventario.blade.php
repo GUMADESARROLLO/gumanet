@@ -504,10 +504,10 @@ function getPrecioMiFic(articulo) {
         data: {},
         async: true,
         success: function(precios) {
-            console.log(precios.Precio_mific_farmacia)
             $("#id_precio_mific_farmacia").text(precios.Precio_mific_farmacia);
-            $("#id_precio_mific_public").text(precios.Precio_mific_public)
-           
+            $("#id_precio_mific_public").text(precios.Precio_mific_public);
+            $("#mific_comentarios").text(precios.mific_comentarios);
+            $("#txt_mific").text(precios.MIFIC);
         }
     })
 }

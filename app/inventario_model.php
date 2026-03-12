@@ -1086,6 +1086,8 @@ class inventario_model extends Model {
             $Array = [
                 'Precio_mific_farmacia'     => "C$ " .number_format($v->MIFIC_FARMACIA,4),
                 'Precio_mific_public'       => "C$ " .number_format($v->MIFIC_PUBLICO,4),
+                'mific_comentarios'         => $v->COMENTARIOS,
+                'MIFIC'                     => $v->MIFIC
             ];        
         }    
         return $Array;
