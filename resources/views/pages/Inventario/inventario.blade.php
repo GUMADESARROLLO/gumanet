@@ -193,7 +193,7 @@
                           <span id="IdUnidadMedida">UNIDAD MEDIDA<br /></span>
                           <span><span class="text-primary"> • </span> <span id="IdPresentacion">PRESENTACION</span>
                         </div>
-                        <div class="mt-1 mb-0 text-muted small" style="display:none">
+                        <div class="mt-1 mb-0 text-muted small">
                           <span>Ultima Orden de Compras</span>
                           <span class="text-primary"> • </span>
                           <span style="color: black;" id="ULTIMA_COMPRA"></span>
