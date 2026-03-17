@@ -12,6 +12,8 @@ class OrdenCompraController extends Controller {
         $this->middleware('auth');
     }
     public function OrdenCompraDetalle($OrdenCompraId) {
+
+        $LIQUIDACION_COMPRA = null;
         $OrdenCompra = OrdenCompra::where('ORDEN_COMPRA', $OrdenCompraId)->get()->first();
 
         $OC_ESTADO = $OrdenCompra->ESTADO;
@@ -20,8 +22,13 @@ class OrdenCompraController extends Controller {
         $EM_LIQUIDADO = $OrdenCompra->getEmbarqueLinea->first()->getInfoEmbarque->LIQUIDADO ?? null;
         $LQ_COMPRA = $OrdenCompra->getEmbarqueLinea->first()->getInfoEmbarque->LIQUIDAC_COMPRA ?? null;
 
-        $LIQUIDACION_COMPRA = LIQUIDAC_COMPRA::where('LIQUIDAC_COMPRA', $LQ_COMPRA)->get()[0];
 
+
+        
+        if($LQ_COMPRA) {
+            $LIQUIDACION_COMPRA = LIQUIDAC_COMPRA::where('LIQUIDAC_COMPRA', $LQ_COMPRA)->get()[0];
+        }
+        
         $LISTA_ESTADOS = [
             'R' => 'RECIBIDO',
             'M' => 'MEDIA',
@@ -47,6 +54,7 @@ class OrdenCompraController extends Controller {
             'EM_LIQUIDADO'  => $EM_LIQUIDADO,
             'LQ_COMPRA'     => $LQ_COMPRA,
         ];
+
 
         return view('Pages.OrdenCompra.Home', compact('OrdenCompra', 'ESTADOS', 'LIQUIDACION_COMPRA'));
     }

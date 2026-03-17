@@ -444,7 +444,7 @@
         <div class="modal-content">
             <div class="modal-header">                    
                 <h4 class="modal-title text-umk" id="exampleModalLongTitle">
-                    <strong></strong> {{$LIQUIDACION_COMPRA->LIQUIDAC_COMPRA}} </h4>
+                    <strong></strong> {{$LIQUIDACION_COMPRA->LIQUIDAC_COMPRA ?? ''}} </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -458,19 +458,19 @@
 
                                 <div class="col-sm-3 text-left">                    
                                     <p class="text-muted m-0"> FECHA: </p>
-                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important">  {{ date('d/m/Y', strtotime($LIQUIDACION_COMPRA->FECHA_LIQUIDAC)) }} </p>
+                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important">  {{ date('d/m/Y', strtotime(($LIQUIDACION_COMPRA->FECHA_LIQUIDAC?? '')))  }} </p>
                                 </div>
                                 <div class="col-sm-3 text-center">
                                     <p class="text-muted m-0">REFERENCIA: </p>
-                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important"> {{ $LIQUIDACION_COMPRA->REFERENCIA_LIQUID }} </p>
+                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important"> {{ $LIQUIDACION_COMPRA->REFERENCIA_LIQUID ?? '' }} </p>
                                 </div>
                                 <div class="col-sm-3 text-center">
                                     <p class="text-muted m-0">PROVEEDOR:</p>
-                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important"> {{ $LIQUIDACION_COMPRA->PROVEEDOR_LIQUIDAC }} </p>
+                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important"> {{ $LIQUIDACION_COMPRA->PROVEEDOR_LIQUIDAC ?? '' }} </p>
                                 </div>
                                 <div class="col-sm-3 text-right">
                                     <p class="text-muted m-0">ESTADO:</p>
-                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important"> {{ $LIQUIDACION_COMPRA->ESTADO_LIQUIDAC }} </p>
+                                    <p class="font-weight-bolder" style="font-size: 1.0rem!important"> {{ $LIQUIDACION_COMPRA->ESTADO_LIQUIDAC ?? '' }} </p>
                                 </div>
                             </div>             
                         </div>
@@ -491,6 +491,7 @@
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-linea-liquidacion" role="tabpanel">
+                            @if(isset($LIQUIDACION_COMPRA->LiquidacionLinea))
                             <table id="tbl_embarque" class="table table-bordered">
                                 <thead class="bg-blue text-light">
                                     <tr>
@@ -527,9 +528,11 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                            @endif
                         </div>   
                         
                         <div class="tab-pane fade show" id="nav-linea-documentos" role="tabpanel">
+                            @if(isset($LIQUIDACION_COMPRA->LiquidacionGasto))
                             <table id="tbl_embarque" class="table table-bordered">
                                 <thead class="bg-blue text-light">
                                     <tr>
@@ -568,6 +571,7 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                            @endif
                         </div> 
                     </div>
                 
