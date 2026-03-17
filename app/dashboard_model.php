@@ -108,6 +108,7 @@ class dashboard_model extends Model {
         'tipo' => 'dtaProyectos',
         'data' => dashboard_model::dataProyectos($mes, $anio, $company_user)
     ];
+
     $tiempos['dataProyectos'] = microtime(true) - $inicio;
 
     // Medición ficticia, no hay consulta activa
@@ -305,35 +306,34 @@ class dashboard_model extends Model {
 
         $segmentos[2] = array(
             'name' => 'Farmacias',
-            'line' => "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F18','F19','F20','F21','F22','F24'",
-            'ruta' => ['F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F18','F19','F20','F21','F22','F24']
+            'line' => "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F18','F19','F20','F21','F24'",
+            'ruta' => ['F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F18','F19','F20','F21','F24']
+        );
+
+        $segmentos[3] = array(
+            'name' => 'Expansion',
+            'line' => "'F25','F26','F27','F28','F29','F30'",
+            'ruta' => ['F25','F26','F27','F28','F29','F30']
         );
 
         switch ($company_user) {
             case '1':
-                //$proyectos = proyectos_model::orderBy('priori', 'asc')->get();
-
-                
                 foreach ($segmentos as $key) {
                     
                     $retVal = ($key['name'] === 'Farmacias') ? 'AND T0.CLIENTE NOT IN (SELECT CLIENTE FROM view_cadena_de_farmacia)' : '' ;
 
-                    $sql_exec = "SELECT
-                                    SUM(TOTAL_LINEA) as total
-                                    FROM
-                                            PRODUCCION.dbo.view_master_pedidos_umk_v2 T0
-                                    WHERE
-                                            T0.FECHA_PEDIDO BETWEEN '".$fechaInicio."' AND '".$fechaFin."'  AND T0.VENDEDOR  IN (".$key['line']." )
-                                            ".$retVal."
-                                    GROUP BY T0.VENDEDOR";
+                    $sql_exec = "SELECT 
+                                SUM(TOTAL_LINEA) as total 
+                                FROM PRODUCCION.dbo.view_master_pedidos_umk_v2 T0
+                                WHERE T0.FECHA_PEDIDO BETWEEN '".$fechaInicio."' AND '".$fechaFin."'  AND T0.VENDEDOR  IN (".$key['line']." ) ".$retVal."
+                                GROUP BY T0.VENDEDOR";
                                             
                     $rutas =     $key['ruta'];
                     
                     $query = $sql_server->fetchArray($sql_exec,SQLSRV_FETCH_ASSOC);
 
                     if ( count($idPeriodo)>0 ) {
-                        $meta =  Gn_couta_x_producto::where('IdPeriodo', $idPeriodo)
-                                    ->where(function ($query) use ($rutas) {                                     
+                        $meta =  Gn_couta_x_producto::where('IdPeriodo', $idPeriodo)->where(function ($query) use ($rutas) {                                     
                                         $query->whereIn('codVendedor', $rutas);
                                     })->sum('val');
                     }
@@ -351,12 +351,6 @@ class dashboard_model extends Model {
                 $array[$i]['proyecto'] = 'Cadena_farmacia';
                 $array[$i]['real'] = $query[0]->Venta;
                 $array[$i]['meta'] = $query[0]->Meta;
-            
-                
-
-                
-
-            
 
                 return $array;
                 break;
@@ -394,10 +388,16 @@ class dashboard_model extends Model {
             'ruta' => ['F04']
         );
 
-         $segmentos[2] = array(
+        $segmentos[2] = array(
             'name' => 'Farmacias',
             'line' => "'F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F19','F20','F21','F22','F24'",
             'ruta' => ['F03','F05','F06','F07','F08','F09','F10','F11','F13','F14','F19','F20','F21','F22','F24']
+        );
+
+        $segmentos[3] = array(
+            'name' => 'Expansion',
+            'line' => "'F25','F26','F27','F28','F29','F30'",
+            'ruta' => ['F25','F26','F27','F28','F29','F30']
         );
 
         switch ($company_user) {
@@ -2225,27 +2225,57 @@ class dashboard_model extends Model {
         $nAnio = $request->input('annio'); 
 
         $sql_server = new \sql_server();
-        
+    
 
-        $sql_exec = "SELECT
-                        T1.CADENA,
-                        SUM(T0.TOTAL_LINEA) AS TOTAL
-                    FROM
-                        view_master_pedidos_umk_v2 T0
-                        INNER JOIN tbl_cadena_de_farmacia T1 ON T0.CLIENTE = T1.CLIENTE
-                            WHERE MONTH(FECHA_PEDIDO)  = ".$nMes." AND YEAR(FECHA_PEDIDO) = ".$nAnio."
-                    GROUP BY
-                        T1.CADENA
-                    ORDER BY
-                        TOTAL DESC";
+
+        $sql_exec = "WITH FACTURADO_CADENA AS (
+                        SELECT
+                            T1.CADENA,
+                            COUNT(DISTINCT T0.CLIENTE_CODIGO) AS SUC_FACT,
+                            COUNT(DISTINCT T0.ARTICULO) AS SKU_FACT,
+                            SUM(T0.venta_total) AS TOTAL_FACTURA
+                        FROM Softland.dbo.ANA_VentasTotales_MOD_Contabilidad_UMK T0
+                        INNER JOIN tbl_cadena_de_farmacia T1 
+                            ON T0.CLIENTE_CODIGO = T1.CLIENTE 
+                        WHERE 
+                            MONTH(T0.Fecha_de_factura) = ".$nMes."
+                            AND YEAR(T0.Fecha_de_factura) = ".$nAnio."
+                        GROUP BY 
+                            T1.CADENA
+                    )
+
+                    SELECT
+                        M.CADENA,
+                        ISNULL(F.SUC_FACT, 0) AS SUC_FACT,
+                        ISNULL(F.SKU_FACT, 0) AS SKU_FACT,
+                        M.META,
+                        ISNULL(F.TOTAL_FACTURA, 0) AS VENTA_VALORES,
+                        CASE 
+                            WHEN M.META > 0
+                            THEN (ISNULL(F.TOTAL_FACTURA, 0) / M.META) * 100
+                            ELSE 0
+                        END AS CUMP_PORCENTAJE
+                    FROM PRODUCCION.dbo.tbl_meta_cadena M
+                    LEFT JOIN FACTURADO_CADENA F  ON M.CADENA = F.CADENA
+                    WHERE  
+                        M.MES =  ".$nMes."
+                    AND M.YEAR = ".$nAnio."
+
+                    ORDER BY VENTA_VALORES DESC;";
 
         $query = $sql_server->fetchArray($sql_exec, SQLSRV_FETCH_ASSOC);
         $json = array();
         
         foreach($query as $key => $value) {
+
             $json[$key]['NUMBER'] = $key + 1;
             $json[$key]['CADENA'] = $value['CADENA'];
-            $json[$key]['VENDE']  = $value['TOTAL'];
+            $json[$key]['SUC_FACT'] = $value['SUC_FACT'];
+            $json[$key]['SKU_FACT'] = $value['SKU_FACT'];
+            $json[$key]['META'] = $value['META'];
+            $json[$key]['VENTA_VALORES']  =$value['VENTA_VALORES'];
+            $json[$key]['CUMP_PORCENTAJE']  = $value['CUMP_PORCENTAJE'];
+
         }
         
         $sql_server->close();           
@@ -2263,19 +2293,19 @@ class dashboard_model extends Model {
         
 
         $sql_exec = "SELECT
-                        T2.ARTICULO,
-                        T2.DESCRIPCION,
-                        SUM ( T0.CANTIDAD_PEDIDA ) AS CANTIDAD,
+                        T0.ARTICULO,
+                        T0.DESCRIPCION,
+                        SUM ( T0.CANTIDAD_FACT ) AS CANTIDAD,
                         T2.UNIDAD_ALMACEN,
-                        SUM(T0.TOTAL_LINEA) AS VALOR
+                        SUM ( T0.venta_total ) AS VALOR
                     FROM
-                        view_master_pedidos_umk_v2 T0
-                        INNER JOIN tbl_cadena_de_farmacia T1 ON T0.CLIENTE = T1.CLIENTE
+                        Softland.dbo.ANA_VentasTotales_MOD_Contabilidad_UMK T0
+                        INNER JOIN tbl_cadena_de_farmacia T1 ON T0.CLIENTE_CODIGO = T1.CLIENTE
                         INNER JOIN iweb_articulos T2 ON T0.ARTICULO = T2.ARTICULO
-                    WHERE MONTH(FECHA_PEDIDO)  = ".$nMes." AND YEAR(FECHA_PEDIDO) = ".$nAnio." AND T1.CADENA = '".$nCadena."'
+                    WHERE MONTH(Fecha_de_factura)  = ".$nMes." AND YEAR(Fecha_de_factura) = ".$nAnio." AND T1.CADENA = '".$nCadena."'
                     GROUP BY
-                        T2.ARTICULO,
-                        T2.DESCRIPCION,
+                        T0.ARTICULO,
+                        T0.DESCRIPCION,
                         T2.UNIDAD_ALMACEN
                     ORDER BY
                         VALOR DESC";

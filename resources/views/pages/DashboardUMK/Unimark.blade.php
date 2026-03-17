@@ -1091,14 +1091,22 @@ MODAL
                         <tr>
                             <th scope="col" class="text-center">#</th>
                             <th scope="col" class="text-center">CADENAS</th>
+                            <th scope="col" class="text-center">SUC_FACT</th>
+                            <th scope="col" class="text-center">SKU_FACT</th>
                             <th scope="col" class="text-center">VENTA EN C$</th>
+                            <th scope="col" class="text-center">VENTA_VALORES</th>
+                            <th scope="col" class="text-center">ALCANCE</th>
                         </tr>
                     </thead>
                     <tbody id="tbodySegmento"></tbody>
                     <tfoot>
                 <tr class="bg-blue text-light">
-                    <th colspan="2"  style="text-align:center"></th>
-                    <th></th>
+                    <th colspan="2"  style="text-align:center">TOTAL</th>
+                    <th  style="text-align:center">0.00</th>
+                    <th  style="text-align:center">0.00</th>
+                    <th  style="text-align:center">0.00</th>
+                    <th  style="text-align:center">0.00</th>
+                    <th  style="text-align:center">0.00</th>
                 </tr>
             </tfoot>
                 </table>  

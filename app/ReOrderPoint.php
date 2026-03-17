@@ -159,6 +159,8 @@ class ReOrderPoint extends Model
     }
     public static function getDataGrafica($Articulos,$Canal) {
 
+        $UltimaCompra = UltimaOrdenCompras::UltimaCompra($Articulos)[0]['ORDEN_COMPRA'] ?? [];
+
         $companiy_id = Session::get('company_id');
 
         //Busca Directamente sobre la base de datos de images, si existe una imagen para el articulo        
@@ -256,6 +258,7 @@ class ReOrderPoint extends Model
             'UNIDAD_ALMACEN'                => isset($InfoArticulo->UNIDAD_ALMACEN) ? $InfoArticulo->UNIDAD_ALMACEN : ' - ',
             'DESCRIPCION'                   => isset($InfoArticulo->DESCRIPCION) ? strtoupper($InfoArticulo->DESCRIPCION) : ' - ',
             'CANT_TOTAL_DISP'               => isset($Total_disp) ? number_format($Total_disp, 2) : 0.00,
+            'ULTIMA_COMPRA'                 => isset($UltimaCompra) ? $UltimaCompra : ' - ',
 
 
         ];

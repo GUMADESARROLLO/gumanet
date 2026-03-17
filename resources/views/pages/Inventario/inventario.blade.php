@@ -182,8 +182,7 @@
                       @endif
                       <div class="col-md-6 col-lg-6 col-xl-6">
                         <h5 id="tArticulo" >Quant trident shirts</h5>
-                        <div class="d-flex flex-row">
-                          
+                        <div class="d-flex flex-row">                          
                           <span id="id_cod_articulo" >310</span>
                         </div>
                         <div class="mt-1 mb-0 text-muted small">
@@ -192,8 +191,14 @@
                           <span id="IdLaboratorio">LABORATORIO</span>
                           <span class="text-primary"> • </span>
                           <span id="IdUnidadMedida">UNIDAD MEDIDA<br /></span>
+                          <span><span class="text-primary"> • </span> <span id="IdPresentacion">PRESENTACION</span>
                         </div>
-                        <div class="mt-1 mb-0 text-muted small" style="display: none;">
+                        <div class="mt-1 mb-0 text-muted small" style="display:none">
+                          <span>Ultima Orden de Compras</span>
+                          <span class="text-primary"> • </span>
+                          <span style="color: black;" id="ULTIMA_COMPRA"></span>
+                        </div>
+                        <div class="mt-1 mb-0 text-muted small" style="display:none">
                           <span>Lic. Expira.</span>
                           <span class="text-primary"> • </span>
                           <span id="lic_exp">00/00/0000</span>
@@ -658,6 +663,14 @@
                       <tr >
                         <td class="bg-blue text-light"><b>PRECIO MIFIC PUBLICO.</b></td>
                         <td id="id_precio_mific_public" class="dt-right">0</td>
+                      </tr>
+                      <tr >
+                        <td class="bg-blue text-light"><b>REG. MIFIC.</b></td>
+                        <td id="txt_mific" class="dt-right">0</td>
+                      </tr>
+                      <tr >
+                        <td class="bg-blue text-light"><b>COMENTARIOS.</b></td>
+                        <td id="mific_comentarios" class="dt-right">0</td>
                       </tr>
                       
                     </tbody>

@@ -33,7 +33,10 @@ class inventario_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH FROM PRODUCCION.dbo.iweb_articulos T0 LEFT JOIN PRODUCCION.dbo.gnet_inventario_promedios_anuales_umk T1 ON T0.ARTICULO = T1.ARTICULO where T0.ARTICULO NOT LIKE 'VU%'";
+                $sql_exec = "SELECT T0.*,
+                T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH 
+                FROM PRODUCCION.dbo.iweb_articulos T0 
+                LEFT JOIN PRODUCCION.dbo.gnet_inventario_promedios_anuales_umk T1 ON T0.ARTICULO = T1.ARTICULO where T0.ARTICULO NOT LIKE 'VU%'";
 
                 $qSKU = "SELECT
                                     T1.ARTICULO,
@@ -216,6 +219,40 @@ class inventario_model extends Model {
         $sql_server->close();        
 
         return $query;
+    }
+
+
+    public static function getInventario() {
+
+        $Inventario_umk = InventarioUMK::all();
+
+        $ArrayInventario = [];
+
+        foreach ($Inventario_umk as $key) {
+
+                $ArrayInventario[] = [
+                    'ARTICULO'           => '<a href="#!" onclick="getDetalleArticulo('."'".$key['ARTICULO']."'".', '."'".$key['DESCRIPCION']."'".')" >'.$key['ARTICULO'].'</a>',            
+                    'ARTICULO_'         =>  $key['ARTICULO'],
+                    'DESCRIPCION'       =>  strtoupper($key['DESCRIPCION']),
+                    'total'             =>  number_format($key['CANT_DISP_B002'], 2),
+                    'und'               =>  number_format($key['CANT_UNIT_DISP_B002'], 2),
+                    'UNIDAD_ALMACEN'    =>  $key['UNIDAD_ALMACEN'],
+                    'PROMEDIO_VENTA'    =>  number_format($key['PROM_YEAR_PASADO'], 2),
+                    'CANT_ANIO_PAS'     =>  number_format($key['TOTAL_ANUAL_PASADO'], 2),
+                    'VST_MES_ACTUAL'    =>  number_format($key['MES_ACTUAL'], 2),
+                    'PROM_VST_ANUAL'    =>  number_format($key['PROM_YEAR_ACTUAL'], 2),
+                    'VST_ANNO_ACTUAL'   =>  number_format($key['TOTAL_ANUAL_ACTUAL'], 2),
+                    'MESES_INVENTARIO'  =>  number_format($key['NUM_MONTHS_INV'], 2),
+                    'SUM_ANUAL'         =>  number_format($key['TOTAL_VTA_YEAR_ACTUAL'], 2),
+                    'AVG_ANUAL'         =>  number_format($key['PROM_VTA_YEAR_ACTUAL'], 2),
+                    'AVG_3M'            =>  number_format($key['PROM_TOP3_YEAR_PASADO'], 2),
+                    'COUNT_MONTH'       =>  number_format($key['MONTH_WITH_VTA'], 2),
+                ];
+                
+            }
+
+        return $ArrayInventario;
+        
     }
 
     public static function invenVencidos() {
@@ -1049,6 +1086,8 @@ class inventario_model extends Model {
             $Array = [
                 'Precio_mific_farmacia'     => "C$ " .number_format($v->MIFIC_FARMACIA,4),
                 'Precio_mific_public'       => "C$ " .number_format($v->MIFIC_PUBLICO,4),
+                'mific_comentarios'         => $v->COMENTARIOS,
+                'MIFIC'                     => $v->MIFIC
             ];        
         }    
         return $Array;

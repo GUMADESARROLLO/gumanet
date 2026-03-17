@@ -76,6 +76,8 @@ class ReOrderPointR3 extends Model
 
         $Months_Discasa  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa ?", [$Year_anterior]); 
 
+        $PrecioMific     = PreciosMific::all()->toArray();
+
         // Obtener los nombres de las columnas dinámicamente
         $Columns_Privado = array_keys(get_object_vars($Months_Privado[0]));
         $Columns_Discasa = array_keys(get_object_vars($Months_Discasa[0]));
@@ -109,6 +111,8 @@ class ReOrderPointR3 extends Model
                 $CountColums++;
             }
 
+            $index_key      = array_search($value->ARTICULO, array_column($PrecioMific, 'ARTICULO'));  
+
             // Merge entre los datos fijos + privados + discasa
             $DataReturn[] = array_merge([
                 'ARTICULO'                  => $value->ARTICULO,
@@ -137,6 +141,7 @@ class ReOrderPointR3 extends Model
                 'COSTO_PROM_DOL'            => $value->COSTO_PROM_DOL,
                 'DESCONTINUADO'             => (in_array($value->DESCONTINUADO, ['SI', 'S'])) ? 'SI': 'NO',
                 'FECHA_VENCIMIENTO'         => date('d-m-Y', strtotime($value->FECHA_VENCIMIENTO)),
+                'REGISTRO_MIFIC'            => $PrecioMific[$index_key]['MIFIC'] ?? 'N/D',
             ], $PrivadoData, $DiscasaData); 
         }
 
