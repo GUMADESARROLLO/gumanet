@@ -69,11 +69,53 @@ $(document).ready(function() {
     CallFilter( desde, hasta );  
 
     $('#btnSaveMific').on('click', function() {
-        $('#mdl-edit-mific').modal('hide');
+        //$('#mdl-edit-mific').modal('hide');
+
+        var IdMific = $('#id_row').val();
+        var UrlPath = (IdMific == 0) ? 'SaveMific' : 'UpdateMific';
+
+        var data_mific = {};
+        data_mific['id_row']                = IdMific;
+        data_mific['sku_umk']               = $('#sku_umk').val();        
+        data_mific['registro_sanitario']    = $('#registro_sanitario').val();
+        data_mific['nombre_comercial']      = $('#nombre_comercial').val();
+        data_mific['nombre_generico']       = $('#nombre_generico').val();
+        data_mific['concentracion']         = $('#concentracion').val();
+        data_mific['presentacion']          = $('#presentacion').val();
+        data_mific['cantidad']              = $('#cantidad').val();
+        data_mific['laboratorio']           = $('#laboratorio').val();
+        data_mific['precio_farmacia']       = $('#precio_farmacia').val();
+        data_mific['precio_publico']        = $('#precio_publico').val();
+        data_mific['unidad_negocio']        = $('#unidad_negocio').val();
+
+        $.ajax({
+            type: 'POST',
+            url: UrlPath,
+            data: data_mific,
+            success: function(response) {
+                Swal.fire({
+                    title: 'Guardado correctamente',
+                    text: '',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+
+        
     });
 
     $('#btnUploadMific').on('click', function() {
         $('#mdl-upload-mific').modal('show');
+    });
+    
+    $('#NuevoMific').on('click', function() {
+        CleanFormMific();
+        $('#mdl-edit-mific').modal('show');
     });
 
 
@@ -183,10 +225,71 @@ function editMific(id) {
     getDetallesMific(id);
     
 }
-function removeMific() {    
+function removeMific(id) {
+
+    Swal.fire({
+        title: 'Estas seguro?' + id,
+        text: "Se eliminar  el registro de mific con id "+id,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'S , eliminar!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: 'DeleteMific',
+                type: 'post',
+                data: {
+                    id_row : id
+                },
+                async: true,
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            title: 'Registro eliminado',
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                CallFilter( desde, hasta );  
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Error al eliminar registro',
+                            text: response.message,
+                            icon: 'error',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        })
+                    }
+                }
+            })
+        }
+    })
+    
+}
+function CleanFormMific() {
+    $('#sku_umk').val("");
+    $('#id_row').val(0);
+    $('#registro_sanitario').val("");
+    $('#nombre_comercial').val("");
+    $('#nombre_generico').val("");
+    $('#concentracion').val("");
+    $('#presentacion').val("");
+    $('#cantidad').val("");
+    $('#laboratorio').val("");
+    $('#precio_farmacia').val("");
+    $('#precio_publico').val("");
+    $('#unidad_negocio').val("ND").trigger('change');    
 }
 function UIMific(data) {
     $('#sku_umk').val(data.ARTICULO);
+    $('#id_row').val(data.ID_MIFIC);
     $('#registro_sanitario').val(data.REGISTRO_SANITARIO);
     $('#nombre_comercial').val(data.NOMBRE_COMERCIAL);
     $('#nombre_generico').val(data.NOMBRE_GENERICO);
@@ -196,8 +299,7 @@ function UIMific(data) {
     $('#laboratorio').val(data.LABORATORIO);
     $('#precio_farmacia').val(data.MIFIC_FARMACIA);
     $('#precio_publico').val(data.MIFIC_PUBLICO);
-    $('#unidad_negocio').val(data.UNIDAD_NEGOCIO).trigger('change');
-    
+    $('#unidad_negocio').val(data.UNIDAD_NEGOCIO).trigger('change');    
 }
 
 function eneableButton(EnableButton, textButton = '<i class="fas fa-filter"></i> Filtrar') {

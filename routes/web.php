@@ -368,3 +368,8 @@ Route::post('getDataOrdenesCompra', 'OrdenCompraController@getDataOrdenesCompra'
 Route::get('Mific', 'MificController@Mific')->name('Mific');
 Route::post('getDataMific', 'MificController@getDataMific')->name('getDataMific');
 Route::post('getDetallesMific', 'MificController@getDetallesMific')->name('getDetallesMific');
+Route::post('UpdateMific', 'MificController@UpdateMific')->name('UpdateMific');
+Route::post('SaveMific', 'MificController@SaveMific')->name('SaveMific');
+Route::post('DeleteMific', 'MificController@DeleteMific')->name('DeleteMific');
+
+
