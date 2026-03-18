@@ -56,7 +56,7 @@
             <table id="tbl_ordenes_compras" class="display" style="width:100%">
               <tfoot>
                 <tr>
-                  <th colspan="11" >
+                  <th colspan="13" >
                     <div class="row">
                       <div class="col-md-10 text-right">
                         <span class="item-right">TOTAL:</span>
