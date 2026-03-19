@@ -261,7 +261,8 @@ class ArticulosTransito extends Model
         $objPHPExcel->getActiveSheet()->getStyle("C2:". $ultimaColumnaLetra .($i-1))->getNumberFormat()->setFormatCode($formatCode);
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Transito.xlsx"');
+        $fechaActual = date('YmdHis');
+        header('Content-Disposition: attachment;filename="Transito_'. $fechaActual .'.xlsx"');
         header('Cache-Control: max-age=0');
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
