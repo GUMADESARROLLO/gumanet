@@ -105,13 +105,17 @@ class ArticulosTransito extends Model
 
         $Array    = array();
         $result = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->get();
+        $ArticulosUMK = Articulo::select('ARTICULO', 'DESCRIPCION')->where('ARTICULO', 'NOT LIKE', '%-N%')->get()->toArray();
+        $ArticulosGP  = ArticulosGP::select('ARTICULO', 'DESCRIPCION')->where('ARTICULO', 'NOT LIKE', '%-N%')->get()->toArray();
+        $Master = array_merge($ArticulosUMK, $ArticulosGP);
         
         foreach ($result as $k => $v) {
+            $index_articulo = array_search($v['Articulo'], array_column($Master, 'ARTICULO'));
             $Array[$k] = [
                 'ID'                => $v['Id_transito'],
                 'ARTICULO'          => $v['Articulo'],
                 //'DESCRIPCION'       => strtoupper($v['Descripcion']),
-                'DESCRIPCION'       => strtoupper($v->getArticulo->DESCRIPCION) ?? 'N/D',
+                'DESCRIPCION'       => strtoupper($Master[$index_articulo]['DESCRIPCION']) ?? 'N/D',
                 'FECHA_ESTIMADA'    => ($v['fecha_estimada']== null) ? 'N/D' : \Date::parse($v['fecha_estimada'])->format('D, M d, Y') ,
                 'FECHA_PEDIDO'      => ($v['fecha_pedido']== null) ? 'N/D' : \Date::parse($v['fecha_pedido'])->format('D, M d, Y') ,
                 'PEDIDO'            => number_format($v['cantidad_pedido'], 0),
