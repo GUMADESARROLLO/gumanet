@@ -161,114 +161,133 @@ class ArticulosTransito extends Model
     }
 
     public static function ExportToExcel() {
+
         $objPHPExcel = new PHPExcel();
-        $titulosColumnas = array();
         $columnIndex = 0;
         $rowIndex = 1;
 
-        $estiloTituloReporte = array(
-            'font' => array(
-            'name'      => 'Tahoma',
-            'bold'      => true,
-            'italic'    => false,
-            'strike'    => false,
-            'size'      => 14,
-            'color'     => array(
-                            'rgb' => '212121')
-            ),
-            'alignment' =>  array(
-                            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                            'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                            'rotation'   => 0,
-                            'wrap'       => TRUE,
-                            )
-        );
-
         $estiloTituloColumnas = array(
             'font' => array(
-                        'name'  => 'Arial',
-                        'bold'  => true
+                'name'  => 'Arial',
+                'bold'  => true
             ),
             'alignment' =>  array(
-                                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                                'wrap'          => TRUE
-                            ),
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrap'       => TRUE
+            ),
             'borders' => array(
-                            'top' => array(
-                            'style' => PHPExcel_Style_Border::BORDER_THIN,
-                        ),
-            'allborders' => array(
-                                'style' => PHPExcel_Style_Border::BORDER_THIN,
-                            )
-            )
-        );
-                
-        $estiloInformacion = new PHPExcel_Style();
-        $estiloInformacion->applyFromArray(
-            array(
-                'borders' => array(
                 'top' => array(
-                            'style' => PHPExcel_Style_Border::BORDER_THIN,
-                        ),
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                ),
                 'allborders' => array(
-                                'style' => PHPExcel_Style_Border::BORDER_THIN,
-                                ),
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
                 )
             )
-        );    
+        );
+
+        $estiloInformacion = new PHPExcel_Style();
+        $estiloInformacion->applyFromArray(array(
+            'borders' => array(
+                'top' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                ),
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                ),
+            )
+        ));
 
         $transito = ArticulosTransito::get();
-        $titulosColumnas = array_keys($transito->first()->toArray());
-        
-        foreach (array_slice($titulosColumnas, 1) as $titulo) {
-            $i = 2;
 
-            // Convierte a mayúsculas y reemplaza guiones bajos por espacios
-            $NameColumna = strtoupper(str_replace('_', ' ', $titulo));
+        if ($transito->isEmpty()) {
+            return;
+        }
 
-            // Asigna la letra a la columna (A, B, C, ...)
+        // 🔥 ORDEN PERSONALIZADO (campos reales de BD)
+        $titulosColumnas = [
+            'Articulo',
+            'Descripcion',
+            'cantidad_pedido',
+            'fecha_pedido',
+            'estado_compra',
+            'cantidad_pedido',
+            'cantidad_transito',
+            'fecha_estimada',
+            'mercado',
+            'via_transporte',
+            'documento',
+            'mific',
+            'observaciones',
+        ];
+
+        $nombreColumnas = [
+            'Articulo' => 'ARTICULO',
+            'Descripcion' => 'DESCRIPCION',
+            'cantidad_pedido' => 'CANTIDAD PEDIDO',
+            'fecha_pedido' => 'FECHA PEDIDO',
+            'estado_compra' => 'ESTADO COMPRA',
+            'cantidad_pedido' => 'CANTIDAD SIN DESPACHO',
+            'cantidad_transito' => 'CANTIDAD TRANSITO',
+            'fecha_estimada' => 'ETA',
+            'mercado' => 'MERCADO',
+            'via_transporte' => 'VIA TRANSPORTE',
+            'documento' => 'DOCUMENTO AWB/BL O FACTURA',
+            'mific' => 'MIFIC',
+            'observaciones' => 'OBSERVACIONES',
+        ];
+
+        foreach ($titulosColumnas as $titulo) {
+
             $columnLetter = PHPExcel_Cell::stringFromColumnIndex($columnIndex);
 
-            // Escribe el nombre de la columna en la primera fila
-            $objPHPExcel->setActiveSheetIndex()->setCellValue($columnLetter . $rowIndex, $NameColumna);
-            $objPHPExcel->getActiveSheet()->getColumnDimension($columnLetter)->setWidth(15);
+            $objPHPExcel->setActiveSheetIndex()->setCellValue(
+                $columnLetter . $rowIndex,
+                $nombreColumnas[$titulo] ?? strtoupper(str_replace('_', ' ', $titulo))
+            );
 
-            // Asigna los valores a cada una de las celdas
-            foreach ($transito as $key) {
-                $objPHPExcel->setActiveSheetIndex()->setCellValue($columnLetter.$i, $key[$titulo]);
-                $i++;
-            }
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnLetter)->setWidth(20);
 
             $columnIndex++;
         }
 
+        $row = 2;
 
-        $ultimaColumnaLetra = PHPExcel_Cell::stringFromColumnIndex($columnIndex - 1);
-    
-        $i++;   
+        foreach ($transito as $item) {
 
-        //ANCHO DE CADA COLUMNAS
-        $objPHPExcel->getActiveSheet()->getColumnDimension("D")->setWidth(20);
-        $objPHPExcel->getActiveSheet()->getColumnDimension("H")->setWidth(50);
-        $objPHPExcel->getActiveSheet()->getColumnDimension("J")->setWidth(110);
+            $columnIndex = 0;
+
+            foreach ($titulosColumnas as $titulo) {
+
+                $columnLetter = PHPExcel_Cell::stringFromColumnIndex($columnIndex);
+
+                $objPHPExcel->setActiveSheetIndex()->setCellValue($columnLetter . $row,$item[$titulo] ?? '');
+
+                $columnIndex++;
+            }
+
+            $row++;
+        }
+
+        $ultimaColumnaLetra = PHPExcel_Cell::stringFromColumnIndex(count($titulosColumnas) - 1);
+
         $objPHPExcel->getActiveSheet()->getStyle('A1:' . $ultimaColumnaLetra . '1')->applyFromArray($estiloTituloColumnas);
 
-        $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A2:". $ultimaColumnaLetra .($i-1));
+        $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A2:" . $ultimaColumnaLetra . ($row - 1));
 
-        //FORMATOS NUMERICOS
         $formatCode = '_-" "* #,##0.00_-;_-" "* #,##0.00_-;_-" "* "-"??_-;_-@_-';
-        $objPHPExcel->getActiveSheet()->getStyle("C2:". $ultimaColumnaLetra .($i-1))->getNumberFormat()->setFormatCode($formatCode);
+        $objPHPExcel->getActiveSheet()->getStyle("C2:C" . ($row - 1))->getNumberFormat()->setFormatCode($formatCode);
+        $objPHPExcel->getActiveSheet()->getStyle("F2:G" . ($row - 1))->getNumberFormat()->setFormatCode($formatCode);
 
+        // 🔹 HEADERS DESCARGA
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        $fechaActual = date('YmdHis');
-        header('Content-Disposition: attachment;filename="Transito_'. $fechaActual .'.xlsx"');
+
+        $fechaActual = \DateTime::createFromFormat('YmdHis', date('YmdHis'))->format('F j, Y gi');
+        header('Content-Disposition: attachment;filename="Transito ' . $fechaActual . '.xlsx"');
         header('Cache-Control: max-age=0');
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save('php://output');
-
-
     }
 
 }
