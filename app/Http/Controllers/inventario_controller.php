@@ -116,6 +116,7 @@ class inventario_controller extends Controller
 				'fecha_estimada'	=> $k->fecha_estimada,
 				'fecha_pedido'      => $k->fecha_pedido,
 				'documento'         => $k->documento,
+				'NumFact'           => $k->NumFact,
 				'cantidad'          => number_format($k->cantidad,0,'.',''),
 				'cantidad_pedido'          	=> number_format($k->cantidad_pedido,0,'.',''),
 				'cantidad_transito'          => number_format($k->cantidad_transito,0,'.',''),
@@ -159,13 +160,14 @@ class inventario_controller extends Controller
             'fecha_estimada' 		=> 'required',
             'fecha_pedido' 			=> 'required',
             'documento' 			=> 'required',
+			'NumFact' 				=> 'required',
             'cantidad' 				=> 'required',
 			'CantidadTransito' 		=> 'required',
             'mercado' 				=> 'required',
             'mific' 				=> 'required',
 			'select_estado' 		=> 'required',
-			'precio_mific_f' 		=> 'required',
-			'precio_mific_p' 		=> 'required',
+			// 'precio_mific_f' 		=> 'required',
+			// 'precio_mific_p' 		=> 'required',
             'observaciones' 		=> 'required',
         ]);
 
@@ -180,14 +182,13 @@ class inventario_controller extends Controller
 				'fecha_estimada' 			=> $request->fecha_estimada,
 				'fecha_pedido' 				=> $request->fecha_pedido,
 				'documento' 				=> $request->documento,
+				'NumFact' 					=> $request->NumFact,
 				'cantidad_pedido' 			=> $request->cantidad,
 				'cantidad_transito' 		=> $request->CantidadTransito,
 				'mercado' 					=> $request->mercado,
 				'mific' 					=> $request->mific,
 				'estado_compra' 			=> $request->select_estado,
 				'observaciones' 			=> $request->observaciones,
-				'Precio_mific_farmacia' 	=> $request->precio_mific_f,
-				'Precio_mific_public' 		=> $request->precio_mific_p,
 				'via_transporte'    		=> $request->via_transito,
 			]);
 	
@@ -201,14 +202,13 @@ class inventario_controller extends Controller
 				'fecha_estimada' 		=> $request->fecha_estimada,
 				'fecha_pedido' 			=> $request->fecha_pedido,
 				'documento' 			=> $request->documento,
+				'NumFact' 				=> $request->NumFact,
 				'cantidad_pedido' 		=> $request->cantidad,
 				'cantidad_transito' 	=> $request->CantidadTransito,
 				'mercado' 				=> $request->mercado,
 				'mific' 				=> $request->mific,
 				'estado_compra' 		=> $request->select_estado,
 				'observaciones' 		=> $request->observaciones,
-				'Precio_mific_farmacia' => $request->precio_mific_f,
-				'Precio_mific_public' 	=> $request->precio_mific_p,
 				'Nuevo' 				=> 'N',
 				'via_transporte'    	=> $request->via_transito,
 			]);
@@ -274,19 +274,7 @@ class inventario_controller extends Controller
 			'hideTransaccion' => ''
 		);
 
-		// $ArticulosConCodigos = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->pluck('Articulo')->toArray();
-		
-		// if(count($ArticulosConCodigos)  > 0){
-		// 	$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', $ArticulosConCodigos)->get();
-			
-		// } else {
-		// 	$Articulos = InventarioUnificadoTransito::all();
-		// };
-
 		$Articulos = InventarioUnificadoTransito::all();
-
-	
-
 
 		return view('pages.Transito.Table', compact('data', 'Articulos'));
 	}
