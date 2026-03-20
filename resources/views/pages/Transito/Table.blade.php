@@ -285,7 +285,7 @@
             <div class="form-group">
                 <select class="selectpicker form-control form-control-sm" id="frm_select_articulo" data-show-subtext="true" data-live-search="true">                    
                     @foreach($Articulos as $art)
-                    <option value="{{strtoupper($art->ARTICULO)}}">{{strtoupper($art->DESCRIPCION )}} - [{{strtoupper($art->ARTICULO)}} ]</option>
+                    <option value="{{strtoupper($art->ARTICULO)}}">{{strtoupper($art->DESCRIPCION )}} - [{{strtoupper($art->ARTICULO)}} ] - {{strtoupper($art->UNIDAD)}}</option>
                     @endforeach
 
                 </select>

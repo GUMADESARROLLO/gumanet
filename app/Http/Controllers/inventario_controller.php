@@ -274,14 +274,16 @@ class inventario_controller extends Controller
 			'hideTransaccion' => ''
 		);
 
-		$ArticulosConCodigos = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->pluck('Articulo')->toArray();
+		// $ArticulosConCodigos = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->pluck('Articulo')->toArray();
 		
-		if(count($ArticulosConCodigos)  > 0){
-			$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', $ArticulosConCodigos)->get();
+		// if(count($ArticulosConCodigos)  > 0){
+		// 	$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', $ArticulosConCodigos)->get();
 			
-		} else {
-			$Articulos = InventarioUnificadoTransito::all();
-		};
+		// } else {
+		// 	$Articulos = InventarioUnificadoTransito::all();
+		// };
+
+		$Articulos = InventarioUnificadoTransito::all();
 
 	
 
