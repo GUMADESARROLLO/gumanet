@@ -119,7 +119,7 @@
                 <label for="exampleFormControlSelect1"><strong>VÍA DE TRANSITO:</strong></label>
                 <select class="form-control" id="id_via_transito">
                     <option value="N/D">N/D</option>
-                    <option value="AERIO">AERIO</option>
+                    <option value="AERIO">AÉREO</option>
                     <option value="MARITIMO">MARITIMO</option>
                     <option value="TERRESTRE">TERRESTRE</option>
                 </select>
