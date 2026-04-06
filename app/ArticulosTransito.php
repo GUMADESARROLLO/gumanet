@@ -17,7 +17,7 @@ class ArticulosTransito extends Model
     
     protected $connection = 'sqlsrv';
     public $timestamps = false;
-    protected $table = "PRODUCCION.dbo.tbl_articulos_transito_v4";
+    protected $table = "PRODUCCION.dbo.tbl_articulos_transito_v2";
     protected $primaryKey = 'Id_transito';
     protected $keyType    = 'string';
 
