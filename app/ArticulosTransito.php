@@ -17,7 +17,7 @@ class ArticulosTransito extends Model
     
     protected $connection = 'sqlsrv';
     public $timestamps = false;
-    protected $table = "PRODUCCION.dbo.tbl_articulos_transito_v2";
+    protected $table = "PRODUCCION.dbo.tbl_articulos_transito_v4";
     protected $primaryKey = 'Id_transito';
     protected $keyType    = 'string';
 
@@ -42,7 +42,8 @@ class ArticulosTransito extends Model
         'Nuevo',
         'cantidad_pedido',
         'cantidad_transito',
-        'via_transporte'
+        'cantidad_bodega',
+        'via_transporte',
     ];
 
 
@@ -99,14 +100,18 @@ class ArticulosTransito extends Model
         }
     }
     
-    public static function getTransitoConCodigo() 
+    public static function getTransitoConCodigo($Estado) 
     {
 
-        $Array    = array();
-        $result = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->get();
+        $Array        = array();
+
+        $IsWhere = ($Estado == 'TODOS') ? ['PEDIDO', 'TRANSITO'] : ['BODEGA'] ;
+
+
+        $result       = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->where('estado_compra', $IsWhere)->get();
         $ArticulosUMK = Articulo::select('ARTICULO', 'DESCRIPCION')->where('ARTICULO', 'NOT LIKE', '%-N%')->get()->toArray();
         $ArticulosGP  = ArticulosGP::select('ARTICULO', 'DESCRIPCION')->where('ARTICULO', 'NOT LIKE', '%-N%')->get()->toArray();
-        $Master = array_merge($ArticulosUMK, $ArticulosGP);
+        $Master       = array_merge($ArticulosUMK, $ArticulosGP);
         
         foreach ($result as $k => $v) {
             $index_articulo = array_search($v['Articulo'], array_column($Master, 'ARTICULO'));
@@ -217,6 +222,7 @@ class ArticulosTransito extends Model
             'estado_compra',
             'cantidad_pedido',
             'cantidad_transito',
+            'cantidad_bodega',
             'fecha_estimada',
             'mercado',
             'via_transporte',
@@ -234,6 +240,7 @@ class ArticulosTransito extends Model
             'estado_compra' => 'ESTADO COMPRA',
             'cantidad_pedido' => 'CANTIDAD SIN DESPACHO',
             'cantidad_transito' => 'CANTIDAD TRANSITO',
+            'cantidad_bodega' => 'CANTIDAD EN BODEGA',
             'fecha_estimada' => 'ETA',
             'mercado' => 'MERCADO',
             'via_transporte' => 'VIA TRANSPORTE',

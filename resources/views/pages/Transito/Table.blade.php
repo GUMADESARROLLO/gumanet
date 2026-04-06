@@ -34,7 +34,7 @@
   </div>
   <span id="id_frm_show" style="display:none">{{ $data['ID'] }}</span>
   <div class="row mt-3">
-    <div class="col-sm-11">
+    <div class="col-sm-10">
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
@@ -49,6 +49,16 @@
         <a href="{{ route('ExportToExcelTransito') }}" target="_blank" class="input-group-text bg-transparent">
           <span class="fas fa-file-excel text-success"></span>
         </a>
+      </div>
+    </div>
+    <div class="col-sm-1">
+      <div class="input-group mb-3">
+        <select class="custom-select" id="filter_select_estado" >
+          <option value="TODOS" >TODOS</option>
+          <option value="PEDIDO">PEDIDO</option>
+          <option value="TRANSITO">TRANSITO</option>
+          <option value="BODEGA">BODEGA</option>
+        </select>
       </div>
     </div>
     <div class="col-sm-1">
@@ -101,6 +111,14 @@
                 <small id="alert_cantidad" class="form-text text-danger">0.00</small>
             </div>
           </div>
+           <div class="col-sm-3">
+            <div class="form-group">
+                <label for="txtCantidad"><strong>CANTIDAD BODEGA:</strong></label>
+                <input type="text" class="form-control" id="txtCantidadBodega" oninput="validateInput(this)" disabled>
+                <small id="alert_cantidad" class="form-text text-danger">0.00</small>
+            </div>
+          </div>
+
 
           <div class="col-sm-3">
             <div class="form-group">
@@ -110,25 +128,17 @@
                     <option value="PEDIDO">PEDIDO</option>
                     <option value="TRANSITO">TRANSITO</option>
                     <option value="ON-HAND">ON-HAND</option>
+                    <option value="BODEGA">BODEGA</option>
                 </select>
                 <small id="alert_Estado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
-          <div class="col-sm-3">
-            <div class="form-group">
-                <label for="exampleFormControlSelect1"><strong>VÍA DE TRANSITO:</strong></label>
-                <select class="form-control" id="id_via_transito">
-                    <option value="N/D">N/D</option>
-                    <option value="AERIO">AÉREO</option>
-                    <option value="MARITIMO">MARITIMO</option>
-                    <option value="TERRESTRE">TERRESTRE</option>
-                </select>
-                <small id="alert_via_transito" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-            </div>
-          </div>
 
+         
+
+         
         
-          <div class="col-sm-6">
+          <div class="col-sm-3">
             <div class="form-group">
                 <label for="exampleInputEmail1"><strong>DOC. (FACT. , BL/AWB ):</strong></label>
                 <input type="text" class="form-control" id="txtDocuments" >
@@ -141,6 +151,19 @@
                 <label for="exampleInputEmail1"><strong>NUM. FACTURA:</strong></label>
                 <input type="text" class="form-control" id="txtNumFact" >
                 <small id="alert_num_fact" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+
+           <div class="col-sm-3">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1"><strong>VÍA DE TRANSITO:</strong></label>
+                <select class="form-control" id="id_via_transito">
+                    <option value="N/D">N/D</option>
+                    <option value="AERIO">AÉREO</option>
+                    <option value="MARITIMO">MARITIMO</option>
+                    <option value="TERRESTRE">TERRESTRE</option>
+                </select>
+                <small id="alert_via_transito" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
 
@@ -209,7 +232,7 @@
           
       </div>      
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" id="id_btns_save">
         <button type="button" class="btn btn-danger btn-sm" id="btnDeleteTransito" @click="DeleteInformacion">Borrar</button>
         <button type="button" class="btn btn-success btn-sm" id="btnSaveTransito" @click="SaveInformacion">Guardar</button>
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
