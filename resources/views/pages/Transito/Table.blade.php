@@ -55,8 +55,6 @@
       <div class="input-group mb-3">
         <select class="custom-select" id="filter_select_estado" >
           <option value="TODOS" >TODOS</option>
-          <option value="PEDIDO">PEDIDO</option>
-          <option value="TRANSITO">TRANSITO</option>
           <option value="BODEGA">BODEGA</option>
         </select>
       </div>
