@@ -108,7 +108,7 @@ class ArticulosTransito extends Model
         $IsWhere = ($Estado == 'TODOS') ? ['PEDIDO', 'TRANSITO'] : ['BODEGA'] ;
 
 
-        $result       = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->where('estado_compra', $IsWhere)->get();
+        $result       = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->whereIn('estado_compra', $IsWhere)->get();
         $ArticulosUMK = Articulo::select('ARTICULO', 'DESCRIPCION')->where('ARTICULO', 'NOT LIKE', '%-N%')->get()->toArray();
         $ArticulosGP  = ArticulosGP::select('ARTICULO', 'DESCRIPCION')->where('ARTICULO', 'NOT LIKE', '%-N%')->get()->toArray();
         $Master       = array_merge($ArticulosUMK, $ArticulosGP);
