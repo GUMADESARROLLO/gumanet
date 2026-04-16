@@ -424,6 +424,8 @@ class recibos_controller extends Controller {
 
         $obj = $query->orderBy('recibo', 'ASC')->get();
 
+        dd($obj);
+
     
         foreach ($obj as $qR => $key) {
 

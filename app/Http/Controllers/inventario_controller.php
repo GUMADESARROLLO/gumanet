@@ -269,6 +269,7 @@ class inventario_controller extends Controller
 			'Descripcion'	=> strtoupper($Art->DESCRIPCION),
             'observaciones' => ' - ',
 			'Nuevo' 		=> 'N',
+			'estado_compra' => 'N/D',
         ]);
 
         return response()->json(['message' => 'Información guardada correctamente']);

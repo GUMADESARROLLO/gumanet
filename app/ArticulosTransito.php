@@ -105,7 +105,7 @@ class ArticulosTransito extends Model
 
         $Array        = array();
 
-        $IsWhere = ($Estado == 'TODOS') ? ['PEDIDO', 'TRANSITO'] : ['BODEGA'] ;
+        $IsWhere = ($Estado == 'TODOS') ? ['PEDIDO', 'TRANSITO','N/D'] : ['BODEGA'] ;
 
 
         $result       = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->whereIn('estado_compra', $IsWhere)->get();
