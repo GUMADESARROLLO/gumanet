@@ -72,7 +72,7 @@
 
                                             <tr>
                                                 <td class="content-block aligncenter">
-                                                    <img src="https://quickchart.io/qr?text=https://unimarksa.com&size=200" alt="">
+                                                    {{ $UrlQR }}                                                    
                                                 </td>
                                             </tr>
                                             <tr>

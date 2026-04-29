@@ -7,6 +7,8 @@ use App\Vendedor;
 use Illuminate\Http\Request;
 use PDF;
 
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 class PromocionesController extends Controller
 {
     public function __construct() 
@@ -52,10 +54,12 @@ class PromocionesController extends Controller
     {
         $Acciones = Facturas::ImprimirAcciones($request);
         $InfoFactura = Facturas::getInfoFactura($request->Factura);
+
+        $UrlQR = QrCode::size(150)->generate('https://carro.unimarksa.com/' . $InfoFactura->CLIENTE);
         
         //$Pdf = PDF::loadView('pages.Promociones.RifaCar.Imprimir', compact('Acciones', 'InfoFactura'));
         //return $Pdf->download('Acciones.pdf');
-        return view('pages.Promociones.RifaCar.Imprimir', compact('Acciones', 'InfoFactura'));
+        return view('pages.Promociones.RifaCar.Imprimir', compact('Acciones', 'InfoFactura', 'UrlQR'));
         
     }
 

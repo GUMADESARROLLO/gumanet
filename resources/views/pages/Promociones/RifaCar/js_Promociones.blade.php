@@ -132,10 +132,15 @@ $(document).ready(function() {
         $('#lbl_codigo_cliente').html(row.CLIENTE);
         $('#lbl_factura').html(row.FACTURA);
 
-        $("#btn_imprimir_acciones").attr("href", `/ImprimirAcciones?Factura=${row.FACTURA}`);
+        //$("#btn_imprimir_acciones").attr("href", `/ImprimirAcciones?Factura=${row.FACTURA}`);
 
         GetAcciones(row.FACTURA);
     }
+
+    $("#btn_imprimir_acciones").on('click', function() {
+        var factura = $('#lbl_factura').html();
+        window.open(`/ImprimirAcciones?Factura=${factura}`, '_blank');
+    });
 
 
     function CallFilter( desde = null, hasta = null ) {
@@ -210,6 +215,9 @@ $(document).ready(function() {
                     ${Acciones.map(accion => `<span class="badge rounded-pill bg-primary px-3 py-2 fs-6">${accion.ACCION}</span>`).join('')}
                 </div>`
             );
+
+            $('#btn_imprimir_acciones').prop('disabled', (Acciones.length === 0 ? true : false));
+
     }
     
     function TablaOrdenesCompras(selector, data) {
@@ -247,11 +255,11 @@ $(document).ready(function() {
                     }          
                 },
             ],
-            createdRow: function (row, rowData) {
-                $(row).on('click', function() {
-
-                    
-                });
+            rowCallback: function(row, data, index) {
+                
+                if(data.IsAccion === 'S') {
+                    $(row).css('background-color', '#d8fae1');
+                }
             },
         });
 

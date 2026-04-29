@@ -17,6 +17,10 @@ class Facturas extends Model
         $desde = $request->desde . ' 00:00:00';
         $hasta = $request->hasta . ' 23:59:59';
 
+        $FacturasConAcciones = DB::connection('sqlsrv')->select("SELECT FACTURA FROM PRODUCCION.dbo.LOG_ACCIONES_RIFA ");
+        
+        
+
         $query = "
             SELECT
                 T0.CLIENTE,
@@ -46,6 +50,8 @@ class Facturas extends Model
         $Arry = [];
         
         foreach ($rows as $item) {
+            $TieneAccion = array_search($item->FACTURA, array_column($FacturasConAcciones, 'FACTURA'));
+            $isAccion = ($TieneAccion !== false) ? 'S' : 'N';
             $Arry[] = [
                 "FACTURA"           => $item->FACTURA,
                 "FECHA"             => date('Y-m-d', strtotime($item->FECHA)),
@@ -54,6 +60,7 @@ class Facturas extends Model
                 "TOTAL_FACTURA"     => $item->TOTAL_FACTURA,
                 "VENDEDOR"          => $item->VENDEDOR,
                 "ACCIONES"          => $item->ACCIONES,
+                "IsAccion"          => $isAccion
             ];
         }
 

@@ -183,13 +183,14 @@
                 </div>
 
                 <!-- Botón -->
-                <a href="#!"
+                <button 
+                    type="button"
                     id="btn_imprimir_acciones"
                     target="_blank"
                     class="btn btn-success w-100 py-2 rounded-3 fw-semibold">
                     <i class="fas fa-print me-2"></i>
                     Imprimir
-                </a>
+                </button>
 
             </div>
         </div>
