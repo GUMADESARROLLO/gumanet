@@ -376,3 +376,11 @@ Route::post('DeleteMific', 'MificController@DeleteMific')->name('DeleteMific');
 // RUTAS PARA FACTURACION
 Route::get('Facturacion', 'FacturacionController@Dashboard')->name('Facturacion');
 Route::post('getDataFacturacion', 'FacturacionController@getDataFacturacion')->name('getDataFacturacion');
+
+
+
+Route::get('Promociones', 'PromocionesController@RifaCar')->name('Promociones');
+Route::post('getFactPromocion', 'PromocionesController@getFactPromocion')->name('getFactPromocion');
+Route::post('getFactAcciones', 'PromocionesController@getFactAcciones')->name('getFactAcciones');
+Route::post('AsignarAcciones', 'PromocionesController@AsignarAcciones')->name('AsignarAcciones');
+Route::get('ImprimirAcciones', 'PromocionesController@ImprimirAcciones')->name('ImprimirAcciones');
