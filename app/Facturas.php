@@ -18,8 +18,6 @@ class Facturas extends Model
         $hasta = $request->hasta . ' 23:59:59';
 
         $FacturasConAcciones = DB::connection('sqlsrv')->select("SELECT FACTURA FROM PRODUCCION.dbo.LOG_ACCIONES_RIFA ");
-        
-        
 
         $query = "
             SELECT

@@ -55,7 +55,7 @@ class PromocionesController extends Controller
         $Acciones = Facturas::ImprimirAcciones($request);
         $InfoFactura = Facturas::getInfoFactura($request->Factura);
 
-        $UrlQR = QrCode::size(150)->generate('https://carro.unimarksa.com/' . $InfoFactura->CLIENTE);
+        $UrlQR = QrCode::size(150)->generate('https://carro.unimarksa.com/api/Perfil/' . $InfoFactura->CLIENTE);
         
         //$Pdf = PDF::loadView('pages.Promociones.RifaCar.Imprimir', compact('Acciones', 'InfoFactura'));
         //return $Pdf->download('Acciones.pdf');
