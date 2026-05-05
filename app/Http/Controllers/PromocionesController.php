@@ -59,7 +59,7 @@ class PromocionesController extends Controller
         
         //$Pdf = PDF::loadView('pages.Promociones.RifaCar.Imprimir', compact('Acciones', 'InfoFactura'));
         //return $Pdf->download('Acciones.pdf');
-        return view('pages.Promociones.RifaCar.Imprimir', compact('Acciones', 'InfoFactura', 'UrlQR'));
+        return view('pages.Promociones.RifaCar.Voucher', compact('Acciones', 'InfoFactura', 'UrlQR'));
         
     }
 
