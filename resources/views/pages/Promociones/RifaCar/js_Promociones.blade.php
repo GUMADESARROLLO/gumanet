@@ -256,9 +256,10 @@ $(document).ready(function() {
                 },
             ],
             rowCallback: function(row, data, index) {
-                
+                var $row = $(row);
+                $row.removeClass('table-success');
                 if(data.IsAccion === 'S') {
-                    $(row).css('background-color', '#d8fae1');
+                    $row.addClass('table-success');
                 }
             },
         });
