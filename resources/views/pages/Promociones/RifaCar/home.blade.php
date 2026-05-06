@@ -14,19 +14,22 @@
         <div class="card-body">
             <div class="row align-items-end">
                 <div class="col-md-5">
-                    <h4 class="h4 text-innova mb-1">FACTURAS EMITIDAS</h4>
-                    <p class="text-muted mb-0 small">Periodo: <span id="tl_periodo" class="fw-semibold text-innova"></span></p>
+                    <h4 class="h4 text-umk mb-1">FACTURAS EMITIDAS</h4>
+                    <p class="text-muted mb-0 small">Periodo: <span id="tl_periodo" class="fw-semibold text-umk"></span></p>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small fw-semibold text-muted text-uppercase">Búsqueda</label>
-                    <input type="text" class="form-control form-control-sm" placeholder="Ej: 0000XXXX" id="txt_busqueda_orden_compra">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                        </div>
+                        <input type="text" class="form-control form-control-sm input-fecha" placeholder="Buscar..." id="txt_busqueda_orden_compra" >
+                    </div>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small fw-semibold text-muted text-uppercase">Fecha de Evaluación</label>
                     <input type="text" class="form-control form-control-sm input-fecha" name="dt_range" />
                 </div>
                 <div class="col-md-1">
-                    <button type="button" class="btn btn-primary-umk btn-sm w-100" id="filtrarFechas">
+                    <button type="button" class="btn btn-primary-umk btn-sm input-fecha" id="filtrarFechas">
                         <i class="fas fa-filter me-1"></i>Filtrar
                     </button>
                 </div>
@@ -130,7 +133,7 @@
                     <button type="button" class="btn-close btn-close-white" data-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body p-4">
+                <div class="modal-body">
                     <div class="mb-3">
                         <small class="text-muted text-uppercase fw-semibold">Factura</small>
                         <div class="fw-bold fs-5" id="lbl_factura"></div>
@@ -151,7 +154,7 @@
                     </div>
 
                     <button type="button" id="btn_imprimir_acciones" class="btn btn-success w-100">
-                        <i class="fas fa-print me-2"></i>Imprimir Acciones
+                        <i class="fas fa-print me-2"></i>Imprimir
                     </button>
                 </div>
             </div>

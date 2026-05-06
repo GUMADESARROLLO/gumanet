@@ -250,6 +250,10 @@ $(document).ready(function() {
                     return `<div class="item-center"><strong>  ${row.ACCIONES} </strong></div>`;
                     }          
                 },  
+                { title: 'PENDIENTE', data: 'IsAccion', className: 'text-center',render: function(data, type, row) {
+                    return `<div class="item-center"><strong>  ${row.IsAccion} </strong></div>`;
+                    }          
+                }, 
                 { title: 'TOTAL C$', data: 'TOTAL_FACTURA', render: function(data, type, row) {
                     return `<div class="item-right">${numeral(data).format('0,0.00')} </div>`;
                     }          

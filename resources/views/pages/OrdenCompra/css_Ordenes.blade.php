@@ -97,6 +97,11 @@
       color: #273b7a;
       font-weight: bold;
     }
+    .text-umk {
+      color: var(--corporate-blue);
+      
+      font-weight: bold;
+    }
     .img-fluid-inn {
       max-width: 100%;
       height: auto;
