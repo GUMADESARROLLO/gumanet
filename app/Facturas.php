@@ -33,15 +33,12 @@ class Facturas extends Model
                 T0.NIVEL_PRECIO
             FROM
                 Softland.umk.FACTURA T0
-            INNER JOIN Softland.umk.CLIENTE T1 
-                ON T0.CLIENTE = T1.CLIENTE
+            INNER JOIN Softland.umk.CLIENTE T1 ON T0.CLIENTE = T1.CLIENTE
             WHERE
                 T0.ANULADA = 'N'
-                AND T0.VENDEDOR NOT IN ('F02','F12')
+                AND T0.VENDEDOR NOT IN ('F01','F12')
                 AND T0.TOTAL_FACTURA > 1000
-                AND T0.CLIENTE NOT IN (
-                    SELECT CLIENTE FROM PRODUCCION.dbo.tbl_cadena_de_farmacia
-                )
+                AND T0.CLIENTE NOT IN ( SELECT CLIENTE FROM PRODUCCION.dbo.tbl_cadena_de_farmacia)
                 AND T0.FECHA BETWEEN ? AND ?
         ";
 
@@ -59,7 +56,7 @@ class Facturas extends Model
 
             $Arry[] = [
                 "FACTURA"           => $item->FACTURA,
-                "FECHA"             => date('Y-m-d', strtotime($item->FECHA)),
+                "FECHA"             => date('Y-m-d H:i:s', strtotime($item->FECHA)),
                 "CLIENTE"           => $item->CLIENTE,
                 "NOMBRE"            => $item->NOMBRE,                
                 "TOTAL_FACTURA"     => $item->TOTAL_FACTURA,
