@@ -119,8 +119,19 @@ $(document).ready(function() {
         vTableArticulos.search(this.value).draw();
     });
 
+    $(document).on('change', '#select-all', function() {
+        var isChecked = $(this).prop('checked');
+        $('.row-checkbox', $('#tbl_ordenes_compras')).prop('checked', isChecked);
+        updateSelectionToolbar();
+    });
 
+    $(document).on('change', '.row-checkbox', function() {
+        updateSelectionToolbar();
+    });
 
+    $('#btn-aplicar-masivo').on('click', function() {
+        AplicarAccionesSeleccionadas();
+    });
 
 });
 
@@ -194,6 +205,102 @@ $(document).ready(function() {
         });
     }
 
+    function updateSelectionToolbar() {
+        var $checkboxes = $('.row-checkbox', $('#tbl_ordenes_compras'));
+        var $checked = $checkboxes.filter(':checked');
+        var count = $checked.length;
+        var total = $checkboxes.length;
+        var toolbar = $('#selection-toolbar');
+        var btn = $('#btn-aplicar-masivo');
+
+        $('#selected-count').text(count);
+        $('#select-all').prop('checked', count > 0 && count === total);
+
+        if (count > 0) {
+            toolbar.removeClass('d-none').addClass('d-flex');
+            btn.prop('disabled', false);
+        } else {
+            toolbar.removeClass('d-flex').addClass('d-none');
+            btn.prop('disabled', true);
+        }
+    }
+
+    async function AplicarAccionesSeleccionadas() {
+        var facturas = [];
+        var omitidas = 0;
+        $('.row-checkbox:checked').each(function() {
+            if ($(this).data('isaccion') === 'N') {
+                facturas.push($(this).val());
+            } else {
+                omitidas++;
+            }
+        });
+
+        if (facturas.length === 0 && omitidas === 0) return;
+
+        var msgConfirm = 'Se asignarán acciones a ' + facturas.length + ' factura(s)';
+        if (omitidas > 0) {
+            msgConfirm += ' (' + omitidas + ' omitida(s) ya tienen acciones asignadas)';
+        }
+
+        if (facturas.length === 0) {
+            Swal.fire('Sin facturas pendientes', 'Todas las facturas seleccionadas ya tienen acciones asignadas.', 'info');
+            return;
+        }
+
+        var result = await Swal.fire({
+            title: '¿Asignar acciones?',
+            text: msgConfirm,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!result.isConfirmed) return;
+
+        Swal.fire({
+            title: 'Procesando factura 1 de ' + facturas.length,
+            text: 'Factura: ' + facturas[0],
+            icon: 'info',
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
+
+        for (var i = 0; i < facturas.length; i++) {
+            var factura = facturas[i];
+
+            Swal.update({
+                title: 'Procesando factura ' + (i + 1) + ' / ' + facturas.length,
+                text: 'Factura: ' + factura
+            });
+
+            try {
+                await $.ajax({
+                    url: '/AsignarAcciones',
+                    method: 'POST',
+                    data: { Factura: factura },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+            } catch (error) {
+                console.error('Error al asignar acciones a factura ' + factura, error);
+            }
+        }
+
+        Swal.fire({
+            title: 'Completado',
+            text: 'Acciones asignadas a ' + facturas.length + ' factura(s) correctamente',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+        });
+
+        var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+        GetData(desde, hasta);
+    }
+
 
     function TableAcciones(selector, data, Factura) {
         var Acciones = data.ACCIONES || [];
@@ -225,11 +332,20 @@ $(document).ready(function() {
             data: data.FACTURACION.DATA,
             destroy: true,
             paging: true,
-            pageLength: 12,
+            pageLength: 25,
             info: false,
             searching: true,
             ordering: true,
             columns: [
+                { 
+                    title: '<div class="text-center"><input type="checkbox" id="select-all" class="form-check-input m-0"></div>', 
+                    data: null, 
+                    className: 'text-center align-middle', 
+                    orderable: false,
+                    render: function(data) {
+                        return '<div class="d-flex justify-content-center align-items-center h-100"><input type="checkbox" class="row-checkbox form-check-input m-0" value="' + data.FACTURA + '" data-isaccion="' + data.IsAccion + '"></div>';
+                    }
+                },
                 { title: 'FACTURA', data: 'FACTURA', className: 'text-center', render: function(data, type, row) {
                     const rowData = encodeURIComponent(JSON.stringify(row));
                     return `<strong><a href='#!' onclick="OpenModal('${rowData}')">${data}</a>

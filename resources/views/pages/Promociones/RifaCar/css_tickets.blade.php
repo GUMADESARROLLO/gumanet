@@ -10,4 +10,7 @@
     #tbl_factura_acciones .badge { font-size: 0.85rem; }
     .table th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
     .table-success { background-color: #d8fae1 !important; }
+    #selection-toolbar { min-height: 44px; transition: all 0.2s ease; }
+    .row-checkbox, #select-all { cursor: pointer; }
+    #select-all { position: relative; top: 0; }
 </style>

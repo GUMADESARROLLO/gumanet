@@ -107,11 +107,19 @@
                 </div>
             </div>
         </div>
+        <div id="selection-toolbar" class="d-none align-items-center justify-content-between px-3 py-2 border-bottom bg-light">
+            <span class="small text-muted">
+                <span id="selected-count">0</span> factura(s) seleccionada(s)
+            </span>
+            <button type="button" id="btn-aplicar-masivo" class="btn btn-success btn-sm" disabled>
+                <i class="fas fa-check-double me-1"></i>Generar Acciones
+            </button>
+        </div>
         <div class="card-body p-0">
-                <table id="tbl_ordenes_compras" class="table table-hover display mb-0" style="width:100%">
+                <table id="tbl_ordenes_compras" class="table" style="width:100%">
                 <tfoot>
                     <tr class="fw-bold bg-light">
-                        <th colspan="5" class="text-end">TOTAL:</th>
+                        <th colspan="7" class="text-end">TOTAL:</th>
                         <th class="text-end" id="total_ordenes">C$. 0.00</th>
                     </tr>
                 </tfoot>
