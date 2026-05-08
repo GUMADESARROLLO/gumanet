@@ -14,7 +14,9 @@
         <div class="card-body">
             <div class="row align-items-end">
                 <div class="col-md-5">
-                    <h4 class="h4 text-umk mb-1">FACTURAS EMITIDAS</h4>
+                    <h4 class="h4 text-umk mb-1">
+                        FACTURAS EMITIDAS
+                    </h4>
                     <p class="text-muted mb-0 small">Periodo: <span id="tl_periodo" class="fw-semibold text-umk"></span></p>
                 </div>
                 <div class="col-md-3">
@@ -40,7 +42,7 @@
 
     <!-- Summary Cards -->
     <div class="row g-3 mb-4">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body d-flex align-items-center">
                     <div class="rounded-circle bg-light-primary p-3 me-3">
@@ -53,19 +55,34 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body d-flex align-items-center">
                     <div class="rounded-circle bg-light-success p-3 me-3">
                         <i class="fas fa-file-invoice text-success"></i>
                     </div>
                     <div>
-                        <div class="small text-muted text-uppercase fw-semibold">Fact. Emitidas</div>
+                        <div class="small text-muted text-uppercase fw-semibold">Total Fact. Emitidas</div>
                         <div class="h4 mb-0 fw-bold" id="TOTAL_FACTURAS">0</div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-2">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="rounded-circle bg-light-success p-3 me-3">
+                        <i class="fas fa-file-invoice text-success"></i>
+                    </div>
+                    <div>
+                        <div class="small text-muted text-uppercase fw-semibold">Total Fact. Sin Acciones</div>
+                        <div class="h4 mb-0 fw-bold" id="TOTAL_SIN_ACCIONES">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-md-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body d-flex align-items-center">

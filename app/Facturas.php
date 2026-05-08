@@ -17,6 +17,8 @@ class Facturas extends Model
         $desde = $request->desde . ' 00:00:00';
         $hasta = $request->hasta . ' 23:59:59';
 
+        $SinAcciones = 0;
+
         $FacturasConAcciones = DB::connection('sqlsrv')->select("SELECT FACTURA FROM PRODUCCION.dbo.LOG_ACCIONES_RIFA ");
 
         $query = "
@@ -50,6 +52,11 @@ class Facturas extends Model
         foreach ($rows as $item) {
             $TieneAccion = array_search($item->FACTURA, array_column($FacturasConAcciones, 'FACTURA'));
             $isAccion = ($TieneAccion !== false) ? 'S' : 'N';
+
+            if ($isAccion == 'N') {
+                $SinAcciones++;
+            }
+
             $Arry[] = [
                 "FACTURA"           => $item->FACTURA,
                 "FECHA"             => date('Y-m-d', strtotime($item->FECHA)),
@@ -68,11 +75,12 @@ class Facturas extends Model
 
         return $Arry = [
             "DATA" => $Arry,
-            'TOTAL_FACTURADO' => array_sum(array_column($Arry, 'TOTAL_FACTURA')),
-            "TOTAL_FACTURAS" => count($Arry),
-            "TOTAL_ACCIONES" => array_sum(array_column($Arry, 'ACCIONES')),
-            "TOTAL_CLIENTES" => count($clientesUnicos),
-            "ULTIMA_ACCION" => $UltmAccion,
+            'TOTAL_FACTURADO'       => array_sum(array_column($Arry, 'TOTAL_FACTURA')),
+            "TOTAL_FACTURAS"        => count($Arry),
+            "TOTAL_ACCIONES"        => array_sum(array_column($Arry, 'ACCIONES')),
+            "TOTAL_CLIENTES"        => count($clientesUnicos),
+            "ULTIMA_ACCION"         => $UltmAccion,
+            "TOTAL_SIN_ACCIONES"    => $SinAcciones,
         ];
     }
     public static function Acciones($request)

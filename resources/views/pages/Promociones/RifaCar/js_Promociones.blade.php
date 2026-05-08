@@ -366,8 +366,11 @@ $(document).ready(function() {
                     return `<div class="item-center"><strong>  ${row.ACCIONES} </strong></div>`;
                     }          
                 },  
-                { title: 'PENDIENTE', data: 'IsAccion', className: 'text-center',render: function(data, type, row) {
-                    return `<div class="item-center"><strong>  ${row.IsAccion} </strong></div>`;
+                { title: 'ESTADO', data: 'IsAccion', className: 'text-center',render: function(data, type, row) {
+                    if (row.IsAccion === 'S') {
+                        return '<span class="badge bg-success">Con Acciones</span>';
+                    }
+                    return '<span class="badge bg-warning text-dark">Sin Acciones</span>';
                     }          
                 }, 
                 { title: 'TOTAL C$', data: 'TOTAL_FACTURA', render: function(data, type, row) {
@@ -387,10 +390,12 @@ $(document).ready(function() {
 
         $("#total_ordenes").html(`C$. ${numeral(data.FACTURACION.TOTAL_FACTURADO).format('0,0.00')}`);
 
-        $("#TOTAL_CLIENTES").html(`${numeral(data.FACTURACION.TOTAL_CLIENTES).format('0,0.00')}`);
-        $("#TOTAL_FACTURAS").html(`${numeral(data.FACTURACION.TOTAL_FACTURAS).format('0,0.00')}`);
+        $("#TOTAL_CLIENTES").html(`${numeral(data.FACTURACION.TOTAL_CLIENTES).format('0,0')}`);
+        $("#TOTAL_FACTURAS").html(`${numeral(data.FACTURACION.TOTAL_FACTURAS).format('0,0')}`);
         $("#TOTAL_ACCIONES").html(`${numeral(data.FACTURACION.TOTAL_ACCIONES).format('0,0.00')}`);
         $("#ULTIMA_ACCION").html(`${data.FACTURACION.ULTIMA_ACCION}`);
+
+        $("#TOTAL_SIN_ACCIONES").text(data.FACTURACION.TOTAL_SIN_ACCIONES);
 
         $(selector + '_length').hide();
         $(selector + '_filter').hide();
