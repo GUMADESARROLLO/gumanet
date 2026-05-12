@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use Auth;
 
 class Facturas extends Model
 {
@@ -138,10 +138,25 @@ class Facturas extends Model
     public static function RevertirAcciones($request)
     {
         $Factura = $request->Factura;
+        $Justificacion = $request->Motivo;
+
+        $info = DB::connection('sqlsrv')->selectOne(
+            "SELECT CLIENTE, TOTAL_FACTURA FROM Softland.umk.FACTURA WHERE FACTURA = ?",
+            [$Factura]
+        );
+
+        $cliente = $info->CLIENTE ?? null;
+        $totalFactura = $info->TOTAL_FACTURA ?? 0;
+        $acciones = floor($totalFactura / 1000);
 
         DB::connection('sqlsrv')->statement(
             "EXEC PRODUCCION.dbo.SP_REVERSAR_ACCIONES_RIFA @FACTURA = ?",
             [$Factura]
+        );
+
+        DB::connection('sqlsrv')->insert(
+            "INSERT INTO PRODUCCION.dbo.LOG_REVERSIONES_RIFA (FACTURA, CLIENTE, TOTAL_FACTURA, ACCIONES, JUSTIFICACION, USUARIO_REVERSO) VALUES (?, ?, ?, ?, ?, ?)",
+            [$Factura, $cliente, $totalFactura, $acciones, $Justificacion, Auth::user()->id ?? 1]
         );
 
         return [
