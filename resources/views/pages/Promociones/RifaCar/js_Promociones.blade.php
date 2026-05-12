@@ -410,14 +410,18 @@ $(document).ready(function() {
                 }},
                 
                 { title: 'CLIENTE', data: 'CLIENTE', className: 'text-center',render: function(data, type, row) {
-                    return `<div class="item-center"><strong>${data}</strong></div>`;
-                    }          
+                    //return `<div class="item-center"><strong>${data}</strong></div>`;
+
+                    return `<strong><a href='https://carro.unimarksa.com/api/Perfil/${row.CLIENTE}' target="_blank'">${data}</a> </strong>`
+                }          
                 },
                 
                 { title: 'NOMBRE', data: 'NOMBRE', className: 'text-left',render: function(data, type, row) {
                     return `<div class="item-center"><strong>${data}</strong></div>`;
                     }          
                 },  
+                
+                { title: 'VENDEDOR', data: 'VENDEDOR', className: 'text-left'},
                 { title : 'FECHA FACTURA', data: 'FECHA', className: 'text-center'},
                 { title: 'ACCIONES', data: 'ACCIONES', className: 'text-center',render: function(data, type, row) {
                     return `<div class="item-center"><strong>  ${row.ACCIONES} </strong></div>`;

@@ -27,16 +27,18 @@ class Facturas extends Model
                 T1.NOMBRE,
                 T0.FACTURA,
                 T0.TOTAL_FACTURA,
-                FLOOR(T0.TOTAL_FACTURA / 1000) AS ACCIONES,
+                FLOOR( T0.TOTAL_FACTURA / 1000 ) AS ACCIONES,
                 T0.FECHA,
                 T0.VENDEDOR,
-                T0.NIVEL_PRECIO
+                T2.NOMBRE AS NOMBRE_VENDEDOR,
+                T0.NIVEL_PRECIO 
             FROM
                 Softland.umk.FACTURA T0
-            INNER JOIN Softland.umk.CLIENTE T1 ON T0.CLIENTE = T1.CLIENTE
+                INNER JOIN Softland.umk.CLIENTE T1 ON T0.CLIENTE = T1.CLIENTE 
+                INNER JOIN Softland.umk.VENDEDOR T2 ON T0.VENDEDOR = T2.VENDEDOR
             WHERE
                 T0.ANULADA = 'N'
-                AND T0.VENDEDOR NOT IN ('F01','F12')
+                AND T0.VENDEDOR NOT IN ('F01','F12', 'F02' , 'F11')
                 AND T0.TOTAL_FACTURA > 1000
                 AND T0.CLIENTE NOT IN ( SELECT CLIENTE FROM PRODUCCION.dbo.tbl_cadena_de_farmacia)
                 AND T0.FECHA BETWEEN ? AND ?
@@ -60,7 +62,7 @@ class Facturas extends Model
                 "CLIENTE"           => $item->CLIENTE,
                 "NOMBRE"            => $item->NOMBRE,                
                 "TOTAL_FACTURA"     => $item->TOTAL_FACTURA,
-                "VENDEDOR"          => $item->VENDEDOR,
+                "VENDEDOR"          => $item->VENDEDOR . ' - ' . $item->NOMBRE_VENDEDOR,
                 "ACCIONES"          => $item->ACCIONES,
                 "IsAccion"          => $isAccion
             ];
@@ -170,7 +172,10 @@ class Facturas extends Model
         $Factura = $request->Factura;
         //$Factura = '00293154';
 
+        
+
         $InfoFactura = FacturasAcciones::where('FACTURA', $Factura)->get();
+        
 
         return $InfoFactura;
     }
@@ -183,21 +188,20 @@ class Facturas extends Model
                 T1.NOMBRE,
                 T0.FACTURA,
                 T0.TOTAL_FACTURA,
-                FLOOR(T0.TOTAL_FACTURA / 1000) AS ACCIONES,
+                FLOOR( T0.TOTAL_FACTURA / 1000 ) AS ACCIONES,
                 T0.FECHA,
                 T0.VENDEDOR,
-                T0.NIVEL_PRECIO
+                T2.NOMBRE AS NOMBRE_VENDEDOR,
+                T0.NIVEL_PRECIO 
             FROM
                 Softland.umk.FACTURA T0
-            INNER JOIN Softland.umk.CLIENTE T1 
-                ON T0.CLIENTE = T1.CLIENTE
+                INNER JOIN Softland.umk.CLIENTE T1 ON T0.CLIENTE = T1.CLIENTE 
+                INNER JOIN Softland.umk.VENDEDOR T2 ON T0.VENDEDOR = T2.VENDEDOR
             WHERE
                 T0.ANULADA = 'N'
-                AND T0.VENDEDOR NOT IN ('F02','F12')
+                AND T0.VENDEDOR NOT IN ('F01','F12', 'F02' , 'F11')
                 AND T0.TOTAL_FACTURA > 1000
-                AND T0.CLIENTE NOT IN (
-                    SELECT CLIENTE FROM PRODUCCION.dbo.tbl_cadena_de_farmacia
-                )
+                AND T0.CLIENTE NOT IN ( SELECT CLIENTE FROM PRODUCCION.dbo.tbl_cadena_de_farmacia)
                 AND T0.FACTURA = ?
         ";
 

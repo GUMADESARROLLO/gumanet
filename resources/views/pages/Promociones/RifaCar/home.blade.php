@@ -164,7 +164,7 @@
                         <div class="fw-bold fs-5" id="lbl_factura"></div>
                     </div>
 
-                    <div class="border rounded-3 p-3 mb-3 min-vh-10" id="tbl_factura_acciones"></div>
+                    
 
                     <div class="d-flex align-items-center p-3 bg-light rounded-3 mb-3">
                         <div class="flex-shrink-0 me-3">
@@ -177,6 +177,8 @@
                             <small class="text-muted" id="lbl_codigo_cliente"></small>
                         </div>
                     </div>
+
+                    <div class="border rounded-3 p-3 mb-3 min-vh-10" id="tbl_factura_acciones"></div>
 
                     <div class="d-flex gap-2">
                         <button type="button" id="btn_imprimir_acciones" class="btn btn-success flex-fill">
