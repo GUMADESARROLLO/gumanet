@@ -43,7 +43,7 @@
     <!-- Summary Cards -->
     <div class="row g-3 mb-4">
         <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="card border-0 shadow-sm h-100 card-clientes" role="button" style="cursor:pointer">
                 <div class="card-body d-flex align-items-center">
                     <div class="rounded-circle bg-light-primary p-3 me-3">
                         <i class="fas fa-users text-primary"></i>
@@ -177,6 +177,52 @@
                             <i class="fas fa-undo me-2"></i>Revertir
                         </button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Clientes -->
+    <div class="modal fade" id="ModalClientes" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-innova text-white">
+                    <div>
+                        <h5 class="modal-title fw-bold">
+                            <i class="fas fa-users me-2"></i>Clientes con Acciones
+                        </h5>
+                        <small class="text-white-50">Periodo: <span id="tl_periodo_modal"></span></small>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                    
+
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                            </div>
+                            <input type="text" class="form-control form-control-sm input-fecha" placeholder="Buscar..." id="buscar-cliente" >
+                        </div>
+                        
+                    </div>
+                    <table id="tbl_clientes" class="table table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>CLIENTE</th>
+                                <th>NOMBRE</th>
+                                <th class="text-center">ACCIONES FACT.</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr class="fw-bold bg-light">
+                                <th colspan="3" class="text-end">TOTAL:</th>
+                                <th class="text-center" id="total-acciones-clientes">0</th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>

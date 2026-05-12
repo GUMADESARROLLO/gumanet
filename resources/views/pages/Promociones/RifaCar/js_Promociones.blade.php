@@ -133,7 +133,23 @@ $(document).ready(function() {
         AplicarAccionesSeleccionadas();
     });
 
+    $('.card-clientes').on('click', function() {
+        if (typeof _clientesData === 'undefined') return;
+        $('#tl_periodo_modal').html($('#tl_periodo').html());
+        $('#ModalClientes').modal('show');
+        setTimeout(function() {
+            TablaClientes('#tbl_clientes', _clientesData);
+        }, 300);
+    });
+
+    $('#buscar-cliente').on('keyup', function() {
+        var table = $('#tbl_clientes').DataTable();
+        table.search(this.value).draw();
+    });
+
 });
+
+    var _clientesData = null;
 
     function OpenModal(RowData) {
         $('#ModalAcciones').modal('show');
@@ -463,6 +479,52 @@ $(document).ready(function() {
 
         $(selector + '_length').hide();
         $(selector + '_filter').hide();
+
+        _clientesData = data.FACTURACION.DATA;
+    }
+
+    function TablaClientes(selector, data) {
+        if ($(selector).hasClass('dataTable')) {
+            $(selector).DataTable().destroy();
+        }
+
+        var clientes = {};
+        data.forEach(function(row) {
+            var key = row.CLIENTE;
+            if (!clientes[key]) {
+                clientes[key] = { CLIENTE: row.CLIENTE, NOMBRE: row.NOMBRE, ACCIONES: 0 };
+            }
+            clientes[key].ACCIONES += parseInt(row.ACCIONES) || 0;
+        });
+
+        var rows = Object.values(clientes);
+        rows.sort(function(a, b) { return b.ACCIONES - a.ACCIONES; });
+
+        $(selector).DataTable({
+            data: rows,
+            destroy: true,
+            paging: true,
+            pageLength: 17,
+            info: false,
+            searching: true,
+            ordering: true,
+            columns: [
+                { data: null, className: 'text-center', render: function(data, type, row, meta) {
+                    return meta.row + 1;
+                }},
+                { data: 'CLIENTE', className: 'text-center' },
+                { data: 'NOMBRE', className: 'text-left' },
+                { data: 'ACCIONES', className: 'text-center fw-bold', render: function(data) {
+                    return numeral(data).format('0,0');
+                }},
+            ],
+        });
+
+        $(selector + '_length').hide();
+        $(selector + '_filter').hide();
+
+        var totalAcciones = rows.reduce(function(sum, r) { return sum + r.ACCIONES; }, 0);
+        $('#total-acciones-clientes').text(numeral(totalAcciones).format('0,0'));
     }
 
 
