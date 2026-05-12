@@ -456,8 +456,10 @@ $(document).ready(function() {
         $("#TOTAL_ACCIONES").html(`${numeral(data.FACTURACION.TOTAL_ACCIONES).format('0,0.00')}`);
         $("#ULTIMA_ACCION").html(`${data.FACTURACION.ULTIMA_ACCION}`);
 
-        $("#TOTAL_SIN_ACCIONES").text(data.FACTURACION.TOTAL_SIN_ACCIONES);
+        $("#TOTAL_SIN_ACCIONES").text("Sin Acciones: " + data.FACTURACION.TOTAL_SIN_ACCIONES);
         $("#porcentaje-disponible").html('Disponible: <strong>' + data.FACTURACION.PORCENTAJE_DISPONIBLE + '%</strong>');
+
+        $("#acciones-asignadas").html("Asignadas: " + numeral(data.FACTURACION.TOTAL_ACCIONES_ASIG).format('0,0'))
 
         $(selector + '_length').hide();
         $(selector + '_filter').hide();

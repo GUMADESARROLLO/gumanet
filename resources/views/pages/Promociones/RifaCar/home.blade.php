@@ -42,7 +42,7 @@
 
     <!-- Summary Cards -->
     <div class="row g-3 mb-4">
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body d-flex align-items-center">
                     <div class="rounded-circle bg-light-primary p-3 me-3">
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body d-flex align-items-center">
                     <div class="rounded-circle bg-light-success p-3 me-3">
@@ -64,20 +64,7 @@
                     <div>
                         <div class="small text-muted text-uppercase fw-semibold">Total Fact. Emitidas</div>
                         <div class="h4 mb-0 fw-bold" id="TOTAL_FACTURAS">0</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center">
-                    <div class="rounded-circle bg-light-success p-3 me-3">
-                        <i class="fas fa-file-invoice text-success"></i>
-                    </div>
-                    <div>
-                        <div class="small text-muted text-uppercase fw-semibold">Total Fact. Sin Acciones</div>
-                        <div class="h4 mb-0 fw-bold" id="TOTAL_SIN_ACCIONES">0</div>
+                        <small class="text-muted" id="TOTAL_SIN_ACCIONES"></small>
                     </div>
                 </div>
             </div>
@@ -92,6 +79,7 @@
                     <div>
                         <div class="small text-muted text-uppercase fw-semibold">Acciones Fact.</div>
                         <div class="h4 mb-0 fw-bold" id="TOTAL_ACCIONES">0</div>
+                        <small class="text-muted" id="acciones-asignadas"></small>
                     </div>
                 </div>
             </div>

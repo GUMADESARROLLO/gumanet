@@ -18,6 +18,7 @@ class Facturas extends Model
         $hasta = $request->hasta . ' 23:59:59';
 
         $SinAcciones = 0;
+        $ConAcciones = 0;
 
         $FacturasConAcciones = DB::connection('sqlsrv')->select("SELECT FACTURA FROM PRODUCCION.dbo.LOG_ACCIONES_RIFA ");
 
@@ -56,6 +57,10 @@ class Facturas extends Model
                 $SinAcciones++;
             }
 
+            if ($isAccion == 'S') {
+                $ConAcciones = $ConAcciones + $item->ACCIONES;
+            }
+
             $Arry[] = [
                 "FACTURA"           => $item->FACTURA,
                 "FECHA"             => date('Y-m-d H:i:s', strtotime($item->FECHA)),
@@ -82,6 +87,7 @@ class Facturas extends Model
             "TOTAL_CLIENTES"        => count($clientesUnicos),
             "ULTIMA_ACCION"         => $UltmAccion,
             "TOTAL_SIN_ACCIONES"    => $SinAcciones,
+            "TOTAL_ACCIONES_ASIG"   => $ConAcciones,
             "PORCENTAJE_DISPONIBLE" => $porcentajeDisponible
         ];
     }
