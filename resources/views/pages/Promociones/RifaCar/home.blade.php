@@ -105,6 +105,7 @@
                     <div>
                         <div class="small text-muted text-uppercase fw-semibold">Última Acción</div>
                         <div class="h4 mb-0 fw-bold" id="ULTIMA_ACCION">0</div>
+                        <small class="text-muted" id="porcentaje-disponible"></small>
                     </div>
                 </div>
             </div>

@@ -457,6 +457,7 @@ $(document).ready(function() {
         $("#ULTIMA_ACCION").html(`${data.FACTURACION.ULTIMA_ACCION}`);
 
         $("#TOTAL_SIN_ACCIONES").text(data.FACTURACION.TOTAL_SIN_ACCIONES);
+        $("#porcentaje-disponible").html('Disponible: <strong>' + data.FACTURACION.PORCENTAJE_DISPONIBLE + '%</strong>');
 
         $(selector + '_length').hide();
         $(selector + '_filter').hide();

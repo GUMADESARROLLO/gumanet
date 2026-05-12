@@ -72,6 +72,8 @@ class Facturas extends Model
 
         $UltmAccion = DB::connection('sqlsrv')->select("SELECT NUMERO FROM PRODUCCION.dbo.NUMEROS_RIFA WHERE USADO = 1 ORDER BY NUMERO DESC")[0]->NUMERO ?? 'N/A';
 
+        $porcentajeDisponible = round(((100000 - $UltmAccion) / 100000) * 100, 1);
+
         return $Arry = [
             "DATA" => $Arry,
             'TOTAL_FACTURADO'       => array_sum(array_column($Arry, 'TOTAL_FACTURA')),
@@ -80,6 +82,7 @@ class Facturas extends Model
             "TOTAL_CLIENTES"        => count($clientesUnicos),
             "ULTIMA_ACCION"         => $UltmAccion,
             "TOTAL_SIN_ACCIONES"    => $SinAcciones,
+            "PORCENTAJE_DISPONIBLE" => $porcentajeDisponible
         ];
     }
     public static function Acciones($request)
