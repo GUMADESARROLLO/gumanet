@@ -153,6 +153,62 @@ $(document).ready(function() {
         window.open(`/ImprimirAcciones?Factura=${factura}`, '_blank');
     });
 
+    $("#btn_revertir_acciones").on('click', function() {
+        var factura = $('#lbl_factura').html();
+        $('#ModalAcciones').modal('hide');
+
+        setTimeout(function() {
+            Swal.fire({
+                title: 'Revertir acciones',
+                text: `Factura: ${factura}`,
+                icon: 'warning',
+                input: 'textarea',
+                inputLabel: 'Motivo de la reversión',
+                inputPlaceholder: 'Describa el motivo...',
+                inputAttributes: {
+                    'aria-label': 'Motivo de la reversión'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Sí, revertir',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#d33',
+                preConfirm: (motivo) => {
+                    if (!motivo) {
+                        Swal.showValidationMessage('Debe ingresar un motivo');
+                        return false;
+                    }
+                    return new Promise((resolve, reject) => {
+                        $.ajax({
+                            url: '/RevertirAcciones',
+                            method: 'POST',
+                            data: { 
+                                Factura: factura, 
+                                Motivo: motivo 
+                            },
+                            success: function (resp) {
+                                resolve(resp);
+                            },
+                            error: function () {
+                                reject('Error al revertir acciones');
+                            }
+                        });
+                    }).catch((error) => {
+                        Swal.showValidationMessage(error);
+                    });
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Revertido', 'Acciones revertidas correctamente', 'success').then(function() {
+                        $('#ModalAcciones').modal('show');
+                        GetAcciones(factura);
+                    });
+                } else {
+                    $('#ModalAcciones').modal('show');
+                }
+            });
+        }, 400);
+    });
+
 
     function CallFilter( desde = null, hasta = null ) {
 
@@ -324,6 +380,7 @@ $(document).ready(function() {
             );
 
             $('#btn_imprimir_acciones').prop('disabled', (Acciones.length === 0 ? true : false));
+            $('#btn_revertir_acciones').prop('disabled', (Acciones.length === 0 ? true : false));
 
     }
     

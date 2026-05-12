@@ -178,9 +178,14 @@
                         </div>
                     </div>
 
-                    <button type="button" id="btn_imprimir_acciones" class="btn btn-success w-100">
-                        <i class="fas fa-print me-2"></i>Imprimir
-                    </button>
+                    <div class="d-flex gap-2">
+                        <button type="button" id="btn_imprimir_acciones" class="btn btn-success flex-fill">
+                            <i class="fas fa-print me-2"></i>Imprimir
+                        </button>
+                        <button type="button" id="btn_revertir_acciones" class="btn btn-danger flex-fill">
+                            <i class="fas fa-undo me-2"></i>Revertir
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

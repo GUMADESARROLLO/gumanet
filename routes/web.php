@@ -383,4 +383,5 @@ Route::get('Promociones', 'PromocionesController@RifaCar')->name('Promociones');
 Route::post('getFactPromocion', 'PromocionesController@getFactPromocion')->name('getFactPromocion');
 Route::post('getFactAcciones', 'PromocionesController@getFactAcciones')->name('getFactAcciones');
 Route::post('AsignarAcciones', 'PromocionesController@AsignarAcciones')->name('AsignarAcciones');
+Route::post('RevertirAcciones', 'PromocionesController@RevertirAcciones')->name('RevertirAcciones');
 Route::get('ImprimirAcciones', 'PromocionesController@ImprimirAcciones')->name('ImprimirAcciones');

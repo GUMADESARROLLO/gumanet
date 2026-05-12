@@ -134,6 +134,22 @@ class Facturas extends Model
             'message' => 'Acciones asignadas correctamente'
         ];
     }
+
+    public static function RevertirAcciones($request)
+    {
+        $Factura = $request->Factura;
+
+        DB::connection('sqlsrv')->statement(
+            "EXEC PRODUCCION.dbo.SP_REVERSAR_ACCIONES_RIFA @FACTURA = ?",
+            [$Factura]
+        );
+
+        return [
+            'status' => true,
+            'message' => 'Acciones revertidas correctamente'
+        ];
+    }
+
     public static function ImprimirAcciones($request)
     {
         $Factura = $request->Factura;

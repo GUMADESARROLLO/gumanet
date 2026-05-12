@@ -50,6 +50,12 @@ class PromocionesController extends Controller
         return response()->json($InfoFactura);
     }
 
+    public function RevertirAcciones(Request $request)
+    {
+        $InfoFactura = Facturas::RevertirAcciones($request);
+        return response()->json($InfoFactura);
+    }
+
     public function ImprimirAcciones(Request $request)
     {
         $Acciones = Facturas::ImprimirAcciones($request);
