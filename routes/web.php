@@ -21,7 +21,7 @@ Route::post('/getTasksProjects','infraestructura_controller@getTasksProjects');
 //RUTAS MENU
 Route::get('/Inventario','inventario_controller@index');
 Route::get('/Inventario/Transito/{id}','inventario_controller@InventarioTransito')->name('/Comiciones/Inventario');
-Route::get('/getTransito/{id}', 'inventario_controller@getTransito')->name("getTransito");
+Route::get('/getTransito/{id}/{unidad}', 'inventario_controller@getTransito')->name("getTransito");
 Route::post('/SaveTransito', 'inventario_controller@SaveTransito')->name("SaveTransito");
 Route::post('/SaveTransitoNew', 'inventario_controller@SaveTransitoNew')->name("SaveTransitoNew");
 Route::post('/SaveTransitoConCodigo', 'inventario_controller@SaveTransitoConCodigo')->name("SaveTransitoConCodigo");
@@ -370,3 +370,20 @@ Route::post('getDataOrdenesCompra', 'OrdenCompraController@getDataOrdenesCompra'
 Route::get('Mific', 'MificController@Mific')->name('Mific');
 Route::post('getDataMific', 'MificController@getDataMific')->name('getDataMific');
 Route::post('getDetallesMific', 'MificController@getDetallesMific')->name('getDetallesMific');
+Route::post('UpdateMific', 'MificController@UpdateMific')->name('UpdateMific');
+Route::post('SaveMific', 'MificController@SaveMific')->name('SaveMific');
+Route::post('DeleteMific', 'MificController@DeleteMific')->name('DeleteMific');
+
+
+// RUTAS PARA FACTURACION
+Route::get('Facturacion', 'FacturacionController@Dashboard')->name('Facturacion');
+Route::post('getDataFacturacion', 'FacturacionController@getDataFacturacion')->name('getDataFacturacion');
+
+
+
+Route::get('Promociones', 'PromocionesController@RifaCar')->name('Promociones');
+Route::post('getFactPromocion', 'PromocionesController@getFactPromocion')->name('getFactPromocion');
+Route::post('getFactAcciones', 'PromocionesController@getFactAcciones')->name('getFactAcciones');
+Route::post('AsignarAcciones', 'PromocionesController@AsignarAcciones')->name('AsignarAcciones');
+Route::post('RevertirAcciones', 'PromocionesController@RevertirAcciones')->name('RevertirAcciones');
+Route::get('ImprimirAcciones', 'PromocionesController@ImprimirAcciones')->name('ImprimirAcciones');

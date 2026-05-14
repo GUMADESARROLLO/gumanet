@@ -20,6 +20,7 @@
         "league/flysystem-sftp": "~1.0",
         "phpoffice/phpexcel": "dev-master",
         "predis/predis": "^2.2",
+        "simplesoftwareio/simple-qrcode": "*",
         "snapappointments/bootstrap-select": "^1.13",
         "vsmoraes/laravel-pdf": "^2.0",
         "yajra/laravel-datatables": "^1.5",

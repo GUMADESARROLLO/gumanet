@@ -100,6 +100,14 @@
           { title: 'ORDEN COMPRA', data: 'ORDEN_COMPRA', className: 'text-center', render: function(data, type, row) {
               return `<strong><a href=OrdenCompraDetalle/${data} target='_blank'>${data}</a></strong>`;
           }},
+          { title: 'EMBARQUE', data: 'ORD_EMBARQ', className: 'text-center',render: function(data, type, row) {
+              return `<div class="item-center"><strong>${data}</strong></div>`;
+            }          
+          },
+          { title: 'LIQUIDACION', data: 'ORD_LIQUID', className: 'text-center',render: function(data, type, row) {
+              return `<div class="item-center"><strong>${data}</strong></div>`;
+            }          
+          },
           { title: 'ESTADO', data: 'ESTADO', className: 'text-center',render: function(data, type, row) {
               return `<div class="item-center"><strong>${data}</strong></div>`;
             }          
@@ -120,7 +128,7 @@
           { title : 'FECHA OFRECIDA', data: 'FECHA_OFRECIDA', className: 'text-center'},
           { title : 'FECHA REQUERIDA', data: 'FECHA_REQUERIDA', className: 'text-center'},
           { title : 'FECHA REQ. EMBARQUE', data: 'FECHA_REQ_EMBARQUE', className: 'text-center'},
-          { title: 'TOTAL MERCADERIA $', data: 'TOTAL_A_COMPRAR', render: function(data, type, row) {
+          { title: 'TOTAL $', data: 'TOTAL_A_COMPRAR', render: function(data, type, row) {
               return `<div class="item-right">${numeral(data).format('0,0.00')} </div>`;
             }          
           },

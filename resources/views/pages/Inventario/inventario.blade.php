@@ -1,13 +1,13 @@
 @extends('layouts.main')
 <style>
   .table thead th {
-    background-color: #004e7e !important;
+    background-color: {{ $Style['Color'] }} !important;
     color: #fff !important;
     font-weight: bold !important;
   }
 
 </style>
-@section('title' , $name)
+@section('title' , $data['name'])
 @section('name_user' , 'Administrador')
 @section('metodosjs')
   @include('jsViews.js_inventario');
@@ -15,19 +15,19 @@
 @section('content')
 
 <div class="container-fluid">
-  <div class="row mb-5">
-    <div class="col-md-6">
-      <h4 class="h4">Inventario</h4>
+  <div class="row mb-5 d-flex justify-content-center">
+    <div class="col-md-10">      
+      <img src="{{ asset($Style['Logo']) }}" alt="Inventario" width="{{ $Style['With'] }}">
     </div>
-    @if( Auth::User()->email=='asaenz@unimarksa.com' || Auth::User()->email=='admin@gmail.com' || Auth::User()->email=='asisp@unimarksa.com' )    
-      <div class="col-md-2">
+    @if (in_array(Auth::User()->email, ['saenz@unimarksa.com', 'admin@gmail.com', 'asisp@unimarksa.com']))
+      <div class="col-md-2" style="display: none;">
         <a id="" href="{{url('/invCompleto')}}" class="btn btn-primary btn-block">Inventario Completo</a>
       </div>
       
       <div class="col-md-2">
-        <a id="" href="{{url('/Inventario/Transito/1')}}" class="btn btn-primary btn-block">Transito Con Codigo</a>
+        <a href="{{url('/Inventario/Transito/1')}}" class="btn btn-primary btn-block mt-2"><i class="fas fa-box"></i> TRANSITO</a>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-2" style="display: none;">
         <a id="" href="{{url('/Inventario/Transito/0')}}" class="btn btn-primary btn-block">Transito Sin Codigo</a>
       </div>
     @endif
@@ -193,7 +193,7 @@
                           <span id="IdUnidadMedida">UNIDAD MEDIDA<br /></span>
                           <span><span class="text-primary"> • </span> <span id="IdPresentacion">PRESENTACION</span>
                         </div>
-                        <div class="mt-1 mb-0 text-muted small">
+                        <div class="mt-1 mb-0 text-muted small" style="display:none">
                           <span>Ultima Orden de Compras</span>
                           <span class="text-primary"> • </span>
                           <span style="color: black;" id="ULTIMA_COMPRA"></span>

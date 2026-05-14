@@ -39,12 +39,20 @@ class inventario_controller extends Controller
 			'name' 				=> 'GUMA@NET',
 			'hideTransaccion' 	=> ''
 		);
+
+
+		$Style = array(
+			'Logo' => ($companie == 4) ? 'img/innova.png' : 'img/unimark.png',
+			'With' => ($companie == 4) ? '200px' : '280px',
+			'Color' => ($companie == 4) ? '#802980' : '#004e7e',
+		);
 		
 		if($companie == 4){
-			$inventario = InnovaModel::getAll();
-			return view('pages.inventarioINN', compact('inventario'));
+			//$inventario = InnovaModel::getAll();
+			//return view('pages.inventarioINN', compact('inventario'));			
+			return view('pages.Inventario.inventario', compact('data','Style'));
 		}else{
-			return view('pages.Inventario.inventario', $data);
+			return view('pages.Inventario.inventario', compact('data','Style'));
 		}
 	}
 	public function getArticuloDetalles($Articulo,$Unidad) {
@@ -116,9 +124,11 @@ class inventario_controller extends Controller
 				'fecha_estimada'	=> $k->fecha_estimada,
 				'fecha_pedido'      => $k->fecha_pedido,
 				'documento'         => $k->documento,
+				'NumFact'           => $k->NumFact,
 				'cantidad'          => number_format($k->cantidad,0,'.',''),
 				'cantidad_pedido'          	=> number_format($k->cantidad_pedido,0,'.',''),
 				'cantidad_transito'          => number_format($k->cantidad_transito,0,'.',''),
+				'cantidad_bodega'          => number_format($k->cantidad_bodega,0,'.',''),
 				'mercado'         	=> $k->mercado,
 				'mific'             => $k->mific,
 				'Estado'             => $k->Estado,
@@ -153,19 +163,26 @@ class inventario_controller extends Controller
 	}
 	public function SaveTransito(Request $request)
     {  
-		$NumRow = $request->NumRow;
+		$NumRow   = $request->NumRow;
+		$isBodega = $request->select_estado ;
+		
+		$Transito = $request->CantidadTransito;
+		$InBodega = 0;
+
+
 
 		$request->validate([
             'fecha_estimada' 		=> 'required',
             'fecha_pedido' 			=> 'required',
             'documento' 			=> 'required',
+			'NumFact' 				=> 'required',
             'cantidad' 				=> 'required',
 			'CantidadTransito' 		=> 'required',
             'mercado' 				=> 'required',
             'mific' 				=> 'required',
 			'select_estado' 		=> 'required',
-			'precio_mific_f' 		=> 'required',
-			'precio_mific_p' 		=> 'required',
+			// 'precio_mific_f' 		=> 'required',
+			// 'precio_mific_p' 		=> 'required',
             'observaciones' 		=> 'required',
         ]);
 
@@ -175,19 +192,25 @@ class inventario_controller extends Controller
 	
 
 		if ($articuloTransito) {
+
+			if ($isBodega == 'BODEGA') {
+				$Transito = 0;
+				$InBodega = $request->CantidadTransito;
+			}
+
 			$articuloTransito->update([
 				'Descripcion' 				=> $request->Descripcion,
 				'fecha_estimada' 			=> $request->fecha_estimada,
 				'fecha_pedido' 				=> $request->fecha_pedido,
 				'documento' 				=> $request->documento,
+				'NumFact' 					=> $request->NumFact,
 				'cantidad_pedido' 			=> $request->cantidad,
-				'cantidad_transito' 		=> $request->CantidadTransito,
+				'cantidad_transito' 		=> $Transito,
+				'cantidad_bodega' 		    => $InBodega,
 				'mercado' 					=> $request->mercado,
 				'mific' 					=> $request->mific,
 				'estado_compra' 			=> $request->select_estado,
 				'observaciones' 			=> $request->observaciones,
-				'Precio_mific_farmacia' 	=> $request->precio_mific_f,
-				'Precio_mific_public' 		=> $request->precio_mific_p,
 				'via_transporte'    		=> $request->via_transito,
 			]);
 	
@@ -201,14 +224,13 @@ class inventario_controller extends Controller
 				'fecha_estimada' 		=> $request->fecha_estimada,
 				'fecha_pedido' 			=> $request->fecha_pedido,
 				'documento' 			=> $request->documento,
+				'NumFact' 				=> $request->NumFact,
 				'cantidad_pedido' 		=> $request->cantidad,
 				'cantidad_transito' 	=> $request->CantidadTransito,
 				'mercado' 				=> $request->mercado,
 				'mific' 				=> $request->mific,
 				'estado_compra' 		=> $request->select_estado,
 				'observaciones' 		=> $request->observaciones,
-				'Precio_mific_farmacia' => $request->precio_mific_f,
-				'Precio_mific_public' 	=> $request->precio_mific_p,
 				'Nuevo' 				=> 'N',
 				'via_transporte'    	=> $request->via_transito,
 			]);
@@ -247,6 +269,7 @@ class inventario_controller extends Controller
 			'Descripcion'	=> strtoupper($Art->DESCRIPCION),
             'observaciones' => ' - ',
 			'Nuevo' 		=> 'N',
+			'estado_compra' => 'N/D',
         ]);
 
         return response()->json(['message' => 'Información guardada correctamente']);
@@ -274,23 +297,13 @@ class inventario_controller extends Controller
 			'hideTransaccion' => ''
 		);
 
-		$ArticulosConCodigos = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->pluck('Articulo')->toArray();
-		
-		if(count($ArticulosConCodigos)  > 0){
-			$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', $ArticulosConCodigos)->get();
-			
-		} else {
-			$Articulos = InventarioUnificadoTransito::all();
-		};
-
-	
-
+		$Articulos = InventarioUnificadoTransito::all();
 
 		return view('pages.Transito.Table', compact('data', 'Articulos'));
 	}
 
-	public function getTransito($Id) {
-		$obj = ($Id == 0) ? ArticulosTransito::getTransitoSinCodigo() : ArticulosTransito::getTransitoConCodigo() ;
+	public function getTransito($Id, $unidad) {
+		$obj = ($Id == 0) ? ArticulosTransito::getTransitoSinCodigo() : ArticulosTransito::getTransitoConCodigo($unidad);
 		return response()->json($obj);
     }
 

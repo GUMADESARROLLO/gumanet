@@ -407,7 +407,7 @@ class recibos_controller extends Controller {
         $query = DB::table('tbl_order_recibo')->whereBetween('fecha_recibo', [$from, $to])->whereNotIn('status', array(3));
 
         if($Ruta != '') {
-            if ($Ruta == 'F26' || $Ruta == 'F27' || $Ruta == 'F28'){
+            if (in_array($Ruta, ['F26', 'F27', 'F28', 'F29', 'F30'])) {
                 $query->where('ruta', 'like', $Ruta.'%');
             }else{ 
                 $query->where('ruta', $Ruta);
