@@ -154,6 +154,23 @@
             return `<div class="item-right">C$ ${numeral(data).format('0,0.00')}</div>`;
           }},
         ],
+        createdRow: function (row, rowData) {
+
+          if (selector === '#vendedoresRangoTable') {
+
+            $(row).css('cursor', 'pointer');
+
+            $(row).on('click', function () {
+
+              $('#mdl-topsku').modal('show');
+              $('#id-name-articulo').text(rowData.NOMBRE);
+
+              getDetallesSKUCliente(rowData.CODIGO);
+
+            });
+
+          }
+        }
       });
       $(selector + '_length').hide();
     }
@@ -203,11 +220,10 @@
             
             order: [],
             columns: [
-                { data: "CLIENTE", title: "" },
                 { data: "CLIENTE", title: "CLIENTE" },
-                { data: "NOMBRE", title: "NOMBRE" },
-                { data: "CANTIDAD", title: "CANT." ,  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
-                { data: "FACTURADO", title: "VENTA SIN IVA",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { data: "CLIENTE", title: "CLIENTE" },
+                { data: "CANTIDAD", title: "CANT." ,  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
+                { data: "VENTA", title: "VENTA",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, 'C$ ') },
             ],
             pageLength: 7,
             bLengthChange: false,
@@ -248,9 +264,6 @@
             destroy: true,
             order: [],
             columns: [
-                { data: "FACTURA", title: "",  class: "text-center",render: function ( data, type, row ) {
-                    return `<a id="exp_factura" href="#!"><i class="material-icons expan_more">expand_more</i></a>`;
-                }},
                 { data: "FACTURA", title: "FACT.",  class: "text-center" },
                 { data: "Dia", title: "FECHA FACT." , class: "text-center",
                     render: function ( data, type, row ) {
@@ -258,7 +271,7 @@
                     }
                 },
                 { data: "CANTIDAD", title: "CANT." ,  class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') },
-                { data: "VENTA", title: "VALOR",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '') }
+                { data: "VENTA", title: "VALOR",   class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, 'C$ ') }
             ],
             pageLength: 7,
             bLengthChange: false,
@@ -350,7 +363,7 @@
             }
         });
     }
-    async function getDetallesSKUCliente(articulo) {
+    async function getDetallesSKUCliente(Ruta) {
       try {
 
         var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
@@ -358,7 +371,7 @@
         var Clientes = $('#cmbClientesExcluir').val();
 
 
-        const response = await fetch('getDetallesSKUCliente', {
+        const response = await fetch('getFacturasSKUClientesUmk', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -367,8 +380,7 @@
           body: JSON.stringify({ 
             desde     : desde, 
             hasta     : hasta,
-            articulo  : articulo,
-            Clientes  : Clientes
+            Ruta  : Ruta
           })
         });
         const result = await response.json();
@@ -450,6 +462,7 @@
             $('#facturacion_esencial').text(result.FACTESEN);
             $('#facturacion_expansion').text(result.FACTEXPA);
             $('#facturacion_total').text(result.FACTTOTA);
+            $('#total_clientes').text(result.CLIENTOT);
             $("#anioAnterior").text(new Date().getFullYear() - 1);
             $("#anioActual").text(new Date().getFullYear());
 

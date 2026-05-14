@@ -56,10 +56,11 @@ class Budget extends Model
         $grupo      = $request->input('grupo');
         
         $resultadosHoy = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.fn_proyecto_90_10(?, ?, ?) ORDER BY VENTA DESC",[$endDate, $endDate, $grupo]);
-        
+        $filtrados = ($grupo === 'TODO') ? $resultadosHoy : array_filter($resultadosHoy, fn($row) => $row->GRUPOS === $grupo);
+
         $clientesTmp = [];
 
-        foreach ($resultadosHoy as $row) {
+        foreach ($filtrados as $row) {
 
             $codigo = $row->CODIGO;
 
@@ -86,21 +87,19 @@ class Budget extends Model
         }
 
         $vendedorTemp = [];
-        foreach ($resultadosHoy as $row) {
+        foreach ($filtrados as $row) { 
+            $key = $row->Ruta . '|' . $row->VENDEDOR; 
+            if (!isset($vendedorTemp[$key])) { 
+                $vendedorTemp[$key] = [ 
+                    'CODIGO' => $row->Ruta, 
+                    'NOMBRE' => $row->VENDEDOR, 
+                    'CANTIDAD' => 0, 
+                    'VENTA' => 0, 
+                    ]; 
+            } 
 
-            $key = $row->Ruta . '|' . $row->VENDEDOR;
-
-            if (!isset($vendedorTemp[$key])) {
-                $vendedorTemp[$key] = [
-                    'CODIGO'   => $row->Ruta,
-                    'NOMBRE'   => $row->VENDEDOR,
-                    'CANTIDAD' => 0,
-                    'VENTA'    => 0,
-                ];
-            }
-
-            $vendedorTemp[$key]['CANTIDAD'] += $row->CANTIDAD;
-            $vendedorTemp[$key]['VENTA']    += $row->VENTA;
+            $vendedorTemp[$key]['CANTIDAD'] += $row->CANTIDAD; 
+            $vendedorTemp[$key]['VENTA'] += $row->VENTA; 
         }
 
         foreach ($vendedorTemp as $item) {
@@ -114,24 +113,24 @@ class Budget extends Model
 
 
         $resultados = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.fn_proyecto_90_10(?, ?, ?) ORDER BY VENTA DESC",[$startDate, $endDate, $grupo]);
+        $filtrado = ($grupo === 'TODO') ? $resultados : array_filter($resultados, fn($row) => $row->GRUPOS === $grupo);
         $vendedorTemp = [];
-        foreach ($resultados as $row) {
+        
+        foreach ($filtrado as $row) { 
+            $key = $row->Ruta . '|' . $row->VENDEDOR; 
+            if (!isset($vendedorTemp[$key])) { 
+                $vendedorTemp[$key] = [ 
+                    'CODIGO' => $row->Ruta, 
+                    'NOMBRE' => $row->VENDEDOR, 
+                    'CANTIDAD' => 0, 
+                    'VENTA' => 0, 
+                    ]; 
+            } 
 
-            $key = $row->Ruta . '|' . $row->VENDEDOR;
-
-            if (!isset($vendedorTemp[$key])) {
-                $vendedorTemp[$key] = [
-                    'CODIGO'   => $row->Ruta,
-                    'NOMBRE'   => $row->VENDEDOR,
-                    'CANTIDAD' => 0,
-                    'VENTA'    => 0,
-                ];
-            }
-
-            $vendedorTemp[$key]['CANTIDAD'] += $row->CANTIDAD;
-            $vendedorTemp[$key]['VENTA']    += $row->VENTA;
+            $vendedorTemp[$key]['CANTIDAD'] += $row->CANTIDAD; 
+            $vendedorTemp[$key]['VENTA'] += $row->VENTA; 
         }
-
+        
         foreach ($vendedorTemp as $item) {
             $vendedores[] = [
                 'CODIGO'   => $item['CODIGO'],
@@ -143,7 +142,7 @@ class Budget extends Model
 
         $skuTemp = [];
 
-        foreach ($resultados as $row) {
+        foreach ($filtrado as $row) {
 
             $sku = $row->ARTICULO;
 
@@ -153,13 +152,11 @@ class Budget extends Model
                     'DESCRIPCION' => $row->DESCRIPCION,
                     'CANTIDAD'    => 0,
                     'VENTA'       => 0,
-                    'PESO'        => 0,
                 ];
             }
 
             $skuTemp[$sku]['CANTIDAD'] += $row->CANTIDAD;
             $skuTemp[$sku]['VENTA']    += $row->VENTA;
-            $skuTemp[$sku]['PESO']     += $row->PESO;
         }
 
         foreach ($skuTemp as $item) {
@@ -168,13 +165,12 @@ class Budget extends Model
                 'DESCRIPCION' => $item['DESCRIPCION'],
                 'CANTIDAD'    => round($item['CANTIDAD'], 2),
                 'VENTA'       => round($item['VENTA'], 2),
-                'PESO'        => round($item['PESO'], 2),
             ];
         }
 
         $clientesTmp = [];
 
-        foreach ($resultados as $row) {
+        foreach ($filtrado as $row) {
 
             $codigo = $row->CODIGO;
 
@@ -203,12 +199,13 @@ class Budget extends Model
 
         $result = DB::connection('sqlsrv')->select("SELECT T1.ARTICULO, T2.DESCRIPCION, T1.GRUPOS FROM PRODUCCION.dbo.tbl_gmv_master_articulos T1 JOIN PRODUCCION.dbo.iweb_articulos T2 ON T1.ARTICULO = T2.ARTICULO WHERE T1.VENDEDOR = 'F05' GROUP BY T1.ARTICULO, T2.DESCRIPCION, T1.GRUPOS");
 
-        $esenacial = array_filter($resultados, fn($row) => $row->GRUPOS === 'A');
-        $expansion = array_filter($resultados, fn($row) => $row->GRUPOS === 'B');
+        $esenacial = array_filter($filtrado, fn($row) => $row->GRUPOS === 'A');
+        $expansion = array_filter($filtrado, fn($row) => $row->GRUPOS === 'B');
 
         $factEsencial = array_sum(array_column($esenacial, 'VENTA'));
         $factExpansion = array_sum(array_column($expansion, 'VENTA'));
-        $factTotal = array_sum(array_column($resultados,'VENTA'));
+        $factTotal = array_sum(array_column($filtrado,'VENTA'));
+        $clientescount = count(array_unique(array_map(fn($r) => $r->CODIGO, $filtrado)));
 
         $metricas = [
             'CLIENTES'  => $clientes,
@@ -221,7 +218,8 @@ class Budget extends Model
             'HASTA'     => $endDate,
             'FACTESEN'  => number_format($factEsencial,2),
             'FACTEXPA'  => number_format($factExpansion,2),
-            'FACTTOTA'  => number_format($factTotal,2)
+            'FACTTOTA'  => number_format($factTotal,2),
+            'CLIENTOT'  => number_format($clientescount)
         ];
         return $metricas;
     }
@@ -246,6 +244,28 @@ class Budget extends Model
                 GROUP BY
                     FACTURA,
                     Dia
+                ",
+                [$CLI, $ini, $end]
+            );
+        return $result;
+    }
+
+    public static function getFacturasSKUClientesUmk($request){
+        $ini    = $request->desde;
+        $end    = $request->hasta;   
+        $CLI    = $request->Ruta;   
+        
+        $result = DB::connection('sqlsrv')->select(
+                "
+                SELECT
+                    [Nombre del Cliente] as CLIENTE,
+                    SUM(CANTIDAD)   AS CANTIDAD,
+                    SUM(VENTA_NETA) AS VENTA
+                FROM Softland.dbo.VtasTotal_UMK
+                WHERE Ruta = ?
+                AND Dia BETWEEN ? AND ?
+                GROUP BY
+                    [Nombre del Cliente]
                 ",
                 [$CLI, $ini, $end]
             );

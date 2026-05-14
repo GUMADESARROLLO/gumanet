@@ -312,6 +312,7 @@ Route::get('get12Canales/{articulo}/{canal}/{opcion}','dashboard_controller@getD
 Route::get('Presupuesto89', 'BudgetController@Budget89')->name('Presupuesto89');
 Route::get('Presupuesto71', 'BudgetController@Budget71')->name('Presupuesto71');
 Route::post('getFacturasClientesUmk', 'BudgetController@getFacturasClientesUmk')->name('getFacturasClientesUmk');
+Route::post('getFacturasSKUClientesUmk', 'BudgetController@getFacturasSKUClientesUmk')->name('getFacturasSKUClientesUmk');
 
 
 Route::post('dtProyect', 'BudgetController@dtProyect')->name('dtProyect');

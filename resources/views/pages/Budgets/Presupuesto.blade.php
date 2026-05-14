@@ -94,7 +94,7 @@
           <div class="card-body">            
             <div class="summary-value"> 
               <div class="d-flex justify-content-between align-items-center">
-                <span id="bultos_actual">0.00</span>
+                <span id="total_clientes">0.00</span>
                 <span>
                   <i class="fa fa-exclamation-circle"></i>
                 </span>
@@ -261,7 +261,7 @@
         <div class="modal-dialog modal-xl modal-dialog-centered " role="document">
             <div class="modal-content">
                 <div class="modal-header">                    
-                    <h4 class="modal-title text-umk" id="id-name-articulo">  </h4>
+                    <h4 class="modal-title text-umk" id="id-name-articulo"> </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
