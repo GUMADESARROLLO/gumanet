@@ -54,18 +54,25 @@ class OrdenCompra extends Model
             $OC_ESTADO = $LISTA_ESTADOS[$OC_ESTADO] ?? "N/D";
             $OC_PRIORIDAD = $LISTA_ESTADOS[$OC_PRIORIDAD] ?? "N/D";
 
+            $OR_EMBARQUE = $a->getEmbarqueLinea->first()->EMBARQUE ?? 'NO';
+            $OR_LIQUIDAC = $a->getEmbarqueLinea->first()->getInfoEmbarque->LIQUIDAC_COMPRA ?? 'NO';
+
+
+
             $Ordenes[$key] = [
                 "ORDEN_COMPRA"          => $a->ORDEN_COMPRA,
+                "ORD_EMBARQ"            => $OR_EMBARQUE,
+                "ORD_LIQUID"            => $OR_LIQUIDAC,
                 "FECHA"                 => date('Y-m-d', strtotime($a->FECHA)),
                 "TOTAL_A_COMPRAR"       => $a->TOTAL_A_COMPRAR,
                 "ESTADO"                => $OC_ESTADO,
                 "PRIORIDAD"             => $OC_PRIORIDAD,
                 "PROVEEDOR"             => $a->PROVEEDOR,
                 "NOMBRE_PROVEEDOR"      => $a->getProveedor->NOMBRE,
-                "FECHA_COTIZACION"      => date('Y-m-d', strtotime($a->FECHA_COTIZACION)),
-                "FECHA_OFRECIDA"        => date('Y-m-d', strtotime($a->FECHA_OFRECIDA)),
-                "FECHA_REQ_EMBARQUE"    => date('Y-m-d', strtotime($a->FECHA_REQ_EMBARQUE)),
-                "FECHA_REQUERIDA"       => date('Y-m-d', strtotime($a->FECHA_REQUERIDA)),
+                "FECHA_COTIZACION"      => (is_null($a->FECHA_COTIZACION)) ? ' - ' : date('Y-m-d', strtotime($a->FECHA_COTIZACION)),
+                "FECHA_OFRECIDA"        => (is_null($a->FECHA_OFRECIDA)) ? ' - ' : date('Y-m-d', strtotime($a->FECHA_OFRECIDA)),
+                "FECHA_REQ_EMBARQUE"    => (is_null($a->FECHA_REQ_EMBARQUE)) ? ' - ' : date('Y-m-d', strtotime($a->FECHA_REQ_EMBARQUE)),
+                "FECHA_REQUERIDA"       => (is_null($a->FECHA_REQUERIDA)) ? ' - ' : date('Y-m-d', strtotime($a->FECHA_REQUERIDA)),
             ];
 
             $ttOrdene = $ttOrdene + $a->TOTAL_A_COMPRAR;

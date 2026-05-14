@@ -15,6 +15,9 @@
   .bg-umk {
     background-color: #004e7e !important;
   }
+  .input-fecha {
+    height: 40px !important;
+  }
 
 </style>
 @section('title' , $data['name'])
@@ -26,12 +29,12 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-10">
-      <h4 class="h4">Inventario {{ ($data['ID'] == 0)? 'Transito Sin Codigo' : 'en Transito' }} </h4>
+      <h4 class="h4">INVENTARIO {{ ($data['ID'] == 0)? 'Transito Sin Codigo' : 'EN TRANSITO' }} </h4>
     </div>
   </div>
   <span id="id_frm_show" style="display:none">{{ $data['ID'] }}</span>
   <div class="row mt-3">
-    <div class="col-sm-11">
+    <div class="col-sm-10">
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
@@ -46,6 +49,14 @@
         <a href="{{ route('ExportToExcelTransito') }}" target="_blank" class="input-group-text bg-transparent">
           <span class="fas fa-file-excel text-success"></span>
         </a>
+      </div>
+    </div>
+    <div class="col-sm-1">
+      <div class="input-group mb-3">
+        <select class="custom-select" id="filter_select_estado" >
+          <option value="TODOS" >TODOS</option>
+          <option value="BODEGA">BODEGA</option>
+        </select>
       </div>
     </div>
     <div class="col-sm-1">
@@ -83,60 +94,80 @@
       <div class="modal-body">
         <div class="row" >   
 
-          <div class="col-sm-4">
+          <div class="col-sm-3">
             <div class="form-group">
-                <label for="txtCantidad">CANTIDAD PEDIDO:</label>
+                <label for="txtCantidad"><strong>CANTIDAD PEDIDO:</strong></label>
                 <input type="text" class="form-control" id="txtCantidad" oninput="validateInput(this)">
                 <small id="alert_cantidad" class="form-text text-danger">0.00</small>
             </div>
           </div>
 
-          <div class="col-sm-4">
+          <div class="col-sm-3">
             <div class="form-group">
-                <label for="txtCantidad">CANTIDAD TRANSITO:</label>
+                <label for="txtCantidad"><strong>CANTIDAD TRANSITO:</strong></label>
                 <input type="text" class="form-control" id="txtCantidadTransito" oninput="validateInput(this)">
                 <small id="alert_cantidad" class="form-text text-danger">0.00</small>
             </div>
           </div>
-
-          <div class="col-sm-4">
+           <div class="col-sm-3">
             <div class="form-group">
-                <label for="select_estado">ESTADO:</label>
+                <label for="txtCantidad"><strong>CANTIDAD BODEGA:</strong></label>
+                <input type="text" class="form-control" id="txtCantidadBodega" oninput="validateInput(this)" disabled>
+                <small id="alert_cantidad" class="form-text text-danger">0.00</small>
+            </div>
+          </div>
+
+
+          <div class="col-sm-3">
+            <div class="form-group">
+                <label for="select_estado"><strong>ESTADO:</strong></label>
                 <select class="form-control" id="select_estado">
                     <option value="N/D">N/D</option>
                     <option value="PEDIDO">PEDIDO</option>
                     <option value="TRANSITO">TRANSITO</option>
                     <option value="ON-HAND">ON-HAND</option>
+                    <option value="BODEGA">BODEGA</option>
                 </select>
                 <small id="alert_Estado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
 
+         
+
+         
         
-          <div class="col-sm-4">
+          <div class="col-sm-3">
             <div class="form-group">
-                <label for="exampleInputEmail1">DOC. (FACT. , BL/AWB ):</label>
+                <label for="exampleInputEmail1"><strong>DOC. (FACT. , BL/AWB ):</strong></label>
                 <input type="text" class="form-control" id="txtDocuments" >
                 <small id="alert_documento" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
-        
-          <div class="col-sm-4">
+
+          <div class="col-sm-6">
             <div class="form-group">
-                <label for="slcMercado">MERCADO:</label>
-                <select class="form-control" id="slcMercado">
-                    <option value="N/D">N/D</option>
-                    <option value="PRIVADO">PRIVADO</option>
-                    <option value="MINSA">MINSA</option>
-                </select>
-                <small id="alert_mercado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+                <label for="exampleInputEmail1"><strong>NUM. FACTURA:</strong></label>
+                <input type="text" class="form-control" id="txtNumFact" >
+                <small id="alert_num_fact" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
 
-
-          <div class="col-sm-4">
+           <div class="col-sm-3">
             <div class="form-group">
-                <label for="exampleFormControlSelect1">MIFIC:</label>
+                <label for="exampleFormControlSelect1"><strong>VÍA DE TRANSITO:</strong></label>
+                <select class="form-control" id="id_via_transito">
+                    <option value="N/D">N/D</option>
+                    <option value="AERIO">AÉREO</option>
+                    <option value="MARITIMO">MARITIMO</option>
+                    <option value="TERRESTRE">TERRESTRE</option>
+                </select>
+                <small id="alert_via_transito" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1"><strong>MIFIC:</strong></label>
                 <select class="form-control" id="slcMIFIC">
                     <option value="N/D">N/D</option>
                     <option value="SI">SI</option>
@@ -145,8 +176,22 @@
                 <small id="alert_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
+        
+          <div class="col-sm-3">
+            <div class="form-group">
+                <label for="slcMercado"><strong>MERCADO:</strong></label>
+                <select class="form-control" id="slcMercado">
+                    <option value="N/D">N/D</option>
+                    <option value="PRIVADO">PRIVADO</option>
+                    <option value="DISCASA">DISCASA</option>
+                    <option value="MINSA">MINSA</option>
+                    <option value="MUESTRA">MUESTRA</option>
+                </select>
+                <small id="alert_mercado" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
+            </div>
+          </div>
 
-          <div class="col-sm-4">
+          <!-- <div class="col-sm-4">
             <div class="form-group">
                 <label for="txtPrecioMific">PREC. MIFIC FARMACIA:</label>
                 <input type="text" class="form-control" id="txtPrecioMific" oninput="validateInput(this)">
@@ -159,43 +204,33 @@
                 <input type="text" class="form-control" id="txtPrecioMificPublic" oninput="validateInput(this)">
                 <small id="alert_precio_mific" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
-          </div>
-          <div class="col-sm-4">
+          </div> -->
+          
+          <div class="col-sm-3">
             <div class="form-group">
-                <label for="exampleFormControlSelect1">VIA TRANSITO:</label>
-                <select class="form-control" id="id_via_transito">
-                    <option value="N/D">N/D</option>
-                    <option value="AERIO">AERIO</option>
-                    <option value="MARITIMO">MARITIMO</option>
-                    <option value="TERRESTRE">TERRESTRE</option>
-                </select>
-                <small id="alert_via_transito" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="form-group">
-                <label for="date_estimada">FECHA ESTIMADA DE ARRIBO:</label>
+                <label for="date_estimada"><strong>FECHA ESTIMADA DE ARRIBO:</strong></label>
                 <input type="text" class="input-fecha" id="date_estimada" >
                 <small id="alert_fecha_estimada" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
 
-          <div class="col-sm-4">
+          <div class="col-sm-3">
             <div class="form-group">
-                <label for="date_pedido">FECHA CREACION PEDIDO:</label>
+                <label for="date_pedido"><strong>FECHA CREACION PEDIDO:</strong></label>
                 <input type="text" class="input-fecha" id="date_pedido" >
                 <small id="alert_fecha_pedido" class="form-text text-danger">Lorem ipsum dolor sit amet, consectetuer.</small>
             </div>
           </div>
+          
           <div class="col-sm-12 mb-3">
-              <label for="validationTextarea">OBSERVACIONES: </label>
+              <label for="validationTextarea"><strong>OBSERVACIONES:</strong></label>
               <textarea class="form-control" id="txtObservacion" placeholder="Comentarios maximo de 255 caracteres" required></textarea>
               <small id="alert_observaciones" class="form-text text-danger"></small>
           </div>
           
       </div>      
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" id="id_btns_save">
         <button type="button" class="btn btn-danger btn-sm" id="btnDeleteTransito" @click="DeleteInformacion">Borrar</button>
         <button type="button" class="btn btn-success btn-sm" id="btnSaveTransito" @click="SaveInformacion">Guardar</button>
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
@@ -285,7 +320,7 @@
             <div class="form-group">
                 <select class="selectpicker form-control form-control-sm" id="frm_select_articulo" data-show-subtext="true" data-live-search="true">                    
                     @foreach($Articulos as $art)
-                    <option value="{{strtoupper($art->ARTICULO)}}">{{strtoupper($art->DESCRIPCION )}} - [{{strtoupper($art->ARTICULO)}} ]</option>
+                    <option value="{{strtoupper($art->ARTICULO)}}">{{strtoupper($art->DESCRIPCION )}} - [{{strtoupper($art->ARTICULO)}} ] - {{strtoupper($art->UNIDAD)}}</option>
                     @endforeach
 
                 </select>

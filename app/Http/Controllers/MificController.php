@@ -30,6 +30,25 @@ class MificController extends Controller {
 
         return response()->json($DetallesMific);
     }
+
+    public function UpdateMific(Request $request)
+    {
+        $UpdateMific = Mific::UpdateMific($request);
+
+        return response()->json($UpdateMific);
+    }
+    public function SaveMific(Request $request)
+    {
+        $SaveMific = Mific::SaveMific($request);
+
+        return response()->json($SaveMific);
+    }
+    Public function DeleteMific(Request $request)
+    {
+        $DeleteMific = Mific::DeleteMific($request);
+
+        return response()->json($DeleteMific);
+    }
 }
 
     

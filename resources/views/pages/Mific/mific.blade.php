@@ -39,11 +39,17 @@
                 Filtrar
             </button>
 
-            <button type="button" 
+            <!-- <button type="button" 
                     class="btn btn-primary-success flex-fill"
                     id="btnUploadMific">
                 <i class="fa fa-upload"></i> Cargar
+            </button> -->
+            <button type="button" 
+                    class="btn btn-primary-success flex-fill"
+                    id="NuevoMific">
+                <i class="fa fa-upload"></i> Nuevo
             </button>
+
         </div>
     </div>
 </div>
@@ -134,57 +140,59 @@
     <div class="modal-dialog modal-xl modal-dialog-centered " role="document">
         <div class="modal-content">
             <div class="modal-header bg-innova text-white">                    
-                <h4 class="modal-title">EDICION DE INFORMACION MIFIC</h4>
+                <h4 class="modal-title">INFORMACION MIFIC</h4>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
+                    <input type="hidden" id="id_row" name="num_row">
                     <div class="form-group col-md-6">
-                        <label for="nombre_comercial">NOMBRE COMERCIAL</label>
+                        <label for="nombre_comercial"><strong>NOMBRE COMERCIAL</strong></label>
                         <input type="text" class="form-control" id="nombre_comercial" name="NOMBRE_COMERCIAL" required>
                     </div>                    
                     <div class="form-group col-md-6">
-                        <label for="nombre_generico">NOMBRE GENERICO</label>
+                        <label for="nombre_generico"><strong>NOMBRE GENERICO</strong></label>
                         <input type="text" class="form-control" id="nombre_generico" name="NOMBRE_GENERICO" required>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="sku_umk">SKU UMK</label>
+                        <label for="sku_umk"><strong>SKU UMK</strong></label>
                         <input type="text" class="form-control" id="sku_umk" name="SKU_UMK" required>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="registro_sanitario">REGISTRO SANITARIO</label>
+                        <label for="registro_sanitario"><strong>REGISTRO SANITARIO</strong></label>
                         <input type="text" class="form-control" id="registro_sanitario" name="REGISTRO_SANITARIO" required>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="concentracion">CONCENTRACION</label>
+                        <label for="concentracion"><strong>CONCENTRACION</strong></label>
                         <input type="text" class="form-control" id="concentracion" name="CONCENTRACION" required>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="presentacion">PRESENTACION</label>
+                        <label for="presentacion"><strong>PRESENTACION</strong></label>
                         <input type="text" class="form-control" id="presentacion" name="PRESENTACION" required>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="cantidad">CANTIDAD</label>
+                        <label for="cantidad"><strong>CANTIDAD</strong></label>
                         <input type="text" class="form-control" id="cantidad" name="CANTIDAD" required>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="laboratorio">LABORATORIO</label>
+                        <label for="laboratorio"><strong>LABORATORIO</strong></label>
                         <input type="text" class="form-control" id="laboratorio" name="LABORATORIO" required>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="precio_farmacia">PRECIO FARMACIA</label>
+                        <label for="precio_farmacia"><strong>PRECIO FARMACIA</strong></label>
                         <input type="text" step="0.01" class="form-control" id="precio_farmacia" name="PRECIO_FARMACIA" required>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="precio_publico">PRECIO PUBLICO</label>
+                        <label for="precio_publico"><strong>PRECIO PUBLICO</strong></label>
                         <input type="text" step="0.01" class="form-control" id="precio_publico" name="PRECIO_PUBLICO" required>
                     </div>
                 
                     <div class="form-group col-md-4">
-                        <label for="unidad_negocio">UNIDAD NEGOCIO</label>
+                        <label for="unidad_negocio"><strong>UNIDAD NEGOCIO</strong></label>
                         <select class="form-control" id="unidad_negocio" name="UNIDAD_NEGOCIO" required>
+                            <option value="ND">N/D</option>
                             <option value="UMK">UNIMARK S.A.</option>
                             <option value="GP">GUMAPHARMA</option>
                             <option value="INN">INNOVA S.A.</option>

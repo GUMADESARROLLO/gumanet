@@ -278,7 +278,6 @@ class dashboard_controller extends Controller {
       
   }
 
-  /************ Add by Rodolfo **********/
   public function getAllClientsByCategory($mes, $anio, $categoria,$Bolson)
   {
       $obj = dashboard_model::getAllClientsByCategory($mes, $anio, $categoria,$Bolson);
