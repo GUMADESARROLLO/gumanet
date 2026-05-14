@@ -33,11 +33,31 @@ class BudgetController extends Controller {
     }
     public function dtProyect(Request $request) {
 
-        $obj = Budget::dtProyect($request);
-        return response()->json($obj);
+        $result = Budget::dtProyectClientesFact($request);
+        
+        return response()->json($result);
       
       
     }
+
+    public function getFacturasClientesUmk(Request $request) {
+
+        $result = Budget::getFacturasClientesUmk($request);
+        
+        return response()->json($result);
+      
+      
+    }
+
+    public function getFacturasSKUClientesUmk(Request $request) {
+
+        $result = Budget::getFacturasSKUClientesUmk($request);
+        
+        return response()->json($result);
+      
+      
+    }
+
     public function dtArticulo(Request $request) {
       $obj = Budget::dtArticulo($request);
       return response()->json($obj);

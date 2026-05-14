@@ -3,6 +3,8 @@
     @section('name_user' , 'Administrador')
 @section('metodosjs')
     @include('pages.Budgets.js_presupuesto')
+    @include('pages.Budgets.js_chart_SKU')  
+    @include('pages.Budgets.js_chart_cliente')  
     @include('pages.Budgets.css_presupuesto')
 @endsection
 
@@ -11,16 +13,16 @@
     <!-- Header -->
     <div class="row border">
       <div class="col-md-7">            
-        <h4 class="h4 text-umk"> PRESUPUESTO 90 - 10.</h4>
-        <p class="text-muted mb-4">Reportes de ventas de productos, tomando en cuenta el periodo de <span id="tl_periodo"></span>.</p>
+        <h4 class="h4 text-umk"> Esencial & Expansión </h4>
+        <p class="text-muted mb-4">Del <span id="tl_periodo"></span>.</p>
       </div>
       <div class="col-md-2 ">        
         <div class="form-group">                
-          <label for="f1">Tomar presupuesto</label>
+          <label for="f1">Equipos</label>
           <select class="custom-select" id="cmbClientesExcluir">
-            <option value="1">TODO</option>
-            <option value="0">90</option>
-            <option value="0">10</option>
+            <option value="TODO">TODO</option>
+            <option value="A">Esencial</option>
+            <option value="B">Expansión</option>
           </select>
         </div>
       </div>
@@ -33,7 +35,7 @@
 
       <div class="col-md-1 mt-4">
         <div class="btn-group w-100">               
-          <button type="button" class="btn btn-primary-umk btn-block float-right" id="filtrarFechas">  Filtrar </button>		
+          <button type="button" class="btn btn-primary-umk btn-block float-right" id="filtrarFechas">Filtrar</button>		
         </div>      
       </div>
     </div>
@@ -46,13 +48,13 @@
             
             <div class="summary-value">
               <div class="d-flex justify-content-between align-items-center">
-                <span id="bultos_facturacion"> 0.00 </span>
+                <span id="facturacion_esencial"> 0.00 </span>
                 <span>
                   <i class="fas fa-comment-dollar"></i>
                 </span>
               </div>
             </div>
-            <div class="summary-title" style="color: #890fa1">Valor Actual</div>
+            <div class="summary-title" style="color: #890fa1">Fact. Actual Esencial</div>
           </div>
         </div>
       </div>
@@ -62,13 +64,13 @@
             
             <div class="summary-value">
               <div class="d-flex justify-content-between align-items-center">
-                <span id="bultos_valor">0.00</span>
+                <span id="facturacion_expansion">0.00</span>
                 <span>
                   <i class="fas fa-boxes"></i>
                 </span>
               </div>
             </div>
-            <div class="summary-title" style="color: #890fa1">Volumen Actual</div>
+            <div class="summary-title" style="color: #890fa1">Fact. Actual Expansión</div>
           </div>
         </div>
       </div>
@@ -77,13 +79,13 @@
           <div class="card-body">            
             <div class="summary-value">
               <div class="d-flex justify-content-between align-items-center">
-                <span id="bultos_anterior">0.00</span>
+                <span id="facturacion_total">0.00</span>
                 <span>
                   <i class="fa fa-exclamation-circle"></i>
                 </span>
               </div>
             </div>
-            <div class="summary-title" style="color: #890fa1">Bultos 2024</div>
+            <div class="summary-title" style="color: #890fa1">Fact. Total</div>
           </div>
         </div>
       </div>
@@ -92,13 +94,13 @@
           <div class="card-body">            
             <div class="summary-value"> 
               <div class="d-flex justify-content-between align-items-center">
-                <span id="bultos_actual">0.00</span>
+                <span id="total_clientes">0.00</span>
                 <span>
                   <i class="fa fa-exclamation-circle"></i>
                 </span>
               </div>
             </div>
-            <div class="summary-title" style="color: #890fa1">Bultos 2025</div>
+            <div class="summary-title" style="color: #890fa1">Clientes Colocados Periodo</div>
           </div>
         </div>
       </div>
@@ -106,8 +108,9 @@
 
     <!-- Tablas -->
     <div class="row g-3 mb-4"> 
-      <div class="row col-md-6 g-2 mb-4">   
-      <div class="col-md-12">
+      <div class="row col-md-12 g-2 mb-4">   
+
+      <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
@@ -119,11 +122,13 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12">
+
+      <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
-              <h6 class="mb-0">VENDEDORES: <b><span id="fechaVentaVendedor" >0000/00/00</span></b></h6>
+              <!-- TODO: ORDENAR DE LA MAYOR VENTA -->
+              <h6 class="mb-0">GRUPOS DEL DIA: <b><span id="fechaVentaVendedor" >0000/00/00</span></b></h6>
             </div>
           </div>
           <div class="card-body">
@@ -131,13 +136,13 @@
           </div>
         </div>
       </div>
-      </div>
+    
 
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-inn-card text-white">            
             <div class="d-flex justify-content-between">
-              <h6 class="mb-0">VENDEDORES: <b><span id="fechaRangoVentaVendedor" >0000/00/00</span></b></h6>
+              <h6 class="mb-0">GRUPOS DEL RANGO: <b><span id="fechaRangoVentaVendedor" >0000/00/00</span></b></h6>
             </div>
           </div>
           <div class="card-body">
@@ -151,7 +156,7 @@
     <div class="row g-4 mb-4">
       <div class="col-md-4">
         <div class="card">
-          <div class="card-header bg-innova text-white">
+          <div class="card-header bg-umk text-white">
             <h6 class="mb-0">GRAFICO DE VENTAS</h6>
           </div>
           <div class="card-body">
@@ -163,7 +168,7 @@
       </div>
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header bg-innova text-white">
+          <div class="card-header bg-umk text-white">
             <h6 class="mb-0">GRAFICO DE CLIENTES</h6>
           </div>
           <div class="card-body">
@@ -177,7 +182,7 @@
     <div class="row g-4 mb-4">      
       <div class="col-md-6">
         <div class="card">
-          <div class="card-header bg-innova text-white">            
+          <div class="card-header bg-umk text-white">            
             <div class="d-flex justify-content-between">
               <h6 class="mb-0">TOP SKUs VENTAS NETAS</h6>
             </div>
@@ -187,7 +192,7 @@
             <table id="tbl_top_sku" class="display" style="width:100%">
               <tfoot>
                 <tr>
-                  <th colspan="3" >
+                  <th colspan="2" >
                     <div class="row">
                       <div class="col-md-6">
                         <span class="item-left">Total:</span>
@@ -206,7 +211,7 @@
       </div>
       <div class="col-md-6">
         <div class="card">
-          <div class="card-header bg-innova text-white">            
+          <div class="card-header bg-umk text-white">            
             <div class="d-flex justify-content-between">
               <h6 class="mb-0">TOP CLIENTES VENTAS NETAS</h6>
             </div>
@@ -236,78 +241,16 @@
     </div>
 
     <!-- Summary -->
-    <div class="row g-3 mb-4">
-      <div class="col-md-3 border-end">
-        <div class="card summary-card">
-          <div class="card-body">
-            
-            <div class="summary-title">
-              <div class="d-flex justify-content-between align-items-center border-bottom">
-                <span>VENTA NETA</span>
-                <span id="anioAnterior">0</span>
-              </div>
-            </div>
-            <div class="summary-value" style="color: #890fa1"><span id="ytd_anterior">0.00</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 border-end">
-        <div class="card summary-card">
-          <div class="card-body">
-            
-            <div class="summary-title">
-              <div class="d-flex justify-content-between align-items-center border-bottom">
-                <span>VENTA NETA</span>
-                <span id="anioActual">0</span>
-              </div>
-            </div>
-            <div class="summary-value" style="color: #890fa1"><span id="ytd_actual">0.00</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 border-end">
-        <div class="card summary-card">
-          <div class="card-body">            
-            <div class="summary-title">
-              <div class="d-flex justify-content-between align-items-center border-bottom">
-                <span>CRECIMIENTO</span>
-                <span>%</span>
-              </div>
-            </div>
-            <div class="summary-value" style="color: #890fa1"><span id="ytd_crecimiento">0.00</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 border-end">
-        <div class="card summary-card">
-          <div class="card-body">            
-            <div class="summary-title"> 
-              <div class="d-flex justify-content-between align-items-center border-bottom">
-                <span id="filtro">FILTRADO POR:</span>
-                <span></span>
-              </div>
-            </div>
-            <div class="summary-value" style="color: #890fa1">
-              <select class="custom-select" id="tipoDato" onchange="actualizarGraficoYTD()">
-                <option value="valor">VALOR</option>
-                <option value="bulto">BULTOS</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row g-4">
-      <div class="col-md-12">
+    
+    <div class="col-md-12">
         <div class="card">
-            <div class="card-header bg-innova text-white">
-              <div class="d-flex justify-content-between">
-              <h6 class="mb-0">GRAFICO YTD VENTAS</h6>
+          <div class="card-header bg-inn-card text-white">            
+            <div class="d-flex justify-content-between">
+              <h6 class="mb-0">CLASIFICACION ESENSIAL & EXPANSION</h6>
             </div>
           </div>
           <div class="card-body">
-            <div id="chart_ytd"></div>
+            <table id="table_grupos" class="display" style="width:100%"></table>
           </div>
         </div>
       </div>
@@ -318,7 +261,7 @@
         <div class="modal-dialog modal-xl modal-dialog-centered " role="document">
             <div class="modal-content">
                 <div class="modal-header">                    
-                    <h4 class="modal-title text-umk" id="id-name-articulo">  </h4>
+                    <h4 class="modal-title text-umk" id="id-name-articulo"> </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -336,7 +279,6 @@
                         </div>
                         
                         <div class="col-sm-1">
-                            <a id="exp-to-excel" href="#!" class="btn btn-success btn-block text-light float-right button_export_excel"><i class="fas fa-file-excel"></i> </a>
                         </div>      
                     </div>
 

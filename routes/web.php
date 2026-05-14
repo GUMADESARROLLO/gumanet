@@ -311,8 +311,11 @@ Route::get('get12Canales/{articulo}/{canal}/{opcion}','dashboard_controller@getD
 // ROUTER DE PROYECTO 71 & 89
 Route::get('Presupuesto89', 'BudgetController@Budget89')->name('Presupuesto89');
 Route::get('Presupuesto71', 'BudgetController@Budget71')->name('Presupuesto71');
+Route::post('getFacturasClientesUmk', 'BudgetController@getFacturasClientesUmk')->name('getFacturasClientesUmk');
+Route::post('getFacturasSKUClientesUmk', 'BudgetController@getFacturasSKUClientesUmk')->name('getFacturasSKUClientesUmk');
 
-Route::get('dtProyect', 'BudgetController@dtProyect')->name('dtProyect');
+
+Route::post('dtProyect', 'BudgetController@dtProyect')->name('dtProyect');
 Route::get('dtArticulo', 'BudgetController@dtArticulo')->name('dtArticulo');
 
 // PRESUPUESTO UMK

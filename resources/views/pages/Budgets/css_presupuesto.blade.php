@@ -4,8 +4,8 @@
       /* Main palette */
       --white: #fff;  
       --orage: #e7551f;
-      --green-inn: #5fb113;
-      --corporate-blue: #002d72;
+      --green-inn: var(--blue);
+      --corporate-blue: var(--blue);
       --agriam-color: #FCCCFC;
     }
     .bg-umk {

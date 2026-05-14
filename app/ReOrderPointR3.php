@@ -43,7 +43,7 @@ class ReOrderPointR3 extends Model
         $FechaIni   = date('Y-m-d 00:00:00.000', strtotime($request->fecha_inicial));
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($request->fecha_final));
 
-        dd($FechaIni, $FechaEnd);
+        //dd($FechaIni, $FechaEnd);
 
         // Ejecutar el primer procedimiento almacenado
         DB::connection('sqlsrv')->statement("EXEC PRODUCCION.dbo.sp_base_reorder_v3 ?, ?", [$FechaIni, $FechaEnd]);
