@@ -28,7 +28,7 @@ class BudgetController extends Controller {
         'name'              => 'GUMA@NET',
         'hideTransaccion'   => ''
       );
-      return view('pages.Budgets.Presupuesto',$data);
+      return view('pages.Budgets.Budget71',$data);
         
     }
     public function dtProyect(Request $request) {
