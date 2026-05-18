@@ -102,7 +102,7 @@ class inventario_controller extends Controller
 		$InfoTransito 	= [];
 
 
-		$ArticuloTransito 	=  (is_null($ID_ROW))? ArticulosTransito::where('Articulo',$request->Articulo)->get() : ArticulosTransito::where('Id_transito',$ID_ROW)->get();
+		$ArticuloTransito 	=  (is_null($ID_ROW))? ArticulosTransito::where('Articulo', $request->Articulo)->where('estado_compra', '!=', 'BODEGA')->get() : ArticulosTransito::where('Id_transito',$ID_ROW)->where('estado_compra', '!=', 'BODEGA')->get();
 		$PreciosMific		=  PreciosMific::where('ARTICULO',$request->Articulo)->limit(1)->first();
 		
 		$Potencial = ArticuloPotencialDiscasa::where('ARTICULO',$request->Articulo)->limit(1)->first()->POTENCIAL_CA ?? 0;
