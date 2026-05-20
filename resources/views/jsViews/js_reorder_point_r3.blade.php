@@ -11,7 +11,7 @@
         { data: "PROM_NORMAL", title: "PROMEDIO NORMAL PRIV.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "PROM_3M", title: "PROMEDIO 3 MESES + ALTOS PRIV.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "PROM_ANUAL", title: "PROMEDIO CANTIDAD ANNUAL PRIV.", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
-        { data: "INVENTARIO", title: "INVENTARIO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) }, 
+        { data: "INVENTARIO", title: "INVENTARIO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2), createdCell: function(td, cellData) { $(td).attr('title', 'Inventario unificado: Unimark + GumaPharma (todas las bodegas)').tooltip(); } }, 
         { data: "PEDIDO", title: "PEDIDO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "TRANSITO", title: "TRANSITO", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
         { data: "ONHAND", title: "ONHAND", class: "text-right", render: $.fn.dataTable.render.number(',', '.', 2) },
@@ -257,6 +257,9 @@ function TableReorderPoint(Dt = []) {
                     
                 ]
             }
+        },
+        initComplete: function() {
+            $(this.api().column(6).header()).attr('title', 'Inventario unificado: Unimark + GumaPharma (todas las bodegas)').tooltip();
         },
         rowCallback: function(row, data, index) {
             // $(row).find('td:eq(3), td:eq(4), td:eq(5)').css({
