@@ -15,3 +15,5 @@ yarn-error.log
 *.example
 .env.example
 *.log
+
+AGENTS.md
