@@ -219,7 +219,7 @@ function getDetalleArticulo(Articulo,Descripcion,ID)
 					var FechaPedido = moment(a.fecha_pedido, 'YYYY-MM-DD');
 					//var FechaEstimada =  moment(a.fecha_estimada, 'YYYY-MM-DD');					
 
-					$("#date_estimada").val(a.fecha_estimada ? moment(a.fecha_estimada, 'YYYY-MM-DD') : null)
+					$("#date_estimada").val(a.fecha_estimada ? moment(a.fecha_estimada, 'YYYY-MM-DD').format('YYYY-MM-DD') : null)
 					$("#date_pedido").val(FechaPedido.format('YYYY-MM-DD'))
 					$("#txtDocuments").val(a.documento)
 					$("#txtNumFact").val(a.NumFact)
