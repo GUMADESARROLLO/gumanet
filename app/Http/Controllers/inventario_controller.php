@@ -172,10 +172,7 @@ class inventario_controller extends Controller
 
 
 		$request->validate([
-            'fecha_estimada' 		=> 'required',
             'fecha_pedido' 			=> 'required',
-            'documento' 			=> 'required',
-			'NumFact' 				=> 'required',
             'cantidad' 				=> 'required',
 			'CantidadTransito' 		=> 'required',
             'mercado' 				=> 'required',
@@ -200,7 +197,7 @@ class inventario_controller extends Controller
 
 			$articuloTransito->update([
 				'Descripcion' 				=> $request->Descripcion,
-				'fecha_estimada' 			=> $request->fecha_estimada,
+				'fecha_estimada' 			=> $request->fecha_estimada ?: null,
 				'fecha_pedido' 				=> $request->fecha_pedido,
 				'documento' 				=> $request->documento,
 				'NumFact' 					=> $request->NumFact,
@@ -221,7 +218,7 @@ class inventario_controller extends Controller
 			ArticulosTransito::create([
 				'Articulo' 				=> $Articulo,
 				'Descripcion' 			=> $request->Descripcion,
-				'fecha_estimada' 		=> $request->fecha_estimada,
+				'fecha_estimada' 		=> empty($request->fecha_estimada) ? null : $request->fecha_estimada,
 				'fecha_pedido' 			=> $request->fecha_pedido,
 				'documento' 			=> $request->documento,
 				'NumFact' 				=> $request->NumFact,
