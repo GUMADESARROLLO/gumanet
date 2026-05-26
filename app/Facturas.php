@@ -28,7 +28,13 @@ class Facturas extends Model
                 T1.NOMBRE,
                 T0.FACTURA,
                 T0.TOTAL_FACTURA,
-                FLOOR( T0.TOTAL_FACTURA / 1000 ) AS ACCIONES,
+                FLOOR(
+                    T0.TOTAL_FACTURA / 
+                    CASE 
+                        WHEN T0.VENDEDOR IN ('F04', 'F22') THEN 10000
+                        ELSE 1000
+                    END
+                ) AS ACCIONES,
                 T0.FECHA,
                 T0.VENDEDOR,
                 T2.NOMBRE AS NOMBRE_VENDEDOR,
@@ -41,7 +47,7 @@ class Facturas extends Model
                 T0.ANULADA = 'N'
                 AND T0.VENDEDOR NOT IN ('F01','F12', 'F02' , 'F11')
                 AND T0.TOTAL_FACTURA > 1000
-                AND T0.CLIENTE NOT IN ( SELECT CLIENTE FROM PRODUCCION.dbo.tbl_cadena_de_farmacia)
+                AND ( (T0.VENDEDOR IN ('F04', 'F22') AND T0.TOTAL_FACTURA >= 10000) OR (T0.VENDEDOR NOT IN ('F04', 'F22') AND T0.TOTAL_FACTURA >= 1000) )
                 AND T0.FECHA BETWEEN ? AND ?
         ";
 
@@ -75,9 +81,10 @@ class Facturas extends Model
 
         $clientesUnicos = array_unique(array_column($Arry, 'CLIENTE'));
 
-        $UltmAccion = DB::connection('sqlsrv')->select("SELECT NUMERO FROM PRODUCCION.dbo.NUMEROS_RIFA WHERE USADO = 1 ORDER BY NUMERO DESC")[0]->NUMERO ?? 'N/A';
+        $ultima = DB::connection('sqlsrv')->selectOne("SELECT NUMERO FROM PRODUCCION.dbo.NUMEROS_RIFA WHERE USADO = 1 ORDER BY NUMERO DESC");
+        $UltmAccion = $ultima ? (int) $ultima->NUMERO : 0;
 
-        $porcentajeDisponible = round(((100000 - $UltmAccion) / 100000) * 100, 1);
+        $porcentajeDisponible = $UltmAccion ? round(((100000 - $UltmAccion) / 100000) * 100, 1) : 100;
 
         return $Arry = [
             "DATA" => $Arry,
@@ -126,18 +133,21 @@ class Facturas extends Model
 
         $CLIENTE        = $InfoFactura->CLIENTE;
         $TOTAL_FACTURA  = $InfoFactura->TOTAL_FACTURA;
+        $VENDEDOR       = $InfoFactura->VENDEDOR;
 
         $query = "
             EXEC PRODUCCION.dbo.SP_INSERTAR_ACCIONES_CONTINUO 
             @CLIENTE = ?, 
             @FACTURA = ?, 
-            @TOTAL_FACTURA = ?
+            @TOTAL_FACTURA = ?,
+            @VENDEDOR = ?
         ";
 
         DB::connection('sqlsrv')->statement($query, [
             $CLIENTE,
             $Factura,
-            $TOTAL_FACTURA
+            $TOTAL_FACTURA,
+            $VENDEDOR
         ]);
 
         return [
@@ -179,9 +189,6 @@ class Facturas extends Model
     public static function ImprimirAcciones($request)
     {
         $Factura = $request->Factura;
-        //$Factura = '00293154';
-
-        
 
         $InfoFactura = FacturasAcciones::where('FACTURA', $Factura)->get();
         
@@ -197,7 +204,13 @@ class Facturas extends Model
                 T1.NOMBRE,
                 T0.FACTURA,
                 T0.TOTAL_FACTURA,
-                FLOOR( T0.TOTAL_FACTURA / 1000 ) AS ACCIONES,
+                FLOOR(
+                    T0.TOTAL_FACTURA / 
+                    CASE 
+                        WHEN T0.VENDEDOR IN ('F04', 'F22') THEN 10000
+                        ELSE 1000
+                    END
+                ) AS ACCIONES,
                 T0.FECHA,
                 T0.VENDEDOR,
                 T2.NOMBRE AS NOMBRE_VENDEDOR,
@@ -210,7 +223,7 @@ class Facturas extends Model
                 T0.ANULADA = 'N'
                 AND T0.VENDEDOR NOT IN ('F01','F12', 'F02' , 'F11')
                 AND T0.TOTAL_FACTURA > 1000
-                AND T0.CLIENTE NOT IN ( SELECT CLIENTE FROM PRODUCCION.dbo.tbl_cadena_de_farmacia)
+                AND ( (T0.VENDEDOR IN ('F04', 'F22') AND T0.TOTAL_FACTURA >= 10000) OR (T0.VENDEDOR NOT IN ('F04', 'F22') AND T0.TOTAL_FACTURA >= 1000) )
                 AND T0.FACTURA = ?
         ";
 

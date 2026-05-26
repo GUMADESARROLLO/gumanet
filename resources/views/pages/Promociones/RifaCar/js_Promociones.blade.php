@@ -257,7 +257,7 @@ $(document).ready(function() {
                         data: { Factura: factura },
                         success: function (resp) {
                             resolve(resp);
-                            getAcciones(factura);
+                            GetAcciones(factura);
                         },
                         error: function () {
                             reject();
