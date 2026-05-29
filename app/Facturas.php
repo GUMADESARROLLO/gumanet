@@ -81,10 +81,12 @@ class Facturas extends Model
 
         $clientesUnicos = array_unique(array_column($Arry, 'CLIENTE'));
 
-        $ultima = DB::connection('sqlsrv')->selectOne("SELECT NUMERO FROM PRODUCCION.dbo.NUMEROS_RIFA WHERE USADO = 1 ORDER BY NUMERO DESC");
+        $ultima = DB::connection('sqlsrv')->selectOne("SELECT NUMERO FROM PRODUCCION.dbo.NUMEROS_RIFA WHERE USADO = 1 ORDER BY ID_ASIGNACION DESC");
+        $ttAccionesUsados = DB::connection('sqlsrv')->selectOne("SELECT COUNT(*) AS TOTAL FROM PRODUCCION.dbo.NUMEROS_RIFA WHERE USADO = 1");
         $UltmAccion = $ultima ? (int) $ultima->NUMERO : 0;
+        $ttAcciones = 60000;
 
-        $porcentajeDisponible = $UltmAccion ? round(((100000 - $UltmAccion) / 100000) * 100, 1) : 100;
+        $porcentajeDisponible = $UltmAccion ? round((($ttAcciones - $ttAccionesUsados->TOTAL) / $ttAcciones) * 100, 1) : 100;
 
         return $Arry = [
             "DATA" => $Arry,
