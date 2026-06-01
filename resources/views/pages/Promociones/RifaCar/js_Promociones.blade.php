@@ -4,82 +4,38 @@ $(document).ready(function() {
     fullScreen();
 
 
-    // const yearActual = moment().year();
-
-    // $('input[name="dt_range"]').daterangepicker({
-    //     autoApply: true,
-
-    //     minDate: moment(`${yearActual}-05-01`, 'YYYY-MM-DD'),
-    //     maxDate: moment(`${yearActual}-09-20`, 'YYYY-MM-DD'),
-
-    //     ranges: {
-    //         'Hoy': [moment(), moment()],
-    //         'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
-    //         'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],              
-    //         'Este Mes': [moment().startOf('month'), moment()],
-    //         'Mes Anterior': [
-    //             moment().subtract(1, 'month').startOf('month'), 
-    //             moment().subtract(1, 'month').endOf('month')
-    //         ],
-    //         "3 Meses": [moment().subtract(3, 'month'), moment()],
-    //         "6 Meses": [moment().subtract(6, 'month'), moment()],
-    //         '1 Año': [moment().subtract(1, 'year'), moment()],
-    //     },
-
-    //     showCustomRangeLabel: false,
-    //     alwaysShowCalendars: true,
-
-    //     startDate: moment(`${yearActual}-05-01`, 'YYYY-MM-DD'),
-    //     endDate: moment().isAfter(moment(`${yearActual}-09-20`))
-    //         ? moment(`${yearActual}-09-20`)
-    //         : moment(),
-
-    //     opens: 'left',
-
-    //     locale: {
-    //         format: "D MMM. YYYY",
-    //         separator: " - ",
-    //         applyLabel: "Aplicar",
-    //         cancelLabel: "Cancelar",
-    //         fromLabel: "Desde",
-    //         toLabel: "Hasta",
-    //         customRangeLabel: "Personalizado",
-    //         weekLabel: "S",
-    //         daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie", "Sab."],
-    //         monthNames: [
-    //             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-    //             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-    //         ],
-    //         firstDay: 1
-    //     }
-
-    // }, function(start, end, label) {
-    //     CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
-    // });
+    const yearActual = moment().year();
 
     $('input[name="dt_range"]').daterangepicker({
-        "autoApply": true,
+        autoApply: true,
+
+        minDate: moment(`${yearActual}-05-01`, 'YYYY-MM-DD'),
+        maxDate: moment(`${yearActual}-09-20`, 'YYYY-MM-DD'),
+
         ranges: {
             'Hoy': [moment(), moment()],
             'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
             'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],              
             'Este Mes': [moment().startOf('month'), moment()],
-            'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-            "3 Meses": [moment().subtract(3, 'month'), moment()],
-            "6 Meses": [moment().subtract(6, 'month'), moment()],
+            'Mes Anterior': [
+                moment().subtract(1, 'month').startOf('month'), 
+                moment().subtract(1, 'month').endOf('month')
+            ],
             
-            '1 Año': [moment().subtract(1, 'year'), moment()],
-            // '2 Años': [moment().subtract(2, 'year'), moment()],
-            // '3 Años': [moment().subtract(3, 'year'), moment()]
         },
-        "showCustomRangeLabel": false,
-        "alwaysShowCalendars": true,
-        "startDate": moment().startOf('month').format('D MMM. YYYY'),
-        "endDate": moment().format('D MMM. YYYY'),
+
+        showCustomRangeLabel: false,
+        alwaysShowCalendars: true,
+
+        startDate: moment(`${yearActual}-05-01`, 'YYYY-MM-DD'),
+        endDate: moment().isAfter(moment(`${yearActual}-09-20`))
+            ? moment(`${yearActual}-09-20`)
+            : moment(),
+
         opens: 'left',
+
         locale: {
-            //format: "DD/MM/YYYY",
-            format: "D MMM. YYYY",   // Ejemplo: 1 ago. 2025
+            format: "D MMM. YYYY",
             separator: " - ",
             applyLabel: "Aplicar",
             cancelLabel: "Cancelar",
@@ -94,9 +50,12 @@ $(document).ready(function() {
             ],
             firstDay: 1
         }
+
     }, function(start, end, label) {
         CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
     });
+
+    
 
 
     var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');

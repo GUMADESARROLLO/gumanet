@@ -74,13 +74,13 @@ class ReOrderPointR3 extends Model
 
         $Months_Privado  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_privado ?, ?, ?", [$Year_anterior,$Month_actual,'PRIVADO']);
 
-        $Months_Discasa  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa ?", [$Year_anterior]); 
+        $Months_Discasa  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa ?", [$Year_actual]); 
 
         $PrecioMific     = PreciosMific::all()->toArray();
 
         // Obtener los nombres de las columnas dinámicamente
-        $Columns_Privado = !empty($Months_Privado) ? array_keys(get_object_vars($Months_Privado[0])) : [];
-        $Columns_Discasa = !empty($Months_Discasa) ? array_keys(get_object_vars($Months_Discasa[0])) : [];
+        $Columns_Privado = array_keys(get_object_vars($Months_Privado[0]));
+        $Columns_Discasa = array_keys(get_object_vars($Months_Discasa[0]));
         
         foreach ($DataReorderPoint as $key => $value) {
 
