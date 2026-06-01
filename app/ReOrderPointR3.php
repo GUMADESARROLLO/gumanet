@@ -79,8 +79,8 @@ class ReOrderPointR3 extends Model
         $PrecioMific     = PreciosMific::all()->toArray();
 
         // Obtener los nombres de las columnas dinámicamente
-        $Columns_Privado = array_keys(get_object_vars($Months_Privado[0]));
-        $Columns_Discasa = array_keys(get_object_vars($Months_Discasa[0]));
+        $Columns_Privado = !empty($Months_Privado) ? array_keys(get_object_vars($Months_Privado[0])) : [];
+        $Columns_Discasa = !empty($Months_Discasa) ? array_keys(get_object_vars($Months_Discasa[0])) : [];
         
         foreach ($DataReorderPoint as $key => $value) {
 
