@@ -22,28 +22,7 @@ class Facturas extends Model
 
         $FacturasConAcciones = DB::connection('sqlsrv')->select("SELECT FACTURA FROM PRODUCCION.dbo.LOG_ACCIONES_RIFA ");
 
-        $query = "
-            SELECT
-                T0.CLIENTE,
-                T1.NOMBRE,
-                T0.FACTURA,
-                T0.TOTAL_FACTURA,
-                FLOOR(T0.TOTAL_FACTURA / 1500) AS ACCIONES,
-                T0.FECHA,
-                T0.VENDEDOR,
-                T2.NOMBRE AS NOMBRE_VENDEDOR,
-                T0.NIVEL_PRECIO 
-            FROM
-                Softland.umk.FACTURA T0
-                INNER JOIN Softland.umk.CLIENTE T1 ON T0.CLIENTE = T1.CLIENTE 
-                INNER JOIN Softland.umk.VENDEDOR T2 ON T0.VENDEDOR = T2.VENDEDOR
-            WHERE
-                T0.ANULADA = 'N'
-                AND T0.VENDEDOR NOT IN ('F01','F12', 'F02', 'F22', 'F04')
-                AND T0.TOTAL_FACTURA > 1500
-                AND T0.FECHA BETWEEN ? AND ?
-                AND T0.CLIENTE NOT IN (	SELECT CODIGO FROM PRODUCCION.dbo.TBL_RIFA_CLIENTES_EXCLUIDOS)
-        ";
+        $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura WHERE FECHA BETWEEN ? AND ? ";
 
         $rows = DB::connection('sqlsrv')->select($query, [$desde, $hasta]);
 
@@ -194,28 +173,7 @@ class Facturas extends Model
 
     public static function getInfoFactura($Factura)
     {
-        $query = "
-            SELECT
-                T0.CLIENTE,
-                T1.NOMBRE,
-                T0.FACTURA,
-                T0.TOTAL_FACTURA,
-                FLOOR(T0.TOTAL_FACTURA / 1500) AS ACCIONES,
-                T0.FECHA,
-                T0.VENDEDOR,
-                T2.NOMBRE AS NOMBRE_VENDEDOR,
-                T0.NIVEL_PRECIO 
-            FROM
-                Softland.umk.FACTURA T0
-                INNER JOIN Softland.umk.CLIENTE T1 ON T0.CLIENTE = T1.CLIENTE 
-                INNER JOIN Softland.umk.VENDEDOR T2 ON T0.VENDEDOR = T2.VENDEDOR
-            WHERE
-                T0.ANULADA = 'N'
-                AND T0.VENDEDOR NOT IN ('F01','F12', 'F02' , 'F22', 'F04')
-                AND T0.TOTAL_FACTURA > 1500
-                AND T0.FACTURA = ?
-                AND T0.CLIENTE NOT IN (	SELECT CODIGO FROM PRODUCCION.dbo.TBL_RIFA_CLIENTES_EXCLUIDOS)
-        ";
+        $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura WHERE FT0.FACTURA = ? ";
 
         $Factura = DB::connection('sqlsrv')->select($query, [$Factura]);
 
