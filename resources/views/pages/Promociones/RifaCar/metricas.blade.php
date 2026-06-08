@@ -322,16 +322,17 @@
   <!-- SECTION HEADER + TABS -->
   <div class="section-header">
     <span class="section-title">Resumen detallado por serie</span>
-    <div class="d-flex align-items-center gap-3">
+    <div class="d-flex align-items-center gap-3" style="flex-wrap:wrap">
       <div style="position:relative">
         <i class="fas fa-search" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text-secondary);pointer-events:none"></i>
-        <input type="text" id="search-tab" placeholder="Buscar..." style="font-size:12px;padding:6px 10px 6px 26px;border:0.5px solid var(--border);border-radius:var(--radius-md);background:var(--bg-primary);color:var(--text-primary);width:160px;outline:none;font-family:var(--font)" />
+        <input type="text" id="search-tab" placeholder="Buscar..." style="font-size:12px;padding:6px 10px 6px 26px;border:0.5px solid var(--border);border-radius:var(--radius-md);background:var(--bg-primary);color:var(--text-primary);width:130px;outline:none;font-family:var(--font)" />
       </div>
-      <div class="tabs" style="margin-left:12px">
+      <div class="tabs" style="margin-left:8px">
         <button class="tab active" data-tab="todos">Ver todos</button>
         <button class="tab" data-tab="asignados">Asignados</button>
         <button class="tab" data-tab="disponibles">Disponibles</button>
       </div>
+      <button id="btn-exportar" onclick="window.abrirExportar()" style="font-size:13px;padding:6px 14px;margin-left:5px;border:0.5px solid #c3e6cb;border-radius:var(--radius-md);background:#d4edda;color:#155724;cursor:pointer;font-family:var(--font);font-weight:500;white-space:nowrap">Exportar</button>
     </div>
   </div>
 
@@ -427,33 +428,32 @@
 
 @section('metodosjs')
 <script>
-    $('input[name="dt_range"]').daterangepicker({
-        autoApply: true,
-        minDate: moment(moment().year() + '-06-01', 'YYYY-MM-DD'),
-        maxDate: moment(moment().year() + '-09-20', 'YYYY-MM-DD'),
-        ranges: {
-            'Hoy': [moment(), moment()],
-            'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
-            'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
-            'Este Mes': [moment().startOf('month'), moment()]
-        },
-        showCustomRangeLabel: false,
-        alwaysShowCalendars: true,
-        startDate: moment(moment().year() + '-06-01', 'YYYY-MM-DD'),
-        endDate: moment().isAfter(moment(moment().year() + '-09-20'))
-            ? moment(moment().year() + '-09-20')
-            : moment(),
-        locale: {
-            format: 'D MMM. YYYY',
-            separator: ' - ',
-            applyLabel: 'Aplicar',
-            cancelLabel: 'Cancelar',
-            customRangeLabel: 'Personalizado'
+    window.abrirExportar = function() {
+        var t = document.querySelector('.tab.active').getAttribute('data-tab');
+        if (t === 'todos') {
+            Swal.fire({ icon: 'info', title: 'Seleccione Asignados o Disponibles', text: 'Cambie de pesta\u00f1a para exportar.', confirmButtonText: 'OK' });
+            return;
         }
+        var tipo = t === 'asignados' ? 1 : 0;
+        window.open('{{ url("ExportRifa") }}/' + tipo, '_blank');
+    };
+
+    document.querySelectorAll('.tab').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab').forEach(function(b) {
+                b.classList.remove('active');
+            });
+            this.classList.add('active');
+            var tab = this.getAttribute('data-tab');
+            document.querySelectorAll('.tab-content').forEach(function(c) {
+                c.classList.add('d-none');
+            });
+            document.getElementById('tab-' + tab).classList.remove('d-none');
+        });
     });
 
     var chartRifa = Highcharts.chart('chart-asignaciones', {
-        chart: { type: 'column', height: 200, backgroundColor: 'transparent' },
+        chart: { type: 'column', height: 220, backgroundColor: 'transparent' },
         exporting: { enabled: false },
         title: { text: null },
         xAxis: {
@@ -476,7 +476,7 @@
         plotOptions: {
             column: {
                 borderRadius: 4,
-                color: '#185fa5',
+                color: '#39b8fd',
                 borderWidth: 0
             }
         },
@@ -484,6 +484,34 @@
             name: 'Asignados',
             data: {!! json_encode($totales) !!}
         }]
+    });
+
+    var yearActual = moment().year();
+
+    $('input[name="dt_range"]').daterangepicker({
+        autoApply: true,
+        minDate: moment(yearActual + '-06-01', 'YYYY-MM-DD'),
+        maxDate: moment(yearActual + '-09-20', 'YYYY-MM-DD'),
+        ranges: {
+            'Hoy': [moment(), moment()],
+            '\u00daltm. 7 D\u00edas': [moment().subtract(6, 'days'), moment()],
+            '\u00daltm. 30 D\u00edas': [moment().subtract(29, 'days'), moment()],
+            'Este Mes': [moment().startOf('month'), moment()]
+        },
+        showCustomRangeLabel: false,
+        alwaysShowCalendars: true,
+        startDate: moment(yearActual + '-06-01', 'YYYY-MM-DD'),
+        endDate: moment().isAfter(moment(yearActual + '-09-20'))
+            ? moment(yearActual + '-09-20')
+            : moment(),
+        opens: 'left',
+        locale: {
+            format: 'D MMM. YYYY',
+            separator: ' - ',
+            applyLabel: 'Aplicar',
+            cancelLabel: 'Cancelar',
+            customRangeLabel: 'Personalizado'
+        }
     });
 
     function filtrarChart() {
@@ -509,17 +537,6 @@
 
     $('#filtrarFechas').on('click', function() {
         filtrarChart();
-    });
-
-    // Tab switching
-    document.querySelectorAll('.tab').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.tab').forEach(function(b) { b.classList.remove('active'); });
-            this.classList.add('active');
-            var tab = this.getAttribute('data-tab');
-            document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.add('d-none'); });
-            document.getElementById('tab-' + tab).classList.remove('d-none');
-        });
     });
 
     // Search across active tab
@@ -593,112 +610,6 @@
         document.getElementById('prev-page').addEventListener('click', function() { showPage(current - 1); });
         document.getElementById('next-page').addEventListener('click', function() { showPage(current + 1); });
     })();
-
-    // SweetAlert on assigned numbers
-    document.querySelector('#tab-asignados').addEventListener('click', function(e) {
-        var card = e.target.closest('.num-card.used');
-        if (!card) return;
-        var numero = card.querySelector('.num').textContent;
-        Swal.fire({
-            icon: 'info',
-            title: 'N\u00famero ' + numero,
-            html: '<div class="text-start">' +
-                '<p class="mb-2 fs-5 fw-semibold">' + card.dataset.cliente + ' - ' + card.dataset.nombre + '</p>' +
-                '<hr class="my-2">' +
-                '<p class="mb-1"><strong>Fac.:</strong> ' + card.dataset.factura + '</p>' +
-                '<p class="mb-0"><strong>Asig.:</strong> ' + card.dataset.fecha + '</p></div>',
-            confirmButtonText: 'Cerrar'
-        });
-    });
-</script>
-@endsection
-
-@section('metodosjs')
-<script>
-    document.querySelectorAll('.tab-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.tab-btn').forEach(function(b) {
-                b.classList.remove('active');
-                b.style.background = 'transparent';
-                b.style.boxShadow = 'none';
-                b.style.fontWeight = '500';
-                b.classList.add('text-muted');
-            });
-            this.classList.add('active');
-            this.style.background = '#fff';
-            this.style.boxShadow = '0 1px 3px rgba(0,0,0,0.08)';
-            this.style.fontWeight = '600';
-            this.classList.remove('text-muted');
-
-            var tab = this.getAttribute('data-tab');
-            document.querySelectorAll('.tab-content').forEach(function(c) {
-                c.classList.add('d-none');
-            });
-            document.getElementById('tab-' + tab).classList.remove('d-none');
-        });
-    });
-
-    var chartRifa = Highcharts.chart('chart-asignaciones', {
-        chart: { type: 'column', height: 220, backgroundColor: 'transparent' },
-        exporting: { enabled: false },
-        title: { text: null },
-        xAxis: {
-            categories: {!! json_encode($dias) !!},
-            labels: { style: { fontSize: '10px', color: '#999' } },
-            lineColor: '#e0e0e0'
-        },
-        yAxis: {
-            title: { text: null },
-            gridLineColor: '#f0f0f0',
-            labels: { style: { fontSize: '10px', color: '#999' } }
-        },
-        legend: { enabled: false },
-        tooltip: {
-            formatter: function() {
-                var pct = {{ $totalAcciones }} > 0 ? (this.y / {{ $totalAcciones }} * 100) : 0;
-                return '<b>' + numeral(this.y).format('0,0') + '</b> Acciones (<b>' + numeral(pct).format('0.00') + '</b> %)';
-            }
-        },
-        plotOptions: {
-            column: {
-                borderRadius: 4,
-                color: '#39b8fd',
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Asignados',
-            data: {!! json_encode($totales) !!}
-        }]
-    });
-
-    var yearActual = moment().year();
-
-    $('input[name="dt_range"]').daterangepicker({
-        autoApply: true,
-        minDate: moment(yearActual + '-06-01', 'YYYY-MM-DD'),
-        maxDate: moment(yearActual + '-09-20', 'YYYY-MM-DD'),
-        ranges: {
-            'Hoy': [moment(), moment()],
-            '\u00daltm. 7 D\u00edas': [moment().subtract(6, 'days'), moment()],
-            '\u00daltm. 30 D\u00edas': [moment().subtract(29, 'days'), moment()],
-            'Este Mes': [moment().startOf('month'), moment()]
-        },
-        showCustomRangeLabel: false,
-        alwaysShowCalendars: true,
-        startDate: moment(yearActual + '-06-01', 'YYYY-MM-DD'),
-        endDate: moment().isAfter(moment(yearActual + '-09-20'))
-            ? moment(yearActual + '-09-20')
-            : moment(),
-        opens: 'left',
-        locale: {
-            format: 'D MMM. YYYY',
-            separator: ' - ',
-            applyLabel: 'Aplicar',
-            cancelLabel: 'Cancelar',
-            customRangeLabel: 'Personalizado'
-        }
-    });
 
     document.querySelector('#tab-asignados').addEventListener('click', function(e) {
         var card = e.target.closest('.num-card.used');

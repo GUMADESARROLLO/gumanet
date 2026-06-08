@@ -15,7 +15,7 @@ class PromocionesController extends Controller
 {
     public function __construct() 
     {
-		$this->middleware(['auth','roles']);
+		$this->middleware(['auth','roles'])->except(['SendAcciones', 'ExportRifa']);
     }
 
     public function RifaCar()
@@ -162,6 +162,53 @@ class PromocionesController extends Controller
         }
 
         return response()->json(['dias' => $dias, 'totales' => $totales]);
+    }
+
+    public function ExportRifa($tipo)
+    {
+        $usado = $tipo == 1 ? 1 : 0;
+
+        $data = DB::connection('sqlsrv')->select("
+            SELECT T0.NUMERO, T0.CLIENTE, T1.NOMBRE, T0.FACTURA, T0.FECHA_ASIGNACION
+            FROM PRODUCCION.dbo.NUMEROS_RIFA T0
+            LEFT JOIN Softland.umk.CLIENTE T1 ON T0.CLIENTE = T1.CLIENTE
+            WHERE T0.USADO = ?
+            ORDER BY T0.NUMERO
+        ", [$usado]);
+
+        $headers = ['Número', 'Cliente', 'Nombre', 'Factura', 'Fecha'];
+
+        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel->getActiveSheet()->setTitle($tipo == 1 ? 'Asignados' : 'Disponibles');
+
+        $col = 0;
+        foreach ($headers as $h) {
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, 1, $h);
+        }
+        $objPHPExcel->getActiveSheet()->getStyle('A1:E1')->getFont()->setBold(true);
+
+        $row = 2;
+        foreach ($data as $item) {
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, str_pad($item->NUMERO, 5, '0', STR_PAD_LEFT));
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $item->CLIENTE ?? '');
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, $item->NOMBRE ?? '');
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, $item->FACTURA ?? '');
+            $fecha = isset($item->FECHA_ASIGNACION) ? date('d-m-Y', strtotime($item->FECHA_ASIGNACION)) : '';
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, $fecha);
+            $row++;
+        }
+
+        foreach (range(0, 4) as $i) {
+            $objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($i)->setAutoSize(true);
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . ($tipo == 1 ? 'asignados' : 'disponibles') . '.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
+        exit;
     }
 
     public function SendAcciones(Request $request, $cliente)

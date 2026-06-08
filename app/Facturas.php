@@ -42,7 +42,7 @@ class Facturas extends Model
                 AND T0.VENDEDOR NOT IN ('F01','F12', 'F02', 'F22', 'F04')
                 AND T0.TOTAL_FACTURA > 1500
                 AND T0.FECHA BETWEEN ? AND ?
-                AND T0.CLIENTE NOT IN ('04619')
+                AND T0.CLIENTE NOT IN (	SELECT CODIGO FROM PRODUCCION.dbo.TBL_RIFA_CLIENTES_EXCLUIDOS)
         ";
 
         $rows = DB::connection('sqlsrv')->select($query, [$desde, $hasta]);
@@ -214,7 +214,7 @@ class Facturas extends Model
                 AND T0.VENDEDOR NOT IN ('F01','F12', 'F02' , 'F22', 'F04')
                 AND T0.TOTAL_FACTURA > 1500
                 AND T0.FACTURA = ?
-                AND T0.CLIENTE NOT IN ('04619')
+                AND T0.CLIENTE NOT IN (	SELECT CODIGO FROM PRODUCCION.dbo.TBL_RIFA_CLIENTES_EXCLUIDOS)
         ";
 
         $Factura = DB::connection('sqlsrv')->select($query, [$Factura]);
