@@ -126,9 +126,8 @@ class PromocionesController extends Controller
 
         $dias = [];
         $totales = [];
-        $idx = 1;
         foreach ($chartAsignados as $c) {
-            $dias[] = 'Dia ' . str_pad($idx++, 2, '0', STR_PAD_LEFT);
+            $dias[] = 'Dia ' . date('d', strtotime($c->dia));
             $totales[] = (int) $c->total;
         }
 
@@ -155,9 +154,8 @@ class PromocionesController extends Controller
 
         $dias = [];
         $totales = [];
-        $idx = 1;
         foreach ($rows as $r) {
-            $dias[] = 'Dia ' . str_pad($idx++, 2, '0', STR_PAD_LEFT);
+            $dias[] = 'Dia ' . date('d', strtotime($r->dia));
             $totales[] = (int) $r->total;
         }
 

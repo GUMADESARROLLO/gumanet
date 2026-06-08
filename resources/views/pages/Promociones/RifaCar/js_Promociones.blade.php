@@ -6,30 +6,50 @@ $(document).ready(function() {
 
     const yearActual = moment().year();
 
+    const minDate = moment(`${yearActual}-06-08`, 'YYYY-MM-DD');
+    const maxDate = moment(`${yearActual}-11-20`, 'YYYY-MM-DD');
+
+    // Semana completa actual (domingo a sábado)
+    let startDate = moment().startOf('week');
+    let endDate = moment().endOf('week');
+
+    // Respetar límites
+    if (startDate.isBefore(minDate)) {
+        startDate = minDate.clone();
+    }
+
+    if (endDate.isAfter(maxDate)) {
+        endDate = maxDate.clone();
+    }
+
     $('input[name="dt_range"]').daterangepicker({
         autoApply: true,
 
-        minDate: moment(`${yearActual}-06-01`, 'YYYY-MM-DD'),
-        maxDate: moment(`${yearActual}-11-20`, 'YYYY-MM-DD'),
+        minDate: minDate,
+        maxDate: maxDate,
 
         ranges: {
+            'Esta Semana': [
+                moment.max(moment().startOf('week'), minDate),
+                moment.min(moment().endOf('week'), maxDate)
+            ],
             'Hoy': [moment(), moment()],
             'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
-            'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],              
-            'Este Mes': [moment().startOf('month'), moment()],
-            
-            
+            'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
+            'Este Mes': [
+                moment.max(moment().startOf('month'), minDate),
+                moment.min(moment().endOf('month'), maxDate)
+            ]
         },
 
         showCustomRangeLabel: false,
         alwaysShowCalendars: true,
 
-        startDate: moment(`${yearActual}-06-01`, 'YYYY-MM-DD'),
-        endDate: moment().isAfter(moment(`${yearActual}-11-20`))
-            ? moment(`${yearActual}-11-20`)
-            : moment(),
+        startDate: startDate,
+        endDate: endDate,
 
         opens: 'left',
+
         locale: {
             format: "D MMM. YYYY",
             separator: " - ",
@@ -39,15 +59,15 @@ $(document).ready(function() {
             toLabel: "Hasta",
             customRangeLabel: "Personalizado",
             weekLabel: "S",
-            daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie", "Sab."],
+            daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie.", "Sab."],
             monthNames: [
                 "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                 "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
             ],
-            firstDay: 1
+            firstDay: 0
         }
 
-    }, function(start, end, label) {
+    }, function(start, end) {
         CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
     });
 
