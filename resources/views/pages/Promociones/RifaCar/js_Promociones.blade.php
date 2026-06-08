@@ -9,31 +9,27 @@ $(document).ready(function() {
     $('input[name="dt_range"]').daterangepicker({
         autoApply: true,
 
-        minDate: moment(`${yearActual}-05-01`, 'YYYY-MM-DD'),
-        maxDate: moment(`${yearActual}-09-20`, 'YYYY-MM-DD'),
+        minDate: moment(`${yearActual}-06-01`, 'YYYY-MM-DD'),
+        maxDate: moment(`${yearActual}-11-20`, 'YYYY-MM-DD'),
 
         ranges: {
             'Hoy': [moment(), moment()],
             'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
             'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],              
             'Este Mes': [moment().startOf('month'), moment()],
-            'Mes Anterior': [
-                moment().subtract(1, 'month').startOf('month'), 
-                moment().subtract(1, 'month').endOf('month')
-            ],
+            
             
         },
 
         showCustomRangeLabel: false,
         alwaysShowCalendars: true,
 
-        startDate: moment(`${yearActual}-05-01`, 'YYYY-MM-DD'),
-        endDate: moment().isAfter(moment(`${yearActual}-09-20`))
-            ? moment(`${yearActual}-09-20`)
+        startDate: moment(`${yearActual}-06-01`, 'YYYY-MM-DD'),
+        endDate: moment().isAfter(moment(`${yearActual}-11-20`))
+            ? moment(`${yearActual}-11-20`)
             : moment(),
 
         opens: 'left',
-
         locale: {
             format: "D MMM. YYYY",
             separator: " - ",
@@ -368,6 +364,7 @@ $(document).ready(function() {
             info: false,
             searching: true,
             ordering: true,
+            order: [[7, 'desc']],
             columns: [
                 { 
                     title: '<div class="text-center"><input type="checkbox" id="select-all" class="form-check-input m-0"></div>', 
@@ -451,12 +448,35 @@ $(document).ready(function() {
         data.forEach(function(row) {
             var key = row.CLIENTE;
             if (!clientes[key]) {
-                clientes[key] = { CLIENTE: row.CLIENTE, NOMBRE: row.NOMBRE, ACCIONES: 0 };
+                clientes[key] = {
+                    CLIENTE: row.CLIENTE,
+                    NOMBRE: row.NOMBRE,
+                    VENDEDORES: [],
+                    NOMBRES_VENDEDOR: [],
+                    CATEGORIA: 'Farmacia',
+                    ACCIONES: 0
+                };
+            }
+            var partes = row.VENDEDOR.split(' - ');
+            var codVen = partes[0];
+            var nomVen = partes.slice(1).join(' - ');
+            if (clientes[key].VENDEDORES.indexOf(codVen) === -1) {
+                clientes[key].VENDEDORES.push(codVen);
+            }
+            if (clientes[key].NOMBRES_VENDEDOR.indexOf(nomVen) === -1) {
+                clientes[key].NOMBRES_VENDEDOR.push(nomVen);
+            }
+            if (codVen === 'F04') {
+                clientes[key].CATEGORIA = 'Mayorista';
             }
             clientes[key].ACCIONES += parseInt(row.ACCIONES) || 0;
         });
 
         var rows = Object.values(clientes);
+        rows.forEach(function(r) {
+            r.VENDEDOR = r.VENDEDORES.join(', ');
+            r.NOMBRE_VENDEDOR = r.NOMBRES_VENDEDOR.join(', ');
+        });
         rows.sort(function(a, b) { return b.ACCIONES - a.ACCIONES; });
 
         $(selector).DataTable({
@@ -473,6 +493,11 @@ $(document).ready(function() {
                 }},
                 { data: 'CLIENTE', className: 'text-center' },
                 { data: 'NOMBRE', className: 'text-left' },
+                { data: 'VENDEDOR', className: 'text-center' },
+                { data: 'NOMBRE_VENDEDOR', className: 'text-left' },
+                { data: 'CATEGORIA', className: 'text-center', render: function(data) {
+                    return '<span class="badge" style="background:#e0e0e0;color:#000">' + data + '</span>';
+                }},
                 { data: 'ACCIONES', className: 'text-center fw-bold', render: function(data) {
                     return numeral(data).format('0,0');
                 }},

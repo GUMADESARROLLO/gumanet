@@ -9,6 +9,15 @@
 
 @section('content')
 
+    
+    @if(Auth::user()->email !== 'promociones@gmail.com')
+    <div class="mb-2">
+        <a href="{{ route('MetricasRifa') }}" target="_blank" class="text-decoration-none small fw-semibold text-umk">
+            <i class="fas fa-chart-bar me-1"></i>Metricas
+        </a>
+    </div>
+    @endif
+
     <!-- Header -->
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body">
@@ -213,12 +222,15 @@
                                 <th>#</th>
                                 <th>CLIENTE</th>
                                 <th>NOMBRE</th>
+                                <th>VENDEDOR</th>
+                                <th>NOMBRE</th>
+                                <th>CATEGORIA</th>
                                 <th class="text-center">ACCIONES FACT.</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr class="fw-bold bg-light">
-                                <th colspan="3" class="text-end">TOTAL:</th>
+                                <th colspan="6" class="text-end">TOTAL:</th>
                                 <th class="text-center" id="total-acciones-clientes">0</th>
                             </tr>
                         </tfoot>

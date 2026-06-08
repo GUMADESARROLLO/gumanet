@@ -388,3 +388,6 @@ Route::post('getFactAcciones', 'PromocionesController@getFactAcciones')->name('g
 Route::post('AsignarAcciones', 'PromocionesController@AsignarAcciones')->name('AsignarAcciones');
 Route::post('RevertirAcciones', 'PromocionesController@RevertirAcciones')->name('RevertirAcciones');
 Route::get('ImprimirAcciones', 'PromocionesController@ImprimirAcciones')->name('ImprimirAcciones');
+Route::get('MetricasRifa', 'PromocionesController@MetricasRifa')->name('MetricasRifa');
+Route::get('getChartRifa', 'PromocionesController@getChartRifa')->name('getChartRifa');
+Route::get('SendAcciones/{cliente}', 'PromocionesController@SendAcciones')->name('SendAcciones');

@@ -28,13 +28,7 @@ class Facturas extends Model
                 T1.NOMBRE,
                 T0.FACTURA,
                 T0.TOTAL_FACTURA,
-                FLOOR(
-                    T0.TOTAL_FACTURA / 
-                    CASE 
-                        WHEN T0.VENDEDOR IN ('F04', 'F22') THEN 10000
-                        ELSE 1000
-                    END
-                ) AS ACCIONES,
+                FLOOR(T0.TOTAL_FACTURA / 1500) AS ACCIONES,
                 T0.FECHA,
                 T0.VENDEDOR,
                 T2.NOMBRE AS NOMBRE_VENDEDOR,
@@ -45,10 +39,10 @@ class Facturas extends Model
                 INNER JOIN Softland.umk.VENDEDOR T2 ON T0.VENDEDOR = T2.VENDEDOR
             WHERE
                 T0.ANULADA = 'N'
-                AND T0.VENDEDOR NOT IN ('F01','F12', 'F02' , 'F11')
-                AND T0.TOTAL_FACTURA > 1000
-                AND ( (T0.VENDEDOR IN ('F04', 'F22') AND T0.TOTAL_FACTURA >= 10000) OR (T0.VENDEDOR NOT IN ('F04', 'F22') AND T0.TOTAL_FACTURA >= 1000) )
+                AND T0.VENDEDOR NOT IN ('F01','F12', 'F02', 'F22', 'F04')
+                AND T0.TOTAL_FACTURA > 1500
                 AND T0.FECHA BETWEEN ? AND ?
+                AND T0.CLIENTE NOT IN ('04619')
         ";
 
         $rows = DB::connection('sqlsrv')->select($query, [$desde, $hasta]);
@@ -206,13 +200,7 @@ class Facturas extends Model
                 T1.NOMBRE,
                 T0.FACTURA,
                 T0.TOTAL_FACTURA,
-                FLOOR(
-                    T0.TOTAL_FACTURA / 
-                    CASE 
-                        WHEN T0.VENDEDOR IN ('F04', 'F22') THEN 10000
-                        ELSE 1000
-                    END
-                ) AS ACCIONES,
+                FLOOR(T0.TOTAL_FACTURA / 1500) AS ACCIONES,
                 T0.FECHA,
                 T0.VENDEDOR,
                 T2.NOMBRE AS NOMBRE_VENDEDOR,
@@ -223,10 +211,10 @@ class Facturas extends Model
                 INNER JOIN Softland.umk.VENDEDOR T2 ON T0.VENDEDOR = T2.VENDEDOR
             WHERE
                 T0.ANULADA = 'N'
-                AND T0.VENDEDOR NOT IN ('F01','F12', 'F02' , 'F11')
-                AND T0.TOTAL_FACTURA > 1000
-                AND ( (T0.VENDEDOR IN ('F04', 'F22') AND T0.TOTAL_FACTURA >= 10000) OR (T0.VENDEDOR NOT IN ('F04', 'F22') AND T0.TOTAL_FACTURA >= 1000) )
+                AND T0.VENDEDOR NOT IN ('F01','F12', 'F02' , 'F22', 'F04')
+                AND T0.TOTAL_FACTURA > 1500
                 AND T0.FACTURA = ?
+                AND T0.CLIENTE NOT IN ('04619')
         ";
 
         $Factura = DB::connection('sqlsrv')->select($query, [$Factura]);
