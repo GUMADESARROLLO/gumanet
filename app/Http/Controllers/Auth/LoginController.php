@@ -56,7 +56,10 @@ class LoginController extends Controller
                 break;
             case '11':
                     return '/Inventario';
-                break;  
+                break;
+            case '12':
+                    return '/Promociones';
+                break;
             default:
                     return '/login'; 
                 break;

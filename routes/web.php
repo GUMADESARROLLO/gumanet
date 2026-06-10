@@ -379,6 +379,7 @@ Route::post('DeleteMific', 'MificController@DeleteMific')->name('DeleteMific');
 // RUTAS PARA FACTURACION
 Route::get('Facturacion', 'FacturacionController@Dashboard')->name('Facturacion');
 Route::post('getDataFacturacion', 'FacturacionController@getDataFacturacion')->name('getDataFacturacion');
+Route::post('getDetallePedidoFactura', 'FacturacionController@getDetallePedidoFactura')->name('getDetallePedidoFactura');
 
 
 
