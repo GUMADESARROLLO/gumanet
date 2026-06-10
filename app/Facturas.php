@@ -22,7 +22,7 @@ class Facturas extends Model
 
         $FacturasConAcciones = DB::connection('sqlsrv')->select("SELECT FACTURA FROM PRODUCCION.dbo.LOG_ACCIONES_RIFA ");
 
-        $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura WHERE FECHA BETWEEN ? AND ? ";
+        $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura T0 WHERE T0.FECHA BETWEEN ? AND ? ";
 
         $rows = DB::connection('sqlsrv')->select($query, [$desde, $hasta]);
 
@@ -173,7 +173,7 @@ class Facturas extends Model
 
     public static function getInfoFactura($Factura)
     {
-        $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura WHERE FT0.FACTURA = ? ";
+        $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura T0 WHERE T0.FACTURA = ? ";
 
         $Factura = DB::connection('sqlsrv')->select($query, [$Factura]);
 
