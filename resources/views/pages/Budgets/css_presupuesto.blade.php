@@ -95,8 +95,19 @@
     }
 
 
-    #tbl_topsku_clientes thead th, #id_exp_detalles thead th {
-      background-color: #802980 !important;
+    /* Remove padding/margin from card-body and table-responsive for these tables */
+    .card:has(#tbl_vendedores) .card-body,
+    .card:has(#tbl_pedidos_facturados) .card-body {
+        padding: 0 !important;
+    }
+    .card:has(#tbl_vendedores) .table-responsive,
+    .card:has(#tbl_pedidos_facturados) .table-responsive {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    #tbl_topsku_clientes thead th, #id_exp_detalles thead th, #tbl_vendedores thead th, #tbl_pedidos_facturados thead th {
+      background-color: #007bff !important;
       color: #fff !important;
       border-color: rgba(255,255,255,0.08);
     }
