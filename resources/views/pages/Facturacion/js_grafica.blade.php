@@ -1,89 +1,90 @@
 <script>
 function renderClienteBolsonChart(data) {
-    //const dataLimit = data.slice(0, 10);    
-    
-    const ArrayDias = data.map(item => item.DIA);
-   
-    const FACTURAS = data.map(item => item.FACTURAS);
-    const TOTAL = data.map(item => item.TOTAL_LINEA);
-    //const UNITS = data.map(item => item.CANTIDAD);
 
-    const UNITS = data.map(item => parseFloat(item.CANTIDAD.replace(/,/g, '')));
-    //const UNITS = data.map(item => parseFloat(item.CANTIDAD.replace(/,/g, '')));
+    const ArrayDias = data.map(item => {
+        const fecha = new Date(item.DIA);
+
+        return fecha.toLocaleDateString('es-ES', {
+            month: 'short',
+            day: 'numeric'
+        });
+    });
+    const PEDIDOS = data.map(item => parseInt(item.PEDIDOS));
+    const FACTURADOS = data.map(item => parseInt(item.FACTURAS));
+
+    const totalPedidos = PEDIDOS.reduce((sum, val) => sum + val, 0);
+    const totalFacturados = FACTURADOS.reduce((sum, val) => sum + val, 0);  
 
     Highcharts.chart('chart_pedidos_dia', {
         chart: {
-            zoomType: 'xy'
+            type: 'column'
         },
         title: {
-            text: 'COMPORTAMIENTO DE PEDIDOS'
+            text: 'PEDIDOS VS FACTURADOS POR DÍA'
         },
-        xAxis: [{
+        xAxis: {
             categories: ArrayDias,
-            crosshair: true,
-            labels: {
-                rotation: 0,
-                useHTML: true,
-                formatter: function () {
-                    const texto = String(this.value || '');
-                    // Dividir por espacios
-                    const partes = texto.split(' ');
-                    if (partes.length > 2) {
-                        // Insertar <br/> después del segundo elemento
-                        partes.splice(2, 0, '<br/>');
-                        return partes.join(' ');
-                    }
-                    return texto; // Si no hay suficiente para un salto, lo deja igual
-                }
-            }
-        }],
-        yAxis: [{ // Primary yAxis
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
             title: {
-                text: 'Valor (C$)',
-                style: {
-                    color: Highcharts.getOptions().colors[0]
-                }
+                text: 'Cantidad'
             }
-        }, { // Secondary yAxis
-            title: {
-                text: 'Bultos UND',
-                style: {
-                    color: Highcharts.getOptions().colors[1]
-                }
-            },
-            opposite: true
-        }],
+        },
         exporting: {
-            enabled: false  
+            enabled: false
         },
         tooltip: {
             shared: true,
             formatter: function () {
-                const index = this.points[0].point.index;
+
+                const pedidos = this.points[0].y;
+                const facturados = this.points[1].y;
+
                 return `
-                    <b>${ArrayDias[index]}</b><br/>
-                    VALOR.: <b>C$ ${numeral(TOTAL[index]).format('0,0.00')}</b><br/>
-                    UNITS: <b>${numeral(UNITS[index]).format('0,0')}</b><br/>
-                    CANT. PEDIDOS.: <b>${numeral(FACTURAS[index]).format('0,0')}</b>
+                    <b>${this.x}</b><br>
+                    Pedidos: <b>${pedidos}</b><br>
+                    Facturados: <b>${facturados}</b>
                 `;
             }
         },
-        series: [{
-            name: 'Valor (C$)',
-            type: 'column',
-            yAxis: 0,
-            data: UNITS,
-            color: '#8e44ad',
-            point: {
-                events: {
-                    click: function(e) {
-
-                        $('#mdl-topsku').modal('show');
-
+        plotOptions: {
+            column: {
+                pointPadding: 0.1,
+                borderWidth: 0
+            }
+        },
+        series: [
+            {
+                name: `Pedidos (${numeral(totalPedidos).format('0,0')})`,
+                data: PEDIDOS,
+                color: '#3498db',
+                point: {
+                    events: {
+                        click: function() {
+                            detalles_ventas_diarias(
+                                this.series.name
+                            );
+                        }
                     }
                 }
             },
-        }]
+            {
+                name: `Facturados (${numeral(totalFacturados).format('0,0')})`,
+                data: FACTURADOS,
+                color: '#2ecc71',
+                point: {
+                    events: {
+                        click: function() {
+                            detalles_ventas_diarias(
+                                this.series.name
+                            );
+                        }
+                    }
+                }
+            }
+        ]
     });
 }
 </script>

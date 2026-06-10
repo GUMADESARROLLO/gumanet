@@ -107,7 +107,6 @@
 
             const result = await response.json();
 
-            
             renderClienteBolsonChart(result.FACTURACION);
 
             let datos = [];
@@ -117,6 +116,93 @@
             window.datos = datos;
             window.totales = totales;
 
+            // Tabla de Vendedores
+            if ($.fn.DataTable.isDataTable('#tbl_vendedores')) {
+                $('#tbl_vendedores').DataTable().destroy();
+            }
+            $('#tbl_vendedores').DataTable({
+                data: result.VENDEDORES,
+                columns: [
+                    { title: 'RUTA', data: 'RUTA' },
+                    { title: 'VENDEDOR', data: 'NOMBRE', className: 'text-center' },
+                    { title: 'CANT. PEDIDOS', data: 'CANTIDAD_PEDIDOS', className: 'text-right' }
+                ],
+                searching: false,
+                lengthChange: false,
+                pageLength: 10,
+                language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' }
+            });
+
+            // Tabla de Pedidos Facturados
+            if ($.fn.DataTable.isDataTable('#tbl_pedidos_facturados')) {
+                $('#tbl_pedidos_facturados').DataTable().destroy();
+            }
+            $('#tbl_pedidos_facturados').DataTable({
+                data: result.PEDIDOS_FACTURADOS,
+                columns: [
+                    { title: 'PEDIDO', data: 'PEDIDO', render: function(data) {
+                        return '<a href="javascript:void(0)" class="link-pedido" data-pedido="' + data + '">' + data + '</a>';
+                    } },
+                    { title: 'FECHA PEDIDO', data: 'FECHAC_PEDIDO', className: 'text-center', render: function(data) {
+                        var d = new Date(data);
+                        var day = ('0' + d.getDate()).slice(-2);
+                        var month = ('0' + (d.getMonth() + 1)).slice(-2);
+                        var year = d.getFullYear();
+                        return day + '-' + month + '-' + year;
+                    } },
+                    { title: 'TOTAL FACTURADO', data: 'TOTAL_A_FACTURAR', className: 'text-right', render: function(data) {
+                        return Number(data).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    } }
+                ],
+                searching: false,
+                lengthChange: false,
+                pageLength: 10,
+                language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' }
+            });
+
+            $('#tbl_pedidos_facturados').on('click', '.link-pedido', function() {
+                var pedido = $(this).data('pedido');
+                $('#mdl-detalle-pedido-factura-title').text('PEDIDO: ' + pedido);
+                $('#tbl-detalle-pedido-factura-body').html('<tr><td colspan="6" class="text-center"><i class="fas fa-spinner fa-spin"></i> Cargando...</td></tr>');
+                $('#mdl-detalle-pedido-factura').modal('show');
+
+                fetch('getDetallePedidoFactura', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ pedido: pedido })
+                })
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    var html = '';
+                    if (data.length === 0) {
+                        html = '<tr><td colspan="6" class="text-center">No se encontraron registros</td></tr>';
+                    } else {
+                        data.forEach(function(row) {
+                            var horas = Math.floor(row.TIEMPO_MINUTOS / 60);
+                            var minutos = row.TIEMPO_MINUTOS % 60;
+                            var tiempo = ('0' + horas).slice(-2) + ':' + ('0' + minutos).slice(-2);
+                            var total = Number(row.TOTAL_FACTURA).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            html += '<tr>' +
+                                '<td>' + row.CLIENTE + '</td>' +
+                                '<td>' + row.NOMBRE_CLIENTE + '</td>' +
+                                '<td>' + row.PEDIDO + '</td>' +
+                                '<td>' + row.FACTURA + '</td>' +
+                                '<td class="text-center">' + tiempo + '</td>' +
+                                '<td class="text-right">C$ ' + total + '</td>' +
+                            '</tr>';
+                        });
+                    }
+                    $('#tbl-detalle-pedido-factura-body').html(html);
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                    $('#tbl-detalle-pedido-factura-body').html('<tr><td colspan="6" class="text-center text-danger">Error al cargar los datos</td></tr>');
+                });
+            });
+
             eneableButton(false,'<i class="fas fa-filter"></i> Filtrar')
 
         } catch (error) {
@@ -124,9 +210,6 @@
             eneableButton(false,null)
         }
     }
-
-    
-
   
 
 
