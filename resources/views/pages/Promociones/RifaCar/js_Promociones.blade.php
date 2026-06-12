@@ -525,7 +525,7 @@ $(document).ready(function() {
                     return numeral(data).format('0,0');
                 }},
                 { data: 'CLIENTE', className: 'text-center', orderable: false, render: function(data) {
-                    return '<a href="#" class="btn-qr-cliente" data-cliente="' + data + '"><i class="fas fa-qrcode" style="color:#185fa5;font-size:16px"></i></a>';
+                    return '<a href="#" class="btn-qr-cliente" data-cliente="' + data + '"><i class="fas fa-paper-plane" style="color:#185fa5;font-size:16px"></i></a>';
                 }},
             ],
         });
@@ -537,80 +537,71 @@ $(document).ready(function() {
         $('#total-acciones-clientes').text(numeral(totalAcciones).format('0,0'));
     }
 
-    window.descargarQR = function() {
-        var qrImg = document.getElementById('qr-img');
-        var qrCard = document.getElementById('qr-card');
-        if (!qrImg || !qrCard) return;
+    
 
-        function dataUriToObjectUrl(uri) {
-            var parts = uri.split(',');
-            var mime = parts[0].split(':')[1].split(';')[0];
-            var raw = atob(parts[1]);
-            var arr = new Uint8Array(raw.length);
-            for (var i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
-            return URL.createObjectURL(new Blob([arr], { type: mime }));
+window.descargarQR = function() {
+    // Apuntamos directamente a la tarjeta REAL visible dentro de SweetAlert
+    var qrCard = document.getElementById('qr-card');
+    if (!qrCard) return;
+
+    // Cargamos dom-to-image
+    function loadDomToImage(callback) {
+        if (typeof domtoimage !== 'undefined') { callback(); return; }
+        var s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js';
+        s.onload = callback;
+        document.head.appendChild(s);
+    }
+
+    loadDomToImage(function() {
+        var btnDescargar = qrCard.querySelector('#btn-descargar-qr');
+        
+        // 1. Lo ocultamos completamente del flujo antes de la foto
+        if (btnDescargar) {
+            btnDescargar.style.display = 'none';
         }
 
-        function loadHtml2canvas(callback) {
-            if (typeof html2canvas !== 'undefined') { callback(); return; }
-            var s = document.createElement('script');
-            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-            s.onload = callback;
-            document.head.appendChild(s);
-        }
-
-        // Convert SVG to PNG via canvas
-        var objUrl = dataUriToObjectUrl(qrImg.src);
-        var tempImg = new Image();
-        tempImg.onload = function() {
-            var qrCanvas = document.createElement('canvas');
-            qrCanvas.width = 220;
-            qrCanvas.height = 220;
-            var qrCtx = qrCanvas.getContext('2d');
-            qrCtx.fillStyle = '#ffffff';
-            qrCtx.fillRect(0, 0, 220, 220);
-            qrCtx.drawImage(tempImg, 0, 0, 220, 220);
-            var pngDataUri = qrCanvas.toDataURL('image/png');
-            URL.revokeObjectURL(objUrl);
-
-            // Create an off-screen clone of the card with PNG QR
-            var clone = qrCard.cloneNode(true);
-            clone.id = 'qr-card-clone';
-            clone.style.position = 'fixed';
-            clone.style.left = '-9999px';
-            clone.style.top = '0';
-            clone.style.zIndex = '-1';
-            document.body.appendChild(clone);
-            var cloneImg = clone.querySelector('#qr-img');
-            cloneImg.src = pngDataUri;
-            var captured = false;
-            function doCapture() {
-                if (captured) return;
-                captured = true;
-                loadHtml2canvas(function() {
-                    html2canvas(clone, { scale: 3, useCORS: true, backgroundColor: '#ffffff' }).then(function(canvas) {
-                        var link = document.createElement('a');
-                        link.download = 'codigo-qr.png';
-                        link.href = canvas.toDataURL('image/png');
-                        link.click();
-                        if (clone.parentNode) document.body.removeChild(clone);
-                    }).catch(function() {
-                        if (clone.parentNode) document.body.removeChild(clone);
-                    });
-                });
+        // 2. Tomamos la captura con un filtro de seguridad extra
+        domtoimage.toPng(qrCard, {
+            bgcolor: '#ffffff',
+            width: qrCard.offsetWidth,
+            height: qrCard.offsetHeight,
+            // FILTRO: Si el nodo tiene el ID del botón, lo excluye por completo de la renderización
+            filter: function(node) {
+                return (node.id !== 'btn-descargar-qr');
+            },
+            style: {
+                transform: 'none',
+                margin: '0',
+                left: '0',
+                top: '0'
             }
-            cloneImg.onload = doCapture;
-            if (cloneImg.complete) setTimeout(doCapture, 150);
-        };
-        tempImg.onerror = function() {
-            var link = document.createElement('a');
-            link.download = 'codigo-qr.png';
-            link.href = qrImg.src;
-            link.click();
-        };
-        tempImg.src = objUrl;
-    };
+        })
+        .then(function(dataUrl) {
+            // 3. Devolvemos el botón a su estado normal (flex para mantener tu diseño d-flex)
+            if (btnDescargar) {
+                btnDescargar.style.display = 'flex';
+            }
 
+            // 4. Descarga del archivo final corregido
+            var cliente = qrCard.getAttribute('data-cliente') || 'cliente';
+            var link = document.createElement('a');
+            link.download = 'codigo-qr-' + cliente + '.png';
+            link.href = dataUrl;
+            link.click();
+        })
+        .catch(function(error) {
+            console.error('Error al exportar la tarjeta real:', error);
+            // Si hay un error, restauramos el botón para que el usuario pueda reintentar
+            if (btnDescargar) {
+                btnDescargar.style.display = 'flex';
+            }
+        });
+    });
+};
+    
+
+    
     window.copiarCuentaQR = function() {
         var texto = document.getElementById('cuenta-numero').textContent.trim();
         var btn = document.getElementById('copy-btn');
@@ -641,6 +632,7 @@ $(document).ready(function() {
     $(document).on('click', '.btn-qr-cliente', function(e) {
         e.preventDefault();
         var cliente = $(this).data('cliente');
+        
         Swal.fire({
             title: 'Cargando...',
             showConfirmButton: false,
@@ -655,12 +647,38 @@ $(document).ready(function() {
                         background: 'transparent',
                         customClass: { popup: 'swal-qr-popup' },
                         didOpen: function(popup) {
-                            setTimeout(function() {
-                                var btnD = popup.querySelector('#btn-descargar-qr');
-                                if (btnD) btnD.onclick = window.descargarQR;
-                                var btnC = popup.querySelector('#copy-btn');
-                                if (btnC) btnC.onclick = window.copiarCuentaQR;
-                            }, 100);
+                            // --- SOLUCIÓN INTEGRADA AQUÍ ---
+                            var card = popup.querySelector('#qr-card');
+                            var container = popup.querySelector('#qr-container');
+                            
+                            if (card && container) {
+                                var base64Str = card.getAttribute('data-qr-src') || '';
+                                if (base64Str.includes(',')) {
+                                    base64Str = base64Str.split(',')[1];
+                                }
+                                
+                                try {
+                                    // Decodificamos e inyectamos el SVG puro de forma nativa
+                                    var svgRaw = atob(base64Str);
+                                    container.innerHTML = svgRaw;
+                                    
+                                    var svgElement = container.querySelector('svg');
+                                    if (svgElement) {
+                                        svgElement.style.width = '100%';
+                                        svgElement.style.height = 'auto';
+                                        svgElement.style.display = 'block';
+                                    }
+                                } catch (err) {
+                                    console.error("Error al decodificar QR Base64:", err);
+                                }
+                            }
+
+                            // Asignamos los eventos de los botones una vez pintado el QR
+                            var btnD = popup.querySelector('#btn-descargar-qr');
+                            if (btnD) btnD.onclick = window.descargarQR;
+                            
+                            var btnC = popup.querySelector('#copy-btn');
+                            if (btnC) btnC.onclick = window.copiarCuentaQR;
                         }
                     });
                 });
