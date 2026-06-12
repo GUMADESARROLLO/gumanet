@@ -1,3 +1,6 @@
+<style>
+.swal-qr-popup { box-shadow: none !important; background: transparent !important; padding: 0 !important; width: auto !important; }
+</style>
 <script>
 $(document).ready(function() {
     //inicializaControlFecha();
@@ -521,6 +524,9 @@ $(document).ready(function() {
                 { data: 'ACCIONES', className: 'text-center fw-bold', render: function(data) {
                     return numeral(data).format('0,0');
                 }},
+                { data: 'CLIENTE', className: 'text-center', orderable: false, render: function(data) {
+                    return '<a href="#" class="btn-qr-cliente" data-cliente="' + data + '"><i class="fas fa-qrcode" style="color:#185fa5;font-size:16px"></i></a>';
+                }},
             ],
         });
 
@@ -531,6 +537,86 @@ $(document).ready(function() {
         $('#total-acciones-clientes').text(numeral(totalAcciones).format('0,0'));
     }
 
+    window.descargarQR = function() {
+        var card = document.getElementById('qr-card');
+        if (!card) return;
+        if (typeof html2canvas === 'undefined') {
+            var s = document.createElement('script');
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            s.onload = function() { window.descargarQR(); };
+            document.head.appendChild(s);
+            return;
+        }
+        html2canvas(card, { scale: 3, useCORS: true, backgroundColor: '#ffffff' }).then(function(canvas) {
+            var link = document.createElement('a');
+            link.download = 'codigo-qr.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+    };
+
+    window.compartirQR = function() {
+        var card = document.getElementById('qr-card');
+        if (!card) return;
+        if (typeof html2canvas === 'undefined') {
+            var s = document.createElement('script');
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            s.onload = function() { window.compartirQR(); };
+            document.head.appendChild(s);
+            return;
+        }
+        html2canvas(card, { scale: 3, useCORS: true, backgroundColor: '#ffffff' }).then(function(canvas) {
+            canvas.toBlob(function(blob) {
+                var file = new File([blob], 'codigo-qr.png', { type: 'image/png' });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    navigator.share({ title: 'Mi C\u00f3digo QR', text: 'Escanea para ver mi perfil', files: [file] });
+                } else {
+                    window.descargarQR();
+                }
+            });
+        });
+    };
+
+    window.copiarCuentaQR = function() {
+        var texto = document.getElementById('cuenta-numero').textContent.trim();
+        navigator.clipboard.writeText(texto).then(function() {
+            var btn = document.getElementById('copy-btn');
+            var icon = document.getElementById('copy-icon');
+            btn.classList.add('copied');
+            icon.className = 'fas fa-check';
+            setTimeout(function() {
+                btn.classList.remove('copied');
+                icon.className = 'fas fa-copy';
+            }, 2000);
+        });
+    };
+
+    $(document).on('click', '.btn-qr-cliente', function(e) {
+        e.preventDefault();
+        var cliente = $(this).data('cliente');
+        Swal.fire({
+            title: 'Cargando...',
+            showConfirmButton: false,
+            didOpen: function() {
+                $.get('{{ url("qrCliente") }}/' + cliente, function(html) {
+                    Swal.fire({
+                        html: html,
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        width: 400,
+                        padding: 0,
+                        background: 'transparent',
+                        customClass: { popup: 'swal-qr-popup' },
+                        didOpen: function() {
+                            document.getElementById('btn-compartir-qr').onclick = window.compartirQR;
+                            document.getElementById('btn-descargar-qr').onclick = window.descargarQR;
+                            document.getElementById('copy-btn').onclick = window.copiarCuentaQR;
+                        }
+                    });
+                });
+            }
+        });
+    });
 
     async function GetData(desde, hasta){
         try {

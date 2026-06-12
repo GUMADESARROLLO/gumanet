@@ -15,7 +15,7 @@ class PromocionesController extends Controller
 {
     public function __construct() 
     {
-		$this->middleware(['auth','roles'])->except(['SendAcciones', 'ExportRifa']);
+		$this->middleware(['auth','roles'])->except(['SendAcciones', 'ExportRifa', 'qrCliente']);
     }
 
     public function RifaCar()
@@ -207,6 +207,20 @@ class PromocionesController extends Controller
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save('php://output');
         exit;
+    }
+
+    public function qrCliente($cliente)
+    {
+        $info = DB::connection('sqlsrv')->selectOne("
+            SELECT CLIENTE, NOMBRE FROM Softland.umk.CLIENTE WHERE CLIENTE = ?
+        ", [$cliente]);
+
+        $nombre = $info->NOMBRE ?? $cliente;
+        $url = 'https://carro.unimarksa.com/api/Perfil/' . $cliente;
+        $qr = \QrCode::size(220)->generate($url);
+        $qrBase64 = 'data:image/svg+xml;base64,' . base64_encode($qr);
+
+        return view('pages.Promociones.RifaCar.qr_card', compact('cliente', 'nombre') + ['qrUrl' => $qrBase64]);
     }
 
     public function SendAcciones(Request $request, $cliente)

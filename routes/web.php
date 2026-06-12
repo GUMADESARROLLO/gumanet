@@ -393,3 +393,4 @@ Route::get('MetricasRifa', 'PromocionesController@MetricasRifa')->name('Metricas
 Route::get('getChartRifa', 'PromocionesController@getChartRifa')->name('getChartRifa');
 Route::get('SendAcciones/{cliente}', 'PromocionesController@SendAcciones')->name('SendAcciones');
 Route::get('ExportRifa/{tipo}', 'PromocionesController@ExportRifa')->name('ExportRifa');
+Route::get('qrCliente/{cliente}', 'PromocionesController@qrCliente')->name('qrCliente');

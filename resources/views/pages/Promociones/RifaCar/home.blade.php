@@ -223,15 +223,17 @@
                                 <th>CLIENTE</th>
                                 <th>NOMBRE</th>
                                 <th>VENDEDOR</th>
-                                <th>NOMBRE</th>
+                                <th>NOMBRE VENDEDOR</th>
                                 <th>CATEGORIA</th>
                                 <th class="text-center">ACCIONES FACT.</th>
+                                <th>QR</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr class="fw-bold bg-light">
                                 <th colspan="6" class="text-end">TOTAL:</th>
                                 <th class="text-center" id="total-acciones-clientes">0</th>
+                                <th></th>
                             </tr>
                         </tfoot>
                     </table>
