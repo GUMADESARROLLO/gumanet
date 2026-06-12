@@ -538,57 +538,104 @@ $(document).ready(function() {
     }
 
     window.descargarQR = function() {
-        var card = document.getElementById('qr-card');
-        if (!card) return;
-        if (typeof html2canvas === 'undefined') {
+        var qrImg = document.getElementById('qr-img');
+        var qrCard = document.getElementById('qr-card');
+        if (!qrImg || !qrCard) return;
+
+        function dataUriToObjectUrl(uri) {
+            var parts = uri.split(',');
+            var mime = parts[0].split(':')[1].split(';')[0];
+            var raw = atob(parts[1]);
+            var arr = new Uint8Array(raw.length);
+            for (var i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
+            return URL.createObjectURL(new Blob([arr], { type: mime }));
+        }
+
+        function loadHtml2canvas(callback) {
+            if (typeof html2canvas !== 'undefined') { callback(); return; }
             var s = document.createElement('script');
             s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-            s.onload = function() { window.descargarQR(); };
+            s.onload = callback;
             document.head.appendChild(s);
-            return;
         }
-        html2canvas(card, { scale: 3, useCORS: true, backgroundColor: '#ffffff' }).then(function(canvas) {
+
+        // Convert SVG to PNG via canvas
+        var objUrl = dataUriToObjectUrl(qrImg.src);
+        var tempImg = new Image();
+        tempImg.onload = function() {
+            var qrCanvas = document.createElement('canvas');
+            qrCanvas.width = 220;
+            qrCanvas.height = 220;
+            var qrCtx = qrCanvas.getContext('2d');
+            qrCtx.fillStyle = '#ffffff';
+            qrCtx.fillRect(0, 0, 220, 220);
+            qrCtx.drawImage(tempImg, 0, 0, 220, 220);
+            var pngDataUri = qrCanvas.toDataURL('image/png');
+            URL.revokeObjectURL(objUrl);
+
+            // Create an off-screen clone of the card with PNG QR
+            var clone = qrCard.cloneNode(true);
+            clone.id = 'qr-card-clone';
+            clone.style.position = 'fixed';
+            clone.style.left = '-9999px';
+            clone.style.top = '0';
+            clone.style.zIndex = '-1';
+            document.body.appendChild(clone);
+            var cloneImg = clone.querySelector('#qr-img');
+            cloneImg.src = pngDataUri;
+            var captured = false;
+            function doCapture() {
+                if (captured) return;
+                captured = true;
+                loadHtml2canvas(function() {
+                    html2canvas(clone, { scale: 3, useCORS: true, backgroundColor: '#ffffff' }).then(function(canvas) {
+                        var link = document.createElement('a');
+                        link.download = 'codigo-qr.png';
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                        if (clone.parentNode) document.body.removeChild(clone);
+                    }).catch(function() {
+                        if (clone.parentNode) document.body.removeChild(clone);
+                    });
+                });
+            }
+            cloneImg.onload = doCapture;
+            if (cloneImg.complete) setTimeout(doCapture, 150);
+        };
+        tempImg.onerror = function() {
             var link = document.createElement('a');
             link.download = 'codigo-qr.png';
-            link.href = canvas.toDataURL('image/png');
+            link.href = qrImg.src;
             link.click();
-        });
-    };
-
-    window.compartirQR = function() {
-        var card = document.getElementById('qr-card');
-        if (!card) return;
-        if (typeof html2canvas === 'undefined') {
-            var s = document.createElement('script');
-            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-            s.onload = function() { window.compartirQR(); };
-            document.head.appendChild(s);
-            return;
-        }
-        html2canvas(card, { scale: 3, useCORS: true, backgroundColor: '#ffffff' }).then(function(canvas) {
-            canvas.toBlob(function(blob) {
-                var file = new File([blob], 'codigo-qr.png', { type: 'image/png' });
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    navigator.share({ title: 'Mi C\u00f3digo QR', text: 'Escanea para ver mi perfil', files: [file] });
-                } else {
-                    window.descargarQR();
-                }
-            });
-        });
+        };
+        tempImg.src = objUrl;
     };
 
     window.copiarCuentaQR = function() {
         var texto = document.getElementById('cuenta-numero').textContent.trim();
-        navigator.clipboard.writeText(texto).then(function() {
-            var btn = document.getElementById('copy-btn');
-            var icon = document.getElementById('copy-icon');
+        var btn = document.getElementById('copy-btn');
+        var icon = document.getElementById('copy-icon');
+        function copiado() {
             btn.classList.add('copied');
             icon.className = 'fas fa-check';
             setTimeout(function() {
                 btn.classList.remove('copied');
                 icon.className = 'fas fa-copy';
             }, 2000);
-        });
+        }
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(texto).then(copiado);
+        } else {
+            var ta = document.createElement('textarea');
+            ta.value = texto;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            copiado();
+        }
     };
 
     $(document).on('click', '.btn-qr-cliente', function(e) {
@@ -607,10 +654,13 @@ $(document).ready(function() {
                         padding: 0,
                         background: 'transparent',
                         customClass: { popup: 'swal-qr-popup' },
-                        didOpen: function() {
-                            document.getElementById('btn-compartir-qr').onclick = window.compartirQR;
-                            document.getElementById('btn-descargar-qr').onclick = window.descargarQR;
-                            document.getElementById('copy-btn').onclick = window.copiarCuentaQR;
+                        didOpen: function(popup) {
+                            setTimeout(function() {
+                                var btnD = popup.querySelector('#btn-descargar-qr');
+                                if (btnD) btnD.onclick = window.descargarQR;
+                                var btnC = popup.querySelector('#copy-btn');
+                                if (btnC) btnC.onclick = window.copiarCuentaQR;
+                            }, 100);
                         }
                     });
                 });

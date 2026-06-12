@@ -215,12 +215,15 @@ class PromocionesController extends Controller
             SELECT CLIENTE, NOMBRE FROM Softland.umk.CLIENTE WHERE CLIENTE = ?
         ", [$cliente]);
 
-        $nombre = $info->NOMBRE ?? $cliente;
+        $nombreCompleto = $info->NOMBRE ?? $cliente;
+        $nombre = preg_replace('/\s*[-]?\s*(?:RUC[- ]?\s*\S+|C(?:E|É)DULA\s*\S+|\d{3}[-]\d{6}[-]\d{4}[A-Z]?).*$/i', '', $nombreCompleto);
+        $nombre = trim($nombre, ' -');
+        $nombre = trim($nombre);
         $url = 'https://carro.unimarksa.com/api/Perfil/' . $cliente;
-        $qr = \QrCode::size(220)->generate($url);
-        $qrBase64 = 'data:image/svg+xml;base64,' . base64_encode($qr);
+        $qrSvg = \QrCode::size(220)->generate($url);
+        $qrSvgBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
 
-        return view('pages.Promociones.RifaCar.qr_card', compact('cliente', 'nombre') + ['qrUrl' => $qrBase64]);
+        return view('pages.Promociones.RifaCar.qr_card', compact('cliente', 'nombre', 'nombreCompleto') + ['qrUrl' => $qrSvgBase64]);
     }
 
     public function SendAcciones(Request $request, $cliente)

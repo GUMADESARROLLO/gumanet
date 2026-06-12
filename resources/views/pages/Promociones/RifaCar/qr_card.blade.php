@@ -5,18 +5,14 @@
 
   <div style="font-size:1.25rem;font-weight:700;color:#1a1a2e;margin-bottom:4px">Hola, {{ $nombre ?? 'Cliente' }}</div>
   <p style="font-size:0.82rem;color:#6b7280;margin-bottom:20px;line-height:1.4">
-    Muestra o comparte este <strong style="color:#1a9de0">C&oacute;digo QR</strong> para acceder a tu perfil.
+    C&oacute;digo de consulta de <strong style="color:#1a9de0">Acciones</strong> — uso interno, no compartir.
   </p>
 
   <div style="background:#f7fffe;border:2px solid #e0f7f3;border-radius:18px;padding:16px;margin-bottom:20px;display:inline-block;width:100%">
     <img id="qr-img" src="{{ $qrUrl }}" alt="Código QR" style="width:100%;max-width:220px;height:auto;display:block;margin:0 auto;border-radius:10px" />
   </div>
 
-  <div class="d-flex justify-content-center gap-3 mb-1">
-    <button class="action-btn" id="btn-compartir-qr">
-      <i class="fas fa-share-alt" style="font-size:1.2rem;color:#00c6a7"></i>
-      Compartir
-    </button>
+  <div class="d-flex justify-content-center mb-1">
     <button class="action-btn" id="btn-descargar-qr">
       <i class="fas fa-download" style="font-size:1.2rem;color:#00c6a7"></i>
       Descargar
@@ -26,7 +22,7 @@
   <div style="background:#f8fafc;border:1.5px solid #e5e7eb;border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin-top:16px">
     <div class="text-start">
       <div style="font-size:0.70rem;color:#9ca3af">Cliente</div>
-      <div style="font-size:0.78rem;font-weight:700;color:#1a1a2e;letter-spacing:0.5px" id="cuenta-numero">{{ $cliente }} - {{ $nombre ?? '' }}</div>
+      <div style="font-size:0.78rem;font-weight:700;color:#1a1a2e;letter-spacing:0.5px" id="cuenta-numero">{{ $cliente }} - {{ $nombreCompleto ?? $nombre ?? '' }}</div>
     </div>
     <button class="copy-btn" id="copy-btn" onclick="copiarCuenta()" title="Copiar">
       <i class="fas fa-copy" id="copy-icon"></i>
