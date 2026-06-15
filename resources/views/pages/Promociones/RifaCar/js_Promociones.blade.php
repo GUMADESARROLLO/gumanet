@@ -9,8 +9,8 @@ $(document).ready(function() {
 
     const yearActual = moment().year();
 
-    const minDate = moment(`${yearActual}-06-08`, 'YYYY-MM-DD');
-    const maxDate = moment(`${yearActual}-11-20`, 'YYYY-MM-DD');
+    const minDate = moment(`${yearActual}-06-15`, 'YYYY-MM-DD');
+    const maxDate = moment(`${yearActual}-11-21`, 'YYYY-MM-DD');
 
     // Semana completa actual (domingo a sábado)
     let startDate = moment().startOf('week');
