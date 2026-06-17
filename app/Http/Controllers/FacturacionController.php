@@ -42,4 +42,25 @@ class FacturacionController extends Controller
         return response()->json($detalle);
     }
 
+    public function getFacturasVendedor(Request $request)
+    {
+        $vendedor = $request->vendedor;
+        $facturas = Facturacion::getFacturasByVendedor($request, $vendedor);
+        return response()->json($facturas);
+    }
+
+    public function getDetallePedidoProductos(Request $request)
+    {
+        $pedido = $request->pedido;
+        $detalle = Facturacion::getDetallePedidoProductos($pedido);
+        return response()->json($detalle);
+    }
+
+    public function getDetalleFacturaProductos(Request $request)
+    {
+        $factura = $request->factura;
+        $detalle = Facturacion::getDetalleFacturaProductos($factura);
+        return response()->json($detalle);
+    }
+
 }

@@ -107,8 +107,8 @@
     }
 
     #tbl_topsku_clientes thead th, #id_exp_detalles thead th, #tbl_vendedores thead th, #tbl_pedidos_facturados thead th {
-      background-color: #007bff !important;
-      color: #fff !important;
+      background-color: #f9f9f9 !important;
+      color: #000000 !important;
       border-color: rgba(255,255,255,0.08);
     }
 
