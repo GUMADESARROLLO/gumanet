@@ -56,7 +56,7 @@
 
     <!-- Tables -->
     <div class="row g-4 mb-4">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-umk text-white">
             <h6 class="mb-0">VENDEDORES</h6>
@@ -68,7 +68,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <div class="card">
           <div class="card-header bg-umk text-white">
             <h6 class="mb-0">PEDIDOS FACTURADOS</h6>
@@ -131,18 +131,48 @@
                 <div class="modal-body">
                     <div class="table-responsive">
                         <table id="tbl-detalle-pedido-factura" class="table table-striped" width="100%">
+                            <tfoot>
+                                <tr>
+                                    <th colspan="4" class="text-right">TOTAL:</th>
+                                    <th class="text-right"></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Facturas por Vendedor -->
+    <div class="modal fade" id="mdl-facturas-vendedor" tabindex="-1" role="dialog" aria-labelledby="mdl-facturas-vendedor-title" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-umk" id="mdl-facturas-vendedor-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table id="tbl-facturas-vendedor" class="table table-striped" width="100%">
                             <thead>
                                 <tr>
+                                    <th></th>
+                                    <th>FACTURA</th>
+                                    <th>FECHA</th>
                                     <th>COD. CLIENTE</th>
                                     <th>NOMBRE CLIENTE</th>
-                                    <th>PEDIDO</th>
-                                    <th>FACTURA</th>
-                                    <th>TIEMPO (HH:MM)</th>
-                                    <th>TOTAL FACTURA C$</th>
+                                    <th>TOTAL</th>
                                 </tr>
                             </thead>
-                            <tbody id="tbl-detalle-pedido-factura-body">
-                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="5" class="text-right">TOTAL:</th>
+                                    <th class="text-right"></th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
