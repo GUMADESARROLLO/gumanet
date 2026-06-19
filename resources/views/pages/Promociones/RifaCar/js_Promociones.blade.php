@@ -527,6 +527,9 @@ $(document).ready(function() {
                 { data: 'CLIENTE', className: 'text-center', orderable: false, render: function(data) {
                     return '<a href="#" class="btn-qr-cliente" data-cliente="' + data + '"><i class="fas fa-paper-plane" style="color:#185fa5;font-size:16px"></i></a>';
                 }},
+                { data: 'CLIENTE', className: 'text-center', orderable: false, render: function(data) {
+                    return '<a href="/ReporteClientesRifa/' + data + '" target="_blank" class="btn-reporte-cliente" data-cliente="' + data + '"><i class="fas fa-file-alt" style="color:#28a745;font-size:16px"></i></a>';
+                }},
             ],
         });
 

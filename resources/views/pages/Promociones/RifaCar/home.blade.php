@@ -193,7 +193,7 @@
 
     <!-- Modal Clientes -->
     <div class="modal fade" id="ModalClientes" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-innova text-white">
                     <div>
@@ -202,7 +202,9 @@
                         </h5>
                         <small class="text-white-50">Periodo: <span id="tl_periodo_modal"></span></small>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-dismiss="modal" aria-label="Close"></button>
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn-close btn-close-white" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
@@ -227,12 +229,14 @@
                                 <th>CATEGORIA</th>
                                 <th class="text-center">ACCIONES FACT.</th>
                                 <th>QR</th>
+                                <th>REPORTE</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr class="fw-bold bg-light">
                                 <th colspan="6" class="text-end">TOTAL:</th>
                                 <th class="text-center" id="total-acciones-clientes">0</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </tfoot>

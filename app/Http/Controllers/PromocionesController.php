@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Facturas;
 use App\Vendedor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use PDF;
@@ -252,6 +253,51 @@ class PromocionesController extends Controller
 
         return view('pages.Promociones.RifaCar.emails.acciones_cliente', compact(
             'cliente', 'nombre', 'acciones'
+        ));
+    }
+
+    public function ReporteClientesRifa($cliente)
+    {
+        $rows = DB::connection('sqlsrv')->select("
+            SELECT T0.NUMERO, T0.FACTURA, T0.FECHA_ASIGNACION,
+                   V.FECHA AS FECHA_FACTURA, V.TOTAL_FACTURA, V.NOMBRE, V.CLIENTE
+            FROM PRODUCCION.dbo.NUMEROS_RIFA T0
+            LEFT JOIN PRODUCCION.dbo.view_gnet_rifa_masterFactura V ON T0.FACTURA = V.FACTURA
+            WHERE T0.USADO = 1 AND T0.CLIENTE = ?
+            ORDER BY V.FECHA DESC, T0.NUMERO
+        ", [$cliente]);
+
+        $nombre = $rows[0]->NOMBRE ?? $cliente;
+
+        $facturasMap = [];
+        $totalComprado = 0;
+        $totalAcciones = 0;
+
+        foreach ($rows as $r) {
+            $fac = $r->FACTURA;
+            if (!isset($facturasMap[$fac])) {
+                $facturasMap[$fac] = [
+                    'FACTURA'       => $fac,
+                    'FECHA'         => $r->FECHA_FACTURA,
+                    'TOTAL_FACTURA' => (float) ($r->TOTAL_FACTURA ?? 0),
+                    'ACCIONES'      => [],
+                ];
+                $totalComprado += (float) ($r->TOTAL_FACTURA ?? 0);
+            }
+            $facturasMap[$fac]['ACCIONES'][] = str_pad($r->NUMERO, 5, '0', STR_PAD_LEFT);
+            $totalAcciones++;
+        }
+
+        $facturas = array_values($facturasMap);
+        $totalFacturas = count($facturas);
+
+        $fechaGeneracion = date('d/m/Y, h:i:s A');
+        $admin = Auth::user()->name ?? 'Sistema';
+
+        return view('pages.Promociones.RifaCar.reporte_clientes', compact(
+            'cliente', 'nombre', 'facturas',
+            'totalFacturas', 'totalAcciones', 'totalComprado',
+            'fechaGeneracion', 'admin'
         ));
     }
 
