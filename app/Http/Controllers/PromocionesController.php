@@ -258,9 +258,28 @@ class PromocionesController extends Controller
 
     public function ReporteClientesRifa($cliente)
     {
+        $data = $this->getReporteData($cliente);
+        return view('pages.Promociones.RifaCar.reporte_clientes', $data);
+    }
+
+    public function ReporteClientesRifaPDF($cliente)
+    {
+        $data = $this->getReporteData($cliente);
+        $pdf = PDF::loadView('pages.Promociones.RifaCar.reporte_clientes_pdf', $data);
+        return $pdf->download('Reporte_' . $cliente . '.pdf');
+    }
+
+    private function getReporteData($cliente)
+    {
         $rows = DB::connection('sqlsrv')->select("
-            SELECT T0.NUMERO, T0.FACTURA, T0.FECHA_ASIGNACION,
-                   V.FECHA AS FECHA_FACTURA, V.TOTAL_FACTURA, V.NOMBRE, V.CLIENTE
+            SELECT 
+                T0.NUMERO, 
+                T0.FACTURA, 
+                T0.FECHA_ASIGNACION,
+                V.FECHA AS FECHA_FACTURA, 
+                V.TOTAL_FACTURA, 
+                V.NOMBRE, 
+                V.CLIENTE
             FROM PRODUCCION.dbo.NUMEROS_RIFA T0
             LEFT JOIN PRODUCCION.dbo.view_gnet_rifa_masterFactura V ON T0.FACTURA = V.FACTURA
             WHERE T0.USADO = 1 AND T0.CLIENTE = ?
@@ -294,11 +313,14 @@ class PromocionesController extends Controller
         $fechaGeneracion = date('d/m/Y, h:i:s A');
         $admin = Auth::user()->name ?? 'Sistema';
 
-        return view('pages.Promociones.RifaCar.reporte_clientes', compact(
+        $qrSvg = \QrCode::size(130)->generate('https://carro.unimarksa.com/api/Perfil/' . $cliente);
+        $qrSvgBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
+
+        return compact(
             'cliente', 'nombre', 'facturas',
             'totalFacturas', 'totalAcciones', 'totalComprado',
-            'fechaGeneracion', 'admin'
-        ));
+            'fechaGeneracion', 'admin', 'qrSvg', 'qrSvgBase64'
+        );
     }
 
     public function ImprimirAcciones(Request $request)

@@ -185,7 +185,7 @@
                                             <tr>
                                                 <td class="content-block">
                                                     <div class="recibo-terminos">
-                                                        <strong>Términos:</strong> Este recibo es válido para participar en el sorteo de Rifas Car. El ganador se anunciará en nuestras redes sociales. No se aceptan cambios ni devoluciones.
+                                                        <strong>Términos:</strong> Promoción "CON UNIMARK TE VAS MONTADO". Por cada C$1,500.00 netos en compras de productos participantes acumula 1 acción electrónica. Vigencia del 08/06/2026 al 21/11/2026. Aplican restricciones. Compras anuladas, devueltas o con saldo vencido pueden invalidar acciones. Consulte el reglamento oficial en UNIMARK S.A.
                                                     </div>
                                                 </td>
                                             </tr>

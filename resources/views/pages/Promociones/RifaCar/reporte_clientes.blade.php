@@ -23,6 +23,7 @@
             max-width: 100% !important;
         }
     }
+    .qr-wrap svg { width: 100% !important; height: auto !important; max-width: 120px; max-height: 120px; }
 </style>
 <script id="tailwind-config">
     tailwind.config = {
@@ -116,7 +117,7 @@
 </script>
 </head>
 <body class="bg-surface-variant/20 font-body-base text-on-background min-h-screen py-xl px-md">
-<div class="max-w-[1200px] mx-auto document-container bg-surface-container-lowest border border-outline-variant shadow-xl rounded-xl p-lg md:p-xl mb-xl">
+<div id="id_document_pdf" class="max-w-[1200px] mx-auto document-container bg-surface-container-lowest border border-outline-variant shadow-xl rounded-xl p-lg md:p-xl mb-xl">
 
     <!-- Report Header -->
     <div class="flex flex-col md:flex-row justify-between items-start mb-xl gap-md">
@@ -232,25 +233,42 @@
     </div>
 
     <!-- Summary Totals Footer Section -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-xl">
-        <div class="bg-surface-container-high p-lg rounded-xl text-center border border-outline-variant">
-            <p class="text-[10px] font-bold text-secondary uppercase mb-1">Monto Total Facturado</p>
-            <p class="text-2xl font-bold text-primary">C$ {{ number_format($totalComprado, 2) }}</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+        <div class="bg-surface-container-high p-lg rounded-xl text-center border border-outline-variant flex flex-col items-center justify-center">
+            <p class="text-xs font-bold text-secondary uppercase mb-1">Monto Total Facturado</p>
+            <p class="text-3xl font-bold text-primary">C$ {{ number_format($totalComprado, 2) }}</p>
         </div>
-        <div class="bg-primary p-lg rounded-xl text-center shadow-md flex flex-col justify-center">
-            <p class="text-[10px] font-bold text-on-primary-container uppercase mb-1">Acciones Totales Vinculadas</p>
-            <p class="text-2xl font-bold text-on-primary">{{ $totalAcciones }}</p>
+        <div class="bg-primary p-lg rounded-xl text-center shadow-md flex flex-col items-center justify-center">
+            <p class="text-xs font-bold text-on-primary-container uppercase mb-1">Acciones Totales Vinculadas</p>
+            <p class="text-3xl font-bold text-on-primary">{{ $totalAcciones }}</p>
+        </div>
+        <div class="bg-white p-lg rounded-xl text-center border border-outline-variant flex items-center justify-center">
+            <div class="qr-wrap" style="width:120px;height:120px;display:flex;align-items:center;justify-content:center;">{!! $qrSvg !!}</div>
         </div>
     </div>
 
     <!-- Document Footer -->
     <div class="mt-xl pt-lg border-t border-outline-variant text-center">
         <p class="font-label-bold text-primary">UNIMARK S.A. | RIFA CAR 20 ANIVERSARIO</p>
-        <p class="font-body-sm text-secondary">Este reporte vincula directamente las facturas emitidas con la asignación de acciones de la rifa.</p>
-        <p class="font-body-sm text-secondary">&copy; {{ date('Y') }} UNIMARK S.A. Todos los derechos reservados.</p>
+        <p class="text-xs text-secondary font-semibold leading-relaxed mt-2">
+            Villa Fontana, Club Terraza, 150 mts. al Oeste
+            Managua, Nicaragua<br>
+            (+505) 2278-8787 | 8574-2828
+            <br>
+
+            Acciones acumuladas sujetas a validación. Las acciones mostradas en este estado de cuenta podrán ser ajustadas por devoluciones, notas de crédito, anulaciones de facturas o saldos vencidos. La cantidad definitiva de acciones válidas será determinada por UNIMARK S.A. conforme al reglamento oficial de la promoción "CON UNIMARK TE VAS MONTADO".
+            &copy; {{ date('Y') }} UNIMARK S.A. Todos los derechos reservados.
+        </p>
     </div>
 </div>
 
+<div class="fixed bottom-8 right-8 no-print">
+    <a href="{{ route('ReporteClientesRifaPDF', $cliente) }}"
+       class="bg-tertiary-container text-on-tertiary-container h-14 w-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform"
+       title="Descargar PDF">
+        <span class="material-symbols-outlined">picture_as_pdf</span>
+    </a>
+</div>
 
 </body>
 </html>

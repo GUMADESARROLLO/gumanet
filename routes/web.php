@@ -397,4 +397,5 @@ Route::get('getChartRifa', 'PromocionesController@getChartRifa')->name('getChart
 Route::get('SendAcciones/{cliente}', 'PromocionesController@SendAcciones')->name('SendAcciones');
 Route::get('ExportRifa/{tipo}', 'PromocionesController@ExportRifa')->name('ExportRifa');
 Route::get('ReporteClientesRifa/{cliente}', 'PromocionesController@ReporteClientesRifa')->name('ReporteClientesRifa');
+Route::get('ReporteClientesRifaPDF/{cliente}', 'PromocionesController@ReporteClientesRifaPDF')->name('ReporteClientesRifaPDF');
 Route::get('qrCliente/{cliente}', 'PromocionesController@qrCliente')->name('qrCliente');
