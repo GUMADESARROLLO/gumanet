@@ -73,47 +73,65 @@ class ReOrderPointR3 extends Model
         $DataReorderPoint = ReOrderPointR3::get();
 
         $Months_Privado  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_privado ?, ?, ?", [$Year_anterior,$Month_actual,'PRIVADO']);
-
         $Months_Discasa  = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa ?", [$Year_actual]); 
+
+        $ValuePrivado = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_privado_money ?, ?, ?", [$Year_anterior,$Month_actual,'PRIVADO']);
+        $ValueDiscasa = DB::connection('sqlsrv')->select("EXEC PRODUCCION.dbo.sp_base_months_discasa_money ?", [$Year_actual]); 
 
         $PrecioMific     = PreciosMific::all()->toArray();
 
         // Obtener los nombres de las columnas dinámicamente
-        $Columns_Privado = array_keys(get_object_vars($Months_Privado[0]));
-        $Columns_Discasa = array_keys(get_object_vars($Months_Discasa[0]));
+        $Columns_Privado = !empty($Months_Privado) ? array_keys(get_object_vars($Months_Privado[0])) : [];
+        $Columns_Discasa = !empty($Months_Discasa) ? array_keys(get_object_vars($Months_Discasa[0])) : [];
+
+        // Nombres de meses dinámicos (excluir ARTICULO)
+        $pvMonths = array_values(array_filter($Columns_Privado, fn($c) => $c !== 'ARTICULO'));
+        $dsMonths = array_values(array_filter($Columns_Discasa, fn($c) => $c !== 'ARTICULO'));
         
         foreach ($DataReorderPoint as $key => $value) {
 
-            $Position_Privado = array_search($value->ARTICULO, array_column($Months_Privado, 'ARTICULO'));
-            $Position_Discasa = array_search($value->ARTICULO, array_column($Months_Discasa, 'ARTICULO'));
+            $Position_Privado = !empty($Months_Privado) ? array_search($value->ARTICULO, array_column($Months_Privado, 'ARTICULO')) : false;
+            $Position_Discasa = !empty($Months_Discasa) ? array_search($value->ARTICULO, array_column($Months_Discasa, 'ARTICULO')) : false;
+
+            $PosValuePrivado = !empty($ValuePrivado) ? array_search($value->ARTICULO, array_column($ValuePrivado, 'ARTICULO')) : false;
+            $PosValueDiscasa = !empty($ValueDiscasa) ? array_search($value->ARTICULO, array_column($ValueDiscasa, 'ARTICULO')) : false;
 
             // Inicializar arrays de datos extra
             $PrivadoData = [];
             $DiscasaData = [];
+            
+            $MoneyPV = [];
+            $MoneyDS = [];
 
             // Agregar dinámicamente las columnas de Months_Privado
             foreach ($Columns_Privado as $columnName) {
                 $Prefix = $columnName.'_pv';
                 $PrivadoData[$Prefix] = ($Position_Privado !== false) ? $Months_Privado[$Position_Privado]->$columnName : 0 ;
-                
-                // Agregar al array de columnas
-                $Columms[$CountColums] = $Prefix; 
-                $CountColums++;
+                $Columms[$CountColums] = $Prefix; $CountColums++;
             }
 
             // Agregar dinámicamente las columnas de Months_Discasa
             foreach ($Columns_Discasa as $columnName) {
                 $Prefix = $columnName.'_ds';
                 $DiscasaData[$Prefix] =  ($Position_Discasa !== false) ?  $Months_Discasa[$Position_Discasa]->$columnName : 0 ;
+                $Columms[$CountColums] = $Prefix; $CountColums++;
+            }
 
-                // Agregar al array de columnas
-                $Columms[$CountColums] = $Prefix; 
-                $CountColums++;
+            // Columnas valor dinero desde ValuePrivado / ValueDiscasa
+            foreach ($pvMonths as $m) {
+                $k = 'C$_' . strtoupper($m) . '_pv';
+                $MoneyPV[$k] = ($PosValuePrivado !== false) ? $ValuePrivado[$PosValuePrivado]->$m : 0;
+                $Columms[$CountColums] = $k; $CountColums++;
+            }
+            foreach ($dsMonths as $m) {
+                $k = 'C$_' . strtoupper($m) . '_ds';
+                $MoneyDS[$k] = ($PosValueDiscasa !== false) ? $ValueDiscasa[$PosValueDiscasa]->$m : 0;
+                $Columms[$CountColums] = $k; $CountColums++;
             }
 
             $index_key      = array_search($value->ARTICULO, array_column($PrecioMific, 'ARTICULO'));  
 
-            // Merge entre los datos fijos + privados + discasa
+            // Merge entre los datos fijos + privados + discasa + dinero
             $DataReturn[] = array_merge([
                 'ARTICULO'                  => $value->ARTICULO,
                 'DESCRIPCION'               => strtoupper($value->DESCRIPCION),
@@ -142,7 +160,7 @@ class ReOrderPointR3 extends Model
                 'DESCONTINUADO'             => (in_array($value->DESCONTINUADO, ['SI', 'S'])) ? 'SI': 'NO',
                 'FECHA_VENCIMIENTO'         => date('d-m-Y', strtotime($value->FECHA_VENCIMIENTO)),
                 'REGISTRO_MIFIC'            => $PrecioMific[$index_key]['MIFIC'] ?? 'N/D',
-            ], $PrivadoData, $DiscasaData); 
+            ], $PrivadoData, $DiscasaData, $MoneyPV, $MoneyDS); 
         }
 
         $MergeData = [
