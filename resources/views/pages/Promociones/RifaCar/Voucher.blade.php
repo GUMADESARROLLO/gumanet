@@ -181,11 +181,11 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <!-- Términos -->
+                                            <!-- T&eacute;rminos -->
                                             <tr>
                                                 <td class="content-block">
                                                     <div class="recibo-terminos">
-                                                        <strong>Términos:</strong> Promoción "CON UNIMARK TE VAS MONTADO". Por cada C$1,500.00 netos en compras de productos participantes acumula 1 acción electrónica. Vigencia del 08/06/2026 al 21/11/2026. Aplican restricciones. Compras anuladas, devueltas o con saldo vencido pueden invalidar acciones. Consulte el reglamento oficial en UNIMARK S.A.
+                                                        <strong>T&eacute;rminos:</strong> Promoci&oacute;n v&aacute;lida del 08 de junio al 21 de noviembre de 2026. Por cada C$1,500.00 netos en compras de productos participantes, recibe una (1) acci&oacute;n electr&oacute;nica. Aplica &uacute;nicamente para clientes del canal farmacia privada con c&oacute;digo activo en UNIMARK S.A. Las acciones anuladas por devoluciones, notas de cr&eacute;dito o falta de pago no participan. El sorteo se realizar&aacute; con base en los resultados de la Loter&iacute;a Nacional del 24 de noviembre de 2026. El ganador deber&aacute; estar solvente con UNIMARK S.A. Aplican restricciones. Consulte el reglamento completo en UNIMARK S.A.
                                                     </div>
                                                 </td>
                                             </tr>

@@ -35,6 +35,10 @@
         <i class="fas fa-copy" id="copy-icon"></i>
       </button>
     </div>
+
+    <div class="qr-terminos" id="qr-terminos">
+      <strong>Términos:</strong> Promoción válida del 08 de junio al 21 de noviembre de 2026. Por cada C$1,500.00 netos en compras de productos participantes, recibe una (1) acción electrónica. Aplica únicamente para clientes del canal farmacia privada con código activo en UNIMARK S.A. Las acciones anuladas por devoluciones, notas de crédito o falta de pago no participan. El sorteo se realizará con base en los resultados de la Lotería Nacional del 24 de noviembre de 2026. El ganador deberá estar solvente con UNIMARK S.A. Aplican restricciones. Consulte el reglamento completo en UNIMARK S.A.
+    </div>
   </div>
 </div>
 
@@ -205,6 +209,20 @@
   color: #328cc1;
   background: #f0f7f9;
 }
+
+.qr-terminos {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border-top: 1px solid #eef2f5;
+  font-size: 0.72rem;
+  color: #5c6b73;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.qr-terminos strong {
+  color: #1d2731;
+}
 </style>
 
 <script>
@@ -257,7 +275,7 @@
             width: qrCard.offsetWidth,
             height: qrCard.offsetHeight,
             filter: function(node) {
-                return (node.id !== 'area-botones-descarga' && node.id !== 'btn-descargar-qr');
+                return (node.id !== 'area-botones-descarga' && node.id !== 'btn-descargar-qr' && node.id !== 'qr-terminos');
             },
             style: {
                 transform: 'none',

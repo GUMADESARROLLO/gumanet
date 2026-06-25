@@ -251,13 +251,17 @@
     <div class="mt-xl pt-lg border-t border-outline-variant text-center">
         <p class="font-label-bold text-primary">UNIMARK S.A. | RIFA CAR 20 ANIVERSARIO</p>
         <p class="text-xs text-secondary font-semibold leading-relaxed mt-2">
-            Villa Fontana, Club Terraza, 150 mts. al Oeste
+            Villa Fontana, Club Terraza, 150 mts. al Oeste<br>
             Managua, Nicaragua<br>
             (+505) 2278-8787 | 8574-2828
-            <br>
+        </p>
+    </div>
 
-            Acciones acumuladas sujetas a validación. Las acciones mostradas en este estado de cuenta podrán ser ajustadas por devoluciones, notas de crédito, anulaciones de facturas o saldos vencidos. La cantidad definitiva de acciones válidas será determinada por UNIMARK S.A. conforme al reglamento oficial de la promoción "CON UNIMARK TE VAS MONTADO".
-            &copy; {{ date('Y') }} UNIMARK S.A. Todos los derechos reservados.
+    <!-- Términos y Condiciones -->
+    <div class="mt-xl" style="border-top:1.5px solid #000;border-bottom:1.5px solid #000;padding:8px 0;">
+        <p class="fw-bold" style="font-size:13px;margin:0 0 5px 0;">TÉRMINOS Y CONDICIONES</p>
+        <p style="font-size:12.5px;margin:0;line-height:1.6;">
+            Promoción válida del <strong>08 de junio al 21 de noviembre de 2026</strong>. Por cada <strong>C$1,500.00 netos en compras</strong> de productos participantes, recibe <strong>una (1) acción electrónica</strong>. Aplica únicamente para clientes del canal farmacia privada con código activo en UNIMARK S.A. Las acciones anuladas por devoluciones, notas de crédito o falta de pago no participan. El sorteo se realizará con base en los resultados de la <strong>Lotería Nacional del 24 de noviembre de 2026</strong>. El ganador deberá estar solvente con UNIMARK S.A. Aplican restricciones. Consulte el reglamento completo en UNIMARK S.A.
         </p>
     </div>
 </div>

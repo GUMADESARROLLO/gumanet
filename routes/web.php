@@ -399,3 +399,7 @@ Route::get('ExportRifa/{tipo}', 'PromocionesController@ExportRifa')->name('Expor
 Route::get('ReporteClientesRifa/{cliente}', 'PromocionesController@ReporteClientesRifa')->name('ReporteClientesRifa');
 Route::get('ReporteClientesRifaPDF/{cliente}', 'PromocionesController@ReporteClientesRifaPDF')->name('ReporteClientesRifaPDF');
 Route::get('qrCliente/{cliente}', 'PromocionesController@qrCliente')->name('qrCliente');
+
+// RUTAS PARA CLIENTES
+Route::get('Clientes', 'ClientesController@index')->name('Clientes');
+Route::get('getClientes', 'ClientesController@getClientes')->name('getClientes');
