@@ -109,9 +109,10 @@
                     return 'C$ ' + Number(data).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                 } }
             ],
-            searching: false,
+            searching: true,
             lengthChange: false,
             pageLength: 10,
+            dom: 'rtip',
             language: {
                 url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
                 zeroRecords: 'Cargando...'
@@ -124,6 +125,10 @@
                 }, 0);
                 $(api.column(5).footer()).html('C$ ' + fmtNum(total));
             }
+        });
+
+        $('#txt_busqueda_facturas_vendedor').on('keyup', function() {
+            $('#tbl-facturas-vendedor').DataTable().search(this.value).draw();
         });
 
         $('#mdl-facturas-vendedor').modal('show');
@@ -178,7 +183,7 @@
 
     function abrirDetalleProductos(tipo, valor, nombre, fecha) {
         var titulo = (tipo === 'pedido') ? 'PEDIDO: ' + valor : 'FACTURA: ' + valor;
-        titulo += '<br>CLIENTE: ' + nombre + '<br>FECHA: ' + fecha;
+        var subtitulo = 'CLIENTE: ' + nombre + '<br>FECHA: ' + fecha;
         var endpoint = (tipo === 'pedido') ? 'getDetallePedidoProductos' : 'getDetalleFacturaProductos';
         var columnas = (tipo === 'pedido')
             ? [
@@ -197,6 +202,7 @@
             ];
 
         $('#mdl-detalle-pedido-factura-title').html(titulo);
+        $('#mdl-detalle-pedido-factura-sub-title').html(subtitulo);
         $('#mdl-detalle-pedido-factura').modal('show');
 
         var table = $('#tbl-detalle-pedido-factura');
@@ -211,9 +217,10 @@
         table.DataTable({
             data: [],
             columns: columnas,
-            searching: false,
+            searching: true,
             lengthChange: false,
             pageLength: 10,
+            dom: 'rtip',
             language: {
                 url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
                 zeroRecords: 'Cargando...'
@@ -225,6 +232,10 @@
                 }, 0);
                 $(api.column(4).footer()).html('C$ ' + fmtNum(total));
             }
+        });
+
+        $('#txt_busqueda_detalle_pedido').on('keyup', function() {
+            $('#tbl-detalle-pedido-factura').DataTable().search(this.value).draw();
         });
 
         var bodyData = {};
@@ -273,23 +284,23 @@
     });
 
     // Expandir/colapsar detalle de factura
-    $(document).on('click', '.exp-factura', function(ef) {
+    $(document).on('click', '.exp-factura', function() {
         var table = $('#tbl-facturas-vendedor').DataTable();
         var tr = $(this).closest('tr');
         var row = table.row(tr);
         var factura = $(this).data('factura');
+        var $icon = $(this).find('.material-icons');
 
         if (row.child.isShown()) {
             row.child.hide();
             tr.removeClass('shown');
-            $(this).find('.material-icons').text('expand_more').css({ background: '#e2e2e2', color: '#007bff' });
+            $icon.text('expand_more').css({ background: '#e2e2e2', color: '#007bff' });
         } else {
-            table.rows().eq(0).each(function(idx) {
-                var r = table.row(idx);
+            table.rows().every(function() {
+                var r = this;
                 if (r.child.isShown()) {
                     r.child.hide();
-                    var c = $(r.node()).find('.exp-factura .material-icons');
-                    c.text('expand_more').css({ background: '#e2e2e2', color: '#007bff' });
+                    $(r.node()).find('.exp-factura .material-icons').text('expand_more').css({ background: '#e2e2e2', color: '#007bff' });
                 }
             });
 
@@ -324,13 +335,13 @@
                     tbody += '</tbody></table>';
                     row.child(thead + tbody).show();
                     tr.addClass('shown');
-                    $(ef.currentTarget).find('.material-icons').text('expand_less').css({ background: '#ff5252', color: '#e2e2e2' });
+                    $icon.text('expand_less').css({ background: '#ff5252', color: '#e2e2e2' });
                 },
                 error: function() {
                     var tbody = '<tr><td colspan="5" class="text-center text-danger">Error al cargar detalle</td></tr></tbody></table>';
                     row.child(thead + tbody).show();
                     tr.addClass('shown');
-                    $(ef.currentTarget).find('.material-icons').text('expand_less').css({ background: '#ff5252', color: '#e2e2e2' });
+                    $icon.text('expand_less').css({ background: '#ff5252', color: '#e2e2e2' });
                 }
             });
         }
@@ -384,10 +395,15 @@
                     { title: 'VENDEDOR', data: 'NOMBRE' },
                     { title: 'CANT. PEDIDOS', data: 'CANTIDAD_PEDIDOS', className: 'text-right' }
                 ],
-                searching: false,
+                searching: true,
                 lengthChange: false,
                 pageLength: 10,
+                dom: 'rtip',
                 language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' }
+            });
+
+            $('#txt_busqueda_vendedores').on('keyup', function() {
+                $('#tbl_vendedores').DataTable().search(this.value).draw();
             });
 
             // Tabla de Pedidos Facturados
@@ -438,10 +454,15 @@
                         return 'C$ ' + Number(data).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                     } }
                 ],
-                searching: false,
+                searching: true,
                 lengthChange: false,
                 pageLength: 10,
+                dom: 'rtip',
                 language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' }
+            });
+
+            $('#txt_busqueda_pedidos_facturados').on('keyup', function() {
+                $('#tbl_pedidos_facturados').DataTable().search(this.value).draw();
             });
 
             eneableButton(false,'<i class="fas fa-filter"></i> Filtrar')

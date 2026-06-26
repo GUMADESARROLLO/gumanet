@@ -70,7 +70,7 @@ class Facturacion extends Model
                 F.TOTAL_FACTURA
             FROM Softland.umk.FACTURA F
             INNER JOIN Softland.umk.PEDIDO P ON F.PEDIDO = P.PEDIDO
-            WHERE P.CreateDate BETWEEN ? AND ?
+            WHERE P.FECHA_PEDIDO BETWEEN ? AND ?
             AND F.VENDEDOR != 'F12'
             ORDER BY F.PEDIDO, F.FACTURA
         ", [$desde, $hasta]);
@@ -149,7 +149,7 @@ class Facturacion extends Model
                 F.TOTAL_FACTURA
             FROM Softland.umk.FACTURA F
             WHERE F.VENDEDOR = ?
-            AND F.CreateDate BETWEEN ? AND ?
+            AND CAST(F.FECHA AS DATE) BETWEEN ? AND ?
             AND F.VENDEDOR != 'F12'
             ORDER BY F.FECHA DESC, F.FACTURA DESC
         ", [$vendedor, $desde, $hasta]);
