@@ -403,3 +403,6 @@ Route::get('qrCliente/{cliente}', 'PromocionesController@qrCliente')->name('qrCl
 // RUTAS PARA CLIENTES
 Route::get('Clientes', 'ClientesController@index')->name('Clientes');
 Route::get('getClientes', 'ClientesController@getClientes')->name('getClientes');
+Route::post('getFactura', 'ClientesController@getFactura')->name('getFactura');
+Route::post('getFacturaDetalle', 'ClientesController@getFacturaDetalle')->name('getFacturaDetalle');
+Route::post('getFacturaPagos', 'ClientesController@getFacturaPagos')->name('getFacturaPagos');

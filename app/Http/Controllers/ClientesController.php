@@ -33,9 +33,34 @@ class ClientesController extends Controller {
         return view('pages.Clientes.clientes', $data);
     }
 
-    public function getClientes(Request $request) {
-    
+    public function getClientes(Request $request) 
+    {
         $obj = ClientesModel::getClientes($request);
         return response()->json($obj);
     }
+
+    public function getFactura(Request $request) 
+    {
+        $cliente = $request->input('cliente');
+        $f1 = $request->input('f1');
+        $f2 = $request->input('f2');
+
+        $obj = ClientesModel::getFactura($cliente, $f1, $f2);
+        return response()->json($obj);
+    }
+
+    public function getFacturaDetalle(Request $request) 
+    {
+        $FACTURA = $request->input('FACTURA');
+        $obj = ClientesModel::getFacturaDetalle($FACTURA);
+        return response()->json($obj);
+    }
+
+    public function getFacturaPagos(Request $request) 
+    {
+        $FACTURA = $request->input('FACTURA');
+        $obj = ClientesModel::getFacturaPagos($FACTURA);
+        return response()->json($obj);
+    }
+
 }

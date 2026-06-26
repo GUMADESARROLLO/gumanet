@@ -61,7 +61,7 @@
             <div class="nav-tabs-custom" role="tablist">
                 <a class="tab-link active" data-target="#tab-general-pane" role="tab">General</a>
                 <a class="tab-link" data-target="#tab-facturacion-pane" role="tab">Facturacion</a>
-                <a class="tab-link" data-target="#tab-cartera-pane" role="tab">Cartera</a>
+
             </div>
 
             <!-- BODY -->
@@ -124,7 +124,15 @@
                     <!-- FACTURACION -->
                     <div class="tab-pane fade" id="tab-facturacion-pane">
                         <div class="row mb-3">
-                            <div class="col-md-10">
+                            <div class="col-md-7">
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-white input-fecha"><i data-feather="search"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm input-fecha" placeholder="Buscar..." id="txtSearchFactura">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
                                 <input type="text" class="form-control form-control-sm input-fecha" name="dt_range_fact" placeholder="Rango de fechas..." />
                             </div>
                             <div class="col-md-2">
@@ -138,47 +146,23 @@
                                 <tr>
                                     <th>FACTURA</th>
                                     <th>FECHA</th>
-                                    <th>MONTO</th>
-                                    <th>ESTADO</th>
+                                    <th>VENDEDOR</th>
+                                    <th>NOMBRE VENDEDOR</th>
+                                    <th>MONTO FACTURA</th>
+									<th>PAGOS</th>
+									<th>MONTO PENDIENTE</th>
+                                    <th style="width:100px">ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td colspan="4" class="text-center text-muted">Seleccione un rango de fechas y presione Filtrar</td>
+                                    <td colspan="8" class="text-center text-muted">Seleccione un rango de fechas y presione Filtrar</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- CARTERA -->
-                    <div class="tab-pane fade" id="tab-cartera-pane">
-                        <div class="row mb-3">
-                            <div class="col-md-10">
-                                <input type="text" class="form-control form-control-sm input-fecha" name="dt_range_cartera" placeholder="Rango de fechas..." />
-                            </div>
-                            <div class="col-md-2">
-                                <button type="button" class="btn btn-primary-umk btn-sm btn-block input-fecha" id="filtrarCartera">
-                                    <i class="bi bi-filter"></i> Filtrar
-                                </button>
-                            </div>
-                        </div>
-                        <table class="table table-sm table-bordered table-striped" id="dtCartera" style="width:100%">
-                            <thead class="bg-secondary text-light">
-                                <tr>
-                                    <th>FECHA</th>
-                                    <th>DOCUMENTO</th>
-                                    <th>DEBE</th>
-                                    <th>HABER</th>
-                                    <th>SALDO</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="5" class="text-center text-muted">Seleccione un rango de fechas y presione Filtrar</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+
                 </div>
             </div>
 

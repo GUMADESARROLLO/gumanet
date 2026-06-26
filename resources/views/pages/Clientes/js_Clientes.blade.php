@@ -11,7 +11,7 @@ $(document).ready(function() {
     var maxDate = moment();
     var startDate = moment().startOf('month');
     var endDate = moment().endOf('month');
-    $('input[name="dt_range_fact"], input[name="dt_range_cartera"]').daterangepicker({
+    $('input[name="dt_range_fact"]').daterangepicker({
         autoApply: true,
         minDate: minDate,
         maxDate: maxDate,
@@ -26,8 +26,8 @@ $(document).ready(function() {
                 moment.max(moment().startOf('week'), minDate),
                 moment.min(moment().endOf('week'), maxDate)
             ],
-            'Ultm. 7 Dias': [moment().subtract(6, 'days'), moment()],
-            'Ultm. 30 Dias': [moment().subtract(29, 'days'), moment()],
+            '3 Meses': [moment().subtract(3, 'months'), moment()],
+            '6 Meses': [moment().subtract(6, 'months'), moment()],
             'Este Mes': [
                 moment.max(moment().startOf('month'), minDate),
                 moment.min(moment().endOf('month'), maxDate)
@@ -63,6 +63,182 @@ $(document).ready(function() {
         $(this).addClass('active');
         $('#ModalCliente .tab-pane').removeClass('show active');
         $(target).addClass('show active');
+    });
+
+    $('#filtrarFacturacion').on('click', async function() {
+        var cliente = $('#modal_cliente_codigo').text();
+        var range = $('input[name="dt_range_fact"]').val();
+        if (!range || !cliente) return;
+
+        var parts = range.split(' - ');
+        var f1 = moment(parts[0].replace('.', ''), 'D MMM YYYY').format('YYYY-MM-DD');
+        var f2 = moment((parts[1] || parts[0]).replace('.', ''), 'D MMM YYYY').format('YYYY-MM-DD');
+
+        var btn = $(this);
+        btn.html('<i class="bi bi-arrow-repeat bi-spin"></i>').prop('disabled', true);
+
+        try {
+            var response = await $.ajax({
+                url: 'getFactura',
+                type: 'POST',
+                data: { cliente: cliente, f1: f1, f2: f2 }
+            });
+
+            if ($('#dtFacturacion').hasClass('dataTable')) {
+                $('#dtFacturacion').DataTable().clear().destroy();
+            }
+
+            var tbody = $('#dtFacturacion tbody');
+            tbody.empty();
+
+            if (!response || response.length === 0) {
+                tbody.html('<tr><td colspan="8" class="text-center text-muted">Sin resultados</td></tr>');
+                btn.html('<i class="bi bi-filter"></i> Filtrar').prop('disabled', false);
+                return;
+            }
+
+            var data = response.map(function(row) {
+                return [
+                    row.FACTURA,
+                    row.FECHA,
+                    row.VENDEDOR || '-',
+                    row.NOMBRE_VENDEDOR || '-',
+                    'C$ ' + row.MONTO,
+                    'C$ ' + row.MONTO_CORD_CRED,
+                    'C$ ' + row.SALDO,
+                    '<button class="btn btn-sm btn-outline-primary detalle-factura" data-factura="' + row.FACTURA + '"><i class="bi bi-search"></i></button> ' +
+                    '<button class="btn btn-sm btn-outline-success pagos-factura" data-factura="' + row.FACTURA + '"><i class="bi bi-cash"></i></button>'
+                ];
+            });
+
+            $('#dtFacturacion').DataTable({
+                data: data,
+                destroy: true,
+                info: false,
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+                language: {
+                    zeroRecords: "NO HAY COINCIDENCIAS",
+                    paginate: {
+                        first: "Primera",
+                        last: "Ultima",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    },
+                    lengthMenu: "MOSTRAR _MENU_",
+                    emptyTable: "SIN DATOS DISPONIBLES",
+                    search: "BUSCAR"
+                },
+                columnDefs: [
+                    { className: "text-center", targets: [0, 1, 2, 3, 7] },
+                    { className: "text-right", targets: [4, 5, 6] },
+                    { orderable: false, targets: [7] }
+                ]
+            });
+            $('#dtFacturacion_length').hide();
+            $('#dtFacturacion_filter').hide();
+            } catch (err) {
+            $('#dtFacturacion tbody').html('<tr><td colspan="8" class="text-center text-danger">Error al cargar datos</td></tr>');
+
+            
+        }
+
+        btn.html('<i class="bi bi-filter"></i> Filtrar').prop('disabled', false);
+    });
+
+    $(document).on('keyup', '#txtSearchFactura', function() {
+        var table = $('#dtFacturacion').DataTable();
+        if (table) table.search(this.value).draw();
+    });
+
+    $('#dtFacturacion').on('click', '.detalle-factura', async function() {
+        var btn = $(this);
+        var row = btn.closest('tr');
+        var factura = btn.data('factura');
+        var nextRow = row.next('.detalle-row');
+
+        if (nextRow.length) {
+            nextRow.remove();
+            btn.html('<i class="bi bi-search"></i>');
+            return;
+        }
+
+        btn.html('<i class="bi bi-arrow-repeat bi-spin"></i>');
+
+        try {
+            var response = await $.ajax({
+                url: 'getFacturaDetalle',
+                type: 'POST',
+                data: { FACTURA: factura }
+            });
+
+            var html = '<tr class="detalle-row"><td colspan="8" class="p-0">';
+            html += '<div class="p-3 bg-light">';
+            html += '<table class="table table-sm table-bordered mb-0">';
+            html += '<thead class="bg-secondary text-light"><tr>';
+            html += '<th>ARTICULO</th><th>DESCRIPCION</th><th>CANTIDAD</th><th>PRECIO UNIT.</th><th>TOTAL</th>';
+            html += '</tr></thead><tbody>';
+
+            if (!response || response.length === 0) {
+                html += '<tr><td colspan="5" class="text-center text-muted">Sin lineas</td></tr>';
+            } else {
+                response.forEach(function(item) {
+                    html += '<tr>';
+                    html += '<td class="text-center">' + (item.ARTICULO || '') + '</td>';
+                    html += '<td>' + (item.DESCRIPCION || '') + '</td>';
+                    html += '<td class="text-right">' + (item.CANTIDAD_FACT || '0.00') + '</td>';
+                    html += '<td class="text-right">C$ ' + numeral(item.PRECIO_UNITARIO).format('0,0.00') + '</td>';
+                    html += '<td class="text-right">C$ ' + numeral(item.VENTA).format('0,0.00') + '</td>';
+                    html += '</tr>';
+                });
+            }
+
+            html += '</tbody></table></div></td></tr>';
+            row.after(html);
+            btn.html('<i class="bi bi-x"></i>');
+        } catch (err) {
+            btn.html('<i class="bi bi-search"></i>');
+        }
+    });
+
+    $('#dtFacturacion').on('click', '.pagos-factura', async function() {
+        var btn = $(this);
+        var factura = btn.data('factura');
+
+        if (btn.hasClass('active')) return;
+        btn.addClass('active').html('<i class="bi bi-arrow-repeat bi-spin"></i>');
+
+        try {
+            var response = await $.ajax({
+                url: 'getFacturaPagos',
+                type: 'POST',
+                data: { FACTURA: factura }
+            });
+
+            var html = '';
+            if (!response || response.length === 0) {
+                html = '<div class="alert alert-info mb-0">Sin pagos registrados</div>';
+            } else {
+                html += '<table class="table table-sm table-bordered mb-0">';
+                html += '<thead class="bg-secondary text-light"><tr><th>RECIBO</th><th>FECHA</th><th>MONTO</th><th>FORMA PAGO</th></tr></thead><tbody>';
+                response.forEach(function(p) {
+                    html += '<tr><td class="text-center">' + (p.RECIBO || '') + '</td><td class="text-center">' + (p.FECHA || '') + '</td><td class="text-right">C$ ' + numeral(p.MONTO).format('0,0.00') + '</td><td class="text-center">' + (p.FORMA_PAGO || '-') + '</td></tr>';
+                });
+                html += '</tbody></table>';
+            }
+
+            Swal.fire({
+                title: 'Pagos - Factura ' + factura,
+                html: html,
+                confirmButtonText: 'Cerrar',
+                confirmButtonColor: '#1B3A6B',
+                width: 600
+            });
+        } catch (err) {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudieron cargar los pagos' });
+        }
+
+        btn.removeClass('active').html('<i class="bi bi-cash"></i>');
     });
 });
 
