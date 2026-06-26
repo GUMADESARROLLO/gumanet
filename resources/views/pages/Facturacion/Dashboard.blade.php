@@ -15,7 +15,7 @@
             <div class="row align-items-end">
                 <div class="col-md-5">
                     <h4 class="h4 text-umk mb-1">
-                        GUMA
+                        UNIMARK
                     </h4>
                     <p class="text-muted mb-0 small">Reportes de ventas, tomando en cuenta el periodo de <span id="tl_periodo" class="fw-semibold text-umk"></span></p>
                 </div>
@@ -129,6 +129,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-9">
+                                <h6 class="text-dark" id="mdl-detalle-pedido-factura-sub-title"></h6>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                                </div>
+                                <input type="text" class="form-control form-control-sm input-fecha" placeholder="Buscar..." id="txt_busqueda_detalle_pedido" >
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table id="tbl-detalle-pedido-factura" class="table table-striped" width="100%">
                             <tfoot>
@@ -155,6 +168,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="row mb-3 justify-content-end">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
+                                </div>
+                                <input type="text" class="form-control form-control-sm input-fecha" placeholder="Buscar..." id="txt_busqueda_facturas_vendedor" >
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table id="tbl-facturas-vendedor" class="table table-striped" width="100%">
                             <thead>
