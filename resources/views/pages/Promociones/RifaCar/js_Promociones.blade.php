@@ -1,85 +1,60 @@
+<style>
+.swal-qr-popup { box-shadow: none !important; background: transparent !important; padding: 0 !important; width: auto !important; }
+</style>
 <script>
 $(document).ready(function() {
     //inicializaControlFecha();
     fullScreen();
 
 
-    // const yearActual = moment().year();
+    const yearActual = moment().year();
 
-    // $('input[name="dt_range"]').daterangepicker({
-    //     autoApply: true,
+    const minDate = moment(`${yearActual}-06-15`, 'YYYY-MM-DD');
+    const maxDate = moment(`${yearActual}-11-21`, 'YYYY-MM-DD');
 
-    //     minDate: moment(`${yearActual}-05-01`, 'YYYY-MM-DD'),
-    //     maxDate: moment(`${yearActual}-09-20`, 'YYYY-MM-DD'),
+    // Semana completa actual (domingo a sábado)
+    let startDate = moment().startOf('week');
+    let endDate = moment().endOf('week');
 
-    //     ranges: {
-    //         'Hoy': [moment(), moment()],
-    //         'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
-    //         'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],              
-    //         'Este Mes': [moment().startOf('month'), moment()],
-    //         'Mes Anterior': [
-    //             moment().subtract(1, 'month').startOf('month'), 
-    //             moment().subtract(1, 'month').endOf('month')
-    //         ],
-    //         "3 Meses": [moment().subtract(3, 'month'), moment()],
-    //         "6 Meses": [moment().subtract(6, 'month'), moment()],
-    //         '1 Año': [moment().subtract(1, 'year'), moment()],
-    //     },
+    // Respetar límites
+    if (startDate.isBefore(minDate)) {
+        startDate = minDate.clone();
+    }
 
-    //     showCustomRangeLabel: false,
-    //     alwaysShowCalendars: true,
-
-    //     startDate: moment(`${yearActual}-05-01`, 'YYYY-MM-DD'),
-    //     endDate: moment().isAfter(moment(`${yearActual}-09-20`))
-    //         ? moment(`${yearActual}-09-20`)
-    //         : moment(),
-
-    //     opens: 'left',
-
-    //     locale: {
-    //         format: "D MMM. YYYY",
-    //         separator: " - ",
-    //         applyLabel: "Aplicar",
-    //         cancelLabel: "Cancelar",
-    //         fromLabel: "Desde",
-    //         toLabel: "Hasta",
-    //         customRangeLabel: "Personalizado",
-    //         weekLabel: "S",
-    //         daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie", "Sab."],
-    //         monthNames: [
-    //             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-    //             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-    //         ],
-    //         firstDay: 1
-    //     }
-
-    // }, function(start, end, label) {
-    //     CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
-    // });
+    if (endDate.isAfter(maxDate)) {
+        endDate = maxDate.clone();
+    }
 
     $('input[name="dt_range"]').daterangepicker({
-        "autoApply": true,
+        autoApply: true,
+
+        minDate: minDate,
+        maxDate: maxDate,
+
         ranges: {
+            'Esta Semana': [
+                moment.max(moment().startOf('week'), minDate),
+                moment.min(moment().endOf('week'), maxDate)
+            ],
             'Hoy': [moment(), moment()],
             'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
-            'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],              
-            'Este Mes': [moment().startOf('month'), moment()],
-            'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-            "3 Meses": [moment().subtract(3, 'month'), moment()],
-            "6 Meses": [moment().subtract(6, 'month'), moment()],
-            
-            '1 Año': [moment().subtract(1, 'year'), moment()],
-            // '2 Años': [moment().subtract(2, 'year'), moment()],
-            // '3 Años': [moment().subtract(3, 'year'), moment()]
+            'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
+            'Este Mes': [
+                moment.max(moment().startOf('month'), minDate),
+                moment.min(moment().endOf('month'), maxDate)
+            ]
         },
-        "showCustomRangeLabel": false,
-        "alwaysShowCalendars": true,
-        "startDate": moment().startOf('month').format('D MMM. YYYY'),
-        "endDate": moment().format('D MMM. YYYY'),
+
+        showCustomRangeLabel: false,
+        alwaysShowCalendars: true,
+
+        startDate: startDate,
+        endDate: endDate,
+
         opens: 'left',
+
         locale: {
-            //format: "DD/MM/YYYY",
-            format: "D MMM. YYYY",   // Ejemplo: 1 ago. 2025
+            format: "D MMM. YYYY",
             separator: " - ",
             applyLabel: "Aplicar",
             cancelLabel: "Cancelar",
@@ -87,16 +62,19 @@ $(document).ready(function() {
             toLabel: "Hasta",
             customRangeLabel: "Personalizado",
             weekLabel: "S",
-            daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie", "Sab."],
+            daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie.", "Sab."],
             monthNames: [
                 "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                 "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
             ],
-            firstDay: 1
+            firstDay: 0
         }
-    }, function(start, end, label) {
+
+    }, function(start, end) {
         CallFilter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
     });
+
+    
 
 
     var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
@@ -257,7 +235,7 @@ $(document).ready(function() {
                         data: { Factura: factura },
                         success: function (resp) {
                             resolve(resp);
-                            getAcciones(factura);
+                            GetAcciones(factura);
                         },
                         error: function () {
                             reject();
@@ -409,6 +387,7 @@ $(document).ready(function() {
             info: false,
             searching: true,
             ordering: true,
+            order: [[7, 'desc']],
             columns: [
                 { 
                     title: '<div class="text-center"><input type="checkbox" id="select-all" class="form-check-input m-0"></div>', 
@@ -492,12 +471,35 @@ $(document).ready(function() {
         data.forEach(function(row) {
             var key = row.CLIENTE;
             if (!clientes[key]) {
-                clientes[key] = { CLIENTE: row.CLIENTE, NOMBRE: row.NOMBRE, ACCIONES: 0 };
+                clientes[key] = {
+                    CLIENTE: row.CLIENTE,
+                    NOMBRE: row.NOMBRE,
+                    VENDEDORES: [],
+                    NOMBRES_VENDEDOR: [],
+                    CATEGORIA: 'Farmacia',
+                    ACCIONES: 0
+                };
+            }
+            var partes = row.VENDEDOR.split(' - ');
+            var codVen = partes[0];
+            var nomVen = partes.slice(1).join(' - ');
+            if (clientes[key].VENDEDORES.indexOf(codVen) === -1) {
+                clientes[key].VENDEDORES.push(codVen);
+            }
+            if (clientes[key].NOMBRES_VENDEDOR.indexOf(nomVen) === -1) {
+                clientes[key].NOMBRES_VENDEDOR.push(nomVen);
+            }
+            if (codVen === 'F04') {
+                clientes[key].CATEGORIA = 'Mayorista';
             }
             clientes[key].ACCIONES += parseInt(row.ACCIONES) || 0;
         });
 
         var rows = Object.values(clientes);
+        rows.forEach(function(r) {
+            r.VENDEDOR = r.VENDEDORES.join(', ');
+            r.NOMBRE_VENDEDOR = r.NOMBRES_VENDEDOR.join(', ');
+        });
         rows.sort(function(a, b) { return b.ACCIONES - a.ACCIONES; });
 
         $(selector).DataTable({
@@ -514,8 +516,19 @@ $(document).ready(function() {
                 }},
                 { data: 'CLIENTE', className: 'text-center' },
                 { data: 'NOMBRE', className: 'text-left' },
+                { data: 'VENDEDOR', className: 'text-center' },
+                { data: 'NOMBRE_VENDEDOR', className: 'text-left' },
+                { data: 'CATEGORIA', className: 'text-center', render: function(data) {
+                    return '<span class="badge" style="background:#e0e0e0;color:#000">' + data + '</span>';
+                }},
                 { data: 'ACCIONES', className: 'text-center fw-bold', render: function(data) {
                     return numeral(data).format('0,0');
+                }},
+                { data: 'CLIENTE', className: 'text-center', orderable: false, render: function(data) {
+                    return '<a href="#" class="btn-qr-cliente" data-cliente="' + data + '"><i class="fas fa-paper-plane" style="color:#185fa5;font-size:16px"></i></a>';
+                }},
+                { data: 'CLIENTE', className: 'text-center', orderable: false, render: function(data) {
+                    return '<a href="/ReporteClientesRifa/' + data + '" target="_blank" class="btn-reporte-cliente" data-cliente="' + data + '"><i class="fas fa-file-alt" style="color:#28a745;font-size:16px"></i></a>';
                 }},
             ],
         });
@@ -527,6 +540,154 @@ $(document).ready(function() {
         $('#total-acciones-clientes').text(numeral(totalAcciones).format('0,0'));
     }
 
+    
+
+window.descargarQR = function() {
+    // Apuntamos directamente a la tarjeta REAL visible dentro de SweetAlert
+    var qrCard = document.getElementById('qr-card');
+    if (!qrCard) return;
+
+    // Cargamos dom-to-image
+    function loadDomToImage(callback) {
+        if (typeof domtoimage !== 'undefined') { callback(); return; }
+        var s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js';
+        s.onload = callback;
+        document.head.appendChild(s);
+    }
+
+    loadDomToImage(function() {
+        var btnDescargar = qrCard.querySelector('#btn-descargar-qr');
+        
+        // 1. Lo ocultamos completamente del flujo antes de la foto
+        if (btnDescargar) {
+            btnDescargar.style.display = 'none';
+        }
+
+        // 2. Tomamos la captura con un filtro de seguridad extra
+        domtoimage.toPng(qrCard, {
+            bgcolor: '#ffffff',
+            width: qrCard.offsetWidth,
+            height: qrCard.offsetHeight,
+            // FILTRO: Si el nodo tiene el ID del botón, lo excluye por completo de la renderización
+            filter: function(node) {
+                return (node.id !== 'btn-descargar-qr');
+            },
+            style: {
+                transform: 'none',
+                margin: '0',
+                left: '0',
+                top: '0'
+            }
+        })
+        .then(function(dataUrl) {
+            // 3. Devolvemos el botón a su estado normal (flex para mantener tu diseño d-flex)
+            if (btnDescargar) {
+                btnDescargar.style.display = 'flex';
+            }
+
+            // 4. Descarga del archivo final corregido
+            var cliente = qrCard.getAttribute('data-cliente') || 'cliente';
+            var link = document.createElement('a');
+            link.download = 'codigo-qr-' + cliente + '.png';
+            link.href = dataUrl;
+            link.click();
+        })
+        .catch(function(error) {
+            console.error('Error al exportar la tarjeta real:', error);
+            // Si hay un error, restauramos el botón para que el usuario pueda reintentar
+            if (btnDescargar) {
+                btnDescargar.style.display = 'flex';
+            }
+        });
+    });
+};
+    
+
+    
+    window.copiarCuentaQR = function() {
+        var texto = document.getElementById('cuenta-numero').textContent.trim();
+        var btn = document.getElementById('copy-btn');
+        var icon = document.getElementById('copy-icon');
+        function copiado() {
+            btn.classList.add('copied');
+            icon.className = 'fas fa-check';
+            setTimeout(function() {
+                btn.classList.remove('copied');
+                icon.className = 'fas fa-copy';
+            }, 2000);
+        }
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(texto).then(copiado);
+        } else {
+            var ta = document.createElement('textarea');
+            ta.value = texto;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            copiado();
+        }
+    };
+
+    $(document).on('click', '.btn-qr-cliente', function(e) {
+        e.preventDefault();
+        var cliente = $(this).data('cliente');
+        
+        Swal.fire({
+            title: 'Cargando...',
+            showConfirmButton: false,
+            didOpen: function() {
+                $.get('{{ url("qrCliente") }}/' + cliente, function(html) {
+                    Swal.fire({
+                        html: html,
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        width: 400,
+                        padding: 0,
+                        background: 'transparent',
+                        customClass: { popup: 'swal-qr-popup' },
+                        didOpen: function(popup) {
+                            // --- SOLUCIÓN INTEGRADA AQUÍ ---
+                            var card = popup.querySelector('#qr-card');
+                            var container = popup.querySelector('#qr-container');
+                            
+                            if (card && container) {
+                                var base64Str = card.getAttribute('data-qr-src') || '';
+                                if (base64Str.includes(',')) {
+                                    base64Str = base64Str.split(',')[1];
+                                }
+                                
+                                try {
+                                    // Decodificamos e inyectamos el SVG puro de forma nativa
+                                    var svgRaw = atob(base64Str);
+                                    container.innerHTML = svgRaw;
+                                    
+                                    var svgElement = container.querySelector('svg');
+                                    if (svgElement) {
+                                        svgElement.style.width = '100%';
+                                        svgElement.style.height = 'auto';
+                                        svgElement.style.display = 'block';
+                                    }
+                                } catch (err) {
+                                    console.error("Error al decodificar QR Base64:", err);
+                                }
+                            }
+
+                            // Asignamos los eventos de los botones una vez pintado el QR
+                            var btnD = popup.querySelector('#btn-descargar-qr');
+                            if (btnD) btnD.onclick = window.descargarQR;
+                            
+                            var btnC = popup.querySelector('#copy-btn');
+                            if (btnC) btnC.onclick = window.copiarCuentaQR;
+                        }
+                    });
+                });
+            }
+        });
+    });
 
     async function GetData(desde, hasta){
         try {

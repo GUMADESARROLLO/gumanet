@@ -27,7 +27,7 @@ class inventario_controller extends Controller
 {
 	public function __construct() {
 		$this->middleware(['auth','roles']);//pagina se carga unicamente cuando se este logeado
-  	}
+	}
 
 	public function index() {
 		$this->agregarDatosASession();
@@ -79,15 +79,15 @@ class inventario_controller extends Controller
     }
 
     public function inventarioCompleto() {
-    	$this->agregarDatosASession();
+		$this->agregarDatosASession();
 
-    	$data = array(
-    		'page'		=> 'Inventario Completo',
-    		'name'		=> 'GUMA@NET',
-    		'hideTransaccion' => ''
-    	);
+		$data = array(
+			'page'		=> 'Inventario Completo',
+			'name'		=> 'GUMA@NET',
+			'hideTransaccion' => ''
+		);
 
-    	return view('pages.inventarioCompleto', $data);
+		return view('pages.inventarioCompleto', $data);
     }
 
     public function inventarioCompletoTable() {
@@ -315,7 +315,7 @@ class inventario_controller extends Controller
 			$obj = $cached;
 		} else {
 
-			$obj = ($request->session()->get('company_id') == 1) ? json_encode(inventario_model::getInventario()) : json_encode(inventario_model::getArticulos());
+			$obj = ($Company == 1) ? json_encode(inventario_model::getInventario()) : json_encode(inventario_model::getArticulos());
 
 			Redis::setex($Key, 900, $obj);
 		}

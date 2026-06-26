@@ -727,8 +727,7 @@ $("#btnSearch").click(function() {
 
                     $.each(api.column(4, { page: 'all' }).data(), function (_, group) {
                         var cant = api.column(9, { page: 'all' }).data()[_];
-                        cant = parseFloat(cant);
-                        console.log(cant)
+                        cant = parseFloat(String(cant).replace(/,/g, ''));
                         if(cant >= 0){
 
                             switch (group) {

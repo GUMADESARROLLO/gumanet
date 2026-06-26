@@ -22,28 +22,7 @@ class Facturas extends Model
 
         $FacturasConAcciones = DB::connection('sqlsrv')->select("SELECT FACTURA FROM PRODUCCION.dbo.LOG_ACCIONES_RIFA ");
 
-        $query = "
-            SELECT
-                T0.CLIENTE,
-                T1.NOMBRE,
-                T0.FACTURA,
-                T0.TOTAL_FACTURA,
-                FLOOR( T0.TOTAL_FACTURA / 1000 ) AS ACCIONES,
-                T0.FECHA,
-                T0.VENDEDOR,
-                T2.NOMBRE AS NOMBRE_VENDEDOR,
-                T0.NIVEL_PRECIO 
-            FROM
-                Softland.umk.FACTURA T0
-                INNER JOIN Softland.umk.CLIENTE T1 ON T0.CLIENTE = T1.CLIENTE 
-                INNER JOIN Softland.umk.VENDEDOR T2 ON T0.VENDEDOR = T2.VENDEDOR
-            WHERE
-                T0.ANULADA = 'N'
-                AND T0.VENDEDOR NOT IN ('F01','F12', 'F02' , 'F11')
-                AND T0.TOTAL_FACTURA > 1000
-                AND T0.CLIENTE NOT IN ( SELECT CLIENTE FROM PRODUCCION.dbo.tbl_cadena_de_farmacia)
-                AND T0.FECHA BETWEEN ? AND ?
-        ";
+        $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura T0 WHERE T0.FECHA BETWEEN ? AND ? ";
 
         $rows = DB::connection('sqlsrv')->select($query, [$desde, $hasta]);
 
@@ -75,9 +54,12 @@ class Facturas extends Model
 
         $clientesUnicos = array_unique(array_column($Arry, 'CLIENTE'));
 
-        $UltmAccion = DB::connection('sqlsrv')->select("SELECT NUMERO FROM PRODUCCION.dbo.NUMEROS_RIFA WHERE USADO = 1 ORDER BY NUMERO DESC")[0]->NUMERO ?? 'N/A';
+        $ultima = DB::connection('sqlsrv')->selectOne("SELECT NUMERO FROM PRODUCCION.dbo.NUMEROS_RIFA WHERE USADO = 1 ORDER BY ID_ASIGNACION DESC");
+        $ttAccionesUsados = DB::connection('sqlsrv')->selectOne("SELECT COUNT(*) AS TOTAL FROM PRODUCCION.dbo.NUMEROS_RIFA WHERE USADO = 1");
+        $UltmAccion = $ultima ? (int) $ultima->NUMERO : 0;
+        $ttAcciones = 60000;
 
-        $porcentajeDisponible = round(((100000 - $UltmAccion) / 100000) * 100, 1);
+        $porcentajeDisponible = $UltmAccion ? round((($ttAcciones - $ttAccionesUsados->TOTAL) / $ttAcciones) * 100, 1) : 100;
 
         return $Arry = [
             "DATA" => $Arry,
@@ -126,18 +108,21 @@ class Facturas extends Model
 
         $CLIENTE        = $InfoFactura->CLIENTE;
         $TOTAL_FACTURA  = $InfoFactura->TOTAL_FACTURA;
+        $VENDEDOR       = $InfoFactura->VENDEDOR;
 
         $query = "
             EXEC PRODUCCION.dbo.SP_INSERTAR_ACCIONES_CONTINUO 
             @CLIENTE = ?, 
             @FACTURA = ?, 
-            @TOTAL_FACTURA = ?
+            @TOTAL_FACTURA = ?,
+            @VENDEDOR = ?
         ";
 
         DB::connection('sqlsrv')->statement($query, [
             $CLIENTE,
             $Factura,
-            $TOTAL_FACTURA
+            $TOTAL_FACTURA,
+            $VENDEDOR
         ]);
 
         return [
@@ -179,9 +164,6 @@ class Facturas extends Model
     public static function ImprimirAcciones($request)
     {
         $Factura = $request->Factura;
-        //$Factura = '00293154';
-
-        
 
         $InfoFactura = FacturasAcciones::where('FACTURA', $Factura)->get();
         
@@ -191,28 +173,7 @@ class Facturas extends Model
 
     public static function getInfoFactura($Factura)
     {
-        $query = "
-            SELECT
-                T0.CLIENTE,
-                T1.NOMBRE,
-                T0.FACTURA,
-                T0.TOTAL_FACTURA,
-                FLOOR( T0.TOTAL_FACTURA / 1000 ) AS ACCIONES,
-                T0.FECHA,
-                T0.VENDEDOR,
-                T2.NOMBRE AS NOMBRE_VENDEDOR,
-                T0.NIVEL_PRECIO 
-            FROM
-                Softland.umk.FACTURA T0
-                INNER JOIN Softland.umk.CLIENTE T1 ON T0.CLIENTE = T1.CLIENTE 
-                INNER JOIN Softland.umk.VENDEDOR T2 ON T0.VENDEDOR = T2.VENDEDOR
-            WHERE
-                T0.ANULADA = 'N'
-                AND T0.VENDEDOR NOT IN ('F01','F12', 'F02' , 'F11')
-                AND T0.TOTAL_FACTURA > 1000
-                AND T0.CLIENTE NOT IN ( SELECT CLIENTE FROM PRODUCCION.dbo.tbl_cadena_de_farmacia)
-                AND T0.FACTURA = ?
-        ";
+        $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura T0 WHERE T0.FACTURA = ? ";
 
         $Factura = DB::connection('sqlsrv')->select($query, [$Factura]);
 

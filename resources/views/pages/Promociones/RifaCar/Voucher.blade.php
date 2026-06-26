@@ -2,12 +2,51 @@
 @extends('layouts.lyt_acciones')
 @section('content')
 <style>
+    @page {
+        size: 80mm 210mm;
+        margin: 0;
+    }
     @media print {
-        body { margin: 0; padding: 0; }
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
         .no-print { display: none !important; }
+        body {
+            width: 72mm !important;
+        }
+        .container {
+            max-width: 72mm !important;
+            width: 72mm !important;
+            padding: 0 !important;
+            margin: 0 auto !important;
+        }
+        .content {
+            max-width: 72mm !important;
+            padding: 3mm !important;
+            margin: 0 !important;
+        }
+        .body-wrap {
+            width: 72mm !important;
+        }
+        .main {
+            border: none !important;
+        }
+        .content-wrap {
+            padding: 3mm !important;
+        }
+        .content-block {
+            padding: 0 0 3mm !important;
+        }
+        .recibo-logo {
+            max-width: 40mm !important;
+        }
+        .recibo-qr img {
+            max-width: 110px !important;
+        }
     }
     .recibo-container {
-        width: 300px;
+        width: 100%;
         max-width: 100%;
         margin: 0 auto;
         font-family: 'Courier New', Courier, monospace;
@@ -142,11 +181,11 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <!-- Términos -->
+                                            <!-- T&eacute;rminos -->
                                             <tr>
                                                 <td class="content-block">
                                                     <div class="recibo-terminos">
-                                                        <strong>Términos:</strong> Este recibo es válido para participar en el sorteo de Rifas Car. El ganador se anunciará en nuestras redes sociales. No se aceptan cambios ni devoluciones.
+                                                        <strong>T&eacute;rminos:</strong> Promoci&oacute;n v&aacute;lida del 08 de junio al 21 de noviembre de 2026. Por cada C$1,500.00 netos en compras de productos participantes, recibe una (1) acci&oacute;n electr&oacute;nica. Aplica &uacute;nicamente para clientes del canal farmacia privada con c&oacute;digo activo en UNIMARK S.A. Las acciones anuladas por devoluciones, notas de cr&eacute;dito o falta de pago no participan. El sorteo se realizar&aacute; con base en los resultados de la Loter&iacute;a Nacional del 24 de noviembre de 2026. El ganador deber&aacute; estar solvente con UNIMARK S.A. Aplican restricciones. Consulte el reglamento completo en UNIMARK S.A.
                                                     </div>
                                                 </td>
                                             </tr>
