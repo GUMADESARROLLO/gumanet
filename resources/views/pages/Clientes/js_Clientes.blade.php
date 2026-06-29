@@ -91,13 +91,25 @@ $(document).ready(function() {
             var tbody = $('#dtFacturacion tbody');
             tbody.empty();
 
-            if (!response || response.length === 0) {
+            var rows = response.data || response;
+            var totals = response.totals || null;
+
+            if (!rows || rows.length === 0) {
                 tbody.html('<tr><td colspan="8" class="text-center text-muted">Sin resultados</td></tr>');
+                $('#ind_facturas').text('0');
+                $('#ind_pagos').text('C$ 0.00');
+                $('#ind_saldo').text('C$ 0.00');
                 btn.html('<i class="bi bi-filter"></i> Filtrar').prop('disabled', false);
                 return;
             }
 
-            var data = response.map(function(row) {
+            if (totals) {
+                $('#ind_facturas').text(numeral(totals.count).format('0,0'));
+                $('#ind_pagos').text('C$ ' + totals.pagos);
+                $('#ind_saldo').text('C$ ' + totals.saldo);
+            }
+
+            var data = rows.map(function(row) {
                 return [
                     row.FACTURA,
                     row.FECHA,
@@ -275,11 +287,11 @@ function dtClientes() {
             { "title": "MOROSO",   "data": "MOROSO",  "className": "text-center",
               "render": function(d) { return d === 'S' ? 'Si' : 'No'; } },
             { "title": "CREDITO",  "data": "LIMITE",  "className": "text-right",
-              "render": function(d) { return 'C$ ' + numeral(d).format('0,0.00'); } },
+              "render": function(d) { return numeral(d).format('0,0.00'); } },
             { "title": "SALDO",    "data": "SALDO",   "className": "text-right",
-              "render": function(d) { return 'C$ ' + numeral(d).format('0,0.00'); } },
+              "render": function(d) { return numeral(d).format('0,0.00'); } },
             { "title": "DISPONIBLE","data": "DISPONIBLE","className": "text-right",
-              "render": function(d) { return 'C$ ' + numeral(d).format('0,0.00'); } },
+              "render": function(d) { return numeral(d).format('0,0.00'); } },
         ],
         "rowCallback": function(row, data) {
             if (data.MOROSO === 'S') {
@@ -295,21 +307,67 @@ function dtClientes() {
     $('#dtClientes_length').hide();
     $('#dtClientes_filter').hide();
 
-    $('#dtClientes tbody').on('click', 'tr', function() {
+    $('#dtClientes tbody').on('click', 'tr', async function() {
         var data = table.row(this).data();
         if (!data) return;
 
-        $('#modal_cliente_codigo').text(data.CLIENTE);
+        var clienteId = data.CLIENTE;
+
+        $('#modal_cliente_codigo').text(clienteId);
         $('#modal_cliente_nombre').text(data.NOMBRE);
-        $('#detalle_cliente').text(data.CLIENTE);
-        $('#detalle_nombre').text(data.NOMBRE);
-        $('#detalle_direccion').text(data.DIRECCION);
-        $('#detalle_ruc').text(data.RUC);
-        $('#detalle_vendedor').text(data.VENDEDOR);
         $('#detalle_vendedor_header').text(data.VENDEDOR);
-        $('#detalle_fecha').text(data.FECHA);
+
+        if ($('#dtFacturacion').hasClass('dataTable')) {
+            $('#dtFacturacion').DataTable().clear().destroy();
+        }
+        $('#dtFacturacion tbody').html('<tr><td colspan="8" class="text-center text-muted">Seleccione un rango de fechas y presione Filtrar</td></tr>');
+        $('#ind_facturas').text('0');
+        $('#ind_pagos').text('C$ 0.00');
+        $('#ind_saldo').text('C$ 0.00');
 
         $('#ModalCliente').modal('show');
+
+        try {
+            var c = await $.ajax({
+                url: 'getClienteById',
+                type: 'POST',
+                data: { cliente: clienteId }
+            });
+
+            if (!c) return;
+
+            $('#detalle_cliente').text(c.CLIENTE);
+            $('#detalle_nombre').text(c.NOMBRE);
+            $('#detalle_direccion').text(c.DIRECCION);
+            $('#detalle_telefono1').text(c.TELEFONO1);
+            $('#detalle_telefono2').text(c.TELEFONO2);
+            $('#detalle_condicion_pago').text(c.CONDICION_PAGO);
+            $('#detalle_fecha_ingreso').text(c.FECHA_INGRESO);
+            $('#detalle_nivel_precio').text(c.NIVEL_PRECIO);
+
+            var badgePill = $('#detalle_estado_pill');
+            var badgeDot = $('#detalle_dot');
+            if (c.ACTIVO === 'S') {
+                badgePill.text('CLIENTE ACTIVO');
+                badgeDot.removeClass('inactive');
+            } else {
+                badgePill.text('CLIENTE INACTIVO');
+                badgeDot.addClass('inactive');
+            }
+
+            var moroso = $('#detalle_moroso');
+            if (c.MOROSO === 'S') {
+                moroso.text('Si').removeClass('active warning').addClass('inactive');
+            } else {
+                moroso.text('No').removeClass('inactive warning').addClass('active');
+            }
+
+            $('#detalle_limite').text('C$ ' + numeral(c.LIMITE_CREDITO).format('0,0.00'));
+            $('#detalle_saldo').text('C$ ' + numeral(c.SALDO).format('0,0.00'));
+            $('#detalle_disponible').text('C$ ' + numeral(c.LIMITE_CREDITO - c.SALDO).format('0,0.00'));
+        } catch (err) {
+            console.log('Error al cargar datos del cliente');
+        }
     });
 }
 </script>

@@ -63,4 +63,11 @@ class ClientesController extends Controller {
         return response()->json($obj);
     }
 
+    public function getClienteById(Request $request)
+    {
+        $clienteId = $request->input('cliente');
+        $obj = ClientesModel::getClienteById($clienteId);
+        return response()->json($obj);
+    }
+
 }
