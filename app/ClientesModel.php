@@ -63,19 +63,30 @@ class ClientesModel extends Model
         
         // TODO: CASO DE ESTUDIO FACTURA NUMERO 00293080
         $InfoFactura = DB::connection('sqlsrv')
-            ->table('PRODUCCION.dbo.gnet_cxc')
-            //->select('MONTO_CORD_CRED', 'FACTURA', 'MONTO', 'VENDEDOR', 'NOMBRE_VENDEDOR')
-            ->whereIn('FACTURA', $Facturas)
-            ->orderBy('FECHA_DEBITO', 'DESC')
-            ->get()
-            ->toArray();
+        ->table('PRODUCCION.dbo.gnet_cxc')
+        ->whereIn('FACTURA', $Facturas)
+        ->selectRaw("
+            FACTURA,
+            SUM(MONTO_CORD_CRED) AS MONTO_CORD_CRED,
+            SUM(SALDO) AS SALDO
+        ")
+        ->groupBy('FACTURA')
+        ->get()
+        ->toArray();
 
 
 
-        foreach ($rows as $key) {            
+        $totalPagos = 0;
+        $totalSaldo = 0;
+
+        foreach ($rows as $key) {     
+            
             $Posicion = array_search($key->FACTURA, array_column($InfoFactura, 'FACTURA'));
-            $MONTO_CORD_CRED = $Posicion !== false ? $InfoFactura[$Posicion]->MONTO_CORD_CRED : 0;
-            $SALDO = $Posicion !== false ? $InfoFactura[$Posicion]->SALDO : 0;
+            $MONTO_CORD_CRED = $Posicion !== false ? $InfoFactura[$Posicion]->MONTO_CORD_CRED : 0;            
+            $SALDO = ($key->MONTO - $MONTO_CORD_CRED) ;
+
+            $totalPagos += $MONTO_CORD_CRED;
+            $totalSaldo += $SALDO;
 
             $data[] = [
                 'FECHA'          => date('d/m/Y', strtotime($key->FECHA)) ?? '',
@@ -88,7 +99,14 @@ class ClientesModel extends Model
             ];
         }
 
-        return $data;
+        return [
+            'data' => $data,
+            'totals' => [
+                'count' => count($data),
+                'pagos' => number_format($totalPagos, 2),
+                'saldo' => number_format($totalSaldo, 2),
+            ]
+        ];
     }
 
     public static function getFacturaDetalle($FACTURA) {
@@ -116,7 +134,7 @@ class ClientesModel extends Model
 
         foreach ($rows as $key) {
             $data[] = [
-                'FECHA'      => date('d/m/Y', strtotime($key->FECHA_DEBITO)) ?? '',
+                'FECHA'      => date('d/m/Y', strtotime($key->FECHA)) ?? '',
                 'RECIBO'     => $key->COD_RECIBO ?? '',
                 'MONTO'      => $key->MONTO_CORD_CRED ?? 0,
                 'FORMA_PAGO' => $key->TIPO_CREDITO ?? '-',
@@ -124,5 +142,36 @@ class ClientesModel extends Model
         }
 
         return $data;
+    }
+
+
+    public static function getClienteById($clienteId) {
+        $rows = DB::connection('sqlsrv')->select(" SELECT * FROM PRODUCCION.dbo.GMV3_MASTER_CLIENTES WHERE CLIENTE = ?", [$clienteId]);
+
+        if (empty($rows)) return null;
+
+        $c = $rows[0];
+        return [
+            'CLIENTE'             => $c->CLIENTE ?? '',
+            'NOMBRE'              => $c->NOMBRE ?? '',
+            'DIRECCION'           => $c->DIRECCION ?? '',
+            'TELEFONO1'           => $c->TELEFONO1 ?? '',
+            'TELEFONO2'           => $c->TELEFONO2 ?? '',
+            'FECHA_INGRESO'       => $c->FECHA_INGRESO ?? '',
+            'SALDO'               => $c->SALDO ?? '0.00',
+            'LIMITE_CREDITO'      => $c->LIMITE_CREDITO ?? '0.00',
+            'CONDICION_PAGO'      => $c->CONDICION_PAGO ?? '',
+            'VENDEDOR'            => $c->VENDEDOR ?? '',
+            'VENDEDOR_COMPARTIDO' => $c->VENDEDOR_COMPARTIDO ?? '',
+            'COBRADOR'            => $c->COBRADOR ?? '',
+            'CLASE_ABC'           => $c->CLASE_ABC ?? '',
+            'CATEGORIA_CLIENTE'   => $c->CATEGORIA_CLIENTE ?? '',
+            'DIVISION_GEOGRAFICA1' => $c->DIVISION_GEOGRAFICA1 ?? '',
+            'DIVISION_GEOGRAFICA2' => $c->DIVISION_GEOGRAFICA2 ?? '',
+            'MOROSO'              => $c->MOROSO ?? 'N',
+            'ACTIVO'              => $c->ACTIVO ?? 'S',
+            'NIVEL_PRECIO'        => $c->NIVEL_PRECIO ?? '',
+            'PLAN_CRECI'          => $c->PLAN_CRECI ?? '',
+        ];
     }
 }

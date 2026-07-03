@@ -70,29 +70,33 @@
                     <!-- GENERAL -->
                     <div class="tab-pane fade show active" id="tab-general-pane">
                         <div class="info-grid">
-                            <div class="info-cell">
-                                <label>Nombre comercial</label>
-                                <div class="value" id="detalle_nombre"></div>
-                            </div>
-                            <div class="info-cell">
-                                <label>RUC</label>
-                                <div class="value mono" id="detalle_ruc"></div>
-                            </div>
                             <div class="info-cell full">
                                 <label>Direccion</label>
                                 <div class="value" id="detalle_direccion"></div>
                             </div>
                             <div class="info-cell">
-                                <label>Fecha de registro</label>
-                                <div class="value" id="detalle_fecha"></div>
+                                <label>Telefono 1</label>
+                                <div class="value" id="detalle_telefono1"></div>
                             </div>
                             <div class="info-cell">
-                                <label>Estado de cuenta</label>
-                                <div class="mt-1">
-                                    <span class="pill active" id="detalle_estado_cuenta">
-                                        <i class="bi bi-check-circle-fill"></i> Al dia
-                                    </span>
-                                </div>
+                                <label>Telefono 2</label>
+                                <div class="value" id="detalle_telefono2"></div>
+                            </div>
+                            <div class="info-cell">
+                                <label>Condicion Pago</label>
+                                <div class="value" id="detalle_condicion_pago"></div>
+                            </div>
+                            <div class="info-cell">
+                                <label>Fecha Ingreso</label>
+                                <div class="value" id="detalle_fecha_ingreso"></div>
+                            </div>
+                            <div class="info-cell">
+                                <label>Nivel Precio</label>
+                                <div class="value" id="detalle_nivel_precio"></div>
+                            </div>
+                            <div class="info-cell">
+                                <label>Moroso</label>
+                                <div class="value"><span class="pill" id="detalle_moroso">-</span></div>
                             </div>
                         </div>
 
@@ -139,6 +143,47 @@
                                 <button type="button" class="btn btn-primary-umk btn-sm btn-block input-fecha" id="filtrarFacturacion">
                                     <i class="bi bi-filter"></i> Filtrar
                                 </button>
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body d-flex align-items-center py-2">
+                                        <div class="rounded-circle bg-light-primary p-2 me-2">
+                                            <i class="bi bi-file-text text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <div class="small text-muted text-uppercase fw-semibold">Facturas</div>
+                                            <div class="h5 mb-0 fw-bold" id="ind_facturas">0</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body d-flex align-items-center py-2">
+                                        <div class="rounded-circle bg-light-success p-2 me-2">
+                                            <i class="bi bi-cash text-success"></i>
+                                        </div>
+                                        <div>
+                                            <div class="small text-muted text-uppercase fw-semibold">Pagos</div>
+                                            <div class="h5 mb-0 fw-bold" id="ind_pagos">C$ 0.00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body d-flex align-items-center py-2">
+                                        <div class="rounded-circle bg-light-warning p-2 me-2">
+                                            <i class="bi bi-credit-card-2-back text-warning"></i>
+                                        </div>
+                                        <div>
+                                            <div class="small text-muted text-uppercase fw-semibold">Saldo Pendiente</div>
+                                            <div class="h5 mb-0 fw-bold" id="ind_saldo">C$ 0.00</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <table class="table table-sm table-bordered table-striped" id="dtFacturacion" style="width:100%">
