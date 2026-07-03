@@ -104,7 +104,7 @@ class Facturacion extends Model
         $query = DB::connection("sqlsrv")->select("
             SELECT
                 PL.ARTICULO,
-                ISNULL(A.DESCRIPCION, '') AS DESCRIPCION,
+                UPPER(ISNULL(A.DESCRIPCION, '')) AS DESCRIPCION,
                 PL.CANTIDAD_PEDIDA AS CANTIDAD,
                 PL.PRECIO_UNITARIO,
                 (PL.CANTIDAD_PEDIDA * PL.PRECIO_UNITARIO) AS PRECIO_TOTAL
@@ -122,7 +122,7 @@ class Facturacion extends Model
         $query = DB::connection("sqlsrv")->select("
             SELECT
                 FL.ARTICULO,
-                ISNULL(A.DESCRIPCION, '') AS DESCRIPCION,
+                UPPER(ISNULL(A.DESCRIPCION, '')) AS DESCRIPCION,
                 FL.CANTIDAD,
                 FL.PRECIO_UNITARIO,
                 FL.PRECIO_TOTAL
@@ -133,6 +133,20 @@ class Facturacion extends Model
         ", [$factura]);
 
         return $query;
+    }
+
+    public static function getRucCliente($cliente)
+    {
+        $query = DB::connection("sqlsrv")->select("
+            SELECT RUC
+            FROM PRODUCCION.dbo.GMV_Clientes
+            WHERE CLIENTE = ?
+        ", [$cliente]);
+
+        if (count($query) > 0) {
+            return $query[0]->RUC ?? '';
+        }
+        return '';
     }
 
     public static function getFacturasByVendedor($request, $vendedor)

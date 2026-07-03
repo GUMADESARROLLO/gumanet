@@ -11,6 +11,9 @@
     .bg-umk {
       background-color: var(--corporate-blue) !important;
     }
+    .bg-umk2 {
+      background-color: #273b7a;
+    }
     body {
       background-color: #e9ecef !important;
     }

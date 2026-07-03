@@ -383,6 +383,7 @@ Route::post('getDetallePedidoFactura', 'FacturacionController@getDetallePedidoFa
 Route::post('getFacturasVendedor', 'FacturacionController@getFacturasVendedor')->name('getFacturasVendedor');
 Route::post('getDetallePedidoProductos', 'FacturacionController@getDetallePedidoProductos')->name('getDetallePedidoProductos');
 Route::post('getDetalleFacturaProductos', 'FacturacionController@getDetalleFacturaProductos')->name('getDetalleFacturaProductos');
+Route::post('getRucCliente', 'FacturacionController@getRucCliente')->name('getRucCliente');
 
 
 
