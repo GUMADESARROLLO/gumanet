@@ -407,3 +407,4 @@ Route::get('getClientes', 'ClientesController@getClientes')->name('getClientes')
 Route::post('getFactura', 'ClientesController@getFactura')->name('getFactura');
 Route::post('getFacturaDetalle', 'ClientesController@getFacturaDetalle')->name('getFacturaDetalle');
 Route::post('getFacturaPagos', 'ClientesController@getFacturaPagos')->name('getFacturaPagos');
+Route::post('getClienteById', 'ClientesController@getClienteById')->name('getClienteById');
