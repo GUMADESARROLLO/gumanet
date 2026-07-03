@@ -181,9 +181,8 @@
         return Number(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
-    function abrirDetalleProductos(tipo, valor, nombre, fecha) {
+    function abrirDetalleProductos(tipo, valor, row) {
         var titulo = (tipo === 'pedido') ? 'PEDIDO: ' + valor : 'FACTURA: ' + valor;
-        var subtitulo = 'CLIENTE: ' + nombre + '<br>FECHA: ' + fecha;
         var endpoint = (tipo === 'pedido') ? 'getDetallePedidoProductos' : 'getDetalleFacturaProductos';
         var columnas = (tipo === 'pedido')
             ? [
@@ -202,7 +201,53 @@
             ];
 
         $('#mdl-detalle-pedido-factura-title').html(titulo);
-        $('#mdl-detalle-pedido-factura-sub-title').html(subtitulo);
+
+        // info-grid con datos de la fila
+        $('#detalle_nombre').text(row.NOMBRE_CLIENTE || '');
+        $('#ruc_cliente').text('');
+
+        // obtener RUC desde GMV_Clientes
+        if (row.COD_CLIENTE) {
+            fetch('getRucCliente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ cliente: row.COD_CLIENTE })
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data && data.ruc) {
+                    $('#ruc_cliente').text(data.ruc);
+                }
+            })
+            .catch(function(error) {
+                console.error('Error al obtener RUC:', error);
+            });
+        }
+
+        if (row.FECHAC_PEDIDO) {
+            var dp = new Date(row.FECHAC_PEDIDO);
+            $('#fecha_pedidio').text(('0' + dp.getDate()).slice(-2) + '-' + ('0' + (dp.getMonth() + 1)).slice(-2) + '-' + dp.getFullYear());
+        }
+        if (row.FECHA_FACTURA) {
+            var df = new Date(row.FECHA_FACTURA);
+            $('#fecha_factura').text(('0' + df.getDate()).slice(-2) + '-' + ('0' + (df.getMonth() + 1)).slice(-2) + '-' + df.getFullYear());
+        }
+        if (row.TIEMPO_MINUTOS !== null && row.TIEMPO_MINUTOS !== undefined) {
+            var mins = row.TIEMPO_MINUTOS;
+            var horas = Math.floor(mins / 60);
+            var minutos = mins % 60;
+            var label = ('0' + horas).slice(-2) + 'h ' + ('0' + minutos).slice(-2) + 'm';
+            var pillClass = 'active';
+            if (mins > 1440) pillClass = 'inactive';
+            else if (mins > 720) pillClass = 'warning';
+            $('#detalle_tiempo').html('<i class="bi bi-clock"></i> ' + label).removeClass('active inactive warning').addClass(pillClass);
+        } else {
+            $('#detalle_tiempo').html('<i class="bi bi-check-circle-fill"></i> Al dia');
+        }
+
         $('#mdl-detalle-pedido-factura').modal('show');
 
         var table = $('#tbl-detalle-pedido-factura');
@@ -269,18 +314,18 @@
 
     // Click en PEDIDO
     $(document).on('click', '#tbl_pedidos_facturados .link-pedido', function() {
-        var pedido = $(this).data('pedido');
-        var nombre = $(this).data('nombre');
-        var fecha = $(this).data('fecha');
-        abrirDetalleProductos('pedido', pedido, nombre, fecha);
+        var tr = $(this).closest('tr');
+        var row = $('#tbl_pedidos_facturados').DataTable().row(tr).data();
+        var pedido = row.PEDIDO;
+        abrirDetalleProductos('pedido', pedido, row);
     });
 
     // Click en FACTURA
     $(document).on('click', '#tbl_pedidos_facturados .link-factura', function() {
-        var factura = $(this).data('factura');
-        var nombre = $(this).data('nombre');
-        var fecha = $(this).data('fecha');
-        abrirDetalleProductos('factura', factura, nombre, fecha);
+        var tr = $(this).closest('tr');
+        var row = $('#tbl_pedidos_facturados').DataTable().row(tr).data();
+        var factura = row.FACTURA;
+        abrirDetalleProductos('factura', factura, row);
     });
 
     // Expandir/colapsar detalle de factura
@@ -414,20 +459,10 @@
                 data: result.PEDIDOS_FACTURADOS,
                 columns: [
                     { title: 'PEDIDO', data: 'PEDIDO', className: 'text-center bg-white text-dark', render: function(data, type, row) {
-                        var d = new Date(row.FECHAC_PEDIDO);
-                        var day = ('0' + d.getDate()).slice(-2);
-                        var month = ('0' + (d.getMonth() + 1)).slice(-2);
-                        var year = d.getFullYear();
-                        var fecha = day + '-' + month + '-' + year;
-                        return '<a href="javascript:void(0)" class="link-pedido" data-pedido="' + data + '" data-nombre="' + row.NOMBRE_CLIENTE + '" data-fecha="' + fecha + '">' + data + '</a>';
+                        return '<a href="javascript:void(0)" class="link-pedido" data-pedido="' + data + '">' + data + '</a>';
                     } },
                     { title: 'FACTURA', data: 'FACTURA', className: 'text-center bg-white text-dark', render: function(data, type, row) {
-                        var d = new Date(row.FECHA_FACTURA);
-                        var day = ('0' + d.getDate()).slice(-2);
-                        var month = ('0' + (d.getMonth() + 1)).slice(-2);
-                        var year = d.getFullYear();
-                        var fecha = day + '-' + month + '-' + year;
-                        return '<a href="javascript:void(0)" class="link-factura" data-factura="' + data + '" data-nombre="' + row.NOMBRE_CLIENTE + '" data-fecha="' + fecha + '">' + data + '</a>';
+                        return '<a href="javascript:void(0)" class="link-factura" data-factura="' + data + '">' + data + '</a>';
                     } },
                     { title: 'COD. CLIENTE', data: 'COD_CLIENTE', className: 'text-center bg-white text-dark' },
                     { title: 'NOMBRE CLIENTE', data: 'NOMBRE_CLIENTE', className: 'bg-white text-dark' },

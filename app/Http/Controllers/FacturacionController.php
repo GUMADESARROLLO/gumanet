@@ -63,4 +63,11 @@ class FacturacionController extends Controller
         return response()->json($detalle);
     }
 
+    public function getRucCliente(Request $request)
+    {
+        $cliente = $request->cliente;
+        $ruc = Facturacion::getRucCliente($cliente);
+        return response()->json(['ruc' => $ruc]);
+    }
+
 }
