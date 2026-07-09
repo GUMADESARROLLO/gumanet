@@ -8,6 +8,7 @@ use PHPExcel_IOFactory;
 use PHPExcel_Style_Alignment;
 use PHPExcel_Style;
 use PHPExcel_Style_Border;
+use PHPExcel_Style_Fill;
 use Illuminate\Database\Eloquent\Model;
 use App\metas_model;
 use App\Articulo_vinneta_modal;
@@ -406,7 +407,11 @@ class inventario_model extends Model {
             'strike'    => false,
             'size'      => 14,
             'color'     => array(
-                            'rgb' => '212121')
+                            'rgb' => 'FFFFFF')
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => '2C3E50')
             ),
             'alignment' =>  array(
                             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
@@ -419,7 +424,12 @@ class inventario_model extends Model {
         $estiloTituloColumnas = array(
             'font' => array(
                         'name'  => 'Arial',
-                        'bold'  => true
+                        'bold'  => true,
+                        'color' => array('rgb' => 'FFFFFF')
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => '3498DB')
             ),
             'alignment' =>  array(
                                 'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
@@ -447,6 +457,20 @@ class inventario_model extends Model {
                                 'style' => PHPExcel_Style_Border::BORDER_THIN,
                                 ),
                 )
+            )
+        );
+
+        $estiloFilaPar = array(
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => 'EBF5FB')
+            )
+        );
+
+        $estiloFilaImpar = array(
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => 'FFFFFF')
             )
         );
 
@@ -575,6 +599,11 @@ class inventario_model extends Model {
                 $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:M".($i-1));
                 $objPHPExcel->getActiveSheet()->getStyle("C4:M".($i-1))->applyFromArray($right);
 
+                for ($row = 4; $row < $i; $row++) {
+                    $style = ($row % 2 == 0) ? $estiloFilaPar : $estiloFilaImpar;
+                    $objPHPExcel->getActiveSheet()->getStyle('A'.$row.':M'.$row)->applyFromArray($style);
+                }
+
                 break;
             case 'vencimiento':
                 $temp = inventario_model::dataLiquidacionMeses($valor);
@@ -609,8 +638,8 @@ class inventario_model extends Model {
 
                 foreach ($temp as $key) {
                     
-                    $cantidad = tbl_temporal::where('articulo', $key['ARTICULO'])->select('cantidad')->first();
-                    $cantidad = ( $cantidad['cantidad']=='' )?0:$cantidad['cantidad'];
+                    $oItem = tbl_temporal::where('articulo', $key['ARTICULO'])->first();
+                    $cantidad = $oItem ? $oItem->cantidad : 0;
 
                     $totalExistencia = $key['CANT_DISPONIBLE2'];
                     $promedio =   ( $cantidad>0 )?( $cantidad / 12 ):0;
@@ -654,6 +683,11 @@ class inventario_model extends Model {
                 $objPHPExcel->getActiveSheet()->getStyle('A3:M3')->applyFromArray($estiloTituloColumnas);
                 $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:M".($i-1));
                 $objPHPExcel->getActiveSheet()->getStyle("C4:M".($i-1))->applyFromArray($right);
+
+                for ($row = 4; $row < $i; $row++) {
+                    $style = ($row % 2 == 0) ? $estiloFilaPar : $estiloFilaImpar;
+                    $objPHPExcel->getActiveSheet()->getStyle('A'.$row.':M'.$row)->applyFromArray($style);
+                }
 
             break;
             default:

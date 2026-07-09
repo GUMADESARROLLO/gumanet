@@ -102,7 +102,7 @@
         <div class="col-sm-1">
           <div class="form-group">
             <label for="exp-to-excel" class="text-muted">Exportar a</label>
-            <a id="exp-to-excel" href="#!" onclick="descargarArchivo('vencimiento')" class="btn btn-light btn-block text-success float-right"><i class="fas fa-file-excel"></i></a>
+            <a id="exp-to-excel" href="#!" onclick="descargarArchivo('vencimiento')" class="btn btn-success btn-block btn-lg text-center shadow"><i class="fas fa-file-excel"></i></a>
           </div>
         </div>
       </div>

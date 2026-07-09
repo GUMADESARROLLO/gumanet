@@ -50,7 +50,7 @@ class inventario_controller extends Controller
 		if($companie == 4){
 			//$inventario = InnovaModel::getAll();
 			//return view('pages.inventarioINN', compact('inventario'));			
-			return view('pages.Inventario.inventario', compact('data','Style'));
+			return view('pages.Inventario.inventliquidacionMesesario', compact('data','Style'));
 		}else{
 			return view('pages.Inventario.inventario', compact('data','Style'));
 		}

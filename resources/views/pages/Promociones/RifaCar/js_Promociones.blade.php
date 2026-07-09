@@ -42,6 +42,10 @@ $(document).ready(function() {
             'Este Mes': [
                 moment.max(moment().startOf('month'), minDate),
                 moment.min(moment().endOf('month'), maxDate)
+            ],
+            'Toda la Promo': [
+                minDate,
+                maxDate
             ]
         },
 
