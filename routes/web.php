@@ -94,6 +94,7 @@ Route::post('/lotes','inventario_controller@getLotesArticulo');
 Route::post('/getLotes','inventario_controller@getLotes');
 Route::get('/liqMeses/{valor}','inventario_controller@liquidacionMeses');
 Route::get('/desInventario/{tipo}/{valor}', 'inventario_controller@descargarInventario');
+Route::get('/desInventarioB004', 'inventario_controller@descargarInventarioB004');
 Route::get('/invCompleto', 'inventario_controller@inventarioCompleto');
 Route::get('/invTotalizadoDT', 'inventario_controller@inventarioCompletoTable');
 Route::get('/desInvTotal2', 'inventario_controller@descargarInventarioCompleto');

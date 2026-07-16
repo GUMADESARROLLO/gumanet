@@ -321,6 +321,84 @@ class inventario_model extends Model {
         return $jsonResulto;
     }
 
+    public static function descargarInventarioB004() {
+        $data = inventario_model::invenVencidos();
+        if (!$data) {
+            dd("No hay datos para exportar.");
+        }
+
+        $objPHPExcel = new PHPExcel();
+        $tituloReporte = "ARTICULOS BODEGA 004 - DAÑADOS Y VENCIDOS HASTA " . date('d/m/Y');
+        $titulosColumnas = array('ARTICULO', 'DESCRIPCION', 'LOTE', 'CANTIDAD', 'COSTO PROM. LOC.', 'COSTO ULT. LOC.', 'FECHA DE VENCIMIENTO');
+
+        $estiloTituloReporte = array(
+            'font' => array('name' => 'Tahoma', 'bold' => true, 'size' => 14, 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '2C3E50')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER, 'wrap' => true),
+        );
+
+        $estiloTituloColumnas = array(
+            'font' => array('name' => 'Arial', 'bold' => true, 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '3498DB')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER, 'wrap' => true),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN)),
+        );
+
+        $estiloInformacion = new PHPExcel_Style();
+        $estiloInformacion->applyFromArray(array('borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))));
+
+        $estiloFilaPar = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'EBF5FB')));
+        $estiloFilaImpar = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'FFFFFF')));
+        $right = array('alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER, 'wrap' => true));
+
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:G1');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $tituloReporte);
+
+        foreach ($titulosColumnas as $idx => $col) {
+            $colLetter = chr(65 + $idx);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue($colLetter . '3', $col);
+        }
+
+        $i = 4;
+        foreach ($data as $key) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $i, $key['ARTICULO'])
+                ->setCellValue('B' . $i, $key['DESCRIPCION'])
+                ->setCellValue('C' . $i, $key['LOTE'])
+                ->setCellValue('D' . $i, $key['CANT_DISPONIBLE'])
+                ->setCellValue('E' . $i, $key['COSTO_PROM_LOC'])
+                ->setCellValue('F' . $i, $key['COSTO_ULT_LOC'])
+                ->setCellValue('G' . $i, $key['FECHA_VENCIMIENTO']);
+            $i++;
+        }
+
+        $lastRow = $i - 1;
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(12);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(70);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(12);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(18);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(18);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(18);
+
+        $objPHPExcel->getActiveSheet()->getStyle('A1:G1')->applyFromArray($estiloTituloReporte);
+        $objPHPExcel->getActiveSheet()->getStyle('A3:G3')->applyFromArray($estiloTituloColumnas);
+        $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:G" . $lastRow);
+        $objPHPExcel->getActiveSheet()->getStyle("D4:G" . $lastRow)->applyFromArray($right);
+
+        for ($row = 4; $row <= $lastRow; $row++) {
+            $style = ($row % 2 == 0) ? $estiloFilaPar : $estiloFilaImpar;
+            $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':G' . $row)->applyFromArray($style);
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Bodega004_' . date('d-m-Y') . '.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
+    }
+
     public static function getInventarioCompleto() {
         $sql_server = new \sql_server();        
        

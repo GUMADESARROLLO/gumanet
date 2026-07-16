@@ -119,7 +119,7 @@
     <div class="col-sm-12">
       <h1 class="h4 text-info mb-4">Articulos de Bodega 004 - Dañados y Vencidos</h1>
       <div class="row">
-        <div class="col-md-11">
+        <div class="col-md-10">
           <div class="form-group">
             <label for="InputDtShowSearchFilterArtVenc" class="text-muted">Realizar busqueda por Articulo</label>
             <div class="input-group">
@@ -129,7 +129,7 @@
               <input type="text" id="id_search_tble_inventario_vencido" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
             </div>
           </div>
-        </div>        
+        </div>
         <div class="col-sm-1">
           <div class="form-group">
             <label for="InputDtShowColumnsArtic2" class="text-muted">Ver por</label>
@@ -140,6 +140,12 @@
               <option value="100">100</option>
               <option value="-1">Todo</option>
             </select>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="form-group">
+            <label for="exp-to-excel-b004" class="text-muted">Exportar a</label>
+            <a id="exp-to-excel-b004" href="#!" onclick="descargarBodega004()" class="btn btn-success btn-block btn-lg text-center shadow"><i class="fas fa-file-excel"></i></a>
           </div>
         </div>
       </div>

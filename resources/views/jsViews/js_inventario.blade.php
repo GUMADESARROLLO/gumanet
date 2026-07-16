@@ -239,6 +239,10 @@ function descargarArchivo( tipo ) {
     }    
 }
 
+function descargarBodega004() {
+    location.href = "desInventarioB004";
+}
+
 $('#InputDtShowSearchFilterArt').on( 'keyup', function () {
     var table = $('#dtInventarioArticulos').DataTable();
     table.search(this.value).draw();

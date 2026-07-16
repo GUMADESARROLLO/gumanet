@@ -596,6 +596,10 @@ class inventario_controller extends Controller
 		$obj = inventario_model::descargarInventario($tipo, $valor);
 	}
 
+	public function descargarInventarioB004() {
+		$obj = inventario_model::descargarInventarioB004();
+	}
+
 	public function getArticuloDetalle($articulo) {
 		$obj = inventario_model::getArticuloDetalle($articulo);
 		return response()->json($obj);
