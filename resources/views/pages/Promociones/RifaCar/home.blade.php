@@ -120,8 +120,20 @@
                     <h6 class="mb-0 fw-bold">FACTURAS</h6>
                     <small class="text-white-50">Lista de facturas generadas</small>
                 </div>
+                <div>
+                    <span id="badge-pendientes" class="badge badge-pill bg-danger p-2 blink-red" style="display:none">Pendientes 0</span>
+                </div>
             </div>
         </div>
+        <style>
+            .blink-red {
+                animation: blink-animation 1s ease-in-out infinite;
+            }
+            @keyframes blink-animation {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
+        </style>
         <div id="selection-toolbar" class="d-none align-items-center justify-content-between px-3 py-2 border-bottom bg-light">
             <span class="small text-muted">
                 <span id="selected-count">0</span> factura(s) seleccionada(s)
