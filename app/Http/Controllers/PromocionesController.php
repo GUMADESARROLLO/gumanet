@@ -328,12 +328,22 @@ class PromocionesController extends Controller
         $Acciones = Facturas::ImprimirAcciones($request);
         $InfoFactura = Facturas::getInfoFactura($request->Factura);
 
-        $UrlQR = QrCode::size(150)->generate('https://carro.unimarksa.com/api/Perfil/' . $InfoFactura->CLIENTE);
+        $UrlQR = QrCode::size(80)->generate('https://carro.unimarksa.com/api/Perfil/' . $InfoFactura->CLIENTE);
         
         //$Pdf = PDF::loadView('pages.Promociones.RifaCar.Imprimir', compact('Acciones', 'InfoFactura'));
         //return $Pdf->download('Acciones.pdf');
         return view('pages.Promociones.RifaCar.Voucher', compact('Acciones', 'InfoFactura', 'UrlQR'));
         
+    }
+
+    public function ImprimirAccionesV2(Request $request)
+    {
+        $Acciones = Facturas::ImprimirAcciones($request);
+        $InfoFactura = Facturas::getInfoFactura($request->Factura);
+
+        $UrlQR = QrCode::size(80)->generate('https://carro.unimarksa.com/api/Perfil/' . $InfoFactura->CLIENTE);
+        
+        return view('pages.Promociones.RifaCar.voucher-v2', compact('Acciones', 'InfoFactura', 'UrlQR'));
     }
 
 }

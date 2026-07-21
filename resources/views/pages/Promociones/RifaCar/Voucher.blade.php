@@ -3,7 +3,7 @@
 @section('content')
 <style>
     @page {
-        size: 80mm 210mm;
+        size: 72.1mm 210mm;
         margin: 0;
     }
     @media print {
@@ -13,37 +13,38 @@
         }
         .no-print { display: none !important; }
         body {
-            width: 72mm !important;
+            width: 72.1mm !important;
         }
         .container {
-            max-width: 72mm !important;
-            width: 72mm !important;
+            max-width: 100% !important;
+            width: 100% !important;
             padding: 0 !important;
-            margin: 0 auto !important;
+            margin: 0 !important;
         }
         .content {
-            max-width: 72mm !important;
-            padding: 3mm !important;
+            max-width: 100% !important;
+            padding: 2mm !important;
             margin: 0 !important;
         }
         .body-wrap {
-            width: 72mm !important;
+            width: 100% !important;
         }
         .main {
             border: none !important;
         }
         .content-wrap {
-            padding: 3mm !important;
+            padding: 0 !important;
         }
         .content-block {
-            padding: 0 0 3mm !important;
+            padding: 0 !important;
         }
         .recibo-logo {
-            max-width: 40mm !important;
+            max-width: 50mm !important;
         }
         .recibo-qr img {
-            max-width: 110px !important;
+            max-width: 35px !important;
         }
+        .accion-cell.zebra{ background:#fff !important; }
     }
     .recibo-container {
         width: 100%;
@@ -53,6 +54,10 @@
         font-size: 12px;
         line-height: 1.3;
     }
+    .container {
+        max-width: 72.1mm;
+        margin: 0 auto;
+    }
     .recibo-header {
         text-align: center;
         border-bottom: 2px dashed #000;
@@ -60,7 +65,7 @@
         margin-bottom: 12px;
     }
     .recibo-logo {
-        max-width: 140px !important;
+        max-width: 120px !important;
         opacity: 0.9;
     }
     .recibo-title {
@@ -70,61 +75,71 @@
         letter-spacing: 1px;
     }
     .recibo-info {
-        margin-bottom: 12px;
         border-bottom: 2px dashed #000;
-        padding-bottom: 12px;
     }
     .recibo-info p {
         margin: 4px 0;
         font-weight: 600;
     }
-    .recibo-acciones {
-        text-align: center;
-        margin: 15px 0;
-        padding: 12px 0;
-        border: 2px solid #000;
+    .acciones-table{
+        width:100%;
+        border-spacing:0;
+        table-layout:fixed;
+    }
+    .accion-cell{
+        border-bottom:1px solid #000;
+        border-right:1px solid #000;
+        padding:1mm .3mm;
+        text-align:center;
+        width:25%;
+    }
+    .acciones-table tbody tr td:first-child{
+        border-left:1px solid #000;
+    }
+    .acciones-table tbody tr:first-child td{
+        border-top:1px solid #000;
+    }
+    .accion-cell.zebra{ background:#eef2f8; }
+    .accion-num{
+        font-weight:800;
+        font-size:13px;
     }
     .recibo-acciones-title {
         font-weight: 900;
         font-size: 14px;
         margin-bottom: 10px;
     }
-    .btn-acciones {
-        display: inline-block;
-        padding: 6px 10px;
-        margin: 3px;
-        border: 2px solid #000;
-        font-weight: 800;
-        font-size: 14px;
-    }
-    .recibo-qr {
-        text-align: center;
-        margin: 12px 0;
-    }
     .recibo-qr img {
-        max-width: 110px;
+        max-width: 28px;
     }
     .recibo-footer {
-        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         border-top: 2px dashed #000;
         padding-top: 12px;
         margin-top: 12px;
         font-size: 12px;
         font-weight: 700;
     }
+    .content-block {
+        padding: 0 !important;
+    }
     .recibo-terminos {
-        font-size: 10px;
-        margin: 12px 0;
+        font-size: 9px;
         text-align: justify;
         font-weight: 500;
     }
+    .recibo-qr-wrap {
+        float: right;
+        margin: 0 0 4px 8px;
+    }
 </style>
 
-<table class="body-wrap">
+<table class="body-wrap" width="100%">
     <tbody>
         <tr>
-            <td></td>
-            <td class="container" width="320">
+            <td class="container">
                 <div class="content" id="content_print">
                     <table class="main" width="100%" cellpadding="0" cellspacing="0">
                         <tbody>
@@ -142,7 +157,7 @@
                                                             class="recibo-logo"
                                                         >
                                                         <div style="font-size:11px; margin:6px 0; font-weight:600;">
-                                                            Villa Fontana, Club Terraza<br>
+                                                            Villa Fontana, Club Terraza 
                                                             150 mts. al Oeste<br>
                                                             Managua, Nicaragua
                                                         </div>
@@ -157,31 +172,26 @@
                                                 <td class="content-block">
                                                     <div class="recibo-info">
                                                         <p style="font-size:12px;"><strong> {{ $InfoFactura->NOMBRE }} | {{ $InfoFactura->CLIENTE }} </strong></p>
-                                                        <p style="font-size:12px;"><strong>Fact.:</strong> {{ $InfoFactura->FACTURA }}</p>
-                                                        <p style="font-size:12px;"><strong>Fecha:</strong> {{ date('d/m/Y', strtotime($InfoFactura->FECHA)) }}</p>
+                                                        <p style="font-size:12px;"><strong>Fact.:</strong> {{ $InfoFactura->FACTURA }} &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Fecha:</strong> {{ date('d/m/Y', strtotime($InfoFactura->FECHA)) }}</p>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <!-- Acciones -->
                                             <tr>
                                                 <td class="content-block">
-                                                    <div class="recibo-acciones">
-                                                        <div class="recibo-acciones-title">ACCIONES ({{ count($Acciones) }}):</div>
-                                                        @foreach($Acciones as $accion)
-                                                            <span class="btn-acciones">{{ $accion->NUMERO }}</span>
+                                                    <div class="recibo-acciones-title">ACCIONES ({{ count($Acciones) }}):</div>
+                                                    <table class="acciones-table">
+                                                        @foreach($Acciones as $i => $accion)
+                                                            @if($i % 4 === 0)<tr>@endif
+                                                                <td class="accion-cell{{ floor($i / 4) % 2 === 1 ? ' zebra' : '' }}">
+                                                                    <span class="accion-num">{{ $accion->NUMERO }}</span>
+                                                                </td>
+                                                            @if($i % 4 === 3 || $loop->last)</tr>@endif
                                                         @endforeach
-                                                    </div>
+                                                    </table>
                                                 </td>
                                             </tr>
-                                            <!-- QR -->
-                                            <tr>
-                                                <td class="content-block">
-                                                    <div class="recibo-qr">
-                                                        {!! $UrlQR !!}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <!-- T&eacute;rminos -->
+                                            <!-- T&eacute;rminos + QR -->
                                             <tr>
                                                 <td class="content-block">
                                                     <div class="recibo-terminos">
@@ -193,7 +203,8 @@
                                             <tr>
                                                 <td class="content-block aligncenter">
                                                     <div class="recibo-footer">
-                                                        <strong>¡Gracias por su compra!</strong>
+                                                        <span><strong>¡Gracias por su compra!</strong></span>
+                                                        <div class="recibo-qr-wrap">{!! $UrlQR !!}</div>
                                                     </div>
                                                 </td>
                                             </tr>
