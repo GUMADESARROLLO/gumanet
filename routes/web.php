@@ -31,6 +31,9 @@ Route::post('/Inventario/Transito/SaveTransitoExcel', 'inventario_controller@Sav
 
 //RUTA DE PRODUCCION
 Route::post('/getInfoArticulo', 'inventario_controller@getInfoArticulo')->name("getInfoArticulo");
+Route::get('/HistoricoArticulos', 'inventario_controller@historicoArticulos')->name("HistoricoArticulos");
+Route::get('/getLotesHistorico/{articulo}', 'inventario_controller@getLotesHistorico')->name("getLotesHistorico");
+Route::get('/getTransaccionesLote/{articulo}/{lote}', 'inventario_controller@getTransaccionesLote')->name("getTransaccionesLote");
 
 
 Route::get('/Metas','metas_controller@index');

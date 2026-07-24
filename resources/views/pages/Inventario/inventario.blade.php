@@ -220,7 +220,7 @@
                           <button data-mdb-button-init data-mdb-ripple-init class="btn btn-secondary btn-sm mt-2" type="button" data-dismiss="modal">
                             Cerrar
                           </button>
-                          
+                          <a id="btnHistoriaArticulo" href="{{url('/HistoricoArticulos')}}" target="_blank" class="btn btn-info btn-sm mt-2">Historia</a>
                         </div>
                       </div>
                     </div>

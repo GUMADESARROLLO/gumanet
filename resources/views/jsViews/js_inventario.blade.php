@@ -390,6 +390,7 @@ function getDetalleArticulo(articulo, descripcion,LicExpira) {
     .append(`<tr><td colspan='5'><center>Aún no ha realizado ninguna busqueda</center></td></tr>`);
 
     $("#mdDetalleArt").modal('show');
+    $("#btnHistoriaArticulo").attr("href", "{{url('/HistoricoArticulos')}}?art=" + articulo);
 
    
 

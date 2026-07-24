@@ -1,0 +1,181 @@
+:root {
+  --ha-paper: #F6F7F4;
+  --ha-paper-raised: #FFFFFF;
+  --ha-ink: #13221D;
+  --ha-ink-soft: #4B5A54;
+  --ha-hairline: #DBDFD6;
+  --ha-compra: #0E5C56;
+  --ha-compra-dim: #DDEAE8;
+  --ha-recepcion: #5C6B8B;
+  --ha-recepcion-dim: #E2E5F0;
+  --ha-traspaso: #3F7A76;
+  --ha-traspaso-dim: #DEEBE9;
+  --ha-venta: #5C8B5A;
+  --ha-venta-dim: #E4EDE2;
+  --ha-consumo: #C6801F;
+  --ha-consumo-dim: #F6E9D6;
+  --ha-liquidacion: #A23B2C;
+  --ha-liquidacion-dim: #F2E0DC;
+}
+
+.ha-body {
+  background: var(--ha-paper);
+  background-image: radial-gradient(circle at 1px 1px, rgba(19,34,29,0.035) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+.ha-card {
+  background: var(--ha-paper-raised);
+  border: 1px solid var(--ha-hairline) !important;
+  border-radius: 6px;
+}
+
+.ha-product-photo-area {
+  background: linear-gradient(180deg, #FBFCFA, #F1F3EE);
+  border-bottom: 1px solid var(--ha-hairline);
+}
+
+@media (min-width: 768px) {
+  .ha-product-photo-area {
+    border-bottom: none;
+    border-right: 1px solid var(--ha-hairline);
+  }
+}
+
+.ha-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ha-badge-compra { background: var(--ha-compra-dim); color: var(--ha-compra); }
+.ha-badge-recepcion { background: var(--ha-recepcion-dim); color: var(--ha-recepcion); }
+.ha-badge-almacenamiento { background: var(--ha-recepcion-dim); color: var(--ha-recepcion); }
+.ha-badge-traspaso { background: var(--ha-traspaso-dim); color: var(--ha-traspaso); }
+.ha-badge-venta { background: var(--ha-venta-dim); color: var(--ha-venta); }
+.ha-badge-consumo { background: var(--ha-consumo-dim); color: var(--ha-consumo); }
+.ha-badge-liquidacion { background: var(--ha-liquidacion-dim); color: var(--ha-liquidacion); }
+
+.ha-badge-status { font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+.ha-badge-vigente { background: var(--ha-venta-dim); color: var(--ha-venta); }
+.ha-badge-atencion { background: var(--ha-consumo-dim); color: var(--ha-consumo); }
+.ha-badge-liquidado { background: var(--ha-liquidacion-dim); color: var(--ha-liquidacion); }
+
+.ha-batch-card {
+  transition: box-shadow .2s ease, border-color .2s ease, transform .15s ease;
+  cursor: pointer;
+  color: var(--ha-ink);
+  background: var(--ha-paper-raised);
+}
+.ha-batch-card:hover { transform: translateX(2px); }
+.ha-batch-card.active {
+  border-color: var(--ha-compra) !important;
+  box-shadow: 0 1px 0 var(--ha-compra);
+}
+
+.ha-stage-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ha-progress-bar {
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--ha-hairline);
+}
+.ha-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.ha-spine {
+  width: 2px;
+  background: repeating-linear-gradient(to bottom, var(--ha-hairline) 0 6px, transparent 6px 11px);
+}
+.ha-node-dot {
+  box-shadow: 0 0 0 4px var(--ha-paper-raised);
+}
+
+.ha-ledger-row {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: ha-rise .35s ease forwards;
+}
+@keyframes ha-rise { to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ha-batch-card, .ha-ledger-row { animation: none !important; transition: none !important; }
+}
+
+.ha-legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ha-scroll-x::-webkit-scrollbar { height: 8px; }
+.ha-legend-item {
+  cursor: pointer;
+  padding: 3px 10px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: background .15s ease, border-color .15s ease, transform .1s ease;
+  user-select: none;
+}
+.ha-legend-item:hover {
+  background: var(--ha-paper);
+  border-color: var(--ha-hairline);
+  transform: translateY(-1px);
+}
+.ha-legend-item.active {
+  background: var(--ha-compra-dim);
+  border-color: var(--ha-compra);
+  color: var(--ha-compra);
+}
+
+.ha-precio-row {
+  transition: background .1s ease;
+}
+.ha-precio-row:hover {
+  background: var(--ha-paper);
+}
+
+.ha-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 11px 0;
+}
+.ha-price-row + .ha-price-row {
+  border-top: 1px solid #EEF0EB;
+}
+.ha-price-leader {
+  flex: 1;
+  border-bottom: 1px dotted var(--ha-hairline);
+  margin-bottom: 5px;
+  min-width: 16px;
+}
+.ha-price-channel {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--ha-ink-soft);
+  white-space: nowrap;
+}
+.ha-price-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ha-ink);
+  white-space: nowrap;
+}
+.ha-price-col {
+  padding: 2px 24px;
+}
+.ha-price-col + .ha-price-col {
+  border-left: 1px solid var(--ha-hairline);
+}

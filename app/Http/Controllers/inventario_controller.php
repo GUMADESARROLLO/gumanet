@@ -19,6 +19,7 @@ use App\ArticulosTransito;
 use App\ArticuloMOQ;
 use App\ArticuloPotencialDiscasa;
 use App\InventarioUnificadoTransito;
+use App\LogTransacInventarioUmk;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
@@ -674,5 +675,53 @@ class inventario_controller extends Controller
 			$obj = inventario_model::getLotes($request->input('articulo'));
 			return response()->json($obj);
 		}
+	}
+
+	public function historicoArticulos(Request $request) {
+		$this->agregarDatosASession();
+		$companie = Session::get('company_id');
+		$Style = array(
+			'Logo' => ($companie == 4) ? 'img/innova.png' : 'img/unimark.png',
+			'With' => ($companie == 4) ? '200px' : '280px',
+			'Color' => ($companie == 4) ? '#802980' : '#004e7e',
+		);
+		$data = array(
+			'page' => 'Inventario',
+			'name' => 'GUMA@NET',
+			'articulo' => $request->input('art', ''),
+		);
+		return view('pages.Inventario.historico_articulos', compact('Style', 'data'));
+	}
+
+	public function getLotesHistorico($articulo) {
+		$obj = inventario_model::getLotes($articulo);
+		return response()->json($obj);
+	}
+
+	public function getTransaccionesLote($articulo, $lote) {
+		$transacciones = LogTransacInventarioUmk::where('ARTICULO', $articulo)
+			->where('LOTE', $lote)
+			->orderBy('FECHA', 'desc')
+			->get(['FECHA','TIPO','DESCRTIPO','CANTIDAD','PRECIO_TOTAL_LOCAL','CONSECUTIVO','NATURALEZA','REFERENCIA','USUARIO','PAQUETE_INVENTARIO','CODIGO_CLIENTE','BONIFICADO','APLICACION']);
+
+		$result = [];
+		foreach ($transacciones as $t) {
+			$result[] = [
+				'FECHA'       => $t->FECHA,
+				'TIPO'        => $t->TIPO,
+				'DESCRTIPO'   => $t->DESCRTIPO,
+				'CANTIDAD'    => $t->CANTIDAD,
+				'REFERENCIA'  => $t->REFERENCIA,
+				'APLICACION'  => $t->APLICACION,
+				'CONSECUTIVO' => $t->CONSECUTIVO,
+				'CODIGO_CLIENTE' => $t->CODIGO_CLIENTE,
+				'BONIFICADO'  => $t->BONIFICADO,
+				'PRECIO_TOTAL_LOCAL' => $t->PRECIO_TOTAL_LOCAL,
+				'USUARIO'     => $t->USUARIO,
+				'NATURALEZA'  => $t->NATURALEZA,
+				'PAQUETE_INVENTARIO' => $t->PAQUETE_INVENTARIO,
+			];
+		}
+		return response()->json($result);
 	}
 }
