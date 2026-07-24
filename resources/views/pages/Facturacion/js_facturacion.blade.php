@@ -203,37 +203,15 @@
         $('#mdl-detalle-pedido-factura-title').html(titulo);
 
         // info-grid con datos de la fila
-        $('#detalle_nombre').text(row.NOMBRE_CLIENTE || '');
-        $('#ruc_cliente').text('');
-
-        // obtener RUC desde GMV_Clientes
-        if (row.COD_CLIENTE) {
-            fetch('getRucCliente', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ cliente: row.COD_CLIENTE })
-            })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                if (data && data.ruc) {
-                    $('#ruc_cliente').text(data.ruc);
-                }
-            })
-            .catch(function(error) {
-                console.error('Error al obtener RUC:', error);
-            });
-        }
+        $('#detalle_nombre').text(row.COD_CLIENTE + ' - ' + row.NOMBRE_CLIENTE);
 
         if (row.FECHAC_PEDIDO) {
             var dp = new Date(row.FECHAC_PEDIDO);
-            $('#fecha_pedidio').text(('0' + dp.getDate()).slice(-2) + '-' + ('0' + (dp.getMonth() + 1)).slice(-2) + '-' + dp.getFullYear());
+            $('#fecha_pedidio').text(('0' + dp.getDate()).slice(-2) + '-' + ('0' + (dp.getMonth() + 1)).slice(-2) + '-' + dp.getFullYear() + ' ' + ('0' + dp.getHours()).slice(-2) + ':' + ('0' + dp.getMinutes()).slice(-2));
         }
         if (row.FECHA_FACTURA) {
             var df = new Date(row.FECHA_FACTURA);
-            $('#fecha_factura').text(('0' + df.getDate()).slice(-2) + '-' + ('0' + (df.getMonth() + 1)).slice(-2) + '-' + df.getFullYear());
+            $('#fecha_factura').text(('0' + df.getDate()).slice(-2) + '-' + ('0' + (df.getMonth() + 1)).slice(-2) + '-' + df.getFullYear() + ' ' + ('0' + df.getHours()).slice(-2) + ':' + ('0' + df.getMinutes()).slice(-2));
         }
         if (row.TIEMPO_MINUTOS !== null && row.TIEMPO_MINUTOS !== undefined) {
             var mins = row.TIEMPO_MINUTOS;

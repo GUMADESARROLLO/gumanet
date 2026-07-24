@@ -183,13 +183,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="info-grid">
-                        <div class="info-cell">
+                        <div class="info-cell full">
                             <label>Nombre comercial</label>
                             <div class="value" id="detalle_nombre"></div>
-                        </div>
-                        <div class="info-cell">
-                            <label>RUC</label>
-                            <div class="value" id="ruc_cliente"></div>
                         </div>
                         <div class="info-cell">
                             <label>FECHA PEDIDO</label>
@@ -199,11 +195,7 @@
                             <label>FECHA FACTURA</label>
                             <div class="value" id="fecha_factura"></div>
                         </div>
-                        <div class="info-cell">
-                            <label>CODIGO CLIENTE</label>
-                            <div class="value" id="codigo_cliente"></div>
-                        </div>
-                        <div class="info-cell">
+                        <div class="info-cell full">
                             <label>TIEMPO PEDIDO A FACTURA</label>
                             <div class="mt-1">
                                 <span class="pill active" id="detalle_tiempo">
