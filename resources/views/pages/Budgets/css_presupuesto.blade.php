@@ -44,6 +44,8 @@
       font-weight: bold;
       text-align: left;
     }
+
+    #mdl-detalle-pedido-factura .info-cell.full { grid-column: 1 / -1; }
     
 
     .item-left {
