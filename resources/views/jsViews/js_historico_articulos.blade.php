@@ -297,6 +297,142 @@ function fetchBonificado(articulo) {
   });
 }
 
+function renderEstadistica() {
+  var colors = Highcharts.getOptions().colors;
+  var colorsLine = ['#407EC9', '#D19000', '#00A376', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
+
+  // Bar chart placeholder
+  if (typeof Highcharts !== 'undefined' && document.getElementById('ha-chart-barras')) {
+    Highcharts.chart('ha-chart-barras', {
+      chart: { type: 'column', backgroundColor: 'transparent', style: { fontFamily: 'inherit' } },
+      title: { text: '' },
+      xAxis: { categories: ['Ene/25','Feb/25','Mar/25','Abr/25','May/25','Jun/25','Jul/25','Ago/25','Sep/25','Oct/25','Nov/25','Dic/25'], labels: { style: { fontSize: '10px' } } },
+      yAxis: { title: { text: 'C$' }, labels: { style: { fontSize: '10px' } } },
+      legend: { itemStyle: { fontSize: '10px' } },
+      series: [
+        { name: '2024', data: [42000,38000,51000,47000,55000,62000,59000,53000,48000,61000,72000,68000], color: colors[0] },
+        { name: '2025', data: [48000,44000,58000,52000,61000,70000,65000,59000,53000,68000,80000,76000], color: colors[1] },
+      ],
+      credits: { enabled: false },
+      plotOptions: { column: { pointPadding: 0.1, groupPadding: 0.1 } }
+    });
+  }
+
+  // Top 12 clientes placeholder
+  var clientes = [
+    { cliente: 'Farmacia San Juan',     monto: 'C$ 285,400.00' },
+    { cliente: 'Hospital Central',       monto: 'C$ 241,200.00' },
+    { cliente: 'Distribuidora El Sol',   monto: 'C$ 198,750.00' },
+    { cliente: 'Cl\u00ednica Managua',   monto: 'C$ 175,300.00' },
+    { cliente: 'Cadena Farma Express',   monto: 'C$ 162,100.00' },
+    { cliente: 'Droguer\u00eda Nacional',monto: 'C$ 148,900.00' },
+    { cliente: 'Farmacia Santa Luc\u00eda',monto: 'C$ 135,600.00' },
+    { cliente: 'Centro M\u00e9dico Oriental',monto: 'C$ 122,450.00' },
+    { cliente: 'Botica Popular',         monto: 'C$ 109,800.00' },
+    { cliente: 'MediFarma S.A.',         monto: 'C$ 98,200.00' },
+    { cliente: 'Salud y Vida',           monto: 'C$ 87,500.00' },
+    { cliente: 'FarmaVital',             monto: 'C$ 76,300.00' },
+  ];
+  var html = '<table class="table table-sm table-borderless mb-0" style="font-size:12px">';
+  clientes.forEach(function(c, i) {
+    html += '<tr><td style="width:28px;color:var(--ha-ink-soft);font-size:11px">' + (i+1) + '</td><td>' + c.cliente + '</td><td class="text-right font-weight-bold" style="color:var(--ha-ink)">' + c.monto + '</td></tr>';
+  });
+  html += '</table>';
+  document.getElementById('ha-top-clientes').innerHTML = html;
+
+  // Line chart placeholder
+  if (typeof Highcharts !== 'undefined' && document.getElementById('ha-chart-linea')) {
+    Highcharts.chart('ha-chart-linea', {
+      chart: { type: 'spline', backgroundColor: 'transparent', style: { fontFamily: 'inherit' } },
+      title: { text: '' },
+      xAxis: { categories: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'], labels: { style: { fontSize: '10px' } } },
+      yAxis: { title: { text: 'Unidades' }, labels: { style: { fontSize: '10px' } } },
+      legend: { enabled: false },
+      series: [{
+        name: '2026',
+        data: [320,280,350,410,380,450,0,0,0,0,0,0],
+        color: colorsLine[0],
+        marker: { symbol: 'circle', radius: 4 },
+        lineWidth: 2,
+      }],
+      credits: { enabled: false },
+      plotOptions: { spline: { marker: { enabled: true } } }
+    });
+  }
+
+  // Daterange picker global (afecta las 3 secciones)
+  if (typeof $.fn.daterangepicker !== 'undefined') {
+    $('#ha-fecha-global').daterangepicker({
+      autoApply: true,
+      showCustomRangeLabel: false,
+      alwaysShowCalendars: true,
+      opens: 'left',
+      startDate: moment().startOf('year'),
+      endDate: moment(),
+      locale: {
+        format: 'DD/MM/YYYY',
+        separator: ' - ',
+        applyLabel: 'Aplicar',
+        cancelLabel: 'Cancelar',
+        fromLabel: 'Desde',
+        toLabel: 'Hasta',
+        customRangeLabel: 'Personalizado',
+      },
+      ranges: {
+        'Hoy': [moment(), moment()],
+        'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
+        'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
+        'Este Mes': [moment().startOf('month'), moment().endOf('month')],
+        'Este Año': [moment().startOf('year'), moment().endOf('year')],
+      }
+    });
+  }
+}
+
+function renderEstadisticaPlaceholder() {
+  var el = document.getElementById('ha-chart-barras');
+  if (!el) return;
+  el.innerHTML = '<div class="text-muted text-center py-5">Cargando gráfica...</div>';
+  document.getElementById('ha-top-clientes').innerHTML = '<div class="text-muted text-center py-5">Cargando top clientes...</div>';
+  var elLinea = document.getElementById('ha-chart-linea');
+  if (elLinea) elLinea.innerHTML = '<div class="text-muted text-center py-5">Cargando gráfica...</div>';
+}
+
+function fetchIndicadores(articulo) {
+  if (!articulo) return;
+  $.get("{{ url('/objIndicadores') }}/" + articulo, function(data) {
+    if (!data || !data.ANUAL) { $("#ha-indicadores").html('<div class="text-muted text-center py-3">Sin indicadores</div>'); return; }
+    var M = data.MENSUAL[0];
+    var A = data.ANUAL[0];
+    var rows = [
+      ['TOTAL. FACT.',       'C$ ' + numeral(M.data).format('0,00.00'),       'C$ ' + numeral(A.data).format('0,00.00')],
+      ['UNIT. FACT.',        numeral(M.dtUnd).format('0,00.00'),                numeral(A.dtUnd).format('0,00.00')],
+      ['UNIT. BONIF.',       numeral(M.dtUndBo).format('0,00.00'),              numeral(A.dtUndBo).format('0,00.00')],
+      ['PREC. PROM.',        'C$ ' + M.dtAVG,                                   'C$ ' + A.dtAVG],
+      ['COST. PROM. UNIT',   'C$ ' + numeral(A.dtCPM).format('0,00.00'),        'C$ ' + numeral(A.dtCPM).format('0,00.00')],
+      ['CONTRIBUCION',       'C$ ' + M.dtMCO,                                   'C$ ' + A.dtMCO],
+      ['% MARGEN BRUTO',     numeral(M.dtPCO).format('0,00.00') + ' %',         numeral(A.dtPCO).format('0,00.00') + ' %'],
+      ['CANT. DISP. B002',   numeral(M.dtTB2).format('0,00.00'),                numeral(A.dtTB2).format('0,00.00')],
+      ['CANT. DISP. UNDS. B002', numeral(M.dtTUB).format('0,00.00'),            numeral(A.dtTUB).format('0,00.00')],
+      ['PROM. UNDS. MES 2022', numeral(M.dtPRO).format('0,00.00'),              numeral(A.dtPRO).format('0,00.00')],
+      ['CANT. DISP. MES',    numeral(M.dtTIE).format('0,00.00'),                numeral(A.dtTIE).format('0,00.00')],
+    ];
+    var html = '<table class="table table-sm mb-0" style="font-size:12px">' +
+      '<thead style="background:var(--ha-paper)"><tr>' +
+        '<th style="border-bottom:2px solid var(--ha-hairline)">Descripción</th>' +
+        '<th class="text-right" style="border-bottom:2px solid var(--ha-hairline)">Mes Actual</th>' +
+        '<th class="text-right" style="border-bottom:2px solid var(--ha-hairline)">Acumulado</th>' +
+      '</tr></thead><tbody>';
+    rows.forEach(function(r) {
+      html += '<tr><td style="color:var(--ha-ink-soft)">' + r[0] + '</td><td class="text-right font-weight-bold">' + r[1] + '</td><td class="text-right font-weight-bold">' + r[2] + '</td></tr>';
+    });
+    html += '</tbody></table>';
+    $("#ha-indicadores").html(html);
+  }).fail(function() {
+    $("#ha-indicadores").html('<div class="text-muted text-center py-3">Error al cargar indicadores</div>');
+  });
+}
+
 $(document).ready(function() {
   fullScreen();
   $("#item-nav-01").after('<li class="breadcrumb-item active">Historial del Art\u00edculo</li>');
@@ -305,10 +441,11 @@ $(document).ready(function() {
     $('.ha-legend-item').removeClass('active');
     $(this).addClass('active');
     CURRENT_FILTER = ($(this).data('tipo') || '').trim();
-
-    console.log(CURRENT_FILTER);
-
     renderLedgerBody();
+  });
+
+  $('a[data-toggle="tab"][href="#ha-pane-estadistica"]').on('shown.bs.tab', function() {
+    renderEstadistica();
   });
 
   var urlParams = new URLSearchParams(window.location.search);
@@ -320,6 +457,7 @@ $(document).ready(function() {
     fetchCosto(articulo);
     fetchPrecios(articulo);
     fetchBonificado(articulo);
+    fetchIndicadores(articulo);
     fetchLotes(articulo);
   }
 

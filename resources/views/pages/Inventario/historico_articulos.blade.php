@@ -77,6 +77,9 @@
         <li class="nav-item">
           <a class="nav-link" id="ha-tab-precios" data-toggle="tab" href="#ha-pane-precios" role="tab">Precios</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" id="ha-tab-estadistica" data-toggle="tab" href="#ha-pane-estadistica" role="tab">Estadística</a>
+        </li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane fade show active" id="ha-pane-lotes" role="tabpanel">
@@ -122,6 +125,63 @@
             </div>
             <div id="ha-precios" class="p-3">
               <div class="text-muted text-center py-3">--</div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="ha-pane-estadistica" role="tabpanel">
+          <!-- Daterange picker global -->
+          <div class="d-flex justify-content-end mb-3">
+            <div class="d-flex align-items-center" style="gap:6px">
+              <small style="color:var(--ha-ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:0.5px">Rango:</small>
+              <input type="text" class="form-control form-control-sm input-fecha" id="ha-fecha-global" style="width:220px;font-size:12px" placeholder="Seleccionar rango">
+            </div>
+          </div>
+
+          <!-- Row 1: Barras agrupadas Mes/Año -->
+          <div class="ha-card mb-3">
+            <div class="p-3 border-bottom d-flex justify-content-between align-items-center flex-wrap" style="border-color:var(--ha-hairline)!important">
+              <div>
+                <small class="text-uppercase d-block" style="font-size:11px;letter-spacing:2px;color:var(--ha-ink-soft)">Estadística</small>
+                <h3 class="h6 mb-0 mt-1 font-weight-bold">Ventas agrupadas por Mes/Año</h3>
+              </div>
+            </div>
+            <div class="p-3">
+              <div id="ha-chart-barras" style="height:280px"></div>
+            </div>
+          </div>
+
+          <!-- Row 2: Top 12 Clientes + Indicadores + Comportamiento -->
+          <div class="row">
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="ha-card h-100">
+                <div class="p-3 border-bottom" style="border-color:var(--ha-hairline)!important">
+                  <small class="text-uppercase d-block" style="font-size:11px;letter-spacing:2px;color:var(--ha-ink-soft)">Clientes</small>
+                  <h3 class="h6 mb-0 mt-1 font-weight-bold">Top 12 — Mayor compra (C$)</h3>
+                </div>
+                <div class="p-3" id="ha-top-clientes">--</div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <div class="ha-card h-100">
+                <div class="p-3 border-bottom" style="border-color:var(--ha-hairline)!important">
+                  <small class="text-uppercase d-block" style="font-size:11px;letter-spacing:2px;color:var(--ha-ink-soft)">Indicadores</small>
+                  <h3 class="h6 mb-0 mt-1 font-weight-bold">Resumen del artículo</h3>
+                </div>
+                <div class="p-3" id="ha-indicadores">--</div>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-4 mb-3">
+              <div class="ha-card h-100">
+                <div class="p-3 border-bottom" style="border-color:var(--ha-hairline)!important">
+                  <div>
+                    <small class="text-uppercase d-block" style="font-size:11px;letter-spacing:2px;color:var(--ha-ink-soft)">Comportamiento</small>
+                    <h3 class="h6 mb-0 mt-1 font-weight-bold">Tendencia mensual</h3>
+                  </div>
+                </div>
+                <div class="p-3">
+                  <div id="ha-chart-linea" style="height:250px"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
