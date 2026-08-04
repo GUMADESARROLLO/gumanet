@@ -1,88 +1,111 @@
-  <script>
-  $(document).ready(function() {
+<script>
+    $(document).ready(function() {
       //inicializaControlFecha();
-      fullScreen();
+    fullScreen();
 
-      $('input[name="dt_range"]').daterangepicker({
-          "autoApply": true,
-            ranges: {
-              'Hoy': [moment(), moment()],
-              'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
-              'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
-              
-              'Esta Semana': [moment().startOf('week'), moment().endOf('week')],
-              'Semana Anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
-              
-              'Este Mes': [moment().startOf('month'), moment()],
-              'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-              
-              //'1 Año': [moment().subtract(1, 'year'), moment()],
-              // '2 Años': [moment().subtract(2, 'year'), moment()],
-              // '3 Años': [moment().subtract(3, 'year'), moment()]
-            },
-          "showCustomRangeLabel": false,
-          "alwaysShowCalendars": true,
-          "startDate": moment().startOf('month').format('D MMM. YYYY'),
-          "endDate": moment().format('D MMM. YYYY'),
-          opens: 'left',
-          locale: {
-              //format: "DD/MM/YYYY",
-              format: "D MMM. YYYY",   // Ejemplo: 1 ago. 2025
-              separator: " - ",
-              applyLabel: "Aplicar",
-              cancelLabel: "Cancelar",
-              fromLabel: "Desde",
-              toLabel: "Hasta",
-              customRangeLabel: "Personalizado",
-              weekLabel: "S",
-              daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie", "Sab."],
-              monthNames: [
-                  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-                  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-              ],
-              firstDay: 1
-          }
-      }, function(start, end, label) {
-          //console.log('Nuevo rango seleccionado: ' + start.format('YYYY-MM-DD') + ' a ' + end.format('YYYY-MM-DD') + ' (rango: ' + label + ')');
-          Filter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
-      });
+    window.DT_LANG_ES = {
+        emptyTable: 'No hay datos disponibles en la tabla',
+        info: 'Mostrando _START_ a _END_ de _TOTAL_ registros',
+        infoEmpty: 'Mostrando 0 a 0 de 0 registros',
+        infoFiltered: '(filtrado de _MAX_ registros totales)',
+        infoThousands: ',',
+        lengthMenu: 'Mostrar _MENU_ registros',
+        loadingRecords: 'Cargando...',
+        processing: 'Procesando...',
+        search: 'Buscar:',
+        zeroRecords: 'No se encontraron registros coincidentes',
+        thousands: ',',
+        paginate: {
+            first: 'Primero',
+            last: 'Último',
+            next: 'Siguiente',
+            previous: 'Anterior'
+        },
+        aria: {
+            sortAscending: ': Activar para ordenar la columna de manera ascendente',
+            sortDescending: ': Activar para ordenar la columna de manera descendente'
+        }
+    };
+
+    $('input[name="dt_range"]').daterangepicker({
+        "autoApply": true,
+        ranges: {
+            'Hoy': [moment(), moment()],
+            'Últm. 7 Días': [moment().subtract(6, 'days'), moment()],
+            'Últm. 30 Días': [moment().subtract(29, 'days'), moment()],
+            
+            'Esta Semana': [moment().startOf('week'), moment().endOf('week')],
+            'Semana Anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
+            
+            'Este Mes': [moment().startOf('month'), moment()],
+            'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            
+            //'1 Año': [moment().subtract(1, 'year'), moment()],
+            // '2 Años': [moment().subtract(2, 'year'), moment()],
+            // '3 Años': [moment().subtract(3, 'year'), moment()]
+        },
+        "showCustomRangeLabel": false,
+        "alwaysShowCalendars": true,
+        "startDate": moment().startOf('month').format('D MMM. YYYY'),
+        "endDate": moment().format('D MMM. YYYY'),
+        opens: 'left',
+        locale: {
+            //format: "DD/MM/YYYY",
+            format: "D MMM. YYYY",   // Ejemplo: 1 ago. 2025
+            separator: " - ",
+            applyLabel: "Aplicar",
+            cancelLabel: "Cancelar",
+            fromLabel: "Desde",
+            toLabel: "Hasta",
+            customRangeLabel: "Personalizado",
+            weekLabel: "S",
+            daysOfWeek: ["Dom.", "Lun.", "Mar.", "Mie.", "Jue.", "Vie", "Sab."],
+            monthNames: [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            ],
+            firstDay: 1
+        }
+    }, function(start, end, label) {
+        //console.log('Nuevo rango seleccionado: ' + start.format('YYYY-MM-DD') + ' a ' + end.format('YYYY-MM-DD') + ' (rango: ' + label + ')');
+        Filter(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+    });
 
 
-      var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
-      var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+    var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+    var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
 
 
 
-      $('#filtrarFechas').on('click', function() {
-          var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
-          var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+    $('#filtrarFechas').on('click', function() {
+        var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
 
-          Filter( desde, hasta );        
-      });
-      
+        Filter( desde, hasta );        
+    });
+    
 
 
-      $("#id_search_importaciones").on('keyup', function() {
+    $("#id_search_importaciones").on('keyup', function() {
         var searchTerm = $(this).val().toLowerCase();
         $('#tbl_topsku_clientes').DataTable().search(searchTerm).draw();
-      });
+    });
 
-      Filter( desde, hasta );  
-
-
-  });
+    Filter( desde, hasta );  
 
 
-  function Filter( desde = null, hasta = null ) {
+    });
 
-      $('#tl_periodo').html(`<b>${moment(desde).format('D MMM. YYYY')}</b> al <b>${moment(hasta).format('D MMM. YYYY')}</b>`);
-      
-      GetData(desde, hasta);
-    
-  }
-  
+
+    function Filter( desde = null, hasta = null ) {
+
+        $('#tl_periodo').html(`<b>${moment(desde).format('D MMM. YYYY')}</b> al <b>${moment(hasta).format('D MMM. YYYY')}</b>`);
+        
+        GetData(desde, hasta);
+
+    }
+
     function abrirModalFacturasVendedor(ruta, nombre) {
-        $('#mdl-facturas-vendedor-title').text('' + nombre);
 
         var table = $('#tbl-facturas-vendedor');
         if ($.fn.DataTable.isDataTable('#tbl-facturas-vendedor')) {
@@ -113,10 +136,7 @@
             lengthChange: false,
             pageLength: 10,
             dom: 'rtip',
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
-                zeroRecords: 'Cargando...'
-            },
+            language: $.extend(true, {}, DT_LANG_ES, { zeroRecords: 'Cargando...' }),
             destroy: true,
             footerCallback: function(row, data, start, end, display) {
                 var api = this.api();
@@ -181,6 +201,80 @@
         return Number(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
+    function esBonificado(d) {
+        return parseFloat(d) === 0;
+    }
+
+    function renderPrecioUnitario(d) {
+        return esBonificado(d) ? '<span class="badge-bonificado">BONIFICADO</span>' : 'C$ ' + fmtNum(d);
+    }
+
+    function fechaDDMMYYYY(data) {
+        if (!data) return '';
+        var d = new Date(data);
+        return ('0' + d.getDate()).slice(-2) + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + d.getFullYear();
+    }
+
+    function renderPillTiempo(data) {
+        if (data === null || data === undefined) return '';
+        var horas = Math.floor(data / 60);
+        var minutos = data % 60;
+        var texto = ('0' + horas).slice(-2) + ':' + ('0' + minutos).slice(-2);
+        var clase = 'tiempo-verde';
+        if (data > 1440) clase = 'tiempo-rojo';
+        else if (data > 720) clase = 'tiempo-ambar';
+        return '<span class="tiempo-pill ' + clase + '">' + texto + '</span>';
+    }
+
+    function renderPaginacion(dt, $nav, $info, $count) {
+        var info = dt.page.info();
+        var desde = info.recordsDisplay === 0 ? 0 : info.start + 1;
+        $info.text('Mostrando ' + desde + ' a ' + info.end + ' de ' + info.recordsDisplay + ' registros');
+        if ($count && $count.length) $count.text(info.recordsDisplay + ' registros');
+
+        var pages = info.pages;
+        var cur = info.page;
+        var html = '<a href="#" class="pagina-nav' + (cur === 0 || pages === 0 ? ' disabled' : '') + '" data-page="' + (cur - 1) + '">Anterior</a>';
+
+        if (pages > 0) {
+            var inicio = Math.max(0, cur - 2);
+            var fin = Math.min(pages - 1, cur + 2);
+            if (inicio > 0) {
+                html += '<a href="#" class="pagina" data-page="0">1</a>';
+                if (inicio > 1) html += '<span class="paginas-ellipsis">…</span>';
+            }
+            for (var p = inicio; p <= fin; p++) {
+                html += '<a href="#" class="pagina' + (p === cur ? ' activa' : '') + '" data-page="' + p + '">' + (p + 1) + '</a>';
+            }
+            if (fin < pages - 1) {
+                if (fin < pages - 2) html += '<span class="paginas-ellipsis">…</span>';
+                html += '<a href="#" class="pagina" data-page="' + (pages - 1) + '">' + pages + '</a>';
+            }
+        }
+
+        html += '<a href="#" class="pagina-nav' + (cur === pages - 1 || pages === 0 ? ' disabled' : '') + '" data-page="' + (cur + 1) + '">Siguiente</a>';
+        $nav.html(html);
+    }
+
+    function onTablaDraw(settings) {
+        var dt = this.api();
+        var $panel = $(dt.table().node()).closest('.panel-fact');
+        renderPaginacion(
+            dt,
+            $panel.find('.paginacion-custom'),
+            $panel.find('.panel-footer > span').first(),
+            $panel.find('.panel-header .count')
+        );
+    }
+
+    $(document).on('click', '.panel-fact .paginacion-custom .pagina, .panel-fact .paginacion-custom .pagina-nav', function(e) {
+        e.preventDefault();
+        if ($(this).hasClass('disabled')) return;
+        var page = parseInt($(this).data('page'), 10);
+        var dt = $(this).closest('.panel-fact').find('table.dataTable').DataTable();
+        dt.page(page).draw('page');
+    });
+
     function abrirDetalleProductos(tipo, valor, row) {
         var titulo = (tipo === 'pedido') ? 'PEDIDO: ' + valor : 'FACTURA: ' + valor;
         var endpoint = (tipo === 'pedido') ? 'getDetallePedidoProductos' : 'getDetalleFacturaProductos';
@@ -188,19 +282,20 @@
             ? [
                 { title: 'ARTICULO', data: 'ARTICULO', className: 'text-center bg-white text-dark' },
                 { title: 'DESCRIPCION', data: 'DESCRIPCION' },
-                { title: 'CANTIDAD PEDIDA', data: 'CANTIDAD', className: 'text-right', render: function(d) { return fmtNum(d); } },
-                { title: 'PRECIO UNITARIO', data: 'PRECIO_UNITARIO', className: 'text-right', render: function(d) { return 'C$ ' + fmtNum(d); } },
-                { title: 'TOTAL', data: 'PRECIO_TOTAL', className: 'text-right', render: function(d) { return 'C$ ' + fmtNum(d); } }
+                { title: 'CANTIDAD', data: 'CANTIDAD', className: 'text-right', render: function(d) { return fmtNum(d); } },
+                { title: 'PRECIO UNIT.', data: 'PRECIO_UNITARIO', className: 'text-right', render: renderPrecioUnitario },
+                { title: 'TOTAL', data: 'PRECIO_TOTAL', className: 'text-right', render: function(d) { return (d === null || d === undefined) ? 'C$ 0.00' : 'C$ ' + fmtNum(d); } }
             ]
             : [
                 { title: 'ARTICULO', data: 'ARTICULO', className: 'text-center bg-white text-dark' },
                 { title: 'DESCRIPCION', data: 'DESCRIPCION' },
                 { title: 'CANTIDAD', data: 'CANTIDAD', className: 'text-right', render: function(d) { return fmtNum(d); } },
-                { title: 'PRECIO UNITARIO', data: 'PRECIO_UNITARIO', className: 'text-right', render: function(d) { return 'C$ ' + fmtNum(d); } },
-                { title: 'PRECIO TOTAL', data: 'PRECIO_TOTAL', className: 'text-right', render: function(d) { return 'C$ ' + fmtNum(d); } }
+                { title: 'PRECIO UNIT.', data: 'PRECIO_UNITARIO', className: 'text-right', render: renderPrecioUnitario },
+                { title: 'TOTAL', data: 'PRECIO_TOTAL', className: 'text-right', render: function(d) { return (d === null || d === undefined) ? 'C$ 0.00' : 'C$ ' + fmtNum(d); } }
             ];
 
         $('#mdl-detalle-pedido-factura-title').html(titulo);
+        $('#detalle_tipo').text(tipo === 'factura' ? 'Factura' : 'Pedido');
 
         // info-grid con datos de la fila
         $('#detalle_nombre').text(row.COD_CLIENTE + ' - ' + row.NOMBRE_CLIENTE);
@@ -243,18 +338,31 @@
             searching: true,
             lengthChange: false,
             pageLength: 10,
-            dom: 'rtip',
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
-                zeroRecords: 'Cargando...'
-            },
+            dom: 'rt',
+            language: $.extend(true, {}, DT_LANG_ES, { zeroRecords: 'Cargando...' }),
             footerCallback: function(row, data, start, end, display) {
                 var api = this.api();
                 var total = api.column(4).data().reduce(function(sum, val) {
                     return sum + parseFloat(val || 0);
                 }, 0);
+                $('#detalle_total').text('C$ ' + fmtNum(total));
                 $(api.column(4).footer()).html('C$ ' + fmtNum(total));
+            },
+            drawCallback: function(settings) {
+                var info = this.api().page.info();
+                $('#detalle_pagina_actual').text(info.page + 1);
+                var desde = info.recordsDisplay === 0 ? 0 : info.start + 1;
+                $('#detalle_info_pagina').text('Mostrando ' + desde + ' a ' + info.end + ' de ' + info.recordsDisplay + ' registros');
             }
+        });
+
+        $('#btn_detalle_anterior').off('click').on('click', function(e) {
+            e.preventDefault();
+            $('#tbl-detalle-pedido-factura').DataTable().page('previous').draw('page');
+        });
+        $('#btn_detalle_siguiente').off('click').on('click', function(e) {
+            e.preventDefault();
+            $('#tbl-detalle-pedido-factura').DataTable().page('next').draw('page');
         });
 
         $('#txt_busqueda_detalle_pedido').on('keyup', function() {
@@ -377,7 +485,6 @@
 
 
     async function GetData(desde, hasta){
-      
         try {
             eneableButton(true,'Calc...') ;
             
@@ -388,8 +495,8 @@
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
                 body: JSON.stringify({ 
-                  desde: desde, 
-                  hasta: hasta,
+                    desde: desde, 
+                    hasta: hasta,
 
                 })
             });
@@ -412,17 +519,20 @@
             $('#tbl_vendedores').DataTable({
                 data: result.VENDEDORES,
                 columns: [
-                { title: 'RUTA', data: 'RUTA', className: 'text-center bg-white text-dark', render: function(data, type, row) {
+                { title: 'RUTA', data: 'RUTA', className: 'link-cell', render: function(data, type, row) {
                     return '<a href="javascript:void(0)" class="link-ruta" data-ruta="' + data + '" data-nombre="' + row.NOMBRE + '">' + data + '</a>';
-                } },
-                    { title: 'VENDEDOR', data: 'NOMBRE' },
-                    { title: 'CANT. PEDIDOS', data: 'CANTIDAD_PEDIDOS', className: 'text-right' }
+                }, createdCell: function(td) { $(td).attr('data-label', 'Ruta'); } },
+                    { title: 'VENDEDOR', data: 'NOMBRE', createdCell: function(td) { $(td).attr('data-label', 'Vendedor'); } },
+                    { title: 'CANT. PEDIDOS', data: 'CANTIDAD_PEDIDOS', className: 'num-cell', render: function(d) {
+                        return '<span class="cant-pill">' + d + '</span>';
+                    }, createdCell: function(td) { $(td).attr('data-label', 'Cant. pedidos'); } }
                 ],
                 searching: true,
                 lengthChange: false,
                 pageLength: 10,
-                dom: 'rtip',
-                language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' }
+                dom: 'rt',
+                language: $.extend(true, {}, DT_LANG_ES),
+                drawCallback: onTablaDraw
             });
 
             $('#txt_busqueda_vendedores').on('keyup', function() {
@@ -436,42 +546,31 @@
             $('#tbl_pedidos_facturados').DataTable({
                 data: result.PEDIDOS_FACTURADOS,
                 columns: [
-                    { title: 'PEDIDO', data: 'PEDIDO', className: 'text-center bg-white text-dark', render: function(data, type, row) {
+                    { title: 'PEDIDO', data: 'PEDIDO', className: 'link-cell', render: function(data, type, row) {
                         return '<a href="javascript:void(0)" class="link-pedido" data-pedido="' + data + '">' + data + '</a>';
-                    } },
-                    { title: 'FACTURA', data: 'FACTURA', className: 'text-center bg-white text-dark', render: function(data, type, row) {
+                    }, createdCell: function(td) { $(td).attr('data-label', 'Pedido'); } },
+                    { title: 'FACTURA', data: 'FACTURA', className: 'link-cell', render: function(data, type, row) {
                         return '<a href="javascript:void(0)" class="link-factura" data-factura="' + data + '">' + data + '</a>';
-                    } },
-                    { title: 'COD. CLIENTE', data: 'COD_CLIENTE', className: 'text-center bg-white text-dark' },
-                    { title: 'NOMBRE CLIENTE', data: 'NOMBRE_CLIENTE', className: 'bg-white text-dark' },
-                    { title: 'FECHA PEDIDO', data: 'FECHAC_PEDIDO', className: 'text-center bg-white text-dark', render: function(data) {
-                        var d = new Date(data);
-                        var day = ('0' + d.getDate()).slice(-2);
-                        var month = ('0' + (d.getMonth() + 1)).slice(-2);
-                        var year = d.getFullYear();
-                        return day + '-' + month + '-' + year;
-                    } },
-                    { title: 'FECHA FACTURA', data: 'FECHA_FACTURA', className: 'text-center bg-white text-dark', render: function(data) {
-                        var d = new Date(data);
-                        var day = ('0' + d.getDate()).slice(-2);
-                        var month = ('0' + (d.getMonth() + 1)).slice(-2);
-                        var year = d.getFullYear();
-                        return day + '-' + month + '-' + year;
-                    } },
-                    { title: 'TIEMPO', data: 'TIEMPO_MINUTOS', className: 'text-center bg-white text-dark', render: function(data) {
-                        var horas = Math.floor(data / 60);
-                        var minutos = data % 60;
-                        return ('0' + horas).slice(-2) + ':' + ('0' + minutos).slice(-2);
-                    } },
-                    { title: 'TOTAL FACTURA C$', data: 'TOTAL_FACTURA', className: 'text-right bg-white text-dark', render: function(data) {
-                        return 'C$ ' + Number(data).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                    } }
+                    }, createdCell: function(td) { $(td).attr('data-label', 'Factura'); } },
+                    { title: 'CLIENTE', data: 'NOMBRE_CLIENTE', render: function(data, type, row) {
+                        if (type === 'display') {
+                            return '<span class="cliente-nombre">' + row.NOMBRE_CLIENTE + '</span><span class="cliente-ruc">' + row.COD_CLIENTE + '</span>';
+                        }
+                        return data;
+                    }, createdCell: function(td) { $(td).attr('data-label', 'Cliente'); } },
+                    { title: 'FECHA PEDIDO', data: 'FECHAC_PEDIDO', render: fechaDDMMYYYY, createdCell: function(td) { $(td).attr('data-label', 'Fecha pedido'); } },
+                    { title: 'FECHA FACTURA', data: 'FECHA_FACTURA', render: fechaDDMMYYYY, createdCell: function(td) { $(td).attr('data-label', 'Fecha factura'); } },
+                    { title: 'TIEMPO', data: 'TIEMPO_MINUTOS', className: 'num-cell', render: renderPillTiempo, createdCell: function(td) { $(td).attr('data-label', 'Tiempo'); } },
+                    { title: 'TOTAL C$', data: 'TOTAL_FACTURA', className: 'num-cell', render: function(data) {
+                        return 'C$ ' + Number(data === null || data === undefined ? 0 : data).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    }, createdCell: function(td) { $(td).attr('data-label', 'Total'); } }
                 ],
                 searching: true,
                 lengthChange: false,
                 pageLength: 10,
-                dom: 'rtip',
-                language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' }
+                dom: 'rt',
+                language: $.extend(true, {}, DT_LANG_ES),
+                drawCallback: onTablaDraw
             });
 
             $('#txt_busqueda_pedidos_facturados').on('keyup', function() {
@@ -485,7 +584,5 @@
             eneableButton(false,null)
         }
     }
-  
-
 
 </script>

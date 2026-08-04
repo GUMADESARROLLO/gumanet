@@ -4,6 +4,7 @@
 @section('metodosjs')
     @include('pages.Facturacion.js_grafica')   
     @include('pages.Facturacion.js_facturacion')
+    @include('pages.Facturacion.css_tablas_facturacion')
     @include('pages.Budgets.css_presupuesto')
 @endsection
 
@@ -56,27 +57,33 @@
 
     <!-- Tables -->
     <div class="row g-4 mb-4">
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-header bg-umk2 text-white">
-            <h6 class="mb-0">VENDEDORES</h6>
+      <div class="col-lg-4">
+        <div class="panel-fact">
+          <div class="panel-header">
+            <span>VENDEDORES</span>
+            <span class="count" id="count_vendedores"></span>
           </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table id="tbl_vendedores" class="table table-striped" width="100%"></table>
-            </div>
+          <div class="table-responsive-wrap">
+            <table id="tbl_vendedores" width="100%"></table>
+          </div>
+          <div class="panel-footer">
+            <span id="info_vendedores">Mostrando 0 registros</span>
+            <div class="paginacion-custom" id="pag_vendedores"></div>
           </div>
         </div>
       </div>
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header bg-umk2 text-white">
-            <h6 class="mb-0">PEDIDOS FACTURADOS</h6>
+      <div class="col-lg-8">
+        <div class="panel-fact">
+          <div class="panel-header">
+            <span>PEDIDOS FACTURADOS</span>
+            <span class="count" id="count_pedidos"></span>
           </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table id="tbl_pedidos_facturados" class="table table-striped" width="100%"></table>
-            </div>
+          <div class="table-responsive-wrap">
+            <table id="tbl_pedidos_facturados" width="100%"></table>
+          </div>
+          <div class="panel-footer">
+            <span id="info_pedidos">Mostrando 0 registros</span>
+            <div class="paginacion-custom" id="pag_pedidos"></div>
           </div>
         </div>
       </div>
@@ -119,105 +126,54 @@
         </div>
     </div>
 
-    <style>
-    #mdl-detalle-pedido-factura .modal-content {
-      border: none;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 24px 60px rgba(0,0,0,.22);
-    }
-    #mdl-detalle-pedido-factura .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: #C4CDD8;
-      border-radius: 8px;
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
-    #mdl-detalle-pedido-factura .info-cell {
-      background: #fff;
-      padding: 14px 16px;
-    }
-    #mdl-detalle-pedido-factura .info-cell label {
-      display: block;
-      font-size: .68rem;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: #5E718A;
-      margin-bottom: 4px;
-    }
-    #mdl-detalle-pedido-factura .info-cell .value {
-      font-size: .92rem;
-      font-weight: 600;
-      color: #14243A;
-    }
-    #mdl-detalle-pedido-factura .info-cell .value.mono {
-      font-family: 'Courier New', monospace;
-      font-size: .85rem;
-      color: #254D94;
-    }
-    #mdl-detalle-pedido-factura .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: .75rem;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 20px;
-    }
-    #mdl-detalle-pedido-factura .pill.active   { background: #e6f9f2; color: #1DB87A; }
-    #mdl-detalle-pedido-factura .pill.inactive { background: #fdecea; color: #E03C3C; }
-    #mdl-detalle-pedido-factura .pill.warning  { background: #fff5e6; color: #F5A623; }
-    </style>
+    @include('pages.Facturacion.css_modal_pedido')
 
     <div class="modal fade" id="mdl-detalle-pedido-factura" tabindex="-1" role="dialog" aria-labelledby="mdl-detalle-pedido-factura-title" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-umk2">
-                    <h4 class="modal-title text-white" id="mdl-detalle-pedido-factura-title"></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <small id="detalle_tipo">Pedido</small>
+                        <span id="mdl-detalle-pedido-factura-title"></span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button type="button" class="btn-close-custom" data-dismiss="modal" aria-label="Cerrar">&times;</button>
+                    </div>
                 </div>
                 <div class="modal-body">
+                    <div class="info-cliente">
+                        <div class="label">Nombre comercial</div>
+                        <div class="valor" id="detalle_nombre"></div>
+                    </div>
+
                     <div class="info-grid">
-                        <div class="info-cell full">
-                            <label>Nombre comercial</label>
-                            <div class="value" id="detalle_nombre"></div>
+                        <div class="info-card">
+                            <div class="label">Fecha pedido</div>
+                            <div class="valor" id="fecha_pedidio"></div>
                         </div>
-                        <div class="info-cell">
-                            <label>FECHA PEDIDO</label>
-                            <div class="value" id="fecha_pedidio"></div>
+                        <div class="info-card">
+                            <div class="label">Fecha factura</div>
+                            <div class="valor" id="fecha_factura"></div>
                         </div>
-                        <div class="info-cell">
-                            <label>FECHA FACTURA</label>
-                            <div class="value" id="fecha_factura"></div>
-                        </div>
-                        <div class="info-cell full">
-                            <label>TIEMPO PEDIDO A FACTURA</label>
-                            <div class="mt-1">
-                                <span class="pill active" id="detalle_tiempo">
-                                    <i class="bi bi-check-circle-fill"></i> Al dia
-                                </span>
-                            </div>
+                        <div class="info-card">
+                            <div class="label">Tiempo pedido a factura</div>
+                            <span class="badge-tiempo pill active" id="detalle_tiempo">
+                                <i class="bi bi-check-circle-fill"></i> Al dia
+                            </span>
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1"><i data-feather="search"></i></span>
-                                </div>
-                                <input type="text" class="form-control form-control-sm input-fecha" placeholder="Buscar..." id="txt_busqueda_detalle_pedido" >
+                    <div class="buscador-wrap">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i data-feather="search"></i></span>
                             </div>
+                            <input type="text" class="form-control form-control-sm input-fecha" placeholder="Buscar articulo..." id="txt_busqueda_detalle_pedido">
                         </div>
                     </div>
-                   
-                    <div class="table-responsive">
-                        <table id="tbl-detalle-pedido-factura" class="table table-striped" width="100%">
+
+                    <div class="tabla-wrap">
+                        <table id="tbl-detalle-pedido-factura" class="table tabla-articulos" width="100%">
                             <tfoot>
                                 <tr>
                                     <th colspan="4" class="text-right">TOTAL:</th>
@@ -225,6 +181,20 @@
                                 </tr>
                             </tfoot>
                         </table>
+
+                        <div class="total-bar">
+                            <span class="label">Total</span>
+                            <span class="valor" id="detalle_total">C$ 0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer-custom">
+                    <span id="detalle_info_pagina">Mostrando 0 registros</span>
+                    <div class="d-flex align-items-center">
+                        <a href="#" class="text-decoration-none text-muted mr-2" id="btn_detalle_anterior">Anterior</a>
+                        <span class="pagina-actual" id="detalle_pagina_actual">1</span>
+                        <a href="#" class="text-decoration-none text-muted ml-2" id="btn_detalle_siguiente">Siguiente</a>
                     </div>
                 </div>
             </div>
@@ -232,11 +202,10 @@
     </div>
 
     <!-- Modal: Facturas por Vendedor -->
-    <div class="modal fade" id="mdl-facturas-vendedor" tabindex="-1" role="dialog" aria-labelledby="mdl-facturas-vendedor-title" aria-hidden="true">
+    <div class="modal fade" id="mdl-facturas-vendedor" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-umk2">
-                    <h4 class="modal-title text-white" id="mdl-facturas-vendedor-title"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
