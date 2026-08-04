@@ -1,16 +1,9 @@
 @extends('layouts.main')
-<style>
-  .table thead th {
-    background-color: {{ $Style['Color'] }} !important;
-    color: #fff !important;
-    font-weight: bold !important;
-  }
-
-</style>
 @section('title' , $data['name'])
 @section('name_user' , 'Administrador')
 @section('metodosjs')
   @include('jsViews.js_inventario');
+  @include('pages.Inventario.css_tablas_inventario')
 @endsection
 @section('content')
 
@@ -58,8 +51,14 @@
   </div>
   <div class="row">
       <div class="col-12">
-          <div class="table-responsive mt-3 mb-2">
-              <table class="table table-bordered table-sm" width="100%" id="dtInventarioArticulos"></table>
+          <div class="panel-fact">
+              <div class="table-responsive-wrap">
+                  <table class="table table-sm" width="100%" id="dtInventarioArticulos"></table>
+              </div>
+              <div class="panel-footer">
+                  <span id="info_dtInventarioArticulos">Mostrando 0 registros</span>
+                  <div class="paginacion-custom" id="pag_dtInventarioArticulos"></div>
+              </div>
           </div>
       </div>
   </div><hr>
@@ -102,12 +101,18 @@
         <div class="col-sm-1">
           <div class="form-group">
             <label for="exp-to-excel" class="text-muted">Exportar a</label>
-            <a id="exp-to-excel" href="#!" onclick="descargarArchivo('vencimiento')" class="btn btn-success btn-block btn-lg text-center shadow"><i class="fas fa-file-excel"></i></a>
+            <a id="exp-to-excel" href="#!" onclick="descargarArchivo('vencimiento')" class="btn btn-success btn-block text-center shadow btn-export-inventario"><i class="fas fa-file-excel"></i></a>
           </div>
         </div>
       </div>
-      <div class="table-responsive mb-5">
-        <table class="table table-bordered table-sm" width="100%" id="tblArticulosVencimiento"></table>
+      <div class="panel-fact">
+        <div class="table-responsive-wrap">
+          <table class="table table-sm" width="100%" id="tblArticulosVencimiento"></table>
+        </div>
+        <div class="panel-footer">
+          <span id="info_tblArticulosVencimiento">Mostrando 0 registros</span>
+          <div class="paginacion-custom" id="pag_tblArticulosVencimiento"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -145,12 +150,18 @@
         <div class="col-sm-1">
           <div class="form-group">
             <label for="exp-to-excel-b004" class="text-muted">Exportar a</label>
-            <a id="exp-to-excel-b004" href="#!" onclick="descargarBodega004()" class="btn btn-success btn-block btn-lg text-center shadow"><i class="fas fa-file-excel"></i></a>
+            <a id="exp-to-excel-b004" href="#!" onclick="descargarBodega004()" class="btn btn-success btn-block text-center shadow btn-export-inventario"><i class="fas fa-file-excel"></i></a>
           </div>
         </div>
       </div>
-      <div class="table-responsive mb-5">
-        <table class="table table-bordered table-sm" width="100%" id="id_tbl_inventario_b004"></table>
+      <div class="panel-fact">
+        <div class="table-responsive-wrap">
+          <table class="table table-sm" width="100%" id="id_tbl_inventario_b004"></table>
+        </div>
+        <div class="panel-footer">
+          <span id="info_id_tbl_inventario_b004">Mostrando 0 registros</span>
+          <div class="paginacion-custom" id="pag_id_tbl_inventario_b004"></div>
+        </div>
       </div>
     </div>
   </div>
