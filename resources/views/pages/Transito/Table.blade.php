@@ -19,11 +19,17 @@
     height: 40px !important;
   }
 
+  #dtInvCompleto thead th,
+  #dtInvCompleto tbody td {
+    white-space: nowrap !important;
+  }
+
 </style>
 @section('title' , $data['name'])
 @section('name_user' , 'Administrador')
 @section('metodosjs')
   @include('jsViews.js_InventarioTransito');
+  @include('pages.Inventario.css_tablas_inventario')
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -76,9 +82,15 @@
   </div>
   <div class="row">
       <div class="col-12">
-        <div class="table-responsive mt-3 mb-2">
-              <table class="table table-bordered" width="100%" id="dtInvCompleto"></table>
+        <div class="panel-fact mt-3 mb-2">
+          <div class="table-responsive-wrap">
+            <table width="100%" id="dtInvCompleto"></table>
           </div>
+          <div class="panel-footer">
+            <span id="info_dtInvCompleto">Mostrando 0 registros</span>
+            <div class="paginacion-custom" id="pag_dtInvCompleto"></div>
+          </div>
+        </div>
       </div>
   </div>
   <!--MODAL: DETALLE DE ARTICULO-->

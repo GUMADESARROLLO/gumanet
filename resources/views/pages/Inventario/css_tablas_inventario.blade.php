@@ -22,14 +22,14 @@
     margin: 0 !important;
   }
   .panel-fact table.dataTable thead th {
-    background: {{ $Style['Color'] }} !important;
+    background: {{ isset($Style['Color']) ? $Style['Color'] : '#004e7e' }} !important;
     color: #fff !important;
     font-size: .68rem;
     font-weight: 700;
     letter-spacing: .05em;
     text-transform: uppercase;
     padding: .65rem .9rem;
-    border-bottom: 2px solid {{ $Style['Color'] }};
+    border-bottom: 2px solid {{ isset($Style['Color']) ? $Style['Color'] : '#004e7e' }};
     white-space: normal !important;
     word-break: normal;
     overflow-wrap: normal;
