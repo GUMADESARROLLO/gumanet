@@ -134,6 +134,7 @@
                 50% { opacity: 0.3; }
             }
         </style>
+        @if(Auth::user()->role != 14)
         <div id="selection-toolbar" class="d-none align-items-center justify-content-between px-3 py-2 border-bottom bg-light">
             <span class="small text-muted">
                 <span id="selected-count">0</span> factura(s) seleccionada(s)
@@ -142,6 +143,7 @@
                 <i class="fas fa-check-double me-1"></i>Generar Acciones
             </button>
         </div>
+        @endif
         <div class="card-body p-0">
                 <table id="tbl_ordenes_compras" class="table" style="width:100%">
                 <tfoot>
@@ -194,9 +196,11 @@
                         <button type="button" id="btn_imprimir_acciones" class="btn btn-success flex-fill">
                             <i class="fas fa-print me-2"></i>Imprimir
                         </button>
+                        @if(Auth::user()->role != 7)
                         <button type="button" id="btn_revertir_acciones" class="btn btn-danger flex-fill">
                             <i class="fas fa-undo me-2"></i>Revertir
                         </button>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -198,17 +198,17 @@
                       </div>
                       @endif
                       <div class="col-md-6 col-lg-6 col-xl-6">
-                        <h5 id="tArticulo" >Quant trident shirts</h5>
+                        <h5 id="tArticulo" >Loading . . . </h5>
                         <div class="d-flex flex-row">                          
                           <span id="id_cod_articulo" >310</span>
                         </div>
                         <div class="mt-1 mb-0 text-muted small">
-                          <span id="IdClaseTerapeutica">CLASE TERAPEUTICA</span>
+                          <span id="IdClaseTerapeutica">Loading . . .</span>
                           <span class="text-primary"> • </span>
-                          <span id="IdLaboratorio">LABORATORIO</span>
+                          <span id="IdLaboratorio">Loading . . .</span>
                           <span class="text-primary"> • </span>
-                          <span id="IdUnidadMedida">UNIDAD MEDIDA<br /></span>
-                          <span><span class="text-primary"> • </span> <span id="IdPresentacion">PRESENTACION</span>
+                          <span id="IdUnidadMedida">Loading . . .<br /></span>
+                          <span><span class="text-primary"> • </span> <span id="IdPresentacion">Loading . . .</span>
                         </div>
                         <div class="mt-1 mb-0 text-muted small" style="display:none">
                           <span>Ultima Orden de Compras</span>

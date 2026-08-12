@@ -2,9 +2,16 @@
 .swal-qr-popup { box-shadow: none !important; background: transparent !important; padding: 0 !important; width: auto !important; }
 </style>
 <script>
+window.ROL_USUARIO = {{ Auth::user()->role }};
+var ES_ROL_7 = window.ROL_USUARIO === 14;
+
 $(document).ready(function() {
     //inicializaControlFecha();
     fullScreen();
+
+    if (ES_ROL_7) {
+        $('#btn_revertir_acciones').hide();
+    }
 
 
     const yearActual = moment().year();
@@ -152,6 +159,10 @@ $(document).ready(function() {
     });
 
     $("#btn_revertir_acciones").on('click', function() {
+        if (ES_ROL_7) {
+            Swal.fire('Sin permiso', 'No tienes permisos para revertir acciones.', 'warning');
+            return;
+        }
         var factura = $('#lbl_factura').html();
         $('#ModalAcciones').modal('hide');
 
@@ -222,6 +233,10 @@ $(document).ready(function() {
     }
 
     function AsignarAcciones(factura) {
+        if (ES_ROL_7) {
+            Swal.fire('Sin permiso', 'No tienes permisos para asignar acciones.', 'warning');
+            return;
+        }
         Swal.fire({
             title: '¿Asignar acciones?',
             text: `Factura: ${factura}`,
@@ -260,6 +275,11 @@ $(document).ready(function() {
     }
 
     function updateSelectionToolbar() {
+        if (ES_ROL_7) {
+            $('#selection-toolbar').removeClass('d-flex').addClass('d-none');
+            $('#btn-aplicar-masivo').prop('disabled', true);
+            return;
+        }
         var $checkboxes = $('.row-checkbox', $('#tbl_ordenes_compras'));
         var $checked = $checkboxes.filter(':checked');
         var count = $checked.length;
@@ -280,6 +300,10 @@ $(document).ready(function() {
     }
 
     async function AplicarAccionesSeleccionadas() {
+        if (ES_ROL_7) {
+            Swal.fire('Sin permiso', 'No tienes permisos para asignar acciones masivamente.', 'warning');
+            return;
+        }
         var facturas = [];
         var omitidas = 0;
         $('.row-checkbox:checked').each(function() {
@@ -365,9 +389,7 @@ $(document).ready(function() {
                         <div class="d-flex flex-column align-items-center justify-content-center">
                             <div class="text-center">
                                 No hay acciones registradas <br>
-                                <a href="#" onclick="AsignarAcciones('${Factura}')">
-                                    Asignar acciones
-                                </a>
+                                ${ES_ROL_7 ? 'La asignación de acciones no está disponible.' : `<a href="#" onclick="AsignarAcciones('${Factura}')">Asignar acciones</a>`}
                             </div>
                         </div>
                     </div>
@@ -378,7 +400,11 @@ $(document).ready(function() {
             );
 
             $('#btn_imprimir_acciones').prop('disabled', (Acciones.length === 0 ? true : false));
-            $('#btn_revertir_acciones').prop('disabled', (Acciones.length === 0 ? true : false));
+            if (ES_ROL_7) {
+                $('#btn_revertir_acciones').prop('disabled', true);
+            } else {
+                $('#btn_revertir_acciones').prop('disabled', (Acciones.length === 0 ? true : false));
+            }
 
     }
     
@@ -394,11 +420,14 @@ $(document).ready(function() {
             order: [[7, 'desc']],
             columns: [
                 { 
-                    title: '<div class="text-center"><input type="checkbox" id="select-all" class="form-check-input m-0"></div>', 
+                    title: ES_ROL_7 ? '<div class="text-center"></div>' : '<div class="text-center"><input type="checkbox" id="select-all" class="form-check-input m-0"></div>', 
                     data: null, 
                     className: 'text-center align-middle', 
                     orderable: false,
                     render: function(data) {
+                        if (ES_ROL_7) {
+                            return '<div class="d-flex justify-content-center align-items-center h-100"></div>';
+                        }
                         return '<div class="d-flex justify-content-center align-items-center h-100"><input type="checkbox" class="row-checkbox form-check-input m-0" value="' + data.FACTURA + '" data-isaccion="' + data.IsAccion + '"></div>';
                     }
                 },
