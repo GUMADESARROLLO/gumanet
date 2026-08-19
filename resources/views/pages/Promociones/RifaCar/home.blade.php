@@ -124,7 +124,7 @@
                     <span id="badge-pendientes" class="badge badge-pill bg-danger p-2 blink-red" style="display:none">Pendientes 0</span>
                     @if(Auth::user()->role != 7)
                     <button type="button" class="btn btn-outline-light btn-sm" id="btn_abrir_anular" title="Anular factura">
-                        <i class="fas fa-ban me-1"></i>Anular
+                        <i class="fas fa-ban me-1"></i> <span id="btn_anular_factura">Anular</span>
                     </button>
                     @endif
                 </div>
@@ -269,7 +269,7 @@
 
     <!-- Modal Anular Factura -->
     <div class="modal fade" id="ModalAnularFactura" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-danger text-white border-bottom-0">
                     <h5 class="modal-title fw-bold">
@@ -278,14 +278,16 @@
                     <button type="button" class="btn-close btn-close-white" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" id="input-factura-anular">
                     <div id="anular-step1">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Número de Factura</label>
-                            <input type="text" class="form-control" id="input-factura-anular" placeholder="Ingrese número de factura" autocomplete="off">
+                       
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i data-feather="search"></i></span>
+                            </div>
+                            <input type="text" class="form-control form-control-sm" placeholder="Buscar factura o cliente..." id="buscar-factura-anular" autocomplete="off">
                         </div>
-                        <button type="button" class="btn btn-danger w-100" id="btn-verificar-factura">
-                            <i class="fas fa-search me-1"></i>Verificar
-                        </button>
+                        <table id="tbl_facturas_anular" class="table table-hover table-sm" style="width:100%"></table>
                     </div>
                     <div id="anular-step2" style="display:none">
                         <div class="row g-2 mb-3">
@@ -342,7 +344,7 @@
                         </div>
                         <div class="d-flex gap-2">
                             <button type="button" class="btn btn-secondary flex-fill" id="btn-cancelar-anular">
-                                <i class="fas fa-times me-1"></i>Cancelar
+                                <i class="fas fa-arrow-left me-1"></i>Volver
                             </button>
                             <button type="button" class="btn btn-danger flex-fill" id="btn-confirmar-anular">
                                 <i class="fas fa-check me-1"></i>Confirmar
@@ -355,7 +357,7 @@
                             <h6 class="text-danger fw-bold" id="anl-error-msg"></h6>
                         </div>
                         <button type="button" class="btn btn-secondary w-100" id="btn-cerrar-error">
-                            <i class="fas fa-times me-1"></i>Cerrar
+                            <i class="fas fa-arrow-left me-1"></i>Volver al listado
                         </button>
                     </div>
                 </div>

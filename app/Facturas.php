@@ -23,6 +23,8 @@ class Facturas extends Model
         $FacturasConAcciones = DB::connection('sqlsrv')->select("SELECT FACTURA FROM PRODUCCION.dbo.LOG_ACCIONES_RIFA ");
 
         $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura T0 WHERE T0.FECHA BETWEEN ? AND ? ";
+        
+        $qFactPendientesAnular = self::getFacturasAnuladasPendientes();
 
         $rows = DB::connection('sqlsrv')->select($query, [$desde, $hasta]);
 
@@ -70,7 +72,8 @@ class Facturas extends Model
             "ULTIMA_ACCION"         => $UltmAccion,
             "TOTAL_SIN_ACCIONES"    => $SinAcciones,
             "TOTAL_ACCIONES_ASIG"   => $ConAcciones,
-            "PORCENTAJE_DISPONIBLE" => $porcentajeDisponible
+            "PORCENTAJE_DISPONIBLE" => $porcentajeDisponible,
+            "FACT_ANULADAS_PEND"    => count($qFactPendientesAnular)
         ];
     }
     public static function Acciones($request)
@@ -247,6 +250,27 @@ class Facturas extends Model
                 'ANULADA'           => $factura->ANULADA
             ]
         ];
+    }
+
+    public static function getFacturasAnuladasPendientes()
+    {
+        $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura_anuladas T0 ORDER BY T0.FECHA DESC ";
+
+        $rows = DB::connection('sqlsrv')->select($query);
+
+        $Arry = [];
+
+        foreach ($rows as $item) {
+            $Arry[] = [
+                'FACTURA'       => $item->FACTURA,
+                'NOMBRE'        => $item->NOMBRE,
+                'TOTAL_FACTURA' => $item->TOTAL_FACTURA,
+                'ACCIONES'      => $item->ACCIONES,
+                'FECHA'         => date('Y-m-d H:i:s', strtotime($item->FECHA))
+            ];
+        }
+
+        return $Arry;
     }
 
 }

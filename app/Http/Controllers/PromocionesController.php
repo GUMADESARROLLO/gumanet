@@ -66,6 +66,15 @@ class PromocionesController extends Controller
         return response()->json($resultado);
     }
 
+    public function getFacturasAnuladas()
+    {
+        $Facturas = Facturas::getFacturasAnuladasPendientes();
+
+        return response()->json([
+            'FACTURAS' => $Facturas
+        ]);
+    }
+
     public function MetricasRifa()
     {
         $raw = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_stat ORDER BY 1");
