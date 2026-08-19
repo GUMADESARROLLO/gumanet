@@ -489,7 +489,11 @@ $(document).ready(function() {
         $("#porcentaje-disponible").html('Disponible: <strong>' + data.FACTURACION.PORCENTAJE_DISPONIBLE + '%</strong>');
 
         const factPendietes = data.FACTURACION.FACT_ANULADAS_PEND;
-        $("#btn_anular_factura").text("Anular ( " + factPendietes + " )").toggle(factPendietes > 0);
+        if (factPendietes > 0) {
+            $("#btn_anular_factura").text("Anular ( " + factPendietes + " )").show();
+        } else {
+            $("#btn_anular_factura").text("Anular").show();
+        }
 
         $("#acciones-asignadas").html("Asignadas: " + numeral(data.FACTURACION.TOTAL_ACCIONES_ASIG).format('0,0'))
 
