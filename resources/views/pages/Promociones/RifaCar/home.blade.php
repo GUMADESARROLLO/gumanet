@@ -120,8 +120,13 @@
                     <h6 class="mb-0 fw-bold">FACTURAS</h6>
                     <small class="text-white-50">Lista de facturas generadas</small>
                 </div>
-                <div>
+                <div class="d-flex align-items-center gap-2">
                     <span id="badge-pendientes" class="badge badge-pill bg-danger p-2 blink-red" style="display:none">Pendientes 0</span>
+                    @if(Auth::user()->role != 7)
+                    <button type="button" class="btn btn-outline-light btn-sm" id="btn_abrir_anular" title="Anular factura">
+                        <i class="fas fa-ban me-1"></i>Anular
+                    </button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -257,6 +262,102 @@
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Anular Factura -->
+    <div class="modal fade" id="ModalAnularFactura" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white border-bottom-0">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-ban me-2"></i>Anular Factura
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="anular-step1">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Número de Factura</label>
+                            <input type="text" class="form-control" id="input-factura-anular" placeholder="Ingrese número de factura" autocomplete="off">
+                        </div>
+                        <button type="button" class="btn btn-danger w-100" id="btn-verificar-factura">
+                            <i class="fas fa-search me-1"></i>Verificar
+                        </button>
+                    </div>
+                    <div id="anular-step2" style="display:none">
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Factura</small>
+                                    <strong id="anl-factura"></strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Fecha</small>
+                                    <strong id="anl-fecha"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-2 p-2 bg-light rounded">
+                            <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Cliente</small>
+                            <strong id="anl-cliente"></strong>
+                            <small class="text-muted d-block" id="anl-nombre"></small>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Vendedor</small>
+                                    <strong id="anl-vendedor"></strong>
+                                    <small class="text-muted d-block" id="anl-nombre-vendedor"></small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Acciones</small>
+                                    <strong id="anl-acciones"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Total Factura</small>
+                                    <strong id="anl-total"></strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Estado</small>
+                                    <span class="badge bg-danger">ANULADA</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Justificación <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="input-justificacion" rows="3" placeholder="Motivo de la anulación..."></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-secondary flex-fill" id="btn-cancelar-anular">
+                                <i class="fas fa-times me-1"></i>Cancelar
+                            </button>
+                            <button type="button" class="btn btn-danger flex-fill" id="btn-confirmar-anular">
+                                <i class="fas fa-check me-1"></i>Confirmar
+                            </button>
+                        </div>
+                    </div>
+                    <div id="anular-step-error" style="display:none">
+                        <div class="text-center py-3">
+                            <i class="fas fa-exclamation-triangle text-danger fa-3x mb-3"></i>
+                            <h6 class="text-danger fw-bold" id="anl-error-msg"></h6>
+                        </div>
+                        <button type="button" class="btn btn-secondary w-100" id="btn-cerrar-error">
+                            <i class="fas fa-times me-1"></i>Cerrar
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -59,6 +59,13 @@ class PromocionesController extends Controller
         return response()->json($InfoFactura);
     }
 
+    public function VerificarFacturaAnulada(Request $request)
+    {
+        $Factura = $request->Factura;
+        $resultado = Facturas::VerificarFacturaAnulada($Factura);
+        return response()->json($resultado);
+    }
+
     public function MetricasRifa()
     {
         $raw = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_stat ORDER BY 1");

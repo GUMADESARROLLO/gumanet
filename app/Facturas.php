@@ -143,21 +143,33 @@ class Facturas extends Model
 
         $cliente = $info->CLIENTE ?? null;
         $totalFactura = $info->TOTAL_FACTURA ?? 0;
-        $acciones = floor($totalFactura / 1000);
 
-        DB::connection('sqlsrv')->statement(
-            "EXEC PRODUCCION.dbo.SP_REVERSAR_ACCIONES_RIFA @FACTURA = ?",
+        $accionesExistentes = DB::connection('sqlsrv')->select(
+            "SELECT COUNT(*) AS total
+            FROM PRODUCCION.dbo.NUMEROS_RIFA
+            WHERE FACTURA = ?",
             [$Factura]
         );
 
+        $accionesRevertidas = (int) $accionesExistentes[0]->total;
+
+        if ($accionesRevertidas > 0) {
+            DB::connection('sqlsrv')->statement(
+                "EXEC PRODUCCION.dbo.SP_REVERSAR_ACCIONES_RIFA @FACTURA = ?",
+                [$Factura]
+            );
+        }
+
         DB::connection('sqlsrv')->insert(
             "INSERT INTO PRODUCCION.dbo.LOG_REVERSIONES_RIFA (FACTURA, CLIENTE, TOTAL_FACTURA, ACCIONES, JUSTIFICACION, USUARIO_REVERSO) VALUES (?, ?, ?, ?, ?, ?)",
-            [$Factura, $cliente, $totalFactura, $acciones, $Justificacion, Auth::user()->id ?? 1]
+            [$Factura, $cliente, $totalFactura, $accionesRevertidas, $Justificacion, Auth::user()->id ?? 1]
         );
 
         return [
             'status' => true,
-            'message' => 'Acciones revertidas correctamente'
+            'message' => $accionesRevertidas > 0
+                ? 'Acciones revertidas correctamente'
+                : 'Factura anulada sin acciones que revertir'
         ];
     }
 
@@ -178,6 +190,63 @@ class Facturas extends Model
         $Factura = DB::connection('sqlsrv')->select($query, [$Factura]);
 
         return $Factura ? $Factura[0] : null;
+    }
+
+    public static function VerificarFacturaAnulada($Factura)
+    {
+        $revertida = DB::connection('sqlsrv')->selectOne(
+            "SELECT FACTURA FROM PRODUCCION.dbo.LOG_REVERSIONES_RIFA WHERE FACTURA = ?",
+            [$Factura]
+        );
+
+        if ($revertida) {
+            return [
+                'status' => false,
+                'message' => 'Esta factura ya fue revertida anteriormente'
+            ];
+        }
+
+        $factura = DB::connection('sqlsrv')->selectOne(
+            "SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura_anuladas WHERE FACTURA = ?",
+            [$Factura]
+        );
+
+        if (!$factura) {
+            return [
+                'status' => false,
+                'message' => 'Factura no encontrada en el sistema'
+            ];
+        }
+
+        if ($factura->ANULADA !== 'S') {
+            return [
+                'status' => false,
+                'message' => 'Esta factura no está anulada'
+            ];
+        }
+
+        $acciones = DB::connection('sqlsrv')->select(
+            "SELECT * FROM PRODUCCION.dbo.NUMEROS_RIFA WHERE FACTURA = ?",
+            [$Factura]
+        );
+
+        $accionesAsignadas = count($acciones);
+
+        return [
+            'status' => true,
+            'data' => [
+                'FACTURA'           => $factura->FACTURA,
+                'CLIENTE'           => $factura->CLIENTE,
+                'NOMBRE'            => $factura->NOMBRE,
+                'TOTAL_FACTURA'     => $factura->TOTAL_FACTURA,
+                'ACCIONES'          => $factura->ACCIONES,
+                'ACCIONES_ASIGNADAS'=> $accionesAsignadas,
+                'FECHA'             => $factura->FECHA,
+                'VENDEDOR'          => $factura->VENDEDOR,
+                'NOMBRE_VENDEDOR'   => $factura->NOMBRE_VENDEDOR,
+                'ANULADA'           => $factura->ANULADA
+            ]
+        ];
     }
 
 }

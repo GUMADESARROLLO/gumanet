@@ -396,6 +396,7 @@ Route::post('getFactPromocion', 'PromocionesController@getFactPromocion')->name(
 Route::post('getFactAcciones', 'PromocionesController@getFactAcciones')->name('getFactAcciones');
 Route::post('AsignarAcciones', 'PromocionesController@AsignarAcciones')->name('AsignarAcciones');
 Route::post('RevertirAcciones', 'PromocionesController@RevertirAcciones')->name('RevertirAcciones');
+Route::post('VerificarFacturaAnulada', 'PromocionesController@VerificarFacturaAnulada')->name('VerificarFacturaAnulada');
 Route::get('ImprimirAcciones', 'PromocionesController@ImprimirAcciones')->name('ImprimirAcciones');
 Route::get('ImprimirAccionesV2', 'PromocionesController@ImprimirAccionesV2')->name('ImprimirAccionesV2');
 Route::get('MetricasRifa', 'PromocionesController@MetricasRifa')->name('MetricasRifa');
