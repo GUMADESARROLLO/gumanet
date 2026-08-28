@@ -25,6 +25,7 @@ class Facturas extends Model
         $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura T0 WHERE T0.FECHA BETWEEN ? AND ? ";
         
         $qFactPendientesAnular = self::getFacturasAnuladasPendientes();
+        $qFactVencidas = self::getFacturasVencidas();
 
         $rows = DB::connection('sqlsrv')->select($query, [$desde, $hasta]);
 
@@ -73,7 +74,8 @@ class Facturas extends Model
             "TOTAL_SIN_ACCIONES"    => $SinAcciones,
             "TOTAL_ACCIONES_ASIG"   => $ConAcciones,
             "PORCENTAJE_DISPONIBLE" => $porcentajeDisponible,
-            "FACT_ANULADAS_PEND"    => count($qFactPendientesAnular)
+            "FACT_ANULADAS_PEND"    => count($qFactPendientesAnular),
+            "FACT_VENCIDAS_PEND"    => count($qFactVencidas)
         ];
     }
     public static function Acciones($request)
@@ -252,6 +254,56 @@ class Facturas extends Model
         ];
     }
 
+    public static function VerificarFacturaVencida($Factura)
+    {
+        $revertida = DB::connection('sqlsrv')->selectOne(
+            "SELECT FACTURA FROM PRODUCCION.dbo.LOG_REVERSIONES_RIFA WHERE FACTURA = ?",
+            [$Factura]
+        );
+
+        if ($revertida) {
+            return [
+                'status' => false,
+                'message' => 'Esta factura ya fue revertida anteriormente'
+            ];
+        }
+
+        $factura = DB::connection('sqlsrv')->selectOne(
+            "SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura_vencidas WHERE FACTURA = ?",
+            [$Factura]
+        );
+
+        if (!$factura) {
+            return [
+                'status' => false,
+                'message' => 'Factura no encontrada en el sistema'
+            ];
+        }
+
+        $acciones = DB::connection('sqlsrv')->select(
+            "SELECT * FROM PRODUCCION.dbo.NUMEROS_RIFA WHERE FACTURA = ?",
+            [$Factura]
+        );
+
+        $accionesAsignadas = count($acciones);
+
+        return [
+            'status' => true,
+            'data' => [
+                'FACTURA'           => $factura->FACTURA,
+                'CLIENTE'           => $factura->CLIENTE,
+                'NOMBRE'            => $factura->NOMBRE,
+                'TOTAL_FACTURA'     => $factura->TOTAL_FACTURA,
+                'ACCIONES'          => $factura->ACCIONES,
+                'ACCIONES_ASIGNADAS'=> $accionesAsignadas,
+                'FECHA'             => $factura->FECHA,
+                'VENDEDOR'          => $factura->VENDEDOR,
+                'NOMBRE_VENDEDOR'   => $factura->NOMBRE_VENDEDOR,
+                'DVENCIDOS'         => $factura->DVencidos
+            ]
+        ];
+    }
+
     public static function getFacturasAnuladasPendientes()
     {
         $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura_anuladas T0 ORDER BY T0.FECHA DESC ";
@@ -267,6 +319,28 @@ class Facturas extends Model
                 'TOTAL_FACTURA' => $item->TOTAL_FACTURA,
                 'ACCIONES'      => $item->ACCIONES,
                 'FECHA'         => date('Y-m-d H:i:s', strtotime($item->FECHA))
+            ];
+        }
+
+        return $Arry;
+    }
+
+    public static function getFacturasVencidas()
+    {
+        $query = " SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_masterFactura_vencidas T0 ORDER BY T0.FECHA DESC ";
+
+        $rows = DB::connection('sqlsrv')->select($query);
+
+        $Arry = [];
+
+        foreach ($rows as $item) {
+            $Arry[] = [
+                'FACTURA'       => $item->FACTURA,
+                'NOMBRE'        => $item->NOMBRE,
+                'TOTAL_FACTURA' => $item->TOTAL_FACTURA,
+                'ACCIONES'      => $item->ACCIONES,
+                'FECHA'         => date('Y-m-d H:i:s', strtotime($item->FECHA)),
+                'DVENCIDOS'     => $item->DVencidos
             ];
         }
 

@@ -123,6 +123,9 @@
                 <div class="d-flex align-items-center gap-2">
                     <span id="badge-pendientes" class="badge badge-pill bg-danger p-2 blink-red" style="display:none">Pendientes 0</span>
                     @if(Auth::user()->role != 7)
+                    <button type="button" class="btn btn-outline-light btn-sm" id="btn_abrir_vencidas" title="Facturas vencidas">
+                        <i class="fas fa-hourglass-end me-1"></i> <span id="btn_vencidas_factura">Vencidas</span>
+                    </button>
                     <button type="button" class="btn btn-outline-light btn-sm" id="btn_abrir_anular" title="Anular factura">
                         <i class="fas fa-ban me-1"></i> <span id="btn_anular_factura">Anular</span>
                     </button>
@@ -357,6 +360,107 @@
                             <h6 class="text-danger fw-bold" id="anl-error-msg"></h6>
                         </div>
                         <button type="button" class="btn btn-secondary w-100" id="btn-cerrar-error">
+                            <i class="fas fa-arrow-left me-1"></i>Volver al listado
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Facturas Vencidas -->
+    <div class="modal fade" id="ModalFacturasVencidas" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-warning text-dark border-bottom-0">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-hourglass-end me-2"></i>Facturas Vencidas
+                    </h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="input-factura-vencida">
+                    <div id="vencida-step1">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i data-feather="search"></i></span>
+                            </div>
+                            <input type="text" class="form-control form-control-sm" placeholder="Buscar factura o cliente..." id="buscar-factura-vencida" autocomplete="off">
+                        </div>
+                        <table id="tbl_facturas_vencidas" class="table table-hover table-sm" style="width:100%"></table>
+                    </div>
+                    <div id="vencida-step2" style="display:none">
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Factura</small>
+                                    <strong id="vnc-factura"></strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Fecha</small>
+                                    <strong id="vnc-fecha"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-2 p-2 bg-light rounded">
+                            <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Cliente</small>
+                            <strong id="vnc-cliente"></strong>
+                            <small class="text-muted d-block" id="vnc-nombre"></small>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Vendedor</small>
+                                    <strong id="vnc-vendedor"></strong>
+                                    <small class="text-muted d-block" id="vnc-nombre-vendedor"></small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Acciones</small>
+                                    <strong id="vnc-acciones"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Total Factura</small>
+                                    <strong id="vnc-total"></strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Días Vencidos</small>
+                                    <strong id="vnc-dvencidos" class="text-danger"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 p-2 bg-light rounded">
+                            <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Estado</small>
+                            <span class="badge bg-warning text-dark">VENCIDA</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Justificación <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="input-justificacion-vencida" rows="3" placeholder="Motivo de la reversión..."></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-secondary flex-fill" id="btn-cancelar-vencida">
+                                <i class="fas fa-arrow-left me-1"></i>Volver
+                            </button>
+                            <button type="button" class="btn btn-warning flex-fill" id="btn-confirmar-vencida">
+                                <i class="fas fa-check me-1"></i>Confirmar
+                            </button>
+                        </div>
+                    </div>
+                    <div id="vencida-step-error" style="display:none">
+                        <div class="text-center py-3">
+                            <i class="fas fa-exclamation-triangle text-danger fa-3x mb-3"></i>
+                            <h6 class="text-danger fw-bold" id="vnc-error-msg"></h6>
+                        </div>
+                        <button type="button" class="btn btn-secondary w-100" id="btn-cerrar-error-vencida">
                             <i class="fas fa-arrow-left me-1"></i>Volver al listado
                         </button>
                     </div>

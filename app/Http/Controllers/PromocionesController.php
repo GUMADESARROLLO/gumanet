@@ -75,6 +75,22 @@ class PromocionesController extends Controller
         ]);
     }
 
+    public function VerificarFacturaVencida(Request $request)
+    {
+        $Factura = $request->Factura;
+        $resultado = Facturas::VerificarFacturaVencida($Factura);
+        return response()->json($resultado);
+    }
+
+    public function getFacturasVencidas()
+    {
+        $Facturas = Facturas::getFacturasVencidas();
+
+        return response()->json([
+            'FACTURAS' => $Facturas
+        ]);
+    }
+
     public function MetricasRifa()
     {
         $raw = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_stat ORDER BY 1");
