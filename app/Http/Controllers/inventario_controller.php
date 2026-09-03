@@ -15,6 +15,9 @@ use PHPExcel_Style_Fill;
 use App\Company;
 use App\InnovaKardex;
 use App\InnovaModel;
+use App\InnIwebArticulo;
+use App\InnIwebBodega;
+use App\InnIwebPrecio;
 use App\ArticulosTransito;
 use App\ArticuloMOQ;
 use App\ArticuloPotencialDiscasa;
@@ -49,12 +52,49 @@ class inventario_controller extends Controller
 		);
 		
 		if($companie == 4){
-			//$inventario = InnovaModel::getAll();
-			//return view('pages.inventarioINN', compact('inventario'));			
-			return view('pages.Inventario.inventliquidacionMesesario', compact('data','Style'));
+			// nuevo inventario Innova: lista PRODUCCION.dbo.inn_iweb_articulos vía ORM.
+			// La vista anterior (pages.inventarioINN, kardex) se conserva y sigue
+			// accesible por InnovaController@inventarioInnova.
+			return view('pages.InventarioInn.inventario', compact('data','Style'));
+			//return view('pages.inventarioINN', compact('data','Style'));
+			//return view('pages.Inventario.inventliquidacionMesesario', compact('data','Style'));
 		}else{
 			return view('pages.Inventario.inventario', compact('data','Style'));
 		}
+	}
+
+	/**
+	 * Listado de articulos de Innova para la DataTable del nuevo inventario.
+	 * Se consume por fetch() desde pages/InventarioInn/js_inventario.
+	 */
+	public function getArticulosInn() {
+		$articulos = InnIwebArticulo::getArticulos();
+
+		return response()->json([
+			'total' => $articulos->count(),
+			'data'  => $articulos,
+		]);
+	}
+
+	/**
+	 * Detalle de un articulo de Innova para el modal: ficha del producto,
+	 * existencias por bodega y precios por nivel. Una sola respuesta alimenta
+	 * el encabezado y los dos tabs.
+	 */
+	public function getDetalleArticuloInn($articulo) {
+		$ficha = InnIwebArticulo::getFicha($articulo);
+
+		if (is_null($ficha)) {
+			return response()->json([
+				'error' => 'El artículo '.$articulo.' no existe en el inventario de Innova.',
+			], 404);
+		}
+
+		return response()->json([
+			'articulo' => $ficha,
+			'bodegas'  => InnIwebBodega::getPorArticulo($articulo),
+			'precios'  => InnIwebPrecio::getPorArticulo($articulo),
+		]);
 	}
 	public function getArticuloDetalles($Articulo,$Unidad) {
 		$obj = inventario_model::getArticuloDetalles($Articulo,$Unidad);

@@ -32,11 +32,17 @@ class InnovaKardex extends Model
         $d1 = $ini;
         $d2 = $end;
 
-        $json_arrays = array();
+        // las tres claves deben existir siempre: el front hace $.each() sobre ellas sin validar
+        $json_arrays = array(
+            'header_date_count' => 0,
+            'header_date'       => array(),
+            'header_date_rows'  => array(),
+            'error'             => null,
+        );
         $i = 0 ;
 
         try{
-     
+
             $dtFechas = InnovaKardex::select('FECHA')
                     ->whereBetween('FECHA', [$d1, $d2])
                     ->groupBy('FECHA')
@@ -48,35 +54,44 @@ class InnovaKardex extends Model
                 $json_arrays['header_date'][$i] = $f->FECHA;
                 $i++;
             }
+
+            // sin fechas en el rango el proc arma columnas pivote vacias y falla
+            // con "Invalid length parameter passed to the LEFT or SUBSTRING function"
+            if (empty($json_arrays['header_date'])) {
+                return $json_arrays;
+            }
+
             $Rows = DB::connection('sqlsrv')->select('SET NOCOUNT ON ;EXEC PRODUCCION.dbo.gnet_calc_kardex '."'".$d1."'".','."'".$d2."'".",''" );
-            
+
             foreach($Rows as $r){
 
                 $RoleUsr = KardexUsuario::find($r->USUARIO);
-            
+
                 $json_arrays['header_date_rows'][$i]['ARTICULO'] = $r->ARTICULO;
                 $json_arrays['header_date_rows'][$i]['DESCRIPCION'] = $r->DESCRIPCION;
                 $json_arrays['header_date_rows'][$i]['UND'] = $r->UND;
-                $json_arrays['header_date_rows'][$i]['USUARIO'] = $RoleUsr->rol->descripcion;
+                $json_arrays['header_date_rows'][$i]['USUARIO'] = optional(optional($RoleUsr)->rol)->descripcion ?? '';
 
-                
-                foreach($json_arrays['header_date'] as $dtFecha => $valor){                    
+
+                foreach($json_arrays['header_date'] as $dtFecha => $valor){
 
                     $rows_in    = 'IN01_'.date('Ymd',strtotime($valor));
                     $rows_out   = 'OUT02_'.date('Ymd',strtotime($valor));
                     $rows_stock = 'STOCK03_'.date('Ymd',strtotime($valor));
 
-                    $json_arrays['header_date_rows'][$i][$rows_in]      = number_format($r->$rows_in,2)  ;
-                    $json_arrays['header_date_rows'][$i][$rows_out]     = number_format($r->$rows_out,2);
-                    $json_arrays['header_date_rows'][$i][$rows_stock]   =  number_format($r->$rows_stock,2);
+                    $json_arrays['header_date_rows'][$i][$rows_in]      = number_format($r->$rows_in ?? 0,2)  ;
+                    $json_arrays['header_date_rows'][$i][$rows_out]     = number_format($r->$rows_out ?? 0,2);
+                    $json_arrays['header_date_rows'][$i][$rows_stock]   =  number_format($r->$rows_stock ?? 0,2);
 
                 }
                 $i++;
             }
             return $json_arrays;
-        }catch(Exception $e){
-            $mensaje =  'Excepción capturada: ' . $e->getMessage() . "\n";
-            return response()->json($mensaje);
+        }catch(\Throwable $e){
+            // no devolver response()->json() aqui: el controlador ya envuelve el
+            // resultado y anidar JsonResponse produce un 200 con un cuerpo sin las claves
+            $json_arrays['error'] = 'Excepción capturada: ' . $e->getMessage();
+            return $json_arrays;
         }
 
     }

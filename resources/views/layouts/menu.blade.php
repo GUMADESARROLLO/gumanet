@@ -29,7 +29,8 @@
             @foreach ($menus as $menu)
             <li class="nav-item">
               <a class="nav-link text-secondary" href="{{url($menu['url'])}}">
-                <span data-feather="{{$menu['icono']}}" class="mr-3"></span>
+                {{-- icono vacio o NULL rompe feather.replace() y aborta el resto de los iconos --}}
+                <span data-feather="{{ $menu['icono'] ?: 'circle' }}" class="mr-3"></span>
                 {{$menu['nombre']}}
               </a>
             </li>

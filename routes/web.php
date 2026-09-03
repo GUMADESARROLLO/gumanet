@@ -20,6 +20,8 @@ Route::post('/getTasksProjects','infraestructura_controller@getTasksProjects');
 
 //RUTAS MENU
 Route::get('/Inventario','inventario_controller@index')->name('Inventario');
+Route::get('/InventarioInn/getArticulos','inventario_controller@getArticulosInn')->name('InventarioInn.getArticulos');
+Route::get('/InventarioInn/getDetalle/{articulo}','inventario_controller@getDetalleArticuloInn')->name('InventarioInn.getDetalle');
 Route::get('/Inventario/Transito/{id}','inventario_controller@InventarioTransito')->name('/Comiciones/Inventario');
 Route::get('/getTransito/{id}/{unidad}', 'inventario_controller@getTransito')->name("getTransito");
 Route::post('/SaveTransito', 'inventario_controller@SaveTransito')->name("SaveTransito");

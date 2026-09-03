@@ -64,6 +64,29 @@ function tblKardex(primerDia, ultimoDia) {
         },
         async: true,
         success: function(data) {
+
+            data = data || {};
+
+            // sin fechas en el rango no hay columnas que construir: se muestra
+            // el estado vacio en lugar de reventar en $.each(undefined)
+            if (!data.header_date || !data.header_date.length) {
+                var msj = data.error
+                    ? 'No se pudo cargar el kardex.'
+                    : 'NO HAY MOVIMIENTOS DE INVENTARIO EN EL RANGO SELECCIONADO';
+
+                $('#kardex').empty().append(
+                    `<div class="alert alert-light border text-center w-100 mb-0" role="alert">`+
+                        `<span class="fas fa-info-circle mr-2 text-600"></span>`+ msj +
+                        `<div class="small text-muted mt-1">`+ primerDia +` a `+ ultimoDia +`</div>`+
+                    `</div>`
+                );
+
+                if (data.error) { console.error('getKerdex:', data.error); }
+
+                $("#id_Status").hide();
+                return;
+            }
+
             table =  `<table class="table table-bordered " id="tbl_kardex" style="width:100%; border-collapse: collapse;"><thead>`+
                         `<tr class="bg-blue text-light">`+
                             `<th style="width: 700px;" rowspan="2">ARTICULO</th>`;
@@ -170,6 +193,15 @@ function tblKardex(primerDia, ultimoDia) {
                 var vTablePedido = $('#tbl_kardex').DataTable();
                 vTablePedido.search(this.value).draw();
             });
+        },
+        error: function(xhr) {
+            console.error('getKerdex:', xhr.status, xhr.responseText);
+            $('#kardex').empty().append(
+                `<div class="alert alert-warning border text-center w-100 mb-0" role="alert">`+
+                    `No se pudo cargar el kardex (`+ xhr.status +`).`+
+                `</div>`
+            );
+            $("#id_Status").hide();
         }
     });
 
@@ -183,7 +215,7 @@ function tblMateriaPrima(){
         async: true,
         success: function(data) {
 
-
+            data = Array.isArray(data) ? data : [];
 
             $('#table_materia_prima').DataTable({
                 "data":data,
@@ -294,6 +326,7 @@ function tblResumen(){
         async: true,
         success: function(data) {
 
+            data = Array.isArray(data) ? data : [];
 
             $('#table_resumen').DataTable({
                 "data":data,
@@ -318,7 +351,7 @@ function tblResumen(){
                         
                         var tBody = '';
                         ItemJumbo = '';
-                        $.each(row.AT, function (i, obj) {
+                        $.each(row.AT || [], function (i, obj) {
                             tBody += `<tr class="border-200">
                                         <td class="align-middle text-left ">
                                         `+ obj.DESCRIPCION +` |  `+ obj.ARTICULO +`
