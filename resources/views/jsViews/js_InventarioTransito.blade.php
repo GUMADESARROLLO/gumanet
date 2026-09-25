@@ -1,13 +1,57 @@
 <script>
 	var TableExcel;
 	dta_table_excel = [];
-	var isError = false
+var isError = false
+
+function renderPaginacionTransito(dt, $nav, $info) {
+    var info = dt.page.info();
+    var desde = info.recordsDisplay === 0 ? 0 : info.start + 1;
+    $info.text('Mostrando ' + desde + ' a ' + info.end + ' de ' + info.recordsDisplay + ' registros');
+
+    var pages = info.pages;
+    var cur = info.page;
+    var html = '<a href="#" class="pagina-nav' + (cur === 0 || pages === 0 ? ' disabled' : '') + '" data-page="' + (cur - 1) + '">Anterior</a>';
+
+    if (pages > 0) {
+        var inicio = Math.max(0, cur - 2);
+        var fin = Math.min(pages - 1, cur + 2);
+        if (inicio > 0) {
+            html += '<a href="#" class="pagina" data-page="0">1</a>';
+            if (inicio > 1) html += '<span class="paginas-ellipsis">…</span>';
+        }
+        for (var p = inicio; p <= fin; p++) {
+            html += '<a href="#" class="pagina' + (p === cur ? ' activa' : '') + '" data-page="' + p + '">' + (p + 1) + '</a>';
+        }
+        if (fin < pages - 1) {
+            if (fin < pages - 2) html += '<span class="paginas-ellipsis">…</span>';
+            html += '<a href="#" class="pagina" data-page="' + (pages - 1) + '">' + pages + '</a>';
+        }
+    }
+
+    html += '<a href="#" class="pagina-nav' + (cur === pages - 1 || pages === 0 ? ' disabled' : '') + '" data-page="' + (cur + 1) + '">Siguiente</a>';
+    $nav.html(html);
+}
+
+function onTablaDrawTransito() {
+    var dt = this.api();
+    var $panel = $(dt.table().node()).closest('.panel-fact');
+    renderPaginacionTransito(dt, $panel.find('.paginacion-custom'), $panel.find('.panel-footer > span').first());
+}
+
+$(document).on('click', '#dtInvCompleto_wrapper ~ .panel-footer .pagina, #dtInvCompleto_wrapper ~ .panel-footer .pagina-nav, .panel-fact .paginacion-custom .pagina, .panel-fact .paginacion-custom .pagina-nav', function(e) {
+    e.preventDefault();
+    if ($(this).hasClass('disabled')) return;
+    var page = parseInt($(this).data('page'), 10);
+    var dt = $(this).closest('.panel-fact').find('table.dataTable').DataTable();
+    dt.page(page).draw('page');
+});
+
 $(document).ready(function() {
     fullScreen();
     inicializaControlFecha();
     $("#item-nav-01").after(`<li class="breadcrumb-item active"><a href="{{url('../Inventario')}}">Inventario</a></li><li class="breadcrumb-item active">Inventario completo</li>`);
 
-	InitTable();
+	InitTable("TODOS");
 	
 
 	$('#InputDtShowSearchFilterArt').on( 'keyup', function () {
@@ -100,13 +144,17 @@ $(document).ready(function() {
 				Swal.fire({
 					title: "Articulo Fue Agregado"
 				});
-				InitTable()
+				InitTable("TODOS");
 			}
 		});
 		}
 
 		
-	})
+	});
+
+	$("#filter_select_estado").change(function(e) {
+		InitTable(e.target.value)
+	});
 
 
 });
@@ -123,7 +171,7 @@ function isValue(value, def, is_return) {
         return ($.type(is_return) == 'boolean' && is_return === true ? value : true);
     }
 }
-function InitTable(){
+function InitTable(estado){
 	$(".text-danger").hide();
 
 	var id = $("#id_frm_show").text();
@@ -131,11 +179,13 @@ function InitTable(){
 
 	$('#dtInvCompleto').DataTable({
 		"ajax":{
-			"url": "../../getTransito/" + id,
+			"url": "../../getTransito/" + id  + "/" + estado,
 			'dataSrc': '',
 		},
 		'destroy' : true,
 		'info': false,
+		"dom": 'rt',
+		"drawCallback": onTablaDrawTransito,
 		"lengthMenu": [[12,10,20,100,-1], [12,10,20,100,"Todo"]],
 		"language": {
 			"infoFiltered": "(Filtrado de _MAX_ total entradas)",
@@ -158,16 +208,17 @@ function InitTable(){
 				
 			}},
 			{"title": "DESCRIPCIÓN", 		"data": "DESCRIPCION"},
+			{"title": "DOC. (FACT. , BL/AWB ): ", 		"data": "DOCUMENTO"},
             {"title": "FECHA ESTIMADA", "data": "FECHA_ESTIMADA" },
             {"title": "FECHA PEDIDO", "data": "FECHA_PEDIDO" },
 			{"title": "MERCADO", "data": "MERCADO" },
             {"title": "PEDIDO", "data": "PEDIDO" },
 			{"title": "TRANSITO", "data": "TRANSITO" },
 		],
-		"columnDefs": [
-			{"className": "dt-center", "targets": [0, 2,3,4 ]},
-			{"className": "dt-right", "targets": [5,6]},
+		"columnDefs": [		
 			{"className": "dt-left", "targets": [1]},
+			{"className": "dt-center", "targets": [0, 2,3,4,5 ]},
+			{"className": "dt-right", "targets": [6,7]},
 			{"width":"20%","targets":[]},
 			{"width":"5%","targets":[]}
 		],
@@ -187,12 +238,13 @@ function getDetalleArticulo(Articulo,Descripcion,ID)
 	$("#date_estimada").val("")
 	$("#date_pedido").val("")
 	$("#txtDocuments").val("")
+	$("#txtNumFact").val("")
 	$("#txtCantidad").val("")
 	$("#txtCantidadTransito").val("")
 	$("#slcMercado").val('N/D').change();
     $("#slcMIFIC").val('N/D').change();
 	$("#txtObservacion").val("")
-	$("#txtPrecioMific").val("")
+	//$("#txtPrecioMific").val("")
 	
 
 	try {					
@@ -211,20 +263,33 @@ function getDetalleArticulo(Articulo,Descripcion,ID)
 				if (a !=0 ) {
 
 					var FechaPedido = moment(a.fecha_pedido, 'YYYY-MM-DD');
-					var FechaEstimada = moment(a.fecha_estimada, 'YYYY-MM-DD');					
+					//var FechaEstimada =  moment(a.fecha_estimada, 'YYYY-MM-DD');					
 
-					$("#date_estimada").val(FechaEstimada.format('YYYY-MM-DD'))
+					$("#date_estimada").val(a.fecha_estimada ? moment(a.fecha_estimada, 'YYYY-MM-DD').format('YYYY-MM-DD') : null)
 					$("#date_pedido").val(FechaPedido.format('YYYY-MM-DD'))
 					$("#txtDocuments").val(a.documento)
+					$("#txtNumFact").val(a.NumFact)
 					$("#txtCantidad").val(a.cantidad_pedido)
 					$("#txtCantidadTransito").val(a.cantidad_transito)
+					$("#txtCantidadBodega").val(a.cantidad_bodega)
 					$("#slcMercado").val(a.mercado).change();
 					$("#slcMIFIC").val(a.mific).change();
 					$("#select_estado").val(a.estado_compra).change();					
 					$("#txtObservacion").val(a.observaciones)
-					$("#txtPrecioMific").val(numeral(a.Precio_mific_farmacia).format('0,0.0000'))
-					$("#txtPrecioMificPublic").val(numeral(a.Precio_mific_public).format('0,0.0000'))
-					$("#id_via_transito").val(a.via_transito).change();			
+					// $("#txtPrecioMific").val(numeral(a.Precio_mific_farmacia).format('0,0.0000'))
+					// $("#txtPrecioMificPublic").val(numeral(a.Precio_mific_public).format('0,0.0000'))
+					$("#id_via_transito").val(a.via_transito).change();	
+					
+					if(a.estado_compra == 'BODEGA'){
+						$("#btnDeleteTransito, #btnSaveTransito").hide();
+
+						$("#date_estimada, #date_pedido, #txtDocuments, #txtNumFact, #txtCantidad,#txtCantidadTransito, #slcMercado, #slcMIFIC, #txtObservacion").prop('disabled', true);
+
+
+					}else{
+						$("#btnDeleteTransito, #btnSaveTransito").show();
+						$("#date_estimada, #date_pedido, #txtDocuments, #txtNumFact, #txtCantidad,#txtCantidadTransito, #slcMercado, #slcMIFIC, #txtObservacion").prop('disabled', false);
+					}
 					
 					
 				}
@@ -262,13 +327,15 @@ new Vue({
 
 
 			formData.append('documento', document.getElementById('txtDocuments').value);
+			formData.append('NumFact', document.getElementById('txtNumFact').value);
+			
 			formData.append('cantidad', document.getElementById('txtCantidad').value);
 			formData.append('CantidadTransito', document.getElementById('txtCantidadTransito').value);
 			formData.append('mercado', document.getElementById('slcMercado').value);
 			formData.append('mific', document.getElementById('slcMIFIC').value);
 			formData.append('select_estado', document.getElementById('select_estado').value);
-			formData.append('precio_mific_f', document.getElementById('txtPrecioMific').value);
-			formData.append('precio_mific_p', document.getElementById('txtPrecioMificPublic').value);
+			// formData.append('precio_mific_f', document.getElementById('txtPrecioMific').value);
+			// formData.append('precio_mific_p', document.getElementById('txtPrecioMificPublic').value);
 			formData.append('observaciones', document.getElementById('txtObservacion').value);
 			formData.append('via_transito', document.getElementById('id_via_transito').value);
 
@@ -283,7 +350,7 @@ new Vue({
 						cancelButtonColor: '#d33',
 						confirmButtonText: 'OK'
 						}).then((result) => {
-							InitTable();
+							InitTable("TODOS");
 							// if (result.isConfirmed) {								
 							// 	mensaje('Informacion Guardada', 'success');
 							// }   

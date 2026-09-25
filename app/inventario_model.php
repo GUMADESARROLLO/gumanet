@@ -8,6 +8,7 @@ use PHPExcel_IOFactory;
 use PHPExcel_Style_Alignment;
 use PHPExcel_Style;
 use PHPExcel_Style_Border;
+use PHPExcel_Style_Fill;
 use Illuminate\Database\Eloquent\Model;
 use App\metas_model;
 use App\Articulo_vinneta_modal;
@@ -33,7 +34,10 @@ class inventario_model extends Model {
 
         switch ($company_user) {
             case '1':
-                $sql_exec = "SELECT T0.*,T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH FROM PRODUCCION.dbo.iweb_articulos T0 LEFT JOIN PRODUCCION.dbo.gnet_inventario_promedios_anuales_umk T1 ON T0.ARTICULO = T1.ARTICULO where T0.ARTICULO NOT LIKE 'VU%'";
+                $sql_exec = "SELECT T0.*,
+                T1.SUM_ANUAL,T1.AVG_ANUAL,T1.AVG_3M,T1.COUNT_MONTH 
+                FROM PRODUCCION.dbo.iweb_articulos T0 
+                LEFT JOIN PRODUCCION.dbo.gnet_inventario_promedios_anuales_umk T1 ON T0.ARTICULO = T1.ARTICULO where T0.ARTICULO NOT LIKE 'VU%'";
 
                 $qSKU = "SELECT
                                     T1.ARTICULO,
@@ -218,6 +222,40 @@ class inventario_model extends Model {
         return $query;
     }
 
+
+    public static function getInventario() {
+
+        $Inventario_umk = InventarioUMK::all();
+
+        $ArrayInventario = [];
+
+        foreach ($Inventario_umk as $key) {
+
+                $ArrayInventario[] = [
+                    'ARTICULO'           => '<a href="#!" onclick="getDetalleArticulo('."'".$key['ARTICULO']."'".', '."'".$key['DESCRIPCION']."'".')" >'.$key['ARTICULO'].'</a>',            
+                    'ARTICULO_'         =>  $key['ARTICULO'],
+                    'DESCRIPCION'       =>  strtoupper($key['DESCRIPCION']),
+                    'total'             =>  number_format($key['CANT_DISP_B002'], 2),
+                    'und'               =>  number_format($key['CANT_UNIT_DISP_B002'], 2),
+                    'UNIDAD_ALMACEN'    =>  $key['UNIDAD_ALMACEN'],
+                    'PROMEDIO_VENTA'    =>  number_format($key['PROM_YEAR_PASADO'], 2),
+                    'CANT_ANIO_PAS'     =>  number_format($key['TOTAL_ANUAL_PASADO'], 2),
+                    'VST_MES_ACTUAL'    =>  number_format($key['MES_ACTUAL'], 2),
+                    'PROM_VST_ANUAL'    =>  number_format($key['PROM_YEAR_ACTUAL'], 2),
+                    'VST_ANNO_ACTUAL'   =>  number_format($key['TOTAL_ANUAL_ACTUAL'], 2),
+                    'MESES_INVENTARIO'  =>  number_format($key['NUM_MONTHS_INV'], 2),
+                    'SUM_ANUAL'         =>  number_format($key['TOTAL_VTA_YEAR_ACTUAL'], 2),
+                    'AVG_ANUAL'         =>  number_format($key['PROM_VTA_YEAR_ACTUAL'], 2),
+                    'AVG_3M'            =>  number_format($key['PROM_TOP3_YEAR_PASADO'], 2),
+                    'COUNT_MONTH'       =>  number_format($key['MONTH_WITH_VTA'], 2),
+                ];
+                
+            }
+
+        return $ArrayInventario;
+        
+    }
+
     public static function invenVencidos() {
         $sql_server = new \sql_server();        
         $request = Request();
@@ -281,6 +319,84 @@ class inventario_model extends Model {
         $sql_server->close();
 
         return $jsonResulto;
+    }
+
+    public static function descargarInventarioB004() {
+        $data = inventario_model::invenVencidos();
+        if (!$data) {
+            dd("No hay datos para exportar.");
+        }
+
+        $objPHPExcel = new PHPExcel();
+        $tituloReporte = "ARTICULOS BODEGA 004 - DAÑADOS Y VENCIDOS HASTA " . date('d/m/Y');
+        $titulosColumnas = array('ARTICULO', 'DESCRIPCION', 'LOTE', 'CANTIDAD', 'COSTO PROM. LOC.', 'COSTO ULT. LOC.', 'FECHA DE VENCIMIENTO');
+
+        $estiloTituloReporte = array(
+            'font' => array('name' => 'Tahoma', 'bold' => true, 'size' => 14, 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '2C3E50')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER, 'wrap' => true),
+        );
+
+        $estiloTituloColumnas = array(
+            'font' => array('name' => 'Arial', 'bold' => true, 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '3498DB')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER, 'wrap' => true),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN)),
+        );
+
+        $estiloInformacion = new PHPExcel_Style();
+        $estiloInformacion->applyFromArray(array('borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))));
+
+        $estiloFilaPar = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'EBF5FB')));
+        $estiloFilaImpar = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'FFFFFF')));
+        $right = array('alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT, 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER, 'wrap' => true));
+
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:G1');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $tituloReporte);
+
+        foreach ($titulosColumnas as $idx => $col) {
+            $colLetter = chr(65 + $idx);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue($colLetter . '3', $col);
+        }
+
+        $i = 4;
+        foreach ($data as $key) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $i, $key['ARTICULO'])
+                ->setCellValue('B' . $i, $key['DESCRIPCION'])
+                ->setCellValue('C' . $i, $key['LOTE'])
+                ->setCellValue('D' . $i, $key['CANT_DISPONIBLE'])
+                ->setCellValue('E' . $i, $key['COSTO_PROM_LOC'])
+                ->setCellValue('F' . $i, $key['COSTO_ULT_LOC'])
+                ->setCellValue('G' . $i, $key['FECHA_VENCIMIENTO']);
+            $i++;
+        }
+
+        $lastRow = $i - 1;
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(12);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(70);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(12);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(18);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(18);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(18);
+
+        $objPHPExcel->getActiveSheet()->getStyle('A1:G1')->applyFromArray($estiloTituloReporte);
+        $objPHPExcel->getActiveSheet()->getStyle('A3:G3')->applyFromArray($estiloTituloColumnas);
+        $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:G" . $lastRow);
+        $objPHPExcel->getActiveSheet()->getStyle("D4:G" . $lastRow)->applyFromArray($right);
+
+        for ($row = 4; $row <= $lastRow; $row++) {
+            $style = ($row % 2 == 0) ? $estiloFilaPar : $estiloFilaImpar;
+            $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':G' . $row)->applyFromArray($style);
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Bodega004_' . date('d-m-Y') . '.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
     }
 
     public static function getInventarioCompleto() {
@@ -369,7 +485,11 @@ class inventario_model extends Model {
             'strike'    => false,
             'size'      => 14,
             'color'     => array(
-                            'rgb' => '212121')
+                            'rgb' => 'FFFFFF')
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => '2C3E50')
             ),
             'alignment' =>  array(
                             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
@@ -382,7 +502,12 @@ class inventario_model extends Model {
         $estiloTituloColumnas = array(
             'font' => array(
                         'name'  => 'Arial',
-                        'bold'  => true
+                        'bold'  => true,
+                        'color' => array('rgb' => 'FFFFFF')
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => '3498DB')
             ),
             'alignment' =>  array(
                                 'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
@@ -410,6 +535,20 @@ class inventario_model extends Model {
                                 'style' => PHPExcel_Style_Border::BORDER_THIN,
                                 ),
                 )
+            )
+        );
+
+        $estiloFilaPar = array(
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => 'EBF5FB')
+            )
+        );
+
+        $estiloFilaImpar = array(
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => 'FFFFFF')
             )
         );
 
@@ -538,6 +677,11 @@ class inventario_model extends Model {
                 $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:M".($i-1));
                 $objPHPExcel->getActiveSheet()->getStyle("C4:M".($i-1))->applyFromArray($right);
 
+                for ($row = 4; $row < $i; $row++) {
+                    $style = ($row % 2 == 0) ? $estiloFilaPar : $estiloFilaImpar;
+                    $objPHPExcel->getActiveSheet()->getStyle('A'.$row.':M'.$row)->applyFromArray($style);
+                }
+
                 break;
             case 'vencimiento':
                 $temp = inventario_model::dataLiquidacionMeses($valor);
@@ -572,8 +716,8 @@ class inventario_model extends Model {
 
                 foreach ($temp as $key) {
                     
-                    $cantidad = tbl_temporal::where('articulo', $key['ARTICULO'])->select('cantidad')->first();
-                    $cantidad = ( $cantidad['cantidad']=='' )?0:$cantidad['cantidad'];
+                    $oItem = tbl_temporal::where('articulo', $key['ARTICULO'])->first();
+                    $cantidad = $oItem ? $oItem->cantidad : 0;
 
                     $totalExistencia = $key['CANT_DISPONIBLE2'];
                     $promedio =   ( $cantidad>0 )?( $cantidad / 12 ):0;
@@ -617,6 +761,11 @@ class inventario_model extends Model {
                 $objPHPExcel->getActiveSheet()->getStyle('A3:M3')->applyFromArray($estiloTituloColumnas);
                 $objPHPExcel->getActiveSheet()->setSharedStyle($estiloInformacion, "A4:M".($i-1));
                 $objPHPExcel->getActiveSheet()->getStyle("C4:M".($i-1))->applyFromArray($right);
+
+                for ($row = 4; $row < $i; $row++) {
+                    $style = ($row % 2 == 0) ? $estiloFilaPar : $estiloFilaImpar;
+                    $objPHPExcel->getActiveSheet()->getStyle('A'.$row.':M'.$row)->applyFromArray($style);
+                }
 
             break;
             default:
@@ -1049,6 +1198,8 @@ class inventario_model extends Model {
             $Array = [
                 'Precio_mific_farmacia'     => "C$ " .number_format($v->MIFIC_FARMACIA,4),
                 'Precio_mific_public'       => "C$ " .number_format($v->MIFIC_PUBLICO,4),
+                'mific_comentarios'         => $v->COMENTARIOS,
+                'MIFIC'                     => $v->MIFIC
             ];        
         }    
         return $Array;

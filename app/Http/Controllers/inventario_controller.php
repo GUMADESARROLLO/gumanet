@@ -15,10 +15,14 @@ use PHPExcel_Style_Fill;
 use App\Company;
 use App\InnovaKardex;
 use App\InnovaModel;
+use App\InnIwebArticulo;
+use App\InnIwebBodega;
+use App\InnIwebPrecio;
 use App\ArticulosTransito;
 use App\ArticuloMOQ;
 use App\ArticuloPotencialDiscasa;
 use App\InventarioUnificadoTransito;
+use App\LogTransacInventarioUmk;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
@@ -27,7 +31,7 @@ class inventario_controller extends Controller
 {
 	public function __construct() {
 		$this->middleware(['auth','roles']);//pagina se carga unicamente cuando se este logeado
-  	}
+	}
 
 	public function index() {
 		$this->agregarDatosASession();
@@ -39,13 +43,58 @@ class inventario_controller extends Controller
 			'name' 				=> 'GUMA@NET',
 			'hideTransaccion' 	=> ''
 		);
+
+
+		$Style = array(
+			'Logo' => ($companie == 4) ? 'img/innova.png' : 'img/unimark.png',
+			'With' => ($companie == 4) ? '200px' : '280px',
+			'Color' => ($companie == 4) ? '#802980' : '#004e7e',
+		);
 		
 		if($companie == 4){
-			$inventario = InnovaModel::getAll();
-			return view('pages.inventarioINN', compact('inventario'));
+			// nuevo inventario Innova: lista PRODUCCION.dbo.inn_iweb_articulos vía ORM.
+			// La vista anterior (pages.inventarioINN, kardex) se conserva y sigue
+			// accesible por InnovaController@inventarioInnova.
+			return view('pages.InventarioInn.inventario', compact('data','Style'));
+			//return view('pages.inventarioINN', compact('data','Style'));
+			//return view('pages.Inventario.inventliquidacionMesesario', compact('data','Style'));
 		}else{
-			return view('pages.Inventario.inventario', $data);
+			return view('pages.Inventario.inventario', compact('data','Style'));
 		}
+	}
+
+	/**
+	 * Listado de articulos de Innova para la DataTable del nuevo inventario.
+	 * Se consume por fetch() desde pages/InventarioInn/js_inventario.
+	 */
+	public function getArticulosInn() {
+		$articulos = InnIwebArticulo::getArticulos();
+
+		return response()->json([
+			'total' => $articulos->count(),
+			'data'  => $articulos,
+		]);
+	}
+
+	/**
+	 * Detalle de un articulo de Innova para el modal: ficha del producto,
+	 * existencias por bodega y precios por nivel. Una sola respuesta alimenta
+	 * el encabezado y los dos tabs.
+	 */
+	public function getDetalleArticuloInn($articulo) {
+		$ficha = InnIwebArticulo::getFicha($articulo);
+
+		if (is_null($ficha)) {
+			return response()->json([
+				'error' => 'El artículo '.$articulo.' no existe en el inventario de Innova.',
+			], 404);
+		}
+
+		return response()->json([
+			'articulo' => $ficha,
+			'bodegas'  => InnIwebBodega::getPorArticulo($articulo),
+			'precios'  => InnIwebPrecio::getPorArticulo($articulo),
+		]);
 	}
 	public function getArticuloDetalles($Articulo,$Unidad) {
 		$obj = inventario_model::getArticuloDetalles($Articulo,$Unidad);
@@ -71,15 +120,15 @@ class inventario_controller extends Controller
     }
 
     public function inventarioCompleto() {
-    	$this->agregarDatosASession();
+		$this->agregarDatosASession();
 
-    	$data = array(
-    		'page'		=> 'Inventario Completo',
-    		'name'		=> 'GUMA@NET',
-    		'hideTransaccion' => ''
-    	);
+		$data = array(
+			'page'		=> 'Inventario Completo',
+			'name'		=> 'GUMA@NET',
+			'hideTransaccion' => ''
+		);
 
-    	return view('pages.inventarioCompleto', $data);
+		return view('pages.inventarioCompleto', $data);
     }
 
     public function inventarioCompletoTable() {
@@ -89,12 +138,13 @@ class inventario_controller extends Controller
 
 	public function getInfoArticulo(Request $request)
     {  
-		$ID_ROW = $request->ID_ROW;
+		$ID_ROW 		= $request->ID_ROW;
 		$datos_articulo = [];
 		$InfoTransito 	= [];
 
 
-		$ArticuloTransito 	=  (is_null($ID_ROW))? ArticulosTransito::where('Articulo',$request->Articulo)->get() : ArticulosTransito::where('Id_transito',$ID_ROW)->get();
+		$ArticuloTransito 	=  (is_null($ID_ROW)) ? ArticulosTransito::where('Articulo', $request->Articulo)->where('estado_compra', '!=', 'BODEGA')->get() : ArticulosTransito::where('Id_transito',$ID_ROW)->where('estado_compra', '!=', 'BODEGA')->get();
+		
 		$PreciosMific		=  PreciosMific::where('ARTICULO',$request->Articulo)->limit(1)->first();
 		
 		$Potencial = ArticuloPotencialDiscasa::where('ARTICULO',$request->Articulo)->limit(1)->first()->POTENCIAL_CA ?? 0;
@@ -116,9 +166,11 @@ class inventario_controller extends Controller
 				'fecha_estimada'	=> $k->fecha_estimada,
 				'fecha_pedido'      => $k->fecha_pedido,
 				'documento'         => $k->documento,
+				'NumFact'           => $k->NumFact,
 				'cantidad'          => number_format($k->cantidad,0,'.',''),
 				'cantidad_pedido'          	=> number_format($k->cantidad_pedido,0,'.',''),
 				'cantidad_transito'          => number_format($k->cantidad_transito,0,'.',''),
+				'cantidad_bodega'          => number_format($k->cantidad_bodega,0,'.',''),
 				'mercado'         	=> $k->mercado,
 				'mific'             => $k->mific,
 				'Estado'             => $k->Estado,
@@ -153,19 +205,23 @@ class inventario_controller extends Controller
 	}
 	public function SaveTransito(Request $request)
     {  
-		$NumRow = $request->NumRow;
+		$NumRow   = $request->NumRow;
+		$isBodega = $request->select_estado ;
+		
+		$Transito = $request->CantidadTransito;
+		$InBodega = 0;
+
+
 
 		$request->validate([
-            'fecha_estimada' 		=> 'required',
             'fecha_pedido' 			=> 'required',
-            'documento' 			=> 'required',
             'cantidad' 				=> 'required',
 			'CantidadTransito' 		=> 'required',
             'mercado' 				=> 'required',
             'mific' 				=> 'required',
 			'select_estado' 		=> 'required',
-			'precio_mific_f' 		=> 'required',
-			'precio_mific_p' 		=> 'required',
+			// 'precio_mific_f' 		=> 'required',
+			// 'precio_mific_p' 		=> 'required',
             'observaciones' 		=> 'required',
         ]);
 
@@ -175,19 +231,25 @@ class inventario_controller extends Controller
 	
 
 		if ($articuloTransito) {
+
+			if ($isBodega == 'BODEGA') {
+				$Transito = 0;
+				$InBodega = $request->CantidadTransito;
+			}
+
 			$articuloTransito->update([
 				'Descripcion' 				=> $request->Descripcion,
-				'fecha_estimada' 			=> $request->fecha_estimada,
+				'fecha_estimada' 			=> $request->fecha_estimada ?: null,
 				'fecha_pedido' 				=> $request->fecha_pedido,
 				'documento' 				=> $request->documento,
+				'NumFact' 					=> $request->NumFact,
 				'cantidad_pedido' 			=> $request->cantidad,
-				'cantidad_transito' 		=> $request->CantidadTransito,
+				'cantidad_transito' 		=> $Transito,
+				'cantidad_bodega' 		    => $InBodega,
 				'mercado' 					=> $request->mercado,
 				'mific' 					=> $request->mific,
 				'estado_compra' 			=> $request->select_estado,
 				'observaciones' 			=> $request->observaciones,
-				'Precio_mific_farmacia' 	=> $request->precio_mific_f,
-				'Precio_mific_public' 		=> $request->precio_mific_p,
 				'via_transporte'    		=> $request->via_transito,
 			]);
 	
@@ -198,17 +260,16 @@ class inventario_controller extends Controller
 			ArticulosTransito::create([
 				'Articulo' 				=> $Articulo,
 				'Descripcion' 			=> $request->Descripcion,
-				'fecha_estimada' 		=> $request->fecha_estimada,
+				'fecha_estimada' 		=> empty($request->fecha_estimada) ? null : $request->fecha_estimada,
 				'fecha_pedido' 			=> $request->fecha_pedido,
 				'documento' 			=> $request->documento,
+				'NumFact' 				=> $request->NumFact,
 				'cantidad_pedido' 		=> $request->cantidad,
 				'cantidad_transito' 	=> $request->CantidadTransito,
 				'mercado' 				=> $request->mercado,
 				'mific' 				=> $request->mific,
 				'estado_compra' 		=> $request->select_estado,
 				'observaciones' 		=> $request->observaciones,
-				'Precio_mific_farmacia' => $request->precio_mific_f,
-				'Precio_mific_public' 	=> $request->precio_mific_p,
 				'Nuevo' 				=> 'N',
 				'via_transporte'    	=> $request->via_transito,
 			]);
@@ -247,6 +308,7 @@ class inventario_controller extends Controller
 			'Descripcion'	=> strtoupper($Art->DESCRIPCION),
             'observaciones' => ' - ',
 			'Nuevo' 		=> 'N',
+			'estado_compra' => 'N/D',
         ]);
 
         return response()->json(['message' => 'Información guardada correctamente']);
@@ -274,38 +336,30 @@ class inventario_controller extends Controller
 			'hideTransaccion' => ''
 		);
 
-		$ArticulosConCodigos = ArticulosTransito::where('ARTICULO', 'NOT LIKE', '%-N%')->pluck('Articulo')->toArray();
-		
-		if(count($ArticulosConCodigos)  > 0){
-			$Articulos = InventarioUnificadoTransito::WhereNotIN('ARTICULO', $ArticulosConCodigos)->get();
-			
-		} else {
-			$Articulos = InventarioUnificadoTransito::all();
-		};
-
-	
-
+		$Articulos = InventarioUnificadoTransito::all();
 
 		return view('pages.Transito.Table', compact('data', 'Articulos'));
 	}
 
-	public function getTransito($Id) {
-		$obj = ($Id == 0) ? ArticulosTransito::getTransitoSinCodigo() : ArticulosTransito::getTransitoConCodigo() ;
+	public function getTransito($Id, $unidad) {
+		$obj = ($Id == 0) ? ArticulosTransito::getTransitoSinCodigo() : ArticulosTransito::getTransitoConCodigo($unidad);
 		return response()->json($obj);
     }
 
 	public function getArticulos(Request $request)  {
-		// $obj = inventario_model::getArticulos();
-		// return response()->json($obj);
 		$Company = $request->session()->get('company_id');
 
-		$Key = 'gnet_Inventario_getArticulos_'.$Company;
+		$Key = 'gnet_inventario_'.$Company;
+
 		$cached = Redis::get($Key);
+
 		if ($cached) {
 			$obj = $cached;
 		} else {
-			$obj = json_encode(inventario_model::getArticulos());
-			Redis::setex($Key, 900, $obj); 
+
+			$obj = ($Company == 1) ? json_encode(inventario_model::getInventario()) : json_encode(inventario_model::getArticulos());
+
+			Redis::setex($Key, 900, $obj);
 		}
 		return response()->json(json_decode($obj));
 	}
@@ -584,6 +638,10 @@ class inventario_controller extends Controller
 		$obj = inventario_model::descargarInventario($tipo, $valor);
 	}
 
+	public function descargarInventarioB004() {
+		$obj = inventario_model::descargarInventarioB004();
+	}
+
 	public function getArticuloDetalle($articulo) {
 		$obj = inventario_model::getArticuloDetalle($articulo);
 		return response()->json($obj);
@@ -658,5 +716,53 @@ class inventario_controller extends Controller
 			$obj = inventario_model::getLotes($request->input('articulo'));
 			return response()->json($obj);
 		}
+	}
+
+	public function historicoArticulos(Request $request) {
+		$this->agregarDatosASession();
+		$companie = Session::get('company_id');
+		$Style = array(
+			'Logo' => ($companie == 4) ? 'img/innova.png' : 'img/unimark.png',
+			'With' => ($companie == 4) ? '200px' : '280px',
+			'Color' => ($companie == 4) ? '#802980' : '#004e7e',
+		);
+		$data = array(
+			'page' => 'Inventario',
+			'name' => 'GUMA@NET',
+			'articulo' => $request->input('art', ''),
+		);
+		return view('pages.Inventario.historico_articulos', compact('Style', 'data'));
+	}
+
+	public function getLotesHistorico($articulo) {
+		$obj = inventario_model::getLotes($articulo);
+		return response()->json($obj);
+	}
+
+	public function getTransaccionesLote($articulo, $lote) {
+		$transacciones = LogTransacInventarioUmk::where('ARTICULO', $articulo)
+			->where('LOTE', $lote)
+			->orderBy('FECHA', 'desc')
+			->get(['FECHA','TIPO','DESCRTIPO','CANTIDAD','PRECIO_TOTAL_LOCAL','CONSECUTIVO','NATURALEZA','REFERENCIA','USUARIO','PAQUETE_INVENTARIO','CODIGO_CLIENTE','BONIFICADO','APLICACION']);
+
+		$result = [];
+		foreach ($transacciones as $t) {
+			$result[] = [
+				'FECHA'       => $t->FECHA,
+				'TIPO'        => $t->TIPO,
+				'DESCRTIPO'   => $t->DESCRTIPO,
+				'CANTIDAD'    => $t->CANTIDAD,
+				'REFERENCIA'  => $t->REFERENCIA,
+				'APLICACION'  => $t->APLICACION,
+				'CONSECUTIVO' => $t->CONSECUTIVO,
+				'CODIGO_CLIENTE' => $t->CODIGO_CLIENTE,
+				'BONIFICADO'  => $t->BONIFICADO,
+				'PRECIO_TOTAL_LOCAL' => $t->PRECIO_TOTAL_LOCAL,
+				'USUARIO'     => $t->USUARIO,
+				'NATURALEZA'  => $t->NATURALEZA,
+				'PAQUETE_INVENTARIO' => $t->PAQUETE_INVENTARIO,
+			];
+		}
+		return response()->json($result);
 	}
 }

@@ -9,7 +9,7 @@ class infraestructura_controller extends Controller
 
     public function __construct() 
     {
-		$this->middleware(['auth','roles']);
+		  $this->middleware(['auth','roles']);
     }
 
     public function home() 

@@ -19,9 +19,11 @@ Route::post('/getTasksProjects','infraestructura_controller@getTasksProjects');
 
 
 //RUTAS MENU
-Route::get('/Inventario','inventario_controller@index');
+Route::get('/Inventario','inventario_controller@index')->name('Inventario');
+Route::get('/InventarioInn/getArticulos','inventario_controller@getArticulosInn')->name('InventarioInn.getArticulos');
+Route::get('/InventarioInn/getDetalle/{articulo}','inventario_controller@getDetalleArticuloInn')->name('InventarioInn.getDetalle');
 Route::get('/Inventario/Transito/{id}','inventario_controller@InventarioTransito')->name('/Comiciones/Inventario');
-Route::get('/getTransito/{id}', 'inventario_controller@getTransito')->name("getTransito");
+Route::get('/getTransito/{id}/{unidad}', 'inventario_controller@getTransito')->name("getTransito");
 Route::post('/SaveTransito', 'inventario_controller@SaveTransito')->name("SaveTransito");
 Route::post('/SaveTransitoNew', 'inventario_controller@SaveTransitoNew')->name("SaveTransitoNew");
 Route::post('/SaveTransitoConCodigo', 'inventario_controller@SaveTransitoConCodigo')->name("SaveTransitoConCodigo");
@@ -31,6 +33,9 @@ Route::post('/Inventario/Transito/SaveTransitoExcel', 'inventario_controller@Sav
 
 //RUTA DE PRODUCCION
 Route::post('/getInfoArticulo', 'inventario_controller@getInfoArticulo')->name("getInfoArticulo");
+Route::get('/HistoricoArticulos', 'inventario_controller@historicoArticulos')->name("HistoricoArticulos");
+Route::get('/getLotesHistorico/{articulo}', 'inventario_controller@getLotesHistorico')->name("getLotesHistorico");
+Route::get('/getTransaccionesLote/{articulo}/{lote}', 'inventario_controller@getTransaccionesLote')->name("getTransaccionesLote");
 
 
 Route::get('/Metas','metas_controller@index');
@@ -94,6 +99,7 @@ Route::post('/lotes','inventario_controller@getLotesArticulo');
 Route::post('/getLotes','inventario_controller@getLotes');
 Route::get('/liqMeses/{valor}','inventario_controller@liquidacionMeses');
 Route::get('/desInventario/{tipo}/{valor}', 'inventario_controller@descargarInventario');
+Route::get('/desInventarioB004', 'inventario_controller@descargarInventarioB004');
 Route::get('/invCompleto', 'inventario_controller@inventarioCompleto');
 Route::get('/invTotalizadoDT', 'inventario_controller@inventarioCompletoTable');
 Route::get('/desInvTotal2', 'inventario_controller@descargarInventarioCompleto');
@@ -312,6 +318,7 @@ Route::get('get12Canales/{articulo}/{canal}/{opcion}','dashboard_controller@getD
 Route::get('Presupuesto89', 'BudgetController@Budget89')->name('Presupuesto89');
 Route::get('Presupuesto71', 'BudgetController@Budget71')->name('Presupuesto71');
 Route::post('getFacturasClientesUmk', 'BudgetController@getFacturasClientesUmk')->name('getFacturasClientesUmk');
+Route::post('getFacturasSKUClientesUmk', 'BudgetController@getFacturasSKUClientesUmk')->name('getFacturasSKUClientesUmk');
 
 
 Route::post('dtProyect', 'BudgetController@dtProyect')->name('dtProyect');
@@ -358,3 +365,57 @@ Route::get('/Updates', 'ControllerUpdateClientes@Updates')->name('Updates');
 
 Route::get('MetricasMetas', 'MetricasMetasController@index')->name('MetricasMetas'); 
 Route::get('getMetricasMetas', 'MetricasMetasController@getMetricasMetas')->name('getMetricasMetas'); 
+
+
+// RUTAS PARA ORDENES DE COMPRA
+Route::get('OrdenCompraDetalle/{Orden}', 'OrdenCompraController@OrdenCompraDetalle')->name('OrdenCompraDetalle/{Orden}'); 
+Route::get('Compras', 'OrdenCompraController@OrdenesCompra')->name('Compras');
+Route::post('getDataOrdenesCompra', 'OrdenCompraController@getDataOrdenesCompra')->name('getDataOrdenesCompra'); 
+
+
+
+Route::get('Mific', 'MificController@Mific')->name('Mific');
+Route::post('getDataMific', 'MificController@getDataMific')->name('getDataMific');
+Route::post('getDetallesMific', 'MificController@getDetallesMific')->name('getDetallesMific');
+Route::post('UpdateMific', 'MificController@UpdateMific')->name('UpdateMific');
+Route::post('SaveMific', 'MificController@SaveMific')->name('SaveMific');
+Route::post('DeleteMific', 'MificController@DeleteMific')->name('DeleteMific');
+
+
+// RUTAS PARA FACTURACION
+Route::get('Facturacion', 'FacturacionController@Dashboard')->name('Facturacion');
+Route::post('getDataFacturacion', 'FacturacionController@getDataFacturacion')->name('getDataFacturacion');
+Route::post('getDetallePedidoFactura', 'FacturacionController@getDetallePedidoFactura')->name('getDetallePedidoFactura');
+Route::post('getFacturasVendedor', 'FacturacionController@getFacturasVendedor')->name('getFacturasVendedor');
+Route::post('getDetallePedidoProductos', 'FacturacionController@getDetallePedidoProductos')->name('getDetallePedidoProductos');
+Route::post('getDetalleFacturaProductos', 'FacturacionController@getDetalleFacturaProductos')->name('getDetalleFacturaProductos');
+Route::post('getRucCliente', 'FacturacionController@getRucCliente')->name('getRucCliente');
+
+
+
+Route::get('Promociones', 'PromocionesController@RifaCar')->name('Promociones');
+Route::post('getFactPromocion', 'PromocionesController@getFactPromocion')->name('getFactPromocion');
+Route::post('getFactAcciones', 'PromocionesController@getFactAcciones')->name('getFactAcciones');
+Route::post('AsignarAcciones', 'PromocionesController@AsignarAcciones')->name('AsignarAcciones');
+Route::post('RevertirAcciones', 'PromocionesController@RevertirAcciones')->name('RevertirAcciones');
+Route::post('VerificarFacturaAnulada', 'PromocionesController@VerificarFacturaAnulada')->name('VerificarFacturaAnulada');
+Route::post('getFacturasAnuladas', 'PromocionesController@getFacturasAnuladas')->name('getFacturasAnuladas');
+Route::post('getFacturasVencidas', 'PromocionesController@getFacturasVencidas')->name('getFacturasVencidas');
+Route::post('VerificarFacturaVencida', 'PromocionesController@VerificarFacturaVencida')->name('VerificarFacturaVencida');
+Route::get('ImprimirAcciones', 'PromocionesController@ImprimirAcciones')->name('ImprimirAcciones');
+Route::get('ImprimirAccionesV2', 'PromocionesController@ImprimirAccionesV2')->name('ImprimirAccionesV2');
+Route::get('MetricasRifa', 'PromocionesController@MetricasRifa')->name('MetricasRifa');
+Route::get('getChartRifa', 'PromocionesController@getChartRifa')->name('getChartRifa');
+Route::get('SendAcciones/{cliente}', 'PromocionesController@SendAcciones')->name('SendAcciones');
+Route::get('ExportRifa/{tipo}', 'PromocionesController@ExportRifa')->name('ExportRifa');
+Route::get('ReporteClientesRifa/{cliente}', 'PromocionesController@ReporteClientesRifa')->name('ReporteClientesRifa');
+Route::get('ReporteClientesRifaPDF/{cliente}', 'PromocionesController@ReporteClientesRifaPDF')->name('ReporteClientesRifaPDF');
+Route::get('qrCliente/{cliente}', 'PromocionesController@qrCliente')->name('qrCliente');
+
+// RUTAS PARA CLIENTES
+Route::get('Clientes', 'ClientesController@index')->name('Clientes');
+Route::get('getClientes', 'ClientesController@getClientes')->name('getClientes');
+Route::post('getFactura', 'ClientesController@getFactura')->name('getFactura');
+Route::post('getFacturaDetalle', 'ClientesController@getFacturaDetalle')->name('getFacturaDetalle');
+Route::post('getFacturaPagos', 'ClientesController@getFacturaPagos')->name('getFacturaPagos');
+Route::post('getClienteById', 'ClientesController@getClienteById')->name('getClienteById');

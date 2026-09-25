@@ -9,6 +9,50 @@ $(document).on('click', '.img-fluid', function (e) {
 
     $(".swal2-popup").css('width', '50%');
 })
+
+function renderPaginacion(dt, $nav, $info) {
+    var info = dt.page.info();
+    var desde = info.recordsDisplay === 0 ? 0 : info.start + 1;
+    if ($info && $info.length) $info.text('Mostrando ' + desde + ' a ' + info.end + ' de ' + info.recordsDisplay + ' registros');
+
+    var pages = info.pages;
+    var cur = info.page;
+    var html = '<a href="#" class="pagina-nav' + (cur === 0 || pages === 0 ? ' disabled' : '') + '" data-page="' + (cur - 1) + '">Anterior</a>';
+
+    if (pages > 0) {
+        var inicio = Math.max(0, cur - 2);
+        var fin = Math.min(pages - 1, cur + 2);
+        if (inicio > 0) {
+            html += '<a href="#" class="pagina" data-page="0">1</a>';
+            if (inicio > 1) html += '<span class="paginas-ellipsis">…</span>';
+        }
+        for (var p = inicio; p <= fin; p++) {
+            html += '<a href="#" class="pagina' + (p === cur ? ' activa' : '') + '" data-page="' + p + '">' + (p + 1) + '</a>';
+        }
+        if (fin < pages - 1) {
+            if (fin < pages - 2) html += '<span class="paginas-ellipsis">…</span>';
+            html += '<a href="#" class="pagina" data-page="' + (pages - 1) + '">' + pages + '</a>';
+        }
+    }
+
+    html += '<a href="#" class="pagina-nav' + (cur === pages - 1 || pages === 0 ? ' disabled' : '') + '" data-page="' + (cur + 1) + '">Siguiente</a>';
+    $nav.html(html);
+}
+
+function onTablaDraw(settings) {
+    var dt = this.api();
+    var $panel = $(dt.table().node()).closest('.panel-fact');
+    renderPaginacion(dt, $panel.find('.paginacion-custom'), $panel.find('.panel-footer > span').first());
+}
+
+$(document).on('click', '.panel-fact .paginacion-custom .pagina, .panel-fact .paginacion-custom .pagina-nav', function(e) {
+    e.preventDefault();
+    if ($(this).hasClass('disabled')) return;
+    var page = parseInt($(this).data('page'), 10);
+    var dt = $(this).closest('.panel-fact').find('table.dataTable').DataTable();
+    dt.page(page).draw('page');
+});
+
 $(document).ready(function() {
     fullScreen();
     //AGREGO LA RUTA AL NAVEGADOR
@@ -106,7 +150,9 @@ $(document).ready(function() {
             'dataSrc': '',
         },
         "info":    true,
+        "dom": 'rt',
         "lengthMenu": [[10,30,50,100,-1], [20,30,50,100,"Todo"]],
+        "drawCallback": onTablaDraw,
         "language": {
             "info": infoTable,
             "infoFiltered": "(Filtrado de _MAX_ total entradas)",
@@ -148,7 +194,9 @@ function InventarioB004() {
             'dataSrc': '',
         },
         "info":    false,
+        "dom": 'rt',
         "lengthMenu": [[5,10,50,-1], [5,10,100,"Todo"]],
+        "drawCallback": onTablaDraw,
         "language": {
             "zeroRecords": "No hay coincidencias",
             "loadingRecords": "Cargando datos...",
@@ -190,7 +238,9 @@ function liquidacionPorMeses(valor) {
             'dataSrc': '',
         },
         "info":    false,
+        "dom": 'rt',
         "lengthMenu": [[5,10,50,-1], [5,10,100,"Todo"]],
+        "drawCallback": onTablaDraw,
         "language": {
             "zeroRecords": "No hay coincidencias",
             "loadingRecords": "Cargando datos...",
@@ -237,6 +287,10 @@ function descargarArchivo( tipo ) {
     }else {
         location.href = "desInventario/"+tipo+"/ND";
     }    
+}
+
+function descargarBodega004() {
+    location.href = "desInventarioB004";
 }
 
 $('#InputDtShowSearchFilterArt').on( 'keyup', function () {
@@ -368,7 +422,10 @@ function getDetalleArticulo(articulo, descripcion,LicExpira) {
         $("#IdUnidadMedida").html(data.UNIDAD_ALMACEN);
         $("#IdUnidadMedidaSpan").html(data.UNIDAD_ALMACEN);
 
-        $("#id_disponibles").html(data.CANT_TOTAL_DISP)
+        $("#id_disponibles").html(data.CANT_TOTAL_DISP);
+
+        $("#ULTIMA_COMPRA").html("<strong><a href=OrdenCompraDetalle/"+data.ULTIMA_COMPRA+" target='_blank'>"+data.ULTIMA_COMPRA+"</a></strong>");
+
 
     });
 
@@ -383,6 +440,7 @@ function getDetalleArticulo(articulo, descripcion,LicExpira) {
     .append(`<tr><td colspan='5'><center>Aún no ha realizado ninguna busqueda</center></td></tr>`);
 
     $("#mdDetalleArt").modal('show');
+    $("#btnHistoriaArticulo").attr("href", "{{url('/HistoricoArticulos')}}?art=" + articulo);
 
    
 
@@ -501,10 +559,10 @@ function getPrecioMiFic(articulo) {
         data: {},
         async: true,
         success: function(precios) {
-            console.log(precios.Precio_mific_farmacia)
             $("#id_precio_mific_farmacia").text(precios.Precio_mific_farmacia);
-            $("#id_precio_mific_public").text(precios.Precio_mific_public)
-           
+            $("#id_precio_mific_public").text(precios.Precio_mific_public);
+            $("#mific_comentarios").text(precios.mific_comentarios);
+            $("#txt_mific").text(precios.MIFIC);
         }
     })
 }
@@ -724,8 +782,7 @@ $("#btnSearch").click(function() {
 
                     $.each(api.column(4, { page: 'all' }).data(), function (_, group) {
                         var cant = api.column(9, { page: 'all' }).data()[_];
-                        cant = parseFloat(cant);
-                        console.log(cant)
+                        cant = parseFloat(String(cant).replace(/,/g, ''));
                         if(cant >= 0){
 
                             switch (group) {

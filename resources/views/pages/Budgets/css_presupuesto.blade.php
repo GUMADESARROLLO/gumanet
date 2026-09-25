@@ -11,6 +11,9 @@
     .bg-umk {
       background-color: var(--corporate-blue) !important;
     }
+    .bg-umk2 {
+      background-color: #273b7a;
+    }
     body {
       background-color: #e9ecef !important;
     }
@@ -41,6 +44,8 @@
       font-weight: bold;
       text-align: left;
     }
+
+    #mdl-detalle-pedido-factura .info-cell.full { grid-column: 1 / -1; }
     
 
     .item-left {
@@ -95,9 +100,20 @@
     }
 
 
-    #tbl_topsku_clientes thead th, #id_exp_detalles thead th {
-      background-color: #802980 !important;
-      color: #fff !important;
+    /* Remove padding/margin from card-body and table-responsive for these tables */
+    .card:has(#tbl_vendedores) .card-body,
+    .card:has(#tbl_pedidos_facturados) .card-body {
+        padding: 0 !important;
+    }
+    .card:has(#tbl_vendedores) .table-responsive,
+    .card:has(#tbl_pedidos_facturados) .table-responsive {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    #tbl_topsku_clientes thead th, #id_exp_detalles thead th, #tbl_vendedores thead th, #tbl_pedidos_facturados thead th {
+      background-color: #f9f9f9 !important;
+      color: #000000 !important;
       border-color: rgba(255,255,255,0.08);
     }
 
