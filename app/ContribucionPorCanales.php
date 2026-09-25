@@ -312,8 +312,10 @@ class ContribucionPorCanales extends Model
 
     public static function calcularCanales($fechaIni, $fechaEnd)
     {
+
+        DB::connection('sqlsrv')->statement("SET NOCOUNT ON ; EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion"); 
         
-        DB::connection('sqlsrv')->statement("SET NOCOUNT ON ; EXEC PRODUCCION.dbo.pr_calcular_canal_contribucion");        
+        
         ContribucionPorCanalesTable::where(function ($query) use ($fechaIni, $fechaEnd) {
             $query->where('FECHA', '<', $fechaIni)
                 ->orWhere('FECHA', '>', $fechaEnd);
