@@ -178,7 +178,7 @@ class ContribucionPorCanales extends Model
                 }
             }
             foreach ($row->getInventario as $disponible) {
-                if ($disponible->BODEGA == '002') {
+                if ($disponible->BODEGA == '002' || $disponible->BODEGA == '005' || $disponible->BODEGA == '006') {
                     $inventario += $disponible->CANT_DISPONIBLE;
                 }
             }
