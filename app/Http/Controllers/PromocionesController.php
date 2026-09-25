@@ -59,6 +59,38 @@ class PromocionesController extends Controller
         return response()->json($InfoFactura);
     }
 
+    public function VerificarFacturaAnulada(Request $request)
+    {
+        $Factura = $request->Factura;
+        $resultado = Facturas::VerificarFacturaAnulada($Factura);
+        return response()->json($resultado);
+    }
+
+    public function getFacturasAnuladas()
+    {
+        $Facturas = Facturas::getFacturasAnuladasPendientes();
+
+        return response()->json([
+            'FACTURAS' => $Facturas
+        ]);
+    }
+
+    public function VerificarFacturaVencida(Request $request)
+    {
+        $Factura = $request->Factura;
+        $resultado = Facturas::VerificarFacturaVencida($Factura);
+        return response()->json($resultado);
+    }
+
+    public function getFacturasVencidas()
+    {
+        $Facturas = Facturas::getFacturasVencidas();
+
+        return response()->json([
+            'FACTURAS' => $Facturas
+        ]);
+    }
+
     public function MetricasRifa()
     {
         $raw = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.view_gnet_rifa_stat ORDER BY 1");
@@ -328,12 +360,22 @@ class PromocionesController extends Controller
         $Acciones = Facturas::ImprimirAcciones($request);
         $InfoFactura = Facturas::getInfoFactura($request->Factura);
 
-        $UrlQR = QrCode::size(150)->generate('https://carro.unimarksa.com/api/Perfil/' . $InfoFactura->CLIENTE);
+        $UrlQR = QrCode::size(80)->generate('https://carro.unimarksa.com/api/Perfil/' . $InfoFactura->CLIENTE);
         
         //$Pdf = PDF::loadView('pages.Promociones.RifaCar.Imprimir', compact('Acciones', 'InfoFactura'));
         //return $Pdf->download('Acciones.pdf');
         return view('pages.Promociones.RifaCar.Voucher', compact('Acciones', 'InfoFactura', 'UrlQR'));
         
+    }
+
+    public function ImprimirAccionesV2(Request $request)
+    {
+        $Acciones = Facturas::ImprimirAcciones($request);
+        $InfoFactura = Facturas::getInfoFactura($request->Factura);
+
+        $UrlQR = QrCode::size(80)->generate('https://carro.unimarksa.com/api/Perfil/' . $InfoFactura->CLIENTE);
+        
+        return view('pages.Promociones.RifaCar.voucher-v2', compact('Acciones', 'InfoFactura', 'UrlQR'));
     }
 
 }

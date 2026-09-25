@@ -72,23 +72,23 @@ body {
 }
 
 .content-wrap {
-    padding: 20px;
+    padding: 10px;
 }
 
 .content-block {
-    padding: 0 0 20px;
+    padding: 0 0 10px;
 }
 
 .header {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .footer {
     width: 100%;
     clear: both;
     color: #999;
-    padding: 20px;
+    padding: 10px;
 }
 .footer a {
     color: #999;
@@ -238,13 +238,13 @@ a {
 }
 .btn-acciones {
     display: inline-block;
-    margin: 5px 5px 5px 0px;
+    margin: 5px 2px 5px 0px;
     padding: 5px 5px 5px 5px;
     font-family: arial, sans-serif;
     font-weight: bold;
     text-decoration: none;
-    border: 2px solid #000;
-    border-radius: 32px;
+    //border: 2px solid #000;
+    //border-radius: 32px;
     color: #000;
     transition: 0.2s ease-in-out;
 }

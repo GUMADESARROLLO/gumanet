@@ -1,7 +1,51 @@
 <script>
 	var TableExcel;
 	dta_table_excel = [];
-	var isError = false
+var isError = false
+
+function renderPaginacionTransito(dt, $nav, $info) {
+    var info = dt.page.info();
+    var desde = info.recordsDisplay === 0 ? 0 : info.start + 1;
+    $info.text('Mostrando ' + desde + ' a ' + info.end + ' de ' + info.recordsDisplay + ' registros');
+
+    var pages = info.pages;
+    var cur = info.page;
+    var html = '<a href="#" class="pagina-nav' + (cur === 0 || pages === 0 ? ' disabled' : '') + '" data-page="' + (cur - 1) + '">Anterior</a>';
+
+    if (pages > 0) {
+        var inicio = Math.max(0, cur - 2);
+        var fin = Math.min(pages - 1, cur + 2);
+        if (inicio > 0) {
+            html += '<a href="#" class="pagina" data-page="0">1</a>';
+            if (inicio > 1) html += '<span class="paginas-ellipsis">…</span>';
+        }
+        for (var p = inicio; p <= fin; p++) {
+            html += '<a href="#" class="pagina' + (p === cur ? ' activa' : '') + '" data-page="' + p + '">' + (p + 1) + '</a>';
+        }
+        if (fin < pages - 1) {
+            if (fin < pages - 2) html += '<span class="paginas-ellipsis">…</span>';
+            html += '<a href="#" class="pagina" data-page="' + (pages - 1) + '">' + pages + '</a>';
+        }
+    }
+
+    html += '<a href="#" class="pagina-nav' + (cur === pages - 1 || pages === 0 ? ' disabled' : '') + '" data-page="' + (cur + 1) + '">Siguiente</a>';
+    $nav.html(html);
+}
+
+function onTablaDrawTransito() {
+    var dt = this.api();
+    var $panel = $(dt.table().node()).closest('.panel-fact');
+    renderPaginacionTransito(dt, $panel.find('.paginacion-custom'), $panel.find('.panel-footer > span').first());
+}
+
+$(document).on('click', '#dtInvCompleto_wrapper ~ .panel-footer .pagina, #dtInvCompleto_wrapper ~ .panel-footer .pagina-nav, .panel-fact .paginacion-custom .pagina, .panel-fact .paginacion-custom .pagina-nav', function(e) {
+    e.preventDefault();
+    if ($(this).hasClass('disabled')) return;
+    var page = parseInt($(this).data('page'), 10);
+    var dt = $(this).closest('.panel-fact').find('table.dataTable').DataTable();
+    dt.page(page).draw('page');
+});
+
 $(document).ready(function() {
     fullScreen();
     inicializaControlFecha();
@@ -140,6 +184,8 @@ function InitTable(estado){
 		},
 		'destroy' : true,
 		'info': false,
+		"dom": 'rt',
+		"drawCallback": onTablaDrawTransito,
 		"lengthMenu": [[12,10,20,100,-1], [12,10,20,100,"Todo"]],
 		"language": {
 			"infoFiltered": "(Filtrado de _MAX_ total entradas)",

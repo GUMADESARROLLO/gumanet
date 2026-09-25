@@ -2,9 +2,16 @@
 .swal-qr-popup { box-shadow: none !important; background: transparent !important; padding: 0 !important; width: auto !important; }
 </style>
 <script>
+window.ROL_USUARIO = {{ Auth::user()->role }};
+var ES_ROL_7 = window.ROL_USUARIO === 14;
+
 $(document).ready(function() {
     //inicializaControlFecha();
     fullScreen();
+
+    if (ES_ROL_7) {
+        $('#btn_revertir_acciones').hide();
+    }
 
 
     const yearActual = moment().year();
@@ -42,6 +49,10 @@ $(document).ready(function() {
             'Este Mes': [
                 moment.max(moment().startOf('month'), minDate),
                 moment.min(moment().endOf('month'), maxDate)
+            ],
+            'Toda la Promo': [
+                minDate,
+                maxDate
             ]
         },
 
@@ -148,6 +159,10 @@ $(document).ready(function() {
     });
 
     $("#btn_revertir_acciones").on('click', function() {
+        if (ES_ROL_7) {
+            Swal.fire('Sin permiso', 'No tienes permisos para revertir acciones.', 'warning');
+            return;
+        }
         var factura = $('#lbl_factura').html();
         $('#ModalAcciones').modal('hide');
 
@@ -218,6 +233,10 @@ $(document).ready(function() {
     }
 
     function AsignarAcciones(factura) {
+        if (ES_ROL_7) {
+            Swal.fire('Sin permiso', 'No tienes permisos para asignar acciones.', 'warning');
+            return;
+        }
         Swal.fire({
             title: '¿Asignar acciones?',
             text: `Factura: ${factura}`,
@@ -256,6 +275,11 @@ $(document).ready(function() {
     }
 
     function updateSelectionToolbar() {
+        if (ES_ROL_7) {
+            $('#selection-toolbar').removeClass('d-flex').addClass('d-none');
+            $('#btn-aplicar-masivo').prop('disabled', true);
+            return;
+        }
         var $checkboxes = $('.row-checkbox', $('#tbl_ordenes_compras'));
         var $checked = $checkboxes.filter(':checked');
         var count = $checked.length;
@@ -276,6 +300,10 @@ $(document).ready(function() {
     }
 
     async function AplicarAccionesSeleccionadas() {
+        if (ES_ROL_7) {
+            Swal.fire('Sin permiso', 'No tienes permisos para asignar acciones masivamente.', 'warning');
+            return;
+        }
         var facturas = [];
         var omitidas = 0;
         $('.row-checkbox:checked').each(function() {
@@ -361,9 +389,7 @@ $(document).ready(function() {
                         <div class="d-flex flex-column align-items-center justify-content-center">
                             <div class="text-center">
                                 No hay acciones registradas <br>
-                                <a href="#" onclick="AsignarAcciones('${Factura}')">
-                                    Asignar acciones
-                                </a>
+                                ${ES_ROL_7 ? 'La asignación de acciones no está disponible.' : `<a href="#" onclick="AsignarAcciones('${Factura}')">Asignar acciones</a>`}
                             </div>
                         </div>
                     </div>
@@ -374,7 +400,11 @@ $(document).ready(function() {
             );
 
             $('#btn_imprimir_acciones').prop('disabled', (Acciones.length === 0 ? true : false));
-            $('#btn_revertir_acciones').prop('disabled', (Acciones.length === 0 ? true : false));
+            if (ES_ROL_7) {
+                $('#btn_revertir_acciones').prop('disabled', true);
+            } else {
+                $('#btn_revertir_acciones').prop('disabled', (Acciones.length === 0 ? true : false));
+            }
 
     }
     
@@ -390,18 +420,20 @@ $(document).ready(function() {
             order: [[7, 'desc']],
             columns: [
                 { 
-                    title: '<div class="text-center"><input type="checkbox" id="select-all" class="form-check-input m-0"></div>', 
+                    title: ES_ROL_7 ? '<div class="text-center"></div>' : '<div class="text-center"><input type="checkbox" id="select-all" class="form-check-input m-0"></div>', 
                     data: null, 
                     className: 'text-center align-middle', 
                     orderable: false,
                     render: function(data) {
+                        if (ES_ROL_7) {
+                            return '<div class="d-flex justify-content-center align-items-center h-100"></div>';
+                        }
                         return '<div class="d-flex justify-content-center align-items-center h-100"><input type="checkbox" class="row-checkbox form-check-input m-0" value="' + data.FACTURA + '" data-isaccion="' + data.IsAccion + '"></div>';
                     }
                 },
                 { title: 'FACTURA', data: 'FACTURA', className: 'text-center', render: function(data, type, row) {
                     const rowData = encodeURIComponent(JSON.stringify(row));
-                    return `<strong><a href='#!' onclick="OpenModal('${rowData}')">${data}</a>
-                    </strong>`;
+                    return `<strong><a href='#!' onclick="OpenModal('${rowData}')">${data}</a></strong>`;
                 }},
                 
                 { title: 'CLIENTE', data: 'CLIENTE', className: 'text-center',render: function(data, type, row) {
@@ -451,8 +483,18 @@ $(document).ready(function() {
         $("#TOTAL_ACCIONES").html(`${numeral(data.FACTURACION.TOTAL_ACCIONES).format('0,0.00')}`);
         $("#ULTIMA_ACCION").html(`${data.FACTURACION.ULTIMA_ACCION}`);
 
-        $("#TOTAL_SIN_ACCIONES").text("Sin Acciones: " + data.FACTURACION.TOTAL_SIN_ACCIONES);
+        var sinAcciones = data.FACTURACION.TOTAL_SIN_ACCIONES;
+        $("#TOTAL_SIN_ACCIONES").text("Sin Acciones: " + sinAcciones);
+        $("#badge-pendientes").text("Pendientes " + sinAcciones).toggle(sinAcciones > 0);
         $("#porcentaje-disponible").html('Disponible: <strong>' + data.FACTURACION.PORCENTAJE_DISPONIBLE + '%</strong>');
+
+        const factPendietes = data.FACTURACION.FACT_ANULADAS_PEND;
+
+        $("#btn_anular_factura").text(factPendietes > 0 ? `Anular ( ${factPendietes} )` : "Anular").show();
+
+        const factVencidas = data.FACTURACION.FACT_VENCIDAS_PEND;
+
+        $("#btn_vencidas_factura").text(factVencidas > 0 ? `Vencidas ( ${factVencidas} )` : "Vencidas").show();
 
         $("#acciones-asignadas").html("Asignadas: " + numeral(data.FACTURACION.TOTAL_ACCIONES_ASIG).format('0,0'))
 
@@ -746,4 +788,403 @@ window.descargarQR = function() {
             eneableButton(false,null)
         }
     }
+
+    async function AnularFactura(Factura) {
+        if (ES_ROL_7) return;
+        $('#anular-step1').show();
+        $('#anular-step2').hide();
+        $('#anular-step-error').hide();
+        $('#input-factura-anular').val('');
+        $('#input-justificacion').val('');
+        $('#buscar-factura-anular').val('');
+        $('#ModalAnularFactura').modal('show');
+
+        if (Factura) {
+            VerificarFactura(Factura);
+        } else {
+            CargarFacturasAnuladas();
+        }
+    }
+
+    $(document).on('click', '#btn_abrir_anular', function() {
+        AnularFactura('');
+    });
+
+    async function VencidasFactura() {
+        if (ES_ROL_7) return;
+        $('#vencida-step1').show();
+        $('#vencida-step2').hide();
+        $('#vencida-step-error').hide();
+        $('#input-factura-vencida').val('');
+        $('#input-justificacion-vencida').val('');
+        $('#buscar-factura-vencida').val('');
+        $('#ModalFacturasVencidas').modal('show');
+        CargarFacturasVencidas();
+    }
+
+    $(document).on('click', '#btn_abrir_vencidas', function() {
+        VencidasFactura();
+    });
+
+    async function CargarFacturasVencidas() {
+        var selector = '#tbl_facturas_vencidas';
+
+        if ($(selector).hasClass('dataTable')) {
+            $(selector).DataTable().destroy();
+        }
+
+        $(selector).html('<tbody><tr><td class="text-center py-4"><i class="fas fa-spinner fa-spin fa-2x text-muted"></i></td></tr></tbody>');
+
+        try {
+            var response = await fetch('getFacturasVencidas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            });
+
+            var result = await response.json();
+            TablaFacturasVencidas(selector, result.FACTURAS || []);
+        } catch (error) {
+            console.error('Error al cargar facturas vencidas:', error);
+            $('#vnc-error-msg').text('Error de conexión al cargar las facturas vencidas');
+            $('#vencida-step1').hide();
+            $('#vencida-step-error').show();
+        }
+    }
+
+    function TablaFacturasVencidas(selector, data) {
+        if ($(selector).hasClass('dataTable')) {
+            $(selector).DataTable().destroy();
+        }
+
+        $(selector).empty();
+
+        $(selector).DataTable({
+            data: data,
+            destroy: true,
+            paging: true,
+            pageLength: 10,
+            info: false,
+            searching: true,
+            ordering: true,
+            order: [[4, 'desc']],
+            columns: [
+                { title: 'FACT.', data: 'FACTURA', className: 'text-center', render: function(data) {
+                    return '<a href="#!" class="fw-bold link-factura-vencida" data-factura="' + data + '">' + data + '</a>';
+                }},
+                { title: 'NOMBRE', data: 'NOMBRE', className: 'text-left' },
+                { title: 'TOTAL C$', data: 'TOTAL_FACTURA', className: 'text-right', render: function(data) {
+                    return numeral(data).format('0,0.00');
+                }},
+                { title: 'ACCIONES', data: 'ACCIONES', className: 'text-center', render: function(data) {
+                    return numeral(data).format('0,0');
+                }},
+                { title: 'FECHA', data: 'FECHA', className: 'text-center' },
+                { title: 'D. VENC.', data: 'DVENCIDOS', className: 'text-center', render: function(data) {
+                    return '<span class="badge bg-danger">' + numeral(data).format('0,0') + '</span>';
+                }},
+            ],
+            language: {
+                emptyTable: 'No hay facturas vencidas',
+                zeroRecords: 'No se encontraron facturas',
+                paginate: { first: 'Primero', last: 'Último', next: 'Siguiente', previous: 'Anterior' }
+            }
+        });
+
+        $(selector + '_length').hide();
+        $(selector + '_filter').hide();
+    }
+
+    $(document).on('keyup', '#buscar-factura-vencida', function() {
+        if ($('#tbl_facturas_vencidas').hasClass('dataTable')) {
+            $('#tbl_facturas_vencidas').DataTable().search(this.value).draw();
+        }
+    });
+
+    $(document).on('click', '.link-factura-vencida', function(e) {
+        e.preventDefault();
+        VerificarFacturaVencida($(this).data('factura'));
+    });
+
+    async function VerificarFacturaVencida(numFactura) {
+        if (!numFactura) return;
+
+        Swal.fire({ title: 'Verificando factura...', allowOutsideClick: false, showConfirmButton: false, didOpen: function() { Swal.showLoading(); } });
+
+        try {
+            var response = await fetch('VerificarFacturaVencida', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ Factura: numFactura })
+            });
+
+            var data = await response.json();
+            Swal.close();
+
+            if (!data.status) {
+                $('#vnc-error-msg').text(data.message);
+                $('#vencida-step1').hide();
+                $('#vencida-step2').hide();
+                $('#vencida-step-error').show();
+                return;
+            }
+
+            var info = data.data;
+            $('#vnc-factura').text(info.FACTURA);
+            $('#vnc-nombre').text(info.NOMBRE);
+            $('#vnc-cliente').text(info.CLIENTE);
+            $('#vnc-fecha').text(info.FECHA);
+            $('#vnc-total').text('C$ ' + numeral(info.TOTAL_FACTURA).format('0,0.00'));
+            $('#vnc-acciones').text(info.ACCIONES_ASIGNADAS + ' / ' + info.ACCIONES);
+            $('#vnc-vendedor').text(info.VENDEDOR);
+            $('#vnc-nombre-vendedor').text(info.NOMBRE_VENDEDOR);
+            $('#vnc-dvencidos').text(info.DVENCIDOS + ' días');
+            $('#input-factura-vencida').val(info.FACTURA);
+            $('#input-justificacion-vencida').val('');
+            $('#vencida-step1').hide();
+            $('#vencida-step2').show();
+        } catch (error) {
+            Swal.close();
+            $('#vnc-error-msg').text('Error de conexión al verificar la factura');
+            $('#vencida-step1').hide();
+            $('#vencida-step2').hide();
+            $('#vencida-step-error').show();
+        }
+    }
+
+    $(document).on('click', '#btn-cancelar-vencida', function() {
+        $('#vencida-step2').hide();
+        $('#vencida-step1').show();
+        CargarFacturasVencidas();
+    });
+
+    $(document).on('click', '#btn-cerrar-error-vencida', function() {
+        $('#vencida-step-error').hide();
+        $('#vencida-step1').show();
+        CargarFacturasVencidas();
+    });
+
+    $(document).on('click', '#btn-confirmar-vencida', async function() {
+        var numFactura = $('#input-factura-vencida').val().trim();
+        var justificacion = $('#input-justificacion-vencida').val().trim();
+
+        if (!justificacion) {
+            Swal.fire({ icon: 'warning', title: 'Campo vacío', text: 'Ingrese una justificación para la reversión' });
+            return;
+        }
+
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Procesando...');
+
+        try {
+            var response = await fetch('RevertirAcciones', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ Factura: numFactura, Motivo: justificacion })
+            });
+
+            var data = await response.json();
+            $btn.prop('disabled', false).html('<i class="fas fa-check me-1"></i>Confirmar');
+
+            if (data.status) {
+                $('#ModalFacturasVencidas').modal('hide');
+                Swal.fire({ icon: 'success', title: 'Factura revertida', text: data.message || 'La factura fue revertida correctamente', timer: 2000, showConfirmButton: false });
+                var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+                CallFilter(desde, hasta);
+            } else {
+                Swal.fire({ icon: 'error', title: 'Error', text: data.message || 'Error al revertir la factura' });
+            }
+        } catch (error) {
+            $btn.prop('disabled', false).html('<i class="fas fa-check me-1"></i>Confirmar');
+            Swal.fire({ icon: 'error', title: 'Error', text: 'Error de conexión al revertir la factura' });
+        }
+    });
+
+    async function CargarFacturasAnuladas() {
+        var selector = '#tbl_facturas_anular';
+
+        if ($(selector).hasClass('dataTable')) {
+            $(selector).DataTable().destroy();
+        }
+
+        $(selector).html('<tbody><tr><td class="text-center py-4"><i class="fas fa-spinner fa-spin fa-2x text-muted"></i></td></tr></tbody>');
+
+        try {
+            var response = await fetch('getFacturasAnuladas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            });
+
+            var result = await response.json();
+            TablaFacturasAnuladas(selector, result.FACTURAS || []);
+        } catch (error) {
+            console.error('Error al cargar facturas anuladas:', error);
+            $('#anl-error-msg').text('Error de conexión al cargar las facturas anuladas');
+            $('#anular-step1').hide();
+            $('#anular-step-error').show();
+        }
+    }
+
+    function TablaFacturasAnuladas(selector, data) {
+        if ($(selector).hasClass('dataTable')) {
+            $(selector).DataTable().destroy();
+        }
+
+        $(selector).empty();
+
+        $(selector).DataTable({
+            data: data,
+            destroy: true,
+            paging: true,
+            pageLength: 10,
+            info: false,
+            searching: true,
+            ordering: true,
+            order: [[4, 'desc']],
+            columns: [
+                { title: 'FACTURA', data: 'FACTURA', className: 'text-center', render: function(data) {
+                    return '<a href="#!" class="fw-bold link-factura-anular" data-factura="' + data + '">' + data + '</a>';
+                }},
+                { title: 'NOMBRE', data: 'NOMBRE', className: 'text-left' },
+                { title: 'TOTAL C$', data: 'TOTAL_FACTURA', className: 'text-right', render: function(data) {
+                    return numeral(data).format('0,0.00');
+                }},
+                { title: 'ACCIONES', data: 'ACCIONES', className: 'text-center', render: function(data) {
+                    return numeral(data).format('0,0');
+                }},
+                { title: 'FECHA', data: 'FECHA', className: 'text-center' },
+            ],
+            language: {
+                emptyTable: 'No hay facturas anuladas pendientes',
+                zeroRecords: 'No se encontraron facturas',
+                paginate: { first: 'Primero', last: 'Último', next: 'Siguiente', previous: 'Anterior' }
+            }
+        });
+
+        $(selector + '_length').hide();
+        $(selector + '_filter').hide();
+    }
+
+    $(document).on('keyup', '#buscar-factura-anular', function() {
+        if ($('#tbl_facturas_anular').hasClass('dataTable')) {
+            $('#tbl_facturas_anular').DataTable().search(this.value).draw();
+        }
+    });
+
+    $(document).on('click', '.link-factura-anular', function(e) {
+        e.preventDefault();
+        VerificarFactura($(this).data('factura'));
+    });
+
+    async function VerificarFactura(numFactura) {
+        if (!numFactura) return;
+
+        Swal.fire({ title: 'Verificando factura...', allowOutsideClick: false, showConfirmButton: false, didOpen: function() { Swal.showLoading(); } });
+
+        try {
+            var response = await fetch('VerificarFacturaAnulada', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ Factura: numFactura })
+            });
+
+            var data = await response.json();
+            Swal.close();
+
+            if (!data.status) {
+                $('#anl-error-msg').text(data.message);
+                $('#anular-step1').hide();
+                $('#anular-step2').hide();
+                $('#anular-step-error').show();
+                return;
+            }
+
+            var info = data.data;
+            $('#anl-factura').text(info.FACTURA);
+            $('#anl-nombre').text(info.NOMBRE);
+            $('#anl-cliente').text(info.CLIENTE);
+            $('#anl-fecha').text(info.FECHA);
+            $('#anl-total').text('C$ ' + numeral(info.TOTAL_FACTURA).format('0,0.00'));
+            $('#anl-acciones').text(info.ACCIONES_ASIGNADAS + ' / ' + info.ACCIONES);
+            $('#anl-vendedor').text(info.VENDEDOR);
+            $('#anl-nombre-vendedor').text(info.NOMBRE_VENDEDOR);
+            $('#input-factura-anular').val(info.FACTURA);
+            $('#input-justificacion').val('');
+            $('#anular-step1').hide();
+            $('#anular-step2').show();
+        } catch (error) {
+            Swal.close();
+            $('#anl-error-msg').text('Error de conexión al verificar la factura');
+            $('#anular-step1').hide();
+            $('#anular-step2').hide();
+            $('#anular-step-error').show();
+        }
+    }
+
+    $(document).on('click', '#btn-cancelar-anular', function() {
+        $('#anular-step2').hide();
+        $('#anular-step1').show();
+        CargarFacturasAnuladas();
+    });
+
+    $(document).on('click', '#btn-cerrar-error', function() {
+        $('#anular-step-error').hide();
+        $('#anular-step1').show();
+        CargarFacturasAnuladas();
+    });
+
+    $(document).on('click', '#btn-confirmar-anular', async function() {
+        var numFactura = $('#input-factura-anular').val().trim();
+        var justificacion = $('#input-justificacion').val().trim();
+
+        if (!justificacion) {
+            Swal.fire({ icon: 'warning', title: 'Campo vacío', text: 'Ingrese una justificación para la anulación' });
+            return;
+        }
+
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Procesando...');
+
+        try {
+            var response = await fetch('RevertirAcciones', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ Factura: numFactura, Motivo: justificacion })
+            });
+
+            var data = await response.json();
+            $btn.prop('disabled', false).html('<i class="fas fa-check me-1"></i>Confirmar');
+
+            if (data.status) {
+                $('#ModalAnularFactura').modal('hide');
+                Swal.fire({ icon: 'success', title: 'Factura anulada', text: data.message || 'La factura fue anulada correctamente', timer: 2000, showConfirmButton: false });
+                var desde = $('input[name="dt_range"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                var hasta = $('input[name="dt_range"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+                CallFilter(desde, hasta);
+            } else {
+                Swal.fire({ icon: 'error', title: 'Error', text: data.message || 'Error al anular la factura' });
+            }
+        } catch (error) {
+            $btn.prop('disabled', false).html('<i class="fas fa-check me-1"></i>Confirmar');
+            Swal.fire({ icon: 'error', title: 'Error', text: 'Error de conexión al anular la factura' });
+        }
+    });
 </script>

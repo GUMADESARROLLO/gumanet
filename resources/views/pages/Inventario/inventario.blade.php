@@ -1,16 +1,9 @@
 @extends('layouts.main')
-<style>
-  .table thead th {
-    background-color: {{ $Style['Color'] }} !important;
-    color: #fff !important;
-    font-weight: bold !important;
-  }
-
-</style>
 @section('title' , $data['name'])
 @section('name_user' , 'Administrador')
 @section('metodosjs')
   @include('jsViews.js_inventario');
+  @include('pages.Inventario.css_tablas_inventario')
 @endsection
 @section('content')
 
@@ -58,8 +51,14 @@
   </div>
   <div class="row">
       <div class="col-12">
-          <div class="table-responsive mt-3 mb-2">
-              <table class="table table-bordered table-sm" width="100%" id="dtInventarioArticulos"></table>
+          <div class="panel-fact">
+              <div class="table-responsive-wrap">
+                  <table class="table table-sm" width="100%" id="dtInventarioArticulos"></table>
+              </div>
+              <div class="panel-footer">
+                  <span id="info_dtInventarioArticulos">Mostrando 0 registros</span>
+                  <div class="paginacion-custom" id="pag_dtInventarioArticulos"></div>
+              </div>
           </div>
       </div>
   </div><hr>
@@ -102,12 +101,18 @@
         <div class="col-sm-1">
           <div class="form-group">
             <label for="exp-to-excel" class="text-muted">Exportar a</label>
-            <a id="exp-to-excel" href="#!" onclick="descargarArchivo('vencimiento')" class="btn btn-light btn-block text-success float-right"><i class="fas fa-file-excel"></i></a>
+            <a id="exp-to-excel" href="#!" onclick="descargarArchivo('vencimiento')" class="btn btn-success btn-block text-center shadow btn-export-inventario"><i class="fas fa-file-excel"></i></a>
           </div>
         </div>
       </div>
-      <div class="table-responsive mb-5">
-        <table class="table table-bordered table-sm" width="100%" id="tblArticulosVencimiento"></table>
+      <div class="panel-fact">
+        <div class="table-responsive-wrap">
+          <table class="table table-sm" width="100%" id="tblArticulosVencimiento"></table>
+        </div>
+        <div class="panel-footer">
+          <span id="info_tblArticulosVencimiento">Mostrando 0 registros</span>
+          <div class="paginacion-custom" id="pag_tblArticulosVencimiento"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -119,7 +124,7 @@
     <div class="col-sm-12">
       <h1 class="h4 text-info mb-4">Articulos de Bodega 004 - Dañados y Vencidos</h1>
       <div class="row">
-        <div class="col-md-11">
+        <div class="col-md-10">
           <div class="form-group">
             <label for="InputDtShowSearchFilterArtVenc" class="text-muted">Realizar busqueda por Articulo</label>
             <div class="input-group">
@@ -129,7 +134,7 @@
               <input type="text" id="id_search_tble_inventario_vencido" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
             </div>
           </div>
-        </div>        
+        </div>
         <div class="col-sm-1">
           <div class="form-group">
             <label for="InputDtShowColumnsArtic2" class="text-muted">Ver por</label>
@@ -142,9 +147,21 @@
             </select>
           </div>
         </div>
+        <div class="col-sm-1">
+          <div class="form-group">
+            <label for="exp-to-excel-b004" class="text-muted">Exportar a</label>
+            <a id="exp-to-excel-b004" href="#!" onclick="descargarBodega004()" class="btn btn-success btn-block text-center shadow btn-export-inventario"><i class="fas fa-file-excel"></i></a>
+          </div>
+        </div>
       </div>
-      <div class="table-responsive mb-5">
-        <table class="table table-bordered table-sm" width="100%" id="id_tbl_inventario_b004"></table>
+      <div class="panel-fact">
+        <div class="table-responsive-wrap">
+          <table class="table table-sm" width="100%" id="id_tbl_inventario_b004"></table>
+        </div>
+        <div class="panel-footer">
+          <span id="info_id_tbl_inventario_b004">Mostrando 0 registros</span>
+          <div class="paginacion-custom" id="pag_id_tbl_inventario_b004"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -181,17 +198,17 @@
                       </div>
                       @endif
                       <div class="col-md-6 col-lg-6 col-xl-6">
-                        <h5 id="tArticulo" >Quant trident shirts</h5>
+                        <h5 id="tArticulo" >Loading . . . </h5>
                         <div class="d-flex flex-row">                          
                           <span id="id_cod_articulo" >310</span>
                         </div>
                         <div class="mt-1 mb-0 text-muted small">
-                          <span id="IdClaseTerapeutica">CLASE TERAPEUTICA</span>
+                          <span id="IdClaseTerapeutica">Loading . . .</span>
                           <span class="text-primary"> • </span>
-                          <span id="IdLaboratorio">LABORATORIO</span>
+                          <span id="IdLaboratorio">Loading . . .</span>
                           <span class="text-primary"> • </span>
-                          <span id="IdUnidadMedida">UNIDAD MEDIDA<br /></span>
-                          <span><span class="text-primary"> • </span> <span id="IdPresentacion">PRESENTACION</span>
+                          <span id="IdUnidadMedida">Loading . . .<br /></span>
+                          <span><span class="text-primary"> • </span> <span id="IdPresentacion">Loading . . .</span>
                         </div>
                         <div class="mt-1 mb-0 text-muted small" style="display:none">
                           <span>Ultima Orden de Compras</span>

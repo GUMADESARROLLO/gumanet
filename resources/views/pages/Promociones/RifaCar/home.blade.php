@@ -120,8 +120,29 @@
                     <h6 class="mb-0 fw-bold">FACTURAS</h6>
                     <small class="text-white-50">Lista de facturas generadas</small>
                 </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span id="badge-pendientes" class="badge badge-pill bg-danger p-2 blink-red" style="display:none">Pendientes 0</span>
+                    @if(Auth::user()->role != 7)
+                    <button type="button" class="btn btn-outline-light btn-sm" id="btn_abrir_vencidas" title="Facturas vencidas">
+                        <i class="fas fa-hourglass-end me-1"></i> <span id="btn_vencidas_factura">Vencidas</span>
+                    </button>
+                    <button type="button" class="btn btn-outline-light btn-sm" id="btn_abrir_anular" title="Anular factura">
+                        <i class="fas fa-ban me-1"></i> <span id="btn_anular_factura">Anular</span>
+                    </button>
+                    @endif
+                </div>
             </div>
         </div>
+        <style>
+            .blink-red {
+                animation: blink-animation 1s ease-in-out infinite;
+            }
+            @keyframes blink-animation {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
+        </style>
+        @if(Auth::user()->role != 14)
         <div id="selection-toolbar" class="d-none align-items-center justify-content-between px-3 py-2 border-bottom bg-light">
             <span class="small text-muted">
                 <span id="selected-count">0</span> factura(s) seleccionada(s)
@@ -130,6 +151,7 @@
                 <i class="fas fa-check-double me-1"></i>Generar Acciones
             </button>
         </div>
+        @endif
         <div class="card-body p-0">
                 <table id="tbl_ordenes_compras" class="table" style="width:100%">
                 <tfoot>
@@ -182,9 +204,11 @@
                         <button type="button" id="btn_imprimir_acciones" class="btn btn-success flex-fill">
                             <i class="fas fa-print me-2"></i>Imprimir
                         </button>
+                        @if(Auth::user()->role != 7)
                         <button type="button" id="btn_revertir_acciones" class="btn btn-danger flex-fill">
                             <i class="fas fa-undo me-2"></i>Revertir
                         </button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -241,6 +265,205 @@
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Anular Factura -->
+    <div class="modal fade" id="ModalAnularFactura" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white border-bottom-0">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-ban me-2"></i>Anular Factura
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="input-factura-anular">
+                    <div id="anular-step1">
+                       
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i data-feather="search"></i></span>
+                            </div>
+                            <input type="text" class="form-control form-control-sm" placeholder="Buscar factura o cliente..." id="buscar-factura-anular" autocomplete="off">
+                        </div>
+                        <table id="tbl_facturas_anular" class="table table-hover table-sm" style="width:100%"></table>
+                    </div>
+                    <div id="anular-step2" style="display:none">
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Factura</small>
+                                    <strong id="anl-factura"></strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Fecha</small>
+                                    <strong id="anl-fecha"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-2 p-2 bg-light rounded">
+                            <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Cliente</small>
+                            <strong id="anl-cliente"></strong>
+                            <small class="text-muted d-block" id="anl-nombre"></small>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Vendedor</small>
+                                    <strong id="anl-vendedor"></strong>
+                                    <small class="text-muted d-block" id="anl-nombre-vendedor"></small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Acciones</small>
+                                    <strong id="anl-acciones"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Total Factura</small>
+                                    <strong id="anl-total"></strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Estado</small>
+                                    <span class="badge bg-danger">ANULADA</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Justificación <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="input-justificacion" rows="3" placeholder="Motivo de la anulación..."></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-secondary flex-fill" id="btn-cancelar-anular">
+                                <i class="fas fa-arrow-left me-1"></i>Volver
+                            </button>
+                            <button type="button" class="btn btn-danger flex-fill" id="btn-confirmar-anular">
+                                <i class="fas fa-check me-1"></i>Confirmar
+                            </button>
+                        </div>
+                    </div>
+                    <div id="anular-step-error" style="display:none">
+                        <div class="text-center py-3">
+                            <i class="fas fa-exclamation-triangle text-danger fa-3x mb-3"></i>
+                            <h6 class="text-danger fw-bold" id="anl-error-msg"></h6>
+                        </div>
+                        <button type="button" class="btn btn-secondary w-100" id="btn-cerrar-error">
+                            <i class="fas fa-arrow-left me-1"></i>Volver al listado
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Facturas Vencidas -->
+    <div class="modal fade" id="ModalFacturasVencidas" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-warning text-dark border-bottom-0">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-hourglass-end me-2"></i>Facturas Vencidas
+                    </h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="input-factura-vencida">
+                    <div id="vencida-step1">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i data-feather="search"></i></span>
+                            </div>
+                            <input type="text" class="form-control form-control-sm" placeholder="Buscar factura o cliente..." id="buscar-factura-vencida" autocomplete="off">
+                        </div>
+                        <table id="tbl_facturas_vencidas" class="table table-hover table-sm" style="width:100%"></table>
+                    </div>
+                    <div id="vencida-step2" style="display:none">
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Factura</small>
+                                    <strong id="vnc-factura"></strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Fecha</small>
+                                    <strong id="vnc-fecha"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-2 p-2 bg-light rounded">
+                            <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Cliente</small>
+                            <strong id="vnc-cliente"></strong>
+                            <small class="text-muted d-block" id="vnc-nombre"></small>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Vendedor</small>
+                                    <strong id="vnc-vendedor"></strong>
+                                    <small class="text-muted d-block" id="vnc-nombre-vendedor"></small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Acciones</small>
+                                    <strong id="vnc-acciones"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Total Factura</small>
+                                    <strong id="vnc-total"></strong>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 bg-light rounded">
+                                    <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Días Vencidos</small>
+                                    <strong id="vnc-dvencidos" class="text-danger"></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 p-2 bg-light rounded">
+                            <small class="text-muted d-block text-uppercase" style="font-size:0.65rem">Estado</small>
+                            <span class="badge bg-warning text-dark">VENCIDA</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Justificación <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="input-justificacion-vencida" rows="3" placeholder="Motivo de la reversión..."></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-secondary flex-fill" id="btn-cancelar-vencida">
+                                <i class="fas fa-arrow-left me-1"></i>Volver
+                            </button>
+                            <button type="button" class="btn btn-warning flex-fill" id="btn-confirmar-vencida">
+                                <i class="fas fa-check me-1"></i>Confirmar
+                            </button>
+                        </div>
+                    </div>
+                    <div id="vencida-step-error" style="display:none">
+                        <div class="text-center py-3">
+                            <i class="fas fa-exclamation-triangle text-danger fa-3x mb-3"></i>
+                            <h6 class="text-danger fw-bold" id="vnc-error-msg"></h6>
+                        </div>
+                        <button type="button" class="btn btn-secondary w-100" id="btn-cerrar-error-vencida">
+                            <i class="fas fa-arrow-left me-1"></i>Volver al listado
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

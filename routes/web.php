@@ -19,7 +19,9 @@ Route::post('/getTasksProjects','infraestructura_controller@getTasksProjects');
 
 
 //RUTAS MENU
-Route::get('/Inventario','inventario_controller@index');
+Route::get('/Inventario','inventario_controller@index')->name('Inventario');
+Route::get('/InventarioInn/getArticulos','inventario_controller@getArticulosInn')->name('InventarioInn.getArticulos');
+Route::get('/InventarioInn/getDetalle/{articulo}','inventario_controller@getDetalleArticuloInn')->name('InventarioInn.getDetalle');
 Route::get('/Inventario/Transito/{id}','inventario_controller@InventarioTransito')->name('/Comiciones/Inventario');
 Route::get('/getTransito/{id}/{unidad}', 'inventario_controller@getTransito')->name("getTransito");
 Route::post('/SaveTransito', 'inventario_controller@SaveTransito')->name("SaveTransito");
@@ -31,6 +33,9 @@ Route::post('/Inventario/Transito/SaveTransitoExcel', 'inventario_controller@Sav
 
 //RUTA DE PRODUCCION
 Route::post('/getInfoArticulo', 'inventario_controller@getInfoArticulo')->name("getInfoArticulo");
+Route::get('/HistoricoArticulos', 'inventario_controller@historicoArticulos')->name("HistoricoArticulos");
+Route::get('/getLotesHistorico/{articulo}', 'inventario_controller@getLotesHistorico')->name("getLotesHistorico");
+Route::get('/getTransaccionesLote/{articulo}/{lote}', 'inventario_controller@getTransaccionesLote')->name("getTransaccionesLote");
 
 
 Route::get('/Metas','metas_controller@index');
@@ -94,6 +99,7 @@ Route::post('/lotes','inventario_controller@getLotesArticulo');
 Route::post('/getLotes','inventario_controller@getLotes');
 Route::get('/liqMeses/{valor}','inventario_controller@liquidacionMeses');
 Route::get('/desInventario/{tipo}/{valor}', 'inventario_controller@descargarInventario');
+Route::get('/desInventarioB004', 'inventario_controller@descargarInventarioB004');
 Route::get('/invCompleto', 'inventario_controller@inventarioCompleto');
 Route::get('/invTotalizadoDT', 'inventario_controller@inventarioCompletoTable');
 Route::get('/desInvTotal2', 'inventario_controller@descargarInventarioCompleto');
@@ -392,7 +398,12 @@ Route::post('getFactPromocion', 'PromocionesController@getFactPromocion')->name(
 Route::post('getFactAcciones', 'PromocionesController@getFactAcciones')->name('getFactAcciones');
 Route::post('AsignarAcciones', 'PromocionesController@AsignarAcciones')->name('AsignarAcciones');
 Route::post('RevertirAcciones', 'PromocionesController@RevertirAcciones')->name('RevertirAcciones');
+Route::post('VerificarFacturaAnulada', 'PromocionesController@VerificarFacturaAnulada')->name('VerificarFacturaAnulada');
+Route::post('getFacturasAnuladas', 'PromocionesController@getFacturasAnuladas')->name('getFacturasAnuladas');
+Route::post('getFacturasVencidas', 'PromocionesController@getFacturasVencidas')->name('getFacturasVencidas');
+Route::post('VerificarFacturaVencida', 'PromocionesController@VerificarFacturaVencida')->name('VerificarFacturaVencida');
 Route::get('ImprimirAcciones', 'PromocionesController@ImprimirAcciones')->name('ImprimirAcciones');
+Route::get('ImprimirAccionesV2', 'PromocionesController@ImprimirAccionesV2')->name('ImprimirAccionesV2');
 Route::get('MetricasRifa', 'PromocionesController@MetricasRifa')->name('MetricasRifa');
 Route::get('getChartRifa', 'PromocionesController@getChartRifa')->name('getChartRifa');
 Route::get('SendAcciones/{cliente}', 'PromocionesController@SendAcciones')->name('SendAcciones');

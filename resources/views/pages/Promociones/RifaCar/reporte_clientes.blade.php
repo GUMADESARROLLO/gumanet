@@ -261,7 +261,7 @@
     <div class="mt-xl" style="border-top:1.5px solid #000;border-bottom:1.5px solid #000;padding:8px 0;">
         <p class="fw-bold" style="font-size:13px;margin:0 0 5px 0;">TÉRMINOS Y CONDICIONES</p>
         <p style="font-size:12.5px;margin:0;line-height:1.6;">
-            Promoción válida del <strong>08 de junio al 21 de noviembre de 2026</strong>. Por cada <strong>C$1,500.00 netos en compras</strong> de productos participantes, recibe <strong>una (1) acción electrónica</strong>. Aplica únicamente para clientes del canal farmacia privada con código activo en UNIMARK S.A. Las acciones anuladas por devoluciones, notas de crédito o falta de pago no participan. El sorteo se realizará con base en los resultados de la <strong>Lotería Nacional del 24 de noviembre de 2026</strong>. El ganador deberá estar solvente con UNIMARK S.A. Aplican restricciones. Consulte el reglamento completo en UNIMARK S.A.
+            Promoción válida del <strong>15 de junio al 21 de noviembre de 2026</strong>. Por cada <strong>C$1,500.00 netos en compras</strong> de productos participantes, recibe <strong>una (1) acción electrónica</strong>. Aplica únicamente para clientes del canal farmacia privada con código activo en UNIMARK S.A. Las acciones anuladas por devoluciones, notas de crédito o falta de pago no participan. El sorteo se realizará con base en los resultados de la <strong>Lotería Nacional del 24 de noviembre de 2026</strong>. El ganador deberá estar solvente con UNIMARK S.A. Aplican restricciones. Consulte el reglamento completo en UNIMARK S.A.
         </p>
     </div>
 </div>
