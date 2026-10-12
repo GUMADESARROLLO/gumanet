@@ -63,6 +63,18 @@
         <div class="p-0 px-car">
           <div class="table-responsive flex-between-center scrollbar border border-1 border-300 rounded-2">
           
+            @php
+              // Canales para las columnas de año anterior y mensuales: prefijo => [nombre, color]
+              $canalesExtra = [
+                'F'   => ['FARMACIA',            '#ffc107'],
+                'C'   => ['CADENA FARMACIA',     'peru'],
+                'M'   => ['MAYORISTA',           'burlywood'],
+                'PRI' => ['INSTITUCION PRIVADA', 'limegreen'],
+                'CA'  => ['CRUZ AZUL',           'cornflowerblue'],
+                'PUB' => ['INSTITUCION PUBLICA', 'limegreen'],
+                'ML'  => ['MINSA - LICIT',       'lightskyblue'],
+              ];
+            @endphp
             <table id="table_contribucion" class="table table-bordered table-sm" width="100%">
               <thead>
                 <tr class="bg-blue text-light">
@@ -75,10 +87,11 @@
                   <th colspan="6">INSTITUCION PUBLICA</th>
                   <th colspan="6">MINSA - LICIT</th>
                   <th colspan="6">TOTAL</th>
-                  {{-- PLACEHOLDER: columnas adicionales solicitadas, pendientes de integrar --}}
-                  <th colspan="2">12 MESES PREVIOS</th>
-                  <th colspan="12">VENTA MENSUAL PRIVADO - UNDS</th>
-                  <th colspan="12">VENTA MENSUAL PRIVADO - C$</th>
+                  {{-- Columnas adicionales: año anterior (7 canales + total) y venta mensual por canal --}}
+                  <th colspan="16">AÑO ANTERIOR</th>
+                  @foreach ($canalesExtra as $canal)
+                  <th colspan="24">{{ $canal[0] }} - MENSUAL</th>
+                  @endforeach
                   <th colspan="2">LOTE PROXIMO A VENCER</th>
                   <th colspan="1">CLIENTES</th>
                   <th colspan="3">ULTIMA COMPRA</th>
@@ -134,7 +147,7 @@
                   <th id="Total_Costo"></th>
                   <th id="Total_Contribucion"></th>
                   <th id="Total_Margen"></th>
-                  @for ($i = 0; $i < 33; $i++)
+                  @for ($i = 0; $i < 191; $i++)
                   <th></th>
                   @endfor
                 </tr>
@@ -195,21 +208,27 @@
                     <th style="background-color:gold">T. CTO</th>
                     <th style="background-color:gold">T. CTB</th>
                     <th style="background-color:gold">T. %</th>
-                    <th style="background-color:silver">ANT. UNDS</th>
-                    <th style="background-color:silver">ANT. VTA</th>
+                    @foreach ($canalesExtra as $pref => $canal)
+                    <th style="background-color:{{ $canal[1] }}" class="th-ant">{{ $pref }}. ANT UNDS</th>
+                    <th style="background-color:{{ $canal[1] }}" class="th-ant">{{ $pref }}. ANT VTA</th>
+                    @endforeach
+                    <th style="background-color:gold" class="th-ant">T. ANT UNDS</th>
+                    <th style="background-color:gold" class="th-ant">T. ANT VTA</th>
+                    @foreach ($canalesExtra as $pref => $canal)
                     @for ($i = 1; $i <= 12; $i++)
-                    <th style="background-color:lightsteelblue" class="th-mes" data-mes="{{ $i - 1 }}">UNDS M{{ $i }}</th>
+                    <th style="background-color:{{ $canal[1] }}" class="th-mes" data-mes="{{ $i - 1 }}" data-prefijo="{{ $pref }}. U">{{ $pref }}. U M{{ $i }}</th>
                     @endfor
                     @for ($i = 1; $i <= 12; $i++)
-                    <th style="background-color:lightblue" class="th-mes" data-mes="{{ $i - 1 }}" data-prefijo="C$">C$ M{{ $i }}</th>
+                    <th style="background-color:{{ $canal[1] }}" class="th-mes" data-mes="{{ $i - 1 }}" data-prefijo="{{ $pref }}. C$">{{ $pref }}. C$ M{{ $i }}</th>
                     @endfor
+                    @endforeach
                     <th style="background-color:khaki">LOTE VENCE</th>
                     <th style="background-color:khaki">LOTE CANT.</th>
-                    <th style="background-color:plum">N° CLIENTES</th>
-                    <th style="background-color:lightgreen">ULT. COMPRA</th>
-                    <th style="background-color:lightgreen">ULT. COSTO C$</th>
-                    <th style="background-color:lightgreen">ULT. COSTO US$</th>
-                    <th style="background-color:lightsalmon">% BONIF.</th>
+                    <th style="background-color:plum" title="Clientes distintos que compraron el SKU en el periodo">N° CLIENTES</th>
+                    <th style="background-color:lightgreen" title="Fecha del ultimo ingreso por compra (embarque)">ULT. COMPRA</th>
+                    <th style="background-color:lightgreen" title="Costo por unidad de la ultima compra, en C$">ULT. COSTO C$</th>
+                    <th style="background-color:lightgreen" title="Costo por unidad de la ultima compra, en US$">ULT. COSTO US$</th>
+                    <th style="background-color:lightsalmon" title="Unds. bonificadas / Unds. vendidas x 100&#10;Solo canales privados, en el periodo">% BONIF.</th>
                 </tr>
               </thead>
             </table>

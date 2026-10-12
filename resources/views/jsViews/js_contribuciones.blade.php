@@ -70,7 +70,10 @@ $(document).ready(function () {
         table.page.len(this.value).draw();
     });
 
-    let Table = new DataTable('#table_contribucion',{ 
+    // Canales de las columnas de año anterior y mensuales (mismo orden que $canalesExtra en Home.blade.php)
+    const CANALES_EXTRA = ['FARMACIAS', 'CADENAS', 'MAYORISTAS', 'INSTITUCIONES_PRIVADAS', 'CRUZ_AZUL', 'INSTITUCIONES_PUBLICAS', 'LICITACIONES'];
+
+    let Table = new DataTable('#table_contribucion',{
         "destroy": true,
         "info": true,
         "ajax":{
@@ -91,15 +94,18 @@ $(document).ready(function () {
 
                 JsonCanal = json.Registros;
 
-                // Nombres de los 12 meses para los encabezados de venta mensual (placeholder)
-                var conMeses = json.Registros.find(r => Array.isArray(r.CANTIDAD_MES));
-                if (conMeses) {
+                // Rango del año anterior en el tooltip de ANT. UNDS / ANT. VTA
+                $('.th-ant').attr('title', 'Año anterior: '
+                    + moment(periodo.anterior_ini).format('DD/MM/YYYY') + ' al ' + moment(periodo.anterior_fin).format('DD/MM/YYYY'));
+
+                // Nombres de los meses (Ene a Dic del año actual) para los encabezados de venta mensual
+                if (Array.isArray(periodo.meses)) {
                     $('.th-mes').each(function() {
-                        var mes = conMeses.CANTIDAD_MES[$(this).data('mes')];
+                        var mes = periodo.meses[$(this).data('mes')];
                         // Escribir dentro del span de DataTables: si se reemplaza la celda completa se
                         // pierde el titulo de la columna y el export a Excel falla (header undefined)
                         var $titulo = $(this).find('.dt-column-title');
-                        if (mes) ($titulo.length ? $titulo : $(this)).text(($(this).data('prefijo') || 'UNDS') + ' ' + mes.Mes);
+                        if (mes) ($titulo.length ? $titulo : $(this)).text(($(this).data('prefijo') || 'UNDS') + ' ' + mes);
                     });
                 }
 
@@ -668,8 +674,18 @@ $(document).ready(function () {
              }},
             // COLUMNAS ADICIONALES: van al final para no mover los indices que usan los botones de
             // canal y calcularTotales. Las que aun no tienen fuente quedan como placeholder ("-").
-            // PLACEHOLDER: 12 meses previos (2) + venta mensual privado UNDS (12) y C$ (12)
-            ...Array.from({ length: 26 }, () => ({ "data": null, "defaultContent": "-", "orderable": false, "className": "dt-center" })),
+            // Año anterior por canal (UNDS / VTA), mismo orden que los encabezados
+            ...CANALES_EXTRA.flatMap(canal => [
+                {"data": "ANT_CANAL." + canal + ".U", "defaultContent": 0, render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+                {"data": "ANT_CANAL." + canal + ".V", "defaultContent": 0, render: $.fn.dataTable.render.number( ',', '.', 2  , '' )}
+            ]),
+            {"data": "ANT_UNIDADES", render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "ANT_VENTA", render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            // Venta mensual por canal: 12 meses de unidades y 12 de C$ (indice 0 = enero del año actual)
+            ...CANALES_EXTRA.flatMap(canal => [
+                ...Array.from({ length: 12 }, (_, m) => ({"data": "MES_CANAL." + canal + ".U." + m, "defaultContent": 0, render: $.fn.dataTable.render.number( ',', '.', 0  , '' )})),
+                ...Array.from({ length: 12 }, (_, m) => ({"data": "MES_CANAL." + canal + ".V." + m, "defaultContent": 0, render: $.fn.dataTable.render.number( ',', '.', 0  , '' )}))
+            ]),
             {"data": "Lote_Mas_a_Vencer_PRIVADO_6_MESES", "className": "dt-center", "render": function(data, type) {
                 if (!data) return type === 'display' ? '-' : '';
                 // dd/mm/yyyy -> yyyymmdd para que ordene por fecha
@@ -683,8 +699,25 @@ $(document).ready(function () {
                     ? $('<span>').attr('title', 'Lotes: ' + row.Lotes_Proximos_Vencer).text(cantidad).prop('outerHTML')
                     : cantidad;
             }},
-            // PLACEHOLDER: N° clientes (1) + ultima compra y costos C$/US$ (3) + % bonificado (1)
-            ...Array.from({ length: 5 }, () => ({ "data": null, "defaultContent": "-", "orderable": false, "className": "dt-center" })),
+            {"data": "CLIENTES", render: $.fn.dataTable.render.number( ',', '.', 0  , '' )},
+            {"data": "ULTIMA_COMPRA", "className": "dt-center", "render": function(data, type, row) {
+                if (!data) return type === 'display' ? '-' : '';
+                // dd/mm/yyyy -> yyyymmdd para que ordene por fecha
+                if (type === 'sort' || type === 'type') return data.split('/').reverse().join('');
+                // Documento de la compra (embarque) visible al pasar el mouse
+                return type === 'display' && row.ULTIMA_COMPRA_DOC
+                    ? $('<span>').attr('title', row.ULTIMA_COMPRA_DOC).text(data).prop('outerHTML')
+                    : data;
+            }},
+            {"data": "ULTIMO_COSTO_LOC", "defaultContent": "-", render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "ULTIMO_COSTO_DOL", "defaultContent": "-", render: $.fn.dataTable.render.number( ',', '.', 2  , '' )},
+            {"data": "PORC_BONIFICADO", "defaultContent": "-", "render": function(data, type, row) {
+                if (data === null || data === undefined) return type === 'display' ? '-' : '';
+                if (type !== 'display') return data;
+                // Detalle del calculo visible al pasar el mouse
+                var detalle = numeral(row.UNDS_BONIFICADAS).format('0,0') + ' bonificadas de ' + numeral(row.UNDS_PRIVADAS).format('0,0') + ' unds.';
+                return $('<span>').attr('title', detalle).text(numeral(data).format('0,0.00')).prop('outerHTML');
+            }},
         ],
         "columnDefs": [        
             {"className": "dt-center", "targets":[ 3 ]},               
