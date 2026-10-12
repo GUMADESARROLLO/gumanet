@@ -7,7 +7,64 @@
   span.btn-change-color {
     background-color: #28a745;
   }
+
+  /* Skeleton de carga (estilo Facebook) mientras se calcula el reporte */
+  .cc-skeleton {
+    position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 5;
+    background: #fff; padding: 16px; min-height: 420px;
+  }
+  .cc-skeleton .cc-sk-titulo { font-size: .85rem; color: #6c757d; margin-bottom: 12px; }
+  .cc-sk-fila { display: flex; gap: 12px; margin-bottom: 14px; }
+  .cc-sk-fila.cc-sk-head { margin-bottom: 20px; }
+  .cc-sk-bar {
+    height: 14px; border-radius: 4px;
+    background: linear-gradient(90deg, #eceff1 25%, #f6f7f8 37%, #eceff1 63%);
+    background-size: 400% 100%;
+    animation: cc-shimmer 1.4s ease infinite;
+  }
+  .cc-sk-head .cc-sk-bar { height: 22px; background-color: #dfe3e6; }
+  @keyframes cc-shimmer {
+    0%   { background-position: 100% 50%; }
+    100% { background-position: 0 50%; }
+  }
+
+  /* Aviso discreto (esquina inferior derecha) mientras se genera el Excel */
+  .cc-exportando {
+    position: fixed; right: 24px; bottom: 24px; z-index: 2000; width: 300px;
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(16, 24, 40, .12);
+    overflow: hidden;
+    opacity: 0; transform: translateY(12px); pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .cc-exportando.activo { opacity: 1; transform: translateY(0); }
+  .cc-exp-caja { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
+  .cc-exp-icono {
+    flex: 0 0 36px; height: 36px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    background: #e8f3ec; color: #1d6f42; font-size: 18px;
+  }
+  .cc-exp-titulo { font-size: .875rem; font-weight: 600; color: #1f2937; }
+  .cc-exp-sub { font-size: .75rem; color: #6b7280; }
+  .cc-exp-barra { height: 3px; background: #eef2f0; overflow: hidden; }
+  .cc-exp-barra span {
+    display: block; width: 35%; height: 100%; background: #1d6f42;
+    animation: cc-avance 1.6s cubic-bezier(.4, 0, .2, 1) infinite;
+  }
+  @keyframes cc-avance { 0% { transform: translateX(-100%); } 100% { transform: translateX(290%); } }
 </style>
+
+{{-- Overlay de exportacion a Excel --}}
+<div class="cc-exportando" id="cc_exportando">
+  <div class="cc-exp-caja">
+    <div class="cc-exp-icono"><i class="fas fa-file-excel"></i></div>
+    <div>
+      <div class="cc-exp-titulo">Generando Excel</div>
+      <div class="cc-exp-sub">La descarga iniciará en unos segundos</div>
+    </div>
+  </div>
+  <div class="cc-exp-barra"><span></span></div>
+</div>
 <div class="container-fluid"> 
   <div class="row">
     <div class="col-sm-6">
@@ -59,7 +116,23 @@
   </div>
 
     <div class="card border-0 shadow-sm ">
-      <div class="card-body col-sm-12 p-0 mb-2">	
+      <div class="card-body col-sm-12 p-0 mb-2" style="position: relative">
+        {{-- Skeleton visible mientras canalData calcula; el JS lo oculta al llegar los datos --}}
+        <div class="cc-skeleton" id="cc_skeleton">
+          <div class="cc-sk-titulo"><i class="fas fa-spinner fa-spin mr-1"></i> Cargando contribución por canal…</div>
+          <div class="cc-sk-fila cc-sk-head">
+            <div class="cc-sk-bar" style="width: 12%"></div><div class="cc-sk-bar" style="width: 28%"></div>
+            <div class="cc-sk-bar" style="width: 14%"></div><div class="cc-sk-bar" style="width: 46%"></div>
+          </div>
+          @for ($i = 0; $i < 8; $i++)
+          <div class="cc-sk-fila">
+            <div class="cc-sk-bar" style="width: 10%"></div>
+            <div class="cc-sk-bar" style="width: {{ [30, 24, 34, 27][$i % 4] }}%"></div>
+            <div class="cc-sk-bar" style="width: 14%"></div>
+            <div class="cc-sk-bar" style="width: {{ [42, 48, 36, 45][$i % 4] }}%"></div>
+          </div>
+          @endfor
+        </div>
         <div class="p-0 px-car">
           <div class="table-responsive flex-between-center scrollbar border border-1 border-300 rounded-2">
           

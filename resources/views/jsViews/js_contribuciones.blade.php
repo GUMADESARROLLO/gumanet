@@ -60,9 +60,15 @@
     };
 $(document).ready(function () {
     
-    $('#id_txt_buscar').on('keyup', function() {   
-        var vTable = $('#table_contribucion').DataTable();     
-        vTable.search(this.value).draw();        
+    // Buscar con una pausa de 300 ms: redibujar una tabla de ~250 columnas en cada tecla la hacia lenta
+    var timerBuscar = null;
+    $('#id_txt_buscar').on('keyup', function() {
+        var texto = this.value;
+        clearTimeout(timerBuscar);
+        timerBuscar = setTimeout(function() {
+            var vTable = $('#table_contribucion').DataTable();
+            if (vTable.search() !== texto) vTable.search(texto).draw();
+        }, 300);
     });
 
     $( "#InputCanales").change(function() {
@@ -370,6 +376,24 @@ $(document).ready(function () {
                     title:  'Contribucion por canal: ' + moment().format('YYYY-MM-DD HH:mm'),
                     exportOptions: {
                         columns: ':visible'
+                    },
+                    // Aviso mientras se arma el archivo. El setTimeout deja que el aviso termine de aparecer
+                    // antes del trabajo pesado (congela la pagina); "done" lo llama Buttons al terminar.
+                    action: function (e, dt, node, config, done) {
+                        var boton = this;
+                        $('#cc_exportando').addClass('activo');
+                        setTimeout(function () {
+                            try {
+                                $.fn.dataTable.ext.buttons.excelHtml5.action.call(boton, e, dt, node, config, function () {
+                                    $('#cc_exportando').removeClass('activo');
+                                    done();
+                                });
+                            } catch (error) {
+                                console.error('Error al exportar:', error);
+                                $('#cc_exportando').removeClass('activo');
+                                done();
+                            }
+                        }, 250);
                     }
                 }]
             }
@@ -727,8 +751,12 @@ $(document).ready(function () {
                 return $('<span>').attr('title', detalle).text(numeral(data).format('0,0.00')).prop('outerHTML');
             }},
         ],
-        "columnDefs": [        
-            {"className": "dt-center", "targets":[ 3 ]},               
+        "columnDefs": [
+            // El buscador solo mira las columnas del SKU (articulo, descripcion, fabricante, categoria).
+            // En columnDefs la primera regla tiene prioridad, por eso va antes que '_all'.
+            { "searchable": true,  "targets": [ 0, 1, 2, 3 ] },
+            { "searchable": false, "targets": '_all' },
+            {"className": "dt-center", "targets":[ 3 ]},
             { "className": "dt-right", "targets": [ 7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48 ]}, 
             { "width": "200px", "targets": [ 1 ] },
             { "width": "10px", "targets": [ 7, 8, 9, 10, 12, 13, 14, 15, 16, 19, 21, 22, 25, 27, 28, 31, 33, 34, 39, 40, 43, 44, 45, 46 ] },
@@ -821,7 +849,15 @@ $(document).ready(function () {
     })
 
     Table.on('draw.dt', function () {
-       calcularTotales(Table);        
+       calcularTotales(Table);
+    });
+
+    // Quitar el skeleton de carga cuando llega la respuesta de canalData (con o sin error)
+    Table.on('xhr.dt', function (e, settings, json) {
+        $('#cc_skeleton').fadeOut(200);
+        if (!json) {
+            Swal.fire('Error', 'No se pudo calcular la contribución por canal. Intente nuevamente.', 'error');
+        }
     });
 
     
@@ -880,10 +916,12 @@ function calcularTotales(table) {
         ]
     };
 
-    
+    // Visibilidad de cada canal: se consulta una vez por calculo, no en cada fila
+    Object.keys(config).forEach(tipo => config[tipo].forEach(c => { c.visible = table.column(c.col).visible(); }));
+
     table.rows({ search: 'applied' }).every(function() {
         var data = this.data();
-        
+
         // TOTAL DE FARMACIAS
         Farmacia_Cantidad       += toNum(data.FARMACIA_CANTIDAD) || 0;
         Farmacia_Venta          += toNum(data.FARMACIA_VENTA) || 0;
@@ -928,8 +966,8 @@ function calcularTotales(table) {
   
         // Función para acumular según config
         function acumularTotales(tipo, total) {
-            config[tipo].forEach(({ col, field }) => {
-                if (table.column(col).visible()) {
+            config[tipo].forEach(({ visible, field }) => {
+                if (visible) {
                     total += toNum(data[field]) || 0;
                 }
             });
