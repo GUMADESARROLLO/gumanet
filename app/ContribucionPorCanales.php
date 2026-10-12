@@ -58,7 +58,13 @@ class ContribucionPorCanales extends Model
         $NameMonths = ContribucionPorCanales::NameMonth($fecha[0]->ultima_fecha);
         $categoria  = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.tbl_categoria_articulo_canales");
         $lote       = DB::connection('sqlsrv')->select("SELECT * FROM PRODUCCION.dbo.iweb_lotes");
-        
+
+        // Lotes agrupados por articulo, para no recorrer toda la tabla por cada SKU
+        $lotesPorArticulo = [];
+        foreach ($lote as $item) {
+            $lotesPorArticulo[$item->ARTICULO][] = $item;
+        }
+
         $fields = [
             "FARMACIA_CANTIDAD",
             "CADENA_FARMACIA_CANTIDAD",
@@ -122,26 +128,30 @@ class ContribucionPorCanales extends Model
             $costoTotal = 0;
             $costoPromedio = 0;
             $mess12 = null;
-            $categ = ""; $factor = 0;
+            $categ = "";
             $pedido = 0;
             $transito = 0;
             $inventario = 0;
 
             // FECHA DE VENCIMIENTO Y CANTIDAD DISPONIBLE
-            foreach($lote as $item) {
-                if($item->ARTICULO == $articulo){
-                    $convertida = $item->CANT_DISPONIBLE * $item->FACTOR_CONVER_6;
-                    $costoTotal += $convertida * $item->COSTO_PROM_LOC;
-                    $costoPromedio = $item->COSTO_PROM_LOC;
-                }
-                
-                $factor = $item->FECHA_VENCIMIENTO;
-                if($item->ARTICULO == $articulo &&  $item->FECHA_VENCIMIENTO >= $fechaActual) {
-                    $cantDisponible += $item->CANT_DISPONIBLE; 
-            
-                    if (is_null($fechaVencimiento) || $item->FECHA_VENCIMIENTO < $fechaVencimiento) {
-                        $fechaVencimiento = $item->FECHA_VENCIMIENTO;
+            $lotesProximos = [];
+            foreach($lotesPorArticulo[$articulo] ?? [] as $item) {
+                $convertida = $item->CANT_DISPONIBLE * $item->FACTOR_CONVER_6;
+                $costoTotal += $convertida * $item->COSTO_PROM_LOC;
+                $costoPromedio = $item->COSTO_PROM_LOC;
+
+                $vence = substr($item->FECHA_VENCIMIENTO, 0, 10);
+                if($vence >= $fechaActual) {
+                    $cantDisponible += $item->CANT_DISPONIBLE;
+
+                    if (is_null($fechaVencimiento) || $vence < $fechaVencimiento) {
+                        $fechaVencimiento = $vence;
                         $cantProxima = $item->CANT_DISPONIBLE;
+                        $lotesProximos = [$item->LOTE];
+                    } elseif ($vence == $fechaVencimiento) {
+                        // Varios lotes (o el mismo lote en otra bodega) vencen el mismo dia: se suman
+                        $cantProxima += $item->CANT_DISPONIBLE;
+                        $lotesProximos[] = $item->LOTE;
                     }
                 }
             }
@@ -190,8 +200,9 @@ class ContribucionPorCanales extends Model
             $json[$i]['Valor_USD_Inventario_ONHAND_PRIVADO']        = $CantOnHand;
             $json[$i]['Valor_USD_Total_OnHand_Tránsito_PRIVADO']    = $CantOnHandTransito;
             $json[$i]['Disponibilidad_Packs_PRIVADO_6_MESES']       = $cantDisponible;
-            $json[$i]['Lote_Mas_a_Vencer_PRIVADO_6_MESES']          = date('d/m/Y',strtotime($fechaVencimiento));
+            $json[$i]['Lote_Mas_a_Vencer_PRIVADO_6_MESES']          = is_null($fechaVencimiento) ? null : date('d/m/Y',strtotime($fechaVencimiento));
             $json[$i]['Existencia_En_Lote_proximo_Vencer_6_MESES']  = $cantProxima;
+            $json[$i]['Lotes_Proximos_Vencer']                      = implode(', ', array_unique($lotesProximos));
             $json[$i]['ARTICULO']                                   = '<a href="#!" onclick="getDetalleArticulo('."'".$row['ARTICULO']."'".', '."'".strtoupper($row['DESCRIPCION'])."'".')" >'.$row['ARTICULO'].'</a>';
             $json[$i]['ARTICULODESC']                               = $row['ARTICULO'];
             $json[$i]['DESCRIPCION']                                = strtoupper($row['DESCRIPCION']);

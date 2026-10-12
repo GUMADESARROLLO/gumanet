@@ -75,6 +75,14 @@
                   <th colspan="6">INSTITUCION PUBLICA</th>
                   <th colspan="6">MINSA - LICIT</th>
                   <th colspan="6">TOTAL</th>
+                  {{-- PLACEHOLDER: columnas adicionales solicitadas, pendientes de integrar --}}
+                  <th colspan="2">12 MESES PREVIOS</th>
+                  <th colspan="12">VENTA MENSUAL PRIVADO - UNDS</th>
+                  <th colspan="12">VENTA MENSUAL PRIVADO - C$</th>
+                  <th colspan="2">LOTE PROXIMO A VENCER</th>
+                  <th colspan="1">CLIENTES</th>
+                  <th colspan="3">ULTIMA COMPRA</th>
+                  <th colspan="1">BONIFICADO</th>
                 </tr>
                 <tr>
                   <th class="bg-blue" colspan="8"></th>
@@ -126,6 +134,9 @@
                   <th id="Total_Costo"></th>
                   <th id="Total_Contribucion"></th>
                   <th id="Total_Margen"></th>
+                  @for ($i = 0; $i < 33; $i++)
+                  <th></th>
+                  @endfor
                 </tr>
                 <tr>
                     <th class="bg-blue text-light">ARTICULO</th>
@@ -184,6 +195,21 @@
                     <th style="background-color:gold">T. CTO</th>
                     <th style="background-color:gold">T. CTB</th>
                     <th style="background-color:gold">T. %</th>
+                    <th style="background-color:silver">ANT. UNDS</th>
+                    <th style="background-color:silver">ANT. VTA</th>
+                    @for ($i = 1; $i <= 12; $i++)
+                    <th style="background-color:lightsteelblue" class="th-mes" data-mes="{{ $i - 1 }}">UNDS M{{ $i }}</th>
+                    @endfor
+                    @for ($i = 1; $i <= 12; $i++)
+                    <th style="background-color:lightblue" class="th-mes" data-mes="{{ $i - 1 }}" data-prefijo="C$">C$ M{{ $i }}</th>
+                    @endfor
+                    <th style="background-color:khaki">LOTE VENCE</th>
+                    <th style="background-color:khaki">LOTE CANT.</th>
+                    <th style="background-color:plum">N° CLIENTES</th>
+                    <th style="background-color:lightgreen">ULT. COMPRA</th>
+                    <th style="background-color:lightgreen">ULT. COSTO C$</th>
+                    <th style="background-color:lightgreen">ULT. COSTO US$</th>
+                    <th style="background-color:lightsalmon">% BONIF.</th>
                 </tr>
               </thead>
             </table>

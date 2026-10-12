@@ -90,6 +90,19 @@ $(document).ready(function () {
                 }
 
                 JsonCanal = json.Registros;
+
+                // Nombres de los 12 meses para los encabezados de venta mensual (placeholder)
+                var conMeses = json.Registros.find(r => Array.isArray(r.CANTIDAD_MES));
+                if (conMeses) {
+                    $('.th-mes').each(function() {
+                        var mes = conMeses.CANTIDAD_MES[$(this).data('mes')];
+                        // Escribir dentro del span de DataTables: si se reemplaza la celda completa se
+                        // pierde el titulo de la columna y el export a Excel falla (header undefined)
+                        var $titulo = $(this).find('.dt-column-title');
+                        if (mes) ($titulo.length ? $titulo : $(this)).text(($(this).data('prefijo') || 'UNDS') + ' ' + mes.Mes);
+                    });
+                }
+
                 return json.Registros;
             }
         },
@@ -652,7 +665,26 @@ $(document).ready(function () {
                 }
 
                 return numeral(((venta-costo)/venta)*100).format('0,0.00');
-             }},        
+             }},
+            // COLUMNAS ADICIONALES: van al final para no mover los indices que usan los botones de
+            // canal y calcularTotales. Las que aun no tienen fuente quedan como placeholder ("-").
+            // PLACEHOLDER: 12 meses previos (2) + venta mensual privado UNDS (12) y C$ (12)
+            ...Array.from({ length: 26 }, () => ({ "data": null, "defaultContent": "-", "orderable": false, "className": "dt-center" })),
+            {"data": "Lote_Mas_a_Vencer_PRIVADO_6_MESES", "className": "dt-center", "render": function(data, type) {
+                if (!data) return type === 'display' ? '-' : '';
+                // dd/mm/yyyy -> yyyymmdd para que ordene por fecha
+                return (type === 'sort' || type === 'type') ? data.split('/').reverse().join('') : data;
+            }},
+            {"data": "Existencia_En_Lote_proximo_Vencer_6_MESES", "render": function(data, type, row) {
+                if (type !== 'display') return data;
+                var cantidad = numeral(data).format('0,0');
+                // Codigos de lote que vencen esa fecha, visibles al pasar el mouse
+                return row.Lotes_Proximos_Vencer
+                    ? $('<span>').attr('title', 'Lotes: ' + row.Lotes_Proximos_Vencer).text(cantidad).prop('outerHTML')
+                    : cantidad;
+            }},
+            // PLACEHOLDER: N° clientes (1) + ultima compra y costos C$/US$ (3) + % bonificado (1)
+            ...Array.from({ length: 5 }, () => ({ "data": null, "defaultContent": "-", "orderable": false, "className": "dt-center" })),
         ],
         "columnDefs": [        
             {"className": "dt-center", "targets":[ 3 ]},               
