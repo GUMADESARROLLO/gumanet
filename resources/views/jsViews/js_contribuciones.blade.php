@@ -98,6 +98,14 @@ $(document).ready(function () {
                 $('.th-ant').attr('title', 'Año anterior: '
                     + moment(periodo.anterior_ini).format('DD/MM/YYYY') + ' al ' + moment(periodo.anterior_fin).format('DD/MM/YYYY'));
 
+                // Encabezados del año anterior con el año comparado: "F. UNDS 25", "F. VTA 25", ...
+                var anioAnt = moment(periodo.anterior_fin).format('YY');
+                $('.th-ant').each(function() {
+                    // Dentro del span de DataTables, para no perder el titulo que usa el export a Excel
+                    var $titulo = $(this).find('.dt-column-title');
+                    ($titulo.length ? $titulo : $(this)).text($(this).data('prefijo') + ' ' + anioAnt);
+                });
+
                 // Nombres de los meses (Ene a Dic del año actual) para los encabezados de venta mensual
                 if (Array.isArray(periodo.meses)) {
                     $('.th-mes').each(function() {

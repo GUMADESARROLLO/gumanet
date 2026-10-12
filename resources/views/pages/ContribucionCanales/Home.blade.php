@@ -209,11 +209,12 @@
                     <th style="background-color:gold">T. CTB</th>
                     <th style="background-color:gold">T. %</th>
                     @foreach ($canalesExtra as $pref => $canal)
-                    <th style="background-color:{{ $canal[1] }}" class="th-ant">{{ $pref }}. ANT UNDS</th>
-                    <th style="background-color:{{ $canal[1] }}" class="th-ant">{{ $pref }}. ANT VTA</th>
+                    {{-- El año (ej. "25") se agrega en el JS segun el periodo que se compara --}}
+                    <th style="background-color:{{ $canal[1] }}" class="th-ant" data-prefijo="{{ $pref }}. UNDS">{{ $pref }}. UNDS</th>
+                    <th style="background-color:{{ $canal[1] }}" class="th-ant" data-prefijo="{{ $pref }}. VTA">{{ $pref }}. VTA</th>
                     @endforeach
-                    <th style="background-color:gold" class="th-ant">T. ANT UNDS</th>
-                    <th style="background-color:gold" class="th-ant">T. ANT VTA</th>
+                    <th style="background-color:gold" class="th-ant" data-prefijo="T. UNDS">T. UNDS</th>
+                    <th style="background-color:gold" class="th-ant" data-prefijo="T. VTA">T. VTA</th>
                     @foreach ($canalesExtra as $pref => $canal)
                     @for ($i = 1; $i <= 12; $i++)
                     <th style="background-color:{{ $canal[1] }}" class="th-mes" data-mes="{{ $i - 1 }}" data-prefijo="{{ $pref }}. U">{{ $pref }}. U M{{ $i }}</th>
