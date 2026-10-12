@@ -109,10 +109,9 @@ class ContribucionPorCanales extends Model
             $bonifPorArticulo[$item->ARTICULO] = $item;
         }
 
-        // Año anterior (mismas fechas del periodo, un año antes) y venta mensual de los 12 meses
-        // que terminan en el cierre del periodo, por canal. Se calcula al vuelo (sin historico)
-        // en una sola lectura de la fuente de Softland.
-        $anterior = ContribucionPorCanales::periodoAnterior($fecha[0]->primera_fecha, $fecha[0]->ultima_fecha);
+        // Año anterior completo (Ene-Dic) y venta mensual Ene-Dic del año actual, por canal.
+        // Se calcula al vuelo (sin historico) en una sola lectura de la fuente de Softland.
+        $anterior = ContribucionPorCanales::periodoAnterior($fecha[0]->ultima_fecha);
         $meses    = ContribucionPorCanales::mesesAnioActual($fecha[0]->ultima_fecha);
         $mesIni   = $meses['ini'];
         $mesFin   = $meses['fin'];
@@ -455,7 +454,7 @@ class ContribucionPorCanales extends Model
         $FechaEnd   = date('Y-m-d 00:00:00.000', strtotime($currentDate . ' -1 days'));
 
         $result = DB::connection('sqlsrv')->select("SELECT MIN(fecha) AS primera_fecha, MAX(fecha) AS ultima_fecha FROM PRODUCCION.dbo.tbl_contribucion_canales");
-        $anterior = ContribucionPorCanales::periodoAnterior($result[0]->primera_fecha, $result[0]->ultima_fecha);
+        $anterior = ContribucionPorCanales::periodoAnterior($result[0]->ultima_fecha);
         return [
             'primera_fecha' => date('Y-m-01', strtotime($result[0]->primera_fecha)),
             'ultima_fecha' => $result[0]->ultima_fecha,
@@ -511,11 +510,12 @@ class ContribucionPorCanales extends Model
         ];
     }
 
-    // Mismas fechas del periodo del reporte, un año antes (para ANT. UNDS / ANT. VTA)
-    public static function periodoAnterior($primeraFecha, $ultimaFecha){
+    // Año anterior completo (enero a diciembre) al año del cierre del reporte, para "F. UNDS 25" / "F. VTA 25"
+    public static function periodoAnterior($ultimaFecha){
+        $anioAnt = date('Y', strtotime($ultimaFecha)) - 1;
         return [
-            'ini' => date('Y-m-d 00:00:00', strtotime('-1 year', strtotime($primeraFecha))),
-            'fin' => date('Y-m-d 23:59:59', strtotime('-1 year', strtotime($ultimaFecha))),
+            'ini' => $anioAnt . '-01-01 00:00:00',
+            'fin' => $anioAnt . '-12-31 23:59:59',
         ];
     }
     public static function ExportToExcel() {
