@@ -766,6 +766,8 @@ function UpdateUI(Prom, Units) {
     
 }
 function calcularTotales(table) {  
+    // Las cantidades vienen formateadas con comas desde PHP ("1,234"); parseFloat las cortaria en la coma
+    const toNum = v => parseFloat(String(v).replace(/,/g, "")) || 0;
     var Farmacia_Cantidad = Farmacia_Costo = Farmacia_Venta = Farmacia_Contribucion = 0;
     var Cadena_Farmacia_Cantidad = Cadena_Farmacia_Costo = Cadena_Farmacia_Venta = Cadena_Farmacia_Contribucion = 0;
     var Mayorista_Cantidad = Mayorista_Costo = Mayorista_Venta = Mayorista_Contribucion = 0;
@@ -810,52 +812,52 @@ function calcularTotales(table) {
         var data = this.data();
         
         // TOTAL DE FARMACIAS
-        Farmacia_Cantidad       += parseFloat(data.FARMACIA_CANTIDAD) || 0;
-        Farmacia_Venta          += parseFloat(data.FARMACIA_VENTA) || 0;
-        Farmacia_Costo          += parseFloat(data.FARMACIA_COSTO) || 0;
-        Farmacia_Contribucion   += parseFloat(data.FARMACIA_CONTRIBUCION) || 0;
+        Farmacia_Cantidad       += toNum(data.FARMACIA_CANTIDAD) || 0;
+        Farmacia_Venta          += toNum(data.FARMACIA_VENTA) || 0;
+        Farmacia_Costo          += toNum(data.FARMACIA_COSTO) || 0;
+        Farmacia_Contribucion   += toNum(data.FARMACIA_CONTRIBUCION) || 0;
 
         // TOTAL DE CADENA DE FARMACIAS
-        Cadena_Farmacia_Cantidad    += parseFloat(data.CADENA_FARMACIA_CANTIDAD) || 0;
-        Cadena_Farmacia_Venta       += parseFloat(data.CADENA_FARMACIA_VENTA) || 0;
-        Cadena_Farmacia_Costo       += parseFloat(data.CADENA_FARMACIA_COSTO) || 0;
-        Cadena_Farmacia_Contribucion+= parseFloat(data.CADENA_FARMACIA_CONTRIBUCION) || 0;
+        Cadena_Farmacia_Cantidad    += toNum(data.CADENA_FARMACIA_CANTIDAD) || 0;
+        Cadena_Farmacia_Venta       += toNum(data.CADENA_FARMACIA_VENTA) || 0;
+        Cadena_Farmacia_Costo       += toNum(data.CADENA_FARMACIA_COSTO) || 0;
+        Cadena_Farmacia_Contribucion+= toNum(data.CADENA_FARMACIA_CONTRIBUCION) || 0;
 
         // TOTAL DE MAYORISTAS
-        Mayorista_Cantidad      += parseFloat(data.MAYORISTA_CANTIDAD) || 0;
-        Mayorista_Venta         += parseFloat(data.MAYORISTA_VENTA) || 0;
-        Mayorista_Costo         += parseFloat(data.MAYORISTA_COSTO) || 0;
-        Mayorista_Contribucion  += parseFloat(data.MAYORISTA_CONTRIBUCION) || 0;
+        Mayorista_Cantidad      += toNum(data.MAYORISTA_CANTIDAD) || 0;
+        Mayorista_Venta         += toNum(data.MAYORISTA_VENTA) || 0;
+        Mayorista_Costo         += toNum(data.MAYORISTA_COSTO) || 0;
+        Mayorista_Contribucion  += toNum(data.MAYORISTA_CONTRIBUCION) || 0;
 
         // TOTAL DE CRUZ AZUL
-        Cruz_Azul_Cantidad      += parseFloat(data.CRUZ_AZUL_CANTIDAD) || 0;
-        Cruz_Azul_Venta         += parseFloat(data.CRUZ_AZUL_VENTA) || 0;
-        Cruz_Azul_Costo         += parseFloat(data.CRUZ_AZUL_COSTO) || 0;
-        Cruz_Azul_Contribucion  += parseFloat(data.CRUZ_AZUL_CONTRIBUCION) || 0;
+        Cruz_Azul_Cantidad      += toNum(data.CRUZ_AZUL_CANTIDAD) || 0;
+        Cruz_Azul_Venta         += toNum(data.CRUZ_AZUL_VENTA) || 0;
+        Cruz_Azul_Costo         += toNum(data.CRUZ_AZUL_COSTO) || 0;
+        Cruz_Azul_Contribucion  += toNum(data.CRUZ_AZUL_CONTRIBUCION) || 0;
 
         // TOTAL INTITUCION PRIVADA
-        Institucion_Privada_Cantidad    += parseFloat(data.INSTITUCION_PRIVADA_CANTIDAD) || 0;
-        Institucion_Privada_Venta       += parseFloat(data.INSTITUCION_PRIVADA_VENTA) || 0;
-        Institucion_Privada_Costo       += parseFloat(data.INSTITUCION_PRIVADA_COSTO) || 0;
-        Institucion_Privada_Contribucion+= parseFloat(data.INSTITUCION_PRIVADA_CONTRIBUCION) || 0;
+        Institucion_Privada_Cantidad    += toNum(data.INSTITUCION_PRIVADA_CANTIDAD) || 0;
+        Institucion_Privada_Venta       += toNum(data.INSTITUCION_PRIVADA_VENTA) || 0;
+        Institucion_Privada_Costo       += toNum(data.INSTITUCION_PRIVADA_COSTO) || 0;
+        Institucion_Privada_Contribucion+= toNum(data.INSTITUCION_PRIVADA_CONTRIBUCION) || 0;
 
         // TOTAL INTITUCION PUBLICA
-        Institucion_Publica_Cantidad    += parseFloat(data.INSTITUCION_PUBLICA_CANTIDAD) || 0;
-        Institucion_Publica_Venta       += parseFloat(data.INSTITUCION_PUBLICA_VENTA) || 0;
-        Institucion_Publica_Costo       += parseFloat(data.INSTITUCION_PUBLICA_COSTO) || 0;
-        Institucion_Publica_Contribucion+= parseFloat(data.INSTITUCION_PUBLICA_CONTRIBUCION) || 0;
+        Institucion_Publica_Cantidad    += toNum(data.INSTITUCION_PUBLICA_CANTIDAD) || 0;
+        Institucion_Publica_Venta       += toNum(data.INSTITUCION_PUBLICA_VENTA) || 0;
+        Institucion_Publica_Costo       += toNum(data.INSTITUCION_PUBLICA_COSTO) || 0;
+        Institucion_Publica_Contribucion+= toNum(data.INSTITUCION_PUBLICA_CONTRIBUCION) || 0;
 
         // TOTAL DE LICITACIONES
-        Licitacion_Cantidad    += parseFloat(data.LICITACION_CANTIDAD) || 0;
-        Licitacion_Venta       += parseFloat(data.LICITACION_VENTA) || 0;
-        Licitacion_Costo       += parseFloat(data.LICITACION_COSTO) || 0;
-        Licitacion_Contribucion+= parseFloat(data.LICITACION_CONTRIBUCION) || 0;
+        Licitacion_Cantidad    += toNum(data.LICITACION_CANTIDAD) || 0;
+        Licitacion_Venta       += toNum(data.LICITACION_VENTA) || 0;
+        Licitacion_Costo       += toNum(data.LICITACION_COSTO) || 0;
+        Licitacion_Contribucion+= toNum(data.LICITACION_CONTRIBUCION) || 0;
   
         // Función para acumular según config
         function acumularTotales(tipo, total) {
             config[tipo].forEach(({ col, field }) => {
                 if (table.column(col).visible()) {
-                    total += parseFloat(data[field]) || 0;
+                    total += toNum(data[field]) || 0;
                 }
             });
             return total;
